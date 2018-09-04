@@ -1,0 +1,15 @@
+{
+  "name": "hulk-cli",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo \"Please implement your build script and modify scripts.build section in package.json\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://wangyongqing01@icode.baidu.com:8235/baidu/searchbox-fe/hulk-cli"
+  },
+  "author": "wangyongqing01",
+  "license": "UNLICENSED"
+}
