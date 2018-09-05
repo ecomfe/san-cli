@@ -9,6 +9,7 @@ yarn-error.log*
 
 .vscode
 package-lock.json
+dist
 
 # Runtime data
 pids
