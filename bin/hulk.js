@@ -60,6 +60,22 @@ program
     });
 
 program
+    .command('install [packageName...]')
+    .description('安装 npm 模块，自动区分百度私有包')
+    .allowUnknownOption()
+    .action((packageName, cmd) => {
+        loadCommand('install', packageName, cmd);
+    });
+
+program
+    .command('update [packageName...]')
+    .description('升级 npm 模块，自动区分百度私有包')
+    .allowUnknownOption()
+    .action((packageName, cmd) => {
+        loadCommand('update', packageName, cmd);
+    });
+
+program
     .arguments('<command>')
     .action(cmd => {
         program.outputHelp();

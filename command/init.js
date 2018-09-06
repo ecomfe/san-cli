@@ -9,7 +9,7 @@ const exists = fs.existsSync;
 const home = require('user-home');
 const inquirer = require('inquirer');
 const rm = fs.removeSync;
-// const debug = require('debug')('init');
+// const debug = require('debug')('command:init');
 
 const download = require('../lib/repo-download');
 const generate = require('../lib/generate');
