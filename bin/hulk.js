@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-
+/**
+ * @file hulk bin 文件
+ */
 const chalk = require('chalk');
 const semver = require('semver');
 const requiredVersion = require('../package.json').engines.node;
@@ -41,7 +43,7 @@ program
 program
     .command('init-template <appName>')
     .description('生成一个项目模板')
-    .action(() => {
+    .action((appName, cmd) => {
         loadCommand('init-template', {
             appName
         }, cmd);
@@ -59,9 +61,9 @@ program
 
 program
     .arguments('<command>')
-    .action((cmd) => {
+    .action(cmd => {
         program.outputHelp();
-        console.log(`  ` + chalk.red(`找不到命令 ${chalk.yellow(cmd)}.`));
+        console.log('  ' + chalk.red(`找不到命令 ${chalk.yellow(cmd)}.`));
         console.log();
     });
 

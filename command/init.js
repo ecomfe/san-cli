@@ -67,8 +67,8 @@ module.exports = async (context, argv, opts) => {
                     return;
                 }
                 else if (action === 'overwrite') {
-                    log(`删除 ${chalk.cyan(targetDir)}...`);
-                    await fs.remove(targetDir);
+                    log(`删除 ${chalk.cyan(dest)}...`);
+                    await fs.remove(dest);
                 }
             }
         }
