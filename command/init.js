@@ -31,8 +31,6 @@ module.exports = async (context, argv, opts) => {
     const inPlace = !appName || appName === '.';
     const name = inPlace ? path.relative('../', process.cwd()) : appName;
     const dest = path.resolve(appName || '.');
-    // 临时存放地址，存放在~/.hulk-templates 下面
-    let tmp = path.join(home, '.hulk-templates', template.replace(/[\/:#]/g, '-'));
 
     if (exists(dest)) {
         if (opts.force) {
@@ -89,9 +87,8 @@ module.exports = async (context, argv, opts) => {
         }
     }
     else {
-        if (!~template.indexOf('/')) {
-            tmp = path.join(home, '.hulk-templates', template.replace(/[\/:#]/g, '-'));
-        }
+        // 临时存放地址，存放在~/.hulk-templates 下面
+        let tmp = path.join(home, '.hulk-templates', template.replace(/[/:#]/g, '-'));
 
         if (opts.cache && exists(tmp)) {
             // 优先使用缓存
