@@ -69,7 +69,7 @@ program
 
 program.on('--help', () => {
     console.log();
-    console.log(`  使用 ${chalk.cyan(`hulk <command> --help`)} 查看帮助`);
+    console.log(`  使用 ${chalk.cyan('hulk <command> --help')} 查看帮助`);
     console.log();
 });
 program.commands.forEach(c => c.on('--help', () => console.log()));
