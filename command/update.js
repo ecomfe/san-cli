@@ -12,7 +12,7 @@ const {
 } = require('../lib/utils');
 module.exports = (context, pkgName, opts, argv) => {
     debug(pkgName, argv);
-    logWithSpinner('📦', `升级中...`);
+    logWithSpinner('📦', '升级中...');
     updatePackage(context, pkgName, argv.filter(a => {
         a !== 'install';
     })).then(() => {
