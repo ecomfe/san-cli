@@ -4,23 +4,19 @@
 const debug = require('debug')('command:install');
 const {installPackage} = require('../lib/npm');
 const {
-    logWithSpinner,
-    stopSpinner,
     log,
+    success,
     error,
     clearConsole
 } = require('../lib/utils');
-module.exports = (context, pkgName, opts, argv) => {
-    debug(pkgName, argv);
-    logWithSpinner('📦', '安装中...');
-    installPackage(context, pkgName, argv.filter(a => {
-        a !== 'install';
-    })).then(() => {
-        stopSpinner();
+module.exports = (context, pkgName, opts, {unknown}) => {
+    debug(pkgName, unknown);
+    log('📦 开始安装...');
+    log();
+    installPackage(context, pkgName, unknown, '', true).then(() => {
         clearConsole();
-        log('✌️ 安装完成');
+        success('安装完成');
     }).catch(e => {
-        stopSpinner();
         error('安装失败');
         log(e);
     });

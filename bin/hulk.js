@@ -17,7 +17,7 @@ function checkNodeVersion(wanted, id) {
 }
 checkNodeVersion(requiredVersion, 'hulk-cli');
 const program = require('commander');
-const loadCommand = require('../lib/load-command');
+const loadCommand = require('../lib/load-command')(program);
 
 program
     .version(require('../package').version, '-v --version')
@@ -64,6 +64,7 @@ program
     .description('安装 npm 模块，自动区分百度私有包')
     .allowUnknownOption()
     .action((packageName, cmd) => {
+
         loadCommand('install', packageName, cmd);
     });
 

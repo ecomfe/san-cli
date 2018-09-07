@@ -1,6 +1,6 @@
 {
-  "name": "hulk-cli",
-  "version": "0.0.1",
+  "name": "@baidu/hulk-cli",
+  "version": "0.0.1-alpha",
   "description": "SearchBox Front-end Command Line Interface",
   "bin": {
     "hulk": "bin/hulk.js"
