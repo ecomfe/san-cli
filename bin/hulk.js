@@ -5,7 +5,6 @@
 const chalk = require('chalk');
 const semver = require('semver');
 const requiredVersion = require('../package.json').engines.node;
-
 function checkNodeVersion(wanted, id) {
     if (!semver.satisfies(process.version, wanted)) {
         console.log(chalk.red(
@@ -18,10 +17,13 @@ function checkNodeVersion(wanted, id) {
 checkNodeVersion(requiredVersion, 'hulk-cli');
 const program = require('commander');
 const loadCommand = require('../lib/load-command')(program);
+const versionCommand = require('../command/version');
 
 program
     .version(require('../package').version, '-v --version')
     .usage('<command> [options]');
+// 重新使用 version，带检查更新
+program.removeAllListeners('option:version').on('option:version', versionCommand);
 
 program
     .command('init <template> <appName>')
@@ -74,6 +76,15 @@ program
     .allowUnknownOption()
     .action((packageName, cmd) => {
         loadCommand('update', packageName, cmd);
+    });
+
+program
+    .command('upgrade')
+    .description('检测并升级 CLI 版本')
+    .option('--verbose', 'verbose 模式')
+    .allowUnknownOption()
+    .action(cmd => {
+        loadCommand('upgrade', cmd);
     });
 
 program
