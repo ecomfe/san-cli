@@ -61,8 +61,9 @@ dot 文件例如：`.gitignore`等，在模板中命名为`_gitignore`，同理�
 ├── _editorconfig
 ├── _babelrc
 ├── public
+├── scripts
 ├── src
-│   ├── App.vue
+│   ├── views
 │   ├── assets
 │   ├── components
 │   └── main.js
