@@ -43,7 +43,7 @@ program
     });
 
 program
-    .command('init-template <appName>')
+    .command('template <appName>')
     .option('-c, --cache', '优先使用缓存')
     .option('-h, --https', 'Git 使用 https 请求')
     .option('-f, --force', 'force', '强制删除已存在的目录，默认：删除')
