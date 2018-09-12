@@ -22,7 +22,7 @@ hulk init github:vuejs-templates/simple demo
 # 安装 baidu/searchbox-fe/simple 这个 repo到 demo 文件，可以使用：
 hulk init simple demo
 # 分支写法
-hulk init name@branch demo
+hulk init name#branch demo
 # 更多用法查看帮助
 hulk --help
 hulk <command> --help
