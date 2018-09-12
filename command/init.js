@@ -4,14 +4,13 @@
 const path = require('path');
 const fs = require('fs-extra');
 
-const exists = fs.existsSync;
-
 const home = require('user-home');
 const inquirer = require('inquirer');
+
+const exists = fs.existsSync;
 const rm = fs.removeSync;
 // const debug = require('debug')('command:init');
 
-const download = require('../lib/repo-download');
 const generate = require('../lib/generate');
 
 const {
@@ -22,10 +21,11 @@ const {
     logWithSpinner,
     stopSpinner,
     log,
+    downloadRepo,
     clearConsole
 } = require('../lib/utils');
 
-module.exports = async (context, argv, opts) => {
+module.exports = async (argv, opts) => {
     const template = argv.template;
     const appName = argv.appName;
     const inPlace = !appName || appName === '.';
@@ -102,7 +102,7 @@ module.exports = async (context, argv, opts) => {
                 rm(tmp);
             }
 
-            download(template, tmp, opts, err => {
+            downloadRepo(template, tmp, opts, err => {
                 stopSpinner();
                 if (!err) {
                     clearConsole();

@@ -9,7 +9,8 @@ const {
     error,
     clearConsole
 } = require('../lib/utils');
-module.exports = (context, pkgName, opts, {unknown}) => {
+module.exports = (pkgName, opts, {unknown}) => {
+    const context = process.cwd();
     debug(pkgName, unknown);
     log('📦 开始升级...');
     log();

@@ -9,18 +9,19 @@ const {
     getLatestVersion,
     updateSpinner,
     success,
+    registries,
+    chalk,
     failSpinner
 } = require('../lib/utils');
 const semver = require('semver');
-const chalk = require('chalk');
 const execa = require('execa');
-const registries = require('../lib/registries');
-const {name} = require('../package');
+const {name, version: current} = require('../package');
 
-module.exports = async(cwd, verbose) => {
+module.exports = async({verbose}) => {
+    const cwd = process.cwd();
     logWithSpinner('检测新版本中...');
 
-    const {current, latest} = await getLatestVersion();
+    const latest = await getLatestVersion();
     if (semver.lt(current, latest)) {
         updateSpinner('🌟️', chalk.green(`发现新版本：${latest}`));
         stopSpinner();
@@ -45,6 +46,7 @@ module.exports = async(cwd, verbose) => {
                 failSpinner('升级失败，请使用 npm 手动重试，或者升级 Node.js 版本后再次重试');
                 log('使用 hulk upgrade --verbose 可以查看详细日志');
             }
+
         });
     }
     else {

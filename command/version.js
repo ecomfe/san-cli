@@ -7,18 +7,18 @@ const {
     stopSpinner,
     getLatestVersion,
     updateSpinner,
-    log
+    log,
+    chalk
 } = require('../lib/utils');
 const semver = require('semver');
-const chalk = require('chalk');
 
-const {name, version} = require('../package');
+const {name, version: current} = require('../package');
 module.exports = async () => {
     const cliName = name.split('/').pop();
-    log(`${cliName} 当前版本 v${version}`);
+    log(`${cliName} 当前版本 v${current}`);
     logWithSpinner('检测新版本中...');
 
-    const {current, latest} = await getLatestVersion();
+    const latest = await getLatestVersion();
 
     if (semver.lt(current, latest)) {
         updateSpinner('🌟️', chalk.green(`发现新版本：${latest}`));

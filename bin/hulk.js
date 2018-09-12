@@ -49,18 +49,8 @@ program
     .option('-f, --force', 'force', '强制删除已存在的目录，默认：删除')
     .description('生成一个项目模板')
     .action((appName, cmd) => {
-        loadCommand('init-template', {
+        loadCommand('template', {
             appName
-        }, cmd);
-    });
-
-program
-    .command('add <type> <name>')
-    .description('添加组件、插件等')
-    .action((type, name, cmd) => {
-        loadCommand('add', {
-            type,
-            name
         }, cmd);
     });
 
