@@ -19,7 +19,7 @@ hulk init <template-name> <project-name>
 # 支持 vuejs-template github 增加github:
 hulk init github:vuejs-templates/simple demo
 # 默认是从 icode repo 安装
-# 安装 baidu/searchbox-fe/simple 这个 repo到 demo 文件，可以使用：
+# 安装 baidu/hulk/simple 这个 repo到 demo 文件，可以使用：
 hulk init simple demo
 # 分支写法
 hulk init name#branch demo
