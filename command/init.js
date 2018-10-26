@@ -24,9 +24,19 @@ const {
     downloadRepo,
     clearConsole
 } = require('../lib/utils');
+const ALIAS_MAP = process.env.alias || {
+    component: 'antd-san-component-templat',
+    project: 'san-project-base'
+};
+const alias = (name) => {
+    if (ALIAS_MAP[name]) {
+        return ALIAS_MAP[name];
+    }
 
+    return name;
+};
 module.exports = async (argv, opts) => {
-    const template = argv.template;
+    const template = alias(argv.template);
     const appName = argv.appName;
     const inPlace = !appName || appName === '.';
     const name = inPlace ? path.relative('../', process.cwd()) : appName;
