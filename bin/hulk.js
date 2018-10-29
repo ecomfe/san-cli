@@ -31,7 +31,7 @@ program
     .option('-o, --offline', '这是一个本地路径')
     .option('-h, --https', 'Git 使用 https 请求')
     .option('-u, --user <user>', 'Git 用户名，默认：git')
-    .option('-I, --no-install', '不安装依赖，默认：安装')
+    .option('-I, --install', '安装依赖，默认：不安装')
     .option('-f, --force', 'force', '强制删除已存在的目录，默认：删除')
     .option('-r, --registry <registry>', '设置 npm registry')
     .option('-c, --cache', '优先使用缓存')
