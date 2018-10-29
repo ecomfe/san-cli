@@ -25,7 +25,7 @@ const {
     clearConsole
 } = require('../lib/utils');
 const ALIAS_MAP = process.env.alias || {
-    component: 'antd-san-component-templat',
+    component: 'antd-san-component-template',
     project: 'san-project-base'
 };
 const alias = (name) => {
