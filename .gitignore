@@ -10,6 +10,7 @@ yarn-error.log*
 .vscode
 package-lock.json
 dist
+packages/**
 
 # Runtime data
 pids
