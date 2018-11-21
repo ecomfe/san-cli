@@ -11,16 +11,7 @@ const exists = fs.existsSync;
 const rm = fs.removeSync;
 // const debug = require('debug')('command:init');
 
-const {
-    chalk,
-    error,
-    logWithSpinner,
-    stopSpinner,
-    log,
-    success,
-    downloadRepo,
-    clearConsole
-} = require('../lib/utils');
+const {chalk, error, logWithSpinner, stopSpinner, log, success, downloadRepo, clearConsole} = require('../lib/utils');
 
 module.exports = async (argv, opts) => {
     const template = 'hulk-template-base';
@@ -33,8 +24,7 @@ module.exports = async (argv, opts) => {
     if (exists(dest)) {
         if (opts.force) {
             await fs.remove(dest);
-        }
-        else {
+        } else {
             clearConsole();
             if (inPlace) {
                 const {ok} = await inquirer.prompt([
@@ -47,8 +37,7 @@ module.exports = async (argv, opts) => {
                 if (!ok) {
                     return;
                 }
-            }
-            else {
+            } else {
                 const {action} = await inquirer.prompt([
                     {
                         name: 'action',
@@ -63,8 +52,7 @@ module.exports = async (argv, opts) => {
                 ]);
                 if (!action) {
                     return;
-                }
-                else if (action === 'overwrite') {
+                } else if (action === 'overwrite') {
                     log(`删除 ${chalk.cyan(dest)}...`);
                     await fs.remove(dest);
                 }
@@ -77,16 +65,16 @@ module.exports = async (argv, opts) => {
 
     if (opts.cache && exists(tmp)) {
         // 优先使用缓存
-        fs.copy(tmp, dest).then(d => {
-            success('初始化项目模板成功');
-        }).catch(e => {
-            error('初始化项目模板失败');
-            log('错误信息如下：');
-            log(e);
-        });
-    }
-    else {
-
+        fs.copy(tmp, dest)
+            .then(d => {
+                success('初始化项目模板成功');
+            })
+            .catch(e => {
+                error('初始化项目模板失败');
+                log('错误信息如下：');
+                log(e);
+            });
+    } else {
         clearConsole();
         logWithSpinner('🗃', '下载模板...');
         if (exists(tmp)) {
@@ -97,15 +85,16 @@ module.exports = async (argv, opts) => {
             stopSpinner();
             if (!err) {
                 clearConsole();
-                fs.copy(tmp, dest).then(d => {
-                    success('初始化项目模板成功');
-                }).catch(e => {
-                    error('初始化项目模板失败');
-                    log('错误信息如下：');
-                    log(e);
-                });
-            }
-            else {
+                fs.copy(tmp, dest)
+                    .then(d => {
+                        success('初始化项目模板成功');
+                    })
+                    .catch(e => {
+                        error('初始化项目模板失败');
+                        log('错误信息如下：');
+                        log(e);
+                    });
+            } else {
                 error('拉取代码失败，请检查路径和代码权限是否正确');
                 if (!process.env.DEBUG) {
                     log(`使用「${chalk.bgYellow.black('DEBUG=*')}」 ，查看报错信息`);
@@ -113,5 +102,4 @@ module.exports = async (argv, opts) => {
             }
         });
     }
-
 };

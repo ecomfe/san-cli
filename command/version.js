@@ -2,14 +2,7 @@
  * @file 检查更新显示 version
  */
 
-const {
-    logWithSpinner,
-    stopSpinner,
-    getLatestVersion,
-    updateSpinner,
-    log,
-    chalk
-} = require('../lib/utils');
+const {logWithSpinner, stopSpinner, getLatestVersion, updateSpinner, log, chalk} = require('../lib/utils');
 const semver = require('semver');
 
 const {name, version: current} = require('../package');
@@ -22,8 +15,7 @@ module.exports = async () => {
 
     if (semver.lt(current, latest)) {
         updateSpinner('🌟️', chalk.green(`发现新版本：${latest}`));
-    }
-    else {
+    } else {
         updateSpinner('检测完成，未发现最新版本');
     }
     stopSpinner();

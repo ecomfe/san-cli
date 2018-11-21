@@ -7,10 +7,12 @@ const semver = require('semver');
 const requiredVersion = require('../package.json').engines.node;
 function checkNodeVersion(wanted, id) {
     if (!semver.satisfies(process.version, wanted)) {
-        console.log(chalk.red(
-            '当前你的 Node 版本为 ' + process.version + '，运行 ' + id
-            + ' 需要 Node ' + wanted + ' 以上版本。\n请升级你的 Node'
-        ));
+        console.log(
+            chalk.red(
+                `当前你的 Node 版本为 ${process.version}，运行${id} 需要 Node ${wanted} 以上版本。
+请升级你的 Node`
+            )
+        );
         process.exit(1);
     }
 }
@@ -19,9 +21,7 @@ const program = require('commander');
 const loadCommand = require('../lib/load-command')(program);
 const versionCommand = require('../command/version');
 
-program
-    .version(require('../package').version, '-v --version')
-    .usage('<command> [options]');
+program.version(require('../package').version, '-v --version').usage('<command> [options]');
 // 重新使用 version，带检查更新
 program.removeAllListeners('option:version').on('option:version', versionCommand);
 
@@ -36,12 +36,28 @@ program
     .option('-r, --registry <registry>', '设置 npm registry')
     .option('-c, --cache', '优先使用缓存')
     .action((template, appName, cmd) => {
-        loadCommand('init', {
-            template,
-            appName
-        }, cmd);
+        loadCommand(
+            'init',
+            {
+                template,
+                appName
+            },
+            cmd
+        );
     });
-
+program
+    .command('serve <filename>')
+    .option('-p, --port', 'dev server port')
+    .description('webpack dev server')
+    .action((filename, cmd) => {
+        loadCommand(
+            'serve',
+            {
+                filename
+            },
+            cmd
+        );
+    });
 program
     .command('template <appName>')
     .option('-c, --cache', '优先使用缓存')
@@ -49,9 +65,13 @@ program
     .option('-f, --force', 'force', '强制删除已存在的目录，默认：删除')
     .description('生成一个项目模板')
     .action((appName, cmd) => {
-        loadCommand('template', {
-            appName
-        }, cmd);
+        loadCommand(
+            'template',
+            {
+                appName
+            },
+            cmd
+        );
     });
 
 program
@@ -59,7 +79,6 @@ program
     .description('安装 npm 模块，自动区分百度私有包')
     .allowUnknownOption()
     .action((packageName, cmd) => {
-
         loadCommand('install', packageName, cmd);
     });
 
@@ -80,13 +99,11 @@ program
         loadCommand('upgrade', cmd);
     });
 
-program
-    .arguments('<command>')
-    .action(cmd => {
-        program.outputHelp();
-        console.log('  ' + chalk.red(`找不到命令 ${chalk.yellow(cmd)}.`));
-        console.log();
-    });
+program.arguments('<command>').action(cmd => {
+    program.outputHelp();
+    console.log('  ' + chalk.red(`找不到命令 ${chalk.yellow(cmd)}.`));
+    console.log();
+});
 
 program.on('--help', () => {
     console.log();

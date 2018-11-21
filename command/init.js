@@ -18,6 +18,7 @@ const {
     isLocalPath,
     getTemplatePath,
     error,
+    updateSpinner,
     logWithSpinner,
     stopSpinner,
     log,
@@ -28,7 +29,7 @@ const ALIAS_MAP = process.env.alias || {
     component: 'antd-san-component-template',
     project: 'san-project-base'
 };
-const alias = (name) => {
+const alias = name => {
     if (ALIAS_MAP[name]) {
         return ALIAS_MAP[name];
     }
@@ -45,8 +46,7 @@ module.exports = async (argv, opts) => {
     if (exists(dest)) {
         if (opts.force) {
             await fs.remove(dest);
-        }
-        else {
+        } else {
             clearConsole();
             if (inPlace) {
                 const {ok} = await inquirer.prompt([
@@ -59,8 +59,7 @@ module.exports = async (argv, opts) => {
                 if (!ok) {
                     return;
                 }
-            }
-            else {
+            } else {
                 const {action} = await inquirer.prompt([
                     {
                         name: 'action',
@@ -75,8 +74,7 @@ module.exports = async (argv, opts) => {
                 ]);
                 if (!action) {
                     return;
-                }
-                else if (action === 'overwrite') {
+                } else if (action === 'overwrite') {
                     log(`删除 ${chalk.cyan(dest)}...`);
                     await fs.remove(dest);
                 }
@@ -91,21 +89,17 @@ module.exports = async (argv, opts) => {
         const templatePath = getTemplatePath(template);
         if (exists(templatePath)) {
             generate(name, templatePath, dest, opts);
-        }
-        else {
+        } else {
             error('模板文件不存在');
         }
-    }
-    else {
+    } else {
         // 临时存放地址，存放在~/.hulk-templates 下面
         let tmp = path.join(home, '.hulk-templates', template.replace(/[/:#]/g, '-'));
 
         if (opts.cache && exists(tmp)) {
             // 优先使用缓存
             generate(name, tmp, dest, opts);
-        }
-        else {
-
+        } else {
             clearConsole();
             logWithSpinner('🗃', '下载模板...');
             if (exists(tmp)) {
@@ -113,12 +107,12 @@ module.exports = async (argv, opts) => {
             }
 
             downloadRepo(template, tmp, opts, err => {
+                updateSpinner('🗃', '模板下载成功!');
                 stopSpinner();
+                console.log();
                 if (!err) {
-                    clearConsole();
                     generate(name, tmp, dest, opts);
-                }
-                else {
+                } else {
                     error('拉取代码失败，请检查路径和代码权限是否正确');
                     if (!process.env.DEBUG) {
                         log(`使用「${chalk.bgYellow.black('DEBUG=*')}」 ，查看报错信息`);
@@ -127,5 +121,4 @@ module.exports = async (argv, opts) => {
             });
         }
     }
-
 };
