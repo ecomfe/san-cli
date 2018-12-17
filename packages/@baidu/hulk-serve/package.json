@@ -1,6 +1,6 @@
 {
     "name": "@baidu/hulk-serve",
-    "version": "1.0.1-alpha.0",
+    "version": "1.0.2-alpha.0",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -19,7 +19,7 @@
     "dependencies": {
         "@babel/core": "^7.2.0",
         "@babel/preset-env": "^7.2.0",
-        "@baidu/hulk-utils": "^1.0.1-alpha.0",
+        "@baidu/hulk-utils": "^1.0.2-alpha.0",
         "address": "^1.0.3",
         "babel-loader": "^8.0.4",
         "case-sensitive-paths-webpack-plugin": "^2.1.2",
