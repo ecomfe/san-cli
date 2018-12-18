@@ -5,6 +5,7 @@
  */
 const {info, prepareUrls} = require('@baidu/hulk-utils');
 const path = require('path');
+const fs = require('fs');
 const resolve = require('resolve');
 const {name} = require('./package.json');
 
@@ -33,6 +34,12 @@ module.exports = function createConfigPlugin(context, entry) {
                     .end()
                     .use('markdown')
                     .loader(require.resolve('./loaders/markdown'));
+
+                if (fs.existsSync(api.resolve('src'))) {
+                    config.resolve.alias.set('@', api.resolve('src'));
+                } else {
+                    config.resolve.alias.set('@', api.resolve('.'));
+                }
 
                 config.resolve.alias.set('~entry', path.resolve(context, entry));
                 entry = require.resolve('./template/main.js');
@@ -111,11 +118,11 @@ module.exports = function createConfigPlugin(context, entry) {
                         const sockjsUrl = publicUrl
                             ? `?${publicUrl}/sockjs-node`
                             : `?${url.format({
-                                    protocol,
-                                    port,
-                                    hostname: urls.lanUrlForConfig || 'localhost',
-                                    pathname: '/sockjs-node'
-                                })}`;
+                                  protocol,
+                                  port,
+                                  hostname: urls.lanUrlForConfig || 'localhost',
+                                  pathname: '/sockjs-node'
+                              })}`;
 
                         const devClients = [
                             // dev server client
