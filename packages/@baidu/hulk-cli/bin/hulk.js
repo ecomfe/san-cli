@@ -56,18 +56,18 @@ program
     });
 program
     .command('component [entry]')
-    .description('serve a component .smd file in development mode with zero config')
+    .description('san component demo preview server')
     .option('-p, --port', 'dev server port')
     .action((entry, cmd) => {
         require('@baidu/hulk-command-component')(entry, cleanArgs(cmd));
     });
-program
-    .command('build [entry]')
-    .description('build a .js or .san file in production mode with zero config')
-    .option('-d, --dest <dir>', 'output directory (default: dist)')
-    .action((entry, cmd) => {
-        require('@baidu/hulk-serve').build(entry, cleanArgs(cmd));
-    });
+// program
+//     .command('build [entry]')
+//     .description('build a .js or .san file in production mode with zero config')
+//     .option('-d, --dest <dir>', 'output directory (default: dist)')
+//     .action((entry, cmd) => {
+//         require('@baidu/hulk-serve').build(entry, cleanArgs(cmd));
+//     });
 program
     .command('template <appName>')
     .option('-c, --cache', '优先使用缓存')

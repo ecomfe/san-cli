@@ -111,11 +111,11 @@ module.exports = function createConfigPlugin(context, entry) {
                         const sockjsUrl = publicUrl
                             ? `?${publicUrl}/sockjs-node`
                             : `?${url.format({
-                                  protocol,
-                                  port,
-                                  hostname: urls.lanUrlForConfig || 'localhost',
-                                  pathname: '/sockjs-node'
-                              })}`;
+                                    protocol,
+                                    port,
+                                    hostname: urls.lanUrlForConfig || 'localhost',
+                                    pathname: '/sockjs-node'
+                                })}`;
 
                         const devClients = [
                             // dev server client
@@ -193,16 +193,6 @@ module.exports = function createConfigPlugin(context, entry) {
 
                             if (isFirstCompile) {
                                 isFirstCompile = false;
-
-                                if (!isProduction) {
-                                    const buildCommand = 'npm run build';
-                                    console.log('  Note that the development build is not optimized.');
-                                    console.log(`  To create a production build, run ${chalk.cyan(buildCommand)}.`);
-                                } else {
-                                    console.log('  App is served in production mode.');
-                                    console.log('  Note this is for preview or E2E testing only.');
-                                }
-                                console.log();
 
                                 // resolve returned Promise
                                 // so other commands can do api.service.run('serve').then(...)

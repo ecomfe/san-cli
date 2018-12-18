@@ -150,16 +150,6 @@ module.exports = (api, options) => {
                     if (isFirstCompile) {
                         isFirstCompile = false;
 
-                        if (!isProduction) {
-                            const buildCommand = 'npm run build';
-                            console.log('  Note that the development build is not optimized.');
-                            console.log(`  To create a production build, run ${chalk.cyan(buildCommand)}.`);
-                        } else {
-                            console.log('  App is served in production mode.');
-                            console.log('  Note this is for preview or E2E testing only.');
-                        }
-                        console.log();
-
                         // resolve returned Promise
                         // so other commands can do api.service.run('serve').then(...)
                         resolve({
