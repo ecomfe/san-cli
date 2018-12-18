@@ -24,7 +24,7 @@ const {
     log,
     downloadRepo,
     clearConsole
-} = require('../lib/utils');
+} = require('@baidu/hulk-utils');
 const ALIAS_MAP = process.env.alias || {
     component: 'antd-san-component-template',
     project: 'san-project-base'

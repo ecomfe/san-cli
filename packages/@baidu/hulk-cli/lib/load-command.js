@@ -15,6 +15,7 @@ module.exports = Command => {
         try {
             return require(`../command/${mod}`)(argv, opts, options);
         } catch (err) {
+            // console.log(err);
             if (isNotFoundError(err)) {
                 try {
                     return require('import-global')(mod)(process.cwd(), argv, opts, options);
