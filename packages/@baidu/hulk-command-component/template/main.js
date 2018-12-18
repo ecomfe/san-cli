@@ -3,7 +3,7 @@
  * @file Created on Thu Nov 15 2018
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-
+import './index.less';
 import {defineComponent} from 'san';
 import App from '~entry';
 const AppC = defineComponent(App);

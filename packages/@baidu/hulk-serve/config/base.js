@@ -58,8 +58,8 @@ module.exports = (api, options) => {
             .loader(require.resolve('babel-loader'))
             .options({cacheDirectory: true})
             .end()
-            .use('san-webpack-loader')
-            .loader('san-webpack-loader')
+            .use('hulk-san-loader')
+            .loader(require.resolve('@baidu/hulk-san-loader'))
             .options({
                 hotReload: true,
                 sourceMap: true,

@@ -33,7 +33,7 @@ function getMarkdownDefaultSanCode(content, cls) {
 }
 module.exports = function(content) {
     this.cacheable && this.cacheable();
-    const {ignore} = loaderUtils.getOptions(this);
+    const {ignore} = loaderUtils.getOptions(this) || {};
 
     const {resourcePath} = this;
     if (Object.prototype.toString.call(ignore).slice(8, -1) === 'RegExp') {
@@ -82,7 +82,7 @@ module.exports = function(content) {
         const fakemd = require.resolve('./utils/_fakemd') + '?mdurl=' + resourcePath + '&_t=' + Date.now();
 
         dyImport =
-            `import uiPreview from "${require.resolve('./san-webpack-loader')}!` +
+            `import uiPreview from "${require.resolve('@baidu/hulk-san-loader')}!` +
             `${pickLoader}?url=${resourcePath}!${fakemd}";`;
     }
 

@@ -1,0 +1,52 @@
+{
+    "author": {
+        "name": "zhangsiyuan"
+    },
+    "bugs": {
+        "url": "https://github.com/jiangjiu/san-webpack-loader/issues"
+    },
+    "dependencies": {
+        "@babel/core": "^7.0.0-beta.54",
+        "@babel/generator": "^7.0.0-beta.54",
+        "loader-utils": "^1.1.0",
+        "@babel/traverse": "^7.0.0-beta.54",
+        "@babel/types": "^7.0.0-beta.54",
+        "html-minifier": "^3.5.20",
+        "@baidu/hulk-utils": "^1.0.2-alpha.0",
+        "node-sass": "^4.11.0",
+        "postcss-loader": "^3.0.0",
+        "posthtml": "^0.11.3",
+        "mini-css-extract-plugin": "^0.4.0",
+        "object-assign": "^4.1.1",
+        "san": "^3.7.0",
+        "san-hot-reload-api": "^1.0.0",
+        "sass-loader": "^7.1.0",
+        "style-loader": "^0.23.1",
+        "css-loader": "^2.0.1",
+        "less": "^3.9.0",
+        "less-loader": "^4.1.0",
+        "stylus-loader": "^3.0.2"
+    },
+    "description": "🌈 a webpack-v4 loader for San.js ☄️",
+    "devDependencies": {},
+    "directories": {
+        "lib": "lib"
+    },
+    "homepage": "https://github.com/jiangjiu/san-webpack-loader#readme",
+    "keywords": [
+        "san",
+        "loader",
+        "webpack4"
+    ],
+    "license": "MIT",
+    "main": "index.js",
+    "name": "@baidu/hulk-san-loader",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jiangjiu/san-webpack-loader.git"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "version": "1.0.0"
+}

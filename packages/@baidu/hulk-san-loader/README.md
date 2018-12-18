@@ -1,9 +1,11 @@
+## 修改一下，增加 mdurl 支持，去掉 rootcontext 支持
+
 
 <div align="center">
     <img src="https://b.bdstatic.com/searchbox/icms/searchbox/img/san-icon.png"></img>
     <h1> san-webpack-loader</h1>
     <p>🌈 a webpack-v4 loader for San.js ☄️</p>
-</div> 
+</div>
 
 
 [文档请点这里](https://jiangjiu.github.io/san-webpack-loader/#/README)
@@ -73,22 +75,22 @@
 - san-webpack-loader的options对象支持stylus属性，可以对.san文件中的stylus部分进行配置
 
 ### 1.2.1
-[新特性] 
+[新特性]
 - 增加less支持
 
 ### 1.2.0
-[update] 
+[update]
 - 内部实现由同步loader改成异步，更好的利用多线程
 
 ### 1.1.3
-[BUG修复] 
+[BUG修复]
 - 修复了windows环境下样式路径失效的问题，对os做了区分处理
 - 移除cache-loader，防止内联loader处理的样式文件被缓存后，无法被MiniCssExtractPlugin输出的问题
-    
+
 ### 1.1.2
-[BUG修复] 
+[BUG修复]
 - 随官方升级babelrc的设置，推荐在业务中使用babel.config.js
-    
+
 ### 1.1.1
 [新特性]
 - 升级babel依赖

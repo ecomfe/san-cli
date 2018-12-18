@@ -32,6 +32,7 @@
         "mini-css-extract-plugin": "^0.5.0",
         "portfinder": "^1.0.20",
         "postcss-loader": "^3.0.0",
+        "@baidu/hulk-san-loader": "^1.0.0",
         "resolve": "^1.8.1",
         "san": "^3.7.0",
         "san-webpack-loader": "^1.2.7",

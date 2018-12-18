@@ -3,6 +3,7 @@
  * @author zhangsiyuan(zhangsiyuan@baidu.com)
  */
 const path = require('path');
+const fs = require('fs');
 const posthtml = require('posthtml');
 const gen = require('@babel/generator').default;
 const assign = require('object-assign');
@@ -33,13 +34,11 @@ function getParam(name, url) {
 }
 
 function loader(content, callback) {
-    let {
-        rootContext = process.cwd(),
-        resourcePath,
-        resourceQuery
-    } = this;
+    let {rootContext = process.cwd(), resourcePath, resourceQuery} = this;
     const mdurl = getParam('mdurl', resourceQuery);
-    resourcePath = mdurl ? mdurl : resourcePath;
+    if (mdurl && (fs.existsSync(mdurl) || fs.existsSync(path.join(rootContext, mdurl)))) {
+        resourcePath = mdurl;
+    }
 
     let output = '';
     const webpackContext = this;
@@ -52,7 +51,6 @@ function loader(content, callback) {
         require('./posthtml-san-selector')(),
         // optimize size
         require('./posthtml-remove-indent')()
-
     ]).process(content, {
         // almost gave up
         // shit@ post html docs
@@ -62,11 +60,14 @@ function loader(content, callback) {
     // <style> exists
     const sanStyle = __sanParts__.style;
     if (sanStyle.content) {
-        output += require('./calc-style-Import')({
-            webpackContext,
-            sanStyle,
-            resourcePath
-        }, config);
+        output += require('./calc-style-Import')(
+            {
+                webpackContext,
+                sanStyle,
+                resourcePath
+            },
+            config
+        );
     }
 
     // operate the ast for move template into  script
@@ -100,7 +101,7 @@ function loader(content, callback) {
     callback(null, output);
 }
 
-module.exports = function (content) {
+module.exports = function(content) {
     const callback = this.async();
     loader.call(this, content, callback);
 };

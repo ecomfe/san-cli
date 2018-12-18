@@ -23,8 +23,8 @@ module.exports = function createConfigPlugin(context, entry) {
                 config.module
                     .rule('md')
                     .test(/\.md$/)
-                    .use('san-webpack-loader-buildin')
-                    .loader(require.resolve('./loaders/san-webpack-loader/index.js'))
+                    .use('hulk-san-loader')
+                    .loader(require.resolve('@baidu/hulk-san-loader'))
                     .options({
                         hotReload: true,
                         sourceMap: true,
