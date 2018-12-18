@@ -33,7 +33,15 @@ function getMarkdownDefaultSanCode(content, cls) {
 }
 module.exports = function(content) {
     this.cacheable && this.cacheable();
+    const {ignore} = loaderUtils.getOptions(this);
+
     const {resourcePath} = this;
+    if (Object.prototype.toString.call(ignore).slice(8, -1) === 'RegExp') {
+        // 配置忽略
+        if (ignore.test(resourcePath)) {
+            return content;
+        }
+    }
     // getsource
     const m = content.match(/```html\s+(.*)\s+```/s);
     let code;
