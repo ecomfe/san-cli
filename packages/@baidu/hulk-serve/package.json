@@ -1,0 +1,56 @@
+{
+    "name": "@baidu/hulk-serve",
+    "version": "1.1.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "repository": {
+        "type": "git",
+        "url": "ssh://git@icode.baidu.com:8235/baidu/hulk/hulk-cli"
+    },
+    "author": "wangyongqing <wangyongqing01@baidu.com>",
+    "license": "MIT",
+    "engines": {
+        "node": ">=8.9"
+    },
+    "dependencies": {
+        "@babel/core": "^7.2.0",
+        "@babel/preset-env": "^7.2.0",
+        "@baidu/hulk-san-loader": "^1.1.0",
+        "@baidu/hulk-utils": "^1.1.0",
+        "@intervolga/optimize-cssnano-plugin": "^1.0.6",
+        "babel-loader": "^8.0.4",
+        "case-sensitive-paths-webpack-plugin": "^2.1.2",
+        "chalk": "^2.4.1",
+        "copy-webpack-plugin": "^4.6.0",
+        "css-loader": "^2.0.1",
+        "cssnano": "^4.1.7",
+        "file-loader": "^2.0.0",
+        "friendly-errors-webpack-plugin": "^1.7.0",
+        "html-webpack-plugin": "^3.2.0",
+        "less": "^3.9.0",
+        "less-loader": "^4.1.0",
+        "lodash.defaultsdeep": "^4.6.0",
+        "mini-css-extract-plugin": "^0.5.0",
+        "node-sass": "^4.11.0",
+        "portfinder": "^1.0.20",
+        "postcss-loader": "^3.0.0",
+        "resolve": "^1.8.1",
+        "san": "^3.7.0",
+        "san-webpack-loader": "^1.2.7",
+        "sass-loader": "^7.1.0",
+        "style-loader": "^0.23.1",
+        "stylus-loader": "^3.0.2",
+        "uglifyjs-webpack-plugin": "^2.0.1",
+        "url-loader": "^1.1.2",
+        "webpack": "^4.27.1",
+        "webpack-bundle-analyzer": "^3.0.3",
+        "webpack-chain": "^5.0.1",
+        "webpack-dev-server": "^3.1.10",
+        "webpack-hot-middleware": "^2.24.3",
+        "webpack-merge": "^4.1.5"
+    }
+}
