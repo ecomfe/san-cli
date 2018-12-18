@@ -4,6 +4,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 import './index.less';
+import 'prismjs/themes/prism.css'
 import {defineComponent} from 'san';
 import App from '~entry';
 const AppC = defineComponent(App);

@@ -72,7 +72,7 @@ module.exports = (api, options) => {
             .rule('images')
             .test(/\.(png|jpe?g|gif|webp)(\?.*)?$/)
             .use('url-loader')
-            .loader('url-loader')
+            .loader(require.resolve('url-loader'))
             .options(genUrlLoaderOptions('img'));
 
         // do not base64-inline SVGs.
@@ -81,7 +81,7 @@ module.exports = (api, options) => {
             .rule('svg')
             .test(/\.(svg)(\?.*)?$/)
             .use('file-loader')
-            .loader('file-loader')
+            .loader(require.resolve('file-loader'))
             .options({
                 name: genAssetSubPath('img')
             });
@@ -90,14 +90,14 @@ module.exports = (api, options) => {
             .rule('media')
             .test(/\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/)
             .use('url-loader')
-            .loader('url-loader')
+            .loader(require.resolve('url-loader'))
             .options(genUrlLoaderOptions('media'));
 
         webpackConfig.module
             .rule('fonts')
             .test(/\.(woff2?|eot|ttf|otf)(\?.*)?$/i)
             .use('url-loader')
-            .loader('url-loader')
+            .loader(require.resolve('url-loader'))
             .options(genUrlLoaderOptions('fonts'));
 
         webpackConfig.plugin('case-sensitive-paths').use(require('case-sensitive-paths-webpack-plugin'));

@@ -56,21 +56,7 @@ module.exports = (api, options) => {
         function createCSSRule(lang, test, loader, options) {
             const baseRule = webpackConfig.module.rule(lang).test(test);
 
-            // rules for <style lang="module">
-            const vueModulesRule = baseRule.oneOf('vue-modules').resourceQuery(/module/);
-            applyLoaders(vueModulesRule, true);
-
-            // rules for <style>
-            const sanNormalRule = baseRule.oneOf('san').resourceQuery(/\?san/);
-            applyLoaders(sanNormalRule, false);
-
-            // rules for *.module.* files
-            const extModulesRule = baseRule.oneOf('normal-modules').test(/\.module\.\w+$/);
-            applyLoaders(extModulesRule, true);
-
-            // rules for normal CSS imports
-            const normalRule = baseRule.oneOf('normal');
-            applyLoaders(normalRule, modules);
+            applyLoaders(baseRule, modules);
 
             function applyLoaders(rule, modules) {
                 if (shouldExtract) {
@@ -79,6 +65,8 @@ module.exports = (api, options) => {
                         .options({
                             publicPath: cssPublicPath
                         });
+                } else {
+                    rule.use('style-loader').loader(require.resolve('style-loader'));
                 }
 
                 const cssLoaderOptions = Object.assign(
@@ -101,26 +89,18 @@ module.exports = (api, options) => {
                 }
 
                 rule.use('css-loader')
-                    .loader('css-loader')
+                    .loader(require.resolve('css-loader'))
                     .options(cssLoaderOptions);
-
-                if (needInlineMinification) {
-                    rule.use('cssnano')
-                        .loader('postcss-loader')
-                        .options({
-                            plugins: [require('cssnano')(cssnanoOptions)]
-                        });
-                }
 
                 if (hasPostCSSConfig) {
                     rule.use('postcss-loader')
-                        .loader('postcss-loader')
+                        .loader(require.resolve('postcss-loader'))
                         .options(Object.assign({sourceMap}, loaderOptions.postcss));
                 }
 
                 if (loader) {
                     rule.use(loader)
-                        .loader(loader)
+                        .loader(require.resolve(loader))
                         .options(Object.assign({sourceMap}, options));
                 }
             }

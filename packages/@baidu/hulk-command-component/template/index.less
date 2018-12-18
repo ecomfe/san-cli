@@ -1,57 +1,61 @@
-.markdown pre code {
-    display: block;
-    padding: 16px 32px;
-    font-family: "Lucida Console", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
-    font-size: 14px;
-    line-height: 2;
-    white-space: pre;
-    color: #314659;
-    border-radius: 2px;
-    background: white;
-}
-.api-container table {
+@import './vars.less';
+@import './markdown.less';
+@import './demo.less';
+.api-container {
+  table {
     width: 100%;
     margin: 8px 0 16px;
     border: 1px solid @site-border-color-split;
     empty-cells: show;
     border-spacing: 0;
     border-collapse: collapse;
-}
-
-.api-container table th {
+  }
+  table th {
     font-weight: 500;
     white-space: nowrap;
     color: #5c6b77;
     background: rgba(0, 0, 0, .02);
-}
-.api-container pre code {
+  }
+  pre code {
     overflow: auto;
     padding: 12px 20px;
-}
-
-.api-container table th,
-.api-container table td {
+  }
+  table th,
+  table td {
     padding: 16px 24px;
     border: 1px solid @site-border-color-split;
     text-align: left;
+  }
 }
-.code-box .highlight-wrapper {
-    display: block;
+
+.code-box-meta>h4,
+.code-box-meta>h3 {
+  position: absolute;
+  top: -14px;
+  width: auto;
+  margin-left: -8px;
+  padding: 1px 8px;
+  font-size: 14px;
+  color: #777;
+  border-radius: 2px 2px 0 0;
+  background: #fff;
 }
-.code-box-meta > h4 {
-    position: absolute;
-    top: -14px;
-    width: auto;
-    margin-left: -8px;
-    padding: 1px 8px;
-    font-size: 14px;
-    color: #777;
-    border-radius: 2px 2px 0 0;
-    background: #fff;
-}
+
 .code-box-code-copy {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    opacity: 1;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  opacity: 1;
+}
+
+.code-box-meta>h4 {
+  position: absolute;
+  top: -14px;
+  width: auto;
+  margin-left: -8px;
+  padding: 1px 8px;
+  font-size: 14px;
+  color: #777;
+  border-radius: 2px 2px 0 0;
+  background: #fff;
 }
