@@ -1,0 +1,50 @@
+{
+    "name": "@baidu/hulk-command-component",
+    "version": "1.0.0",
+    "description": "san markdown loader",
+    "author": "wangyongqing01 <wangyongqing01@baidu.com>",
+    "homepage": "",
+    "license": "MIT",
+    "main": "index.js",
+    "publishConfig": {
+        "registry": "http://registry.npm.baidu-int.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "ssh://wangyongqing01@icode.baidu.com:8235/baidu/hulk/hulk-cli"
+    },
+    "scripts": {
+        "test": "echo \"Error: run tests from root\" && exit 1"
+    },
+    "dependencies": {
+        "@babel/core": "^7.1.2",
+        "@babel/generator": "^7.0.0-beta.54",
+        "@babel/preset-env": "^7.1.0",
+        "@babel/traverse": "^7.0.0-beta.54",
+        "@babel/types": "^7.0.0-beta.54",
+        "@baidu/hulk-serve": "^1.0.2-alpha.0",
+        "@baidu/hulk-utils": "^1.0.2-alpha.0",
+        "chalk": "^2.4.1",
+        "css-loader": "^2.0.1",
+        "html-minifier": "^3.5.20",
+        "less": "^3.9.0",
+        "less-loader": "^4.1.0",
+        "loader-utils": "^1.1.0",
+        "marked": "^0.5.2",
+        "mini-css-extract-plugin": "^0.4.5",
+        "node-sass": "^4.11.0",
+        "object-assign": "^4.1.1",
+        "portfinder": "^1.0.20",
+        "postcss-loader": "^3.0.0",
+        "posthtml": "^0.11.3",
+        "prismjs": "^1.15.0",
+        "resolve": "^1.8.1",
+        "san": "^3.7.0",
+        "san-hot-reload-api": "^1.0.0",
+        "sass-loader": "^7.1.0",
+        "style-loader": "^0.23.1",
+        "stylus-loader": "^3.0.2",
+        "webpack": "^4.27.1",
+        "webpack-dev-server": "^3.1.10"
+    }
+}

@@ -3,7 +3,7 @@
  * @file serve 主要内容
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const {info} = require('@baidu/hulk-utils');
+const {info, prepareUrls} = require('@baidu/hulk-utils');
 
 const defaults = {
     host: '0.0.0.0',
@@ -33,7 +33,6 @@ module.exports = (api, options) => {
             const path = require('path');
             const chalk = require('chalk');
             const webpack = require('webpack');
-            const {prepareUrls} = require('../lib/utils');
 
             const WebpackDevServer = require('webpack-dev-server');
             const portfinder = require('portfinder');
@@ -68,16 +67,14 @@ module.exports = (api, options) => {
             // inject dev & hot-reload middleware entries
             if (!isProduction) {
                 const sockjsUrl = publicUrl
-                    ? // explicitly configured via devServer.public
-                      `?${publicUrl}/sockjs-node`
-                    : // otherwise infer the url
-                      `?` +
-                      url.format({
-                          protocol,
-                          port,
-                          hostname: urls.lanUrlForConfig || 'localhost',
-                          pathname: '/sockjs-node'
-                      });
+                    ? `?${publicUrl}/sockjs-node`
+                    : `?${url.format({
+                            protocol,
+                            port,
+                            hostname: urls.lanUrlForConfig || 'localhost',
+                            pathname: '/sockjs-node'
+                        })}`;
+
                 const devClients = [
                     // dev server client
                     require.resolve('webpack-dev-server/client') + sockjsUrl,

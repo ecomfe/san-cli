@@ -2,10 +2,10 @@
  * @file base
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+const {transformer, formatter} = require('@baidu/hulk-utils');
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
-        const isLegacyBundle = process.env.VUE_CLI_MODERN_MODE && !process.env.VUE_CLI_MODERN_BUILD;
-        const {getAssetPath, resolveLocal, transformer, formatter} = require('../lib/utils');
+        const {getAssetPath, resolveLocal} = require('../lib/utils');
         const inlineLimit = 4096;
 
         const genAssetSubPath = dir => {
@@ -32,7 +32,7 @@ module.exports = (api, options) => {
             .add('./src/main.js')
             .end()
             .output.path(api.resolve(options.outputDir))
-            .filename(isLegacyBundle ? '[name]-legacy.js' : '[name].js')
+            .filename('[name].js')
             .publicPath(options.baseUrl);
 
         webpackConfig.resolve

@@ -13,7 +13,10 @@
     'get-latest-version',
     'download-repo',
     'get-debug',
-    'plugin'
+    'plugin',
+    'prepare-urls',
+    'webpack-error',
+    'find-existing'
 ].forEach(m => {
     Object.assign(exports, require(`./lib/${m}`));
 });

@@ -1,14 +1,22 @@
 /**
- * @file hulk -serve
+ * @file san markdown loader
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const fs = require('fs');
 const path = require('path');
+const Service = require('@baidu/hulk-serve/Service');
 const chalk = require('chalk');
-
-const globalConfigPlugin = require('./lib/globalConfigPlugin');
 const {findExisting} = require('@baidu/hulk-utils');
-const Service = require('./Service');
+
+module.exports = (e, args) => {
+    const {context, entry} = resolveEntry(e);
+    new Service(context, {
+        projectOptions: {
+            compiler: true
+        },
+        plugins: [require('./component')(context, entry)]
+    }).run('component', args);
+};
 
 function resolveEntry(entry) {
     const context = process.cwd();
@@ -29,27 +37,4 @@ function resolveEntry(entry) {
         context,
         entry
     };
-}
-exports.serve = (e, args) => {
-    const {context, entry} = resolveEntry(e);
-    createService(context, entry).run('serve', args);
-};
-exports.build = (e, args) => {
-    const {context, entry} = resolveEntry(e);
-    const asLib = args.target && args.target !== 'app';
-    if (asLib) {
-        args.entry = entry;
-    }
-    createService(context, entry, asLib).run('build', args);
-};
-
-
-function createService(context, entry, asLib, plugins = []) {
-    // console.log(plugins);
-    return new Service(context, {
-        projectOptions: {
-            compiler: true
-        },
-        plugins: [...plugins, globalConfigPlugin(context, entry, asLib)]
-    });
 }

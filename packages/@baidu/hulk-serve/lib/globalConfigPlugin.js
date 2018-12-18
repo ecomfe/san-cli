@@ -5,7 +5,8 @@
 
 const path = require('path');
 const resolve = require('resolve');
-const {findExisting} = require('./utils');
+const {findExisting} = require('@baidu/hulk-utils');
+
 
 module.exports = function createConfigPlugin(context, entry, asLib) {
     return {
@@ -17,8 +18,8 @@ module.exports = function createConfigPlugin(context, entry, asLib) {
                     config.resolve.alias.set('~entry', path.resolve(context, entry));
                     entry = require.resolve('../template/main.js');
                 } else {
-                    // make sure entry is relative
-                    if (!/^\.\//.test(entry)) {
+                    // make sure entry is relative or absolute
+                    if (!/^\.\//.test(entry) && !/^\//.test(entry)) {
                         entry = `./${entry}`;
                     }
                 }

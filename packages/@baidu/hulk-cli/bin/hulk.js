@@ -54,7 +54,13 @@ program
     .action((entry, cmd) => {
         require('@baidu/hulk-serve').serve(entry, cleanArgs(cmd));
     });
-
+program
+    .command('component [entry]')
+    .description('serve a component .smd file in development mode with zero config')
+    .option('-p, --port', 'dev server port')
+    .action((entry, cmd) => {
+        require('@baidu/hulk-command-component')(entry, cleanArgs(cmd));
+    });
 program
     .command('build [entry]')
     .description('build a .js or .san file in production mode with zero config')

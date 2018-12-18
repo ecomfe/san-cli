@@ -17,6 +17,7 @@
         "node": ">=8.9"
     },
     "dependencies": {
+        "address": "^1.0.3",
         "chalk": "^2.4.1",
         "debug": "^4.1.0",
         "execa": "^1.0.0",

@@ -20,6 +20,7 @@
     "dependencies": {
         "@baidu/hulk-serve": "^1.0.2-alpha.0",
         "@baidu/hulk-utils": "^1.0.2-alpha.0",
+        "@baidu/hulk-command-component": "^1.0.0",
         "commander": "^2.17.1",
         "concat-stream": "^1.6.2",
         "consolidate": "^0.15.1",
@@ -35,8 +36,5 @@
         "through2": "^2.0.3",
         "user-home": "^2.0.0",
         "vinyl-fs": "^3.0.3"
-    },
-    "devDependencies": {
-        "lerna": "^3.4.3"
     }
 }

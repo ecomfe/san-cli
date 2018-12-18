@@ -2,20 +2,11 @@
  * @file css webpack
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const fs = require('fs');
-const path = require('path');
 
-const findExisting = (context, files) => {
-    for (const file of files) {
-        if (fs.existsSync(path.join(context, file))) {
-            return file;
-        }
-    }
-};
-
+const {findExisting} = require('@baidu/hulk-utils');
+const getAssetPath = require('../lib/utils').getAssetPath;
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
-        const getAssetPath = require('../lib/utils').getAssetPath;
         const isProd = process.env.NODE_ENV === 'production';
 
         const {modules = false, extract = isProd, sourceMap = false, loaderOptions = {}} = options.css || {};
@@ -70,8 +61,8 @@ module.exports = (api, options) => {
             applyLoaders(vueModulesRule, true);
 
             // rules for <style>
-            const vueNormalRule = baseRule.oneOf('vue').resourceQuery(/\?vue/);
-            applyLoaders(vueNormalRule, false);
+            const sanNormalRule = baseRule.oneOf('san').resourceQuery(/\?san/);
+            applyLoaders(sanNormalRule, false);
 
             // rules for *.module.* files
             const extModulesRule = baseRule.oneOf('normal-modules').test(/\.module\.\w+$/);
@@ -87,12 +78,6 @@ module.exports = (api, options) => {
                         .loader(require('mini-css-extract-plugin').loader)
                         .options({
                             publicPath: cssPublicPath
-                        });
-                } else {
-                    rule.use('vue-style-loader')
-                        .loader('vue-style-loader')
-                        .options({
-                            sourceMap
                         });
                 }
 
