@@ -3,11 +3,19 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-const classnames = require('classnames');
+const classNames = require('classnames');
 
 module.exports = (prefix, space = '-') => {
+    if (!prefix) {
+        return classNames;
+    }
     return (...args) => {
-        const cls = classnames(...args);
-        cls.split(/\s+/).map(s => [prefix, s].join(space));
+        let cls = classNames.apply(null, args);
+        if (cls !== '') {
+            cls = cls.split(/\s+/).map(s => [prefix, s].join(space));
+            return [prefix, ...cls].join(' ');
+        } else {
+            return prefix;
+        }
     };
 };
