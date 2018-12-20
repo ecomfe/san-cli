@@ -1,0 +1,32 @@
+{
+    "name": "@baidu/prefix-classnames",
+    "version": "1.0.0",
+    "description": "prefix classnames",
+    "keywords": [
+        "classnames"
+    ],
+    "author": "wangyongqing01 <wangyongqing01@baidu.com>",
+    "homepage": "",
+    "license": "MIT",
+    "main": "index.js",
+    "directories": {
+        "lib": "lib",
+        "test": "__tests__"
+    },
+    "files": [
+        "lib"
+    ],
+    "publishConfig": {
+        "registry": "http://registry.npm.baidu-int.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "ssh://wangyongqing01@icode.baidu.com:8235/baidu/hulk/hulk-cli"
+    },
+    "scripts": {
+        "test": "echo \"Error: run tests from root\" && exit 1"
+    },
+    "dependencies": {
+        "classnames": "^2.2.6"
+    }
+}
