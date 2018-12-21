@@ -167,4 +167,7 @@ module.exports = {
 如果对 hulk 默认的 dev server 的 `index.html` 不能满足需求，可以在项目创建`public/index.html`来代替 hulk 内置的`index.html`，dev Server 会优先选择`public/index.html`作为页面模板。
 
 ## `postcss.config.js`
+
+postcss 是一个 css 的 AST 工具，通过它可以用 JavaScript 对 css 进行编辑和批量处理，比如随机 id/class 等需求都可以通过编写 postcss 来实现。这里项目主要用了 postcss 的 `autoprefixer`和`pr2rem`，其他插件根据实际情况配置，对应的配置文件为：`postcss.config.js`
+
 对于项目中使用 postcss 进行 css 处理的时候，可以通过配置`postcss.config.js`来完成 postcss 的配置。**注意：需要同时安装 postcss 插件的 npm 包**

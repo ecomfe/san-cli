@@ -11,7 +11,7 @@ yarn-error.log*
 package-lock.json
 dist
 test
-
+docs/_book
 # Runtime data
 pids
 *.pid

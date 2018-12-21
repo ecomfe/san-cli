@@ -106,6 +106,9 @@ output
     "description": "San Component for Profile",
 }
 ```
+#### 模板就要输出`{{ xxx }}`怎么办？
+
+使用转义符号：`\{{xxx}}` 即可！
 
 ### 模板中使用判断
 同样，在模板中可以使用判断语句，hulk 模板中的判断语句写法示例如下：

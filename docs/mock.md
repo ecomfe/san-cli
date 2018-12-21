@@ -1,7 +1,4 @@
 # mock server
-*
-
-
 > 为了方便本地假数据调试，减少联调成本，项目支持[apim](http://apim.baidu.com/docs#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C) 和 [本地实现 Mock Server](http://icode.baidu.com/repos/baidu/hulk/mock-server/tree/master) 两种 mock 方案，在创建项目的时候有选择，**推荐使用`apim`**
 
 ## Local Mock Server
@@ -16,7 +13,6 @@ Mock Server 实现涉及到代码和说明
 
 `dev.js`中会启动`webpackDevServer`和`hotReload`功能，DevServer会将请求转发到 MockServer，MockServer （代码`middlewares/mocker.js`）包含两部分：`nodeServer`和`smartyServer`，node 遵循[`webpack-api-mocker`](https://github.com/jaywcjlove/webpack-api-mocker/)文档，`smartyServer`是 node 执行`php`命令行渲染 smarty 模板，然后将 stdout 作为输出。
 
-{{#if_eq mock "hulk"}}
 #### Local Mock Server 配置
 在 `config/index.js`中添加中间件：
 
@@ -82,17 +78,13 @@ export default {
 }
 ```
 
-{{/if_eq}}
 
-{{#if_eq tplEngine "smarty"}}
 smarty支持的配置有：`baseDir=./template&bin=php&dataDir=mockDir/_mockdata_`
 
 * baseDir：template 路径，会传递给 smarty->setTempalteDir
 * bin：php bin 的路径，默认会使用 node 的 which 查找 php
 * dataDir：模板数据来源目录，默认是 rootDir 的 `_data_`目录
-{{/if_eq}}
 
-{{#if_eq mock "apim"}}
 ## APIM 支持
 在 config 中选择`dev.middlewares`选择使用 [apim](http://apim.baidu.com/docs#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C)
 
@@ -116,7 +108,6 @@ dev: {
     ]
 }
 ```
-{{/if_eq}}
 
 
 
