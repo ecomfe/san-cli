@@ -13,7 +13,8 @@
 
 ## 项目创建
 
-参见[项目脚手架](./project.md)
+* [项目脚手架](./project.md)
+* [如何创建一个脚手架](./create-scaffold.md)
 
 ## 组件开发
 
