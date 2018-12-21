@@ -41,5 +41,10 @@ hulk <command> --help
 
 安装模板后会自动安装依赖文件。
 
-## 组件开发
+## `hulk.config.js`
+
+## 默认**页面**模板
+如果对 hulk 默认的 dev server 的 `index.html` 不能满足需求，可以在项目创建`public/index.html`来代替 hulk 内置的`index.html`，dev Server 会优先选择`public/index.html`作为页面模板。
+
+
 

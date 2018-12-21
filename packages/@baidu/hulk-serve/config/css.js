@@ -55,7 +55,7 @@ module.exports = (api, options) => {
 
         function createCSSRule(lang, test, loader, options) {
             const baseRule = webpackConfig.module.rule(lang).test(test);
-
+            baseRule.exclude.add(/@baidu\/hulk/);
             applyLoaders(baseRule, modules);
 
             function applyLoaders(rule, modules) {
@@ -105,7 +105,6 @@ module.exports = (api, options) => {
                 }
             }
         }
-
         createCSSRule('css', /\.css$/);
         createCSSRule('postcss', /\.p(ost)?css$/);
         createCSSRule('scss', /\.scss$/, 'sass-loader', loaderOptions.sass);

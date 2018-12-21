@@ -65,6 +65,26 @@ module.exports = (api, options) => {
                 sourceMap: true,
                 minimize: false
             });
+        // hulk buildin css loader
+        webpackConfig.module
+            .rule('hulk-css')
+            .test(/@baidu\/hulk.+\.css$/)
+            .use('style-loader')
+            .loader(require.resolve('style-loader'))
+            .end()
+            .use('css-loader')
+            .loader(require.resolve('css-loader'));
+        webpackConfig.module
+            .rule('hulk-less')
+            .test(/@baidu\/hulk.+\.less$/)
+            .use('style-loader')
+            .loader(require.resolve('style-loader'))
+            .end()
+            .use('css-loader')
+            .loader(require.resolve('css-loader'))
+            .end()
+            .use('less-loader')
+            .loader(require.resolve('less-loader'));
 
         // static assets -----------------------------------------------------------
 

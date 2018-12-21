@@ -82,3 +82,43 @@ export default {
 ```
 
 使用`hulk component docs/index.js`的效果是在展现basic.md 中`html`的代码执行结果，并且显示文档`<text></text>`中的内容！
+
+## 最佳实践
+
+* 使用`@baidu/prefix-classnames`生成 className
+
+例如：
+
+```js
+import san, {DataTypes} from 'san';
+import prefixClassNames from '@baidu/prefix-classnames';
+
+const prefixCls = 's-test';
+const classNames = prefixClassNames(prefixCls);
+// classNames() → s-test
+// classNames({a: true}) → s-test s-test-a
+// classNames({a: true}, b) → s-test s-test-a s-test-b
+export default san.defineComponent({
+    trimWhitespace: 'all',
+    template: `
+        <div class="${classNames()}">
+            <h2 class="{{h2ClassName}}">Hi~</h2>
+        </div>
+    `,
+    dataTypes: {
+        test: DataTypes.any
+    },
+    computed: {
+        h2ClassName() {
+            return classNames({
+                h2: true
+            }, 'demo');
+        }
+    },
+    initData() {
+        return {
+
+        };
+    }
+});
+```
