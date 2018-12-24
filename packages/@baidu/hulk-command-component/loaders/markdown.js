@@ -68,7 +68,10 @@ module.exports = function(content) {
     const textHtml = textMd ? compiler(textMd) : textMd;
 
     // 解决文档中的语法被解析的问题
-    codeHtml = codeHtml.replace(/{{/g, '{<span></span>{').replace(/}}/g, '}<span></span>}');
+    codeHtml = codeHtml.replace(/{{/g, '{<span></span>{')
+        .replace(/}}/g, '}<span></span>}')
+        .replace(/\${/g, '$<span></span>{')
+        .replace(/`/g, '\\`');
 
     const requireReg = /<![-]{2,}require\((['"])(.+?)\1\)[-]{2,}>/;
     const requirejs = content.match(requireReg);
