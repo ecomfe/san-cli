@@ -3,34 +3,44 @@
  * @file build 主要内容
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const {info, prepareUrls} = require('@baidu/hulk-utils');
-
-
+const {info} = require('@baidu/hulk-utils');
 
 module.exports = (api, options) => {
     api.registerCommand(
         'build',
         {
-            description: '零配置启动 dev server',
-            usage: 'hulk serve [options] [entry]',
+            description: '生成生产环境打包结果',
+
+            usage: 'hulk build [options] [entry]',
             options: {
-                '--mode': 'specify env mode (default: development)',
-                '--host': `specify host (default: ${defaults.host})`,
-                '--port': `specify port (default: ${defaults.port})`,
-                '--https': `use https (default: ${defaults.https})`,
-                '--public': 'specify the public network URL for the HMR client'
+                '--sourcemap': '输出 sourcemap 文件 (default: false)'
             }
         },
         async function serve(args) {
             info('Building...');
 
             process.env.NODE_ENV = 'production';
-            const url = require('url');
-            const path = require('path');
-            const chalk = require('chalk');
+
             const webpack = require('webpack');
-
-
+            // resolve webpack config
+            const webpackConfig = api.resolveWebpackConfig();
+            webpackConfig.mode = 'production';
+            if (!args.map) {
+                delete webpackConfig.devtool; // = null;
+            }
+            // webpackConfig.output.publicPath = './';
+            return new Promise((resolve, reject) => {
+                webpack(webpackConfig, err => {
+                    if (err) {
+                        return reject(err);
+                    }
+                    resolve();
+                });
+            });
         }
     );
+};
+
+module.exports.defaultModes = {
+    build: 'production'
 };
