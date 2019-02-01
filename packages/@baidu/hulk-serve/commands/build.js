@@ -3,7 +3,7 @@
  * @file build 主要内容
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const {info} = require('@baidu/hulk-utils');
+const info = require('@baidu/hulk-utils').info;
 
 module.exports = (api, options) => {
     api.registerCommand(
