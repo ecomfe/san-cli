@@ -16,7 +16,7 @@ import {isFunction, isString} from '@baidu/xbox/is';
 
 ## 文档地址
 
-http://wangyongqing01.fe.baidu.com/docs/xbox
+http://hulk.baidu-int.com/docs/xbox
 
 ## 二次开发&增加新函数
 

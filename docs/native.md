@@ -16,7 +16,7 @@ import toast from '@baidu/xbox-native/ui/openToast';
 
 ## 文档地址
 
-http://wangyongqing01.fe.baidu.com/docs/xbox-native
+http://hulk.baidu-int.com/docs/xbox-native
 
 ## 二次开发&增加新函数
 
