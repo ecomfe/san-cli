@@ -9,7 +9,7 @@ module.exports = (api, options) => {
         const inlineLimit = 4096;
 
         const genAssetSubPath = dir => {
-            return getAssetPath(options, `${dir}/[name]${options.filenameHashing ? '.[hash:8]' : ''}.[ext]`);
+            return getAssetPath(options, `${dir}/[name]${options.filenameHashing ? '.[chunkhash:8]' : ''}.[ext]`);
         };
 
         const genUrlLoaderOptions = dir => {
