@@ -54,7 +54,7 @@ const createMenuFile = ({menu, pathMap}) => {
             });
             tabDep.shift();
         }
-    }
+    };
     readNode(menu);
     fs.writeFileSync(resolve(pathMap.navPath, 'nav.yml'), content, 'utf8');
 };
@@ -115,7 +115,7 @@ const getCompoList = set => {
     return {
         folderList,
         compoList
-    }
+    };
 };
 const replaceFileStr = (filePath, reg, value) => {
     let content = fs.readFileSync(filePath, 'utf8');
@@ -123,7 +123,7 @@ const replaceFileStr = (filePath, reg, value) => {
     fs.writeFileSync(filePath, content, 'utf8');
 };
 
-const replaceHexoConfig = (set) => {
+const replaceHexoConfig = set => {
     const urlReg = /{{{::HEXO-CONFIG-URL::}}}/g;
     const rootReg = /{{{::HEXO-CONFIG-ROOT::}}}/g;
     const compoPathReg = /{{{::COMPO-PATH::}}}/g;
@@ -133,7 +133,7 @@ const replaceHexoConfig = (set) => {
     replaceFileStr(configFile, rootReg, set.root);
     replaceFileStr(docEntry, compoPathReg, resolve(process.cwd(), set.compoPath));
 };
-module.exports = async (cmd) => {
+module.exports = async cmd => {
     let setFilePath = resolve(process.cwd(), cmd.set);
     let set = require(setFilePath);
     const distPath = resolve(process.cwd(), './dist');
