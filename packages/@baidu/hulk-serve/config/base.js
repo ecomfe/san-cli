@@ -2,6 +2,9 @@
  * @file base
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+const path = require('path');
+const resolve = require('resolve');
+
 const {transformer, formatter} = require('@baidu/hulk-utils');
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
@@ -43,8 +46,14 @@ module.exports = (api, options) => {
             .add(api.resolve('node_modules'))
             .add(resolveLocal('node_modules'))
             .end()
-            .alias.set('@', api.resolve('src'))
-            .set('san', options.sanDev ? 'san/dist/san.dev.js' : 'san/dist/san.min.js');
+            .alias.set('@', api.resolve('src'));
+
+        try {
+            resolve.sync('san', {basedir: api.getCwd()});
+        } catch (e) {
+            const sanPath = path.dirname(require.resolve('san'));
+            webpackConfig.resolve.alias.set('san', `${sanPath}/${options.compiler ? 'san.dev.js' : 'san.min.js'}`);
+        }
 
         webpackConfig.resolveLoader.modules
             .add('node_modules')
