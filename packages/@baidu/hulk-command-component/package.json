@@ -23,7 +23,7 @@
         "@babel/traverse": "^7.0.0-beta.54",
         "@babel/types": "^7.0.0-beta.54",
         "@baidu/hulk-san-loader": "^1.2.0",
-        "@baidu/hulk-serve": "^1.2.0",
+        "@baidu/hulk-serve": "^1.2.1",
         "@baidu/hulk-utils": "^1.2.0",
         "chalk": "^2.4.1",
         "loader-utils": "^1.1.0",
