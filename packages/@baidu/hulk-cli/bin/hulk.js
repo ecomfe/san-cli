@@ -108,7 +108,13 @@ program
     .action(cmd => {
         loadCommand('upgrade', cmd);
     });
-
+program
+    .command('gendoc')
+    .description('根据san组件的MD文档生成组件文档静态网站')
+    .option('-s, --set <path>', '指定配置文件set.js的路径')
+    .action(cmd => {
+        loadCommand('gendoc', cmd);
+    });
 program.arguments('<command>').action(cmd => {
     program.outputHelp();
     console.log('  ' + chalk.red(`找不到命令 ${chalk.yellow(cmd)}.`));
