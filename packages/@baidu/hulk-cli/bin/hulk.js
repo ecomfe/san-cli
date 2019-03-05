@@ -129,7 +129,7 @@ if (!process.argv.slice(2).length) {
 }
 
 function cleanArgs(cmd) {
-    const args = {};
+    const args = {version: packageJson.version};
     cmd.options.forEach(o => {
         const key = o.long.replace(/^--/, '');
         // if an option is not present and Command has a method with the same name

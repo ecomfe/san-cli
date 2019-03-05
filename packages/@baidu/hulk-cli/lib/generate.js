@@ -23,6 +23,7 @@ const {
     line,
     getGitUser,
     getLatestVersion,
+    newVersionLog,
     logWithSpinner,
     installDeps,
     updateSpinner,
@@ -217,14 +218,7 @@ function logMessage(message, data) {
     }
 
     if (newVersion) {
-        /* eslint-disable*/
-        console.log(
-            chalk.green(`
-            ┌────────────────────────────────────────────${`─`.repeat(newVersion.length)}──┐
-            │  A newer version of hulk-cli is available: ${chalk.yellow(localVersion)}  │
-            └────────────────────────────────────────────${`─`.repeat(newVersion.length)}──┘`)
-        );
-        /* eslint-enable*/
+        newVersionLog(localVersion, newVersion);
     }
 }
 
