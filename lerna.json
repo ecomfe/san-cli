@@ -2,7 +2,7 @@
   "packages": [
     "packages/@baidu/*"
   ],
-  "version": "independent",
+  "version": "1.2.1",
   "npmClient": "npm",
     "command": {
         "bootstrap": {

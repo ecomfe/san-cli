@@ -3,8 +3,7 @@ const chalk = require('chalk');
 
 exports.newVersionLog = (currentVersion, latestVersion) => {
     const message = `Update available ${chalk.dim(currentVersion)} ${chalk.reset('→')} ${chalk.green(latestVersion)}
-Run ${chalk.cyan('npm i -g @baidu/hulk-cli')} to update
-    `;
+Run ${chalk.cyan('npm i -g @baidu/hulk-cli')} to update`;
 
     console.log(
         boxen(message, {
