@@ -1,12 +1,14 @@
 {
-  "packages": [
-    "packages/@baidu/*"
-  ],
-  "version": "1.2.1",
-  "npmClient": "npm",
+    "packages": [
+        "packages/@baidu/*"
+    ],
+    "version": "1.2.2",
+    "npmClient": "npm",
     "command": {
         "bootstrap": {
-            "npmClientArgs": ["--no-package-lock"]
+            "npmClientArgs": [
+                "--no-package-lock"
+            ]
         }
     }
 }
