@@ -89,7 +89,7 @@ program
     .description('安装 npm 模块，自动区分百度私有包')
     .allowUnknownOption()
     .action((packageName, cmd) => {
-        loadCommand('install', packageName, cmd);
+        loadCommand('install', packageName, cleanArgs(cmd));
     });
 
 program
@@ -97,7 +97,7 @@ program
     .description('升级 npm 模块，自动区分百度私有包')
     .allowUnknownOption()
     .action((packageName, cmd) => {
-        loadCommand('update', packageName, cmd);
+        loadCommand('update', packageName, cleanArgs(cmd));
     });
 
 program
@@ -106,14 +106,14 @@ program
     .option('--verbose', 'verbose 模式')
     .allowUnknownOption()
     .action(cmd => {
-        loadCommand('upgrade', cmd);
+        loadCommand('upgrade', cleanArgs(cmd));
     });
 program
     .command('gendoc')
     .description('根据san组件的MD文档生成组件文档静态网站')
     .option('-s, --set <path>', '指定配置文件set.js的路径')
     .action(cmd => {
-        loadCommand('gendoc', cmd);
+        loadCommand('gendoc', cleanArgs(cmd));
     });
 program.arguments('<command>').action(cmd => {
     program.outputHelp();
