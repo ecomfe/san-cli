@@ -1,3 +1,7 @@
+/**
+ * @file 显示更新的框框~
+ * @author wangyongqing <wangyongqing01@baidu.com>
+ */
 const boxen = require('boxen');
 const chalk = require('chalk');
 
