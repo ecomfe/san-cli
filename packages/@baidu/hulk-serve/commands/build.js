@@ -16,7 +16,7 @@ module.exports = (api, options) => {
                 '--sourcemap': '输出 sourcemap 文件 (default: false)'
             }
         },
-        async function serve(args) {
+        async function build(args) {
             info('Building...');
 
             process.env.NODE_ENV = 'production';

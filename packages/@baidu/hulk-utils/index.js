@@ -10,6 +10,7 @@
     'spinner',
     'npm',
     'eval',
+    'new-version-log',
     'get-latest-version',
     'download-repo',
     'get-debug',

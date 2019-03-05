@@ -3,7 +3,8 @@
  * @file serve 主要内容
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const {info, prepareUrls} = require('@baidu/hulk-utils');
+const {info, prepareUrls, getLatestVersion, newVersionLog} = require('@baidu/hulk-utils');
+const semver = require('semver');
 
 const defaults = {
     host: '0.0.0.0',
@@ -27,6 +28,15 @@ module.exports = (api, options) => {
         },
         async function serve(args) {
             info('Starting development server...');
+
+            // 从1.2.1开始
+            let localVersion = args.version || '1.2.1';
+            let newVersion = 0;
+            getLatestVersion().then(latest => {
+                if (semver.lt(localVersion, latest)) {
+                    newVersion = latest;
+                }
+            });
 
             const isProduction = process.env.NODE_ENV === 'production';
             const url = require('url');
@@ -66,14 +76,16 @@ module.exports = (api, options) => {
             const urls = prepareUrls(protocol, host, port, options.baseUrl);
             // inject dev & hot-reload middleware entries
             if (!isProduction) {
+                /* eslint-disable*/
                 const sockjsUrl = publicUrl
                     ? `?${publicUrl}/sockjs-node`
                     : `?${url.format({
-                            protocol,
-                            port,
-                            hostname: urls.lanUrlForConfig || 'localhost',
-                            pathname: '/sockjs-node'
-                        })}`;
+                          protocol,
+                          port,
+                          hostname: urls.lanUrlForConfig || 'localhost',
+                          pathname: '/sockjs-node'
+                      })}`;
+                /* eslint-enable*/
 
                 const devClients = [
                     // dev server client
@@ -128,6 +140,9 @@ module.exports = (api, options) => {
             ['SIGINT', 'SIGTERM'].forEach(signal => {
                 process.on(signal, () => {
                     server.close(() => {
+                        if (newVersion) {
+                            newVersionLog(localVersion, newVersion);
+                        }
                         process.exit(0);
                     });
                 });

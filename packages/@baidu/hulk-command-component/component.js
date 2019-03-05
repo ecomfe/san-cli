@@ -3,10 +3,12 @@
  * @file serve 主要内容
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const {info, prepareUrls} = require('@baidu/hulk-utils');
+const {info, prepareUrls, getLatestVersion, newVersionLog} = require('@baidu/hulk-utils');
 const path = require('path');
 const fs = require('fs');
 const resolve = require('resolve');
+const semver = require('semver');
+
 const {name} = require('./package.json');
 
 const defaults = {
@@ -76,6 +78,14 @@ module.exports = function createConfigPlugin(context, entry) {
                 async args => {
                     info('Starting development server...');
 
+                    // 从1.2.1开始
+                    let localVersion = args.version || '1.2.1';
+                    let newVersion = 0;
+                    getLatestVersion().then(latest => {
+                        if (semver.lt(localVersion, latest)) {
+                            newVersion = latest;
+                        }
+                    });
                     const isProduction = process.env.NODE_ENV === 'production';
                     const url = require('url');
                     const path = require('path');
@@ -103,6 +113,7 @@ module.exports = function createConfigPlugin(context, entry) {
                     const useHttps = args.https || projectDevServerOptions.https || defaults.https;
                     const protocol = useHttps ? 'https' : 'http';
                     const host = args.host || process.env.HOST || projectDevServerOptions.host || defaults.host;
+                    // eslint-disable-next-line
                     portfinder.basePort =
                         args.port || process.env.PORT || projectDevServerOptions.port || defaults.port;
                     const port = await portfinder.getPortPromise();
@@ -115,6 +126,7 @@ module.exports = function createConfigPlugin(context, entry) {
                     const urls = prepareUrls(protocol, host, port, options.baseUrl);
                     // inject dev & hot-reload middleware entries
                     if (!isProduction) {
+                        /* eslint-disable*/
                         const sockjsUrl = publicUrl
                             ? `?${publicUrl}/sockjs-node`
                             : `?${url.format({
@@ -123,6 +135,7 @@ module.exports = function createConfigPlugin(context, entry) {
                                   hostname: urls.lanUrlForConfig || 'localhost',
                                   pathname: '/sockjs-node'
                               })}`;
+                        /* eslint-enable*/
 
                         const devClients = [
                             // dev server client
@@ -178,6 +191,9 @@ module.exports = function createConfigPlugin(context, entry) {
 
                     ['SIGINT', 'SIGTERM'].forEach(signal => {
                         process.on(signal, () => {
+                            if (newVersion) {
+                                newVersionLog(localVersion, newVersion);
+                            }
                             server.close(() => {
                                 process.exit(0);
                             });

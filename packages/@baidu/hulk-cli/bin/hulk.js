@@ -61,13 +61,13 @@ program
     .action((entry, cmd) => {
         require('@baidu/hulk-command-component')(entry, cleanArgs(cmd));
     });
-// program
-//     .command('build [entry]')
-//     .description('build a .js or .san file in production mode with zero config')
-//     .option('-d, --dest <dir>', 'output directory (default: dist)')
-//     .action((entry, cmd) => {
-//         require('@baidu/hulk-serve').build(entry, cleanArgs(cmd));
-//     });
+program
+    .command('build [entry]')
+    .description('build a .js or .san file in production mode with zero config')
+    .option('-d, --dest <dir>', 'output directory (default: dist)')
+    .action((entry, cmd) => {
+        require('@baidu/hulk-serve').build(entry, cleanArgs(cmd));
+    });
 program
     .command('template <appName>')
     .option('-c, --cache', '优先使用缓存')
@@ -89,7 +89,7 @@ program
     .description('安装 npm 模块，自动区分百度私有包')
     .allowUnknownOption()
     .action((packageName, cmd) => {
-        loadCommand('install', packageName, cmd);
+        loadCommand('install', packageName, cleanArgs(cmd));
     });
 
 program
@@ -97,7 +97,7 @@ program
     .description('升级 npm 模块，自动区分百度私有包')
     .allowUnknownOption()
     .action((packageName, cmd) => {
-        loadCommand('update', packageName, cmd);
+        loadCommand('update', packageName, cleanArgs(cmd));
     });
 
 program
@@ -106,14 +106,14 @@ program
     .option('--verbose', 'verbose 模式')
     .allowUnknownOption()
     .action(cmd => {
-        loadCommand('upgrade', cmd);
+        loadCommand('upgrade', cleanArgs(cmd));
     });
 program
     .command('gendoc')
     .description('根据san组件的MD文档生成组件文档静态网站')
     .option('-s, --set <path>', '指定配置文件set.js的路径')
     .action(cmd => {
-        loadCommand('gendoc', cmd);
+        loadCommand('gendoc', cleanArgs(cmd));
     });
 program.arguments('<command>').action(cmd => {
     program.outputHelp();
@@ -135,7 +135,7 @@ if (!process.argv.slice(2).length) {
 }
 
 function cleanArgs(cmd) {
-    const args = {};
+    const args = {version: packageJson.version};
     cmd.options.forEach(o => {
         const key = o.long.replace(/^--/, '');
         // if an option is not present and Command has a method with the same name

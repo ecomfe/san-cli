@@ -32,7 +32,7 @@ module.exports = function createConfigPlugin(context, entry, asLib) {
                     const sanPath = path.dirname(require.resolve('san'));
                     config.resolve.alias.set(
                         'san',
-                        `${sanPath}/${options.compiler ? 'dist/san.dev.js' : 'dist/san.min.js'}`
+                        `${sanPath}/${options.compiler ? 'san.dev.js' : 'san.min.js'}`
                     );
                 }
                 // set entry
