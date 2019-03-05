@@ -4,21 +4,13 @@
 const path = require('path');
 const fs = require('fs-extra');
 
-const home = require('user-home');
-const inquirer = require('inquirer');
-
 const exists = fs.existsSync;
 const rm = fs.removeSync;
-// const debug = require('debug')('command:init');
-
-const generate = require('../lib/generate');
 const exec = require('child_process').execSync;
 
 const resolve = path.resolve;
 const {
     chalk,
-    isLocalPath,
-    getTemplatePath,
     error,
     updateSpinner,
     logWithSpinner,
@@ -59,8 +51,8 @@ const createMenuFile = ({menu, pathMap}) => {
     fs.writeFileSync(resolve(pathMap.navPath, 'nav.yml'), content, 'utf8');
 };
 const refreshDir = dir => {
-    if (fs.existsSync(dir)) {
-        fs.removeSync(dir);
+    if (exists(dir)) {
+        rm(dir);
     }
     fs.ensureDirSync(dir);
     // fs.mkdirSync(dir);
