@@ -126,7 +126,7 @@ const replaceHexoConfig = set => {
     replaceFileStr(docEntry, compoPathReg, resolve(process.cwd(), set.compoPath));
 };
 module.exports = async cmd => {
-    let setFilePath = resolve(process.cwd(), cmd.set);
+    let setFilePath = resolve(process.cwd(), cmd.config);
     let set = require(setFilePath);
     const distPath = resolve(process.cwd(), './dist');
     const hexoPath = resolve(distPath, 'hexo');

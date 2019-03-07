@@ -111,7 +111,7 @@ program
 program
     .command('gendoc')
     .description('根据san组件的MD文档生成组件文档静态网站')
-    .option('-s, --set <path>', '指定配置文件set.js的路径')
+    .option('-s, --config <path>', '指定配置文件doc.config.js的路径')
     .action(cmd => {
         loadCommand('gendoc', cleanArgs(cmd));
     });
