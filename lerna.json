@@ -1,6 +1,6 @@
 {
     "packages": [
-        "packages/@baidu/*"
+        "packages/*"
     ],
     "version": "1.2.2",
     "npmClient": "npm",
