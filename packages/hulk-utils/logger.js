@@ -57,7 +57,7 @@ exports.warn = (msg, tag = null) => {
 
 exports.error = (msg, tag = null) => {
     error(format(chalk.bgRed(' ERROR ') + (tag ? chalkTag(tag) : ''), chalk.red(msg)));
-    if (msg instanceof Error) {
+    if (msg instanceof Error && msg.stack) {
         error(msg.stack);
     }
 };

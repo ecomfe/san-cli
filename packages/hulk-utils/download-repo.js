@@ -10,15 +10,16 @@ const {getGitUser} = require('./git-user');
 exports.downloadRepo = (repo, dest, opts = {}, fn) => {
     repo = normalize(repo, opts);
     const {url, checkout} = repo;
-
-    gitclone(url, dest, {checkout, shallow: checkout === 'master'}, err => {
-        if (!err) {
-            rm(`${dest}/.git`);
-            fn();
-        } else {
-            fn(err);
-            debug(err, url, dest, checkout);
-        }
+    return new Promise((resolve, reject) => {
+        gitclone(url, dest, {checkout, shallow: checkout === 'master'}, err => {
+            if (!err) {
+                rm(`${dest}/.git`);
+                resolve();
+            } else {
+                debug(err, url, dest, checkout);
+                reject(err);
+            }
+        });
     });
 };
 function normalize(repo, opts) {
