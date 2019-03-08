@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-const inquirer = require('inquirer');
+const inquirer = require('@baidu/hulk-utils/listr/inquirer');
 const {evaluate} = require('@baidu/hulk-utils');
 
 const promptMapping = {
@@ -36,38 +36,46 @@ function render(content, data) {
 
     return content;
 }
-async function prompt(data, key, prompt, tplData) {
-    // 当 when 起作用的时候跳过
-    if (prompt.when && !evaluate(prompt.when, data)) {
-        return;
-    }
-
-    let promptDefault = prompt.default;
-    if (typeof promptDefault === 'function') {
-        promptDefault = function() {
-            return prompt.default.bind(this)(data);
-        };
-    }
-
-    const answers = await inquirer.prompt([
-        {
-            type: promptMapping[prompt.type] || prompt.type,
-            name: key,
-            message: prompt.message || prompt.label || key,
-            default: render(promptDefault, tplData),
-            choices: prompt.choices || [],
-            validate: prompt.validate || (() => true)
+function prompt(data, key, prompt, tplData) {
+    return new Promise((resolve, reject) => {
+        // 当 when 起作用的时候跳过
+        if (prompt.when && !evaluate(prompt.when, data)) {
+            resolve();
+            return;
         }
-    ]);
 
-    if (Array.isArray(answers[key])) {
-        data[key] = {};
-        answers[key].forEach(multiChoiceAnswer => {
-            data[key][multiChoiceAnswer] = true;
-        });
-    } else if (typeof answers[key] === 'string') {
-        data[key] = answers[key].replace(/"/g, '\\"');
-    } else {
-        data[key] = answers[key];
-    }
+        let promptDefault = prompt.default;
+        if (typeof promptDefault === 'function') {
+            // eslint-disable-next-line
+            promptDefault = function() {
+                return prompt.default.bind(this)(data);
+            };
+        }
+
+        inquirer(
+            [
+                {
+                    type: promptMapping[prompt.type] || prompt.type,
+                    name: key,
+                    message: prompt.message || prompt.label || key,
+                    default: render(promptDefault, tplData),
+                    choices: prompt.choices || [],
+                    validate: prompt.validate || (() => true)
+                }
+            ],
+            answers => {
+                if (Array.isArray(answers[key])) {
+                    data[key] = {};
+                    answers[key].forEach(multiChoiceAnswer => {
+                        data[key][multiChoiceAnswer] = true;
+                    });
+                } else if (typeof answers[key] === 'string') {
+                    data[key] = answers[key].replace(/"/g, '\\"');
+                } else {
+                    data[key] = answers[key];
+                }
+                resolve();
+            }
+        );
+    });
 }
