@@ -1,5 +1,6 @@
 /**
  * @file 根据模板生成项目目录结构
+ * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const path = require('path');
 const fs = require('fs');
@@ -12,9 +13,11 @@ const render = require('consolidate').handlebars.render;
 const concat = require('concat-stream');
 const filter = require('gulp-filter');
 const rename = require('gulp-rename');
-const {evaluate, getGitUser, getDebugLogger} = require('@baidu/hulk-utils');
+const {getDebugLogger} = require('@baidu/hulk-utils/get-debug');
+const {evaluate} = require('@baidu/hulk-utils/eval');
+const {getGitUser} = require('@baidu/hulk-utils/git-user');
 const {name, version} = require('../package.json');
-const debug = getDebugLogger('generate', name);
+const debug = getDebugLogger('generate');
 
 const ask = require('./ask');
 const exists = fs.existsSync;
@@ -29,10 +32,10 @@ module.exports = (name, dest, options) => {
             metaData.author = author;
             metaData.email = gitEmail;
             metaData.username = gitUser;
+            metaData.name = name;
 
             // 添加到 context 传入下一个流程
             ctx.metaData = metaData;
-            debug(metaData);
 
             // 1. 添加 handlebar helper
             // eslint-disable-next-line
@@ -41,9 +44,9 @@ module.exports = (name, dest, options) => {
                     Handlebars.registerHelper(key, metaData.helpers[key]);
                 });
 
-            const opts = ctx.metaData;
+            debug(metaData);
             // 2. 请回答
-            const answers = await ask(opts.prompts || {}, opts);
+            const answers = await ask(metaData.prompts || {}, metaData);
             const data = Object.assign(
                 {
                     destDirName: name,

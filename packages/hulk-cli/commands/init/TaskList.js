@@ -11,6 +11,7 @@ module.exports = class TaskList {
         this._options = options;
         this._index = 0;
         this._tasksLength = tasks.length;
+        this._context = {};
         // 这里可以写个状态机
         this._status = 'ready'; // ready, pending, done, fail, running
     }

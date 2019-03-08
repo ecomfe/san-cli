@@ -17,7 +17,7 @@ const inquirer = require('inquirer');
 const Handlebars = require('../../lib/handlerbars');
 const generator = require('../../lib/generator');
 const {name, version: localVersion} = require('../../package.json');
-const {log, success, error, newVersionLog} = require('@baidu/hulk-utils/logger');
+const {log, success, error, newVersionLog, info} = require('@baidu/hulk-utils/logger');
 const {getLatestVersion} = require('@baidu/hulk-utils/get-latest-version');
 const {isLocalPath, getTemplatePath, downloadRepo, installDeps} = require('@baidu/hulk-utils');
 
@@ -49,7 +49,7 @@ module.exports = async (template, appName, opts) => {
     opts._inPlace = inPlace;
     // const name = inPlace ? path.relative('../', process.cwd()) : appName;
     const dest = path.resolve(appName || '.');
-
+    const startTime = Date.now();
     const taskList = [
         {title: '🔍  检测目录和离线包状态...', task: checkStatus(template, dest, opts)},
         {title: '🚚 下载项目脚手架模板...', task: download(template, dest, opts)},
@@ -83,9 +83,14 @@ module.exports = async (template, appName, opts) => {
             } else {
                 logMessage(opts.completeMessage, data);
             }
+            const duration = (((Date.now() - startTime) / 10) | 0) / 100;
+
+            console.log('✨  Done in ' + duration + 's.');
         })
         .catch(e => {
             error(e);
+            info(`使用 ${chalk.yellow('DEBUG=hulk:*')} 查看报错信息`);
+
             process.exit(1);
         });
 };
@@ -197,20 +202,15 @@ function download(template, dest, opts) {
                 task.skip('发现本地缓存，优先使用本地缓存模板');
                 observer.complete();
             } else {
-                observer.next('开始拉取模板');
+                observer.next('拉取模板ing...');
                 downloadRepo(template, tmp, opts)
                     .then(() => {
                         ctx.localTemplatePath = tmp;
                         observer.complete();
                     })
                     .catch(err => {
-                        observer.error(
-                            `拉取代码失败，请检查路径和代码权限是否正确\n使用「${chalk.bgYellow.black(
-                                'DEBUG=hulk:*'
-                            )}」查看报错信息`
-                        );
+                        observer.error('拉取代码失败，请检查路径和代码权限是否正确');
                     });
-                observer.complete();
             }
         });
     };
@@ -223,6 +223,7 @@ function installDep(template, dest, opts) {
             let install = hasPackage && opts.install;
             if (hasPackage && !install) {
                 const name = 'install';
+                observer.next();
                 const answers = await prompt([
                     {
                         type: 'confirm',
@@ -232,6 +233,10 @@ function installDep(template, dest, opts) {
                 ]);
                 if (answers[name]) {
                     install = true;
+                } else {
+                    task.skip('用户选择不安装依赖');
+                    observer.complete();
+                    return;
                 }
             }
 

@@ -66,12 +66,12 @@ exports.line = msg => {
     msg ? logger('─'.repeat(20) + msg + '─'.repeat(20)) : logger('─'.repeat(45));
     logger();
 };
-exports.success = (msg, tag) => {
-    if (typeof tag !== 'string') {
-        tag = process.platform === 'win32' ? '√' : '✔';
+exports.success = (msg, symbol) => {
+    if (typeof symbol !== 'string') {
+        symbol = process.platform === 'win32' ? '√' : '✔';
     }
 
-    tag ? logger(format(`${chalk.green(tag)} `, msg)) : logger(msg);
+    symbol ? logger(format(`${chalk.green(symbol)} `, msg)) : logger(msg);
 };
 
 exports.clearConsole = () => {
