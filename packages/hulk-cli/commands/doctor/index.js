@@ -1,5 +1,5 @@
 /**
- * @file hulk analyze
+ * @file hulk doctor
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
