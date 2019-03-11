@@ -10,7 +10,6 @@
     'spinner',
     'npm',
     'eval',
-    'new-version-log',
     'get-latest-version',
     'download-repo',
     'get-debug',
@@ -19,7 +18,7 @@
     'webpack-error',
     'find-existing'
 ].forEach(m => {
-    Object.assign(exports, require(`./lib/${m}`));
+    Object.assign(exports, require(`./${m}`));
 });
 
 exports.chalk = require('chalk');

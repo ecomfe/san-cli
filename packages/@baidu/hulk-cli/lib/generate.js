@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const exists = fs.existsSync;
 
+const chalk = require('chalk');
 const semver = require('semver');
 const inquirer = require('inquirer');
 const through = require('through2');
@@ -14,22 +15,9 @@ const render = require('consolidate').handlebars.render;
 const concat = require('concat-stream');
 const filter = require('gulp-filter');
 const rename = require('gulp-rename');
-const {
-    error,
-    log,
-    chalk,
-    evaluate,
-    success,
-    line,
-    getGitUser,
-    getLatestVersion,
-    newVersionLog,
-    logWithSpinner,
-    installDeps,
-    updateSpinner,
-    stopSpinner,
-    getDebugLogger
-} = require('@baidu/hulk-utils');
+const {error, log, success, line} = require('@baidu/hulk-utils/logger');
+const {logWithSpinner, updateSpinner, stopSpinner, newVersionLog} = require('@baidu/hulk-utils/spinner');
+const {evaluate, getGitUser, getLatestVersion, installDeps, getDebugLogger} = require('@baidu/hulk-utils');
 const {name, version: localVersion} = require('../package.json');
 const debug = getDebugLogger('generate', name);
 

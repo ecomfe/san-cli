@@ -9,9 +9,8 @@ const inquirer = require('inquirer');
 
 const exists = fs.existsSync;
 const rm = fs.removeSync;
-// const debug = require('debug')('command:init');
 
-const generate = require('../lib/generate');
+const generate = require('../../lib/generate');
 
 const {
     chalk,
@@ -36,9 +35,8 @@ const alias = name => {
 
     return name;
 };
-module.exports = async (argv, opts) => {
-    const template = alias(argv.template);
-    const appName = argv.appName;
+module.exports = async (template, appName, opts) => {
+    template = alias(template);
     const inPlace = !appName || appName === '.';
     const name = inPlace ? path.relative('../', process.cwd()) : appName;
     const dest = path.resolve(appName || '.');
