@@ -37,6 +37,7 @@
         "rxjs": "^6.4.0",
         "semver": "^5.6.0",
         "through2": "^3.0.0",
+        "tty-table": "^2.7.0",
         "update-notifier": "^2.5.0",
         "user-home": "^2.0.0",
         "vinyl-fs": "^3.0.3"

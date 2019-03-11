@@ -60,11 +60,11 @@ const updateCompatible = context => {
                         cwd: context,
                         stdio: ['pipe', 'pipe', 'pipe']
                     });
+                    ctx.autoUpdates = autoUpdates;
                     observer.complete();
                 } catch (e) {
                     observer.error(e);
                 }
-                ctx.autoUpdates = autoUpdates;
             } else {
                 task.skip('没有新的小版本兼容包');
                 observer.complete();
@@ -81,7 +81,7 @@ const selectBreaking = context => {
                 {
                     type: 'checkbox',
                     name: 'requiredUpdates',
-                    message: '发现一些需要更新的包，请手动选择需要更新的包',
+                    message: '发现需要更新的包，请手动选择',
                     choices: breakings.map(({name, current, latest}) => {
                         return {
                             name: `${name} ${current} -> ${latest}`,
@@ -90,6 +90,7 @@ const selectBreaking = context => {
                     })
                 }
             ];
+            observer.next(); // 清空 loading
             const {requiredUpdates} = await inquirer.prompt(questions);
             ctx.requiredUpdates = entries.filter(({name}) => requiredUpdates.includes(name));
             observer.complete();
@@ -102,11 +103,15 @@ const updateBreaking = context => {
             const requiredUpdates = ctx.requiredUpdates;
             // 这里更新吧
             observer.next('更新到最新版本ing...');
-            const args = requiredUpdates.map(({name}) => name + '@latest');
-            await execa('npm', ['install', ...args, '--registry', NPM_REGISTRY], {
-                cwd: context,
-                stdio: ['pipe', 'pipe', 'pipe']
-            });
+            if (requiredUpdates && requiredUpdates.length) {
+                const args = requiredUpdates.map(({name}) => name + '@latest');
+                await execa('npm', ['install', ...args, '--registry', NPM_REGISTRY], {
+                    cwd: context,
+                    stdio: ['pipe', 'pipe', 'pipe']
+                });
+            } else {
+                task.skip('没有新的包');
+            }
             observer.complete();
         });
     };
@@ -117,7 +122,7 @@ module.exports = (context = process.cwd()) => {
     const taskList = [
         {title: '查找过期的依赖包...', task: findOutdated(context)},
         {title: '自动更新小版本兼容包...', task: updateCompatible(context)},
-        {title: '请手动选择需要更新的大版本依赖包...', task: selectBreaking(context)},
+        {title: '请手动选择需要更新的依赖包...', task: selectBreaking(context)},
         {title: '更新选择的大版本依赖包...', task: updateBreaking(context)}
     ];
     // 检测版本更新
@@ -136,20 +141,24 @@ module.exports = (context = process.cwd()) => {
     tasks
         .run()
         .then(ctx => {
-            const {requiredUpdates, autoUpdates} = ctx;
-
-            const toResult = targetVersionKey => entry => {
-                const targetVersion = entry.wanted || entry.latest;
-                return {
-                    name: entry.name,
-                    from: entry.current,
-                    to: targetVersion
+            const {requiredUpdates = [], autoUpdates = []} = ctx;
+            if (requiredUpdates.length || autoUpdates.length) {
+                const toResult = targetVersionKey => entry => {
+                    const targetVersion = entry[targetVersionKey];
+                    return {
+                        name: entry.name,
+                        from: entry.current,
+                        to: targetVersion
+                    };
                 };
-            };
-            const updates = [...autoUpdates.map(toResult('wanted')), ...requiredUpdates.map(toResult('latest'))];
-            reportUpdateResult(updates);
-            console.log();
-            console.log('✨  更新完成！要养成定期检查过期包的好习惯哦O(∩_∩)O~');
+                const updates = [...autoUpdates.map(toResult('wanted')), ...requiredUpdates.map(toResult('latest'))];
+                reportUpdateResult(updates);
+                console.log();
+                console.log('✨  更新完成！要养成定期检查过期包的好习惯哦O(∩_∩)O~');
+            } else {
+                console.log('✨  没有需要更新的包');
+            }
+
             // 显示版本更新
             notifier.notify();
         })

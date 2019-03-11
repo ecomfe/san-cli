@@ -58,27 +58,30 @@ module.exports = class TaskList {
         this._startTask(0);
         return this._promise;
     }
-    skip(reason) {
-        this.next({reason, type: 'skip'});
-    }
+
     _taskWrapper(task) {
-        return task(this._context, this);
+        task.skip = reason => {
+            task.status = 'skiped'; // running failed
+            this.next({reason, type: 'skip'});
+        };
+        return task(this._context, task);
     }
     _startTask(idx, {reason, type = ''} = {}) {
         let {title, task} = this._tasks[idx];
-        const that = this;
         if (this._spinner) {
             this._spinner.stop();
         }
-        const skipped = type === 'skip' ? ` ${chalk.dim('[skipped]')}` : '';
         const p = `[${this._index + 1}/${this.length}]`;
-        console.log(chalk.dim(p) + ` ${title}${skipped}`);
         if (reason) {
             console.log(chalk.dim(`${new Array(p.length + 1).join(' ')} ${figures.arrowRight} ${reason}`));
         }
+        console.log(chalk.dim(p) + ` ${title}`);
+
         if (!this._spinner) {
-            this._spinner = ora('正在处理中...').start();
+            this._spinner = ora('正在处理中...', {spinner: 'point'}).start();
         }
+        task.status = 'running';
+
         this._taskWrapper(task).subscribe({
             next: data => {
                 if (data) {
@@ -92,10 +95,16 @@ module.exports = class TaskList {
                 }
             },
             error: err => {
-                this._fail(err);
+                if (task.status === 'running') {
+                    task.status = 'failed';
+                    this._fail(err);
+                }
             },
             complete: () => {
-                this.next();
+                if (task.status === 'running') {
+                    task.status = 'done';
+                    this.next();
+                }
             }
         });
     }
@@ -109,7 +118,7 @@ module.exports = class TaskList {
     }
     next(reason) {
         this._index++;
-        if (this._index === this._tasks.length) {
+        if (this._index >= this._tasks.length) {
             // 完成了
             this._setStatus('done');
             this._done();
