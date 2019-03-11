@@ -9,6 +9,6 @@ module.exports = program => {
         .description('san component demo preview server')
         .option('-p, --port', 'dev server port')
         .action((entry, cmd) => {
-            require('@baidu/hulk-command-component')(entry, cleanArgs(cmd));
+            require('@baidu/hulk-command-component')(entry, cmd);
         });
 };

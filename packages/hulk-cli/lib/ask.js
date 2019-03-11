@@ -4,6 +4,7 @@
  */
 const importLazy = require('import-lazy')(require);
 const inquirer = importLazy('inquirer');
+// eslint-disable-next-line
 const {evaluate} = require('@baidu/hulk-utils/eval');
 
 const promptMapping = {
