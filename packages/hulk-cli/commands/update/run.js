@@ -8,12 +8,15 @@ const rxjs = importLazy('rxjs');
 const updateNotifier = importLazy('update-notifier');
 const execa = importLazy('execa');
 const inquirer = importLazy('inquirer');
+const {gt: isLaterThan} = require('semver');
+const ConsoleTable = importLazy('tty-table');
+
 // eslint-disable-next-line
 const {NPM_REGISTRY, POSSIBLE_BREAKING_PACKAGES} = require('../../constants');
 
 const {name, version} = require('../../package.json');
 const TaskList = importLazy('../../lib/TaskList');
-const {log, success, error} = require('@baidu/hulk-utils/logger');
+const error = require('@baidu/hulk-utils/logger').error;
 
 const findOutdated = context => {
     return (ctx, task) => {
@@ -36,7 +39,9 @@ const findOutdated = context => {
                     .split('\n')
                     .slice(1); // 第一行是表头
                 const entries = lines.map(line => line.split(/ +/));
-                ctx.entries = entries.map(([name, current, wanted, latest]) => ({name, current, wanted, latest}));
+                ctx.entries = entries
+                    .map(([name, current, wanted, latest]) => ({name, current, wanted, latest}))
+                    .filter(({name}) => !POSSIBLE_BREAKING_PACKAGES.has(name));
             }
             observer.complete();
         });
@@ -46,9 +51,7 @@ const updateCompatible = context => {
     return (ctx, task) => {
         return new rxjs.Observable(async observer => {
             observer.next('开始自动更新小版本兼容包...');
-            const autoUpdates = ctx.entries
-                .filter(({name}) => !POSSIBLE_BREAKING_PACKAGES.has(name))
-                .filter(({current, wanted}) => current !== wanted);
+            const autoUpdates = ctx.entries.filter(({current, wanted}) => current !== wanted);
             if (autoUpdates.length > 0) {
                 // 可以更新
                 try {
@@ -61,6 +64,7 @@ const updateCompatible = context => {
                 } catch (e) {
                     observer.error(e);
                 }
+                ctx.autoUpdates = autoUpdates;
             } else {
                 task.skip('没有新的小版本兼容包');
                 observer.complete();
@@ -70,26 +74,41 @@ const updateCompatible = context => {
 };
 const selectBreaking = context => {
     return (ctx, task) => {
-        return new rxjs.Observable(observer => {
-            // const checkBreakings = async (entries: OutdatedInfo[]): Promise<OutdatedInfo[]> => {
-            //     const breakings = entries.filter(isBreakingUpdate);
-            //     const questions = [
-            //         {
-            //             type: 'checkbox',
-            //             name: 'requiredUpdates',
-            //             message: 'Found breaking updates as follows, select to update.',
-            //             choices: breakings.map(toChoice),
-            //         },
-            //     ];
-            //     const {requiredUpdates} = await inquirer.prompt<BreakingUpdate>(questions);
-            //     return entries.filter(({name}) => requiredUpdates.includes(name));
-            // };
+        return new rxjs.Observable(async observer => {
+            const entries = ctx.entries;
+            const breakings = entries.filter(({name, wanted, latest}) => isLaterThan(latest, wanted));
+            const questions = [
+                {
+                    type: 'checkbox',
+                    name: 'requiredUpdates',
+                    message: '发现一些需要更新的包，请手动选择需要更新的包',
+                    choices: breakings.map(({name, current, latest}) => {
+                        return {
+                            name: `${name} ${current} -> ${latest}`,
+                            value: name
+                        };
+                    })
+                }
+            ];
+            const {requiredUpdates} = await inquirer.prompt(questions);
+            ctx.requiredUpdates = entries.filter(({name}) => requiredUpdates.includes(name));
+            observer.complete();
         });
     };
 };
 const updateBreaking = context => {
     return (ctx, task) => {
-        return new rxjs.Observable(observer => {});
+        return new rxjs.Observable(async observer => {
+            const requiredUpdates = ctx.requiredUpdates;
+            // 这里更新吧
+            observer.next('更新到最新版本ing...');
+            const args = requiredUpdates.map(({name}) => name + '@latest');
+            await execa('npm', ['install', ...args, '--registry', NPM_REGISTRY], {
+                cwd: context,
+                stdio: ['pipe', 'pipe', 'pipe']
+            });
+            observer.complete();
+        });
     };
 };
 
@@ -117,7 +136,20 @@ module.exports = (context = process.cwd()) => {
     tasks
         .run()
         .then(ctx => {
-            console.log(ctx);
+            const {requiredUpdates, autoUpdates} = ctx;
+
+            const toResult = targetVersionKey => entry => {
+                const targetVersion = entry.wanted || entry.latest;
+                return {
+                    name: entry.name,
+                    from: entry.current,
+                    to: targetVersion
+                };
+            };
+            const updates = [...autoUpdates.map(toResult('wanted')), ...requiredUpdates.map(toResult('latest'))];
+            reportUpdateResult(updates);
+            console.log();
+            console.log('✨  更新完成！要养成定期检查过期包的好习惯哦O(∩_∩)O~');
             // 显示版本更新
             notifier.notify();
         })
@@ -128,3 +160,13 @@ module.exports = (context = process.cwd()) => {
             process.exit(1);
         });
 };
+
+function reportUpdateResult(updates) {
+    const headers = [
+        {value: 'name', alias: 'Name', align: 'left'},
+        {value: 'from', alias: 'Current Version', align: 'left', width: 20},
+        {value: 'to', alias: 'Updated Version', align: 'left', width: 20}
+    ];
+    const table = new ConsoleTable(headers, updates);
+    console.log(table.render());
+}
