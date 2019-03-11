@@ -2,26 +2,27 @@
  * @file init 初始化项目
  */
 const path = require('path');
+const importLazy = require('import-lazy')(require);
 
-const delay = require('delay');
-const fs = require('fs-extra');
-const chalk = require('chalk');
+const fs = importLazy('fs-extra');
+const chalk = importLazy('chalk');
 const home = require('user-home');
-const boxen = require('boxen');
 
 const Observable = require('rxjs').Observable;
-const semver = require('semver');
 const render = require('consolidate').handlebars.render;
 
-const inquirer = require('inquirer');
-const Handlebars = require('../../lib/handlerbars');
-const generator = require('../../lib/generator');
+const inquirer = importLazy('inquirer');
+const execa = importLazy('execa');
+const updateNotifier = importLazy('update-notifier');
 const {name, version: localVersion} = require('../../package.json');
-const {log, success, error, newVersionLog, info} = require('@baidu/hulk-utils/logger');
-const {getLatestVersion} = require('@baidu/hulk-utils/get-latest-version');
-const {isLocalPath, getTemplatePath, downloadRepo, installDeps} = require('@baidu/hulk-utils');
 
-const TaskList = require('./TaskList');
+const {log, success, error} = require('@baidu/hulk-utils/logger');
+const {downloadRepo} = require('@baidu/hulk-utils/download-repo');
+const {isLocalPath, getTemplatePath} = require('@baidu/hulk-utils/path');
+
+const Handlebars = importLazy('../../lib/handlerbars');
+const generator = importLazy('../../lib/generator');
+const TaskList = require('../../lib/TaskList');
 
 const ALIAS_MAP = process.env.alias || {
     component: 'antd-san-component-template',
@@ -33,15 +34,6 @@ const alias = name => {
     }
     return name;
 };
-
-// 检测版本更新
-let newVersion = 0;
-// TODO 这里改成单独现成获取，不占用资源？
-getLatestVersion().then(latest => {
-    if (semver.lt(localVersion, latest)) {
-        newVersion = latest;
-    }
-});
 
 module.exports = async (template, appName, opts) => {
     template = alias(template);
@@ -57,6 +49,17 @@ module.exports = async (template, appName, opts) => {
         {title: '🔗 安装项目依赖...', task: installDep(template, dest, opts)}
     ];
 
+    // 检测版本更新
+    const notifier = updateNotifier({
+        pkg: {
+            name,
+            version: localVersion
+        },
+        isGlobal: true,
+        // updateCheckInterval: 0,
+        // npm script 也显示
+        shouldNotifyInNpmScript: true
+    });
     // 离线脚手架目录处理
     // 1. 下载安装包 download
     // 2. 解包 unpack
@@ -73,7 +76,7 @@ module.exports = async (template, appName, opts) => {
                 opts.complete(data, {
                     chalk,
                     logger: {
-                        boxen,
+                        boxen: require('boxen'),
                         log,
                         fatal: error,
                         success
@@ -86,10 +89,11 @@ module.exports = async (template, appName, opts) => {
             const duration = (((Date.now() - startTime) / 10) | 0) / 100;
 
             console.log('✨  Done in ' + duration + 's.');
+            notifier.notify();
         })
         .catch(e => {
             error(e);
-            info(`使用 ${chalk.yellow('DEBUG=hulk:*')} 查看报错信息`);
+            // info(`使用 ${chalk.yellow('DEBUG=hulk:*')} 查看报错信息`);
 
             process.exit(1);
         });
@@ -99,9 +103,7 @@ function prompt(input, done) {
     if (!Array.isArray(input)) {
         input = [input];
     }
-    return new Promise((resolve, reject) => {
-        inquirer(input, resolve);
-    });
+    return inquirer.prompt(input);
 }
 
 function logMessage(message, data) {
@@ -117,76 +119,67 @@ function logMessage(message, data) {
     } else if (message) {
         log(message);
     }
-
-    if (newVersion) {
-        newVersionLog(localVersion, newVersion);
-    }
 }
 function checkStatus(template, dest, opts) {
     return (ctx, task) => {
         return new Observable(async observer => {
             observer.next('开始检测目标目录状态');
             // 处理目标目录存在的情况，显示 loading 啊~
-            delay(100)
-                .then(async () => {
-                    if (fs.existsSync(dest)) {
-                        if (opts.force) {
-                            observer.next('--force 删除目录');
-                            return fs.remove(dest);
-                        } else {
-                            if (opts._inPlace) {
-                                const {ok} = await prompt([
-                                    {
-                                        name: 'ok',
-                                        type: 'confirm',
-                                        message: '在当前目录创建项目？'
-                                    }
-                                ]);
-                                if (!ok) {
-                                    return;
-                                }
-                            } else {
-                                observer.next();
-                                const shortDest = path.relative(process.cwd(), dest);
-                                const {action} = await inquirer.prompt([
-                                    {
-                                        name: 'action',
-                                        type: 'list',
-                                        message: `目录 ${chalk.cyan(shortDest)} 已经存在。请选择操作：`,
-                                        choices: [
-                                            {name: '覆盖', value: 'overwrite'},
-                                            {name: '合并', value: 'merge'},
-                                            {name: '取消', value: false}
-                                        ]
-                                    }
-                                ]);
-                                if (!action) {
-                                    return;
-                                } else if (action === 'overwrite') {
-                                    observer.next(`选择覆盖，首先删除 ${shortDest}...`);
-                                    await fs.remove(dest);
-                                }
+            if (fs.existsSync(dest)) {
+                if (opts.force) {
+                    observer.next('--force 删除目录');
+                    return fs.remove(dest);
+                } else {
+                    if (opts._inPlace) {
+                        const {ok} = await prompt([
+                            {
+                                name: 'ok',
+                                type: 'confirm',
+                                message: '在当前目录创建项目？'
                             }
-                        }
-                    }
-                })
-                .then(() => {
-                    observer.next('检测离线模板状态');
-                    const isOffline = opts.offline;
-                    if (isOffline || isLocalPath(template)) {
-                        // 使用离线地址
-                        // 直接复制，不下载 icode 代码
-                        const templatePath = getTemplatePath(template);
-                        if (fs.existsSync(templatePath)) {
-                            // 添加 本地template 路径
-                            ctx.localTemplatePath = templatePath;
-                        } else {
-                            observer.error('离线脚手架模板路径不存在');
+                        ]);
+                        if (!ok) {
                             return;
                         }
+                    } else {
+                        observer.next();
+                        const shortDest = path.relative(process.cwd(), dest);
+                        const {action} = await prompt([
+                            {
+                                name: 'action',
+                                type: 'list',
+                                message: `目录 ${chalk.cyan(shortDest)} 已经存在。请选择操作：`,
+                                choices: [
+                                    {name: '覆盖', value: 'overwrite'},
+                                    {name: '合并', value: 'merge'},
+                                    {name: '取消', value: false}
+                                ]
+                            }
+                        ]);
+                        if (!action) {
+                            return observer.error(`取消覆盖 ${shortDest} 文件夹`);
+                        } else if (action === 'overwrite') {
+                            observer.next(`选择覆盖，首先删除 ${shortDest}...`);
+                            await fs.remove(dest);
+                        }
                     }
-                    observer.complete();
-                });
+                }
+            }
+
+            observer.next('检测离线模板状态');
+            const isOffline = opts.offline;
+            if (isOffline || isLocalPath(template)) {
+                // 使用离线地址
+                // 直接复制，不下载 icode 代码
+                const templatePath = getTemplatePath(template);
+                if (fs.existsSync(templatePath)) {
+                    // 添加 本地template 路径
+                    ctx.localTemplatePath = templatePath;
+                } else {
+                    return observer.error('离线脚手架模板路径不存在');
+                }
+            }
+            observer.complete();
         });
     };
 }
@@ -243,8 +236,8 @@ function installDep(template, dest, opts) {
             if (install) {
                 try {
                     // 清理 log，交给 npm
-                    observer.next();
-                    await installDeps(dest, opts.registry, true);
+                    observer.next('安装依赖ing...');
+                    await installDeps(dest, opts.registry);
                     observer.complete();
                 } catch (e) {
                     observer.error(e);
@@ -252,4 +245,11 @@ function installDep(template, dest, opts) {
             }
         });
     };
+}
+
+function installDeps(dest, registry = 'http://registry.npm.baidu-int.com') {
+    return execa('npm', ['install', '--loglevel', 'error', '--registry', registry], {
+        cwd: dest,
+        stdio: ['pipe', 'pipe', 'pipe']
+    });
 }

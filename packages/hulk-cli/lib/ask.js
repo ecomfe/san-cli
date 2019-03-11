@@ -72,6 +72,6 @@ function prompt(data, key, prompt, tplData) {
         } else {
             data[key] = answers[key];
         }
-        resolve();
+        resolve(data);
     });
 }

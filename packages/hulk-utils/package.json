@@ -18,9 +18,7 @@
     },
     "dependencies": {
         "address": "^1.0.3",
-        "boxen": "^3.0.0",
         "chalk": "^2.4.1",
-        "cli-truncate": "^1.1.0",
         "debug": "^4.1.0",
         "execa": "^1.0.0",
         "fs-extra": "^7.0.1",

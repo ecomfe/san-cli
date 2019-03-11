@@ -16,7 +16,7 @@ const rename = require('gulp-rename');
 const {getDebugLogger} = require('@baidu/hulk-utils/get-debug');
 const {evaluate} = require('@baidu/hulk-utils/eval');
 const {getGitUser} = require('@baidu/hulk-utils/git-user');
-const {name, version} = require('../package.json');
+// const {name, version} = require('../package.json');
 const debug = getDebugLogger('generate');
 
 const ask = require('./ask');
@@ -46,6 +46,7 @@ module.exports = (name, dest, options) => {
 
             debug(metaData);
             // 2. 请回答
+            observer.next();
             const answers = await ask(metaData.prompts || {}, metaData);
             const data = Object.assign(
                 {
@@ -57,6 +58,8 @@ module.exports = (name, dest, options) => {
             );
             debug('merge 后的参数', data);
             ctx.tplData = data;
+
+            observer.next('生成目录结构ing...');
             startTask(src, dest, ctx, observer);
         });
     };

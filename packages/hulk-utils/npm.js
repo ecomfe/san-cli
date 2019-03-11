@@ -56,7 +56,6 @@ function executeCommand(args, targetDir, apiMode = false) {
                 reject(`命令执行错误: ${command} ${args.join(' ')}`);
                 return;
             }
-
             resolve();
         });
     });

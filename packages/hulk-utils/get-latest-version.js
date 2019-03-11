@@ -2,9 +2,13 @@
  * @file check version
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+const spawn = require('child_process').spawn;
+const path = require('path');
+const format = require('util').format;
 
-const request = require('request');
-const debug = require('./get-debug').getDebugLogger('get-lastest-version');
+const r = require('import-lazy')(require);
+const request = r('request');
+const debug = r('./get-debug').getDebugLogger('get-lastest-version');
 
 // 获取最新版本
 function getLatestVersion(name = '@baidu/hulk-cli', registry = 'http://registry.npm.baidu-int.com') {
@@ -20,7 +24,7 @@ function getLatestVersion(name = '@baidu/hulk-cli', registry = 'http://registry.
                     debug(latest);
                     resolve(latest);
                 } else {
-                    debug(err, `${registry}/${name}`);
+                    debug()(err, `${registry}/${name}`);
                     resolve('0.0.0');
                 }
             }

@@ -8,7 +8,7 @@ lerna bootstrap
 ## 发布
 
 ```bash
-lerna publish
+lerna publish --skip-git
 ```
 
 ## 测试
@@ -16,3 +16,4 @@ lerna publish
 ```bash
 node packages/@baidu/hulk-cli/bin/hulk.js
 ```
+

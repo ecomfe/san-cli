@@ -95,13 +95,10 @@ module.exports = class TaskList {
         });
     }
     _done() {
-        // TODO 清理屏幕
         this._spinner.stop();
         this._resolve(this._context);
     }
     _fail(err) {
-        // TODO 清理屏幕
-        // TODO 显示 Error
         this._spinner.stop();
         this._reject(err);
     }
