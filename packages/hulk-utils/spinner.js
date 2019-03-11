@@ -11,7 +11,9 @@ function getDefaultSymbol() {
     return process.platform === 'win32' ? '√' : '✔';
 }
 const logWithSpinner = (exports.logWithSpinner = (...args) => {
-    let symbol, text, color;
+    let symbol;
+    let text;
+    let color;
     switch (args.length) {
         case 1:
             if (typeof args[0] === 'object') {
@@ -54,7 +56,9 @@ const logWithSpinner = (exports.logWithSpinner = (...args) => {
 });
 exports.startSpinner = logWithSpinner;
 exports.updateSpinner = (...args) => {
-    let symbol, text, color;
+    let symbol;
+    let text;
+    let color;
     switch (args.length) {
         case 1:
             if (typeof args[0] === 'object') {

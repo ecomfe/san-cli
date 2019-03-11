@@ -2,9 +2,9 @@
  * @file 修改字 vue-cli,prompt 收集答案
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-
-const inquirer = require('inquirer').prompt;
-const {evaluate} = require('@baidu/hulk-utils');
+const importLazy = require('import-lazy')(require);
+const inquirer = importLazy('inquirer');
+const {evaluate} = require('@baidu/hulk-utils/eval');
 
 const promptMapping = {
     string: 'input',
@@ -52,7 +52,7 @@ function prompt(data, key, prompt, tplData) {
             };
         }
 
-        const answers = await inquirer([
+        const answers = await inquirer.prompt([
             {
                 type: promptMapping[prompt.type] || prompt.type,
                 name: key,

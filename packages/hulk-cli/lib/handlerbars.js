@@ -1,3 +1,7 @@
+/**
+ * @file Handlebars
+ * @author wangyongqing <wangyongqing01@baidu.com>
+ */
 const Handlebars = require('handlebars');
 
 // 增加 handleba helper

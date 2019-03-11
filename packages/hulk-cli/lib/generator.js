@@ -4,18 +4,21 @@
  */
 const path = require('path');
 const fs = require('fs');
-const Observable = require('rxjs').Observable;
+const importLazy = require('import-lazy')(require);
+const rxjs = importLazy('rxjs');
 
-const through = require('through2');
-const Handlebars = require('./handlerbars');
-const vfs = require('vinyl-fs');
+const through = importLazy('through2');
+const Handlebars = importLazy('./handlerbars');
+const vfs = importLazy('vinyl-fs');
 const render = require('consolidate').handlebars.render;
-const concat = require('concat-stream');
-const filter = require('gulp-filter');
-const rename = require('gulp-rename');
+const concat = importLazy('concat-stream');
+const filter = importLazy('gulp-filter');
+const rename = importLazy('gulp-rename');
+// eslint-disable-next-line
 const {getDebugLogger} = require('@baidu/hulk-utils/get-debug');
+// eslint-disable-next-line
 const {evaluate} = require('@baidu/hulk-utils/eval');
-const {getGitUser} = require('@baidu/hulk-utils/git-user');
+const getGitUser = importLazy('@baidu/hulk-utils/git-user');
 // const {name, version} = require('../package.json');
 const debug = getDebugLogger('generate');
 
@@ -24,11 +27,11 @@ const exists = fs.existsSync;
 
 module.exports = (name, dest, options) => {
     return (ctx, task) => {
-        return new Observable(async observer => {
+        return new rxjs.Observable(async observer => {
             const src = ctx.localTemplatePath;
             // 0. 设置meta信息
             const metaData = getMetadata(src);
-            const {name: gitUser, email: gitEmail, author} = getGitUser();
+            const {name: gitUser, email: gitEmail, author} = getGitUser.getGitUser();
             metaData.author = author;
             metaData.email = gitEmail;
             metaData.username = gitUser;
@@ -40,7 +43,7 @@ module.exports = (name, dest, options) => {
             // 1. 添加 handlebar helper
             // eslint-disable-next-line
             metaData.helpers &&
-                Object.keys(metaData.helpers).map(key => {
+                Object.keys(metaData.helpers).forEach(key => {
                     Handlebars.registerHelper(key, metaData.helpers[key]);
                 });
 
@@ -75,7 +78,7 @@ function startTask(src, dest, ctx, observer) {
         });
 
         if (globs.length) {
-            globs.map(glob => {
+            globs.forEach(glob => {
                 rootSrc.push(`!${glob}`);
             });
         }

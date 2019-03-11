@@ -17,7 +17,7 @@ const updateNotifier = importLazy('update-notifier');
 const {name, version: localVersion} = require('../../package.json');
 
 const {log, success, error} = require('@baidu/hulk-utils/logger');
-const {downloadRepo} = require('@baidu/hulk-utils/download-repo');
+const dRepo = importLazy('@baidu/hulk-utils/download-repo');
 const {isLocalPath, getTemplatePath} = require('@baidu/hulk-utils/path');
 
 const Handlebars = importLazy('../../lib/handlerbars');
@@ -129,39 +129,39 @@ function checkStatus(template, dest, opts) {
                 if (opts.force) {
                     observer.next('--force 删除目录');
                     return fs.remove(dest);
+                } else if (opts._inPlace) {
+                    // eslint-disable-next-line
+                    const {ok} = await prompt([
+                        {
+                            name: 'ok',
+                            type: 'confirm',
+                            message: '在当前目录创建项目？'
+                        }
+                    ]);
+                    if (!ok) {
+                        return;
+                    }
                 } else {
-                    if (opts._inPlace) {
-                        const {ok} = await prompt([
-                            {
-                                name: 'ok',
-                                type: 'confirm',
-                                message: '在当前目录创建项目？'
-                            }
-                        ]);
-                        if (!ok) {
-                            return;
+                    observer.next();
+                    const shortDest = path.relative(process.cwd(), dest);
+                    // eslint-disable-next-line
+                    const {action} = await prompt([
+                        {
+                            name: 'action',
+                            type: 'list',
+                            message: `目录 ${chalk.cyan(shortDest)} 已经存在。请选择操作：`,
+                            choices: [
+                                {name: '覆盖', value: 'overwrite'},
+                                {name: '合并', value: 'merge'},
+                                {name: '取消', value: false}
+                            ]
                         }
-                    } else {
-                        observer.next();
-                        const shortDest = path.relative(process.cwd(), dest);
-                        const {action} = await prompt([
-                            {
-                                name: 'action',
-                                type: 'list',
-                                message: `目录 ${chalk.cyan(shortDest)} 已经存在。请选择操作：`,
-                                choices: [
-                                    {name: '覆盖', value: 'overwrite'},
-                                    {name: '合并', value: 'merge'},
-                                    {name: '取消', value: false}
-                                ]
-                            }
-                        ]);
-                        if (!action) {
-                            return observer.error(`取消覆盖 ${shortDest} 文件夹`);
-                        } else if (action === 'overwrite') {
-                            observer.next(`选择覆盖，首先删除 ${shortDest}...`);
-                            await fs.remove(dest);
-                        }
+                    ]);
+                    if (!action) {
+                        return observer.error(`取消覆盖 ${shortDest} 文件夹`);
+                    } else if (action === 'overwrite') {
+                        observer.next(`选择覆盖，首先删除 ${shortDest}...`);
+                        await fs.remove(dest);
                     }
                 }
             }
@@ -196,7 +196,8 @@ function download(template, dest, opts) {
                 observer.complete();
             } else {
                 observer.next('拉取模板ing...');
-                downloadRepo(template, tmp, opts)
+                dRepo
+                    .downloadRepo(template, tmp, opts)
                     .then(() => {
                         ctx.localTemplatePath = tmp;
                         observer.complete();

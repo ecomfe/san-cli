@@ -9,6 +9,6 @@ module.exports = program => {
         .description('build a .js or .san file in production mode with zero config')
         .option('-d, --dest <dir>', 'output directory (default: dist)')
         .action((entry, cmd) => {
-            require('@baidu/hulk-serve').build(entry, cleanArgs(cmd));
+            require('@baidu/hulk-serve').build(entry, cmd);
         });
 };
