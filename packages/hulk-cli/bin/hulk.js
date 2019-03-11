@@ -24,7 +24,7 @@ program.arguments('<command>').action(cmd => {
     program.outputHelp();
 });
 
-['init', 'version'].forEach(cmd => {
+['init', 'version', 'update'].forEach(cmd => {
     require(`../commands/${cmd}`)(program);
 });
 

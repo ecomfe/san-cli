@@ -8,7 +8,7 @@ const fs = importLazy('fs-extra');
 const chalk = importLazy('chalk');
 const home = require('user-home');
 
-const Observable = require('rxjs').Observable;
+const rxjs = importLazy('rxjs');
 const render = require('consolidate').handlebars.render;
 
 const inquirer = importLazy('inquirer');
@@ -23,7 +23,8 @@ const {isLocalPath, getTemplatePath} = require('@baidu/hulk-utils/path');
 const Handlebars = importLazy('../../lib/handlerbars');
 const generator = importLazy('../../lib/generator');
 const TaskList = require('../../lib/TaskList');
-
+// eslint-disable-next-line
+const {NPM_REGISTRY} = require('../../constants');
 const ALIAS_MAP = process.env.alias || {
     component: 'antd-san-component-template',
     project: 'san-project-base'
@@ -43,7 +44,7 @@ module.exports = async (template, appName, opts) => {
     const dest = path.resolve(appName || '.');
     const startTime = Date.now();
     const taskList = [
-        {title: '🔍  检测目录和离线包状态...', task: checkStatus(template, dest, opts)},
+        {title: '🔍 检测目录和离线包状态...', task: checkStatus(template, dest, opts)},
         {title: '🚚 下载项目脚手架模板...', task: download(template, dest, opts)},
         {title: '🔨 生成项目目录结构...', task: generator(template, dest, opts)},
         {title: '🔗 安装项目依赖...', task: installDep(template, dest, opts)}
@@ -122,7 +123,7 @@ function logMessage(message, data) {
 }
 function checkStatus(template, dest, opts) {
     return (ctx, task) => {
-        return new Observable(async observer => {
+        return new rxjs.Observable(async observer => {
             observer.next('开始检测目标目录状态');
             // 处理目标目录存在的情况，显示 loading 啊~
             if (fs.existsSync(dest)) {
@@ -187,7 +188,7 @@ function checkStatus(template, dest, opts) {
 // 下载模板
 function download(template, dest, opts) {
     return (ctx, task) => {
-        return new Observable(observer => {
+        return new rxjs.Observable(observer => {
             // 临时存放地址，存放在~/.hulk-templates 下面
             let tmp = path.join(home, '.hulk-templates', template.replace(/[/:#]/g, '-'));
             if (opts.useCache && fs.exists(tmp)) {
@@ -212,7 +213,7 @@ function download(template, dest, opts) {
 function installDep(template, dest, opts) {
     // 3. 安装依赖
     return (ctx, task) => {
-        return new Observable(async observer => {
+        return new rxjs.Observable(async observer => {
             const hasPackage = fs.exists(path.join(dest, 'package.json'));
             let install = hasPackage && opts.install;
             if (hasPackage && !install) {
@@ -248,7 +249,7 @@ function installDep(template, dest, opts) {
     };
 }
 
-function installDeps(dest, registry = 'http://registry.npm.baidu-int.com') {
+function installDeps(dest, registry = NPM_REGISTRY) {
     return execa('npm', ['install', '--loglevel', 'error', '--registry', registry], {
         cwd: dest,
         stdio: ['pipe', 'pipe', 'pipe']

@@ -1,8 +1,10 @@
 /**
  * @file 下载 icon repo
  */
-const gitclone = require('git-clone');
-const rm = require('fs-extra').removeSync;
+const importLazy = require('import-lazy')(require);
+const gitclone = importLazy('git-clone');
+const fse = importLazy('fs-extra');
+
 const debug = require('./get-debug').getDebugLogger('download-repo');
 
 const {getGitUser} = require('./git-user');
@@ -10,6 +12,7 @@ const {getGitUser} = require('./git-user');
 exports.downloadRepo = (repo, dest, opts = {}, fn) => {
     repo = normalize(repo, opts);
     const {url, checkout} = repo;
+    // const rm = fse.removeSync;
     // 先删除
     rm(dest);
     return new Promise((resolve, reject) => {

@@ -2,9 +2,12 @@
  * @file taskList 类
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const ora = require('ora');
-const chalk = require('chalk');
-const figures = require('figures');
+const importLazy = require('import-lazy')(require);
+
+const ora = importLazy('ora');
+const chalk = importLazy('chalk');
+const figures = importLazy('figures');
+
 module.exports = class TaskList {
     constructor(tasks, options = {}) {
         this._tasks = tasks;
@@ -14,6 +17,11 @@ module.exports = class TaskList {
         this._context = {};
         // 这里可以写个状态机
         this._status = 'ready'; // ready, pending, done, fail, running
+
+        this._promise = new Promise((resolve, reject) => {
+            this._resolve = resolve;
+            this._reject = reject;
+        });
     }
 
     _setStatus(status) {
@@ -48,11 +56,7 @@ module.exports = class TaskList {
     run() {
         this._setStatus('running');
         this._startTask(0);
-
-        return new Promise((resolve, reject) => {
-            this._resolve = resolve;
-            this._reject = reject;
-        });
+        return this._promise;
     }
     skip(reason) {
         this.next({reason, type: 'skip'});
@@ -62,14 +66,15 @@ module.exports = class TaskList {
     }
     _startTask(idx, {reason, type = ''} = {}) {
         let {title, task} = this._tasks[idx];
+        const that = this;
         if (this._spinner) {
             this._spinner.stop();
         }
         const skipped = type === 'skip' ? ` ${chalk.dim('[skipped]')}` : '';
-
-        console.log(`${chalk.dim(`[${this._index + 1}/${this.length}]`)} ${title}${skipped}`);
+        const p = `[${this._index + 1}/${this.length}]`;
+        console.log(chalk.dim(p) + ` ${title}${skipped}`);
         if (reason) {
-            console.log(` ${figures.arrowRight} ${reason}`);
+            console.log(chalk.dim(`${new Array(p.length + 1).join(' ')} ${figures.arrowRight} ${reason}`));
         }
         if (!this._spinner) {
             this._spinner = ora('正在处理中...').start();

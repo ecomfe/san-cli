@@ -3,8 +3,8 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-const chalk = require('chalk');
-
+const importLazy = require('import-lazy')(require);
+const chalk = importLazy('chalk');
 exports.evaluate = (exp, data) => {
     /* eslint-disable no-new-func */
     const fn = new Function('data', 'with (data) { return ' + exp + '}');

@@ -2,10 +2,10 @@
  * @file logger 封装
  */
 const EventEmitter = require('events');
-
-const chalk = require('chalk');
-const readline = require('readline');
-const padStart = require('string.prototype.padstart');
+const importLazy = require('import-lazy')(require);
+const chalk = importLazy('chalk');
+const readline = importLazy('readline');
+const padStart = importLazy('string.prototype.padstart');
 
 const logger = console.log;
 const error = console.error;

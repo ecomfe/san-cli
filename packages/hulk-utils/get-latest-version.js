@@ -2,9 +2,6 @@
  * @file check version
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const spawn = require('child_process').spawn;
-const path = require('path');
-const format = require('util').format;
 
 const r = require('import-lazy')(require);
 const request = r('request');

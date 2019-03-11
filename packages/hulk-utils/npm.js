@@ -2,10 +2,11 @@
  * @file npm 相关操作
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+const importLazy = require('import-lazy')(require);
 
-const execa = require('execa');
+const execa = importLazy('execa');
 const {log, warn} = require('./logger');
-const request = require('request');
+const request = importLazy('request');
 const debug = require('./get-debug').getDebugLogger('npm');
 // @fex, @baidu, @befe, @nfe, @nuomi, @tieba, @super-fe
 const privateRegx = /\s*@(fex|baidu|befe|nfe|nuomi|tieba|super-fe)\b/;

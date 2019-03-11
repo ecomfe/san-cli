@@ -1,7 +1,11 @@
-
-const chalk = require('chalk');
+/**
+ * @file 解析 url
+ * @author wangyongqing <wangyongqing01@baidu.com>
+ */
 const url = require('url');
-const address = require('address');
+const importLazy = require('import-lazy')(require);
+const chalk = importLazy('chalk');
+const address = importLazy('address');
 
 exports.prepareUrls = (protocol, host, port, pathname = '/') => {
     const formatUrl = hostname =>

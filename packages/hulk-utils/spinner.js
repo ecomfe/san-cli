@@ -2,7 +2,8 @@
  * @file loading 转圈效果
  */
 const ora = require('ora');
-const chalk = require('chalk');
+const importLazy = require('import-lazy')(require);
+const chalk = importLazy('chalk');
 
 const spinner = ora();
 let lastMsg = null;
