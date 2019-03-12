@@ -3,9 +3,6 @@
  * @file serve 主要内容
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const {info, prepareUrls, getLatestVersion, newVersionLog} = require('@baidu/hulk-utils');
-const semver = require('semver');
-
 const defaults = {
     host: '0.0.0.0',
     port: 8080,
@@ -27,16 +24,28 @@ module.exports = (api, options) => {
             }
         },
         async function serve(args) {
+            const info = require('@baidu/hulk-utils/logger').info;
+            const prepareUrls = require('@baidu/hulk-utils/path').prepareUrls;
+
             info('Starting development server...');
 
-            // 从1.2.1开始
-            let localVersion = args.version || '1.2.1';
-            let newVersion = 0;
-            getLatestVersion().then(latest => {
-                if (semver.lt(localVersion, latest)) {
-                    newVersion = latest;
-                }
-            });
+            let {version: pkgVersion, name: pkgName} = args.pkg || {};
+            let notifier;
+            if (pkgVersion && pkgName) {
+                const updateNotifier = require('update-notifier');
+
+                // 检测版本更新
+                notifier = updateNotifier({
+                    pkg: {
+                        name: pkgName,
+                        version: pkgVersion
+                    },
+                    isGlobal: true,
+                    // updateCheckInterval: 0,
+                    // npm script 也显示
+                    shouldNotifyInNpmScript: true
+                });
+            }
 
             const isProduction = process.env.NODE_ENV === 'production';
             const url = require('url');
@@ -140,9 +149,8 @@ module.exports = (api, options) => {
             ['SIGINT', 'SIGTERM'].forEach(signal => {
                 process.on(signal, () => {
                     server.close(() => {
-                        if (newVersion) {
-                            newVersionLog(localVersion, newVersion);
-                        }
+                        notifier && notifier.notify();
+
                         process.exit(0);
                     });
                 });
@@ -171,9 +179,6 @@ module.exports = (api, options) => {
                             server,
                             url: urls.localUrlForBrowser
                         });
-                    } else if (process.env.VUE_CLI_TEST) {
-                        // signal for test to check HMR
-                        console.log('App updated');
                     }
                 });
 

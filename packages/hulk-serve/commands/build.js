@@ -3,7 +3,6 @@
  * @file build 主要内容
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const info = require('@baidu/hulk-utils').info;
 
 module.exports = (api, options) => {
     api.registerCommand(
@@ -17,6 +16,8 @@ module.exports = (api, options) => {
             }
         },
         async function build(args) {
+            const info = require('@baidu/hulk-utils/logger').info;
+
             info('Building...');
 
             process.env.NODE_ENV = 'production';
