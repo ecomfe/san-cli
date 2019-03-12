@@ -252,6 +252,6 @@ function installDep(template, dest, opts) {
 function installDeps(dest, registry = NPM_REGISTRY) {
     return execa('npm', ['install', '--loglevel', 'error', '--registry', registry], {
         cwd: dest,
-        stdio: ['pipe', 'pipe', 'pipe']
+        stdio: ['inherit', 'inherit', 'inherit']
     });
 }
