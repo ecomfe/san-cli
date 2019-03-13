@@ -5,17 +5,10 @@
 const path = require('path');
 const fs = require('fs');
 const compiler = require('./utils/compiler');
-const template = fs.readFileSync(path.join(__dirname, './markdown.html'), 'utf8');
+const defaultTemplate = path.join(__dirname, './template.san');
 const loaderUtils = require('loader-utils');
-function genTemplate(tpl, data) {
-    for (let i in data) {
-        if (!data[i]) {
-            data[i] = '';
-        }
-        tpl = tpl.split('${' + i + '}').join(data[i]);
-    }
-    return tpl;
-}
+const genTemplate = require('./utils/genTemplate');
+
 function getMarkdownDefaultSanCode(content, cls) {
     cls = cls || ['markdown'];
     if (!Array.isArray(cls)) {
@@ -31,9 +24,10 @@ function getMarkdownDefaultSanCode(content, cls) {
     <script>export default{}</script>
 `;
 }
+// eslint-disable-next-line
 module.exports = function(content) {
     this.cacheable && this.cacheable();
-    const {ignore} = loaderUtils.getOptions(this) || {};
+    const {ignore, template} = loaderUtils.getOptions(this) || {};
 
     const {resourcePath} = this;
     if (Object.prototype.toString.call(ignore).slice(8, -1) === 'RegExp') {
@@ -68,7 +62,8 @@ module.exports = function(content) {
     const textHtml = textMd ? compiler(textMd) : textMd;
 
     // 解决文档中的语法被解析的问题
-    codeHtml = codeHtml.replace(/{{/g, '{<span></span>{')
+    codeHtml = codeHtml
+        .replace(/{{/g, '{<span></span>{')
         .replace(/}}/g, '}<span></span>}')
         .replace(/\${/g, '$<span></span>{')
         .replace(/`/g, '\\`');
@@ -79,16 +74,28 @@ module.exports = function(content) {
     if (requirejs && requirejs[2]) {
         // 说明使用了`<!--require()-->`语法引入
         const importFilePath = path.resolve(resourcePath, requirejs[2]);
-        dyImport = `import uiPreview from "${importFilePath}";`;
+        dyImport = `import codePreview from "${importFilePath}";`;
     } else {
         const pickLoader = require.resolve('./utils/pickFence.js');
         const fakemd = require.resolve('./utils/_fakemd') + '?mdurl=' + resourcePath + '&_t=' + Date.now();
 
         dyImport =
-            `import uiPreview from "${require.resolve('@baidu/hulk-san-loader')}!` +
+            `import codePreview from "${require.resolve('@baidu/hulk-san-loader')}!` +
             `${pickLoader}?url=${resourcePath}!${fakemd}";`;
     }
 
     let id = 'components-demo-' + Date.now();
-    return genTemplate(template, {id, textHtml, codeHtml, dyImport});
+    let templateContent = '';
+    if (template && fs.existsSync(path.resolve(template))) {
+        templateContent = fs.readFileSync(path.resolve(template), 'utf8');
+    } else {
+        templateContent = fs.readFileSync(defaultTemplate, 'utf8');
+    }
+
+    return genTemplate(templateContent, {
+        id,
+        'text-container-placeholder': textHtml,
+        'code-container-placeholder': codeHtml,
+        dyImport
+    });
 };
