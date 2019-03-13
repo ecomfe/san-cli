@@ -12,17 +12,6 @@ const defaults = {
 module.exports = (api, options) => {
     api.registerCommand(
         'serve',
-        {
-            description: '零配置启动 dev server',
-            usage: 'hulk serve [options] [entry]',
-            options: {
-                '--mode': 'specify env mode (default: development)',
-                '--host': `specify host (default: ${defaults.host})`,
-                '--port': `specify port (default: ${defaults.port})`,
-                '--https': `use https (default: ${defaults.https})`,
-                '--public': 'specify the public network URL for the HMR client'
-            }
-        },
         async function serve(args) {
             const info = require('@baidu/hulk-utils/logger').info;
             const prepareUrls = require('@baidu/hulk-utils/path').prepareUrls;

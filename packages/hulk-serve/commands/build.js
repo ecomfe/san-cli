@@ -7,14 +7,6 @@
 module.exports = (api, options) => {
     api.registerCommand(
         'build',
-        {
-            description: '生成生产环境打包结果',
-
-            usage: 'hulk build [options] [entry]',
-            options: {
-                '--sourcemap': '输出 sourcemap 文件 (default: false)'
-            }
-        },
         async function build(args) {
             const info = require('@baidu/hulk-utils/logger').info;
 
