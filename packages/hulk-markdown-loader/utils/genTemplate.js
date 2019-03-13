@@ -13,7 +13,7 @@ module.exports = function genTemplate(tpl, data) {
         if (!data[i]) {
             data[i] = '';
         }
-        tpl = tpl.split(new RegExp(`<${i}\s*\\/>|<${i}>\s*<\\/${i}>`, 'g')).join(data[i]);
+        tpl = tpl.split(new RegExp(`<${i}\\s*\\/>|<${i}>\\s*<\\/${i}>`, 'g')).join(data[i]);
     }
     // console.log(tpl);
     return render(
