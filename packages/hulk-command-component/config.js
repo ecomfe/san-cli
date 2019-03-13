@@ -8,6 +8,8 @@ const resolve = require('resolve');
 
 module.exports = (api, context, entry, options) => {
     api.chainWebpack(config => {
+        const {entry: configEntry, template, ignore} = options.component || {};
+
         // 增加 md
         config.module
             .rule('md')
@@ -21,7 +23,8 @@ module.exports = (api, context, entry, options) => {
             })
             .end()
             .use('markdown')
-            .loader(require.resolve('@baidu/hulk-markdown-loader'));
+            .loader(require.resolve('@baidu/hulk-markdown-loader'))
+            .options({context, template, ignore});
 
         if (fs.existsSync(api.resolve('src'))) {
             config.resolve.alias.set('@', api.resolve('src'));
@@ -30,7 +33,13 @@ module.exports = (api, context, entry, options) => {
         }
 
         config.resolve.alias.set('~entry', path.resolve(context, entry));
-        entry = require.resolve('./template/main.js');
+        if (configEntry && fs.existsSync(path.join(context, configEntry))) {
+            entry = path.join(context, configEntry);
+        } else if (configEntry) {
+            throw new Error('entry is not found: ' + configEntry);
+        } else {
+            entry = require.resolve('./template/main.js');
+        }
 
         try {
             resolve.sync('san', {basedir: context});

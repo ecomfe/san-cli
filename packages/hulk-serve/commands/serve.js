@@ -14,7 +14,7 @@ module.exports = (api, options) => {
         'serve',
         async function serve(args) {
             const info = require('@baidu/hulk-utils/logger').info;
-            const prepareUrls = require('@baidu/hulk-utils/path').prepareUrls;
+            const prepareUrls = require('@baidu/hulk-utils/prepare-urls').prepareUrls;
 
             info('Starting development server...');
 

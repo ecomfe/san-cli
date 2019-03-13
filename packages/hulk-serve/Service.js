@@ -108,12 +108,9 @@ module.exports = class Service {
             error(`command "${name}" does not exist.`);
             process.exit(1);
         }
-        if (!command || args.help) {
-            command = this.commands.help;
-        } else {
-            args._.shift(); // remove command itself
-            rawArgv.shift();
-        }
+
+        args._.shift(); // remove command itself
+        rawArgv.shift();
         const {fn} = command;
         return fn(args, rawArgv);
     }

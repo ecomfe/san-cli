@@ -12,6 +12,7 @@ const {getGitUser} = require('./git-user');
 exports.downloadRepo = (repo, dest, opts = {}, fn) => {
     repo = normalize(repo, opts);
     const {url, checkout} = repo;
+    const rm = fse.removeSync;
     // const rm = fse.removeSync;
     // 先删除
     rm(dest);
