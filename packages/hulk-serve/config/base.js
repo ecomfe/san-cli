@@ -6,11 +6,12 @@ const path = require('path');
 const resolve = require('resolve');
 
 const {transformer, formatter} = require('@baidu/hulk-utils');
+
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
         const {getAssetPath, resolveLocal} = require('../lib/utils');
         const inlineLimit = 4096;
-
+        const isProd = options.mode === 'production';
         const genAssetSubPath = dir => {
             return getAssetPath(options, `${dir}/[name]${options.filenameHashing ? '.[chunkhash:8]' : ''}.[ext]`);
         };
@@ -18,18 +19,12 @@ module.exports = (api, options) => {
         const genUrlLoaderOptions = dir => {
             return {
                 limit: inlineLimit,
-                // use explicit fallback to avoid regression in url-loader>=1.1.0
-                fallback: {
-                    loader: 'file-loader',
-                    options: {
-                        name: genAssetSubPath(dir)
-                    }
-                }
+                name: genAssetSubPath(dir)
             };
         };
 
         webpackConfig
-            .mode('development')
+            .mode(isProd ? 'production' : 'development')
             .context(api.service.context)
             .entry('app')
             .add('./src/main.js')
@@ -40,7 +35,7 @@ module.exports = (api, options) => {
 
         webpackConfig.resolve
             .set('symlinks', false)
-            .extensions.merge(['.js', '.san', '.json'])
+            .extensions.merge(['.js', '.css', '.less', '.scss', '.styl', '.san', '.jsx', '.vue'])
             .end()
             .modules.add('node_modules')
             .add(api.resolve('node_modules'))
@@ -59,6 +54,20 @@ module.exports = (api, options) => {
             .add('node_modules')
             .add(api.resolve('node_modules'))
             .add(resolveLocal('node_modules'));
+        // ejs
+        webpackConfig.module
+            .rule('ejs')
+            .test(/\.ejs$/)
+            .use('ejs-loader')
+            .loader(require.resolve('ejs-loader'));
+
+        // html
+        webpackConfig.module
+            .rule('html')
+            .test(/\.htm[l]$/)
+            .use('html-loader')
+            .loader(require.resolve('html-loader'))
+            .options({attrs: [':data-src']});
 
         webpackConfig.module
             .rule('san')
@@ -70,10 +79,11 @@ module.exports = (api, options) => {
             .use('hulk-san-loader')
             .loader(require.resolve('@baidu/hulk-san-loader'))
             .options({
-                hotReload: true,
-                sourceMap: true,
-                minimize: false
+                hotReload: !isProd,
+                sourceMap: !isProd,
+                minimize: isProd
             });
+
         // hulk buildin css loader
         webpackConfig.module
             .rule('hulk-css')
@@ -83,6 +93,7 @@ module.exports = (api, options) => {
             .end()
             .use('css-loader')
             .loader(require.resolve('css-loader'));
+
         webpackConfig.module
             .rule('hulk-less')
             .test(/@baidu\/hulk.+\.less$/)
@@ -96,7 +107,6 @@ module.exports = (api, options) => {
             .loader(require.resolve('less-loader'));
 
         // static assets -----------------------------------------------------------
-
         webpackConfig.module
             .rule('images')
             .test(/\.(png|jpe?g|gif|webp)(\?.*)?$/)
@@ -129,7 +139,25 @@ module.exports = (api, options) => {
             .loader(require.resolve('url-loader'))
             .options(genUrlLoaderOptions('fonts'));
 
+        // 大小写敏感！！！！
         webpackConfig.plugin('case-sensitive-paths').use(require('case-sensitive-paths-webpack-plugin'));
+        // 清理
+        webpackConfig.plugin('clean-webpack-plugin').use(require('clean-webpack-plugin'), [
+            {
+                verbose: false
+            }
+        ]);
+
+        if (options.smarty && typeof options.smarty === 'object') {
+            const {tplSourcePath, tplTargetPath} = options.smarty;
+            webpackConfig.plugin('copy-webpack-plugin').use(require('copy-webpack-plugin'), [
+                {
+                    from: tplSourcePath,
+                    to: tplTargetPath,
+                    ignore: ['.*']
+                }
+            ]);
+        }
 
         // friendly error plugin displays very confusing errors when webpack
         // fails to resolve a loader, so we provide custom handlers to improve it

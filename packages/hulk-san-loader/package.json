@@ -25,7 +25,8 @@
         "san-hot-reload-api": "^1.0.0",
         "sass-loader": "^7.1.0",
         "style-loader": "^0.23.1",
-        "stylus-loader": "^3.0.2"
+        "stylus-loader": "^3.0.2",
+        "webpack": "^4.29.6"
     },
     "description": "🌈 a webpack-v4 loader for San.js ☄️",
     "directories": {

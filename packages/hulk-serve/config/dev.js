@@ -4,7 +4,9 @@
  */
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
-        if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
+        const isProd = options.mode === 'production';
+
+        if (!isProd) {
             webpackConfig.devtool('cheap-module-eval-source-map').output.publicPath(options.baseUrl);
 
             webpackConfig.plugin('hmr').use(require('webpack/lib/HotModuleReplacementPlugin'));

@@ -4,7 +4,8 @@
  */
 const fs = require('fs');
 const path = require('path');
-
+const HtmlWebpackPlugin = require('html-webpack-plugin-for-split');
+const hwpTemp = new HtmlWebpackPlugin({});
 // ensure the filename passed to html-webpack-plugin is a relative path
 // because it cannot correctly handle absolute paths
 function ensureRelative(outputDir, p) {
@@ -17,12 +18,19 @@ function ensureRelative(outputDir, p) {
 
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
-        const isProd = process.env.NODE_ENV === 'production';
+        const isProd = options.mode === 'production';
         const outputDir = api.resolve(options.outputDir);
 
         // code splitting
         if (isProd) {
             webpackConfig.optimization.splitChunks({
+                name: true,
+                chunks: 'all',
+                minSize: 30000,
+                minChunks: 1,
+                maxAsyncRequests: 5,
+                maxInitialRequests: 3,
+                automaticNameDelimiter: '.',
                 cacheGroups: {
                     vendors: {
                         name: 'chunk-vendors',
@@ -137,11 +145,25 @@ module.exports = (api, options) => {
 
         if (!multiPageConfig) {
             // default, single page setup.
+            htmlOptions.alwaysWriteToDisk = true;
             htmlOptions.template = fs.existsSync(htmlPath) ? htmlPath : defaultHtmlPath;
-
             webpackConfig.plugin('html').use(HTMLPlugin, [htmlOptions]);
         } else {
             // multi-page setup
+            /**
+             * pages: {
+                    index: {
+                    entry: 'src/entry-point/index/main.js', //entry for the public page
+                    template: 'public/index.html', // source template
+                    filename: 'index.html' // output as dist/*
+                    },
+                    signin: {
+                    entry: 'src/entry-point/signin/main.js',
+                    template: 'public/signin.html',
+                    filename: 'signin.html'
+                    }
+                }
+             */
             webpackConfig.entryPoints.clear();
 
             const pages = Object.keys(multiPageConfig);
@@ -170,7 +192,7 @@ module.exports = (api, options) => {
                     : defaultHtmlPath;
 
                 // inject html plugin for the page
-                const pageHtmlOptions = Object.assign({}, htmlOptions, {
+                const pageHtmlOptions = Object.assign({alwaysWriteToDisk: true}, htmlOptions, {
                     chunks: chunks || ['chunk-vendors', 'chunk-common', name],
                     template: templatePath,
                     filename: ensureRelative(outputDir, filename),
@@ -181,6 +203,48 @@ module.exports = (api, options) => {
             });
         }
 
+        // html-webpack-harddisk-plugin
+        webpackConfig.plugin('html-webpack-harddisk-plugin').use(require('html-webpack-harddisk-plugin'));
+
+        // 处理 smarty 的placeholder
+        webpackConfig.plugin('hulk-html-webpack-addons-plugin').use(require('@baidu/hulk-html-webpack-plugin-addons'), [
+            {
+                alterAssetTags(pluginData) {
+                    // 不插入css和js
+                    pluginData.head = pluginData.body = [];
+                    return pluginData;
+                },
+                afterHTMLProcessing(pluginData) {
+                    if (!~pluginData.html.indexOf('{%/block%}')) {
+                        return pluginData;
+                    }
+
+                    // 手动添加资源到项目tpl特定的位置
+                    let assetTags = hwpTemp.generateHtmlTags(pluginData.assets);
+                    let bodyAsset = assetTags.body.map(hwpTemp.createHtmlTag.bind(hwpTemp));
+                    let headAsset = assetTags.head.map(hwpTemp.createHtmlTag.bind(hwpTemp));
+                    const headTag = '{%block name="__css_asset"%}';
+                    const bodyTag = '{%block name="__script_asset"%}';
+                    let html = pluginData.html;
+                    // if (isProduction) {
+                    //     const reg = new RegExp(config.build.assetsPublicPath, 'g');
+                    //     headAsset = headAsset.map(item => item.replace(reg, '{%$staticDomain%}/'));
+                    //     bodyAsset = bodyAsset.map(item => item.replace(reg, '{%$staticDomain%}/'));
+                    // }
+                    // 替换 head body部分
+                    [[headAsset, headTag], [bodyAsset, bodyTag]].forEach(([assets, tag]) => {
+                        if (~html.indexOf(tag)) {
+                            html = html.split(tag).join(`${tag}${assets.join('')}`);
+                        } else {
+                            html += tag + assets.join('') + '{%/block%}';
+                        }
+                    });
+
+                    pluginData.html = html;
+                    return pluginData;
+                }
+            }
+        ]);
         // copy static assets in public/
         const publicDir = api.resolve('public');
         if (fs.existsSync(publicDir)) {

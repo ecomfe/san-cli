@@ -6,6 +6,7 @@
 module.exports = program => {
     program
         .command('component [entry]')
+        .alias('md')
         .description('san component demo preview server')
         .option('-p, --port', 'dev server port')
         .action((entry, cmd) => {

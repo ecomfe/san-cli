@@ -53,7 +53,7 @@ const logWithSpinner = (exports.logWithSpinner = (...args) => {
         symbol: symbol + ' ',
         text
     };
-    spinner.start();
+    return spinner.start();
 });
 exports.startSpinner = logWithSpinner;
 exports.updateSpinner = (...args) => {

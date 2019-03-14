@@ -7,16 +7,20 @@ const {findExisting} = require('@baidu/hulk-utils');
 const getAssetPath = require('../lib/utils').getAssetPath;
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
-        const isProd = process.env.NODE_ENV === 'production';
+        const isProd = options.mode === 'production';
 
         const {modules = false, extract = isProd, sourceMap = false, loaderOptions = {}} = options.css || {};
 
         const shouldExtract = extract !== false;
         const filename = getAssetPath(options, `css/[name]${options.filenameHashing ? '.[contenthash:8]' : ''}.css`);
+        const chunkFilename = getAssetPath(
+            options,
+            `css/common/[name]${options.filenameHashing ? '.[contenthash:8]' : ''}.css`
+        );
         const extractOptions = Object.assign(
             {
                 filename,
-                chunkFilename: filename
+                chunkFilename
             },
             extract && typeof extract === 'object' ? extract : {}
         );
@@ -39,22 +43,9 @@ module.exports = (api, options) => {
             ])
         );
 
-        // if building for production but not extracting CSS, we need to minimize
-        // the embbeded inline CSS as they will not be going through the optimizing
-        // plugin.
-        const needInlineMinification = isProd && !shouldExtract;
-
-        const cssnanoOptions = {
-            safe: true,
-            autoprefixer: {disable: true},
-            mergeLonghand: false
-        };
-        if (options.productionSourceMap && sourceMap) {
-            cssnanoOptions.map = {inline: false};
-        }
-
         function createCSSRule(lang, test, loader, options) {
             const baseRule = webpackConfig.module.rule(lang).test(test);
+            // 排除内置的样式
             baseRule.exclude.add(/@baidu\/hulk/);
             applyLoaders(baseRule, modules);
 
@@ -72,10 +63,7 @@ module.exports = (api, options) => {
                 const cssLoaderOptions = Object.assign(
                     {
                         sourceMap,
-                        importLoaders:
-                            1 + // stylePostLoader injected by vue-loader
-                            (hasPostCSSConfig ? 1 : 0) +
-                            (needInlineMinification ? 1 : 0)
+                        importLoaders: 1 + (hasPostCSSConfig ? 1 : 0)
                     },
                     loaderOptions.css
                 );
@@ -135,16 +123,6 @@ module.exports = (api, options) => {
         // inject CSS extraction plugin
         if (shouldExtract) {
             webpackConfig.plugin('extract-css').use(require('mini-css-extract-plugin'), [extractOptions]);
-
-            // minify extracted CSS
-            if (isProd) {
-                webpackConfig.plugin('optimize-css').use(require('@intervolga/optimize-cssnano-plugin'), [
-                    {
-                        sourceMap: options.productionSourceMap && sourceMap,
-                        cssnanoOptions
-                    }
-                ]);
-            }
         }
     });
 };

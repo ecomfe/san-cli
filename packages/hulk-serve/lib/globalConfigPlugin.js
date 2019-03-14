@@ -7,8 +7,7 @@ const path = require('path');
 const resolve = require('resolve');
 const {findExisting} = require('@baidu/hulk-utils');
 
-
-module.exports = function createConfigPlugin(context, entry, asLib) {
+module.exports = function createConfigPlugin(context, entry) {
     return {
         id: 'hulk-cli-service-global-config',
         apply: (api, options) => {
@@ -30,33 +29,54 @@ module.exports = function createConfigPlugin(context, entry, asLib) {
                     resolve.sync('san', {basedir: context});
                 } catch (e) {
                     const sanPath = path.dirname(require.resolve('san'));
-                    config.resolve.alias.set(
-                        'san',
-                        `${sanPath}/${options.compiler ? 'san.dev.js' : 'san.min.js'}`
-                    );
+                    config.resolve.alias.set('san', `${sanPath}/${options.compiler ? 'san.dev.js' : 'san.min.js'}`);
                 }
                 // set entry
-                config
-                    .entry('app')
-                    .clear()
-                    .add(entry);
+                if (entry) {
+                    config
+                        .entry('app')
+                        .clear()
+                        .add(entry);
+                } else {
+                    // config.entry('app').clear();
+                }
 
-                if (!asLib) {
+                // set inline babel options
+                config.module
+                    .rule('js')
+                    .test(/\.m?js$/)
+                    .include.add(api.resolve('src'))
+                    .end()
+                    .exclude.add(/node_modules/)
+                    .add(/@baidu\/hulk-serve/)
+                    .add(/@baidu\/hulk-command-component/)
+                    .end()
+                    .use('babel-loader')
+                    .loader(require.resolve('babel-loader'))
+                    .options({
+                        presets: [['@babel/preset-env']],
+                        plugins: ['@babel/plugin-proposal-class-properties', '@babel/plugin-transform-new-target']
+                    })
+                    .end();
+
+                if (!options.pages) {
                     // set html plugin template
                     /* eslint-disable*/
                     const indexFile =
                         findExisting(context, ['index.html', 'public/index.html']) ||
                         path.resolve(__dirname, '../template/index.html');
                     /* eslint-enable*/
+                    let hasHtml = false;
                     config.plugin('html').tap(args => {
-                        args[0].template = indexFile;
+                        if (Array.isArray(args) && args[0]) {
+                            args[0].template = indexFile;
+                            hasHtml = true;
+                        }
                         return args;
                     });
-                }
-
-                // disable copy plugin if no public dir
-                if (asLib || !findExisting(context, ['public'])) {
-                    config.plugins.delete('copy');
+                    if (!hasHtml) {
+                        config.plugins.delete('html');
+                    }
                 }
             });
         }

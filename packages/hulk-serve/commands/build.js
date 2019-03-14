@@ -3,35 +3,78 @@
  * @file build 主要内容
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-
+const modifyConfig = (config, fn) => {
+    if (Array.isArray(config)) {
+        config.forEach(c => fn(c));
+    } else {
+        fn(config);
+    }
+};
 module.exports = (api, options) => {
-    api.registerCommand(
-        'build',
-        async function build(args) {
-            const info = require('@baidu/hulk-utils/logger').info;
+    api.registerCommand('build', async args => {
+        const {info, success} = require('@baidu/hulk-utils/logger');
+        const {logWithSpinner, stopSpinner} = require('@baidu/hulk-utils/spinner');
+        const fse = require('fs-extra');
+        const chalk = require('chalk');
+        const path = require('path');
+        logWithSpinner('Building for production...');
 
-            info('Building...');
+        process.env.NODE_ENV = 'production';
 
-            process.env.NODE_ENV = 'production';
+        const webpack = require('webpack');
 
-            const webpack = require('webpack');
-            // resolve webpack config
-            const webpackConfig = api.resolveWebpackConfig();
-            webpackConfig.mode = 'production';
-            if (!args.map) {
-                delete webpackConfig.devtool; // = null;
-            }
-            // webpackConfig.output.publicPath = './';
-            return new Promise((resolve, reject) => {
-                webpack(webpackConfig, err => {
-                    if (err) {
-                        return reject(err);
-                    }
-                    resolve();
-                });
+
+
+        // resolve webpack config
+        const webpackConfig = api.resolveWebpackConfig();
+
+        const targetDir = api.resolve(args.dest || options.outputDir);
+        if (args.dest) {
+            modifyConfig(webpackConfig, config => {
+                config.output.path = targetDir;
             });
         }
-    );
+
+        if (args.watch) {
+            modifyConfig(webpackConfig, config => {
+                config.watch = true;
+            });
+        }
+        if (args.clean) {
+            await fse.remove(targetDir);
+        }
+        webpackConfig.mode = 'production';
+
+        // webpackConfig.output.publicPath = './';
+        return new Promise((resolve, reject) => {
+            webpack(webpackConfig, (err, stats) => {
+                stopSpinner(false);
+                if (err) {
+                    return reject(err);
+                }
+                process.stdout.write(
+                    stats.toString({
+                        colors: true,
+                        modules: false,
+                        children: false,
+                        chunks: false,
+                        chunkModules: false
+                    }) + '\n'
+                );
+
+                if (stats.hasErrors()) {
+                    return reject('Build failed with errors.');
+                }
+                if (!args.watch) {
+                    const targetDirShort = path.relative(api.service.context, targetDir);
+                    success(`Build complete. The ${chalk.cyan(targetDirShort)} directory is ready to be deployed.`);
+                } else {
+                    success('Build complete. Watching for changes...');
+                }
+                resolve();
+            });
+        });
+    });
 };
 
 module.exports.defaultModes = {

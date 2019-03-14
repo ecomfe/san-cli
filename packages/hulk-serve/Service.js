@@ -36,7 +36,16 @@ module.exports = class Service {
         this.initialized = true;
         this.mode = mode;
         const userOptions = this.loadUserOptions();
-        const projectOptions = (this.projectOptions = defaultsDeep(userOptions, defaults()));
+        let projectOptions = defaultsDeep(userOptions, defaults());
+
+        // 这里优先使用环境变量中的 production
+        const isProd = process.env.NODE_ENV === 'production' || mode === 'production';
+        projectOptions.mode = isProd ? 'production' : 'development';
+        // 优先使用 build 的！
+        if (isProd && projectOptions.build && typeof projectOptions.build === 'object') {
+            projectOptions = defaultsDeep(projectOptions.build, projectOptions);
+        }
+        this.projectOptions = projectOptions;
         debug(projectOptions);
         // apply plugins.
         this.plugins.forEach(({id, apply}) => {
@@ -58,9 +67,12 @@ module.exports = class Service {
         if (fs.existsSync(configPath)) {
             try {
                 fileConfig = require(configPath);
-                if (!fileConfig || typeof fileConfig !== 'object') {
-                    error(`Error loading ${chalk.bold('hulk.config.js')}: should export an object.`);
+                if (!fileConfig || (typeof fileConfig !== 'object' && typeof fileConfig !== 'function')) {
+                    error(`${chalk.bold('hulk.config.js')}: 格式必须是对象或者fn(mode).`);
                     fileConfig = null;
+                }
+                if (typeof fileConfig === 'function') {
+                    fileConfig = fileConfig(this.mode);
                 }
             } catch (e) {
                 error(`Error loading ${chalk.bold('hulk.config.js')}:`);

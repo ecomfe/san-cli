@@ -9,7 +9,9 @@ class PluginAPI {
         this.id = id;
         this.service = service;
     }
-
+    getMode() {
+        return this.service.mode;
+    }
     /**
      * 获取当前工作目录
      * @return {string} 返回工作目录
