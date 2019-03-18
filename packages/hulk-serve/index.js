@@ -36,8 +36,8 @@ exports.serve = (e, args) => {
 };
 exports.build = (e, args) => {
     const context = process.cwd();
-    // TODO 判断文件存在不，是不是目录，是目录则设置 context
     const entry = e || findExisting(context, ['main.js', 'index.js', 'App.san', 'app.san']);
+    args._entry = entry;
     createService(context, entry).run('build', args);
 };
 

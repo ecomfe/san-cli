@@ -54,6 +54,7 @@ module.exports = function createConfigPlugin(context, entry) {
                     .use('babel-loader')
                     .loader(require.resolve('babel-loader'))
                     .options({
+                        cacheDirectory: true,
                         presets: [['@babel/preset-env']],
                         plugins: ['@babel/plugin-proposal-class-properties', '@babel/plugin-transform-new-target']
                     })

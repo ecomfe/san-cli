@@ -23,10 +23,22 @@ module.exports = (api, options) => {
 
         const webpack = require('webpack');
 
-
-
         // resolve webpack config
         const webpackConfig = api.resolveWebpackConfig();
+        const entry = args._entry;
+        if (entry) {
+            try {
+                const stats = fse.statSync(api.resolve(entry));
+                if (!stats.isFile()) {
+                    delete webpackConfig.entry.app;
+                }
+            } catch (e) {
+                delete webpackConfig.entry.app;
+            }
+        } else {
+            delete webpackConfig.entry.app;
+        }
+        // console.log(webpackConfig);
 
         const targetDir = api.resolve(args.dest || options.outputDir);
         if (args.dest) {

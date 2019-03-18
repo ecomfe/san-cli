@@ -47,7 +47,7 @@ module.exports = (api, options) => {
             resolve.sync('san', {basedir: api.getCwd()});
         } catch (e) {
             const sanPath = path.dirname(require.resolve('san'));
-            webpackConfig.resolve.alias.set('san', `${sanPath}/${options.compiler ? 'san.dev.js' : 'san.min.js'}`);
+            webpackConfig.resolve.alias.set('san', `${sanPath}/${!isProd ? 'san.dev.js' : 'san.min.js'}`);
         }
 
         webpackConfig.resolveLoader.modules
