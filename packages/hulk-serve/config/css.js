@@ -26,7 +26,7 @@ module.exports = (api, options) => {
         );
 
         const cssPublicPath = '../'.repeat(
-            extractOptions.filename.replace(/^\.[\/\\]/, '').split(/[\/\\]/g).length - 1
+            extractOptions.filename.replace(/^.[\/\\]/, '').split(/[\/\\]/g).length - 1
         );
 
         // check if the project has a valid postcss config

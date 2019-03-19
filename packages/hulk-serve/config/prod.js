@@ -44,11 +44,12 @@ module.exports = (api, options) => {
 
             webpackConfig.optimization.minimizer('js').use(
                 new TerserPlugin({
-                    extractComments: true,
+                    extractComments: false,
                     sourceMap: false,
                     parallel: true,
                     cache: true,
                     terserOptions: {
+                        comments: false,
                         compress: {
                             unused: true,
                             // 删掉 debugger

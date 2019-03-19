@@ -12,15 +12,14 @@ module.exports = function createConfigPlugin(context, entry) {
         id: 'hulk-cli-service-global-config',
         apply: (api, options) => {
             api.chainWebpack(config => {
+                const isProd = options.mode === 'production';
+
                 // entry is *.vue file, create alias for built-in js entry
                 if (/\.san$/.test(entry)) {
                     config.resolve.alias.set('~entry', path.resolve(context, entry));
                     entry = require.resolve('../template/main.js');
-                } else {
-                    // make sure entry is relative or absolute
-                    if (!/^\.\//.test(entry) && !/^\//.test(entry)) {
-                        entry = `./${entry}`;
-                    }
+                } else if (!/^\.\//.test(entry) && !/^\//.test(entry)) {
+                    entry = `./${entry}`;
                 }
 
                 // add resolve alias for vue and vue-hot-reload-api
@@ -29,7 +28,7 @@ module.exports = function createConfigPlugin(context, entry) {
                     resolve.sync('san', {basedir: context});
                 } catch (e) {
                     const sanPath = path.dirname(require.resolve('san'));
-                    config.resolve.alias.set('san', `${sanPath}/${options.compiler ? 'san.dev.js' : 'san.min.js'}`);
+                    config.resolve.alias.set('san', `${sanPath}/${!isProd ? 'san.dev.js' : 'san.min.js'}`);
                 }
                 // set entry
                 if (entry) {

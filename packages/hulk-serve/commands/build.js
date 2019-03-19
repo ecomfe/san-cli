@@ -17,6 +17,8 @@ module.exports = (api, options) => {
         const fse = require('fs-extra');
         const chalk = require('chalk');
         const path = require('path');
+        const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
+
         logWithSpinner('Building for production...');
 
         process.env.NODE_ENV = 'production';
@@ -52,8 +54,15 @@ module.exports = (api, options) => {
                 config.watch = true;
             });
         }
-        if (args.clean) {
+        if (!args.clean) {
+            // 删除 dist
             await fse.remove(targetDir);
+        }
+        if (args.analyze) {
+            // args.analyze
+            modifyConfig(webpackConfig, config => {
+                config.plugins.push(new BundleAnalyzerPlugin());
+            });
         }
         webpackConfig.mode = 'production';
 
@@ -64,15 +73,17 @@ module.exports = (api, options) => {
                 if (err) {
                     return reject(err);
                 }
-                process.stdout.write(
-                    stats.toString({
-                        colors: true,
-                        modules: false,
-                        children: false,
-                        chunks: false,
-                        chunkModules: false
-                    }) + '\n'
-                );
+                if (!args.analyze) {
+                    process.stdout.write(
+                        stats.toString({
+                            colors: true,
+                            modules: false,
+                            children: false,
+                            chunks: false,
+                            chunkModules: false
+                        }) + '\n'
+                    );
+                }
 
                 if (stats.hasErrors()) {
                     return reject('Build failed with errors.');

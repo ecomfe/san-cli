@@ -13,7 +13,10 @@ module.exports = (api, options) => {
         const inlineLimit = 4096;
         const isProd = options.mode === 'production';
         const genAssetSubPath = dir => {
-            return getAssetPath(options, `${dir}/[name]${options.filenameHashing ? '.[chunkhash:8]' : ''}.[ext]`);
+            return getAssetPath(
+                options,
+                `${dir}/[name]${isProd || options.filenameHashing ? '.[chunkhash:8]' : ''}.[ext]`
+            );
         };
 
         const genUrlLoaderOptions = dir => {
@@ -30,7 +33,7 @@ module.exports = (api, options) => {
             .add('./src/main.js')
             .end()
             .output.path(api.resolve(options.outputDir))
-            .filename(`[name]${options.filenameHashing ? '.[hash:8]' : ''}.js`)
+            .filename(`[name]${isProd || options.filenameHashing ? '.[hash:8]' : ''}.js`)
             .publicPath(options.baseUrl);
 
         webpackConfig.resolve
