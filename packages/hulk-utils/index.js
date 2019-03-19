@@ -15,7 +15,6 @@
     'get-debug',
     'plugin',
     'prepare-urls',
-    'webpack-error',
     'find-existing'
 ].forEach(m => {
     Object.assign(exports, require(`./${m}`));
