@@ -1,3 +1,8 @@
+/**
+ * @file gen template test
+ * @author wangyongqing <wangyongqing01@baidu.com>
+ */
+
 const fs = require('fs');
 const path = require('path');
 const genTemplate = require('../utils/genTemplate');

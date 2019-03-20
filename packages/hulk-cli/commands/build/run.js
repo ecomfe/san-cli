@@ -2,13 +2,7 @@
  * @file run
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const modifyConfig = (config, fn) => {
-    if (Array.isArray(config)) {
-        config.forEach(c => fn(c));
-    } else {
-        fn(config);
-    }
-};
+
 
 module.exports = async (entry, args) => {
     // 1. 判断 entry 是 app.san app.js index.js等？还是目录
@@ -23,6 +17,7 @@ module.exports = async (entry, args) => {
     const path = require('path');
     const webpack = require('webpack');
 
+    // 处理 entry 不存在的情况
     const resolveEntry = require('../../lib/utils').resolveEntry;
 
     const obj = resolveEntry(entry);
@@ -31,6 +26,15 @@ module.exports = async (entry, args) => {
 
     const mode = args.mode || 'production'; // 默认是 production
     const isProduction = mode ? mode === 'production' : process.env.NODE_ENV === 'production';
+
+    // 合并 config 的方式
+    const modifyConfig = (config, fn) => {
+        if (Array.isArray(config)) {
+            config.forEach(c => fn(c));
+        } else {
+            fn(config);
+        }
+    };
     logWithSpinner(`Building for ${mode}...`);
 
     const Service = require('../../lib/Service');
@@ -56,6 +60,7 @@ module.exports = async (entry, args) => {
         });
     }
 
+    // watch 功能
     if (args.watch) {
         modifyConfig(webpackConfig, config => {
             config.watch = true;
@@ -79,6 +84,7 @@ module.exports = async (entry, args) => {
     } else {
         delete webpackConfig.entry.app;
     }
+    // 处理 entry 不存在的情况
     if (Object.keys(webpackConfig.entry).length === 0) {
         stopSpinner(false);
         error('没有找到 Entry，请命令后面添加 entry 或者配置 hulk.config.js');

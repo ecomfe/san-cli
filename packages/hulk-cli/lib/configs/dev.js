@@ -2,6 +2,12 @@
  * @file dev
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+
+/**
+ * dev function
+ * @param api - pluginAPI instance
+ * @param options - object
+ */
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
         const isProd = api.getMode() === 'production';

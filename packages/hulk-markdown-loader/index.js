@@ -78,10 +78,11 @@ module.exports = function(content) {
     } else {
         const pickLoader = require.resolve('./utils/pickFence.js');
         const fakemd = require.resolve('./utils/_fakemd') + '?mdurl=' + resourcePath + '&_t=' + Date.now();
-
+        /* eslint-disable*/
         dyImport =
             `import codePreview from "${require.resolve('@baidu/hulk-san-loader')}!` +
             `${pickLoader}?url=${resourcePath}!${fakemd}";`;
+        /* eslint-enable*/
     }
 
     let id = 'components-demo-' + Date.now();

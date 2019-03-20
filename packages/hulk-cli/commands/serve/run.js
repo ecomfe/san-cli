@@ -193,7 +193,7 @@ module.exports = async (entry, args) => {
     });
 };
 function addDevClientToEntry(config, devClient) {
-    const {entry} = config;
+    const {entry} = config; // eslint-disable-line
     if (typeof entry === 'object' && !Array.isArray(entry)) {
         Object.keys(entry).forEach(key => {
             entry[key] = devClient.concat(entry[key]);
