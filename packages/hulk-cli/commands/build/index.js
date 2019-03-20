@@ -9,9 +9,10 @@ module.exports = program => {
         .description('build in production mode with zero config')
         .option('-d, --dest <dir>', 'output directory (default: dist)')
         .option('--analyze', 'analyze bundle')
-        .option('--report', 'get a report')
         .option('--modern', 'modern browser build (default: false)')
         .option('--watch', 'watch mode (default: false)')
         .option('--no-clean', 'clean dest directory before build')
+        .option('-m, --mode <mode>', 'webpack mode', /^(development|production)$/i, 'development')
+        .option('-c, --config <config>', 'set config file')
         .action(run);
 };
