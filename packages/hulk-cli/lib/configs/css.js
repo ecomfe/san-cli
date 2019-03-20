@@ -22,7 +22,7 @@ module.exports = (api, options) => {
             extract && typeof extract === 'object' ? extract : {}
         );
 
-        const cssPublicPath = '../'.repeat(extractOptions.filename.replace(/^.[\/\\]/, '').split(/[\/\\]/g).length - 1);
+        const cssPublicPath = '../'.repeat(extractOptions.filename.replace(/^.[/\\]/, '').split(/[\/\\]/g).length - 1);
 
         const cssLoader = require('./loaders/css')(loaderOptions);
         const styleLoader = require('./loaders/style')(loaderOptions);
