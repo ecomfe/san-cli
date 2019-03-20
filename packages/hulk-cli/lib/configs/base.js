@@ -5,7 +5,7 @@
 const path = require('path');
 
 const resolve = require('resolve');
-const {transformer, formatter, resolveLocal, getLoaderOptions, setLoader} = require('../utils');
+const {transformer, formatter, resolveLocal, getLoaderOptions} = require('../utils');
 
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
@@ -36,10 +36,12 @@ module.exports = (api, options) => {
 
         // set san alias
         try {
-            resolve.sync('san', {basedir: api.getCwd()});
+            const sanFile = resolve.sync('san', {basedir: api.getCwd()});
+            const sanPath = path.dirname(sanFile);
+            webpackConfig.resolve.alias.set('san', `${sanPath}/${!isProd ? 'san.spa.dev.js' : 'san.spa.js'}`);
         } catch (e) {
             const sanPath = path.dirname(require.resolve('san'));
-            webpackConfig.resolve.alias.set('san', `${sanPath}/${!isProd ? 'san.dev.js' : 'san.min.js'}`);
+            webpackConfig.resolve.alias.set('san', `${sanPath}/${!isProd ? 'san.spa.dev.js' : 'san.spa.js'}`);
         }
         // set resolveLoader
         webpackConfig.resolveLoader.modules

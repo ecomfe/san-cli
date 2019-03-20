@@ -10,40 +10,21 @@ const defaults = {
 };
 
 module.exports = async (entry, args) => {
-    const info = require('@baidu/hulk-utils/logger').info;
+    const {info, error} = require('@baidu/hulk-utils/logger');
     info('Starting development server...');
 
     const context = process.cwd();
     const chalk = require('chalk');
-    const fse = require('fs-extra');
     const path = require('path');
     const url = require('url');
+    const resolveEntry = require('../../lib/utils').resolveEntry;
 
     // 1. 判断 entry 是文件还是目
     // 2. 文件，直接启动 file server
     // 3. 目录，则直接启动 devServer
-    let isFile = false;
-
-    if (entry) {
-        try {
-            const stats = fse.statSync(path.resolve(entry));
-            if (stats.isFile()) {
-                const ext = path.extname(entry);
-                if (ext === '.js' || ext === '.san') {
-                    isFile = true;
-                    // 添加。~entry
-                    entry = path.resolve(entry);
-                } else {
-                    console.log(chalk.red('Valid entry file should be one of: *.js or *.san.'));
-                    process.exit(1);
-                }
-                isFile = true;
-            }
-        } catch (e) {
-            console.log(chalk.red('Valid entry is not a file or directory.'));
-            process.exit(1);
-        }
-    }
+    const obj = resolveEntry(entry);
+    entry = obj.entry;
+    const isFile = obj.isFile;
 
     let {version: pkgVersion, name: pkgName} = require('../../package.json');
     let notifier;
@@ -90,6 +71,13 @@ module.exports = async (entry, args) => {
                 app: entry
             };
         }
+    } else {
+        delete webpackConfig.entry.app;
+    }
+    if (Object.keys(webpackConfig.entry).length === 0) {
+        error('没有找到 Entry，请命令后面添加 entry 或者配置 hulk.config.js');
+        process.exit(1);
+        return Promise.reject();
     }
     // resolve server options
     const useHttps = args.useHttps || projectDevServerOptions.https || defaults.https;

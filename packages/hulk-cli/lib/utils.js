@@ -4,6 +4,7 @@
  */
 const path = require('path');
 const chalk = require('chalk');
+const fse = require('fs-extra');
 
 exports.getAssetPath = (assetsDir, filePath) => (assetsDir ? path.posix.join(assetsDir, filePath) : filePath);
 
@@ -11,6 +12,34 @@ exports.resolveLocal = function resolveLocal(...args) {
     return path.join(__dirname, '../../', ...args);
 };
 
+exports.resolveEntry = entry => {
+    let isFile = false;
+
+    if (entry) {
+        try {
+            const stats = fse.statSync(path.resolve(entry));
+            if (stats.isFile()) {
+                const ext = path.extname(entry);
+                if (ext === '.js' || ext === '.san') {
+                    isFile = true;
+                    // 添加。~entry
+                    entry = path.resolve(entry);
+                } else {
+                    console.log(chalk.red('Valid entry file should be one of: *.js or *.san.'));
+                    process.exit(1);
+                }
+                isFile = true;
+            }
+        } catch (e) {
+            console.log(chalk.red('Valid entry is not a file or directory.'));
+            process.exit(1);
+        }
+    }
+    return {
+        entry,
+        isFile
+    };
+};
 exports.getLoaderOptions = (
     api,
     {
@@ -32,8 +61,6 @@ exports.getLoaderOptions = (
         devServer
     };
 };
-
-
 
 const rules = [
     {
