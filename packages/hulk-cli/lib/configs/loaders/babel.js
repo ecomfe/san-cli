@@ -3,13 +3,15 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-module.exports = ({browserslist, command, loaderOptions: {babel = {}}}) => {
+module.exports = ({browserslist, modernMode, modernBuild, modernBowsers, command, loaderOptions: {babel = {}}}) => {
     const babelPlugins = (babel && babel.plugins) || [];
+    // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
+    const isLegacyBundle = modernMode && !modernBuild;
     return {
         name: 'babel-loader',
         loader: require.resolve('babel-loader'),
         options: {
-            cacheDirectory: command !== 'devServer',
+            cacheDirectory: command !== 'serve',
             presets: [
                 [
                     require.resolve('@babel/preset-env'),

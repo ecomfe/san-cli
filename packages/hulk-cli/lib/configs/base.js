@@ -10,13 +10,16 @@ const {transformer, formatter, resolveLocal, getLoaderOptions} = require('../uti
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
         const isProd = api.getMode() === 'production';
+        // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
+        const isLegacyBundle = options.modernMode && !options.modernBuild;
+
         const context = api.getCwd();
         // set mode
         webpackConfig.mode(isProd ? 'production' : 'development').context(api.service.context);
         // set output
         webpackConfig.output
             .path(api.resolve(options.outputDir))
-            .filename(`[name]${isProd ? '.[hash:8]' : ''}.js`)
+            .filename((isLegacyBundle ? '[name]-legacy' : '[name]') + `${isProd ? '.[hash:8]' : ''}.js`)
             .publicPath(options.baseUrl);
 
         // prettier-ignore

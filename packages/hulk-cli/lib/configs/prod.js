@@ -15,8 +15,9 @@ module.exports = (api, options) => {
             return;
         }
         const {assetsDir, maxAssetSize, sourceMap = true} = options;
-
-        const filename = getAssetPath(assetsDir, 'js/[name].[contenthash:8].js');
+        // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
+        const isLegacyBundle = options.modernMode && !options.modernBuild;
+        const filename = getAssetPath(assetsDir, `js/[name]${isLegacyBundle ? '-legacy' : ''}.[contenthash:8].js`);
 
         webpackConfig
             .mode('production')

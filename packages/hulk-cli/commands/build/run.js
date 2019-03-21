@@ -46,7 +46,12 @@ module.exports = async (entry, args) => {
         configFile: args.config,
         plugins
     });
-    const options = service.init(mode);
+    const options = service.init(mode, {
+        target: args.target ? args.target : isFile ? 'page' : 'app',
+        modernMode: args.modern,
+        modernBuild: args.modern && process.env.HULK_CLI_MODERN_BUILD,
+        command: 'build'
+    });
 
     // resolve webpack config
     const webpackConfig = service.resolveWebpackConfig();

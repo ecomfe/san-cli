@@ -91,7 +91,10 @@ exports.getLoaderOptions = (
         largeAssetSize = 4096,
         devServer = {},
         loaderOptions = {},
-        assetsDir
+        assetsDir,
+        modernMode,
+        modernBuild,
+        modernBowsers
     } = {}
 ) => {
     const mode = api.getMode();
@@ -104,7 +107,11 @@ exports.getLoaderOptions = (
         mode,
         devServer,
         loaderOptions,
-        assetsDir
+        assetsDir,
+        modernMode,
+        modernBuild,
+        // 这个是 modern 浏览器的 browserslist
+        modernBowsers
     };
 };
 

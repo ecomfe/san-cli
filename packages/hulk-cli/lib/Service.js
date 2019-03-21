@@ -77,7 +77,7 @@ module.exports = class Service {
 
         return plugins;
     }
-    init(mode = 'development') {
+    init(mode = 'development', args = {}) {
         if (this.initialized) {
             return;
         }
@@ -91,8 +91,10 @@ module.exports = class Service {
         if (isProd && config.build && typeof config.build === 'object') {
             config = defaultsDeep(config.build, config);
         }
+        // 强制优先使用 cli 的 args 的参数
+        config = defaultsDeep(args, config);
 
-        debug(this.config);
+        debug(config);
         // apply plugins.
         this.plugins.forEach(({id, apply}) => {
             apply(new PluginAPI(id, this), config);
