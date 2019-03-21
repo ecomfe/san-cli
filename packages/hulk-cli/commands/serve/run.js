@@ -9,7 +9,7 @@ const defaults = {
     https: false
 };
 
-module.exports = async (entry, args) => {
+async function serve(app, entry, args) {
     const context = process.cwd();
     const mode = args.mode;
     const isProduction = mode ? mode === 'production' : process.env.NODE_ENV === 'production';
@@ -26,20 +26,14 @@ module.exports = async (entry, args) => {
     const portfinder = require('portfinder');
     const prepareUrls = require('@baidu/hulk-utils/prepare-urls').prepareUrls;
 
-    const {updateNotifier, addDevClientToEntry, resolveEntry} = require('../../lib/utils');
-
-    // 1. 判断 entry 是文件还是目
-    // 2. 文件，直接启动 file server
-    // 3. 目录，则直接启动 devServer
-    const obj = resolveEntry(entry);
-    entry = obj.entry;
-    const isFile = obj.isFile;
+    const {updateNotifier, addDevClientToEntry} = require('../../lib/utils');
 
     // 开始正式的操作
     const Service = require('../../lib/Service');
     const service = new Service(context, {
         configFile: args.config
     });
+
     const options = service.init(mode);
 
     // resolve webpack config
@@ -47,16 +41,13 @@ module.exports = async (entry, args) => {
 
     const projectDevServerOptions = Object.assign(webpackConfig.devServer || {}, options.devServer);
     // entry arg
-    if (isFile) {
-        if (/\.san$/.test(entry)) {
-            webpackConfig.resolve.alias['~entry'] = path.resolve(context, entry);
-        } else {
-            webpackConfig.entry = {
-                app: entry
-            };
-        }
-    } else {
+    if (entry) {
+        webpackConfig.resolve.alias['~entry'] = path.resolve(context, entry);
+    }
+    if (!app) {
         delete webpackConfig.entry.app;
+    } else {
+        webpackConfig.entry.app = app;
     }
     if (Object.keys(webpackConfig.entry).length === 0) {
         error('没有找到 Entry，请命令后面添加 entry 或者配置 hulk.config.js');
@@ -101,7 +92,7 @@ module.exports = async (entry, args) => {
 
     // create compiler
     const compiler = webpack(webpackConfig);
-
+    // console.log(webpackConfig)
     // create server
     const server = new WebpackDevServer(
         compiler,
@@ -125,7 +116,7 @@ module.exports = async (entry, args) => {
                 https: useHttps,
                 before(app, server) {
                     // allow other plugins to register middlewares, e.g. PWA
-                    (projectDevServerOptions.middlewares || []).forEach(fn => fn(app, server));
+                    (projectDevServerOptions.middlewares || []).forEach(fn => app.use(fn()));
                     // apply in project middlewares
                     projectDevServerOptions.before && projectDevServerOptions.before(app, server);
                 }
@@ -166,4 +157,25 @@ module.exports = async (entry, args) => {
             }
         });
     });
+}
+
+module.exports = (entry, args) => {
+    const {resolveEntry} = require('../../lib/utils');
+    // 1. 判断 entry 是文件还是目
+    // 2. 文件，直接启动 file server
+    // 3. 目录，则直接启动 devServer
+    const obj = resolveEntry(entry);
+    entry = obj.entry;
+    const isFile = obj.isFile;
+    let app;
+
+    if (isFile) {
+        if (/\.san$/.test(entry)) {
+        } else {
+            app = entry;
+            entry = undefined;
+        }
+    }
+    return serve(app, entry, args);
 };
+module.exports.serve = serve;

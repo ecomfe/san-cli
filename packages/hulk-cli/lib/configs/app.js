@@ -51,13 +51,14 @@ module.exports = (api, options) => {
         const multiPageConfig = options.pages;
         const HTMLPlugin = require('html-webpack-plugin');
         const htmlPath = api.resolve('public/index.html');
-        const defaultHtmlPath = path.resolve(__dirname, '../../template/index-default.html');
-        const publicCopyIgnore = ['index.html', '.DS_Store'];
+        // 默认路径
+        const defaultHtmlPath = path.resolve(__dirname, '../../template/webpack/index-default.html');
+        const publicCopyIgnore = ['index.html', '.DS_Store', '.*'];
 
         if (!multiPageConfig) {
             webpackConfig
                 .entry('app')
-                .add(require.resolve('../../template/main.js'))
+                .add(require.resolve('../../template/webpack/main.js'))
                 .end();
             // default, single page setup.
             htmlOptions.alwaysWriteToDisk = true;
@@ -86,15 +87,20 @@ module.exports = (api, options) => {
             const normalizePageConfig = c => (typeof c === 'string' ? {entry: c} : c);
 
             pages.forEach(name => {
-                const {
-                    title,
-                    entry,
-                    template = `public/${name}.html`,
-                    filename = `${name}.html`,
-                    chunks
-                } = normalizePageConfig(multiPageConfig[name]);
+                let {title, entry, template = `public/${name}.html`, filename, chunks} = normalizePageConfig(
+                    multiPageConfig[name]
+                );
                 // inject entry
                 webpackConfig.entry(name).add(api.resolve(entry));
+
+                if (!filename) {
+                    // 处理 smarty 情况
+                    if (path.extname(template) === '.tpl') {
+                        filename = path.basename(template);
+                    } else {
+                        filename = `${name}.html`;
+                    }
+                }
 
                 // resolve page index template
                 const hasDedicatedTemplate = fs.existsSync(api.resolve(template));
@@ -126,8 +132,11 @@ module.exports = (api, options) => {
         webpackConfig.plugin('hulk-html-webpack-addons-plugin').use(require('@baidu/hulk-html-webpack-plugin-addons'), [
             {
                 alterAssetTags(pluginData) {
-                    // 不插入css和js
-                    // pluginData.head = pluginData.body = [];
+                    if (path.extname(pluginData.outputName) === '.tpl') {
+                        // 不插入css和js
+                        pluginData.head = pluginData.body = [];
+                    }
+
                     return pluginData;
                 },
                 afterHTMLProcessing(pluginData) {
@@ -163,16 +172,27 @@ module.exports = (api, options) => {
         ]);
         // copy static assets in public/
         const publicDir = api.resolve('public');
-        if (fs.existsSync(publicDir)) {
-            webpackConfig.plugin('copy').use(require('copy-webpack-plugin'), [
-                [
-                    {
-                        from: publicDir,
-                        to: outputDir,
-                        ignore: publicCopyIgnore
-                    }
-                ]
-            ]);
+        const copyArgs = [];
+        if (options.copyPublicDir && fs.existsSync(publicDir)) {
+            copyArgs.push({
+                from: publicDir,
+                to: outputDir,
+                ignore: publicCopyIgnore
+            });
+        }
+        // ------ 这里把 copy 拿到这里来处理是为了合并 ignore
+        if (options.copy && options.copy.from) {
+            const {from, to = './', ignore = ['.*']} = options.copy;
+            if (fs.existsSync(api.resolve(from))) {
+                copyArgs.push({
+                    from: api.resolve(from),
+                    to: path.join(outputDir, to),
+                    ignore: publicCopyIgnore.concat(typeof ignore === 'string' ? [ignore] : ignore)
+                });
+            }
+        }
+        if (copyArgs.length) {
+            webpackConfig.plugin('copy-webpack-plugin').use(require('copy-webpack-plugin'), [copyArgs]);
         }
     });
 };

@@ -90,13 +90,17 @@ module.exports = async (entry, args) => {
         process.exit(1);
         return Promise.reject();
     }
-
+    // console.log(webpackConfig.plugins[webpackConfig.plugins.length-1])
     // webpackConfig.output.publicPath = './';
     return new Promise((resolve, reject) => {
         webpack(webpackConfig, (err, stats) => {
             stopSpinner(false);
             if (err) {
                 return reject(err);
+            }
+
+            if (stats.hasErrors()) {
+                return reject('Build failed with errors.');
             }
 
             if (!args.analyze) {
@@ -111,16 +115,15 @@ module.exports = async (entry, args) => {
                 );
             }
 
-            if (stats.hasErrors()) {
-                return reject('Build failed with errors.');
-            }
+            resolve();
             if (!args.watch) {
                 const targetDirShort = path.relative(context, targetDir);
                 success(`Build complete. The ${chalk.cyan(targetDirShort)} directory is ready to be deployed.`);
+                // 解决 apim 这类问题
+                // process.exit(0);
             } else {
                 success('Build complete. Watching for changes...');
             }
-            resolve();
         });
     });
 };

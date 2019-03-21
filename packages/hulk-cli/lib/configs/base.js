@@ -10,6 +10,7 @@ const {transformer, formatter, resolveLocal, getLoaderOptions} = require('../uti
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
         const isProd = api.getMode() === 'production';
+        const context = api.getCwd();
         // set mode
         webpackConfig.mode(isProd ? 'production' : 'development').context(api.service.context);
         // set output
@@ -99,18 +100,25 @@ module.exports = (api, options) => {
         /* eslint-enable*/
         setLoader('js', /\.m?js$/, 'babel');
 
-        // ----------------------pulgins---------------------
-        if (options.copy) {
-            const {from, to, ignore = ['.*']} = options.copy;
-            webpackConfig.plugin('copy-webpack-plugin').use(require('copy-webpack-plugin'), [
-                {
-                    from,
-                    to,
-                    ignore
-                }
-            ]);
-        }
+        // 增加 md loader
+        // 来自hulk.config.js component
+        const {template, ignore} = options.component || {};
+        webpackConfig.module
+            .rule('md')
+            .test(/\.md$/)
+            .use('san-loader')
+            .loader(require.resolve('@baidu/hulk-san-loader'))
+            .options({
+                hotReload: true,
+                sourceMap: true,
+                minimize: false
+            })
+            .end()
+            .use('markdown')
+            .loader(require.resolve('@baidu/hulk-markdown-loader'))
+            .options({context, template, ignore});
 
+        // ----------------------pulgins---------------------
         // 大小写敏感！！！！
         webpackConfig.plugin('case-sensitive-paths').use(require('case-sensitive-paths-webpack-plugin'));
         // 清理

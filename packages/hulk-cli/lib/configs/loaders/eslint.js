@@ -3,6 +3,6 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-module.exports = () => {
+module.exports = ({loaderOptions: {eslint = {}}}) => {
     return {};
 };

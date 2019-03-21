@@ -14,7 +14,7 @@ module.exports = (api, options) => {
         if (!isProd) {
             return;
         }
-        const {assetsDir, maxAssetSize} = options;
+        const {assetsDir, maxAssetSize, sourceMap = true} = options;
 
         const filename = getAssetPath(assetsDir, 'js/[name].[contenthash:8].js');
 
@@ -78,7 +78,7 @@ module.exports = (api, options) => {
         webpackConfig.optimization.minimizer('js').use(
             new TerserPlugin({
                 extractComments: false,
-                sourceMap: false,
+                sourceMap,
                 parallel: true,
                 cache: true,
                 terserOptions: {

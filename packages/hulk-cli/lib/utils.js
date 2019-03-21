@@ -85,11 +85,13 @@ exports.resolveEntry = entry => {
 exports.getLoaderOptions = (
     api,
     {
-        sourceMap,
+        sourceMap = true,
         browserslist = ['defaults', 'not ie < 11', 'last 2 versions', '> 1%', 'iOS 7', 'last 3 iOS versions'],
         command = 'build',
         largeAssetSize = 4096,
-        devServer = {}
+        devServer = {},
+        loaderOptions = {},
+        assetsDir
     } = {}
 ) => {
     const mode = api.getMode();
@@ -100,7 +102,9 @@ exports.getLoaderOptions = (
         command,
         largeAssetSize,
         mode,
-        devServer
+        devServer,
+        loaderOptions,
+        assetsDir
     };
 };
 

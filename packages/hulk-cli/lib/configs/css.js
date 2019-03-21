@@ -8,7 +8,7 @@ module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
         const isProd = api.getMode() === 'production';
         const {css = {}, assetsDir = ''} = options;
-        const {modules = false, extract = isProd, sourceMap = false} = css;
+        const {modules = false, extract = isProd, sourceMap = true} = css;
         const loaderOptions = getLoaderOptions(api, options);
 
         const shouldExtract = extract !== false;
@@ -57,7 +57,7 @@ module.exports = (api, options) => {
                         localIdentName
                     });
                 }
-
+                cssLoaderOptions.importLoaders += loaders.length;
                 rule.use(cssLoader.name)
                     .loader(cssLoader.loader)
                     .options(cssLoaderOptions);

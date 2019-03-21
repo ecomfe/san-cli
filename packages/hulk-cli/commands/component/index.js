@@ -2,8 +2,7 @@
  * @file hulk component
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const run = require('./run');
-
+// alias serve + change (entry + app)
 module.exports = program => {
     program
         .command('component <entry>')
@@ -14,5 +13,11 @@ module.exports = program => {
         .option('-m, --mode <mode>', 'webpack mode', /^(development|production)$/i, 'development')
         .option('-c, --config <config>', 'set config file')
         .option('--use-https', 'use https')
-        .action(run);
+        .action((entry, args) => {
+            const serve = require('../serve/run').serve;
+            const path = require('path');
+            const context = process.cwd();
+
+            return serve(require.resolve('../../template/webpack/component/main.js'), path.resolve(context, entry), args);
+        });
 };

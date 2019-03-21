@@ -3,7 +3,8 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-module.exports = ({browserslist, command, babelPlugins = []}) => {
+module.exports = ({browserslist, command, loaderOptions: {babel = {}}}) => {
+    const babelPlugins = (babel && babel.plugins) || [];
     return {
         name: 'babel-loader',
         loader: require.resolve('babel-loader'),

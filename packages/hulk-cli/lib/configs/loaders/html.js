@@ -2,7 +2,7 @@
  * @file html-loader
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-module.exports = () => {
+module.exports = ({loaderOptions: {html = {}}}) => {
     return {
         name: 'html-loader',
 

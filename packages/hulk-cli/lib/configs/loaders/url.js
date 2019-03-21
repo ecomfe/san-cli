@@ -4,7 +4,7 @@
  */
 const {getAssetPath} = require('../../utils'); // eslint-disable-line
 
-module.exports = ({mode, dir, assetsDir, largeAssetSize = 4096}) => {
+module.exports = ({mode, dir, assetsDir, largeAssetSize = 4096, loaderOptions: {url = {}}}) => {
     const isProd = mode === 'production';
     return {
         name: 'url-loader',
@@ -12,7 +12,7 @@ module.exports = ({mode, dir, assetsDir, largeAssetSize = 4096}) => {
         loader: require.resolve('url-loader'),
         options: {
             limit: largeAssetSize,
-            name: getAssetPath(assetsDir, `${dir}/[name]${isProd ? '.[chunkhash:8]' : ''}.[ext]`)
+            name: getAssetPath(assetsDir, `${dir}/[name]${isProd ? '.[hash:8]' : ''}.[ext]`)
         }
     };
 };

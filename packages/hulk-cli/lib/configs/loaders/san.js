@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-module.exports = ({mode}) => {
+module.exports = ({mode, loaderOptions: {san = {}}}) => {
     const isProd = mode === 'production';
     return {
         name: 'san-loader',
