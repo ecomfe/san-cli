@@ -18,6 +18,10 @@ module.exports = program => {
             const path = require('path');
             const context = process.cwd();
 
-            return serve(require.resolve('../../template/webpack/component/main.js'), path.resolve(context, entry), args);
+            return serve(
+                require.resolve('../../template/webpack/component/main.js'),
+                path.resolve(context, entry),
+                args
+            );
         });
 };

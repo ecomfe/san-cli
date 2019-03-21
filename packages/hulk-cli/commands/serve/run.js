@@ -160,6 +160,7 @@ async function serve(app, entry, args) {
 }
 
 module.exports = (entry, args) => {
+    // eslint-disable-next-line
     const {resolveEntry} = require('../../lib/utils');
     // 1. 判断 entry 是文件还是目
     // 2. 文件，直接启动 file server
@@ -169,12 +170,9 @@ module.exports = (entry, args) => {
     const isFile = obj.isFile;
     let app;
 
-    if (isFile) {
-        if (/\.san$/.test(entry)) {
-        } else {
-            app = entry;
-            entry = undefined;
-        }
+    if (isFile && !/\.san$/.test(entry)) {
+        app = entry;
+        entry = undefined;
     }
     return serve(app, entry, args);
 };
