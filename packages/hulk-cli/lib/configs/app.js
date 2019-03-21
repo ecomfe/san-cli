@@ -199,6 +199,9 @@ module.exports = (api, options) => {
         if (copyArgs.length) {
             webpackConfig.plugin('copy-webpack-plugin').use(require('copy-webpack-plugin'), [copyArgs]);
         }
+        if (options.command === 'serve') {
+            webpackConfig.plugin('write-file').use(require('write-file-webpack-plugin'), [{test: /\.tpl$/}]);
+        }
     });
 };
 

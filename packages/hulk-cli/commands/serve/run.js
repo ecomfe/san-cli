@@ -103,7 +103,6 @@ async function serve(app, entry, args) {
     // create server
     const defaultDevServer = {
         clientLogLevel: 'none',
-
         contentBase: isFile ? path.resolve('public') : path.resolve(context, options.outputDir || 'public'),
         watchContentBase: !isProduction,
         hot: !isProduction,
