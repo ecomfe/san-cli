@@ -11,6 +11,7 @@ const defaults = {
 
 async function serve(app, entry, args) {
     const context = process.cwd();
+    const isFile = app && entry;
     const mode = args.mode;
     const isProduction = mode ? mode === 'production' : process.env.NODE_ENV === 'production';
 
@@ -34,7 +35,12 @@ async function serve(app, entry, args) {
         configFile: args.config
     });
 
-    const options = service.init(mode);
+    const options = service.init(mode, {
+        target: args.target ? args.target : isFile ? 'page' : 'app',
+        modernMode: args.modern,
+        modernBuild: args.modern && process.env.HULK_CLI_MODERN_BUILD,
+        command: 'serve'
+    });
 
     // resolve webpack config
     const webpackConfig = service.resolveWebpackConfig();
@@ -92,36 +98,47 @@ async function serve(app, entry, args) {
 
     // create compiler
     const compiler = webpack(webpackConfig);
+
     // console.log(webpackConfig)
     // create server
+    const defaultDevServer = {
+        clientLogLevel: 'none',
+
+        contentBase: isFile ? path.resolve('public') : path.resolve(context, options.outputDir || 'public'),
+        watchContentBase: !isProduction,
+        hot: !isProduction,
+        noInfo: true,
+        stats: 'errors-only',
+        inline: true,
+        lazy: false,
+        quiet: true,
+        watchOptions: {
+            aggregateTimeout: 300,
+            ignored: /node_modules/,
+            poll: 100
+        },
+        compress: isProduction,
+        publicPath: options.baseUrl,
+        overlay: isProduction ? false : {warnings: false, errors: true}
+    };
+    if (isFile) {
+        // 不显示列表，直接显示首页 index.html
+        defaultDevServer.historyApiFallback = {
+            disableDotRule: true,
+            rewrites: [{from: /./, to: path.posix.join(options.baseUrl, 'index.html')}]
+        };
+    }
     const server = new WebpackDevServer(
         compiler,
-        Object.assign(
-            {
-                clientLogLevel: 'none',
-                historyApiFallback: {
-                    disableDotRule: true,
-                    rewrites: [{from: /./, to: path.posix.join(options.baseUrl, 'index.html')}]
-                },
-                contentBase: path.resolve('public'),
-                watchContentBase: !isProduction,
-                hot: !isProduction,
-                quiet: true,
-                compress: isProduction,
-                publicPath: options.baseUrl,
-                overlay: isProduction ? false : {warnings: false, errors: true}
-            },
-            projectDevServerOptions,
-            {
-                https: useHttps,
-                before(app, server) {
-                    // allow other plugins to register middlewares, e.g. PWA
-                    (projectDevServerOptions.middlewares || []).forEach(fn => app.use(fn()));
-                    // apply in project middlewares
-                    projectDevServerOptions.before && projectDevServerOptions.before(app, server);
-                }
+        Object.assign(defaultDevServer, projectDevServerOptions, {
+            https: useHttps,
+            before(app, server) {
+                // allow other plugins to register middlewares, e.g. PWA
+                (options.middlewares || []).forEach(fn => app.use(fn()));
+                // apply in project middlewares
+                projectDevServerOptions.before && projectDevServerOptions.before(app, server);
             }
-        )
+        })
     );
 
     updateNotifier(server);

@@ -10,6 +10,7 @@ module.exports = {
     baseUrl: '/',
     // where to output built files
     outputDir: 'dist',
+    templateDir: '',
     // where to put static assets (js/css/img/font/...)
     assetsDir: '',
     // filename for index.html (relative to outputDir)

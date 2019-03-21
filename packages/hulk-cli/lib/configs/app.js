@@ -53,7 +53,7 @@ module.exports = (api, options) => {
         const htmlPath = api.resolve('public/index.html');
         // 默认路径
         const defaultHtmlPath = path.resolve(__dirname, '../../template/webpack/index-default.html');
-        const publicCopyIgnore = ['index.html', '.DS_Store', '.*'];
+        const publicCopyIgnore = ['index.html', '.DS_Store'];
 
         if (!multiPageConfig) {
             webpackConfig
@@ -101,7 +101,7 @@ module.exports = (api, options) => {
                         filename = `${name}.html`;
                     }
                 }
-
+                filename = path.join(options.templateDir, filename);
                 // resolve page index template
                 const hasDedicatedTemplate = fs.existsSync(api.resolve(template));
                 if (hasDedicatedTemplate) {
@@ -117,6 +117,7 @@ module.exports = (api, options) => {
                 const pageHtmlOptions = Object.assign({alwaysWriteToDisk: true}, htmlOptions, {
                     chunks: chunks || ['chunk-vendors', 'chunk-common', name],
                     template: templatePath,
+                    // add templateDir
                     filename: ensureRelative(outputDir, filename),
                     title
                 });
@@ -143,7 +144,6 @@ module.exports = (api, options) => {
                     if (!~pluginData.html.indexOf('{%/block%}')) {
                         return pluginData;
                     }
-
                     // 手动添加资源到项目tpl特定的位置
                     let assetTags = hwpTemp.generateHtmlTags(pluginData.assets);
                     let bodyAsset = assetTags.body.map(hwpTemp.createHtmlTag.bind(hwpTemp));
@@ -182,12 +182,17 @@ module.exports = (api, options) => {
         }
         // ------ 这里把 copy 拿到这里来处理是为了合并 ignore
         if (options.copy && options.copy.from) {
-            const {from, to = './', ignore = ['.*']} = options.copy;
-            if (fs.existsSync(api.resolve(from))) {
+            let {from, to = './', ignore = []} = options.copy;
+
+            if (from && fs.existsSync(api.resolve(from))) {
+                from = api.resolve(from);
+                // 保证相对路径
+                ignore = publicCopyIgnore.concat(typeof ignore === 'string' ? [ignore] : ignore);
+                ignore = ignore.map((f, i) => (i > 1 ? ensureRelative(from, api.resolve(f)) : f));
                 copyArgs.push({
-                    from: api.resolve(from),
+                    from,
                     to: path.join(outputDir, to),
-                    ignore: publicCopyIgnore.concat(typeof ignore === 'string' ? [ignore] : ignore)
+                    ignore
                 });
             }
         }
