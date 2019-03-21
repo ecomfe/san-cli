@@ -1,4 +1,17 @@
-# hulk cli
+# Hulk cli - 前端研发命令集
+
+## Hulk 2.0
+
+解决问题：
+
+1. 发现大家在使用 Hulk-CLI 创建了项目之后，需要升级配置的时候，需要挨个升级，很是麻烦；
+2. 而且之前的脚手架存在多处配置问题，需要重新设计下架构；
+3. 纳入lint 命令；
+4. 扩展 hulk.config.js；
+5. 拆分loader 和 plugin，修复设计不合理的地方，比如 markdown-loader 配置问题，不支持模板定制问题。
+
+![](./roadmap-2.0.png)
+
 ## 开发
 
 ```bash
