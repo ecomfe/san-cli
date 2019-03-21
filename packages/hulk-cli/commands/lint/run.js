@@ -21,6 +21,9 @@ module.exports = async (dir = process.cwd()) => {
     let eslintRes = cli.executeOnFiles([dir]);
 
     eslintRes.results.forEach(item => {
+        if (item.messages.length === 0) {
+            return false;
+        }
         console.log('=============================');
         console.log(chalk.green(`in File: ${item.filePath}`));
         item.messages.forEach(msg => {

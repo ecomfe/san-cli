@@ -1,1 +1,0 @@
-hulk component a.md

@@ -12,6 +12,7 @@ const {getGitUser} = require('./git-user');
 exports.downloadRepo = (repo, dest, opts = {}, fn) => {
     repo = normalize(repo, opts);
     const {url, checkout} = repo;
+    const rm = fse.removeSync;
     // const rm = fse.removeSync;
     // 先删除
     rm(dest);
@@ -32,7 +33,7 @@ function normalize(repo, opts) {
     // ssh://wangyongqing01@icode.baidu.com:8235/baidu/ezcode/jssdk
     // ssh://git@icode.baidu.com:8235/baidu/ezcode/jssdk
     // 公司名/目录名/repo#分支
-    const regex = /^(?:(icode|github|gitlab|bitbucket|coding)\:)?(?:(baidu)\/)?(?:([^\/]+)\/)?([^#]+)(?:#(.+))?$/;
+    const regex = /^(?:(icode|github|gitlab|bitbucket|coding):)?(?:(baidu)\/)?(?:([^/]+)\/)?([^#]+)(?:#(.+))?$/;
     const useHttps = opts.useHttps || false;
     const {name, isBaidu} = getGitUser();
     // 如果是 是百度，则强制使用百度账号

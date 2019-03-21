@@ -19,12 +19,12 @@ checkNodeVersion(requiredNodeVersion, name);
 // 2. 找不到命令的通用提示
 program.arguments('<command>').action(cmd => {
     console.log();
-    error(`Don't find command: ${chalk.yellow(cmd)}`);
+    error(`Command: ${chalk.yellow(cmd)} not exist！`);
     console.log();
     program.outputHelp();
 });
-
-['init', 'version', 'update', 'lint'].forEach(cmd => {
+// 3. 挂载commands 下面的命令
+['init', 'version', 'update', 'serve', 'build', 'component', 'lint'].forEach(cmd => {
     require(`../commands/${cmd}`)(program);
 });
 

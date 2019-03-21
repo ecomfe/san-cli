@@ -8,6 +8,7 @@ const rxjs = importLazy('rxjs');
 const updateNotifier = importLazy('update-notifier');
 const execa = importLazy('execa');
 const inquirer = importLazy('inquirer');
+const chalk = importLazy('chalk');
 const {gt: isLaterThan} = require('semver');
 const ConsoleTable = importLazy('tty-table');
 
@@ -58,7 +59,7 @@ const updateCompatible = context => {
                     observer.next();
                     await execa('npm', ['update', '--registry', NPM_REGISTRY], {
                         cwd: context,
-                        stdio: ['pipe', 'pipe', 'pipe']
+                        stdio: ['inherit', 'inherit', 'inherit']
                     });
                     ctx.autoUpdates = autoUpdates;
                     observer.complete();
@@ -102,12 +103,14 @@ const updateBreaking = context => {
         return new rxjs.Observable(async observer => {
             const requiredUpdates = ctx.requiredUpdates;
             // 这里更新吧
-            observer.next('更新到最新版本ing...');
+            // observer.next('更新到最新版本ing...');
+            observer.next();
+
             if (requiredUpdates && requiredUpdates.length) {
                 const args = requiredUpdates.map(({name}) => name + '@latest');
                 await execa('npm', ['install', ...args, '--registry', NPM_REGISTRY], {
                     cwd: context,
-                    stdio: ['pipe', 'pipe', 'pipe']
+                    stdio: ['inherit', 'inherit', 'inherit']
                 });
             } else {
                 task.skip('没有新的包');
@@ -148,7 +151,7 @@ module.exports = (context = process.cwd()) => {
                     return {
                         name: entry.name,
                         from: entry.current,
-                        to: targetVersion
+                        to: chalk.green(targetVersion)
                     };
                 };
                 const updates = [...autoUpdates.map(toResult('wanted')), ...requiredUpdates.map(toResult('latest'))];
