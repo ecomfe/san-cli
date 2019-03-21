@@ -1,63 +1,48 @@
 /**
- * @file serve run
+ * @file run
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-
 const defaults = {
     host: '0.0.0.0',
     port: 8080,
     https: false
 };
-
 module.exports = async (entry, args) => {
     const context = process.cwd();
     const mode = args.mode;
     const isProduction = mode ? mode === 'production' : process.env.NODE_ENV === 'production';
 
-    const {info, error} = require('@baidu/hulk-utils/logger');
+    const {error, info} = require('@baidu/hulk-utils/logger');
+
     info(`Starting ${mode} server...`);
 
-    const path = require('path');
+    const {updateNotifier, addDevClientToEntry} = require('../../lib/utils');
+
     const url = require('url');
+    const path = require('path');
 
     const chalk = require('chalk');
     const webpack = require('webpack');
     const WebpackDevServer = require('webpack-dev-server');
     const portfinder = require('portfinder');
+
     const prepareUrls = require('@baidu/hulk-utils/prepare-urls').prepareUrls;
-
-    const {updateNotifier, addDevClientToEntry, resolveEntry} = require('../../lib/utils');
-
-    // 1. 判断 entry 是文件还是目
-    // 2. 文件，直接启动 file server
-    // 3. 目录，则直接启动 devServer
-    const obj = resolveEntry(entry);
-    entry = obj.entry;
-    const isFile = obj.isFile;
-
-    // 开始正式的操作
     const Service = require('../../lib/Service');
+
     const service = new Service(context, {
-        configFile: args.config
+        configFile: args.config,
+        plugins: [require('../../lib/serivce-plugins/component')]
     });
     const options = service.init(mode);
 
     // resolve webpack config
     const webpackConfig = service.resolveWebpackConfig();
 
+    webpackConfig.resolve.alias['~entry'] = path.resolve(context, entry);
+    webpackConfig.entry.app = require.resolve('../../template/component/main.js');
+
     const projectDevServerOptions = Object.assign(webpackConfig.devServer || {}, options.devServer);
-    // entry arg
-    if (isFile) {
-        if (/\.san$/.test(entry)) {
-            webpackConfig.resolve.alias['~entry'] = path.resolve(context, entry);
-        } else {
-            webpackConfig.entry = {
-                app: entry
-            };
-        }
-    } else {
-        delete webpackConfig.entry.app;
-    }
+
     if (Object.keys(webpackConfig.entry).length === 0) {
         error('没有找到 Entry，请命令后面添加 entry 或者配置 hulk.config.js');
         process.exit(1);

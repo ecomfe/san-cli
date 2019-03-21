@@ -5,11 +5,53 @@
 const path = require('path');
 const chalk = require('chalk');
 const fse = require('fs-extra');
+const updateNotifier = require('update-notifier');
+
+let {version: pkgVersion, name: pkgName} = require('../package.json');
 
 exports.getAssetPath = (assetsDir, filePath) => (assetsDir ? path.posix.join(assetsDir, filePath) : filePath);
 
 exports.resolveLocal = function resolveLocal(...args) {
     return path.join(__dirname, '../../', ...args);
+};
+
+exports.updateNotifier = server => {
+    let notifier;
+    if (pkgVersion && pkgName) {
+        // 检测版本更新
+        notifier = updateNotifier({
+            pkg: {
+                name: pkgName,
+                version: pkgVersion
+            },
+            isGlobal: true,
+            // updateCheckInterval: 0,
+            // npm script 也显示
+            shouldNotifyInNpmScript: true
+        });
+    }
+    ['SIGINT', 'SIGTERM'].forEach(signal => {
+        process.on(signal, () => {
+            notifier && notifier.notify();
+
+            server.close(() => {
+                process.exit(0);
+            });
+        });
+    });
+};
+
+exports.addDevClientToEntry = (config, devClient) => {
+    const {entry} = config; // eslint-disable-line
+    if (typeof entry === 'object' && !Array.isArray(entry)) {
+        Object.keys(entry).forEach(key => {
+            entry[key] = devClient.concat(entry[key]);
+        });
+    } else if (typeof entry === 'function') {
+        config.entry = entry(devClient);
+    } else {
+        config.entry = devClient.concat(entry);
+    }
 };
 
 exports.resolveEntry = entry => {
