@@ -7,6 +7,8 @@ const chalk = require('chalk');
 const fse = require('fs-extra');
 const updateNotifier = require('update-notifier');
 
+const {BROWSERS_LIST} = require('../constants');
+
 let {version: pkgVersion, name: pkgName} = require('../package.json');
 
 exports.getAssetPath = (assetsDir, filePath) => (assetsDir ? path.posix.join(assetsDir, filePath) : filePath);
@@ -86,7 +88,7 @@ exports.getLoaderOptions = (
     api,
     {
         sourceMap = true,
-        browserslist = ['defaults', 'not ie < 11', 'last 2 versions', '> 1%', 'iOS 7', 'last 3 iOS versions'],
+        browserslist = BROWSERS_LIST,
         command = 'build',
         largeAssetSize = 4096,
         devServer = {},
@@ -100,6 +102,7 @@ exports.getLoaderOptions = (
     const mode = api.getMode();
     return {
         context: api.getCwd(),
+        isProd: api.isProd(),
         sourceMap: sourceMap === false || sourceMap === true ? sourceMap : mode === 'production',
         browserslist,
         command,

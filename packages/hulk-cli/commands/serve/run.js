@@ -5,15 +5,15 @@
 
 const defaults = {
     host: '0.0.0.0',
-    port: 8080,
+    port: 8899,
     https: false
 };
-
 async function serve(app, entry, args) {
     const context = process.cwd();
     const isFile = app && entry;
     const mode = args.mode;
-    const isProduction = mode ? mode === 'production' : process.env.NODE_ENV === 'production';
+    const {PRODUCTION_MODE} = require('../../constants'); // eslint-disable-line
+    const isProduction = mode ? mode === PRODUCTION_MODE : process.env.NODE_ENV === PRODUCTION_MODE;
 
     const {info, error} = require('@baidu/hulk-utils/logger');
     info(`Starting ${mode} server...`);
@@ -111,6 +111,7 @@ async function serve(app, entry, args) {
         inline: true,
         lazy: false,
         quiet: true,
+        index: 'index.html',
         watchOptions: {
             aggregateTimeout: 300,
             ignored: /node_modules/,

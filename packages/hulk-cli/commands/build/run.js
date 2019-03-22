@@ -4,13 +4,18 @@
  */
 
 module.exports = async (entry, args) => {
+    const {logWithSpinner, stopSpinner} = require('@baidu/hulk-utils/spinner');
+    const mode = args.mode || 'production'; // 默认是 production
+    logWithSpinner(`Building for ${mode}...`);
+
+    const context = process.cwd();
+    const isProduction = mode ? mode === 'production' : process.env.NODE_ENV === 'production';
+
     // 1. 判断 entry 是 app.san app.js index.js等？还是目录
     // 目录直接操作
     // 如果是文件，需要设置 entry('app'),~entry
-    const context = process.cwd();
 
     const {success, error} = require('@baidu/hulk-utils/logger');
-    const {logWithSpinner, stopSpinner} = require('@baidu/hulk-utils/spinner');
     const fse = require('fs-extra');
     const chalk = require('chalk');
     const path = require('path');
@@ -23,9 +28,6 @@ module.exports = async (entry, args) => {
     entry = obj.entry;
     const isFile = obj.isFile;
 
-    const mode = args.mode || 'production'; // 默认是 production
-    const isProduction = mode ? mode === 'production' : process.env.NODE_ENV === 'production';
-
     // 合并 config 的方式
     const modifyConfig = (config, fn) => {
         if (Array.isArray(config)) {
@@ -34,7 +36,6 @@ module.exports = async (entry, args) => {
             fn(config);
         }
     };
-    logWithSpinner(`Building for ${mode}...`);
 
     const Service = require('../../lib/Service');
     const plugins = [];

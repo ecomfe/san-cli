@@ -3,10 +3,10 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-module.exports = ({browserslist, modernMode, modernBuild, modernBowsers, command, loaderOptions: {babel = {}}}) => {
+module.exports = ({browserslist, modernMode, modernBuild, command, loaderOptions: {babel = {}}}) => {
     const babelPlugins = (babel && babel.plugins) || [];
     // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
-    const isLegacyBundle = modernMode && !modernBuild;
+    // const isLegacyBundle = modernMode && !modernBuild;
     return {
         name: 'babel-loader',
         loader: require.resolve('babel-loader'),
@@ -27,6 +27,7 @@ module.exports = ({browserslist, modernMode, modernBuild, modernBowsers, command
                 require.resolve('@babel/plugin-syntax-import-meta'),
                 require.resolve('@babel/plugin-proposal-class-properties'),
                 require.resolve('@babel/plugin-transform-new-target'),
+                require.resolve('@babel/plugin-transform-modules-commonjs'),
                 ...babelPlugins
             ]
         }

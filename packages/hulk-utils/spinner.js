@@ -5,7 +5,7 @@ const ora = require('ora');
 const importLazy = require('import-lazy')(require);
 const chalk = importLazy('chalk');
 
-const spinner = ora();
+const spinner = ora({spinner: 'point'});
 let lastMsg = null;
 
 function getDefaultSymbol() {
