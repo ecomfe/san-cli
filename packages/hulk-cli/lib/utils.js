@@ -7,7 +7,7 @@ const chalk = require('chalk');
 const fse = require('fs-extra');
 const updateNotifier = require('update-notifier');
 
-const {BROWSERS_LIST} = require('../constants');
+const {BROWSERS_LIST} = require('../constants'); // eslint-disable-line
 
 let {version: pkgVersion, name: pkgName} = require('../package.json');
 

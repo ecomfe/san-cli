@@ -1,7 +1,46 @@
 {
-  "name": "root",
-  "private": true,
-  "devDependencies": {
-    "lerna": "^3.4.3"
-  }
+    "name": "root",
+    "private": true,
+    "devDependencies": {
+        "fecs": "^1.6.2",
+        "husky": "^1.3.0",
+        "lerna": "^3.4.3",
+        "lint-staged": "^8.1.5",
+        "stylelint": "^9.10.1"
+    },
+    "scripts": {
+        "lint": "lint-staged"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "linters": {
+            "*.san": [
+                "fecs check --type=es,js,san,css,less,html --reporter=baidu --rule"
+            ],
+            "*.js": [
+                "fecs check --type=es,js --reporter=baidu --rule"
+            ],
+            "*.{html,htm}": [
+                "fecs check --reporter=baidu --rule"
+            ],
+            "*.css": [
+                "fecs format",
+                "git add"
+            ],
+            "*.less": [
+                "stylelint --fix --syntax=less",
+                "git add"
+            ]
+        },
+        "ignore": [
+            "**/dist/**",
+            "**/docs/**",
+            "**/output/**",
+            "**/*.min.js"
+        ]
+    }
 }
