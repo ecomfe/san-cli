@@ -24,7 +24,7 @@ program.arguments('<command>').action(cmd => {
     program.outputHelp();
 });
 // 3. 挂载commands 下面的命令
-['init', 'version', 'update', 'serve', 'build', 'component', 'lint'].forEach(cmd => {
+['init', 'version', 'update', 'serve', 'build', 'component', 'lint', 'inspect'].forEach(cmd => {
     require(`../commands/${cmd}`)(program);
 });
 
