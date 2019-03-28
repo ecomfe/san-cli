@@ -5,11 +5,12 @@
 const path = require('path');
 
 const resolve = require('resolve');
-const {transformer, formatter, resolveLocal, getLoaderOptions} = require('../utils');
+const {resolveLocal, getLoaderOptions} = require('../utils');
 
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
-        const isProd = api.getMode() === 'production';
+        const isProd = api.isProd();
+
         // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
         const isLegacyBundle = options.modernMode && !options.modernBuild;
 
@@ -128,13 +129,6 @@ module.exports = (api, options) => {
         webpackConfig.plugin('clean-webpack-plugin').use(require('clean-webpack-plugin'), [
             {
                 verbose: false
-            }
-        ]);
-
-        webpackConfig.plugin('friendly-errors').use(require('friendly-errors-webpack-plugin'), [
-            {
-                additionalTransformers: [transformer],
-                additionalFormatters: [formatter]
             }
         ]);
     });

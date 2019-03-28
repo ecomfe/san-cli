@@ -13,8 +13,8 @@ const {error} = require('@baidu/hulk-utils/logger'); // eslint-disable-line
 const {getDebugLogger} = require('@baidu/hulk-utils/get-debug'); // eslint-disable-line
 const defaults = require('./defaultConfig');
 const PluginAPI = require('./PluginAPI');
+const {ENV: env, BROWSERS_LIST, DEVELOPMENT_MODE, PRODUCTION_MODE} = require('../constants');
 
-const env = ['production', 'development'];
 const debug = getDebugLogger('Service');
 
 module.exports = class Service {
@@ -82,15 +82,41 @@ module.exports = class Service {
             return;
         }
         this.initialized = true;
-        this.mode = env.includes(mode) ? mode : process.env.NODE_ENV === 'production' ? 'production' : 'development';
+        this.mode = env.includes(mode)
+            ? mode
+            : process.env.NODE_ENV === PRODUCTION_MODE
+            ? PRODUCTION_MODE
+            : DEVELOPMENT_MODE;
 
         let config = defaultsDeep(this.loadConfigFile(this.configFile), defaults);
 
-        // 如果是 生产环境，优先使用 build
-        const isProd = this.mode === 'production';
-        if (isProd && config.build && typeof config.build === 'object') {
+        // 如果是 生产环境，优先使用 production 环境
+        const isProd = this.mode === PRODUCTION_MODE;
+        if (isProd && config.production && typeof config.production === 'object') {
             config = defaultsDeep(config.build, config);
         }
+        // 根据mode 选择合适的 browserslist
+
+        if (args.modernMode && args.modernBuild) {
+            if (typeof config.browserslist === 'object' && config.browserslist.modern) {
+                // 设置为 modern mode browserslist
+                config.browserslist = config.browserslist.modern;
+            } else {
+                throw new Error('Not found Modern browserslist in hulk.config.js');
+            }
+        } else if (
+            /* prettier-ignore */
+            !Array.isArray(config.browserslist)
+            && typeof config.browserslist === 'object'
+            && config.browserslist[this.mode]
+        ) {
+            config.browserslist = config.browserslist[this.mode];
+        }
+        if (!config.browserslist) {
+            config.browserslist = BROWSERS_LIST;
+        }
+        // console.log(config.browserslist = ['defaults', 'not ie < 11', 'last 2 versions', '> 1%', 'iOS 7', 'last 3 iOS versions'])
+
         // 强制优先使用 cli 的 args 的参数
         config = defaultsDeep(args, config);
 

@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-module.exports = ({mode, context, sourceMap, browserslist, loaderOptions: {postcss = {}}}) => {
+module.exports = ({sourceMap, browserslist, loaderOptions: {postcss = {}}}) => {
     const postcssPlugins = postcss.plugins || [];
     const plugins = [
         require('autoprefixer')({

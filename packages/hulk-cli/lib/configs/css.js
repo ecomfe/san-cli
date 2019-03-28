@@ -6,7 +6,8 @@ const {getAssetPath, getLoaderOptions} = require('../utils');
 
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
-        const isProd = api.getMode() === 'production';
+        const isProd = api.isProd();
+
         const {css = {}, assetsDir = ''} = options;
         const {modules = false, extract = isProd, sourceMap = true} = css;
         const loaderOptions = getLoaderOptions(api, options);

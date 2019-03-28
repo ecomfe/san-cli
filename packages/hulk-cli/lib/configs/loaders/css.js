@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-module.exports = ({mode = 'development', sourceMap, loaderOptions: {css = {}}}) => {
+module.exports = ({sourceMap, loaderOptions: {css = {}}}) => {
     return {
         name: 'css-loader',
         loader: require.resolve('css-loader'),

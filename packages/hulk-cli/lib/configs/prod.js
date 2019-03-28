@@ -10,11 +10,12 @@ const getAssetPath = require('../utils').getAssetPath;
 
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
-        const isProd = api.getMode() === 'production';
+        const isProd = api.isProd();
+
         if (!isProd) {
             return;
         }
-        const {assetsDir, maxAssetSize, sourceMap = true} = options;
+        const {assetsDir, sourceMap = true} = options;
         // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
         const isLegacyBundle = options.modernMode && !options.modernBuild;
         const filename = getAssetPath(assetsDir, `js/[name]${isLegacyBundle ? '-legacy' : ''}.[contenthash:8].js`);
@@ -50,7 +51,6 @@ module.exports = (api, options) => {
                 }
             }
         });
-        webpackConfig.performance.maxAssetSize(maxAssetSize);
 
         // 压缩
         webpackConfig.optimization.minimizer('css').use(

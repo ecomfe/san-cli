@@ -3,6 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const path = require('path');
+const PRODUCTION_MODE = require('../constants').PRODUCTION_MODE;
 module.exports = class Plugin {
     constructor(id, service) {
         this.id = id;
@@ -18,6 +19,14 @@ module.exports = class Plugin {
      */
     getCwd() {
         return this.service.context;
+    }
+
+    /**
+     * 是不是 production mode
+     * @return {boolean} true|false
+     */
+    isProd() {
+        return this.service.mode === PRODUCTION_MODE;
     }
 
     /**

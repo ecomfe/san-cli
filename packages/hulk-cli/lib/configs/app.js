@@ -9,7 +9,7 @@ const hwpTemp = new HtmlWebpackPlugin({});
 
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
-        const isProd = options.mode === 'production';
+        const isProd = api.isProd();
         const outputDir = api.resolve(options.outputDir);
         // 1. 判断 pages
         // 2. build 做的事情是判断 serve 对象
@@ -181,19 +181,33 @@ module.exports = (api, options) => {
             });
         }
         // ------ 这里把 copy 拿到这里来处理是为了合并 ignore
-        if (options.copy && options.copy.from) {
-            let {from, to = './', ignore = []} = options.copy;
-
-            if (from && fs.existsSync(api.resolve(from))) {
-                from = api.resolve(from);
-                // 保证相对路径
+        if (options.copy) {
+            const addCopyOptions = ({from, to = './', ignore = []}) => {
+                // 排除 templte 的情况
                 ignore = publicCopyIgnore.concat(typeof ignore === 'string' ? [ignore] : ignore);
-                ignore = ignore.map((f, i) => (i > 1 ? ensureRelative(from, api.resolve(f)) : f));
-                copyArgs.push({
-                    from,
-                    to: path.join(outputDir, to),
-                    ignore
-                });
+                if (from && !/[$^*?!]+/.test(from) && fs.existsSync(api.resolve(from))) {
+                    from = api.resolve(from);
+                    // 保证template的相对路径
+                    ignore = ignore.map((f, i) => (i > 1 ? ensureRelative(from, api.resolve(f)) : f));
+                    copyArgs.push({
+                        from,
+                        to: path.join(outputDir, to),
+                        ignore
+                    });
+                } else {
+                    // 正则的，不处理
+                    copyArgs.push({
+                        from,
+                        to: path.join(outputDir, to),
+                        ignore
+                    });
+                }
+            };
+            if (Array.isArray(options.copy)) {
+                // 数组就循环吧
+                options.copy.forEach(addCopyOptions);
+            } else {
+                addCopyOptions(options.copy);
             }
         }
         if (copyArgs.length) {
