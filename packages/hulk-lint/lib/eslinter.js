@@ -1,12 +1,13 @@
 /**
- *  Hulk-lint eslint tool
+ * @file Hulk-lint eslint tool
+ * @author luzhe <luzhe01@baidu.com>
  */
 
 const CLIEngine = require('eslint').CLIEngine;
 const eslintConf = require('../config/_eslintrc.js');
 const chalk = require('chalk');
 
-module.exports = (dir) => {
+module.exports = dir => {
     console.log('eslinting...');
     let cli = new CLIEngine(eslintConf);
 
@@ -25,4 +26,4 @@ module.exports = (dir) => {
     });
 
     console.log('eslint done');
-}
+};

@@ -7,4 +7,4 @@ const linter = importLazy('@baidu/hulk-lint');
 
 module.exports = async (dir = process.cwd()) => {
     linter(dir);
-}
+};

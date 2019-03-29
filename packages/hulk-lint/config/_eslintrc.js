@@ -1,3 +1,7 @@
+/**
+ * @file eslint conf
+ */
+
 module.exports = {
     "baseConfig": {
         "extends": "@ecomfe/eslint-config"
