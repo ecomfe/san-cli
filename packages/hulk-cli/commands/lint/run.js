@@ -5,6 +5,6 @@
 const importLazy = require('import-lazy')(require);
 const linter = importLazy('@baidu/hulk-lint');
 
-module.exports = async (dir = process.cwd()) => {
+module.exports = (dir = process.cwd()) => {
     linter(dir);
-}
+};
