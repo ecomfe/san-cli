@@ -1,5 +1,9 @@
 # Hulk cli - 前端研发命令集
 
+- [ ] 检测 babelrc、browserslist、postcss 配置
+- [ ] lint rules 增加 no-alert 等自定义规范
+- [ ] 提速：去掉 commander 使用 minimist？
+
 ## Hulk 2.0
 
 解决问题：
@@ -9,6 +13,7 @@
 3. 纳入lint 命令；
 4. 扩展 hulk.config.js；
 5. 拆分loader 和 plugin，修复设计不合理的地方，比如 markdown-loader 配置问题，不支持模板定制问题。
+
 
 ![](./roadmap-2.0.png)
 
@@ -58,4 +63,5 @@ module.exports = program => {
 `run.js` 是项目实际的代码，接收`commander` `action`参数
 
 > `run.js` 推荐用 import-lazy来引入模块，尽量避免一开始就执行，不然会拖累 cli 的执行速度
+
 
