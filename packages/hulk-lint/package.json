@@ -1,0 +1,23 @@
+{
+    "name": "@baidu/hulk-lint",
+    "version": "1.0.0",
+    "description": "SearchBox Front-end Pre-Lint tool. ",
+    "bin": {
+        "hulk-lint": "bin/hulk-lint.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "ssh://git@icode.baidu.com:8235/baidu/hulk/hulk-cli"
+    },
+    "author": "luzhe <luzhe01@baidu.com>",
+    "license": "MIT",
+    "engines": {
+        "node": ">=8.9"
+    },
+    "dependencies": {
+        "@ecomfe/eslint-config": "^2.1.0",
+        "@ecomfe/stylelint-config": "^1.0.0",
+        "eslint": "^5.15.1",
+        "stylelint": "^9.10.1"
+    }
+}
