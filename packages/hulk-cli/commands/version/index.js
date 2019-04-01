@@ -1,4 +1,3 @@
-const ora = require('ora');
 /**
  * @file hulk -v 实现
  * @author wangyongqing <wangyongqing01@baidu.com>
