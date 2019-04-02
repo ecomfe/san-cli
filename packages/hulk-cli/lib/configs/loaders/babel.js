@@ -17,6 +17,7 @@ module.exports = ({browserslist, modernMode, modernBuild, command, loaderOptions
                     require.resolve('@babel/preset-env'),
                     {
                         debug: false,
+                        useBuiltIns: 'usage',
                         targets: browserslist,
                         modules: false
                     }
