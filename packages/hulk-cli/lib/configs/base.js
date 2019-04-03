@@ -101,8 +101,7 @@ module.exports = (api, options) => {
                     .end()
                 .exclude
                     .add(/node_modules/)
-                    .add(/@baidu\/hulk-serve/)
-                    .add(/@baidu\/hulk-command-component/)
+                    .add(/@baidu\/hulk-cli/)
                 .end()
         /* eslint-enable*/
         setLoader('js', /\.m?js$/, 'babel');
