@@ -2,7 +2,7 @@
  * @file bable loader config
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-
+const path = require('path');
 module.exports = ({browserslist, modernMode, modernBuild, command, loaderOptions: {babel = {}}}) => {
     const plugins = (babel && babel.plugins) || [];
     let targets = browserslist;
@@ -20,21 +20,31 @@ module.exports = ({browserslist, modernMode, modernBuild, command, loaderOptions
             cacheDirectory: command !== 'serve',
             presets: [
                 [
-                    require.resolve('@babel/preset-env'),
+                    require('@babel/preset-env'),
                     {
                         debug: false,
                         useBuiltIns: 'usage',
+                        corejs: 3,
                         targets,
                         modules: false
                     }
                 ]
             ],
             plugins: [
-                require.resolve('@babel/plugin-syntax-dynamic-import'),
-                require.resolve('@babel/plugin-syntax-import-meta'),
-                require.resolve('@babel/plugin-proposal-class-properties'),
-                require.resolve('@babel/plugin-transform-new-target'),
-                require.resolve('@babel/plugin-transform-modules-commonjs'),
+                require('@babel/plugin-syntax-dynamic-import'),
+                require('@babel/plugin-syntax-import-meta'),
+                require('@babel/plugin-proposal-class-properties'),
+                require('@babel/plugin-transform-new-target'),
+                require('@babel/plugin-transform-modules-commonjs'),
+                [
+                    require('@babel/plugin-transform-runtime'),
+                    {
+                        regenerator: false,
+                        helpers: true,
+                        useESModules: false,
+                        absoluteRuntime: path.dirname(require.resolve('@babel/runtime/package.json'))
+                    }
+                ],
                 ...plugins
             ]
         }
