@@ -20,6 +20,7 @@ module.exports = async (entry, args) => {
     const chalk = require('chalk');
     const path = require('path');
     const webpack = require('webpack');
+    const formatStats = require('../../lib/formatStats');
 
     // 处理 entry 不存在的情况
     const resolveEntry = require('../../lib/utils').resolveEntry;
@@ -98,38 +99,34 @@ module.exports = async (entry, args) => {
     }
     // console.log(webpackConfig.plugins[webpackConfig.plugins.length-1])
     // webpackConfig.output.publicPath = './';
-    return new Promise((resolve, reject) => {
-        webpack(webpackConfig, (err, stats) => {
-            stopSpinner(false);
-            if (err) {
-                return reject(err);
-            }
+    webpack(webpackConfig, (err, stats) => {
+        stopSpinner(false);
+        if (err) {
+            return console.log(err);
+        }
 
-            if (stats.hasErrors()) {
-                return reject('Build failed with errors.');
-            }
+        if (stats.hasErrors()) {
+            console.log('Build failed with errors.');
+            process.stderr.write(stats.toString({colors: true}));
+            return;
+        }
 
-            if (!args.analyze) {
-                process.stdout.write(
-                    stats.toString({
-                        colors: true,
-                        modules: false,
-                        children: false,
-                        chunks: false,
-                        chunkModules: false
-                    }) + '\n'
-                );
-            }
+        if (!args.analyze) {
+            const targetDirShort = path.relative(context, targetDir);
+            console.log(
+                formatStats(stats, targetDirShort, {
+                    resolve: p => path.resolve(context, p)
+                })
+            );
+        }
 
-            resolve();
-            if (!args.watch) {
-                const targetDirShort = path.relative(context, targetDir);
-                success(`Build complete. The ${chalk.cyan(targetDirShort)} directory is ready to be deployed.`);
-                // 解决 apim 这类问题
-                // process.exit(0);
-            } else {
-                success('Build complete. Watching for changes...');
-            }
-        });
+        if (!args.watch) {
+            const targetDirShort = path.relative(context, targetDir);
+            success(`Build complete. The ${chalk.cyan(targetDirShort)} directory is ready to be deployed.`);
+            // 解决 apim 这类问题
+            // process.exit(0);
+        } else {
+            success('Build complete. Watching for changes...');
+        }
     });
 };

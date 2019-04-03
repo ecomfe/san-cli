@@ -2,11 +2,17 @@
  * @file bable loader config
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-
+const path = require('path');
 module.exports = ({browserslist, modernMode, modernBuild, command, loaderOptions: {babel = {}}}) => {
-    const babelPlugins = (babel && babel.plugins) || [];
+    const plugins = (babel && babel.plugins) || [];
+    let targets = browserslist;
     // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
-    // const isLegacyBundle = modernMode && !modernBuild;
+    const isModernBundle = modernMode && modernBuild;
+    if (isModernBundle) {
+        // 这个是 modern 打包
+        targets = {esmodules: true};
+    }
+
     return {
         name: 'babel-loader',
         loader: require.resolve('babel-loader'),
@@ -14,21 +20,32 @@ module.exports = ({browserslist, modernMode, modernBuild, command, loaderOptions
             cacheDirectory: command !== 'serve',
             presets: [
                 [
-                    require.resolve('@babel/preset-env'),
+                    require('@babel/preset-env'),
                     {
                         debug: false,
-                        targets: browserslist,
+                        useBuiltIns: 'usage',
+                        corejs: 3,
+                        targets,
                         modules: false
                     }
                 ]
             ],
             plugins: [
-                require.resolve('@babel/plugin-syntax-dynamic-import'),
-                require.resolve('@babel/plugin-syntax-import-meta'),
-                require.resolve('@babel/plugin-proposal-class-properties'),
-                require.resolve('@babel/plugin-transform-new-target'),
-                require.resolve('@babel/plugin-transform-modules-commonjs'),
-                ...babelPlugins
+                require('@babel/plugin-syntax-dynamic-import'),
+                require('@babel/plugin-syntax-import-meta'),
+                require('@babel/plugin-proposal-class-properties'),
+                require('@babel/plugin-transform-new-target'),
+                require('@babel/plugin-transform-modules-commonjs'),
+                [
+                    require('@babel/plugin-transform-runtime'),
+                    {
+                        regenerator: false,
+                        helpers: true,
+                        useESModules: false,
+                        absoluteRuntime: path.dirname(require.resolve('@babel/runtime/package.json'))
+                    }
+                ],
+                ...plugins
             ]
         }
     };

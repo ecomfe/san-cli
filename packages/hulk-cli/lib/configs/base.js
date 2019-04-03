@@ -36,7 +36,9 @@ module.exports = (api, options) => {
                 .add(resolveLocal('node_modules'))
                 .end()
             .alias
-                .set('@', api.resolve('src'));
+                .set('@', api.resolve('src'))
+                .set('core-js', path.dirname(require.resolve('core-js')))
+                .set('regenerator-runtime', path.dirname(require.resolve('regenerator-runtime')));
         /* eslint-enable*/
 
         // set san alias
@@ -94,13 +96,13 @@ module.exports = (api, options) => {
         webpackConfig.module
             .rule('js')
                 .test(/\.m?js$/)
-                .include.add(api.resolve('src'))
-            .end()
+                .include
+                    .clear()
+                    .end()
                 .exclude
                     .add(/node_modules/)
-                    .add(/@baidu\/hulk-serve/)
-                    .add(/@baidu\/hulk-command-component/)
-            .end()
+                    .add(/@baidu\/hulk-cli/)
+                .end()
         /* eslint-enable*/
         setLoader('js', /\.m?js$/, 'babel');
 

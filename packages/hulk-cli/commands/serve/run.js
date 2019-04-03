@@ -191,6 +191,6 @@ module.exports = (entry, args) => {
         app = entry;
         entry = undefined;
     }
-    return serve(app, entry, args);
+    return serve(app, entry, args).catch(err => console.log(err));
 };
 module.exports.serve = serve;

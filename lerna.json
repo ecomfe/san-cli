@@ -1,14 +1,6 @@
 {
-    "packages": [
-        "packages/*"
-    ],
+    "packages": ["packages/*"],
     "version": "1.2.2",
-    "npmClient": "npm",
-    "command": {
-        "bootstrap": {
-            "npmClientArgs": [
-                "--no-package-lock"
-            ]
-        }
-    }
+    "npmClient": "yarn",
+    "useWorkspaces": false
 }

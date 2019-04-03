@@ -6,10 +6,8 @@ const importLazy = require('import-lazy')(require);
 
 const fs = importLazy('fs-extra');
 const chalk = importLazy('chalk');
-const home = require('user-home');
-
 const rxjs = importLazy('rxjs');
-const render = require('consolidate').handlebars.render;
+const consolidate = importLazy('consolidate');
 
 const inquirer = importLazy('inquirer');
 const execa = importLazy('execa');
@@ -22,7 +20,6 @@ const {isLocalPath, getTemplatePath} = require('@baidu/hulk-utils/path');
 
 const Handlebars = importLazy('../../lib/handlerbars');
 const generator = importLazy('../../lib/generator');
-const TaskList = require('../../lib/TaskList');
 // eslint-disable-next-line
 const {NPM_REGISTRY} = require('../../constants');
 const ALIAS_MAP = process.env.alias || {
@@ -37,6 +34,8 @@ const alias = name => {
 };
 
 module.exports = async (template, appName, opts) => {
+    const TaskList = require('../../lib/TaskList');
+
     template = alias(template);
     const inPlace = !appName || appName === '.';
     opts._inPlace = inPlace;
@@ -109,7 +108,8 @@ function prompt(input, done) {
 
 function logMessage(message, data) {
     if (Handlebars.isHandlebarTPL(message)) {
-        render(message, data)
+        consolidate.handlebars
+            .render(message, data)
             .then(res => {
                 // 显示
                 log(res);
@@ -187,6 +187,8 @@ function checkStatus(template, dest, opts) {
 
 // 下载模板
 function download(template, dest, opts) {
+    const home = require('user-home');
+
     return (ctx, task) => {
         return new rxjs.Observable(observer => {
             // 临时存放地址，存放在~/.hulk-templates 下面
