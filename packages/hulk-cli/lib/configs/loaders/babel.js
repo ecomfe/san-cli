@@ -4,9 +4,15 @@
  */
 
 module.exports = ({browserslist, modernMode, modernBuild, command, loaderOptions: {babel = {}}}) => {
-    const babelPlugins = (babel && babel.plugins) || [];
+    const plugins = (babel && babel.plugins) || [];
+    let targets = browserslist;
     // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
-    // const isLegacyBundle = modernMode && !modernBuild;
+    const isModernBundle = modernMode && modernBuild;
+    if (isModernBundle) {
+        // 这个是 modern 打包
+        targets = {esmodules: true};
+    }
+
     return {
         name: 'babel-loader',
         loader: require.resolve('babel-loader'),
@@ -18,7 +24,7 @@ module.exports = ({browserslist, modernMode, modernBuild, command, loaderOptions
                     {
                         debug: false,
                         useBuiltIns: 'usage',
-                        targets: browserslist,
+                        targets,
                         modules: false
                     }
                 ]
@@ -29,7 +35,7 @@ module.exports = ({browserslist, modernMode, modernBuild, command, loaderOptions
                 require.resolve('@babel/plugin-proposal-class-properties'),
                 require.resolve('@babel/plugin-transform-new-target'),
                 require.resolve('@babel/plugin-transform-modules-commonjs'),
-                ...babelPlugins
+                ...plugins
             ]
         }
     };

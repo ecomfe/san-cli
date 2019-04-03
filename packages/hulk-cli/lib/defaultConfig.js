@@ -37,8 +37,7 @@ module.exports = {
     }, // build 只会在 build 状态替换到默认的配置
     browserslist: {
         production: ['defaults', 'not ie < 11', 'last 2 versions', '> 1%', 'iOS 7', 'last 3 iOS versions'],
-        development: ['defaults', 'not ie < 11', 'last 2 versions', '> 1%', 'iOS 7', 'last 3 iOS versions'],
-        modern: []
+        development: ['defaults', 'not ie < 11', 'last 2 versions', '> 1%', 'iOS 7', 'last 3 iOS versions']
     },
     // project deployment base
     baseUrl: '/',
