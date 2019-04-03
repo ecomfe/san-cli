@@ -4,13 +4,20 @@
  */
 
 const path = require('path');
-const eslinter = require('./lib/eslinter');
-const stylelinter = require('./lib/stylelinter');
+const fecs = require('fecs');
 
 module.exports = dir => {
     dir = path.resolve(dir);
 
-    // commitlinter();
-    eslinter(dir);
-    stylelinter(dir);
+    fecs.check({
+        /* eslint-disable */
+        _: [dir],
+        /* eslint-enable */
+        stream: false,
+        reporter: 'baidu',
+        ignore: ['{node_modules,dist}/*', '*/*.min.*'],
+        rule: true,
+        color: true
+    });
+
 };

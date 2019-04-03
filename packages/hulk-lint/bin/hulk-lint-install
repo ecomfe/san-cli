@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+/**
+ * @file install git hooks
+ * @author luzhe <luzhe01@baidu.com>
+ */
+
+const path = require('path');
+const fs = require('fs');
+const chalk = require('chalk');
+
+const inject = require('../lib/inject');
+
+
+let dir = process.cwd();
+let packageJson = path.resolve(dir, 'package.json');
+if (!fs.existsSync(packageJson)) {
+    console.log(chalk.red('No package.json found! Please make sure the path is correct!'));
+    return;
+}
+
+let packageConf = require(packageJson);
+packageConf = inject(packageConf);
+
+fs.writeFile(packageJson, JSON.stringify(packageConf, '', '\t'), (err) => {
+    err ? console.log(err) : console.log('done!');
+});
