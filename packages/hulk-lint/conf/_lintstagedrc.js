@@ -26,6 +26,10 @@ module.exports = {
         '**/dist/**',
         '**/docs/**',
         '**/output/**',
+        '**/third-party/**',
+        '**/third_party/**',
+        '**/node_modules/**',
+        '**/third/**',
         '**/*.min.js'
     ]
 };
