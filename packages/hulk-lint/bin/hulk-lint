@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
 /**
- * @file hulk-cli bin 文件入口
+ * @file hulk-lint bin 文件入口
  * @author luzhe <luzhe01@baidu.com>
  */
 
 const linter = require('../index');
 
-linter(process.cwd());
+let dir = process.argv[2] || process.cwd();
+
+linter(dir);
