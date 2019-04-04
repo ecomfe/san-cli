@@ -30,6 +30,6 @@ module.exports = {
         '**/third_party/**',
         '**/node_modules/**',
         '**/third/**',
-        '**/*.min.js'
+        '**/*.min.*'
     ]
 };

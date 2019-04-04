@@ -19,5 +19,4 @@ module.exports = dir => {
         rule: true,
         color: true
     });
-
 };
