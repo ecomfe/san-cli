@@ -9,7 +9,7 @@ const updateNotifier = importLazy('update-notifier');
 const execa = importLazy('execa');
 const inquirer = importLazy('inquirer');
 const chalk = importLazy('chalk');
-const {gt: isLaterThan} = require('semver');
+const semver = importLazy('semver');
 const ConsoleTable = importLazy('tty-table');
 
 // eslint-disable-next-line
@@ -77,7 +77,7 @@ const selectBreaking = context => {
     return (ctx, task) => {
         return new rxjs.Observable(async observer => {
             const entries = ctx.entries;
-            const breakings = entries.filter(({name, wanted, latest}) => isLaterThan(latest, wanted));
+            const breakings = entries.filter(({name, wanted, latest}) => semver.gt(latest, wanted));
             const questions = [
                 {
                     type: 'checkbox',
