@@ -106,6 +106,24 @@ module.exports = (api, options) => {
         /* eslint-enable*/
         setLoader('js', /\.m?js$/, 'babel');
 
+        // webpackConfig.resolveLoader.modules.prepend(path.join(__dirname, 'node_modules'));
+
+        // const eslint = require('./loaders/eslint')(loaderOptions);
+
+        // webpackConfig.module
+        //     .rule('eslint')
+        //     .pre()
+        //     .include.add(api.resolve('src'))
+        //     .end()
+        //     .exclude.add(/node_modules/)
+        //     .add(/@baidu\/hulk-cli/)
+        //     .add(/(__test__|docs|output|dist|dest|third_party|min)/)
+        //     .end()
+        //     .test(/\.m?js$/)
+        //     .use(eslint.name)
+        //     .loader(eslint.loader)
+        //     .options(eslint.options);
+
         // 增加 md loader
         // 来自hulk.config.js component
         const {template, ignore} = options.component || {};

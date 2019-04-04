@@ -7,7 +7,9 @@ module.exports = ({sourceMap, browserslist, loaderOptions: {postcss = {}}}) => {
     const postcssPlugins = postcss.plugins || [];
     const plugins = [
         require('autoprefixer')({
-            browsers: browserslist
+            browsers: browserslist,
+            // 防止主动移除一些手写上去老的兼容写法，例如 -webkit-box-orient
+            remove: false
         }),
         require('postcss-import')(),
         require('postcss-plugin-pr2rem')({

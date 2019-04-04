@@ -102,12 +102,15 @@ module.exports = async (entry, args) => {
     webpack(webpackConfig, (err, stats) => {
         stopSpinner(false);
         if (err) {
-            return console.log(err);
+            console.log(err);
+            process.exit(1);
+            return;
         }
 
         if (stats.hasErrors()) {
             console.log('Build failed with errors.');
-            process.stderr.write(stats.toString({colors: true}));
+            process.stderr.write(stats.toString({colors: true, children: false, modules: false, chunkModules: false}));
+            process.exit(1);
             return;
         }
 
