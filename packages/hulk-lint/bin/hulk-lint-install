@@ -8,11 +8,16 @@
 const path = require('path');
 const fs = require('fs');
 const chalk = require('chalk');
+const program = require('commander');
 
 const inject = require('../lib/inject');
 
+program
+    .option('-p, --path [path]', 'Path to be install')
+    .parse(process.argv);
 
-let dir = process.cwd();
+let dir = program.path || process.cwd();
+
 let packageJson = path.resolve(dir, 'package.json');
 if (!fs.existsSync(packageJson)) {
     console.log(chalk.red('No package.json found! Please make sure the path is correct!'));

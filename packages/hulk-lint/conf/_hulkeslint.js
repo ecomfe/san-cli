@@ -4,7 +4,7 @@
  */
 
 module.exports = {
-    rules: {
+    'rules': {
         // 禁止 console，要用写 eslint disbale
         'no-console': 2,
         // 禁止 debugger，防止上线
@@ -15,5 +15,22 @@ module.exports = {
         'no-unused-vars': 2,
         // 没定义就用的就别用，全局的要用 写 eslint global
         'no-undef': 2
-    }
+    },
+    'parser': 'babel-eslint',
+    'parserOptions': {
+        'sourceType': 'module',
+        'ecmaFeatures': {
+            'jsx': true
+        }
+    },
+    'envs': [
+        'node', 'browser', 'es6'
+    ],
+    'plugins': ['babel'],
+    'ignore': true,
+    'ignorePattern': [
+        '/dist/**',
+        '/build/**',
+        '**/*.min.js'
+    ]
 };
