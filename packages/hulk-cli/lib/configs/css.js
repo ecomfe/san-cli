@@ -14,7 +14,7 @@ module.exports = (api, options) => {
 
         const shouldExtract = extract !== false;
         const filename = getAssetPath(assetsDir, `css/[name]${isProd ? '.[contenthash:8]' : ''}.css`);
-        const chunkFilename = getAssetPath(assetsDir, `css/common/[name]${isProd ? '.[contenthash:8]' : ''}.css`);
+        const chunkFilename = getAssetPath(assetsDir, `css/[name]${isProd ? '.[contenthash:8]' : ''}.css`);
         const extractOptions = Object.assign(
             {
                 filename,

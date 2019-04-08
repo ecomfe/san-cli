@@ -90,7 +90,7 @@ exports.getLoaderOptions = (
         sourceMap = true,
         browserslist = BROWSERS_LIST,
         command = 'build',
-        largeAssetSize = 4096,
+        largeAssetSize = 1024,
         devServer = {},
         loaderOptions = {},
         assetsDir,

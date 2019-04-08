@@ -18,7 +18,7 @@ module.exports = (api, options) => {
         const {assetsDir, sourceMap = true} = options;
         // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
         const isLegacyBundle = options.modernMode && !options.modernBuild;
-        const filename = getAssetPath(assetsDir, `js/[name]${isLegacyBundle ? '-legacy' : ''}.[contenthash:8].js`);
+        const filename = getAssetPath(assetsDir, `js/[name]${isLegacyBundle ? '-legacy' : ''}.[chunkhash:8].js`);
 
         webpackConfig
             .mode('production')
@@ -36,17 +36,45 @@ module.exports = (api, options) => {
             maxInitialRequests: 3,
             automaticNameDelimiter: '.',
             cacheGroups: {
+                default: false,
+                // 公共css代码抽离
+                styles: {
+                    name: 'common',
+                    test: /\.css$/,
+                    chunks: 'all',
+                    enforce: true,
+                    // 两个以上公用才抽离
+                    minChunks: 2,
+                    priority: 20
+                },
+                // 异步模块命名
+                asyncVendors: {
+                    name: 'async',
+                    minChunks: 1,
+                    chunks: 'async',
+                    priority: 0
+                },
+                // 三方库模块独立打包
                 vendors: {
-                    name: 'vendors',
-                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendor',
+                    test(mod) {
+                        return /[\\/]node_modules[\\/]/.test(mod.resource) && mod.type === 'javascript/auto';
+                    },
+                    minChunks: 1,
                     priority: -10,
                     chunks: 'initial'
                 },
+                // 公共js代码抽离
                 common: {
                     name: 'common',
-                    minChunks: 2,
+                    // 只抽取公共依赖模块，保证页面之间公用，并且不经常变化，否则 http cache 不住
+                    test(mod) {
+                        return /[\\/]node_modules[\\/]/.test(mod.resource) && mod.type === 'javascript/auto';
+                    },
+                    // 1个以上公用才抽离
+                    minChunks: 1,
                     priority: -20,
-                    chunks: 'initial',
+                    chunks: 'all',
                     reuseExistingChunk: true
                 }
             }
@@ -85,21 +113,7 @@ module.exports = (api, options) => {
                 terserOptions: {
                     comments: false,
                     compress: {
-                        arrows: false,
-                        comparisons: false,
-                        switches: false,
-                        toplevel: false,
-                        typeofs: false,
-                        booleans: true, // 0.7kb
-                        // prettier-ignore
-                        'if_return': true, // 0.4kb
-                        // prettier-ignore
-                        'collapse_vars': false, // 0.3kb
-
-                        sequences: true, // 0.7kb
                         unused: true,
-                        conditionals: true,
-                        evaluate: true,
                         // 删掉 debugger
                         drop_debugger: true, // eslint-disable-line
                         // 移除 console
@@ -107,10 +121,10 @@ module.exports = (api, options) => {
                         // 移除无用的代码
                         dead_code: true // eslint-disable-line
                     },
-                    safari10: false,
+                    ie8: false,
+                    safari10: true,
                     warnings: false,
-                    toplevel: true,
-                    ie8: false
+                    toplevel: true
                 }
             })
         );
