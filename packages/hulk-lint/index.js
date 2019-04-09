@@ -5,6 +5,7 @@
 
 const path = require('path');
 const fecs = require('fecs');
+const eslinter = require('./lib/eslinter');
 
 module.exports = dir => {
     dir = path.resolve(dir);
@@ -19,4 +20,6 @@ module.exports = dir => {
         rule: true,
         color: true
     });
+
+    eslinter(dir);
 };
