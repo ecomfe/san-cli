@@ -77,23 +77,29 @@ const selectBreaking = context => {
     return (ctx, task) => {
         return new rxjs.Observable(async observer => {
             const entries = ctx.entries;
-            const breakings = entries.filter(({name, wanted, latest}) => semver.gt(latest, wanted));
-            const questions = [
-                {
-                    type: 'checkbox',
-                    name: 'requiredUpdates',
-                    message: '发现需要更新的包，请手动选择',
-                    choices: breakings.map(({name, current, latest}) => {
-                        return {
-                            name: `${name} ${current} -> ${latest}`,
-                            value: name
-                        };
-                    })
-                }
-            ];
-            observer.next(); // 清空 loading
-            const {requiredUpdates} = await inquirer.prompt(questions);
-            ctx.requiredUpdates = entries.filter(({name}) => requiredUpdates.includes(name));
+            const breakings = entries.filter(
+                ({name, wanted, latest}) => semver.valid(wanted) && semver.valid(latest) && semver.gt(latest, wanted)
+            );
+            if (breakings.length) {
+                const questions = [
+                    {
+                        type: 'checkbox',
+                        name: 'requiredUpdates',
+                        message: '发现需要更新的包，请手动选择',
+                        choices: breakings.map(({name, current, latest}) => {
+                            return {
+                                name: `${name} ${current} -> ${latest}`,
+                                value: name
+                            };
+                        })
+                    }
+                ];
+                observer.next(); // 清空 loading
+                const {requiredUpdates} = await inquirer.prompt(questions);
+                ctx.requiredUpdates = entries.filter(({name}) => requiredUpdates.includes(name));
+            } else {
+                task.skip('empty');
+            }
             observer.complete();
         });
     };

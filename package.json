@@ -4,7 +4,7 @@
     "devDependencies": {
         "fecs": "^1.6.2",
         "husky": "^1.3.0",
-        "lerna": "^3.4.3",
+        "lerna": "^3.13.2",
         "lint-staged": "^8.1.5",
         "stylelint": "^9.10.1"
     },
