@@ -95,7 +95,7 @@ const selectBreaking = context => {
                     }
                 ];
                 observer.next(); // 清空 loading
-                const {requiredUpdates} = await inquirer.prompt(questions);
+                const {requiredUpdates} = await inquirer.prompt(questions); // eslint-disable-line
                 ctx.requiredUpdates = entries.filter(({name}) => requiredUpdates.includes(name));
             } else {
                 task.skip('empty');
