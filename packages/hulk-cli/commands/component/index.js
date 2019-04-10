@@ -7,11 +7,11 @@ module.exports = program => {
     program
         .command('component <entry>')
         .alias('md')
-        .description('san component demo preview server')
+        .description('San 组件 Demo 预览服务器')
         .option('-p, --port <port>', 'dev server port', /\d+/, 8899)
         .option('-h, --host <host>', 'dev server host')
-        .option('-m, --mode <mode>', 'webpack mode', /^(development|production)$/i, 'development')
-        .option('-c, --config <config>', 'set config file')
+        .option('-m, --mode <mode>', '设置 webpack mode', /^(development|production)$/i, 'development')
+        .option('-c, --config <config>', '设置  webpack config 文件')
         .option('--use-https', 'use https')
         .action((entry, args) => {
             const serve = require('../serve/run').serve;

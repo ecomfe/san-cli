@@ -10,11 +10,11 @@ module.exports = program => {
     program
         .command('serve [entry]')
         .alias('dev')
-        .description('serve a .js or .san file in development mode with zero config')
-        .option('-p, --port <port>', 'dev server port', /\d+/, 8899)
+        .description('0配置针对 a .js / .san 文件启动开发模式编译')
+        .option('-p, --port <port>', 'dev server 端口号', /\d+/, 8899)
         .option('-h, --host <host>', 'dev server host')
-        .option('-m, --mode <mode>', 'webpack mode', envReg, DEVELOPMENT_MODE)
-        .option('-c, --config <config>', 'set config file')
-        .option('--use-https', 'use https')
+        .option('-m, --mode <mode>', '指定 webpack mode', envReg, DEVELOPMENT_MODE)
+        .option('-c, --config <config>', '指定 webpack config 文件')
+        .option('--use-https', '使用 https')
         .action(run);
 };

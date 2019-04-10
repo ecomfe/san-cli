@@ -7,13 +7,12 @@ const run = require('./run');
 module.exports = program => {
     program
         .command('inspect [paths...]')
-        .description('inspect internal webpack config')
-        .option('--rule <ruleName>', 'inspect a specific module rule')
-        .option('--plugin <pluginName>', 'inspect a specific plugin')
-        .option('--rules', 'list all rule')
-        .option('--plugins', 'list all plugin names')
-        .option('--verbose', 'show full function definitions in output')
-        .option('-m, --mode <mode>', 'set webpack mode', /^(development|production)$/i, 'production')
-        .option('-c, --config <config>', 'set config file')
+        .description('检查内置 webpack 配置')
+        .option('--rule <ruleName>', '根据 module 规则名称输出配置')
+        .option('--plugin <pluginName>', '根据插件名称输出配置')
+        .option('--rules', '显示所有 module 规则')
+        .option('--plugins', '显示所有插件名称')
+        .option('-m, --mode <mode>', '设置 webpack mode', /^(development|production)$/i, 'production')
+        .option('-c, --config <config>', '设置 webpack config 文件')
         .action(run);
 };
