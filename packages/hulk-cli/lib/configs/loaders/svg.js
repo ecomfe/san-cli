@@ -10,6 +10,7 @@ module.exports = ({isProd, dir, assetsDir, largeAssetSize = 1024, loaderOptions:
         loader: require.resolve('svg-url-loader'),
         options: {
             limit: largeAssetSize,
+            noquotes: true,
             name: getAssetPath(assetsDir, `${dir}/[name]${isProd ? '.[hash:8]' : ''}.[ext]`)
         }
     };
