@@ -77,10 +77,15 @@ module.exports = (api, options) => {
         setLoader('san', /\.san$/, ['babel', 'san']);
         setLoader('ejs', /\.ejs$/, 'ejs');
         setLoader('html', /\.html?$/, 'html');
-        setLoader('img', /\.(png|jpe?g|gif|webp|svg)(\?.*)?$/, 'url', {
+        setLoader('svg', /\.svg(\?.*)?$/, 'svg', {
+            dir: 'svg',
+            ...loaderOptions
+        });
+        setLoader('img', /\.(png|jpe?g|gif|webp)(\?.*)?$/, 'url', {
             dir: 'img',
             ...loaderOptions
         });
+
         setLoader('media', /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/, 'url', {
             dir: 'media',
             ...loaderOptions

@@ -42,5 +42,8 @@
             "**/output/**",
             "**/*.min.js"
         ]
+    },
+    "dependencies": {
+        "svg-url-loader": "^2.3.2"
     }
 }
