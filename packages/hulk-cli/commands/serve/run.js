@@ -12,7 +12,7 @@ async function serve(app, entry, args) {
 
     const {info, error} = require('@baidu/hulk-utils/logger');
     // 默认配置
-    const {devServer: defaults} = require('../../lib/defaultConfig');
+    const {devServer: defaults} = require('../../lib/defaultConfig'); // eslint-disable-line
 
     info(`Starting ${mode} server...`);
 
