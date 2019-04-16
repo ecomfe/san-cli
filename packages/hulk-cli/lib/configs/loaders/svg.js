@@ -1,5 +1,5 @@
 /**
- * @file url-loader options
+ * @file svg-url-loader options
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const {getAssetPath} = require('../../utils'); // eslint-disable-line

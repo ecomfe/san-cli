@@ -23,7 +23,6 @@ module.exports = function formatStats(stats, dir, api) {
     });
     const chunks = json.chunks;
     let assets = json.assets ? json.assets : json.children.reduce((acc, child) => acc.concat(child.assets), []);
-
     const assetsMap = new Map(); // eslint-disable-line no-undef
     let maxHeaderWidth = 0;
     // 只提取 js 和 css

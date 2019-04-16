@@ -3,11 +3,6 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-const defaults = {
-    host: '0.0.0.0',
-    port: 8899,
-    https: false
-};
 async function serve(app, entry, args) {
     const context = process.cwd();
     const isFile = app && entry;
@@ -16,6 +11,9 @@ async function serve(app, entry, args) {
     const isProduction = mode ? mode === PRODUCTION_MODE : process.env.NODE_ENV === PRODUCTION_MODE;
 
     const {info, error} = require('@baidu/hulk-utils/logger');
+    // 默认配置
+    const {devServer: defaults} = require('../../lib/defaultConfig');
+
     info(`Starting ${mode} server...`);
 
     const path = require('path');
@@ -97,7 +95,18 @@ async function serve(app, entry, args) {
     }
 
     // create compiler
-    const compiler = webpack(webpackConfig);
+    let compiler;
+    try {
+        compiler = webpack(webpackConfig);
+    } catch (e) {
+        // 捕捉参数不正确的错误信息
+        console.log('webpack compile error!');
+        if (e instanceof webpack.WebpackOptionsValidationError) {
+            console.error(e.message);
+            process.exit(1);
+        }
+        throw e;
+    }
 
     // console.log(webpackConfig)
     // create server
