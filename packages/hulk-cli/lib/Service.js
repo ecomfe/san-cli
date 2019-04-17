@@ -8,6 +8,7 @@ const chalk = require('chalk');
 const defaultsDeep = require('lodash.defaultsdeep');
 const Config = require('webpack-chain');
 const merge = require('webpack-merge');
+const cosmiconfig = require('cosmiconfig');
 
 const {error} = require('@baidu/hulk-utils/logger'); // eslint-disable-line
 const {getDebugLogger} = require('@baidu/hulk-utils/get-debug'); // eslint-disable-line
@@ -135,25 +136,33 @@ module.exports = class Service {
     }
     loadConfigFile(configFile = 'hulk.config.js') {
         let config = {};
-        const configPath = resolve(this.context, configFile);
-        if (configPath && fs.existsSync(configPath)) {
-            try {
-                delete require.cache[configPath];
-                config = require(configPath);
-                if (config.default) {
-                    config = config.default;
-                }
-                if (!config || (typeof config !== 'object' && typeof config !== 'function')) {
-                    error(`${chalk.bold(configPath)}: 格式必须是对象或者fn(mode).`);
-                    config = null;
-                }
-                if (typeof config === 'function') {
-                    config = config(this.mode);
-                }
-            } catch (e) {
-                error(`Error loading ${chalk.bold(configPath)} `);
-                throw e;
+        let configPath = resolve(this.context, configFile);
+        if (!(configPath && fs.existsSync(configPath))) {
+            // 使用 cosmiconfig 查找
+            const explorer = cosmiconfig('hulk', {
+                searchPlaces: ['hulk.config.js', '.hulkrc.js']
+            });
+            const result = explorer.searchSync(this.context) || {};
+            if (result.filepath) {
+                configPath = result.filepath;
             }
+        }
+        try {
+            delete require.cache[configPath];
+            config = require(configPath);
+            if (config.default) {
+                config = config.default;
+            }
+            if (!config || (typeof config !== 'object' && typeof config !== 'function')) {
+                error(`${chalk.bold(configPath)}: 格式必须是对象或者fn(mode).`);
+                config = null;
+            }
+            if (typeof config === 'function') {
+                config = config(this.mode);
+            }
+        } catch (e) {
+            error(`Error loading ${chalk.bold(configPath)} `);
+            throw e;
         }
 
         // normalize some options
