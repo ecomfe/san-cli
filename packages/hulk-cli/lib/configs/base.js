@@ -105,7 +105,7 @@ module.exports = (api, options) => {
                     .clear()
                     .end()
                 .exclude
-                    .add(/node_modules/)
+                    .add(/node_modules\/(?!@baidu)/) // 排除@baidu/xbox这类库
                     .add(/@baidu\/hulk-cli/)
                 .end()
         /* eslint-enable*/
