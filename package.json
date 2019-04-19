@@ -45,9 +45,6 @@
             "**/*.min.js"
         ]
     },
-    "dependencies": {
-        "svg-url-loader": "^2.3.2"
-    },
     "commitlint": {
         "rules": {
             "body-leading-blank": [
@@ -114,5 +111,6 @@
                 ]
             ]
         }
-    }
+    },
+    "dependencies": {}
 }
