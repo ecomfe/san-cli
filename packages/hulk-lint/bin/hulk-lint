@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+
+/**
+ * @file hulk-lint bin 文件入口
+ * @author luzhe <luzhe01@baidu.com>
+ */
+
+const program = require('commander');
+
+const linter = require('../index');
+const packageInfo = require('../package.json');
+
+program
+    .version(packageInfo.version)
+    .option('-p, --path [path]', 'Path to be linted')
+    .option('-h, --hook', 'For husky')
+    .parse(process.argv);
+
+let dir = program.path || process.cwd();
+linter(dir);
