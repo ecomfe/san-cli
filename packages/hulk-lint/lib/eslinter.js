@@ -23,7 +23,9 @@ function num2Str(num) {
     return '    '.slice(0, constLength - str.length) + str;
 }
 
+/*eslint no-console: "off"*/
 module.exports = dir => {
+    
     console.log('eslinting...');
     let cli = new CLIEngine(eslintConf);
 

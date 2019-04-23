@@ -10,6 +10,7 @@ const {spawn} = require('child_process');
 
 const inject = require('./inject');
 
+/*eslint no-console: "off"*/
 module.exports = (dir = '') => {
     // read the content of package.json
     let packageJson = path.resolve(dir, 'package.json');
