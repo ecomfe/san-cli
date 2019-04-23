@@ -21,5 +21,7 @@ module.exports = dir => {
         color: true
     });
 
-    eslinter(dir);
+    let {results} = eslinter(dir);
+    process.extCode = results.length === 0 ? 0 : 1;
+    process.exit();
 };
