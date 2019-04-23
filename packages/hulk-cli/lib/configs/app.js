@@ -4,8 +4,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin-for-split');
-const hwpTemp = new HtmlWebpackPlugin({});
+const injectTplAssets = require('../injectTplAssets');
 
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
@@ -133,41 +132,14 @@ module.exports = (api, options) => {
         webpackConfig.plugin('hulk-html-webpack-addons-plugin').use(require('@baidu/hulk-html-webpack-plugin-addons'), [
             {
                 alterAssetTags(pluginData) {
+                    // 这里注意，只是 html-webpack-plugin v3才有这个，v4没有 head 和 body，但又替代品
                     if (path.extname(pluginData.outputName) === '.tpl') {
                         // 不插入css和js
                         pluginData.head = pluginData.body = [];
                     }
-
                     return pluginData;
                 },
-                afterHTMLProcessing(pluginData) {
-                    if (!~pluginData.html.indexOf('{%/block%}')) {
-                        return pluginData;
-                    }
-                    // 手动添加资源到项目tpl特定的位置
-                    let assetTags = hwpTemp.generateHtmlTags(pluginData.assets);
-                    let bodyAsset = assetTags.body.map(hwpTemp.createHtmlTag.bind(hwpTemp));
-                    let headAsset = assetTags.head.map(hwpTemp.createHtmlTag.bind(hwpTemp));
-                    const headTag = '{%block name="__css_asset"%}';
-                    const bodyTag = '{%block name="__script_asset"%}';
-                    let html = pluginData.html;
-                    // if (isProduction) {
-                    //     const reg = new RegExp(config.build.assetsPublicPath, 'g');
-                    //     headAsset = headAsset.map(item => item.replace(reg, '{%$staticDomain%}/'));
-                    //     bodyAsset = bodyAsset.map(item => item.replace(reg, '{%$staticDomain%}/'));
-                    // }
-                    // 替换 head body部分
-                    [[headAsset, headTag], [bodyAsset, bodyTag]].forEach(([assets, tag]) => {
-                        if (~html.indexOf(tag)) {
-                            html = html.split(tag).join(`${tag}${assets.join('')}`);
-                        } else {
-                            html += tag + assets.join('') + '{%/block%}';
-                        }
-                    });
-
-                    pluginData.html = html;
-                    return pluginData;
-                }
+                afterHTMLProcessing: injectTplAssets
             }
         ]);
         // copy static assets in public/

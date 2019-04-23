@@ -4,6 +4,8 @@
  */
 
 module.exports = async (entry, args) => {
+    // 开始时间
+    const startTime = Date.now();
     const {logWithSpinner, stopSpinner} = require('@baidu/hulk-utils/spinner');
     const mode = args.mode || 'production'; // 默认是 production
     logWithSpinner(`Building for ${mode}...`);
@@ -124,8 +126,12 @@ module.exports = async (entry, args) => {
         }
 
         if (!args.watch) {
-            const targetDirShort = path.relative(context, targetDir);
-            success(`Build complete. The ${chalk.cyan(targetDirShort)} directory is ready to be deployed.`);
+            const duration = (Date.now() - startTime) / 1e3;
+            const {time} = stats.toJson({modules: false, chunks: false, assets: false});
+            // const targetDirShort = path.relative(context, targetDir);
+            success(
+                `Build complete. Duration ${chalk.cyan(duration + 's')}, Webpack use ${chalk.cyan(time / 1e3 + 's')}.`
+            );
             // 解决 apim 这类问题
             // process.exit(0);
         } else {
