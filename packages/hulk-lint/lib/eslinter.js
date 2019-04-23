@@ -23,13 +23,14 @@ function num2Str(num) {
     return '    '.slice(0, constLength - str.length) + str;
 }
 
-/*eslint no-console: "off"*/
-module.exports = dir => {
-    
+/* eslint no-console: "off" */
+
+module.exports = dirs => {
+
     console.log('eslinting...');
     let cli = new CLIEngine(eslintConf);
 
-    let eslintRes = cli.executeOnFiles([dir]);
+    let eslintRes = cli.executeOnFiles(dirs);
 
     if (eslintRes.warningCount === 0 && eslintRes.errorCount === 0) {
         console.log(chalk.green('Congratulations! No es error!'));
