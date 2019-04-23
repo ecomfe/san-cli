@@ -24,7 +24,7 @@
             ],
             "*.js": [
                 "fecs check --type=es,js --reporter=baidu --rule",
-                "hulk-lint"
+                "hulk lint"
             ],
             "*.{html,htm}": [
                 "fecs check --reporter=baidu --rule"
