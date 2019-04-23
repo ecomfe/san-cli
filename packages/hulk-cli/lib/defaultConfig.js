@@ -51,7 +51,7 @@ module.exports = {
     // project deployment base
     baseUrl: '/',
     // where to output built files
-    outputDir: 'dist',
+    outputDir: 'outputDir',
     templateDir: '',
     // where to put static assets (js/css/img/font/...)
     assetsDir: '',

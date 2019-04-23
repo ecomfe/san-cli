@@ -35,7 +35,8 @@ module.exports = (name, dest, options) => {
             metaData.author = author;
             metaData.email = gitEmail;
             metaData.username = gitUser;
-            metaData.name = name;
+            // 路径地址
+            metaData.name = path.basename(path.resolve(dest));
 
             // 添加到 context 传入下一个流程
             ctx.metaData = metaData;

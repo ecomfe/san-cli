@@ -191,6 +191,12 @@ function download(template, dest, opts) {
 
     return (ctx, task) => {
         return new rxjs.Observable(observer => {
+            if (ctx.localTemplatePath) {
+                // 使用本地路径
+                task.skip('本次使用本地路径');
+                observer.complete();
+                return;
+            }
             // 临时存放地址，存放在~/.hulk-templates 下面
             let tmp = path.join(home, '.hulk-templates', template.replace(/[/:#]/g, '-'));
             if (opts.useCache && fs.exists(tmp)) {
@@ -241,7 +247,7 @@ function installDep(template, dest, opts) {
                 try {
                     // 清理 log，交给 npm
                     observer.next('安装依赖ing...');
-                    await installDeps(dest, opts.registry);
+                    await installDeps(dest, opts.verbose, opts.registry);
                     observer.complete();
                 } catch (e) {
                     observer.error(e);
@@ -251,9 +257,9 @@ function installDep(template, dest, opts) {
     };
 }
 
-function installDeps(dest, registry = NPM_REGISTRY) {
+function installDeps(dest, verbose = false, registry = NPM_REGISTRY) {
     return execa('npm', ['install', '--loglevel', 'error', '--registry', registry], {
         cwd: dest,
-        stdio: ['inherit', 'inherit', 'inherit']
+        stdio: verbose ? ['inherit', 'inherit', 'inherit'] : ['ignore', 'ignore', 'ignore']
     });
 }

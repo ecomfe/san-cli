@@ -10,6 +10,7 @@ module.exports = program => {
         .description('通过项目脚手架生成项目')
         .option('--offline', '标示 template 是离线的脚手架')
         .option('--use-https', 'Git 使用 https 请求')
+        .option('--verbose', '显示调试信息')
         .option('--install', '初始化成功后，进入目录安装依赖，默认：不安装')
         .option('--force', '跳过提醒，强制删除已存在的目录，默认会提醒')
         .option('--use-cache', '优先使用本地已经下载过的脚手架缓存')
