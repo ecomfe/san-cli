@@ -1,8 +1,12 @@
 # Hulk cli - 前端研发命令集
 
-- [ ] 检测 babelrc、browserslist、postcss 配置
-- [ ] lint rules 增加 no-alert 等自定义规范
-- [ ] 提速：去掉 commander 使用 minimist？
+- [ ] modern mode
+- [ ] css sprite
+- [ ] doc 命令
+- [ ] ezcode
+- [ ] test
+- [ ] sentry
+- [ ] 文档整理
 
 ## Hulk 2.0
 

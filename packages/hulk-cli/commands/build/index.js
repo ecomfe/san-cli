@@ -7,7 +7,7 @@ module.exports = program => {
     program
         .command('build [entry]')
         .description('0配置打包')
-        .option('-d, --dest <dir>', '输出文件路径', 'dist')
+        .option('-d, --dest <dir>', '输出文件路径')
         .option('--analyze', '分析 bunlde')
         // .option('--modern', 'modern browser build (default: false)')
         .option('--watch', 'watch 模式')

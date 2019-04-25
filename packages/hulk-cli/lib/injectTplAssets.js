@@ -9,6 +9,8 @@ module.exports = (pluginData, compilation) => {
     }
     const htmlWp = pluginData.plugin;
 
+    // TODO 调研下 html-webpack-plugin 中能不能直接拿到 prefetch magic commit 的代码
+    // TODO 如果能拿到，就可以省掉这部分代码
     const initEntry = Object.keys(pluginData.assets.chunks)[0];
     // publicPath
     const publicPath = compilation.outputOptions.publicPath || '';
