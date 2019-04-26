@@ -7,12 +7,16 @@ const path = require('path');
 const fecs = require('fecs');
 const eslinter = require('./lib/eslinter');
 
-module.exports = dir => {
-    dir = path.resolve(dir);
+module.exports = dirs => {
+    if (!Array.isArray(dirs)) {
+        dirs = [dirs];
+    }
+
+    dirs = dirs.map(dir => path.resolve(dir));
 
     fecs.check({
         /* eslint-disable */
-        _: [dir],
+        _: dirs,
         /* eslint-enable */
         stream: false,
         reporter: 'baidu',
@@ -21,7 +25,6 @@ module.exports = dir => {
         color: true
     });
 
-    let {results} = eslinter(dir);
-    process.extCode = results.length === 0 ? 0 : 1;
-    process.exit();
+    let {results} = eslinter(dirs);
+    process.exitCode = results.length === 0 ? 0 : 1;
 };
