@@ -4,9 +4,9 @@
  */
 // const MAX_GZIPPED_SIZE = 150 * 1024;
 const MAX_SIZE = 500 * 1024;
-const RECOMMEND_SIZE = 244;
+// const RECOMMEND_SIZE = 244;
 // eslint-disable-next-line fecs-valid-jsdoc
-module.exports = function formatStats(stats, dir, api) {
+module.exports = function formatStats(stats, destDir, api) {
     const fs = require('fs');
     const path = require('path');
     const zlib = require('zlib');
@@ -89,12 +89,10 @@ module.exports = function formatStats(stats, dir, api) {
                     totalSize += asset.size;
                     totalGzippedSize += gzippedSize;
                 }
-
+                const size = formatSize(asset.size);
                 return [
-                    /js$/.test(asset.name)
-                        ? chalk.green(path.join(dir, asset.name))
-                        : chalk.blue(path.join(dir, asset.name)),
-                    formatSize(asset.size),
+                    /js$/.test(asset.name) ? chalk.green(asset.name) : chalk.blue(asset.name),
+                    asset.isOverSizeLimit ? chalk.underline.red.bold(size) : size,
                     formatSize(gzippedSize)
                 ];
             });
@@ -105,14 +103,7 @@ module.exports = function formatStats(stats, dir, api) {
                 {
                     value: 'Size',
                     align: 'center',
-                    width: 16,
-                    formatter(value) {
-                        const size = parseInt(value, 10);
-                        if (!isNaN(size) && size >= RECOMMEND_SIZE) {
-                            return chalk.underline.red.bold(value);
-                        }
-                        return value;
-                    }
+                    width: 16
                 },
                 {value: 'Gzipped', align: 'center', width: 16}
             ],
@@ -138,7 +129,7 @@ module.exports = function formatStats(stats, dir, api) {
     }
 
     function getGzippedSize(asset) {
-        const filepath = api.resolve(path.join(dir, asset.name));
+        const filepath = api.resolve(path.join(destDir, asset.name));
         const buffer = fs.readFileSync(filepath);
         return zlib.gzipSync(buffer).length;
     }

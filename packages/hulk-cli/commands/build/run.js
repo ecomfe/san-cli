@@ -6,9 +6,9 @@
 module.exports = async (entry, args) => {
     // 开始时间
     const startTime = Date.now();
-    const {logWithSpinner, stopSpinner} = require('@baidu/hulk-utils/spinner');
+    const {success, error, info} = require('@baidu/hulk-utils/logger');
     const mode = args.mode || 'production'; // 默认是 production
-    logWithSpinner(`Building for ${mode}...`);
+    info(`Building for ${mode}...`);
 
     const context = process.cwd();
     const isProduction = mode ? mode === 'production' : process.env.NODE_ENV === 'production';
@@ -17,7 +17,6 @@ module.exports = async (entry, args) => {
     // 目录直接操作
     // 如果是文件，需要设置 entry('app'),~entry
 
-    const {success, error} = require('@baidu/hulk-utils/logger');
     const fse = require('fs-extra');
     const chalk = require('chalk');
     const path = require('path');
@@ -50,6 +49,7 @@ module.exports = async (entry, args) => {
         configFile: args.config,
         plugins
     });
+
     const options = service.init(mode, {
         target: args.target ? args.target : isFile ? 'page' : 'app',
         modernMode: args.modern,
@@ -94,7 +94,6 @@ module.exports = async (entry, args) => {
     }
     // 处理 entry 不存在的情况
     if (Object.keys(webpackConfig.entry).length === 0) {
-        stopSpinner(false);
         error('没有找到 Entry，请命令后面添加 entry 或者配置 hulk.config.js');
         process.exit(1);
         return Promise.reject();
@@ -102,7 +101,6 @@ module.exports = async (entry, args) => {
     // console.log(webpackConfig.plugins[webpackConfig.plugins.length-1])
     // webpackConfig.output.publicPath = './';
     webpack(webpackConfig, (err, stats) => {
-        stopSpinner(false);
         if (err) {
             console.log(err);
             process.exit(1);
@@ -116,8 +114,9 @@ module.exports = async (entry, args) => {
             return;
         }
 
+        const targetDirShort = path.relative(context, targetDir);
+
         if (!args.analyze) {
-            const targetDirShort = path.relative(context, targetDir);
             console.log(
                 formatStats(stats, targetDirShort, {
                     resolve: p => path.resolve(context, p)
@@ -127,10 +126,12 @@ module.exports = async (entry, args) => {
 
         if (!args.watch) {
             const duration = (Date.now() - startTime) / 1e3;
-            const {time} = stats.toJson({modules: false, chunks: false, assets: false});
+            const {time, version} = stats.toJson({modules: false, chunks: false, assets: false});
             // const targetDirShort = path.relative(context, targetDir);
             success(
-                `Build complete. Duration ${chalk.cyan(duration + 's')}, Webpack use ${chalk.cyan(time / 1e3 + 's')}.`
+                `The ${chalk.cyan(targetDirShort)} directory is ready to be deployed. Duration ${chalk.cyan(
+                    `${duration}/${time / 1e3}s`
+                )}, Webpack ${version}.`
             );
             // 解决 apim 这类问题
             // process.exit(0);

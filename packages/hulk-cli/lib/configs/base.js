@@ -20,6 +20,7 @@ module.exports = (api, options) => {
         // set output
         webpackConfig.output
             .path(api.resolve(options.outputDir))
+            .jsonpFunction('Hulk2')
             .filename((isLegacyBundle ? '[name]-legacy' : '[name]') + `${isProd ? '.[hash:8]' : ''}.js`)
             .publicPath(options.baseUrl);
 
@@ -156,5 +157,7 @@ module.exports = (api, options) => {
                 verbose: false
             }
         ]);
+        // 添加progress
+        webpackConfig.plugin('progress').use(require('webpack/lib/ProgressPlugin'));
     });
 };

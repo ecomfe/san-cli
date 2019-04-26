@@ -49,7 +49,17 @@ module.exports = (api, options) => {
                 },
                 // 异步模块命名
                 asyncVendors: {
-                    name: 'async',
+                    name(module, chunks, cacheGroupKey) {
+                        if (Array.isArray(chunks)) {
+                            const names = chunks
+                                .map(({name}) => {
+                                    return name;
+                                })
+                                .filter(name => name);
+                            return names.length ? names.join('-') : 'async';
+                        }
+                        return 'async';
+                    },
                     minChunks: 1,
                     chunks: 'async',
                     priority: 0
@@ -72,7 +82,7 @@ module.exports = (api, options) => {
                         return /[\\/]node_modules[\\/]/.test(mod.resource) && mod.type === 'javascript/auto';
                     },
                     // 1个以上公用才抽离
-                    minChunks: 1,
+                    minChunks: 2,
                     priority: -20,
                     chunks: 'all',
                     reuseExistingChunk: true

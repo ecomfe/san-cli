@@ -17,13 +17,11 @@ module.exports = (api, options) => {
             webpackConfig.output.globalObject('this');
             webpackConfig.plugin('no-emit-on-errors').use(require('webpack/lib/NoEmitOnErrorsPlugin'));
         }
+
         // 在 serve 情况下添加
         if (options.command === 'serve') {
-            if (options.devServer.progress !== false) {
-                webpackConfig.plugin('progress').use(require('webpack/lib/ProgressPlugin'));
-            }
             const {transformer, formatter} = require('../utils');
-
+            webpackConfig.plugin('named-modules-plugin').use(require('webpack/lib/NamedModulesPlugin'));
             webpackConfig.plugin('friendly-errors').use(require('friendly-errors-webpack-plugin'), [
                 {
                     additionalTransformers: [transformer],

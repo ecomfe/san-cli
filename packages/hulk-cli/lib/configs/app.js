@@ -13,7 +13,18 @@ module.exports = (api, options) => {
         // 1. 判断 pages
         // 2. build 做的事情是判断 serve 对象
         const htmlOptions = {
-            templateParameters: (compilation, assets, pluginOptions) => {
+            templateParameters: (...args) => {
+                /* eslint-disable one-var */
+                let compilation, assets, assetTags, pluginOptions;
+                /* eslint-enable one-var */
+
+                if (args.length === 4) {
+                    // v4 版本
+                    [compilation, assets, assetTags, pluginOptions] = args;
+                } else {
+                    // v3 版本
+                    [compilation, assets, pluginOptions] = args;
+                }
                 // enhance html-webpack-plugin's built in template params
                 let stats;
                 return Object.assign({
@@ -21,10 +32,11 @@ module.exports = (api, options) => {
                     get webpack() {
                         return stats || (stats = compilation.getStats().toJson());
                     },
-                    compilation: compilation,
+                    compilation,
                     webpackConfig: compilation.options,
                     htmlWebpackPlugin: {
                         files: assets,
+                        tags: assetTags,
                         options: pluginOptions
                     }
                 });
@@ -36,10 +48,10 @@ module.exports = (api, options) => {
             Object.assign(htmlOptions, {
                 minify: {
                     removeComments: true,
-                    collapseWhitespace: true,
+                    collapseWhitespace: false,
                     removeAttributeQuotes: true,
                     collapseBooleanAttributes: true,
-                    removeScriptTypeAttributes: true
+                    removeScriptTypeAttributes: false
                     // more options:
                     // https://github.com/kangax/html-minifier#options-quick-reference
                 }
@@ -86,9 +98,13 @@ module.exports = (api, options) => {
             const normalizePageConfig = c => (typeof c === 'string' ? {entry: c} : c);
 
             pages.forEach(name => {
-                let {title, entry, template = `public/${name}.html`, filename, chunks} = normalizePageConfig(
-                    multiPageConfig[name]
-                );
+                let {
+                    title,
+                    entry,
+                    template = `public/${name}.html`,
+                    filename,
+                    chunks = undefined
+                } = normalizePageConfig(multiPageConfig[name]);
                 // inject entry
                 webpackConfig.entry(name).add(api.resolve(entry));
 
@@ -113,14 +129,20 @@ module.exports = (api, options) => {
                     : defaultHtmlPath;
 
                 // inject html plugin for the page
-                const pageHtmlOptions = Object.assign({alwaysWriteToDisk: true}, htmlOptions, {
-                    chunks: chunks || ['chunk-vendors', 'chunk-common', name],
-                    template: templatePath,
-                    // add templateDir
-                    filename: ensureRelative(outputDir, filename),
-                    title
-                });
-
+                const pageHtmlOptions = Object.assign(
+                    {
+                        alwaysWriteToDisk: true
+                    },
+                    htmlOptions,
+                    {
+                        chunks,
+                        entry: name,
+                        template: templatePath,
+                        // add templateDir
+                        filename: ensureRelative(outputDir, filename),
+                        title
+                    }
+                );
                 webpackConfig.plugin(`html-${name}`).use(HTMLPlugin, [pageHtmlOptions]);
             });
         }
