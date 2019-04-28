@@ -97,7 +97,6 @@ async function serve(app, entry, args, command = 'serve') {
         // inject dev/hot client
         addDevClientToEntry(webpackConfig, devClients);
     }
-
     // create compiler
     let compiler;
     try {
@@ -120,7 +119,7 @@ async function serve(app, entry, args, command = 'serve') {
         hot: !isProduction,
         noInfo: true,
         stats: 'errors-only',
-        inline: true,
+        inline: false,
         lazy: false,
         quiet: true,
         index: 'index.html',
