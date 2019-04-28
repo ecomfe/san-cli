@@ -71,8 +71,11 @@ module.exports = async (template, appName, opts) => {
         .run()
         .then(ctx => {
             const {metaData: opts, tplData: data} = ctx;
+            const duration = (((Date.now() - startTime) / 10) | 0) / 100;
+            console.log('✨  Done in ' + duration + 's.');
+
             if (typeof opts.complete === 'function') {
-                // 跟 vue template 参数保持一致
+                // 传入参数
                 opts.complete(data, {
                     chalk,
                     logger: {
@@ -86,9 +89,7 @@ module.exports = async (template, appName, opts) => {
             } else {
                 logMessage(opts.completeMessage, data);
             }
-            const duration = (((Date.now() - startTime) / 10) | 0) / 100;
 
-            console.log('✨  Done in ' + duration + 's.');
             notifier.notify();
         })
         .catch(e => {

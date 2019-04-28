@@ -11,7 +11,7 @@ module.exports = program => {
         .command('serve [entry]')
         .alias('dev')
         .description('0配置针对 a .js / .san 文件启动开发模式编译')
-        .option('-p, --port <port>', 'dev server 端口号', /\d+/, 8899)
+        .option('-p, --port <port>', 'dev server 端口号', /\d+/)
         .option('-h, --host <host>', 'dev server host')
         .option('-m, --mode <mode>', '指定 webpack mode', envReg, DEVELOPMENT_MODE)
         .option('-c, --config <config>', '指定 webpack config 文件')

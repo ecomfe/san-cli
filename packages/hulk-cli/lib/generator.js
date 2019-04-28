@@ -54,7 +54,7 @@ module.exports = (name, dest, options) => {
             const answers = await ask(metaData.prompts || {}, metaData);
             const data = Object.assign(
                 {
-                    destDirName: name,
+                    destDirName: dest,
                     inPlace: dest === process.cwd(),
                     noEscape: true
                 },
@@ -170,7 +170,7 @@ function template(content, file, cb, data) {
 
     render(content, data)
         .then(res => {
-            file.contents = new Buffer(res);
+            file.contents = Buffer.from(res);
             cb(null, file);
         })
         .catch(err => {
