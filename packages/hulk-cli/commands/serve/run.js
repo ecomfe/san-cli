@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-async function serve(app, entry, args) {
+async function serve(app, entry, args, command = 'serve') {
     const context = process.cwd();
     const isFile = app && entry;
     const mode = args.mode;
@@ -37,7 +37,7 @@ async function serve(app, entry, args) {
         target: args.target ? args.target : isFile ? 'page' : 'app',
         modernMode: args.modern,
         modernBuild: args.modern && process.env.HULK_CLI_MODERN_BUILD,
-        command: 'serve'
+        command
     });
 
     // resolve webpack config
@@ -47,6 +47,10 @@ async function serve(app, entry, args) {
     // entry arg
     if (entry) {
         webpackConfig.resolve.alias['~entry'] = path.resolve(context, entry);
+    }
+    if (command === 'component') {
+        // 清空，这里是因为 hulk.config 查找导致的
+        webpackConfig.entry = {};
     }
     if (!app) {
         delete webpackConfig.entry.app;
@@ -108,7 +112,6 @@ async function serve(app, entry, args) {
         throw e;
     }
 
-    // console.log(webpackConfig)
     // create server
     const defaultDevServer = {
         clientLogLevel: 'none',

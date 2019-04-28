@@ -21,7 +21,8 @@ module.exports = program => {
             return serve(
                 require.resolve('../../template/webpack/component/main.js'),
                 path.resolve(context, entry),
-                args
+                args,
+                'component'
             );
         });
 };

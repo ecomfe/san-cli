@@ -66,17 +66,19 @@ module.exports = (api, options) => {
         // 默认路径
         const defaultHtmlPath = path.resolve(__dirname, '../../template/webpack/index-default.html');
         const publicCopyIgnore = ['index.html', '.DS_Store'];
-
-        if (!multiPageConfig) {
+        let useHtmlPlugin = false;
+        if (!multiPageConfig || options.command === 'component') {
             webpackConfig
                 .entry('app')
                 .add(require.resolve('../../template/webpack/main.js'))
                 .end();
+
             // default, single page setup.
             htmlOptions.alwaysWriteToDisk = true;
             htmlOptions.inject = true;
             htmlOptions.template = fs.existsSync(htmlPath) ? htmlPath : defaultHtmlPath;
             webpackConfig.plugin('html').use(HTMLPlugin, [htmlOptions]);
+            useHtmlPlugin = true;
         } else {
             // multi-page setup
             /**
@@ -99,13 +101,9 @@ module.exports = (api, options) => {
             const normalizePageConfig = c => (typeof c === 'string' ? {entry: c} : c);
 
             pages.forEach(name => {
-                let {
-                    title,
-                    entry,
-                    template = `public/${name}.html`,
-                    filename,
-                    chunks = [name]
-                } = normalizePageConfig(multiPageConfig[name]);
+                let {title, entry, template = `public/${name}.html`, filename, chunks = [name]} = normalizePageConfig(
+                    multiPageConfig[name]
+                );
                 // inject entry
                 webpackConfig.entry(name).add(api.resolve(entry));
 
@@ -146,25 +144,31 @@ module.exports = (api, options) => {
                 );
                 webpackConfig.plugin(`html-${name}`).use(HTMLPlugin, [pageHtmlOptions]);
             });
+            useHtmlPlugin = true;
+        }
+        if (useHtmlPlugin) {
+            // 这里插件是依赖 html-webpack-plguin 的，所以不配置 hwp，会报错哦~
+            // html-webpack-harddisk-plugin
+            webpackConfig.plugin('html-webpack-harddisk-plugin').use(require('html-webpack-harddisk-plugin'));
+
+            // 处理 smarty 的placeholder
+            webpackConfig
+                .plugin('hulk-html-webpack-addons-plugin')
+                .use(require('@baidu/hulk-html-webpack-plugin-addons'), [
+                    {
+                        alterAssetTags(pluginData) {
+                            // 这里注意，只是 html-webpack-plugin v3才有这个，v4没有 head 和 body，但又替代品
+                            if (path.extname(pluginData.outputName) === '.tpl') {
+                                // 不插入css和js
+                                pluginData.head = pluginData.body = [];
+                            }
+                            return pluginData;
+                        },
+                        afterHTMLProcessing: injectAssets
+                    }
+                ]);
         }
 
-        // html-webpack-harddisk-plugin
-        webpackConfig.plugin('html-webpack-harddisk-plugin').use(require('html-webpack-harddisk-plugin'));
-
-        // 处理 smarty 的placeholder
-        webpackConfig.plugin('hulk-html-webpack-addons-plugin').use(require('@baidu/hulk-html-webpack-plugin-addons'), [
-            {
-                alterAssetTags(pluginData) {
-                    // 这里注意，只是 html-webpack-plugin v3才有这个，v4没有 head 和 body，但又替代品
-                    if (path.extname(pluginData.outputName) === '.tpl') {
-                        // 不插入css和js
-                        pluginData.head = pluginData.body = [];
-                    }
-                    return pluginData;
-                },
-                afterHTMLProcessing: injectAssets
-            }
-        ]);
         // copy static assets in public/
         const publicDir = api.resolve('public');
         const copyArgs = [];
@@ -176,7 +180,7 @@ module.exports = (api, options) => {
             });
         }
         // ------ 这里把 copy 拿到这里来处理是为了合并 ignore
-        if (options.copy) {
+        if (options.copy && options.command !== 'component') {
             const addCopyOptions = ({from, to = './', ignore = []}) => {
                 // 排除 templte 的情况
                 ignore = publicCopyIgnore.concat(typeof ignore === 'string' ? [ignore] : ignore);
