@@ -4,7 +4,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const injectTplAssets = require('../injectTplAssets');
+const injectAssets = require('../injectAssets');
 
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
@@ -13,6 +13,7 @@ module.exports = (api, options) => {
         // 1. 判断 pages
         // 2. build 做的事情是判断 serve 对象
         const htmlOptions = {
+            inject: true,
             templateParameters: (...args) => {
                 /* eslint-disable one-var */
                 let compilation, assets, assetTags, pluginOptions;
@@ -103,7 +104,7 @@ module.exports = (api, options) => {
                     entry,
                     template = `public/${name}.html`,
                     filename,
-                    chunks = undefined
+                    chunks = [name]
                 } = normalizePageConfig(multiPageConfig[name]);
                 // inject entry
                 webpackConfig.entry(name).add(api.resolve(entry));
@@ -161,7 +162,7 @@ module.exports = (api, options) => {
                     }
                     return pluginData;
                 },
-                afterHTMLProcessing: injectTplAssets
+                afterHTMLProcessing: injectAssets
             }
         ]);
         // copy static assets in public/

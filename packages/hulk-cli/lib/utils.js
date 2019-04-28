@@ -161,3 +161,14 @@ exports.formatter = errors => {
 exports.flatten = arr => arr.reduce((prev, curr) => prev.concat(curr), []);
 exports.isJS = val => /\.js$/.test(val);
 exports.isCSS = val => /\.css$/.test(val);
+
+exports.compareId = (a, b) => {
+    if (typeof a !== typeof b) {
+        return typeof a < typeof b ? -1 : 1;
+    }
+    /* eslint-disable curly */
+    if (a < b) return -1;
+    if (a > b) return 1;
+    /* eslint-enable curly */
+    return 0;
+};
