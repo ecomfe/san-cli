@@ -92,7 +92,7 @@ async function serve(app, entry, args, command = 'serve') {
             // dev server client
             require.resolve('webpack-dev-server/client') + sockjsUrl,
             // hmr client
-            require.resolve(projectDevServerOptions.hotOnly ? 'webpack/hot/only-dev-server' : 'webpack/hot/dev-server')
+            require.resolve(!projectDevServerOptions.hotOnly ? 'webpack/hot/only-dev-server' : 'webpack/hot/dev-server')
         ];
         // inject dev/hot client
         addDevClientToEntry(webpackConfig, devClients);
@@ -113,10 +113,10 @@ async function serve(app, entry, args, command = 'serve') {
 
     // create server
     const defaultDevServer = {
-        clientLogLevel: 'none',
-        contentBase: isFile ? path.resolve('public') : path.resolve(context, options.outputDir || 'public'),
+        clientLogLevel: 'info',
+        contentBase: path.resolve('public'),
         watchContentBase: !isProduction,
-        hot: !isProduction,
+        hot: true,
         noInfo: true,
         stats: 'errors-only',
         inline: false,
@@ -128,9 +128,9 @@ async function serve(app, entry, args, command = 'serve') {
             ignored: /node_modules/,
             poll: 100
         },
-        compress: isProduction,
+        compress: false,
         publicPath: options.baseUrl,
-        overlay: isProduction ? false : {warnings: false, errors: true}
+        overlay: {warnings: false, errors: true}
     };
     if (isFile) {
         // 不显示列表，直接显示首页 index.html
