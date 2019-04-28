@@ -52,11 +52,14 @@ async function serve(app, entry, args, command = 'serve') {
         // 清空，这里是因为 hulk.config 查找导致的
         webpackConfig.entry = {};
     }
-    if (!app) {
-        delete webpackConfig.entry.app;
-    } else {
+    if (app) {
         webpackConfig.entry.app = app;
     }
+    // if (!app) {
+    //     // delete webpackConfig.entry.app;
+    // } else {
+    //     webpackConfig.entry.app = app;
+    // }
     if (Object.keys(webpackConfig.entry).length === 0) {
         error('没有找到 Entry，请命令后面添加 entry 或者配置 hulk.config.js');
         process.exit(1);
