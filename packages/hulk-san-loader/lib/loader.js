@@ -101,7 +101,9 @@ function loader(content, callback) {
     callback(null, output);
 }
 
+/* eslint-disable space-before-function-paren */
 module.exports = function(content) {
+/* eslint-enable space-before-function-paren */
     const callback = this.async();
     loader.call(this, content, callback);
 };
