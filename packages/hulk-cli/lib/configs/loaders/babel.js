@@ -39,9 +39,10 @@ module.exports = ({browserslist, modernMode, modernBuild, command, loaderOptions
                 [
                     require('@babel/plugin-transform-runtime'),
                     {
-                        regenerator: false,
-                        helpers: true,
-                        useESModules: false,
+                        // corejs: false, // 默认值，可以不写
+                        regenerator: false, // 通过 preset-env 已经使用了全局的 regeneratorRuntime, 不再需要 transform-runtime 提供的 不污染全局的 regeneratorRuntime
+                        helpers: true, // 默认，可以不写
+                        useESModules: false, // 不使用 es modules helpers, 减少 commonJS 语法代码
                         absoluteRuntime: path.dirname(require.resolve('@babel/runtime/package.json'))
                     }
                 ],
