@@ -12,6 +12,10 @@ module.exports = ({browserslist, modernMode, modernBuild, command, loaderOptions
         // 这个是 modern 打包
         targets = {esmodules: true};
     }
+    if (command === 'serve') {
+        // 添加 san-hmr 插件
+        plugins.push(require('@baidu/babel-plugin-san-hmr'));
+    }
 
     return {
         name: 'babel-loader',
