@@ -113,11 +113,13 @@ async function serve(app, entry, args, command = 'serve') {
         }
         throw e;
     }
-
     // create server
     const defaultDevServer = {
         clientLogLevel: 'info',
+        // 这里注意，这个配置的是 outputDir
         contentBase: path.resolve('public'),
+        // 这里注意：
+        // 如果是 contentBase = outputDir 谨慎打开，打开后 template 每次文件都会重写，从而导致 hmr 失效，每次都 reload 页面
         watchContentBase: !isProduction,
         hot: true,
         noInfo: true,
@@ -143,6 +145,15 @@ async function serve(app, entry, args, command = 'serve') {
             rewrites: [{from: /./, to: path.posix.join(options.baseUrl, 'index.html')}]
         };
     }
+    // console.log(Object.assign(defaultDevServer, projectDevServerOptions, {
+    //     https: useHttps,
+    //     before(app, server) {
+    //         // allow other plugins to register middlewares, e.g. PWA
+    //         (options.middlewares || []).forEach(fn => app.use(fn()));
+    //         // apply in project middlewares
+    //         projectDevServerOptions.before && projectDevServerOptions.before(app, server);
+    //     }
+    // }));
     const server = new WebpackDevServer(
         compiler,
         Object.assign(defaultDevServer, projectDevServerOptions, {

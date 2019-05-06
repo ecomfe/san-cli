@@ -1,6 +1,6 @@
 {
     "name": "@baidu/hulk-html-webpack-plugin-addons",
-    "version": "2.0.0-alpha.0",
+    "version": "2.0.0-alpha.12",
     "description": "hulk-html-webpack-plugin-addons",
     "author": "wangyongqing01 <wangyongqing01@baidu.com>",
     "homepage": "",
@@ -15,5 +15,6 @@
     },
     "scripts": {
         "test": "echo \"Error: run tests from root\" && exit 1"
-    }
+    },
+    "gitHead": "9c78cf4439df7ecede9b648942e10b826787daab"
 }

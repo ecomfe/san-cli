@@ -1,6 +1,6 @@
 {
     "name": "@baidu/prefix-classnames",
-    "version": "2.0.0-alpha.0",
+    "version": "2.0.0-alpha.12",
     "description": "prefix classnames",
     "keywords": [
         "classnames"
@@ -28,5 +28,6 @@
     },
     "dependencies": {
         "classnames": "^2.2.6"
-    }
+    },
+    "gitHead": "9c78cf4439df7ecede9b648942e10b826787daab"
 }

@@ -1,6 +1,6 @@
 {
     "name": "@baidu/hulk-utils",
-    "version": "2.0.0-alpha.0",
+    "version": "2.0.0-alpha.12",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -31,5 +31,6 @@
     },
     "devDependencies": {
         "delay": "^4.1.0"
-    }
+    },
+    "gitHead": "9c78cf4439df7ecede9b648942e10b826787daab"
 }
