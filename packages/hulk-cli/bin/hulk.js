@@ -10,7 +10,8 @@ const semver = require('semver');
 const program = require('commander');
 const {
     engines: {node: requiredNodeVersion},
-    name
+    name,
+    version
 } = require('../package.json');
 const error = require('@baidu/hulk-utils/logger').error;
 
@@ -23,6 +24,7 @@ program.arguments('<command>').action(cmd => {
     console.log();
     program.outputHelp();
 });
+console.log(chalk.bold.cyan('Hulk CLI v' + version));
 // 3. 挂载commands 下面的命令
 ['init', 'version', 'update', 'serve', 'build', 'component', 'lint', 'inspect'].forEach(cmd => {
     require(`../commands/${cmd}`)(program);

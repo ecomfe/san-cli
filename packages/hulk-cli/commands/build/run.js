@@ -100,6 +100,7 @@ module.exports = async (entry, args) => {
     }
     // console.log(webpackConfig.plugins[webpackConfig.plugins.length-1])
     // webpackConfig.output.publicPath = './';
+    // webpackConfig.optimization.runtimeChunk = true;
     webpack(webpackConfig, (err, stats) => {
         if (err) {
             console.log(err);
@@ -116,6 +117,16 @@ module.exports = async (entry, args) => {
 
         const targetDirShort = path.relative(context, targetDir);
 
+        stats = stats.toJson({
+            all: false,
+            entrypoints: true,
+            assets: true,
+            chunks: true,
+            version: true,
+            timings: true,
+            performance: true
+        });
+
         if (!args.analyze) {
             console.log(
                 formatStats(stats, targetDirShort, {
@@ -126,7 +137,7 @@ module.exports = async (entry, args) => {
 
         if (!args.watch) {
             const duration = (Date.now() - startTime) / 1e3;
-            const {time, version} = stats.toJson({modules: false, chunks: false, assets: false});
+            const {time, version} = stats;
             // const targetDirShort = path.relative(context, targetDir);
             success(
                 `The ${chalk.cyan(targetDirShort)} directory is ready to be deployed. Duration ${chalk.cyan(

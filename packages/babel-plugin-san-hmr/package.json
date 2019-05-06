@@ -1,0 +1,21 @@
+{
+    "name": "@baidu/babel-plugin-san-hmr",
+    "version": "2.0.0-alpha.12",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "repository": {
+        "type": "git",
+        "url": "ssh://git@icode.baidu.com:8235/baidu/hulk/hulk-cli"
+    },
+    "author": "wangyongqing <wangyongqing01@baidu.com>",
+    "license": "MIT",
+    "dependencies": {
+        "hash-sum": "^1.0.2",
+        "san-hot-reload-api": "^1.0.1"
+    },
+    "gitHead": "9c78cf4439df7ecede9b648942e10b826787daab"
+}

@@ -51,7 +51,9 @@ module.exports = function calceStyleImport({webpackContext, sanStyle, resourcePa
     }
     // 拼接生成内联loader处理san样式
     const genStyleString = (...args) => {
+        /* eslint-disable quotes */
         const startString = "import '!";
+        /* eslint-enable quotes */
         const endString = require.resolve('./selector.js') + `?type=style!${resourcePath}';\n`;
         return [startString, ...args, endString].join('!');
     };

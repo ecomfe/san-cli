@@ -52,11 +52,14 @@ async function serve(app, entry, args, command = 'serve') {
         // 清空，这里是因为 hulk.config 查找导致的
         webpackConfig.entry = {};
     }
-    if (!app) {
-        delete webpackConfig.entry.app;
-    } else {
+    if (app) {
         webpackConfig.entry.app = app;
     }
+    // if (!app) {
+    //     // delete webpackConfig.entry.app;
+    // } else {
+    //     webpackConfig.entry.app = app;
+    // }
     if (Object.keys(webpackConfig.entry).length === 0) {
         error('没有找到 Entry，请命令后面添加 entry 或者配置 hulk.config.js');
         process.exit(1);
@@ -92,12 +95,11 @@ async function serve(app, entry, args, command = 'serve') {
             // dev server client
             require.resolve('webpack-dev-server/client') + sockjsUrl,
             // hmr client
-            require.resolve(projectDevServerOptions.hotOnly ? 'webpack/hot/only-dev-server' : 'webpack/hot/dev-server')
+            require.resolve(!projectDevServerOptions.hotOnly ? 'webpack/hot/only-dev-server' : 'webpack/hot/dev-server')
         ];
         // inject dev/hot client
         addDevClientToEntry(webpackConfig, devClients);
     }
-
     // create compiler
     let compiler;
     try {
@@ -114,13 +116,13 @@ async function serve(app, entry, args, command = 'serve') {
 
     // create server
     const defaultDevServer = {
-        clientLogLevel: 'none',
-        contentBase: isFile ? path.resolve('public') : path.resolve(context, options.outputDir || 'public'),
+        clientLogLevel: 'info',
+        contentBase: path.resolve('public'),
         watchContentBase: !isProduction,
-        hot: !isProduction,
+        hot: true,
         noInfo: true,
         stats: 'errors-only',
-        inline: true,
+        inline: false,
         lazy: false,
         quiet: true,
         index: 'index.html',
@@ -129,9 +131,10 @@ async function serve(app, entry, args, command = 'serve') {
             ignored: /node_modules/,
             poll: 100
         },
-        compress: isProduction,
+        disableHostCheck: true,
+        compress: false,
         publicPath: options.baseUrl,
-        overlay: isProduction ? false : {warnings: false, errors: true}
+        overlay: {warnings: false, errors: true}
     };
     if (isFile) {
         // 不显示列表，直接显示首页 index.html

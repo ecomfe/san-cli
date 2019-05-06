@@ -161,8 +161,7 @@ module.exports = class Service {
                 config = config(this.mode);
             }
         } catch (e) {
-            error(`Error loading ${chalk.bold(configPath)} `);
-            throw e;
+            return {};
         }
 
         // normalize some options
