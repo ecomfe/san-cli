@@ -84,7 +84,7 @@ module.exports = (api, options) => {
                     // 1个以上公用才抽离
                     minChunks: 2,
                     priority: -20,
-                    chunks: 'all',
+                    chunks: 'initial',
                     reuseExistingChunk: true
                 }
             }
