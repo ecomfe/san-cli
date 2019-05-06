@@ -11,20 +11,58 @@ module.exports = function formatStats(stats, destDir, api) {
     const path = require('path');
     const zlib = require('zlib');
     const chalk = require('chalk');
+    const flatten = require('./utils').flatten;
+
     const ConsoleTable = require('tty-table');
+
     const isJS = val => /\.js$/.test(val);
     const isCSS = val => /\.css$/.test(val);
     const isMinJS = val => /\.min\.js$/.test(val);
 
-    const json = stats.toJson({
-        hash: false,
-        modules: false,
-        chunks: true
+    let {assets, entrypoints, chunks} = stats;
+    const entries = Object.keys(entrypoints).map(name => {
+        const entry = entrypoints[name];
+        const {prefetch = [], preload = []} = entry.children;
+
+        let prefetchChunks = [];
+        let preloadChunks = [];
+        const prefetchAssets = flatten(
+            prefetch.map(({chunks, assets}) => {
+                prefetchChunks.push(...chunks);
+                return getAssetsFiles(assets);
+            })
+        );
+        const preloadAssets = flatten(
+            preload.map(({chunks, assets}) => {
+                preloadChunks.push(...chunks);
+                return getAssetsFiles(assets);
+            })
+        );
+
+        const asyncChunks = [];
+
+        entry.chunks.forEach(chunkId => {
+            const children = chunks[chunkId].children;
+            if (children.length) {
+                asyncChunks.push(
+                    ...flatten(
+                        children
+                            .filter(chunkId => !~prefetchChunks.indexOf(chunkId) && !~preloadChunks.indexOf(chunkId))
+                            .map(chunkId => getAssetsFiles(chunks[chunkId].files))
+                    )
+                );
+            }
+        });
+        return {
+            name,
+            assets: entry.assets,
+            prefetchAssets,
+            preloadAssets,
+            asyncAssets: [...new Set(asyncChunks)]
+        };
     });
-    const chunks = json.chunks;
-    let assets = json.assets ? json.assets : json.children.reduce((acc, child) => acc.concat(child.assets), []);
+
     const assetsMap = new Map(); // eslint-disable-line no-undef
-    let maxHeaderWidth = 0;
     // 只提取 js 和 css
     assets = assets.filter(a => {
         if (isJS(a.name) || isCSS(a.name)) {
@@ -36,32 +74,12 @@ module.exports = function formatStats(stats, destDir, api) {
                 ...a,
                 gzippedSize: getGzippedSize(a)
             });
-            maxHeaderWidth = Math.max(maxHeaderWidth, name.length);
             // 处理 entry 合并计算资源大小
             return true;
         }
         return false;
     });
-    // 查找出来 entry 的文件
-    const entries = chunks
-        .filter(chunk => chunk.entry)
-        .map(({files, siblings, children, names}) => {
-            files = getAssetsFiles(files);
-            siblings.forEach(id => {
-                if (chunks[id].files.length) {
-                    files.push(...getAssetsFiles(chunks[id].files));
-                }
-            });
-            children.forEach(id => {
-                if (chunks[id].files.length) {
-                    files.push(...getAssetsFiles(chunks[id].files));
-                }
-            });
-            return {
-                name: names.join('-'),
-                files: files.map(file => assetsMap.get(file))
-            };
-        });
+
     function getAssetsFiles(files = []) {
         return files.filter(file => isJS(file) || isCSS(file));
     }
@@ -72,6 +90,8 @@ module.exports = function formatStats(stats, destDir, api) {
     function getTableString(name, files) {
         let totalSize = 0;
         let totalGzippedSize = 0;
+        let maxHeaderWidth = 0;
+
         // 排序
         const assets = files
             .sort((a, b) => {
@@ -90,10 +110,13 @@ module.exports = function formatStats(stats, destDir, api) {
                     totalGzippedSize += gzippedSize;
                 }
                 const size = formatSize(asset.size);
+                let colorfulName = /js$/.test(asset.name) ? chalk.green(asset.name) : chalk.blue(asset.name);
+                maxHeaderWidth = Math.max(colorfulName.length, maxHeaderWidth);
                 return [
-                    /js$/.test(asset.name) ? chalk.green(asset.name) : chalk.blue(asset.name),
+                    colorfulName,
                     asset.isOverSizeLimit ? chalk.underline.red.bold(size) : size,
-                    formatSize(gzippedSize)
+                    formatSize(gzippedSize),
+                    asset.type ? asset.type : 'link'
                 ];
             });
 
@@ -105,7 +128,8 @@ module.exports = function formatStats(stats, destDir, api) {
                     align: 'center',
                     width: 16
                 },
-                {value: 'Gzipped', align: 'center', width: 16}
+                {value: 'Gzipped', align: 'center', width: 16},
+                {value: 'Type', align: 'center', width: 16}
             ],
             assets,
             {
@@ -134,7 +158,22 @@ module.exports = function formatStats(stats, destDir, api) {
         return zlib.gzipSync(buffer).length;
     }
 
-    const strArray = entries.map(({name, files}) => getTableString(name, files));
+    const strArray = entries.map(({name, assets, prefetchAssets, preloadAssets, asyncAssets}) => {
+        const files = [];
+        [[assets], [prefetchAssets, 'prefetch'], [preloadAssets, 'preload'], [asyncAssets, 'async']].forEach(
+            ([assets, type]) => {
+                files.push(
+                    ...assets.map(asset => {
+                        return {
+                            ...assetsMap.get(asset),
+                            type
+                        };
+                    })
+                );
+            }
+        );
+        return getTableString(name, files);
+    });
 
     return `\n${strArray.join('\n\n')}\n\n  ${chalk.gray('Images and other types of assets omitted.')}\n`;
 };

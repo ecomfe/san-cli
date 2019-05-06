@@ -131,6 +131,7 @@ async function serve(app, entry, args, command = 'serve') {
             ignored: /node_modules/,
             poll: 100
         },
+        disableHostCheck: true,
         compress: false,
         publicPath: options.baseUrl,
         overlay: {warnings: false, errors: true}
