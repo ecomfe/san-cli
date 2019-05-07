@@ -7,34 +7,26 @@ Mock Server 实现涉及到代码和说明
 ├── mock    mock 文件
 │   ├── _data_  这里是JSON 数据，跟template 目录结构一致，支持 Mockjs 语法（**.mock.json）
 │   └── index.js 配置文件
-├── scripts
-│   ├── dev.js
+
 ```
 
 `dev.js`中会启动`webpackDevServer`和`hotReload`功能，DevServer会将请求转发到 MockServer，MockServer （代码`middlewares/mocker.js`）包含两部分：`nodeServer`和`smartyServer`，node 遵循[`webpack-api-mocker`](https://github.com/jaywcjlove/webpack-api-mocker/)文档，`smartyServer`是 node 执行`php`命令行渲染 smarty 模板，然后将 stdout 作为输出。
 
 #### Local Mock Server 配置
-在 `config/index.js`中添加中间件：
+在 `hulk.config.js`中添加中间件：
 
 ```js
 import MockerServer from '@baidu/hulk-mock-server';
 
-// dev.middleware 中间件
-export default {
-    build: {
-        //...
-    },
-    dev: {
-        //...
-        middlewares: [
-            MockerServer({
-                contentBase: path.join(__dirname, '../dist/'),
-                rootDir: path.join(__dirname, '../mock'),
-                processors:[`smarty?router=/template/*&baseDir=${path.join(__dirname, '../dist/template')}&dataDir=${path.join(__dirname, '../mock/_data_')}`]
-            })
-        ]
-    }
-};
+
+//...
+middlewares: [
+    MockerServer({
+        contentBase: path.join(__dirname, '../dist/'),
+        rootDir: path.join(__dirname, '../mock'),
+        processors:[`smarty?router=/template/*&baseDir=${path.join(__dirname, '../dist/template')}&dataDir=${path.join(__dirname, '../mock/_data_')}`]
+    })
+]
 ```
 
 > 参数说明：
@@ -86,16 +78,10 @@ smarty支持的配置有：`baseDir=./template&bin=php&dataDir=mockDir/_mockdata
 * dataDir：模板数据来源目录，默认是 rootDir 的 `_data_`目录
 
 ## APIM 支持
-在 config 中选择`dev.middlewares`选择使用 [apim](http://apim.baidu.com/docs#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C)
+在 hulk.config 中选择`middlewares`选择使用 [apim](http://apim.baidu.com/docs#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C)
 
 ```js
-dev: {
-    assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
-    server: {
-        // 这里是 devServer 相关配置
-        port: 8888
-    },
+
     middlewares:[
         require('apim-tools').express({
             // 设置存储的 mock 相关数据存储的根目录
@@ -106,7 +92,6 @@ dev: {
             startAutoSync: true
         })
     ]
-}
 ```
 
 

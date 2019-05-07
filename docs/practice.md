@@ -13,14 +13,16 @@ import FooBar from './FooBar.js'  // No good enough
 import FooBar from './FooBar'     // Good
 ```
 
-## 最小化引入类库
+## 最小化引入类库，ES6 类库
 
 ```js
 import _ from 'lodash'               // Bad
-import isEmpty from 'lodash/isEmpty' // Good
+import isEmpty from 'lodash-es/isEmpty' // Good
 ```
 
 这里推荐使用 [xbox](./xbox.md)
+
+> Tips：使用 ES6 类库可以增强 Webpack 的 Tree-Shaking 功能
 
 ## HTML 过长拆开写
 

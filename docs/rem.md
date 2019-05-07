@@ -20,4 +20,3 @@ h2 {
 }
 ```
 
-具体 postcss 的问题，参考 [postcss.config](./postcss.md)

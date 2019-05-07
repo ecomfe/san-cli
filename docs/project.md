@@ -56,13 +56,9 @@ npm run analyzer
 
 ### 编译相关配置和说明
 
-#### `webpack`配置
+#### `hulk.config.js`
 
--   webpack.config.analyzer.js：analyzer
--   webpack.config.base.js：基础版本，prod 和 dev 共享配置
--   webpack.config.dev.js：development
--   webpack.config.js：production
--   config/index.js：webpack 打包配置，主要是静态资源，domain/public 相关，分`build`和`dev`，`dev.server`部分是 DevServer 的配置
+hulk.config.js 是 hulk 的配置文件，配置格式[参考](./hulk-cli.md)
 
 #### build.sh
 
@@ -79,20 +75,15 @@ npm run analyzer
 
 ### 模板引擎
 
--   如果不使用 smarty，直接 html，则使用`pages.template.ejs`生成对应的页面 html，放到`dist/_html`中，本地开发通过`localhost:port/_html`访问
+-   如果不使用 smarty，直接 html，则使用`pages.template.ejs`生成对应的页面 html，放到`output/_html`中，本地开发通过`localhost:port/_html`访问
 -   使用 Smarty 模板，则通过`template`文件夹下面的 tpl 进行渲染，全部继承`base.tpl`模板，本地开发通过`localhost:port/template`访问
 
 ## 目录说明
 
 ```
-├── config
-│   └── index.js
+
 ├── mock
-├── scripts
-│   ├── plugins
-│   ├── build.js
-│   ├── dev.js
-│   └── utils.js
+├── apim
 ├── src
 │   ├── services       # 公共service请求
 │   ├── assets         # 公共资源
@@ -113,17 +104,13 @@ npm run analyzer
 │       └── index.tpl
 ├── node_modules
 ├── public
-├── dist
+├── output
 ├── docs
 ├── README.md
 ├── build.sh
 ├── package.json
 ├── pages.template.ejs
-├── postcss.config.js
-├── webpack.config.analyzer.js
-├── webpack.config.base.js
-├── webpack.config.dev.js
-└── webpack.config.js
+└── hulk.config.js
 ```
 
 #### pages
@@ -143,10 +130,9 @@ pages
 
 ### dotFile 配置
 
--   babelrc：babel 配置
 -   editorconfig：不需要修改，设置了 tab 4 个空格等，常见规范类的配置
 -   npmrc：不需要修改，注册@baidu registry
 -   prettierrc：不需要修改，格式化插件
 -   gitignore：git 忽略
 -   fecsrc：fecs 格式化配置
--   ezcoderc：同步开发机配置，yaml 格式，**未来支持**
+-   ezcoderc：同步开发机配置，yaml 格式，**暂不支持**
