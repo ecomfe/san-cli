@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-module.exports = async (entry, args) => {
+module.exports = async (initEntry, args) => {
     // 开始时间
     const startTime = Date.now();
     const {success, error, info} = require('@baidu/hulk-utils/logger');
@@ -18,7 +18,8 @@ module.exports = async (entry, args) => {
     // 如果是文件，需要设置 entry('app'),~entry
 
     const fse = require('fs-extra');
-    const chalk = require('chalk');
+    const chalk = require('@baidu/hulk-utils/chalk');
+
     const path = require('path');
     const webpack = require('webpack');
     const formatStats = require('../../lib/formatStats');
@@ -26,9 +27,7 @@ module.exports = async (entry, args) => {
     // 处理 entry 不存在的情况
     const resolveEntry = require('../../lib/utils').resolveEntry;
 
-    const obj = resolveEntry(entry);
-    entry = obj.entry;
-    const isFile = obj.isFile;
+    const {entry, isFile} = resolveEntry(initEntry);
 
     // 合并 config 的方式
     const modifyConfig = (config, fn) => {

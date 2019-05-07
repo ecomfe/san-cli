@@ -5,7 +5,8 @@
 
 const path = require('path');
 const fs = require('fs');
-const chalk = require('chalk');
+const chalk = require('@baidu/hulk-utils/chalk');
+
 const {spawn} = require('child_process');
 
 const inject = require('./inject');

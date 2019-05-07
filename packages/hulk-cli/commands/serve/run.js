@@ -19,7 +19,8 @@ async function serve(app, entry, args, command = 'serve') {
     const path = require('path');
     const url = require('url');
 
-    const chalk = require('chalk');
+    const chalk = require('@baidu/hulk-utils/chalk');
+
     const webpack = require('webpack');
     const WebpackDevServer = require('webpack-dev-server');
     const portfinder = require('portfinder');

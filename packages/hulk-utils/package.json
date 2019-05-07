@@ -21,6 +21,7 @@
         "chalk": "^2.4.2",
         "debug": "^4.1.1",
         "execa": "^1.0.0",
+        "strip-ansi": "^5.2.0",
         "fs-extra": "^7.0.1",
         "git-clone": "^0.1.0",
         "import-lazy": "^3.1.0",

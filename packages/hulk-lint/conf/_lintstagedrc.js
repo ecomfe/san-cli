@@ -27,7 +27,6 @@ module.exports = {
         '**/docs/**',
         '**/output/**',
         '**/third-party/**',
-        '**/third_party/**',
         '**/node_modules/**',
         '**/third/**',
         '**/*.min.*'

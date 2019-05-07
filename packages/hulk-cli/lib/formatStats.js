@@ -10,7 +10,8 @@ module.exports = function formatStats(stats, destDir, api) {
     const fs = require('fs');
     const path = require('path');
     const zlib = require('zlib');
-    const chalk = require('chalk');
+    const chalk = require('@baidu/hulk-utils/chalk');
+
     const flatten = require('./utils').flatten;
 
     const ConsoleTable = require('tty-table');

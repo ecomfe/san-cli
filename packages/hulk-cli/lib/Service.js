@@ -4,7 +4,8 @@
  */
 const {resolve, isAbsolute} = require('path');
 const fs = require('fs');
-const chalk = require('chalk');
+const chalk = require('@baidu/hulk-utils/chalk');
+
 const defaultsDeep = require('lodash.defaultsdeep');
 const Config = require('webpack-chain');
 const merge = require('webpack-merge');

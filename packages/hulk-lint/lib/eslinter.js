@@ -5,7 +5,7 @@
 
 const CLIEngine = require('eslint').CLIEngine;
 const eslintConf = require('../conf/_hulkeslint.js');
-const chalk = require('chalk');
+const chalk = require('@baidu/hulk-utils/chalk');
 
 /**
  * format numbers

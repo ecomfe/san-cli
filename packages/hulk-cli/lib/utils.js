@@ -3,7 +3,8 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const path = require('path');
-const chalk = require('chalk');
+const chalk = require('@baidu/hulk-utils/chalk');
+
 const fse = require('fs-extra');
 const updateNotifier = require('update-notifier');
 

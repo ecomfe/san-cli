@@ -20,4 +20,4 @@
     Object.assign(exports, require(`./${m}`));
 });
 
-exports.chalk = require('chalk');
+exports.chalk = require('./chalk');

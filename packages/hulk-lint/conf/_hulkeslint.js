@@ -31,6 +31,8 @@ module.exports = {
     'ignorePattern': [
         '/dist/**',
         '/build/**',
+        '**/third-party/**',
+        '/output/**',
         '**/*.min.js',
         '**/node_modules/**'
     ]
