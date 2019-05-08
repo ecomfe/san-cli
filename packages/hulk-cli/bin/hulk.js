@@ -37,29 +37,25 @@ if (commands.includes(cmd)) {
         console.log();
         program.outputHelp();
     });
-    const colors = ['yellow', 'green', 'cyan', 'magenta', 'blue'];
-    const randomColorName = colors[Math.floor(Math.random() * colors.length)];
 
     program.on('--help', () => {
         console.log('');
         console.log(`Commands:
-  * ${chalk[randomColorName](
-      'init'
-  )}      [options] <template> <appName>  通过项目脚手架生成项目，支持 iCode/Github Repo
-  * ${chalk[randomColorName]('serve')}     [options] [entry]               零配置针对 .js/.san 文件启动开发模式编译
-  * ${chalk[randomColorName]('build')}     [options] [entry]               内置 Webpack 零配置打包
-  * ${chalk[randomColorName]('component')} [options] <entry>               San 组件 Demo 预览服务器
-  * ${chalk[randomColorName]('lint')}      [options] [path]                代码校验工具，按照厂内FE规范进行本地校验
-  * ${chalk[randomColorName]('update')}    [path]                          执行npm outdated，升级目录下面的依赖
-  * ${chalk[randomColorName]('inspect')}   [options] [paths...]            检查内置 Webpack 配置`);
+  hulk init <template> <appName>  通过项目脚手架生成项目，支持 iCode/Github Repo
+  hulk serve [entry]              零配置针对 .js/.san 文件启动开发模式编译
+  hulk build [entry]              内置 Webpack 零配置打包
+  hulk component <entry>          San 组件 Demo 预览服务器
+  hulk lint [path]                代码校验工具，按照厂内FE规范进行本地校验
+  hulk update [path]              执行npm outdated，升级目录下面的依赖
+  hulk inspect [paths...]         检查内置 Webpack 配置`);
         console.log('');
         console.log(`Command Alias:
   init: new
   serve: dev
   component: md`);
         console.log(`
-Run \`${chalk[randomColorName]('hulk COMMAND -h')}\` for more information on specific commands.
-Visit ${chalk[randomColorName]('http://hulk.baidu-int.com/docs/hulk/')} to learn more about Hulk.
+Run \`${chalk.bold('hulk COMMAND -h')}\` for more information on specific commands.
+Visit ${chalk.bold('http://hulk.baidu-int.com/docs/hulk/')} to learn more about Hulk.
     `);
     });
     // 默认执行 hulk，则输出 help
