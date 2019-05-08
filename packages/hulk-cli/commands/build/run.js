@@ -22,7 +22,7 @@ module.exports = async (initEntry, args) => {
 
     const path = require('path');
     const webpack = require('webpack');
-    const formatStats = require('../../lib/formatStats');
+    const report = require('../../lib/report');
 
     // 处理 entry 不存在的情况
     const resolveEntry = require('../../lib/utils').resolveEntry;
@@ -128,7 +128,7 @@ module.exports = async (initEntry, args) => {
 
         if (!args.analyze) {
             console.log(
-                formatStats(stats, targetDirShort, {
+                report(stats, targetDirShort, {
                     resolve: p => path.resolve(context, p)
                 })
             );

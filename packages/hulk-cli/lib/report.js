@@ -2,25 +2,33 @@
  * @file formatStats 美化下 stats log
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+const fs = require('fs');
+const path = require('path');
+const zlib = require('zlib');
+const chalk = require('@baidu/hulk-utils/chalk');
+
+const flatten = require('./utils').flatten;
+
+const ConsoleTable = require('tty-table');
 // const MAX_GZIPPED_SIZE = 150 * 1024;
 const MAX_SIZE = 500 * 1024;
 // const RECOMMEND_SIZE = 244;
 // eslint-disable-next-line fecs-valid-jsdoc
 module.exports = function formatStats(stats, destDir, api) {
-    const fs = require('fs');
-    const path = require('path');
-    const zlib = require('zlib');
-    const chalk = require('@baidu/hulk-utils/chalk');
-
-    const flatten = require('./utils').flatten;
-
-    const ConsoleTable = require('tty-table');
-
     const isJS = val => /\.js$/.test(val);
     const isCSS = val => /\.css$/.test(val);
     const isMinJS = val => /\.min\.js$/.test(val);
 
     let {assets, entrypoints, chunks} = stats;
+
+    function getChunksById(id) {
+        if (typeof id === 'number' && chunks[id]) {
+            return chunks[id];
+        } else {
+            return chunks.find(chunk => chunk.id === id);
+        }
+    }
+
     // 记录唯一 chunkid
     const uniChunksMap = new Set();
 
@@ -60,9 +68,10 @@ module.exports = function formatStats(stats, destDir, api) {
 
         entry.chunks.forEach(chunkId => {
             if (!commonChunksIds.has(chunkId)) {
+                const chunk = getChunksById(chunkId);
                 // 2. 非公共模块则查找他的 children
                 // 这是因为公共模块查找出出来的 children 是依赖公共模块的全部依赖，所以不能说明是当前 entry 依赖到的模块，会导致计算不准确
-                const children = chunks[chunkId].children;
+                const children = chunk.children;
                 if (children.length) {
                     asyncChunks.push(
                         ...flatten(
@@ -70,7 +79,7 @@ module.exports = function formatStats(stats, destDir, api) {
                                 .filter(
                                     chunkId => !~prefetchChunks.indexOf(chunkId) && !~preloadChunks.indexOf(chunkId)
                                 )
-                                .map(chunkId => getAssetsFiles(chunks[chunkId].files))
+                                .map(chunkId => getAssetsFiles(chunk.files))
                         )
                     );
                 }
