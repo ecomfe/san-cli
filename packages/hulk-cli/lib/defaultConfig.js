@@ -18,7 +18,8 @@ module.exports = {
         // }
         // postcss plugins
         // postcss:{
-        //     plugins: [rquire(xxx), options]
+        //     plugins: [rquire(xxx), options],
+        //     builtInPluginConfig: {pr2rem: {}}
         // }
     },
     // 生产环境配置

@@ -93,7 +93,9 @@ import utils from 'src/lib/utils';
         // }
         // postcss plugins
         // postcss:{
-        //     plugins: [rquire(xxx), options]
+        //     plugins: [rquire(xxx), options],
+        //     这里可以用来修改内置postcss插件默认配置，内置的插件包括 autoprefixer，pr2rem, import
+        //     builtInPluginConifg: {pr2rem:{}}
         // }
     },
     // 生产环境配置

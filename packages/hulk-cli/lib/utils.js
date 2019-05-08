@@ -85,9 +85,8 @@ exports.resolveEntry = entry => {
         isFile
     };
 };
-exports.getLoaderOptions = (
-    api,
-    {
+exports.getLoaderOptions = (api, options) => {
+    const {
         sourceMap = true,
         browserslist = BROWSERS_LIST,
         command = 'build',
@@ -98,8 +97,7 @@ exports.getLoaderOptions = (
         modernMode,
         modernBuild,
         modernBowsers
-    } = {}
-) => {
+    } = options || {};
     const mode = api.getMode();
     return {
         context: api.getCwd(),

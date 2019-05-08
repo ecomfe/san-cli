@@ -11,7 +11,6 @@ module.exports = (api, options) => {
         const {css = {}, assetsDir = ''} = options;
         const {modules = false, extract = isProd, sourceMap = true} = css;
         const loaderOptions = getLoaderOptions(api, options);
-
         const shouldExtract = extract !== false;
         const filename = getAssetPath(assetsDir, `css/[name]${isProd ? '.[contenthash:8]' : ''}.css`);
         const chunkFilename = getAssetPath(assetsDir, `css/[name]${isProd ? '.[contenthash:8]' : ''}.css`);
