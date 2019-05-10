@@ -3,6 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const path = require('path');
+const sanHmrPlugin = require('@baidu/babel-plugin-san-hmr');
 module.exports = ({browserslist, modernMode, modernBuild, command, loaderOptions: {babel = {}}}) => {
     const plugins = (babel && babel.plugins) || [];
     let targets = browserslist;
@@ -12,11 +13,10 @@ module.exports = ({browserslist, modernMode, modernBuild, command, loaderOptions
         // 这个是 modern 打包
         targets = {esmodules: true};
     }
-    if (command === 'serve') {
+    if (command === 'serve' && !plugins.includes(sanHmrPlugin)) {
         // 添加 san-hmr 插件
-        plugins.push(require('@baidu/babel-plugin-san-hmr'));
+        plugins.push(sanHmrPlugin);
     }
-
     return {
         name: 'babel-loader',
         loader: require.resolve('babel-loader'),

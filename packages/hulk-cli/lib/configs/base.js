@@ -20,7 +20,7 @@ module.exports = (api, options) => {
         // set output
         webpackConfig.output
             .path(api.resolve(options.outputDir))
-            .jsonpFunction('Hulk2')
+            .jsonpFunction('Hulk')
             .filename((isLegacyBundle ? '[name]-legacy' : '[name]') + `${isProd ? '.[hash:8]' : ''}.js`)
             .publicPath(options.baseUrl);
 
