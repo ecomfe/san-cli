@@ -121,7 +121,7 @@ async function serve(app, entry, args, command = 'serve') {
         contentBase: path.resolve('public'),
         // 这里注意：
         // 如果是 contentBase = outputDir 谨慎打开，打开后 template 每次文件都会重写，从而导致 hmr 失效，每次都 reload 页面
-        watchContentBase: !isProduction,
+        watchContentBase: false,
         hot: true,
         noInfo: true,
         stats: 'errors-only',
