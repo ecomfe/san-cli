@@ -200,21 +200,26 @@ module.exports = function formatStats(stats, destDir, api) {
 
     const strArray = entries.map(({name, assets, prefetchAssets, preloadAssets, asyncAssets}) => {
         const files = [];
+        const uniqueSet = new Set();
         [[assets], [prefetchAssets, 'prefetch'], [preloadAssets, 'preload'], [asyncAssets, 'async']].forEach(
             ([assets, type]) => {
                 files.push(
                     ...assets.map(asset => {
-                        asset = assetsMap.get(asset);
-                        if (Array.isArray(asset.type) && type) {
-                            asset.type.push(type);
+                        if (!uniqueSet.has(asset)) {
+                            uniqueSet.add(asset);
+                            asset = assetsMap.get(asset);
+                            if (Array.isArray(asset.type) && type) {
+                                asset.type.push(type);
+                            }
+                            return asset;
                         }
 
-                        return asset;
+                        return false;
                     })
                 );
             }
         );
-        return getTableString(name, files);
+        return getTableString(name, files.filter(f => f));
     });
 
     return `\n${strArray.join('\n\n')}\n\n  ${chalk.gray('Images and other types of assets omitted.')}\n`;
