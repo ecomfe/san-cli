@@ -4,7 +4,7 @@
 
 module.exports = {
     'hooks': {
-        'pre-commit': 'lint-staged',
-        'commit-msg': 'commitlint -E HUSKY_GIT_PARAMS'
+        'pre-commit': 'node ./node_modules/lint-staged/index.js',
+        'commit-msg': 'node ./node_modules/commitlint/node_modules/.bin/commitlint -E HUSKY_GIT_PARAMS'
     }
 };

@@ -25,6 +25,10 @@ module.exports = dirs => {
         color: true
     });
 
-    let {results} = eslinter(dirs);
-    process.exitCode = results.length === 0 ? 0 : 1;
+    let {errorCount} = eslinter(dirs);
+    if (errorCount && errorCount !== 0) {
+        process.exitCode = 1;
+        process.exit();
+    }
+
 };
