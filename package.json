@@ -13,26 +13,27 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lint-staged",
-            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+            "pre-commit": "node ./packages/hulk-lint/node_modules/lint-staged/index.js",
+            "commit-msg": "node ./packages/hulk-lint/node_modules/commitlint/node_modules/.bin/commitlint -E HUSKY_GIT_PARAMS"
         }
     },
     "lint-staged": {
         "linters": {
             "*.san": [
-                "node node_modules/fecs/bin/fecs check --type=es,js,san,css,less,html --reporter=baidu --rule"
+                "node ./packages/hulk-lint/node_modules/fecs/bin/fecs check --type=es,js,san,css,less,html --reporter=baidu --rule"
             ],
             "*.js": [
+                "node ./packages/hulk-lint/bin/hulk-lint"
             ],
             "*.{html,htm}": [
-                "node node_modules/fecs/bin/fecs check --reporter=baidu --rule"
+                "node ./packages/hulk-lint/node_modules/fecs/bin/fecs check --reporter=baidu --rule"
             ],
             "*.css": [
-                "node node_modules/fecs/bin/fecs format",
+                "node ./packages/hulk-lint/node_modules/fecs/bin/fecs format",
                 "git add"
             ],
             "*.less": [
-                "node node_modules/stylelint/bin/stylelint.js --fix --syntax=less",
+                "node ./packages/hulk-lint/node_modules/stylelint/bin/stylelint.js --fix --syntax=less",
                 "git add"
             ]
         },
