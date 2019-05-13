@@ -5,20 +5,20 @@
 module.exports = {
     'linters': {
         '*.san': [
-            'npx fecs check --type=es,js,san,css,less,html --reporter=baidu --rule'
+            'node ./node_modules/fecs/bin/fecs check --type=es,js,san,css,less,html --reporter=baidu --rule'
         ],
         '*.js': [
-            'npx hulk-lint'
+            'node ./node_modules/hulk-lint/bin/hulk-lint'
         ],
         '*.{html,htm}': [
-            'npx fecs check --reporter=baidu --rule'
+            'node ./node_modules/fecs/bin/fecs check --reporter=baidu --rule'
         ],
         '*.css': [
-            'npx fecs format',
+            'node ./node_modules/fecs/bin/fecs format',
             'git add'
         ],
         '*.less': [
-            'npx stylelint --syntax=less',
+            'node ./node_modules/stylelint/bin/sylelint.js --syntax=less',
             'git add'
         ]
     },
