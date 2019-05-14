@@ -7,11 +7,11 @@ const path = require('path');
 const fs = require('fs');
 const chalk = require('@baidu/hulk-utils/chalk');
 
-const {spawn} = require('child_process');
+const {spawn, spawnSync} = require('child_process');
 
 const inject = require('./inject');
 
-/*eslint no-console: "off"*/
+/* eslint no-console: "off" */
 module.exports = (dir = '') => {
     // read the content of package.json
     let packageJson = path.resolve(dir, 'package.json');
@@ -28,6 +28,7 @@ module.exports = (dir = '') => {
     });
 
     // spawn a child process to install git hooks
+    spawnSync('rm', './.git/hooks/*');
     const husky = spawn('node', [path.resolve(dir, 'node_modules/husky/husky.js'), 'install']);
 
     husky.stderr.on('data', data => {
