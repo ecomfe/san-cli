@@ -10,6 +10,10 @@ hulk-cli 新版本暂时未发布正式版，需要使用`@baidu/hulk-cli@next`�
 -   webpack
 -   [san store](https://github.com/baidu/san-store)
 
+## Hulk 1.x 迁移 Hulk 2.x
+
+hulk-cli 目前 2.0 版本已经开始测试，需要使用`@baidu/hulk-cli@next`方式安装，hulk 1.x 版本迁移 hulk2 [参考文档](./migration.md)。
+
 ## 安装 CLI 工具
 
 参见[hulk-cli](./hulk-cli.md)
