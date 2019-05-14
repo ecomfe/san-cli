@@ -151,14 +151,6 @@ module.exports = (api, options) => {
         // ----------------------pulgins---------------------
         // 大小写敏感！！！！
         webpackConfig.plugin('case-sensitive-paths').use(require('case-sensitive-paths-webpack-plugin'));
-        // 清理
-        if (options.command === 'build') {
-            webpackConfig.plugin('clean-webpack-plugin').use(require('clean-webpack-plugin'), [
-                {
-                    verbose: false
-                }
-            ]);
-        }
         // 添加progress
         webpackConfig.plugin('progress').use(require('webpack/lib/ProgressPlugin'));
     });
