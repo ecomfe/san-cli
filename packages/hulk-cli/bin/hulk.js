@@ -7,7 +7,6 @@
 /* eslint-disable no-console */
 
 const semver = require('semver');
-const program = require('commander');
 const {
     engines: {node: requiredNodeVersion},
     name,
@@ -16,6 +15,22 @@ const {
 
 const chalk = require('@baidu/hulk-utils/chalk');
 const error = require('@baidu/hulk-utils/logger').error;
+
+const Command = require('commander').Command;
+Command.prototype.unknownOption = function unknownOption(flag) {
+    if (this._allowUnknownOption) {
+        return;
+    }
+    /* eslint-disable quotes */
+    console.log();
+    error('Unknown option `' + flag + '`');
+    console.log();
+    /* eslint-enable quotes */
+    this.outputHelp();
+    process.exit(1);
+};
+
+const program = new Command();
 
 // 1. 检测 node 版本
 checkNodeVersion(requiredNodeVersion, name);
@@ -41,6 +56,7 @@ if (commands.includes(cmd)) {
         error(`Command: ${chalk.yellow(cmd)} not exist！`);
         console.log();
         program.outputHelp();
+        process.exit(1);
     });
 
     program.on('--help', () => {

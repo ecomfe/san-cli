@@ -55,7 +55,7 @@ module.exports = {
     outputDir: 'output',
     templateDir: '',
     // where to put static assets (js/css/img/font/...)
-    assetsDir: 'output',
+    assetsDir: 'static',
     // filename for index.html (relative to outputDir)
     indexPath: 'index.html',
     // whether filename will contain hash part

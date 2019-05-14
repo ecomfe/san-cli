@@ -49,7 +49,7 @@ module.exports = async (initEntry, args) => {
             console.log(err);
         }
     }
-    function successBuild({stats, config, options}, {isModern, isModernBuild}) {
+    function successBuild({stats, config, options}, {isModern, isModernBuild} = {}) {
         const targetDir = path.resolve(context, config.output.path || args.dest || options.outputDir);
         const targetDirShort = path.relative(context, targetDir);
 

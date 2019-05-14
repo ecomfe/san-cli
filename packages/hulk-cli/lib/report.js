@@ -2,6 +2,7 @@
  * @file formatStats 美化下 stats log
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+/* global Set, Map */
 const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
@@ -19,7 +20,9 @@ module.exports = function formatStats(stats, destDir, api) {
     const isCSS = val => /\.css$/.test(val);
     const isMinJS = val => /\.min\.js$/.test(val);
 
+    /* eslint-disable no-unused-vars */
     let {assets, entrypoints, chunks} = stats;
+    /* eslint-enable no-unused-vars */
 
     function getChunksById(id) {
         if (typeof id === 'number' && chunks[id]) {
@@ -79,7 +82,7 @@ module.exports = function formatStats(stats, destDir, api) {
                                 .filter(
                                     chunkId => !~prefetchChunks.indexOf(chunkId) && !~preloadChunks.indexOf(chunkId)
                                 )
-                                .map(chunkId => getAssetsFiles(chunk.files))
+                                .map(() => getAssetsFiles(chunk.files))
                         )
                     );
                 }
@@ -208,7 +211,7 @@ module.exports = function formatStats(stats, destDir, api) {
                         if (!uniqueSet.has(asset)) {
                             uniqueSet.add(asset);
                             asset = assetsMap.get(asset);
-                            if (Array.isArray(asset.type) && type) {
+                            if (asset && Array.isArray(asset.type) && type) {
                                 asset.type.push(type);
                             }
                             return asset;
