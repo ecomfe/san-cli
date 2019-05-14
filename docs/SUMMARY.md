@@ -1,4 +1,5 @@
 -   [安装](./hulk-cli.md)
+-   [迁移 hulk2](./migration.md)
 -   项目脚手架
     -   [项目脚手架安装和介绍](./project.md)
     -   [hulk.config.js](./config.md)

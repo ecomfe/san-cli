@@ -224,8 +224,9 @@ module.exports = {
 
 > 注意：`<head></head>`和`<body></body>`必须要填写，html-webpack-plugin 会查找这个标签，添加上 js 和 css，处理完之后，只起到了占位的作用；hulk 在最后使用插件，将这俩标签去掉。
 
-```html
-{%block name="__head_asset"%}<head></head>{%/block%} {%block name="__body_asset"%}
+```
+{%block name="__head_asset"%}<head></head>{%/block%}
+{%block name="__body_asset"%}
 <body></body>
 {%/block%}
 ```
