@@ -39,7 +39,7 @@ module.exports = (api, options) => {
                 default: false,
                 // 公共css代码抽离
                 styles: {
-                    name: 'common',
+                    name: 'css-common',
                     test: /\.css$/,
                     chunks: 'all',
                     enforce: true,
@@ -49,7 +49,7 @@ module.exports = (api, options) => {
                 },
                 // 异步模块命名
                 asyncVendors: {
-                    name(module, chunks, cacheGroupKey) {
+                    name(module, chunks) {
                         if (Array.isArray(chunks)) {
                             const names = chunks
                                 .map(({name}) => {
@@ -66,11 +66,11 @@ module.exports = (api, options) => {
                 },
                 // 三方库模块独立打包
                 vendors: {
-                    name: 'vendor',
+                    name: 'vendors',
                     test(mod) {
                         return /[\\/]node_modules[\\/]/.test(mod.resource) && mod.type === 'javascript/auto';
                     },
-                    minChunks: 1,
+                    // minChunks: 1,
                     priority: -10,
                     chunks: 'initial'
                 },
@@ -78,9 +78,9 @@ module.exports = (api, options) => {
                 common: {
                     name: 'common',
                     // 只抽取公共依赖模块，保证页面之间公用，并且不经常变化，否则 http cache 不住
-                    test(mod) {
-                        return /[\\/]node_modules[\\/]/.test(mod.resource) && mod.type === 'javascript/auto';
-                    },
+                    // test(mod) {
+                    //     return /[\\/]node_modules[\\/]/.test(mod.resource) && mod.type === 'javascript/auto';
+                    // },
                     // 1个以上公用才抽离
                     minChunks: 2,
                     priority: -20,

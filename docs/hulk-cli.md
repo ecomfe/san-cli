@@ -217,3 +217,15 @@ module.exports = {
 ## 默认**页面**模板
 
 如果对 hulk 默认的 dev server 的 `index.html` 不能满足需求，可以在项目创建`public/index.html`来代替 hulk 内置的`index.html`，dev Server 会优先选择`public/index.html`作为页面模板。
+
+## smarty 模板
+
+在 smarty 模板中，需要添加下面的`block`，html-webpack-plugin 的插件会匹配内容，将打包出来的 js 和 css 放到对应的 head 和 body 中去！
+
+> 注意：`<head></head>`和`<body></body>`必须要填写，html-webpack-plugin 会查找这个标签，添加上 js 和 css，处理完之后，只起到了占位的作用；hulk 在最后使用插件，将这俩标签去掉。
+
+```html
+{%block name="__head_asset"%}<head></head>{%/block%} {%block name="__body_asset"%}
+<body></body>
+{%/block%}
+```

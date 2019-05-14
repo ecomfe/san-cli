@@ -4,6 +4,8 @@
  * @file hulk bin 文件入口
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+/* eslint-disable no-console */
+
 const semver = require('semver');
 const program = require('commander');
 const {
@@ -24,7 +26,10 @@ const cmd = process.argv[2];
 const commands = ['init', 'update', 'serve', 'build', 'component', 'lint', 'inspect'];
 
 if (commands.includes(cmd)) {
-    console.log(chalk.bold(`hulk ${cmd} v${version}`));
+    if (!process.env.HULK_CLI_MODERN_BUILD) {
+        // modern 打包不要输出这个了
+        console.log(chalk.bold(`hulk ${cmd} v${version}`));
+    }
     require(`../commands/${cmd}`)(program);
 } else {
     // 添加 version

@@ -9,6 +9,7 @@ module.exports = ({browserslist, modernMode, modernBuild, command, loaderOptions
     let targets = browserslist;
     // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
     const isModernBundle = modernMode && modernBuild;
+
     if (isModernBundle) {
         // 这个是 modern 打包
         targets = {esmodules: true};

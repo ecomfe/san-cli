@@ -4,7 +4,6 @@
  */
 const fs = require('fs');
 const path = require('path');
-const injectAssets = require('../injectAssets');
 
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
@@ -62,6 +61,7 @@ module.exports = (api, options) => {
         // resolve HTML file(s)
         const multiPageConfig = options.pages;
         const HTMLPlugin = require('html-webpack-plugin');
+        const HulkHtmlPlugin = require('../webpack/HtmlPlugin');
         const htmlPath = api.resolve('public/index.html');
         // 默认路径
         const defaultHtmlPath = path.resolve(__dirname, '../../template/webpack/index-default.html');
@@ -101,9 +101,13 @@ module.exports = (api, options) => {
             const normalizePageConfig = c => (typeof c === 'string' ? {entry: c} : c);
 
             pages.forEach(name => {
-                let {title, entry, template = `public/${name}.html`, filename, chunks = [name]} = normalizePageConfig(
-                    multiPageConfig[name]
-                );
+                let {
+                    title,
+                    entry,
+                    template = `public/${name}.html`,
+                    filename,
+                    chunks = ['common', 'vendors', 'css-common', name]
+                } = normalizePageConfig(multiPageConfig[name]);
                 // inject entry
                 webpackConfig.entry(name).add(api.resolve(entry));
 
@@ -143,6 +147,7 @@ module.exports = (api, options) => {
                     }
                 );
                 webpackConfig.plugin(`html-${name}`).use(HTMLPlugin, [pageHtmlOptions]);
+                webpackConfig.plugin(`hulk-html-${name}`).use(HulkHtmlPlugin);
             });
             useHtmlPlugin = true;
         }
@@ -150,23 +155,6 @@ module.exports = (api, options) => {
             // 这里插件是依赖 html-webpack-plguin 的，所以不配置 hwp，会报错哦~
             // html-webpack-harddisk-plugin
             webpackConfig.plugin('html-webpack-harddisk-plugin').use(require('html-webpack-harddisk-plugin'));
-
-            // 处理 smarty 的placeholder
-            webpackConfig
-                .plugin('hulk-html-webpack-addons-plugin')
-                .use(require('@baidu/hulk-html-webpack-plugin-addons'), [
-                    {
-                        alterAssetTags(pluginData) {
-                            // 这里注意，只是 html-webpack-plugin v3才有这个，v4没有 head 和 body，但又替代品
-                            if (path.extname(pluginData.outputName) === '.tpl') {
-                                // 不插入css和js
-                                pluginData.head = pluginData.body = [];
-                            }
-                            return pluginData;
-                        },
-                        afterHTMLProcessing: injectAssets
-                    }
-                ]);
         }
 
         // copy static assets in public/

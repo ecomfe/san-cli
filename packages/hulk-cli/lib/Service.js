@@ -97,16 +97,9 @@ module.exports = class Service {
         if (isProd && config.production && typeof config.production === 'object') {
             config = defaultsDeep(config.build, config);
         }
-        // 根据mode 选择合适的 browserslist
 
-        if (args.modernMode && args.modernBuild) {
-            if (typeof config.browserslist === 'object' && config.browserslist.modern) {
-                // 设置为 modern mode browserslist
-                config.browserslist = config.browserslist.modern;
-            } else {
-                throw new Error('Not found Modern browserslist in hulk.config.js');
-            }
-        } else if (
+        // 根据mode 选择合适的 browserslist
+        if (
             /* prettier-ignore */
             !Array.isArray(config.browserslist)
             && typeof config.browserslist === 'object'
