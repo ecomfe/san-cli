@@ -6,41 +6,59 @@
 const path = require('path');
 const fs = require('fs');
 const chalk = require('@baidu/hulk-utils/chalk');
-
-const {spawn, spawnSync} = require('child_process');
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
+const fsAccess = util.promisify(require('fs').access);
+const fsWrite = util.promisify(require('fs').writeFile);
 
 const inject = require('./inject');
 
 /* eslint no-console: "off" */
-module.exports = (dir = '') => {
+async function injectPkg(dir) {
     // read the content of package.json
-    let packageJson = path.resolve(dir, 'package.json');
-    if (!fs.existsSync(packageJson)) {
+    let pkg = path.resolve(dir, 'package.json');
+    try {
+        await fsAccess(pkg, fs.constants.F_OK | fs.constants.W_OK);
+    }
+    catch (e) {
         console.log(chalk.red('No package.json found! Please make sure the path is correct!'));
         return false;
     }
-    let packageConf = require(packageJson);
+    let packageConf = require(pkg);
 
     // inject config into package.json
     packageConf = inject(packageConf);
-    fs.writeFile(packageJson, JSON.stringify(packageConf, '', '\t'), err => {
-        err ? console.log(err) : console.log('Writing package.json finished.');
-    });
+    try {
+        await fsWrite(pkg, JSON.stringify(packageConf, '', '    '));
+    }
+    catch (e) {
+        console.log(e);
+        return false;
+    }
+    console.log('Writing package.json finished.');
+}
 
-    // spawn a child process to install git hooks
-    spawnSync('rm', './.git/hooks/*');
-    const husky = spawn('node', [path.resolve(dir, 'node_modules/husky/husky.js'), 'install']);
+async function huskyReinstall(dir) {
+    // uninstall git hooks
+    const rm = await exec(`rm ${path.resolve(dir, '.git/hooks/*')}`);
+    console.log(`${rm.stdout}`);
+    console.log(`${rm.stderr}`);
+    if (rm.e) {
+        console.log(chalk.red('Failed to uninstall git hooks.\n'));
+        return false;
+    }
 
-    husky.stderr.on('data', data => {
-        console.log(`${data}`);
-    });
-    husky.on('close', code => {
-        if (code === 0) {
-            console.log('Git hooks installed.');
-        }
-        else {
-            console.log(chalk.red('Failed to install git hooks.'));
-        }
+    // spawn a child process to reinstall git hooks
+    const husky = await exec(`node ${path.resolve(dir, 'node_modules/husky/husky.js')} install`);
+    console.log(`${husky.stdout}`);
+    console.log(`${husky.stderr}`);
+    if (husky.e) {
+        console.log(chalk.red('Failed to install git hooks.\n'));
+        return false;
+    }
+    console.log('Git hooks installed.\n');
+}
 
-    });
+module.exports = async (dir = '') => {
+    await Promise.all([injectPkg(dir), huskyReinstall(dir)]);
 };
