@@ -112,6 +112,9 @@ module.exports = (api, options) => {
         /* eslint-enable*/
         setLoader('js', /\.m?js$/, 'babel');
 
+        // 增加 matrix-loader example
+        // webpackConfig.module.rules.get('js').use('matrix').loader(require.resolve('matrix-loader'))
+
         // webpackConfig.resolveLoader.modules.prepend(path.join(__dirname, 'node_modules'));
 
         // const eslint = require('./loaders/eslint')(loaderOptions);

@@ -191,7 +191,7 @@ async function build(args) {
     // resolve webpack config
     // const webpackConfig = service.resolveWebpackConfig();
     const webpackConfig = service.resolveWebpackConfig(chainConfig);
-    // console.log(webpackConfig);
+    // console.log(webpackConfig.module.rules[7]);
 
     if (dest) {
         modifyConfig(webpackConfig, config => {
