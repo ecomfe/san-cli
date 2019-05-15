@@ -8,7 +8,7 @@ module.exports = {
             'node ./node_modules/fecs/bin/fecs check --type=es,js,san,css,less,html --reporter=baidu --rule'
         ],
         '*.js': [
-            'node ./node_modules/hulk-lint/bin/hulk-lint'
+            'node ./node_modules/@baidu/hulk-lint/bin/hulk-lint'
         ],
         '*.{html,htm}': [
             'node ./node_modules/fecs/bin/fecs check --reporter=baidu --rule'
