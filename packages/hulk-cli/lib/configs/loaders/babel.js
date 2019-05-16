@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const path = require('path');
-const sanHmrPlugin = require('@baidu/babel-plugin-san-hmr');
+const sanHmrPlugin = require('babel-plugin-san-hmr');
 module.exports = ({browserslist, modernMode, modernBuild, command, loaderOptions: {babel = {}}}) => {
     const plugins = (babel && babel.plugins) || [];
     let targets = browserslist;
