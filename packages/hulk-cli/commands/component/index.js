@@ -16,6 +16,7 @@ module.exports = program => {
         .option('-h, --host <host>', 'dev server host')
         .option('-m, --mode <mode>', '指定 webpack mode', envReg, DEVELOPMENT_MODE)
         .option('-c, --config <config>', '设置  webpack config 文件')
+        .option('--qrcode', '显示 url 二维码')
         .option('--use-https', 'use https')
         .action((entry, args) => {
             const serve = require('../serve/run').serve;

@@ -16,5 +16,4 @@ program
     .parse(process.argv);
 
 let paths = process.argv.slice(2);
-linter(paths)
-
+linter(paths);

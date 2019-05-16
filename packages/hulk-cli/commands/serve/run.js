@@ -2,7 +2,7 @@
  * @file serve run
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-
+/* eslint-disable no-console */
 async function serve(app, entry, args, command = 'serve') {
     const context = process.cwd();
     const isFile = app && entry;
@@ -22,6 +22,7 @@ async function serve(app, entry, args, command = 'serve') {
     const chalk = require('@baidu/hulk-utils/chalk');
 
     const webpack = require('webpack');
+    const qrcode = require('qrcode-terminal');
     const WebpackDevServer = require('webpack-dev-server');
     const portfinder = require('portfinder');
     const prepareUrls = require('@baidu/hulk-utils/prepare-urls').prepareUrls;
@@ -107,9 +108,9 @@ async function serve(app, entry, args, command = 'serve') {
         compiler = webpack(webpackConfig);
     } catch (e) {
         // 捕捉参数不正确的错误信息
-        console.log('webpack compile error!');
+        console.log('webpack compile error!'); // eslint-disable-line no-console
         if (e instanceof webpack.WebpackOptionsValidationError) {
-            console.error(e.message);
+            console.error(e.message); // eslint-disable-line no-console
             process.exit(1);
         }
         throw e;
@@ -146,15 +147,7 @@ async function serve(app, entry, args, command = 'serve') {
             rewrites: [{from: /./, to: path.posix.join(options.baseUrl, 'index.html')}]
         };
     }
-    // console.log(Object.assign(defaultDevServer, projectDevServerOptions, {
-    //     https: useHttps,
-    //     before(app, server) {
-    //         // allow other plugins to register middlewares, e.g. PWA
-    //         (options.middlewares || []).forEach(fn => app.use(fn()));
-    //         // apply in project middlewares
-    //         projectDevServerOptions.before && projectDevServerOptions.before(app, server);
-    //     }
-    // }));
+
     const server = new WebpackDevServer(
         compiler,
         Object.assign(defaultDevServer, projectDevServerOptions, {
@@ -177,11 +170,26 @@ async function serve(app, entry, args, command = 'serve') {
                 return;
             }
 
+            /* eslint-disable no-console */
             console.log();
             console.log('  App running at:');
             const networkUrl = publicUrl ? publicUrl.replace(/([^/])$/, '$1/') : urls.lanUrlForTerminal;
             console.log(`  - Network: ${chalk.cyan(networkUrl)}`);
             console.log();
+            /* eslint-enable no-console */
+
+            if (args.qrcode) {
+                qrcode.generate(
+                    networkUrl,
+                    {
+                        small: true
+                    },
+                    qrcode => {
+                        // eslint-disable-next-line
+                        console.log(qrcode);
+                    }
+                );
+            }
 
             if (isFirstCompile) {
                 isFirstCompile = false;
@@ -218,6 +226,7 @@ module.exports = (entry, args) => {
         app = entry;
         entry = undefined;
     }
+    // eslint-disable-next-line
     return serve(app, entry, args).catch(err => console.log(err));
 };
 module.exports.serve = serve;
