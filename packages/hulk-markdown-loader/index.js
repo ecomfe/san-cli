@@ -87,9 +87,8 @@ module.exports = function(content) {
 
     let id = 'components-demo-' + Date.now();
     let templateContent = '';
-    const tmplPath = path.join(context, template);
-    if (template && fs.existsSync(tmplPath)) {
-        templateContent = fs.readFileSync(tmplPath, 'utf8');
+    if (template && fs.existsSync(path.join(context, template))) {
+        templateContent = fs.readFileSync(path.join(context, template), 'utf8');
     } else {
         templateContent = fs.readFileSync(defaultTemplate, 'utf8');
     }
