@@ -27,7 +27,7 @@ function getMarkdownDefaultSanCode(content, cls) {
 // eslint-disable-next-line
 module.exports = function(content) {
     this.cacheable && this.cacheable();
-    const {ignore, template, context} = loaderUtils.getOptions(this) || {};
+    const {ignore, template, context = process.cwd()} = loaderUtils.getOptions(this) || {};
 
     const {resourcePath} = this;
     if (Object.prototype.toString.call(ignore).slice(8, -1) === 'RegExp') {
@@ -87,8 +87,9 @@ module.exports = function(content) {
 
     let id = 'components-demo-' + Date.now();
     let templateContent = '';
-    if (template && fs.existsSync(path.join(context, template))) {
-        templateContent = fs.readFileSync(path.join(context, template), 'utf8');
+    const tmplPath = path.join(context, template);
+    if (template && fs.existsSync(tmplPath)) {
+        templateContent = fs.readFileSync(tmplPath, 'utf8');
     } else {
         templateContent = fs.readFileSync(defaultTemplate, 'utf8');
     }
