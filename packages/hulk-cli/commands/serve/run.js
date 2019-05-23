@@ -167,6 +167,7 @@ async function serve(app, entry, args, command = 'serve') {
         let isFirstCompile = true;
         compiler.hooks.done.tap('hulk-cli-serve', stats => {
             if (stats.hasErrors()) {
+                reject(stats.toString({colors: true, all: false, errors: true}));
                 return;
             }
 

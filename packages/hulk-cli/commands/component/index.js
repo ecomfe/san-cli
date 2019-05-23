@@ -48,6 +48,7 @@ module.exports = program => {
                 // 默认情况
                 mainTemplate = require.resolve('../../template/webpack/component/main.js');
             }
-            return serve(mainTemplate, path.resolve(context, entry), args, 'component');
+            // eslint-disable-next-line
+            return serve(mainTemplate, path.resolve(context, entry), args, 'component').catch(err => console.log(err));
         });
 };
