@@ -19,7 +19,7 @@ origin.heading = renderer.heading = (text, level) => {
     const slug = slugify(text);
     const url = '#' + slug;
 
-    return `<h${level} id="${slug}"><span>${text}</span><a href="${url}" class="anchor">#<a></h${level}>`;
+    return `<h${level} id="${slug}"><span>${text}</span><a href="${url}" class="anchor">#</a></h${level}>`;
 };
 // Highlight code
 origin.code = renderer.code = (code, lang = '') => {
@@ -29,7 +29,7 @@ origin.code = renderer.code = (code, lang = '') => {
 
     const hl = prism.highlight(code, prism.languages[lang] || prism.languages.markup);
 
-    return `<pre v-pre data-lang="' + lang + '"><code class="lang-' + lang + '">${hl}</code></pre>`;
+    return `<pre v-pre data-lang="' + lang + '"><code class="lang-${lang}">${hl}</code></pre>`;
 };
 
 origin.paragraph = renderer.paragraph = text => {

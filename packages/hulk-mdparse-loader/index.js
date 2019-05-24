@@ -9,7 +9,6 @@ const defaultTemplate = path.join(__dirname, './template.san');
 const loaderUtils = require('loader-utils');
 const genTemplate = require('./utils/genTemplate');
 const getText = require('./utils/getText').getText;
-const Ejs = require('ejs');
 
 function getMarkdownDefaultSanCode(content, cls) {
     cls = cls || ['markdown'];
@@ -30,7 +29,7 @@ function getMarkdownDefaultSanCode(content, cls) {
 module.exports = function(content) {
     this.cacheable && this.cacheable();
     // eslint-disable-next-line
-    const {ignore, template, context = process.cwd(), textTag = 'text', i18n = 'cn', exportType = 'component'} =
+    const {ignore, template, context = process.cwd(), textTag = 'text', i18n = 'cn', exportType = 'object'} =
         loaderUtils.getOptions(this) || {};
 
     const {resourcePath} = this;
@@ -73,8 +72,18 @@ module.exports = function(content) {
 };
 function genObject(template, data) {
     const {resourcePath} = this;
-    data.requirePath = getComponentImportFromCode(resourcePath, data.content);
-    return Ejs.render(template, data);
+    if (data.code) {
+        const requirePath = getComponentImportFromCode(resourcePath, data.content);
+        data.sanComponent = 'sanComponent';
+        data.hasCode = true;
+        return `
+import sanComponent from '${requirePath}';
+export default ${JSON.stringify(data).replace(/(['"])sanComponent\1/g, 'sanComponent')};
+`;
+    } else {
+        data.hasCode = false;
+        return `export default ${JSON.stringify(data)}`;
+    }
 }
 
 function genComponent(template, {text, code, content}) {
@@ -117,7 +126,7 @@ function getComponentImportFromCode(resourcePath, content) {
         const pickLoader = require.resolve('./utils/pickFence.js');
         const fakemd = `${require.resolve('./utils/_fakemd')}?mdurl=${resourcePath}&_t=${Date.now()}`;
 
-        dyImport = `${require.resolve('@baidu/hulk-san-loader')}!${pickLoader}?url=${resourcePath}!${fakemd}";`;
+        dyImport = `${require.resolve('@baidu/hulk-san-loader')}!${pickLoader}?url=${resourcePath}!${fakemd}`;
     }
     return dyImport;
 }

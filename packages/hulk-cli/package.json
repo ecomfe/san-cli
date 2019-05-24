@@ -18,6 +18,7 @@
         "node": ">=8.9"
     },
     "dependencies": {
+        "marked": "^0.6.1",
         "@babel/core": "^7.3.4",
         "@babel/plugin-proposal-class-properties": "^7.3.4",
         "@babel/plugin-syntax-dynamic-import": "^7.2.0",

@@ -139,14 +139,6 @@ module.exports = (api, options) => {
         webpackConfig.module
             .rule('md')
             .test(/\.md$/)
-            .use('san-loader')
-            .loader(require.resolve('@baidu/hulk-san-loader'))
-            .options({
-                hotReload: true,
-                sourceMap: true,
-                minimize: false
-            })
-            .end()
             .use('markdown')
             .loader(require.resolve('@baidu/hulk-mdparse-loader'))
             .options({context, template, ignore});

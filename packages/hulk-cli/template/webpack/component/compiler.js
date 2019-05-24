@@ -7,10 +7,50 @@
  * Render anchor tag
  * @link https://github.com/markedjs/marked#overriding-renderer-methods
  */
-const prism = require('prismjs');
 const marked = require('marked');
 
-const {slugify, helper, merge} = require('./index.js');
+const merge = Object.assign;
+
+const hasOwn = Object.prototype.hasOwnProperty;
+let cache$1 = {};
+const re = /[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,./:;<=>?@[\]^`{|}~]/g;
+
+function lower(string) {
+    return string.toLowerCase();
+}
+
+function slugify(str) {
+    if (typeof str !== 'string') {
+        return '';
+    }
+
+    let slug = str
+        .trim()
+        .replace(/[A-Z]+/g, lower)
+        .replace(/<[^>\d]+>/g, '')
+        .replace(re, '')
+        .replace(/\s/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^(\d)/, '_$1');
+    let count = cache$1[slug];
+
+    count = hasOwn.call(cache$1, slug) ? count + 1 : 0;
+    cache$1[slug] = count;
+
+    if (count) {
+        slug = slug + '-' + count;
+    }
+
+    return slug;
+}
+
+slugify.clear = () => {
+    cache$1 = {};
+};
+
+function helper(className, content) {
+    return '<p class="' + className + '">' + content.slice(5).trim() + '</p>';
+}
 
 const renderer = new marked.Renderer();
 const origin = {};
@@ -20,16 +60,6 @@ origin.heading = renderer.heading = (text, level) => {
     const url = '#' + slug;
 
     return `<h${level} id="${slug}"><span>${text}</span><a href="${url}" class="anchor">#</a></h${level}>`;
-};
-// Highlight code
-origin.code = renderer.code = (code, lang = '') => {
-    if (lang === undefined) {
-        lang = '';
-    }
-
-    const hl = prism.highlight(code, prism.languages[lang] || prism.languages.markup);
-
-    return `<pre v-pre data-lang="' + lang + '"><code class="lang-${lang}">${hl}</code></pre>`;
 };
 
 origin.paragraph = renderer.paragraph = text => {

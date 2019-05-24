@@ -28,10 +28,6 @@
             "*.css": [
                 "node ./packages/hulk-lint/node_modules/fecs/bin/fecs format",
                 "git add"
-            ],
-            "*.less": [
-                "node ./packages/hulk-lint/node_modules/stylelint/bin/stylelint.js --fix --syntax=less",
-                "git add"
             ]
         },
         "ignore": [
