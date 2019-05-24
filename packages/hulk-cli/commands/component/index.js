@@ -22,26 +22,35 @@ module.exports = program => {
         .option('--use-https', 'use https')
         .action((entry, args) => {
             const serve = require('../serve/run').serve;
+            const fse = require('fs-extra');
+
             const context = process.cwd();
             let mainTemplate;
-            if (args.template) {
+            if (path.extname(entry) === '') {
+                // 默认是 docs/index
+                const docIndex = path.resolve(entry, './docs/index.js');
+                if (fse.existsSync(docIndex)) {
+                    entry = docIndex;
+                }
+            }
+            if (args.mainTemplate) {
                 // 下面来检查下 main template 内容是否正确
-                const fse = require('fs-extra');
+
                 /* eslint-disable no-unused-vars,fecs-no-require */
                 const {error} = require('@baidu/hulk-utils/logger');
                 /* eslint-enable no-unused-vars,fecs-no-require */
 
-                mainTemplate = path.resolve(args.template);
+                mainTemplate = path.resolve(args.mainTemplate);
                 if (fse.existsSync(mainTemplate)) {
                     const content = fse.readFileSync(mainTemplate, {encoding: 'utf8'});
                     if (content.indexOf('~entry') === -1) {
                         // 必须包含~entry 引入啊
-                        error(`${args.template} is not include \`~entry\`!`);
+                        error(`${args.mainTemplate} is not include \`~entry\`!`);
                         process.exit(1);
                     }
                 } else {
                     // 不存在的哦~
-                    error(`${args.template} is not exists!`);
+                    error(`${args.mainTemplate} is not exists!`);
                     process.exit(1);
                 }
             } else {

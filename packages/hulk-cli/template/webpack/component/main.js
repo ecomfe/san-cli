@@ -4,7 +4,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-import './index.less';
+import './styles/index.less';
 import {defineComponent} from 'san';
 import CodeBox from './CodeBox.js';
 import compiler from './compiler';
@@ -15,7 +15,7 @@ if (Array.isArray(entries) && entries.length) {
     const template = [];
     entries
         .map(({code, hasCode, text, content, sanComponent}) => { // eslint-disable-line
-            if (code) {
+            if (hasCode && code) {
                 code = `<pre><code class="language-html">${code.replace(/</g, '&lt;')}</code></pre>`;
             }
 
@@ -49,6 +49,7 @@ if (Array.isArray(entries) && entries.length) {
         template: `<div id="app">${template.join('')}</div>`,
         components
     });
+
     const app = new AppC();
     app.attach(document.body);
 }

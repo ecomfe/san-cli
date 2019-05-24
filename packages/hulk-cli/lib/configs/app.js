@@ -64,7 +64,12 @@ module.exports = (api, options) => {
         const HulkHtmlPlugin = require('../webpack/HtmlPlugin');
         const htmlPath = api.resolve('public/index.html');
         // 默认路径
-        const defaultHtmlPath = path.resolve(__dirname, '../../template/webpack/index-default.html');
+        const defaultHtmlPath = path.resolve(
+            __dirname,
+            options.command === 'component'
+                ? '../../template/webpack/component/index.html'
+                : '../../template/webpack/index-default.html'
+        );
         const publicCopyIgnore = ['index.html', '.DS_Store'];
         let useHtmlPlugin = false;
         if (!multiPageConfig || options.command === 'component') {
