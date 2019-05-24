@@ -19,9 +19,6 @@
     },
     "lint-staged": {
         "linters": {
-            "*.san": [
-                "node ./packages/hulk-lint/node_modules/fecs/bin/fecs check --type=es,js,san,css,less,html --reporter=baidu --rule"
-            ],
             "*.js": [
                 "node ./packages/hulk-lint/bin/hulk-lint"
             ],

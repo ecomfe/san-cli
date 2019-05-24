@@ -148,7 +148,7 @@ module.exports = (api, options) => {
             })
             .end()
             .use('markdown')
-            .loader(require.resolve('@baidu/hulk-markdown-loader'))
+            .loader(require.resolve('@baidu/hulk-mdparse-loader'))
             .options({context, template, ignore});
 
         // ----------------------pulgins---------------------

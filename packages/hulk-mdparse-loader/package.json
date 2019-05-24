@@ -1,0 +1,32 @@
+{
+    "name": "@baidu/hulk-mdparse-loader",
+    "version": "2.0.0-alpha.12",
+    "description": "san markdown loader",
+    "author": "wangyongqing01 <wangyongqing01@baidu.com>",
+    "homepage": "",
+    "license": "MIT",
+    "main": "index.js",
+    "publishConfig": {
+        "registry": "http://registry.npm.baidu-int.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "ssh://wangyongqing01@icode.baidu.com:8235/baidu/hulk/hulk-cli"
+    },
+    "scripts": {
+        "test": "echo \"Error: run tests from root\" && exit 1"
+    },
+    "dependencies": {
+        "@babel/core": "^7.3.4",
+        "@babel/generator": "^7.3.4",
+        "@babel/traverse": "^7.3.4",
+        "@baidu/hulk-san-loader": "^2.0.0-alpha.12",
+        "loader-utils": "^1.2.3",
+        "ejs": "^2.6.1",
+        "marked": "^0.6.1",
+        "posthtml": "^0.11.4",
+        "posthtml-render": "^1.1.5",
+        "prismjs": "^1.15.0"
+    },
+    "gitHead": "9c78cf4439df7ecede9b648942e10b826787daab"
+}
