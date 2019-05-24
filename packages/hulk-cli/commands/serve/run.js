@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 /* eslint-disable no-console */
-async function serve(app, entry, args, command = 'serve') {
+async function serve(app, entry, args, command = 'serve', plugins = []) {
     const context = process.cwd();
     const isFile = app && entry;
     const mode = args.mode;
@@ -32,7 +32,8 @@ async function serve(app, entry, args, command = 'serve') {
     // 开始正式的操作
     const Service = require('../../lib/Service');
     const service = new Service(context, {
-        configFile: args.config
+        configFile: args.config,
+        plugins
     });
 
     const options = service.init(mode, {
@@ -55,7 +56,11 @@ async function serve(app, entry, args, command = 'serve') {
         webpackConfig.entry = {};
     }
     if (app) {
-        webpackConfig.entry.app = app;
+        if (typeof app === 'object') {
+            webpackConfig.entry = app;
+        } else {
+            webpackConfig.entry.app = app;
+        }
     }
     // if (!app) {
     //     // delete webpackConfig.entry.app;

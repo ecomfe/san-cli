@@ -14,7 +14,6 @@ module.exports = (api, options) => {
         // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
         const isLegacyBundle = options.modernMode && !options.modernBuild;
 
-        const context = api.getCwd();
         // set mode
         webpackConfig.mode(isProd ? 'production' : 'development').context(api.service.context);
         // set output
@@ -133,15 +132,7 @@ module.exports = (api, options) => {
         //     .loader(eslint.loader)
         //     .options(eslint.options);
 
-        // 增加 md loader
-        // 来自hulk.config.js component
-        const {template, ignore} = options.component || {};
-        webpackConfig.module
-            .rule('md')
-            .test(/\.md$/)
-            .use('markdown')
-            .loader(require.resolve('@baidu/hulk-mdparse-loader'))
-            .options({context, template, ignore});
+
 
         // ----------------------pulgins---------------------
         // 大小写敏感！！！！

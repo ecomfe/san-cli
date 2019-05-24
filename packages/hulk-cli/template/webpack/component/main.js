@@ -6,15 +6,18 @@
 
 import './styles/index.less';
 import {defineComponent} from 'san';
-import CodeBox from './CodeBox.js';
+import getComponentClass from './CodeBox';
 import compiler from './compiler';
 import entries from '~entry';
 
+const CodeBox = getComponentClass();
+
+const components = {};
+const template = [];
 if (Array.isArray(entries) && entries.length) {
-    const components = {};
-    const template = [];
     entries
-        .map(({code, hasCode, text, content, sanComponent}) => { // eslint-disable-line
+        .map(({code, hasCode, text, sanComponent}) => {
+            // eslint-disable-line
             if (hasCode && code) {
                 code = `<pre><code class="language-html">${code.replace(/</g, '&lt;')}</code></pre>`;
             }
@@ -44,12 +47,42 @@ if (Array.isArray(entries) && entries.length) {
             components[`ui-${i}`] = instance;
             template.push(`<ui-${i}/>`);
         });
-    // console.log(components);
-    const AppC = defineComponent({
-        template: `<div id="app">${template.join('')}</div>`,
-        components
-    });
+} else if (typeof entries === 'object') {
+    Object.keys(entries).forEach(name => {
+        let {code, hasCode, text, sanComponent} = entries[name];
+        if (hasCode && code) {
+            code = `<pre><code class="language-html">${code.replace(/</g, '&lt;')}</code></pre>`;
+        }
 
-    const app = new AppC();
-    app.attach(document.body);
+        text = compiler(text);
+        let BoxComponent;
+        if (hasCode) {
+            BoxComponent = class extends CodeBox {
+                static components = {
+                    'code-preview': sanComponent
+                };
+                initData() {
+                    return {
+                        text,
+                        code,
+                        isExpand: false
+                    };
+                }
+            };
+        } else {
+            BoxComponent = defineComponent({
+                template: `<section class="markdown">${text}</section>`
+            });
+        }
+        components[name] = BoxComponent;
+        template.push(`<${name}/>`);
+    });
 }
+
+const AppC = defineComponent({
+    template: `<div id="app">${template.join('')}</div>`,
+    components
+});
+
+const app = new AppC();
+app.attach(document.body);
