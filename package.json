@@ -21,13 +21,6 @@
         "linters": {
             "*.js": [
                 "node ./packages/hulk-lint/bin/hulk-lint"
-            ],
-            "*.{html,htm}": [
-                "node ./packages/hulk-lint/node_modules/fecs/bin/fecs check --reporter=baidu --rule"
-            ],
-            "*.css": [
-                "node ./packages/hulk-lint/node_modules/fecs/bin/fecs format",
-                "git add"
             ]
         },
         "ignore": [

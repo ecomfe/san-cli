@@ -29,7 +29,7 @@
         "@babel/preset-env": "^7.4.0",
         "@babel/runtime": "^7.4.0",
         "@baidu/hulk-lint": "^2.0.0-alpha.12",
-        "@baidu/hulk-mdparse-loader": "^2.0.0-alpha.12",
+        "@baidu/hulk-markdown-loader": "^2.0.0-alpha.12",
         "@baidu/hulk-san-loader": "^2.0.0-alpha.12",
         "@baidu/hulk-utils": "^2.0.0-alpha.12",
         "babel-plugin-san-hmr": "^1.0.1",

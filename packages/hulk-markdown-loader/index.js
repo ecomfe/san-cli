@@ -13,6 +13,8 @@ const loaderUtils = require('loader-utils');
 const genTemplate = require('./utils/genTemplate');
 const getText = require('./utils/getText').getText;
 
+const EXPORT_TYPES = ['app', 'component', 'object'];
+
 function getMarkdownDefaultSanCode(content, cls) {
     cls = cls || ['markdown'];
     if (!Array.isArray(cls)) {
@@ -41,7 +43,7 @@ module.exports = function(content) {
         context = process.cwd(),
         textTag = 'text',
         i18n = 'cn',
-        exportType = params.exportType ? 'component' : 'app'
+        exportType = EXPORT_TYPES.includes(params.exportType) ? params.exportType : 'app'
     } = loaderUtils.getOptions(this) || {};
 
     if (Object.prototype.toString.call(ignore).slice(8, -1) === 'RegExp') {

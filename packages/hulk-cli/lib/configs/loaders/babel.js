@@ -14,7 +14,7 @@ module.exports = ({browserslist, modernMode, modernBuild, command, loaderOptions
         // 这个是 modern 打包
         targets = {esmodules: true};
     }
-    if (command === 'serve' && !plugins.includes(sanHmrPlugin)) {
+    if ((command === 'serve' || command === 'component') && !plugins.includes(sanHmrPlugin)) {
         // 添加 san-hmr 插件
         plugins.push(sanHmrPlugin);
     }
