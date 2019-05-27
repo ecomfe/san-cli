@@ -51,10 +51,7 @@ async function serve(app, entry, args, command = 'serve', plugins = []) {
     if (entry) {
         webpackConfig.resolve.alias['~entry'] = path.resolve(context, entry);
     }
-    if (command === 'component') {
-        // 清空，这里是因为 hulk.config 查找导致的
-        webpackConfig.entry = {};
-    }
+
     if (app) {
         if (typeof app === 'object') {
             webpackConfig.entry = app;

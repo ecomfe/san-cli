@@ -20,7 +20,6 @@ module.exports = (entry, args) => {
     }
     if (args.mainTemplate) {
         // 下面来检查下 main template 内容是否正确
-
         /* eslint-disable no-unused-vars,fecs-no-require */
         const {error} = require('@baidu/hulk-utils/logger');
         /* eslint-enable no-unused-vars,fecs-no-require */
@@ -40,14 +39,10 @@ module.exports = (entry, args) => {
         }
     } else {
         // 默认情况
-        mainTemplate = require.resolve(`../../template/webpack/component/${args.single ? 'preview.js' : 'main.js'}`);
+        mainTemplate = require.resolve('../../template/webpack/component/main.js');
     }
     // eslint-disable-next-line
-    return serve(
-        require.resolve('../../template/webpack/component/preview.js'),
-        path.resolve(context, entry),
-        args,
-        'component',
-        [require('../../lib/serivce-plugins/component')]
-    ).catch(err => console.log(err));
+    return serve(mainTemplate, path.resolve(context, entry), args, 'component', [
+        require('../../lib/serivce-plugins/component')
+    ]).catch(err => console.log(err));
 };
