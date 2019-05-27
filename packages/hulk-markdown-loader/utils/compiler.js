@@ -7,10 +7,10 @@
  * Render anchor tag
  * @link https://github.com/markedjs/marked#overriding-renderer-methods
  */
-const prism = require('prismjs');
+// const prism = require('prismjs');
 const marked = require('marked');
 
-const {slugify, helper, merge} = require('./index.js');
+const {slugify, helper, merge} = require('./index');
 
 const renderer = new marked.Renderer();
 const origin = {};
@@ -22,15 +22,15 @@ origin.heading = renderer.heading = (text, level) => {
     return `<h${level} id="${slug}"><span>${text}</span><a href="${url}" class="anchor">#</a></h${level}>`;
 };
 // Highlight code
-origin.code = renderer.code = (code, lang = '') => {
-    if (lang === undefined) {
-        lang = '';
-    }
+// origin.code = renderer.code = (code, lang = '') => {
+//     if (lang === undefined) {
+//         lang = '';
+//     }
 
-    const hl = prism.highlight(code, prism.languages[lang] || prism.languages.markup);
+//     const hl = prism.highlight(code, prism.languages[lang] || prism.languages.markup);
 
-    return `<pre v-pre data-lang="' + lang + '"><code class="lang-${lang}">${hl}</code></pre>`;
-};
+//     return `<pre v-pre data-lang="' + lang + '"><code class="lang-${lang}">${hl}</code></pre>`;
+// };
 
 origin.paragraph = renderer.paragraph = text => {
     let result;
