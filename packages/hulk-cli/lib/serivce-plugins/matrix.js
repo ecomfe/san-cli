@@ -2,6 +2,7 @@
  * @file matrix-loader plugin
  * @author jinzhan <jinzhan@baidu.com>
  */
+const {success, error, info} = require('@baidu/hulk-utils/logger');
 
 const rulesMap = {
     js: 'js',
@@ -12,7 +13,22 @@ const rulesMap = {
 
 module.exports = {
     id: 'matrix',
-    apply: (api, options) => {
+    apply: (api, {enableMatrix, matrixEnv}) => {
+        if (!enableMatrix) {
+            info('Matrix disabled!');
+            return;
+        }
+
+        const isBuild = Array.isArray(matrixEnv);
+
+        // build情况下，默认编译用第一个
+        const env = isBuild ? matrixEnv[0] : matrixEnv;
+
+        if (!env || !env.trim) {
+            error('Matrix env require!');
+            return;
+        }
+
         api.chainWebpack(config => {
             for (const fileSuffix in rulesMap) {
                 config.module
@@ -21,9 +37,18 @@ module.exports = {
                     .use('matrix')
                     .loader(require.resolve('@baidu/matrix-loader'))
                     .options({
-                        env: options.matrixEnv,
+                        env,
                         type: rulesMap[fileSuffix]
                     });
+            }
+
+            // 如果是build阶段，且存在多个matrixEnv的情况
+            if (isBuild && matrixEnv.length > 1) {
+                const MatrixPlugin = require('../../lib/webpack/MatrixPlugin');
+                config.plugin('matrix-plugin').use(new MatrixPlugin({
+                    matrixEnv,
+                    mainMatrixEnv: env
+                }));
             }
         });
     }

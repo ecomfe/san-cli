@@ -62,6 +62,7 @@ module.exports = (api, options) => {
         const multiPageConfig = options.pages;
         const HTMLPlugin = require('html-webpack-plugin');
         const HulkHtmlPlugin = require('../webpack/HtmlPlugin');
+        const MatrixTplPlugin = require('../webpack/MatrixTplPlugin');
         const htmlPath = api.resolve('public/index.html');
         // 默认路径
         const defaultHtmlPath = path.resolve(__dirname, '../../template/webpack/index-default.html');
@@ -128,8 +129,8 @@ module.exports = (api, options) => {
                 const templatePath = hasDedicatedTemplate
                     ? template
                     : fs.existsSync(htmlPath)
-                    ? htmlPath
-                    : defaultHtmlPath;
+                        ? htmlPath
+                        : defaultHtmlPath;
 
                 // inject html plugin for the page
                 const pageHtmlOptions = Object.assign(
@@ -147,7 +148,9 @@ module.exports = (api, options) => {
                     }
                 );
                 webpackConfig.plugin(`html-${name}`).use(HTMLPlugin, [pageHtmlOptions]);
-                webpackConfig.plugin(`hulk-html-${name}`).use(HulkHtmlPlugin);
+                const isMatrix = options.enableMatrix && Array.isArray(options.matrixEnv);
+                webpackConfig.plugin(`hulk-html-${name}`)
+                    .use(isMatrix ? MatrixTplPlugin : HulkHtmlPlugin, [{matrixEnv: options.matrixEnv}]);
             });
             useHtmlPlugin = true;
         }
