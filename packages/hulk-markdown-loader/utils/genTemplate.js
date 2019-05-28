@@ -9,18 +9,14 @@ const babel = require('@babel/core');
 const babelGen = require('@babel/generator').default;
 
 module.exports = function genTemplate(tpl, data) {
-    for (let i in data) {
-        if (!data[i]) {
-            data[i] = '';
-        }
-        tpl = tpl.split(new RegExp(`<${i}\\s*\\/>|<${i}>\\s*<\\/${i}>`, 'g')).join(data[i]);
-    }
-    // console.log(tpl);
-    return render(
+    let html = render(
         posthtml([
             tree => {
                 tree.match({tag: 'script'}, node => {
                     let code = node.content;
+                    if (Array.isArray(code)) {
+                        code = code.join('\n');
+                    }
                     let ast = babel.parse(code);
                     traverse(ast, {
                         enter(path) {
@@ -49,7 +45,6 @@ module.exports = function genTemplate(tpl, data) {
                                             return true;
                                         }
                                         /* eslint-enable*/
-
                                         return false;
                                     });
                                 }
@@ -86,4 +81,12 @@ module.exports = function genTemplate(tpl, data) {
             sync: true
         }).tree
     );
+    for (let i in data) {
+        if (!data[i]) {
+            data[i] = '';
+        }
+        // <%=id=%>
+        html = html.split(new RegExp(`<%=\\s*${i}\\s*=%>`, 'g')).join(data[i]);
+    }
+    return html;
 };

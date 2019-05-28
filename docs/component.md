@@ -87,6 +87,36 @@ export default {
 
 > Tips：`hulk commponent` 命令可以用`hulk md`代替
 
+## 只展现`html`中的代码，不显示页面文档内容
+
+新建`preview.js`，内容如下：
+
+```js
+// html:
+import {Component} from 'san';
+import Basic from './basic.md?exportType=component';
+
+export default class Index extends Component {
+    static template = `
+        <div>
+            <basic/>
+        </div>
+    `;
+    static components = {
+        basic: Basic
+    };
+}
+```
+
+在这里`import Basic from './basic.md?exportType=component'`得到的是不再是一个完整的文档+预览内容，而是得到预览部分代码的的 San 组件，通过这种方式可以直接预览 Markdown 文档中的代码部分效果。**可以用于移动页面嵌入 iframe 预览效果**
+
+`exportType`支持三种类型：
+
+-   app：默认，即通常的用法，会返回`template`转成的 doc+预览的效果，可以修改 template 模板的方式来修改样式
+-   object：返回的是包含 text、sanComponent 和 code 的对象，在`index.js`中可以自由使用灵活度较高；
+-   component：仅仅返回 markdown 文档中的代码部分 san 组件，用于只显示预览效果。
+
+
 ## 最佳实践
 
 -   使用`@baidu/prefix-classnames`生成 className

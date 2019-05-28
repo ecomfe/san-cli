@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 /* eslint-disable no-console */
-async function serve(app, entry, args, command = 'serve') {
+async function serve(app, entry, args, command = 'serve', plugins = []) {
     const context = process.cwd();
     const isFile = app && entry;
     const mode = args.mode;
@@ -60,12 +60,13 @@ async function serve(app, entry, args, command = 'serve') {
     if (entry) {
         webpackConfig.resolve.alias['~entry'] = path.resolve(context, entry);
     }
-    if (command === 'component') {
-        // 清空，这里是因为 hulk.config 查找导致的
-        webpackConfig.entry = {};
-    }
+
     if (app) {
-        webpackConfig.entry.app = app;
+        if (typeof app === 'object') {
+            webpackConfig.entry = app;
+        } else {
+            webpackConfig.entry.app = app;
+        }
     }
     // if (!app) {
     //     // delete webpackConfig.entry.app;
@@ -177,6 +178,7 @@ async function serve(app, entry, args, command = 'serve') {
         let isFirstCompile = true;
         compiler.hooks.done.tap('hulk-cli-serve', stats => {
             if (stats.hasErrors()) {
+                reject(stats.toString({colors: true, all: false, errors: true}));
                 return;
             }
 

@@ -9,7 +9,7 @@ function loader(content) {
 
     content = fs.readFileSync(url);
     content = content.toString();
-    const m = content.match(/```html\s+(.*)\s+```/s);
+    const m = content.match(/```html\s+(.+?)\s+```/s);
     if (!m) {
         return content;
     }

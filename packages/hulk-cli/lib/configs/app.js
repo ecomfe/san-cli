@@ -67,7 +67,7 @@ module.exports = (api, options) => {
         const defaultHtmlPath = path.resolve(__dirname, '../../template/webpack/index-default.html');
         const publicCopyIgnore = ['index.html', '.DS_Store'];
         let useHtmlPlugin = false;
-        if (!multiPageConfig || options.command === 'component') {
+        if (!multiPageConfig) {
             webpackConfig
                 .entry('app')
                 .add(require.resolve('../../template/webpack/main.js'))
@@ -81,7 +81,7 @@ module.exports = (api, options) => {
             useHtmlPlugin = true;
         } else {
             // multi-page setup
-            /**
+            /** simple
              * pages: {
                     index: {
                     entry: 'src/entry-point/index/main.js', //entry for the public page

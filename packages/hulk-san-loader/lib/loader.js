@@ -33,17 +33,17 @@ function getParam(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
-function loader(content, callback) {
-    let {rootContext = process.cwd(), resourcePath, resourceQuery} = this;
+function loader(content, config, callback) {
+    let {rootContext, resourcePath, resourceQuery} = config;
+
     const mdurl = getParam('mdurl', resourceQuery);
     if (mdurl && (fs.existsSync(mdurl) || fs.existsSync(path.join(rootContext, mdurl)))) {
         resourcePath = mdurl;
     }
 
     let output = '';
-    const webpackContext = this;
+    const webpackContext = config;
     // 获取config
-    const config = getLoaderConfig(this);
 
     const shortFilePath = path.relative(rootContext, resourcePath).replace(/^(\.\.[\\\/])+/, '');
     const __sanParts__ = posthtml([
@@ -97,13 +97,20 @@ function loader(content, callback) {
     }
     `;
     }
-
     callback(null, output);
 }
 
 /* eslint-disable space-before-function-paren */
 module.exports = function(content) {
-/* eslint-enable space-before-function-paren */
+    /* eslint-enable space-before-function-paren */
     const callback = this.async();
-    loader.call(this, content, callback);
+    const config = getLoaderConfig(this);
+    let {rootContext = process.cwd(), resourcePath, resourceQuery, query} = this;
+    config.resourcePath = resourcePath;
+    config.resourceQuery = resourceQuery;
+    config.rootContext = rootContext;
+    config.query = query;
+    loader(content, config, callback);
 };
+
+module.exports.loader = loader;

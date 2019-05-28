@@ -18,6 +18,7 @@
         "node": ">=8.9"
     },
     "dependencies": {
+        "marked": "^0.6.1",
         "@babel/core": "^7.3.4",
         "@babel/plugin-proposal-class-properties": "^7.3.4",
         "@babel/plugin-syntax-dynamic-import": "^7.2.0",
@@ -75,6 +76,7 @@
         "resolve": "^1.10.0",
         "rxjs": "^6.4.0",
         "san": "^3.7.2",
+        "san-router": "^1.2.0",
         "semver": "^5.5.1",
         "style-loader": "^0.23.1",
         "svg-url-loader": "^2.3.2",
