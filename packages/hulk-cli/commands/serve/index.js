@@ -16,6 +16,7 @@ module.exports = program => {
         .option('-m, --mode <mode>', '指定 webpack mode', envReg, DEVELOPMENT_MODE)
         .option('-c, --config <config>', '指定 webpack config 文件')
         .option('--use-https', '使用 https')
+        .option('--no-progress', '不显示进度条')
         .option('--qrcode', '显示 url 二维码')
         .action(run);
 };

@@ -15,6 +15,7 @@ module.exports = program => {
         .option('-c, --config <config>', '指定 webpack config 地址')
         .option('--no-clean', '构建之前不删除 dist 目录')
         .option('--no-colors, --no-color', 'log 不显示颜色')
+        .option('--no-progress', '不显示进度条')
         // Accepted values: none, errors-only, minimal, normal, detailed, verbose
         // Any other falsy value will behave as 'none', truthy values as 'normal'
         .option(

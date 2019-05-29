@@ -10,9 +10,9 @@ const {resolveLocal, getLoaderOptions} = require('../utils');
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
         const isProd = api.isProd();
-
+        const args = options._args || {};
         // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
-        const isLegacyBundle = options.modernMode && !options.modernBuild;
+        const isLegacyBundle = args.modernMode && !args.modernBuild;
 
         // set mode
         webpackConfig.mode(isProd ? 'production' : 'development').context(api.service.context);
@@ -111,33 +111,12 @@ module.exports = (api, options) => {
         /* eslint-enable*/
         setLoader('js', /\.m?js$/, 'babel');
 
-        // 增加 matrix-loader example
-        // webpackConfig.module.rules.get('js').use('matrix').loader(require.resolve('matrix-loader'))
-
-        // webpackConfig.resolveLoader.modules.prepend(path.join(__dirname, 'node_modules'));
-
-        // const eslint = require('./loaders/eslint')(loaderOptions);
-
-        // webpackConfig.module
-        //     .rule('eslint')
-        //     .pre()
-        //     .include.add(api.resolve('src'))
-        //     .end()
-        //     .exclude.add(/node_modules/)
-        //     .add(/@baidu\/hulk-cli/)
-        //     .add(/(__test__|docs|output|dist|dest|third_party|min)/)
-        //     .end()
-        //     .test(/\.m?js$/)
-        //     .use(eslint.name)
-        //     .loader(eslint.loader)
-        //     .options(eslint.options);
-
-
-
         // ----------------------pulgins---------------------
         // 大小写敏感！！！！
         webpackConfig.plugin('case-sensitive-paths').use(require('case-sensitive-paths-webpack-plugin'));
         // 添加progress
-        webpackConfig.plugin('progress').use(require('webpack/lib/ProgressPlugin'));
+        if (args.progress) {
+            webpackConfig.plugin('progress').use(require('webpack/lib/ProgressPlugin'));
+        }
     });
 };

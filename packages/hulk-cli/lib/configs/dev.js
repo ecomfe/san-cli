@@ -7,7 +7,9 @@
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
         const isProd = api.isProd();
-
+        /* eslint-disable space-infix-ops,no-unused-vars */
+        const args = options._args || {};
+        /* eslint-enable space-infix-ops,no-unused-vars */
         if (!isProd) {
             webpackConfig.devtool('cheap-module-eval-source-map').output.publicPath(options.baseUrl);
 
@@ -19,7 +21,7 @@ module.exports = (api, options) => {
         }
 
         // 在 serve 情况下添加
-        if (options.command === 'serve') {
+        if (args.command === 'serve') {
             const {transformer, formatter} = require('../utils');
             webpackConfig.plugin('named-modules-plugin').use(require('webpack/lib/NamedModulesPlugin'));
             webpackConfig.plugin('friendly-errors').use(require('friendly-errors-webpack-plugin'), [

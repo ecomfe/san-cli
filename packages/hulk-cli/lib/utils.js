@@ -17,6 +17,7 @@ exports.getAssetPath = (assetsDir, filePath) => (assetsDir ? path.posix.join(ass
 exports.resolveLocal = function resolveLocal(...args) {
     return path.join(__dirname, '../../', ...args);
 };
+/* eslint-disable no-console */
 
 exports.updateNotifier = server => {
     let notifier;
@@ -86,17 +87,16 @@ exports.resolveEntry = entry => {
     };
 };
 exports.getLoaderOptions = (api, options) => {
+    /* eslint-disable fecs-camelcase */
+
     const {
         sourceMap = true,
         browserslist = BROWSERS_LIST,
-        command = 'build',
         largeAssetSize = 1024,
         devServer = {},
         loaderOptions = {},
         assetsDir,
-        modernMode,
-        modernBuild,
-        modernBowsers
+        _args = {}
     } = options || {};
     const mode = api.getMode();
     return {
@@ -104,16 +104,12 @@ exports.getLoaderOptions = (api, options) => {
         isProd: api.isProd(),
         sourceMap: sourceMap === false || sourceMap === true ? sourceMap : mode === 'production',
         browserslist,
-        command,
         largeAssetSize,
         mode,
         devServer,
         loaderOptions,
         assetsDir,
-        modernMode,
-        modernBuild,
-        // 这个是 modern 浏览器的 browserslist
-        modernBowsers
+        _args
     };
 };
 

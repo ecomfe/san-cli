@@ -36,12 +36,15 @@ async function serve(app, entry, args, command = 'serve', plugins = []) {
         plugins
     });
 
-    const options = service.init(mode, {
-        target: args.target ? args.target : isFile ? 'page' : 'app',
-        modernMode: args.modern,
-        modernBuild: args.modern && process.env.HULK_CLI_MODERN_BUILD,
-        command
-    });
+    const options = service.init(
+        mode,
+        Object.assign(args, {
+            target: args.target ? args.target : isFile ? 'page' : 'app',
+            modernMode: args.modern,
+            modernBuild: args.modern && process.env.HULK_CLI_MODERN_BUILD,
+            command
+        })
+    );
 
     // resolve webpack config
     const webpackConfig = service.resolveWebpackConfig();

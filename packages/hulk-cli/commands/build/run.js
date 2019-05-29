@@ -56,7 +56,14 @@ module.exports = async (initEntry, args, plugins = []) => {
     function failBuild(err) {
         if (err && err.toJson) {
             console.log('Build failed with errors.');
-            process.stderr.write(err.toString({colors: true, children: false, modules: false, chunkModules: false}));
+            process.stderr.write(
+                err.toString({
+                    colors: !!args.colors || !!args.color,
+                    children: false,
+                    modules: false,
+                    chunkModules: false
+                })
+            );
             process.exit(1);
         } else {
             console.log(err);
@@ -178,12 +185,15 @@ async function build(args, plugins = []) {
     });
 
     // 这里的 options 是结合 hulk.configl.js 处理之后的 options
-    const options = service.init(mode, {
-        target,
-        modernMode: modern,
-        modernBuild: modern && process.env.HULK_CLI_MODERN_BUILD,
-        command: 'build'
-    });
+    const options = service.init(
+        mode,
+        Object.assign(args, {
+            target,
+            modernMode: modern,
+            modernBuild: modern && process.env.HULK_CLI_MODERN_BUILD,
+            command: 'build'
+        })
+    );
 
     const targetDir = path.resolve(context, dest || options.outputDir);
 
