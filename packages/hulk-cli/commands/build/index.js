@@ -11,6 +11,7 @@ module.exports = program => {
         .option('--analyze', 'webpack-analyze-bunlde 模式')
         .option('--modern', 'modern 模式打包')
         .option('--watch', 'watch 模式')
+        .option('--sentry', '开启Sentry线上错误监控')
         .option('-m, --mode <mode>', '设置 webpack mode', /^(development|production)$/i, 'production')
         .option('-c, --config <config>', '指定 webpack config 地址')
         .option('--no-clean', '构建之前不删除 dist 目录')
