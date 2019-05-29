@@ -67,6 +67,22 @@ module.exports = {
     // sev server middlewares ; use return function
     middlewares: [],
     devServer: {
+        clientLogLevel: 'info',
+        overlay: {warnings: false, errors: true},
+        hot: true,
+        noInfo: true,
+        stats: 'errors-only',
+        inline: false,
+        lazy: false,
+        quiet: true,
+        index: 'index.html',
+        watchOptions: {
+            aggregateTimeout: 300,
+            ignored: /node_modules/,
+            poll: 100
+        },
+        disableHostCheck: true,
+        compress: false,
         host: '0.0.0.0',
         port: 8899,
         https: false
