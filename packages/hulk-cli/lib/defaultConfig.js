@@ -23,7 +23,7 @@ module.exports = {
         // }
     },
     // 生产环境配置
-    production: {
+    build: {
         // 配置 cdn 路径
         // baseUrl: 'https://s.baidu.com/sbc/',
         // 打包 assets 路径
