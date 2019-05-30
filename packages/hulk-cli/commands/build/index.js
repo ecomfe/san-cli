@@ -27,5 +27,7 @@ module.exports = program => {
         .option('--verbose', 'verbose log')
         .option('--report-json', '生成打包报告 report.json')
         .option('--report', '生成打包报告 report.html')
+        .option('-e, --matrix-env <matrix-env>', '使用matrix loader，指定matrix的环境，main/kdd/lite/other')
+        .option('-x, --matrix', '对matrix编译产出进行聚合')
         .action(run);
 };

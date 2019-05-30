@@ -69,6 +69,7 @@ module.exports = async (initEntry, args, plugins = []) => {
             console.log(err);
         }
     }
+
     // 编译成功处理逻辑
     function successBuild({stats: webpackStats, config, options}, {isModern, isModernBuild} = {}) {
         if (!args.analyze) {
@@ -178,6 +179,8 @@ async function build(args, plugins = []) {
     const fse = require('fs-extra');
     const webpack = require('webpack');
     const Service = require('../../lib/Service');
+    // add matrix plugin
+    plugins.push(require('../../lib/serivce-plugins/matrix'));
 
     const service = new Service(context, {
         configFile,
@@ -226,7 +229,6 @@ async function build(args, plugins = []) {
     if (args.analyze) {
         // 添加 analyze
         const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
-
         chainConfig.plugin('bundle-analyzer').use(new BundleAnalyzerPlugin());
     } else if (args.report || args['report-json']) {
         const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');

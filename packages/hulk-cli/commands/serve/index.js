@@ -15,6 +15,7 @@ module.exports = program => {
         .option('-h, --host <host>', 'dev server host')
         .option('-m, --mode <mode>', '指定 webpack mode', envReg, DEVELOPMENT_MODE)
         .option('-c, --config <config>', '指定 webpack config 文件')
+        .option('-e, --matrix-env <matrix-env>', '使用matrix loader，指定matrix的环境，main/kdd/lite/other')
         .option('--use-https', '使用 https')
         .option('--no-progress', '不显示进度条')
         .option('--qrcode', '显示 url 二维码')
