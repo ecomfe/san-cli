@@ -9,6 +9,10 @@ module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
         const isProd = api.isProd();
         const outputDir = api.resolve(options.outputDir);
+
+        /* eslint-disable space-infix-ops,no-unused-vars */
+        const args = options._args || {};
+        /* eslint-enable space-infix-ops,no-unused-vars */
         // 1. 判断 pages
         // 2. build 做的事情是判断 serve 对象
         const htmlOptions = {
@@ -62,6 +66,7 @@ module.exports = (api, options) => {
         const multiPageConfig = options.pages;
         const HTMLPlugin = require('html-webpack-plugin');
         const HulkHtmlPlugin = require('../webpack/HtmlPlugin');
+        const MatrixTplPlugin = require('../webpack/MatrixTplPlugin');
         const htmlPath = api.resolve('public/index.html');
         // 默认路径
         const defaultHtmlPath = path.resolve(__dirname, '../../template/webpack/index-default.html');
@@ -106,6 +111,7 @@ module.exports = (api, options) => {
                     entry,
                     template = `public/${name}.html`,
                     filename,
+                    // 这里需要跟 mode 里面的 splitChunks 遥相呼应
                     chunks = ['common', 'vendors', 'css-common', name]
                 } = normalizePageConfig(multiPageConfig[name]);
                 // inject entry
@@ -128,8 +134,8 @@ module.exports = (api, options) => {
                 const templatePath = hasDedicatedTemplate
                     ? template
                     : fs.existsSync(htmlPath)
-                    ? htmlPath
-                    : defaultHtmlPath;
+                        ? htmlPath
+                        : defaultHtmlPath;
 
                 // inject html plugin for the page
                 const pageHtmlOptions = Object.assign(
@@ -147,7 +153,9 @@ module.exports = (api, options) => {
                     }
                 );
                 webpackConfig.plugin(`html-${name}`).use(HTMLPlugin, [pageHtmlOptions]);
-                webpackConfig.plugin(`hulk-html-${name}`).use(HulkHtmlPlugin);
+                const isMatrix = options.enableMatrix && Array.isArray(options.matrixEnv);
+                webpackConfig.plugin(`hulk-html-${name}`)
+                    .use(isMatrix ? MatrixTplPlugin : HulkHtmlPlugin, [{matrixEnv: options.matrixEnv}]);
             });
             useHtmlPlugin = true;
         }
@@ -168,7 +176,7 @@ module.exports = (api, options) => {
             });
         }
         // ------ 这里把 copy 拿到这里来处理是为了合并 ignore
-        if (options.copy && options.command !== 'component') {
+        if (options.copy && args.command !== 'component') {
             const addCopyOptions = ({from, to = './', ignore = []}) => {
                 // 排除 templte 的情况
                 ignore = publicCopyIgnore.concat(typeof ignore === 'string' ? [ignore] : ignore);
@@ -200,9 +208,7 @@ module.exports = (api, options) => {
         if (copyArgs.length) {
             webpackConfig.plugin('copy-webpack-plugin').use(require('copy-webpack-plugin'), [copyArgs]);
         }
-        if (options.command === 'serve') {
-            webpackConfig.plugin('write-file').use(require('write-file-webpack-plugin'), [{test: /\.tpl$/}]);
-        }
+
     });
 };
 

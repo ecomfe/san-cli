@@ -38,8 +38,7 @@ module.exports = class Service {
         const builtInPlugins = [
             './configs/base',
             './configs/css',
-            './configs/dev',
-            './configs/prod',
+            './configs/mode',
             './configs/app'
         ].map(idToPlugin);
 
@@ -89,13 +88,14 @@ module.exports = class Service {
             : process.env.NODE_ENV === PRODUCTION_MODE
             ? PRODUCTION_MODE
             : DEVELOPMENT_MODE;
-
         let config = defaultsDeep(this.loadConfigFile(this.configFile), defaults);
-
         // 如果是 生产环境，优先使用 production 环境
         const isProd = this.mode === PRODUCTION_MODE;
-        if (isProd && config.production && typeof config.production === 'object') {
+
+        if (isProd && config.build && typeof config.build === 'object') {
             config = defaultsDeep(config.build, config);
+            // 删掉噪音
+            delete config.build;
         }
 
         // 根据mode 选择合适的 browserslist
@@ -113,11 +113,14 @@ module.exports = class Service {
         // console.log(config.browserslist = ['defaults', 'not ie < 11', 'last 2 versions', '> 1%', 'iOS 7', 'last 3 iOS versions'])
 
         // 强制优先使用 cli 的 args 的参数
-        config = defaultsDeep(args, config);
+        // config = defaultsDeep(args, config);
+        // 这里修改为放到options._args 对象中，用于区分 config 文件的 options
+        config._args = args;
 
         debug(config);
         // apply plugins.
         this.plugins.forEach(({id, apply}) => {
+            // 三个参数：api instance，config，args
             apply(new PluginAPI(id, this), config);
         });
         if (config.chainWebpack) {

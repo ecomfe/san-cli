@@ -22,15 +22,25 @@ async function serve(app, entry, args, command = 'serve', plugins = []) {
     const chalk = require('@baidu/hulk-utils/chalk');
 
     const webpack = require('webpack');
-    const qrcode = require('qrcode-terminal');
     const WebpackDevServer = require('webpack-dev-server');
     const portfinder = require('portfinder');
+
     const prepareUrls = require('@baidu/hulk-utils/prepare-urls').prepareUrls;
 
     const {updateNotifier, addDevClientToEntry} = require('../../lib/utils');
 
+    // 添加 serve 的 service-plugins
+    plugins.push(require('../../lib/serivce-plugins/commandServe'));
     // 开始正式的操作
     const Service = require('../../lib/Service');
+
+    const plugins = [];
+
+    if (args.matrixEnv) {
+        // 添加 analyze
+        plugins.push(require('../../lib/serivce-plugins/matrix'));
+    }
+
     const service = new Service(context, {
         configFile: args.config,
         plugins
@@ -40,6 +50,7 @@ async function serve(app, entry, args, command = 'serve', plugins = []) {
         target: args.target ? args.target : isFile ? 'page' : 'app',
         modernMode: args.modern,
         modernBuild: args.modern && process.env.HULK_CLI_MODERN_BUILD,
+        matrixEnv: args.matrixEnv,
         command
     });
 
@@ -59,11 +70,7 @@ async function serve(app, entry, args, command = 'serve', plugins = []) {
             webpackConfig.entry.app = app;
         }
     }
-    // if (!app) {
-    //     // delete webpackConfig.entry.app;
-    // } else {
-    //     webpackConfig.entry.app = app;
-    // }
+
     if (Object.keys(webpackConfig.entry).length === 0) {
         error('没有找到 Entry，请命令后面添加 entry 或者配置 hulk.config.js');
         process.exit(1);
@@ -119,28 +126,12 @@ async function serve(app, entry, args, command = 'serve', plugins = []) {
     }
     // create server
     const defaultDevServer = {
-        clientLogLevel: 'info',
         // 这里注意，这个配置的是 outputDir
         contentBase: path.resolve('public'),
         // 这里注意：
         // 如果是 contentBase = outputDir 谨慎打开，打开后 template 每次文件都会重写，从而导致 hmr 失效，每次都 reload 页面
         watchContentBase: false,
-        hot: true,
-        noInfo: true,
-        stats: 'errors-only',
-        inline: false,
-        lazy: false,
-        quiet: true,
-        index: 'index.html',
-        watchOptions: {
-            aggregateTimeout: 300,
-            ignored: /node_modules/,
-            poll: 100
-        },
-        disableHostCheck: true,
-        compress: false,
-        publicPath: options.baseUrl,
-        overlay: {warnings: false, errors: true}
+        publicPath: options.baseUrl
     };
     if (isFile) {
         // 不显示列表，直接显示首页 index.html
@@ -167,6 +158,8 @@ async function serve(app, entry, args, command = 'serve', plugins = []) {
     return new Promise((resolve, reject) => {
         // log instructions & open browser on first compilation complete
         let isFirstCompile = true;
+        const qrcode = require('qrcode-terminal');
+
         compiler.hooks.done.tap('hulk-cli-serve', stats => {
             if (stats.hasErrors()) {
                 reject(stats.toString({colors: true, all: false, errors: true}));

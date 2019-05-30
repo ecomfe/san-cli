@@ -2,11 +2,14 @@
  * @file bable loader config
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+/* eslint-disable fecs-camelcase */
+
 const path = require('path');
 const sanHmrPlugin = require('babel-plugin-san-hmr');
-module.exports = ({browserslist, modernMode, modernBuild, command, loaderOptions: {babel = {}}}) => {
+module.exports = ({browserslist, _args = {}, loaderOptions: {babel = {}}}) => {
     const plugins = (babel && babel.plugins) || [];
     let targets = browserslist;
+    const {command, modernMode, modernBuild} = _args;
     // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
     const isModernBundle = modernMode && modernBuild;
 

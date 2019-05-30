@@ -7,21 +7,32 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
 const getAssetPath = require('../utils').getAssetPath;
+/* eslint-disable fecs-camelcase */
 
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
         const isProd = api.isProd();
-
         if (!isProd) {
+            // dev mode
+            webpackConfig.devtool('cheap-module-eval-source-map').output.publicPath(options.baseUrl);
+
+            webpackConfig.plugin('hmr').use(require('webpack/lib/HotModuleReplacementPlugin'));
+
+            // https://github.com/webpack/webpack/issues/6642
+            webpackConfig.output.globalObject('this');
+            webpackConfig.plugin('no-emit-on-errors').use(require('webpack/lib/NoEmitOnErrorsPlugin'));
             return;
         }
-        const {assetsDir, sourceMap = true} = options;
+
+        // prod mode
+        const {assetsDir, sourceMap = false, _args = {}} = options;
+        const {modernMode, modernBuild} = _args;
+
         // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
-        const isLegacyBundle = options.modernMode && !options.modernBuild;
+        const isLegacyBundle = modernMode && !modernBuild;
         const filename = getAssetPath(assetsDir, `js/[name]${isLegacyBundle ? '-legacy' : ''}.[chunkhash:8].js`);
 
         webpackConfig
-            .mode('production')
             .devtool('source-map')
             .output.filename(filename)
             .chunkFilename(filename);

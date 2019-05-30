@@ -20,5 +20,6 @@ module.exports = program => {
         .option('-t, --main-template <mainTemplate>', '设置 demo 的 main 模板')
         .option('--qrcode', '显示 url 二维码')
         .option('--use-https', 'use https')
+        .option('--no-progress', '不显示进度条')
         .action(run);
 };
