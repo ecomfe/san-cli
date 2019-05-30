@@ -182,12 +182,17 @@ async function build(args, plugins = []) {
     // add matrix plugin
     plugins.push(require('../../lib/serivce-plugins/matrix'));
 
+    // [sentry]参数控制是否打开sentry
+    if (args.sentry) {
+        plugins.push(require('../../lib/serivce-plugins/sentry'));
+    }
+
     const service = new Service(context, {
         configFile,
         plugins
     });
 
-    // 这里的 options 是结合 hulk.configl.js 处理之后的 options
+    // 这里的 options 是结合 hulk.config.js 处理之后的 options
     const options = service.init(
         mode,
         Object.assign(args, {

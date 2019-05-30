@@ -3,12 +3,14 @@
  * @author yanwenkai
  */
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const SMARTY_BLOCK = /{%block name=(["'])__(body|head)_asset[s]?\1%}(.+?){%\/block%}/g;
 
 function main(pluginData, compilation, options) {
     if (options.scripts) {
-        options.scripts.forEach(ele => {
-            pluginData.head.push(ele);
+        // 前插
+        let tmpScript = options.scripts;
+        tmpScript = [...tmpScript].reverse();
+        tmpScript.forEach(ele => {
+            pluginData.head.unshift(ele);
         });
     }
     return pluginData;
@@ -23,15 +25,12 @@ module.exports = class sentryInsertPlugin {
         compiler.hooks.compilation.tap(name, compilation => {
 
             const alterAssetTags = this.alterAssetTags.bind(this, compilation);
-            const afterHTMLProcessing = this.afterHTMLProcessing.bind(this, compilation);
             if (HtmlWebpackPlugin.getHooks) {
                 // v4
 
                 HtmlWebpackPlugin.getHooks(compilation).alterAssetTags.tapAsync(name, alterAssetTags);
-                HtmlWebpackPlugin.getHooks(compilation).afterTemplateExecution.tap(name, alterAssetTags);
             } else {
                 compilation.hooks.htmlWebpackPluginAlterAssetTags.tapAsync(name, alterAssetTags);
-                compilation.hooks.htmlWebpackPluginAfterHtmlProcessing.tap(name, afterHTMLProcessing);
             }
         });
     }
@@ -39,12 +38,5 @@ module.exports = class sentryInsertPlugin {
         data = main(data, compilation, this.options);
         cb(null, data);
     }
-    afterHTMLProcessing(compilation, data) {
-        // 处理 html 中的{%block name="__head_asset"%}中的 head 和 body tag
-        // data.html = data.html.replace('');
-        if (data.html.indexOf(SMARTY_BLOCK) >= 0) {
-            data.html = data.html.replace(SMARTY_BLOCK, m => m.replace(/<[/]?(head|body)>/g, ''));
-        }
-        return data;
-    }
+
 };

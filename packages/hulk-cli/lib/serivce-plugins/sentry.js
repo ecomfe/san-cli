@@ -38,14 +38,7 @@ let sBranchName = (() => {
 })();
 
 // 基础功能 - 获取APP信息
-let sentryInfo = (() => {
-    let appInfo = cosmiconfig('sentryOptions', {
-        searchPlaces: ['hulk.config.js', '.hulkrc.js']
-    }).searchSync();
-
-    // 参数校验
-    let config = appInfo.config.sentryOptions || {};
-
+let getSentryInfo = (config = {}) => {
     // 默认去找package.json的name
     if (!config.sName) {
         config.sName = cosmiconfig('name').searchSync().config;
@@ -73,58 +66,58 @@ let sentryInfo = (() => {
 
     // 默认sSDK的链接
     if (!config.sSDKurl) {
-        config.sSDKurl = 'https://gss0.bdstatic.com/5bd1bjqh_Q23odCf/n/monitor/sentry.js';
+        config.sSDKurl = 'https://s.bdstatic.com/monitor/sentry.js';
     }
 
 
 
     return config || {};
-})();
-
-
-
-// 参数准备 - 植入脚本
-let sentryInsertConfig = [{
-    scripts: [{
-            tagName: 'script',
-            voidTag: false,
-            attributes: {
-                crossorigin: 'anonymous',
-                src: sentryInfo.sSDKurl
-            }
-        },
-        {
-            tagName: 'script',
-            voidTag: false,
-            attributes: {
-                anonymous: 'cors'
-            },
-            innerHTML: `try{window.SENTRY.init({'release': '${sentryInfo.sName}@${sBranchName}'})}catch(e){}`
-        }
-    ]
-}];
-
-
-// 参数准备 - 上传参数sentryConfig
-const fileName = '.sentryclirc';
-let SentryConfig = `[defaults]
-url = ${sentryInfo.sHost}
-org = ${sentryInfo.sOrg}
-project = ${sentryInfo.sName}
-[auth]
-token = ${sentryInfo.sToken}`;
+};
 
 module.exports = {
     id: 'sentry',
     apply: (api, options) => {
-        // step1: 接受外部参数
+        // setp1: 获取hulk.conf里的参数配置
+        let sentryInfo = getSentryInfo(options.sentryOptions || {});
 
+        // 参数准备 - 植入脚本
+        let sentryInsertConfig = [{
+            scripts: [{
+                    tagName: 'script',
+                    voidTag: false,
+                    attributes: {
+                        crossorigin: 'anonymous',
+                        src: sentryInfo.sSDKurl
+                    }
+                },
+                {
+                    tagName: 'script',
+                    voidTag: false,
+                    attributes: {
+                        anonymous: 'cors'
+                    },
+                    innerHTML: `try{window.SENTRY.init({'release': '${sentryInfo.sName}@${sBranchName}'})}catch(e){}`
+                }
+            ]
+        }];
+
+
+        // 参数准备 - 上传参数sentryConfig
+        const fileName = '.sentryclirc';
+        let SentryConfig = `[defaults]
+                        url = ${sentryInfo.sHost}
+                        org = ${sentryInfo.sOrg}
+                        project = ${sentryInfo.sName}
+                        [auth]
+                        token = ${sentryInfo.sToken}`;
+
+        // step2: 接受外部参数
         let sOutputDir = options.outputDir;
-        // step2: 创建一个.sentryclirc文件
 
         if (sBranchName) {
+            // step3: 创建一个.sentryclirc文件
             fs.writeFileSync(fileName, SentryConfig);
-            // step3: 分别调用两个插件
+            // step4: 分别调用两个插件
             api.chainWebpack(webpackConfig => {
                 webpackConfig
                     .plugin('sentryInsert')
