@@ -38,8 +38,7 @@ module.exports = class Service {
         const builtInPlugins = [
             './configs/base',
             './configs/css',
-            './configs/dev',
-            './configs/prod',
+            './configs/mode',
             './configs/app'
         ].map(idToPlugin);
 

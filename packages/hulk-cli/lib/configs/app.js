@@ -111,6 +111,7 @@ module.exports = (api, options) => {
                     entry,
                     template = `public/${name}.html`,
                     filename,
+                    // 这里需要跟 mode 里面的 splitChunks 遥相呼应
                     chunks = ['common', 'vendors', 'css-common', name]
                 } = normalizePageConfig(multiPageConfig[name]);
                 // inject entry
@@ -207,9 +208,7 @@ module.exports = (api, options) => {
         if (copyArgs.length) {
             webpackConfig.plugin('copy-webpack-plugin').use(require('copy-webpack-plugin'), [copyArgs]);
         }
-        if (args.command === 'serve') {
-            webpackConfig.plugin('write-file').use(require('write-file-webpack-plugin'), [{test: /\.tpl$/}]);
-        }
+
     });
 };
 
