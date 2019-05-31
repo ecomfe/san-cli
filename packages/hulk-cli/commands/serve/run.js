@@ -2,6 +2,7 @@
  * @file serve run
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+
 /* eslint-disable no-console */
 async function serve(app, entry, args, command = 'serve', plugins = []) {
     const context = process.cwd();
@@ -31,13 +32,14 @@ async function serve(app, entry, args, command = 'serve', plugins = []) {
 
     // 添加 serve 的 service-plugins
     plugins.push(require('../../lib/serivce-plugins/commandServe'));
-    // 开始正式的操作
-    const Service = require('../../lib/Service');
 
     if (args.matrixEnv) {
         // 添加 analyze
         plugins.push(require('../../lib/serivce-plugins/matrix'));
     }
+
+    // 开始正式的操作
+    const Service = require('../../lib/Service');
 
     const service = new Service(context, {
         configFile: args.config,
@@ -93,11 +95,11 @@ async function serve(app, entry, args, command = 'serve', plugins = []) {
         const sockjsUrl = publicUrl
             ? `?${publicUrl}/sockjs-node`
             : `?${url.format({
-                  protocol,
-                  port,
-                  hostname: urls.lanUrlForConfig || 'localhost',
-                  pathname: '/sockjs-node'
-              })}`;
+                protocol,
+                port,
+                hostname: urls.lanUrlForConfig || 'localhost',
+                pathname: '/sockjs-node'
+            })}`;
         /* eslint-enable*/
 
         const devClients = [
