@@ -36,7 +36,6 @@
         "@baidu/upload-file": "^0.0.2",
         "@samverschueren/stream-to-observable": "^0.3.0",
         "@sentry/webpack-plugin": "^1.6.2",
-        "@baidu/upload-file": "^0.0.2",
         "autoprefixer": "^9.5.0",
         "babel-loader": "^8.0.5",
         "babel-plugin-san-hmr": "^1.0.1",
