@@ -34,8 +34,6 @@ async function serve(app, entry, args, command = 'serve', plugins = []) {
     // 开始正式的操作
     const Service = require('../../lib/Service');
 
-    const plugins = [];
-
     if (args.matrixEnv) {
         // 添加 analyze
         plugins.push(require('../../lib/serivce-plugins/matrix'));
