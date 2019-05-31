@@ -1,6 +1,6 @@
 {
     "name": "@baidu/hulk-lint",
-    "version": "2.0.0-alpha.12",
+    "version": "2.0.0",
     "description": "SearchBox Front-end Pre-Lint tool. ",
     "bin": {
         "hulk-lint-install": "./bin/hulk-lint-install",
@@ -16,7 +16,7 @@
         "node": ">=8.9"
     },
     "dependencies": {
-        "@baidu/hulk-utils": "^2.0.0-alpha.12",
+        "@baidu/hulk-utils": "^2.0.0",
         "commitlint": "^7.5.2",
         "fecs": "^1.6.2",
         "husky": "^1.3.0",
