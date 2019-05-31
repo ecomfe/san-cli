@@ -30,8 +30,9 @@ module.exports = {
             isBuild && error('Matrix env require!');
             return;
         }
-        
+
         info('Matrix enabled!');
+
         api.chainWebpack(config => {
             for (const fileSuffix in rulesMap) {
                 config.module.rules
