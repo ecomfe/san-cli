@@ -13,7 +13,7 @@ const loaderUtils = require('loader-utils');
 const genTemplate = require('./utils/genTemplate');
 const getText = require('./utils/getText').getText;
 
-const EXPORT_TYPES = ['app', 'component', 'object'];
+const EXPORT_TYPES = ['app', 'component', 'object', 'md', 'markdown'];
 
 function getMarkdownDefaultSanCode(content, cls) {
     cls = cls || ['markdown'];
@@ -37,7 +37,7 @@ module.exports = function(content) {
     const {resourcePath, resourceQuery} = this;
     const params = resourceQuery !== '' ? loaderUtils.parseQuery(resourceQuery) : {};
     // eslint-disable-next-line
-    const {
+    let {
         ignore,
         template,
         context = process.cwd(),
@@ -45,6 +45,12 @@ module.exports = function(content) {
         i18n = 'cn',
         exportType = EXPORT_TYPES.includes(params.exportType) ? params.exportType : 'app'
     } = loaderUtils.getOptions(this) || {};
+
+    if (params.template) {
+        // url 中自定义 template
+        context = path.basename(resourcePath);
+        template = params.template;
+    }
 
     if (Object.prototype.toString.call(ignore).slice(8, -1) === 'RegExp') {
         // 配置忽略
@@ -67,7 +73,6 @@ module.exports = function(content) {
         text,
         content
     };
-    // TODO 在这里正则匹配页面用到的 html 模板，然后替换这个默认的模板
     // 获取 template 内容
     let templateContent = '';
     if (template && path.join(context, template)) {
@@ -75,8 +80,14 @@ module.exports = function(content) {
     } else {
         templateContent = fs.readFileSync(defaultTemplate, 'utf8');
     }
-
+    // console.log('\n', resourcePath, exportType);
     switch (exportType) {
+        case 'markdown':
+        case 'md':
+            const json = JSON.stringify(content)
+                .replace(/\u2028/g, '\\u2028')
+                .replace(/\u2029/g, '\\u2029');
+            return `export default ${json}`;
         case 'component':
             // 将 code 转成独立 san component 返回
             const getSingleComponent = genSingleComponent.bind(this);
