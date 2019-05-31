@@ -210,6 +210,7 @@ async function build(args, plugins = []) {
     }
 
     const chainConfig = service.resolveChainableWebpackConfig();
+
     if (args.modern && !args.analyze) {
         const ModernModePlugin = require('../../lib/webpack/ModernModePlugin');
         if (!args.modernBuild) {
