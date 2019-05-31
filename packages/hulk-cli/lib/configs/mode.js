@@ -25,7 +25,7 @@ module.exports = (api, options) => {
         }
 
         // prod mode
-        const {assetsDir, _args = {}} = options;
+        const {assetsDir, _args = {}, splitChunks = {}} = options;
         const {modernMode, modernBuild} = _args;
 
         // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
@@ -52,59 +52,62 @@ module.exports = (api, options) => {
             maxAsyncRequests: 5,
             maxInitialRequests: 3,
             automaticNameDelimiter: '.',
-            cacheGroups: {
-                default: false,
-                // 公共css代码抽离
-                styles: {
-                    name: 'css-common',
-                    test: /\.css$/,
-                    chunks: 'all',
-                    enforce: true,
-                    // 两个以上公用才抽离
-                    minChunks: 2,
-                    priority: 20
-                },
-                // 异步模块命名
-                asyncVendors: {
-                    name(module, chunks) {
-                        if (Array.isArray(chunks)) {
-                            const names = chunks
-                                .map(({name}) => {
-                                    return name;
-                                })
-                                .filter(name => name);
-                            return names.length ? names.join('-') : 'async';
-                        }
-                        return 'async';
+            cacheGroups: Object.assign(
+                {
+                    default: false,
+                    // 公共css代码抽离
+                    styles: {
+                        name: 'css-common',
+                        test: /\.css$/,
+                        chunks: 'all',
+                        enforce: true,
+                        // 两个以上公用才抽离
+                        minChunks: 2,
+                        priority: 20
                     },
-                    minChunks: 1,
-                    chunks: 'async',
-                    priority: 0
-                },
-                // 三方库模块独立打包
-                vendors: {
-                    name: 'vendors',
-                    test(mod) {
-                        return /[\\/]node_modules[\\/]/.test(mod.resource) && mod.type === 'javascript/auto';
+                    // 异步模块命名
+                    asyncVendors: {
+                        name(module, chunks) {
+                            if (Array.isArray(chunks)) {
+                                const names = chunks
+                                    .map(({name}) => {
+                                        return name;
+                                    })
+                                    .filter(name => name);
+                                return names.length ? names.join('-') : 'async';
+                            }
+                            return 'async';
+                        },
+                        minChunks: 1,
+                        chunks: 'async',
+                        priority: 0
                     },
-                    // minChunks: 1,
-                    priority: -10,
-                    chunks: 'initial'
+                    // 三方库模块独立打包
+                    vendors: {
+                        name: 'vendors',
+                        test(mod) {
+                            return /[\\/]node_modules[\\/]/.test(mod.resource) && mod.type === 'javascript/auto';
+                        },
+                        // minChunks: 1,
+                        priority: -10,
+                        chunks: 'initial'
+                    },
+                    // 公共js代码抽离
+                    common: {
+                        name: 'common',
+                        // 只抽取公共依赖模块，保证页面之间公用，并且不经常变化，否则 http cache 不住
+                        // test(mod) {
+                        //     return /[\\/]node_modules[\\/]/.test(mod.resource) && mod.type === 'javascript/auto';
+                        // },
+                        // 1个以上公用才抽离
+                        minChunks: 2,
+                        priority: -20,
+                        chunks: 'initial',
+                        reuseExistingChunk: true
+                    }
                 },
-                // 公共js代码抽离
-                common: {
-                    name: 'common',
-                    // 只抽取公共依赖模块，保证页面之间公用，并且不经常变化，否则 http cache 不住
-                    // test(mod) {
-                    //     return /[\\/]node_modules[\\/]/.test(mod.resource) && mod.type === 'javascript/auto';
-                    // },
-                    // 1个以上公用才抽离
-                    minChunks: 2,
-                    priority: -20,
-                    chunks: 'initial',
-                    reuseExistingChunk: true
-                }
-            }
+                splitChunks
+            )
         });
 
         // 压缩
