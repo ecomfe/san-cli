@@ -2,7 +2,9 @@
  * @file matrix-loader plugin
  * @author jinzhan <jinzhan@baidu.com>
  */
+/* eslint-disable no-unused-vars,fecs-no-require */
 const {success, error, info} = require('@baidu/hulk-utils/logger');
+/* eslint-enable no-unused-vars,fecs-no-require */
 
 const rulesMap = {
     js: 'js',
@@ -15,9 +17,9 @@ module.exports = {
     id: 'matrix',
     apply: (api, {enableMatrix, matrixEnv}) => {
         if (!enableMatrix) {
-            info('Matrix disabled!');
             return;
         }
+        info('Matrix enabled!');
 
         const isBuild = Array.isArray(matrixEnv);
 
@@ -31,8 +33,7 @@ module.exports = {
 
         api.chainWebpack(config => {
             for (const fileSuffix in rulesMap) {
-                config.module
-                    .rules
+                config.module.rules
                     .get(fileSuffix)
                     .use('matrix')
                     .loader(require.resolve('@baidu/matrix-loader'))
@@ -45,10 +46,12 @@ module.exports = {
             // 如果是build阶段，且存在多个matrixEnv的情况
             if (isBuild && matrixEnv.length > 1) {
                 const MatrixPlugin = require('../../lib/webpack/MatrixPlugin');
-                config.plugin('matrix-plugin').use(new MatrixPlugin({
-                    matrixEnv,
-                    mainMatrixEnv: env
-                }));
+                config.plugin('matrix-plugin').use(
+                    new MatrixPlugin({
+                        matrixEnv,
+                        mainMatrixEnv: env
+                    })
+                );
             }
         });
     }
