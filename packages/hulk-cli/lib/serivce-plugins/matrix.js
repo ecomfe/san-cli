@@ -15,21 +15,23 @@ const rulesMap = {
 
 module.exports = {
     id: 'matrix',
-    apply: (api, {enableMatrix, matrixEnv}) => {
-        if (!enableMatrix) {
+    apply: (api, {_args: args, enableMatrix, matrixEnv}) => {
+        const isBuild = args.command === 'build';
+
+        if (isBuild && !enableMatrix) {
+            info('Matrix disabled!');
             return;
         }
-        info('Matrix enabled!');
-
-        const isBuild = Array.isArray(matrixEnv);
 
         // build情况下，默认编译用第一个
-        const env = isBuild ? matrixEnv[0] : matrixEnv;
+        const env = isBuild ? matrixEnv[0] : args.matrixEnv;
 
         if (!env || !env.trim) {
-            error('Matrix env require!');
+            isBuild && error('Matrix env require!');
             return;
         }
+
+        info('Matrix enabled!');
 
         api.chainWebpack(config => {
             for (const fileSuffix in rulesMap) {
