@@ -25,12 +25,18 @@ module.exports = (api, options) => {
         }
 
         // prod mode
-        const {assetsDir, sourceMap = false, _args = {}} = options;
+        const {assetsDir, _args = {}} = options;
         const {modernMode, modernBuild} = _args;
 
         // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
         const isLegacyBundle = modernMode && !modernBuild;
         const filename = getAssetPath(assetsDir, `js/[name]${isLegacyBundle ? '-legacy' : ''}.[chunkhash:8].js`);
+
+        // 条件判断sourcemap是否开启,sentry命令或者hulk.config.js传入
+        let ifSourcemap = false;
+        if (options._args.sentry || options.sourceMap) {
+            ifSourcemap = true;
+        }
 
         webpackConfig
             .devtool('source-map')
@@ -128,7 +134,7 @@ module.exports = (api, options) => {
         webpackConfig.optimization.minimizer('js').use(
             new TerserPlugin({
                 extractComments: false,
-                sourceMap,
+                sourceMap: ifSourcemap,
                 parallel: true,
                 cache: true,
                 terserOptions: {
