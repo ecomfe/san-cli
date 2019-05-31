@@ -13,8 +13,8 @@ const rulesMap = {
 
 module.exports = {
     id: 'matrix',
-    apply: (api, {_args, enableMatrix, matrixEnv}) => {
-        const isBuild = _args.command === 'build';
+    apply: (api, {_args: args, enableMatrix, matrixEnv}) => {
+        const isBuild = args.command === 'build';
 
         if (isBuild && !enableMatrix) {
             info('Matrix disabled!');
@@ -22,7 +22,7 @@ module.exports = {
         }
 
         // build情况下，默认编译用第一个
-        const env = isBuild ? matrixEnv[0] : _args.matrixEnv;
+        const env = isBuild ? matrixEnv[0] : args.matrixEnv;
 
         if (!env || !env.trim) {
             isBuild && error('Matrix env require!');

@@ -51,20 +51,19 @@ class Upload {
     }
 
     getContent(filename, compilation) {
-        const isContainCdn = /\.(css|js|tpl).test(filename)/.test(filename);
+        const isContainCdn = /\.(css|js|tpl)$/.test(filename);
         const source = compilation.assets[filename].source().toString();
         if (!isContainCdn) {
             return source;
         }
-        return source.replace(new RegExp(this.options.build.baseUrl, 'gm'), this.options.staticDomain);
+        return source.replace(new RegExp(this.options.baseUrl, 'gm'), this.options.staticDomain);
     }
 }
 
 module.exports = {
     id: 'upload',
-    apply: (api, {_args, deployMap, build}) => {
-
-        const remote = _args.remote;
+    apply: (api, {_args: args, deployMap, baseUrl}) => {
+        const remote = args.remote;
 
         if (!deployMap[remote]) {
             error(`deployMap.${remote} is NOT exist`);
@@ -74,7 +73,7 @@ module.exports = {
         api.chainWebpack(config => {
             config.plugin(PLUGIN_NAME).use(new Upload({
                 ...deployMap[remote],
-                build
+                baseUrl
             }));
         });
     }
