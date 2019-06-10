@@ -92,7 +92,7 @@
         "webpack": "^4.31.0",
         "webpack-bundle-analyzer": "^3.3.2",
         "webpack-chain": "^5.2.2",
-        "webpack-dev-server": "^3.3.1",
+        "webpack-dev-server": "~3.5.1",
         "webpack-hot-middleware": "^2.24.3",
         "webpack-merge": "^4.2.1",
         "write-file-webpack-plugin": "^4.5.0"
