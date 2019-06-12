@@ -31,7 +31,7 @@
         "@baidu/hulk-markdown-loader": "^2.0.0",
         "@baidu/hulk-san-loader": "^2.0.0",
         "@baidu/hulk-utils": "^2.0.0",
-        "@baidu/matrix-loader": "^1.0.9",
+        "@baidu/matrix-loader": "^1.1.1",
         "@baidu/upload-file": "^0.0.2",
         "@samverschueren/stream-to-observable": "^0.3.0",
         "@sentry/webpack-plugin": "^1.6.2",
