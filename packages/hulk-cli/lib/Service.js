@@ -35,12 +35,7 @@ module.exports = class Service {
             apply: require(id)
         });
 
-        const builtInPlugins = [
-            './configs/base',
-            './configs/css',
-            './configs/mode',
-            './configs/app'
-        ].map(idToPlugin);
+        const builtInPlugins = ['./configs/base', './configs/css', './configs/mode', './configs/app'].map(idToPlugin);
 
         let plugins;
         if (inlinePlugins && Array.isArray(inlinePlugins)) {
@@ -158,7 +153,12 @@ module.exports = class Service {
                 config = config(this.mode);
             }
         } catch (e) {
-            return {};
+            error(`${chalk.bold(configFile)} 内容存在错误，请查看错误信息`);
+            /* eslint-disable no-console */
+            console.log(e);
+            /* eslint-enable no-console */
+            process.exit(1);
+            // return {}
         }
 
         // normalize some options
@@ -167,7 +167,6 @@ module.exports = class Service {
             config.config = config.baseUrl.replace(/^\.\//, '');
         }
         removeSlash(config, 'outputDir');
-
         return config;
     }
     resolveChainableWebpackConfig() {

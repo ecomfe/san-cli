@@ -10,7 +10,7 @@ module.exports = ({sourceMap, browserslist, loaderOptions: {postcss = {}}}) => {
         require('autoprefixer')(
             Object.assign(
                 {
-                    browsers: browserslist,
+                    overrideBrowserslist: browserslist,
                     // 防止主动移除一些手写上去老的兼容写法，例如 -webkit-box-orient
                     remove: false
                 },

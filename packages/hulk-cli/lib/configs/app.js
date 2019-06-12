@@ -101,7 +101,6 @@ module.exports = (api, options) => {
                 }
              */
             webpackConfig.entryPoints.clear();
-
             const pages = Object.keys(multiPageConfig);
             const normalizePageConfig = c => (typeof c === 'string' ? {entry: c} : c);
 
