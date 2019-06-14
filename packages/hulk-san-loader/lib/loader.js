@@ -1,6 +1,6 @@
 /**
  * @file loader
- * @author zhangsiyuan(zhangsiyuan@baidu.com)
+ * @author zhangsiyuan(zhangsiyuan@baidu.com), wangyongqing <wangyongqing01@baidu.com>
  */
 const path = require('path');
 const fs = require('fs');
@@ -36,9 +36,11 @@ function getParam(name, url) {
 function loader(content, config, callback) {
     let {rootContext, resourcePath, resourceQuery} = config;
 
+    // 这里处理 hulk-markdown-loader 传入 fakeMD mdurl的情况，主要给 css selector使用
     const mdurl = getParam('mdurl', resourceQuery);
     if (mdurl && (fs.existsSync(mdurl) || fs.existsSync(path.join(rootContext, mdurl)))) {
-        resourcePath = mdurl;
+        // resourcePath = mdurl;
+        resourcePath = mdurl + '?filetype=md';
     }
 
     let output = '';

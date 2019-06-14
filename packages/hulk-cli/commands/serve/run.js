@@ -46,13 +46,14 @@ async function serve(app, entry, args, command = 'serve', plugins = []) {
         plugins
     });
 
-    const options = service.init(mode, {
-        target: args.target ? args.target : isFile ? 'page' : 'app',
-        modernMode: args.modern,
-        modernBuild: args.modern && process.env.HULK_CLI_MODERN_BUILD,
-        matrixEnv: args.matrixEnv,
-        command
-    });
+    const options = service.init(
+        mode,
+        Object.assign(args, {
+            target: args.target ? args.target : isFile ? 'page' : 'app',
+            modernBuild: args.modern && process.env.HULK_CLI_MODERN_BUILD,
+            command
+        })
+    );
 
     // resolve webpack config
     const webpackConfig = service.resolveWebpackConfig();
@@ -95,11 +96,11 @@ async function serve(app, entry, args, command = 'serve', plugins = []) {
         const sockjsUrl = publicUrl
             ? `?${publicUrl}/sockjs-node`
             : `?${url.format({
-                protocol,
-                port,
-                hostname: urls.lanUrlForConfig || 'localhost',
-                pathname: '/sockjs-node'
-            })}`;
+                  protocol,
+                  port,
+                  hostname: urls.lanUrlForConfig || 'localhost',
+                  pathname: '/sockjs-node'
+              })}`;
         /* eslint-enable*/
 
         const devClients = [
