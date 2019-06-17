@@ -3,10 +3,12 @@
  * @author zhangsiyuan(zhangsiyuan@baidu.com)
  */
 const path = require('path');
-const {resolve, join} = path.posix;
 const loaderUtils = require('loader-utils');
+const cosmiconfig = require('cosmiconfig');
 
-const {findExisting} = require('@baidu/hulk-utils');
+/* eslint-disable no-unused-vars */
+const {resolve, join} = path.posix;
+/* eslint-enable no-unused-vars */
 
 module.exports = function calceStyleImport({webpackContext, sanStyle, resourcePath}, {sourceMap, minimize}) {
     // 路径需要对windows环境区分处理，用path.posix处理，不然windows无法正常编译
@@ -22,15 +24,11 @@ module.exports = function calceStyleImport({webpackContext, sanStyle, resourcePa
     const cssLoader = `${require.resolve('css-loader')}?{sourceMap:${sourceMap},importLoaders:1}`;
     loaders.push(styleLoader, cssLoader);
 
-    const hasPostCSSConfig = !!findExisting(process.cwd(), [
-        '.postcssrc',
-        '.postcssrc.js',
-        'postcss.config.js',
-        '.postcssrc.yaml',
-        '.postcssrc.json'
-    ]);
+    const hasPostCSSConfig = cosmiconfig('postcss', {
+        searchPlaces: ['.postcssrc', '.postcssrc.js', 'postcss.config.js', '.postcssrc.yaml', '.postcssrc.json']
+    }).searchSync(process.cwd());
 
-    if (hasPostCSSConfig) {
+    if (hasPostCSSConfig && hasPostCSSConfig.filepath) {
         const postcssLoader = `${require.resolve('postcss-loader')}?sourceMap=${sourceMap}`;
         loaders.push(postcssLoader);
     }
