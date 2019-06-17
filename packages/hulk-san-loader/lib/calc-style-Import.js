@@ -25,7 +25,7 @@ module.exports = function calceStyleImport({webpackContext, sanStyle, resourcePa
     loaders.push(styleLoader, cssLoader);
 
     const hasPostCSSConfig = cosmiconfig('postcss', {
-        searchPlaces: ['.postcssrc', '.postcssrc.js', 'postcss.config.js', '.postcssrc.yaml', '.postcssrc.json']
+        searchPlaces: ['.postcssrc', '.postcssrc.js', 'postcss.config.js']
     }).searchSync(process.cwd());
 
     if (hasPostCSSConfig && hasPostCSSConfig.filepath) {

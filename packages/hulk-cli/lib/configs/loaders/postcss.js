@@ -8,7 +8,7 @@ module.exports = ({context, sourceMap, browserslist, loaderOptions: {postcss = {
     let options = {sourceMap};
 
     const hasPostcssConfig = cosmiconfig('postcss', {
-        searchPlaces: ['.postcssrc', '.postcssrc.js', 'postcss.config.js', '.postcssrc.yaml', '.postcssrc.json']
+        searchPlaces: ['.postcssrc', '.postcssrc.js', 'postcss.config.js']
     }).searchSync(context);
 
     if (hasPostcssConfig && hasPostcssConfig.config) {
