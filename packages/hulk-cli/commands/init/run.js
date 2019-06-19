@@ -16,7 +16,7 @@ const {name, version: localVersion} = require('../../package.json');
 
 const {log, success, error} = require('@baidu/hulk-utils/logger');
 const dRepo = importLazy('@baidu/hulk-utils/download-repo');
-const {isLocalPath, getTemplatePath} = require('@baidu/hulk-utils/path');
+const {isLocalPath} = require('@baidu/hulk-utils/path');
 
 const Handlebars = importLazy('../../lib/handlerbars');
 const generator = importLazy('../../lib/generator');
@@ -186,10 +186,13 @@ function checkStatus(template, dest, opts) {
     };
 }
 
+function getTemplatePath(template) {
+    const home = require('user-home');
+    return path.join(home, '.hulk-templates', template.replace(/[/:#]/g, '-'));
+}
+
 // 下载模板
 function download(template, dest, opts) {
-    const home = require('user-home');
-
     return (ctx, task) => {
         return new rxjs.Observable(observer => {
             if (ctx.localTemplatePath) {
@@ -199,7 +202,7 @@ function download(template, dest, opts) {
                 return;
             }
             // 临时存放地址，存放在~/.hulk-templates 下面
-            let tmp = path.join(home, '.hulk-templates', template.replace(/[/:#]/g, '-'));
+            let tmp = getTemplatePath(template);
             if (opts.useCache && fs.exists(tmp)) {
                 // 优先使用缓存
                 task.skip('发现本地缓存，优先使用本地缓存模板');

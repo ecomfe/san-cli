@@ -187,6 +187,10 @@ async function build(args, plugins = []) {
         plugins.push(require('../../lib/serivce-plugins/sentry'));
     }
 
+    if (args.remote) {
+        plugins.push(require('../../lib/serivce-plugins/upload'));
+    }
+
     const service = new Service(context, {
         configFile,
         plugins
@@ -210,6 +214,7 @@ async function build(args, plugins = []) {
     }
 
     const chainConfig = service.resolveChainableWebpackConfig();
+
     if (args.modern && !args.analyze) {
         const ModernModePlugin = require('../../lib/webpack/ModernModePlugin');
         if (!args.modernBuild) {

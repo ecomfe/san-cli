@@ -2,6 +2,7 @@
  * @file serve run
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+
 /* eslint-disable no-console */
 async function serve(app, entry, args, command = 'serve', plugins = []) {
     const context = process.cwd();
@@ -31,28 +32,28 @@ async function serve(app, entry, args, command = 'serve', plugins = []) {
 
     // 添加 serve 的 service-plugins
     plugins.push(require('../../lib/serivce-plugins/commandServe'));
-    // 开始正式的操作
-    const Service = require('../../lib/Service');
-
-    const plugins = [];
 
     if (args.matrixEnv) {
         // 添加 analyze
         plugins.push(require('../../lib/serivce-plugins/matrix'));
     }
 
+    // 开始正式的操作
+    const Service = require('../../lib/Service');
+
     const service = new Service(context, {
         configFile: args.config,
         plugins
     });
 
-    const options = service.init(mode, {
-        target: args.target ? args.target : isFile ? 'page' : 'app',
-        modernMode: args.modern,
-        modernBuild: args.modern && process.env.HULK_CLI_MODERN_BUILD,
-        matrixEnv: args.matrixEnv,
-        command
-    });
+    const options = service.init(
+        mode,
+        Object.assign(args, {
+            target: args.target ? args.target : isFile ? 'page' : 'app',
+            modernBuild: args.modern && process.env.HULK_CLI_MODERN_BUILD,
+            command
+        })
+    );
 
     // resolve webpack config
     const webpackConfig = service.resolveWebpackConfig();

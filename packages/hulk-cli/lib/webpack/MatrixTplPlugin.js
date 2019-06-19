@@ -7,17 +7,24 @@ const {isCSS, isJS} = require('../utils');
 const SMARTY_BLOCK = /{%block name=(["'])__(body|head)_asset[s]?\1%}(.+?){%\/block%}/g;
 const MATRIX_SMARTY_BLOCK = /{%block name=(["'])__(kdd|lite|other)_(body|head)_asset[s]?\1%}(.+?){%\/block%}/g;
 
-const getMatrixName = (filename, env) => {
-    return filename.replace(/^(.*)\/(\w+)\.(\w+)\.(css|js)$/, `$1/$2-${env}.$3.$4`);
+const getMatrixName = (filename, env, list) => {
+    const path = list.find(url => {
+        if(~url.indexOf(`-${env}`)) {
+            const postfix = filename.split(url.split(`-${env}`)[0])[1];
+            return postfix && postfix.charAt(0) === '.';
+        }
+        return false;
+    });
+    return filename.split('/static/')[0] + '/' + path;
 };
 
-const matrixFns = (data, matrixEnv) => {
+const matrixFns = (data, matrixEnv, list) => {
     const htmlWebpackPlugin = new HtmlWebpackPlugin();
     const matrixAssets = {};
     matrixEnv.forEach(env => {
         const assets = Object.assign({}, data.assets);
-        assets.css = assets.css.map(url => getMatrixName(url, env));
-        assets.js = assets.js.map(url => getMatrixName(url, env));
+        assets.css = assets.css.map(url => getMatrixName(url, env, list));
+        assets.js = assets.js.map(url => getMatrixName(url, env, list));
         const assetTags = htmlWebpackPlugin.generateHtmlTags(assets);
         const bodyAsset = assetTags.body.map(htmlWebpackPlugin.createHtmlTag.bind(htmlWebpackPlugin));
         const headAsset = assetTags.head.map(htmlWebpackPlugin.createHtmlTag.bind(htmlWebpackPlugin));
@@ -123,7 +130,7 @@ module.exports = class HulkHtmlWebpackPlugin {
     afterHTMLProcessing(compilation, data) {
         // 处理 html 中的{%block name="__head_asset"%}中的 head 和 body tag
         data.html = data.html.replace(SMARTY_BLOCK, m => m.replace(/<[/]?(head|body)>/g, ''));
-        data.html = matrixFns(data, this.options.matrixEnv);
+        data.html = matrixFns(data, this.options.matrixEnv, Object.keys(compilation.assets));
         return data;
     }
 };

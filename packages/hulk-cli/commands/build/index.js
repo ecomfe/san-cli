@@ -30,5 +30,6 @@ module.exports = program => {
         .option('--report', '生成打包报告 report.html')
         .option('-e, --matrix-env <matrix-env>', '使用matrix loader，指定matrix的环境，main/kdd/lite/other')
         .option('-x, --matrix', '对matrix编译产出进行聚合')
+        .option('-r, --remote <remote>', '上传文件到远程机器')
         .action(run);
 };
