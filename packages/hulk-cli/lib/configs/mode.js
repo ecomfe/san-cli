@@ -39,7 +39,6 @@ module.exports = (api, options) => {
         }
 
         webpackConfig
-            .devtool('source-map')
             .output.filename(filename)
             .chunkFilename(filename);
 
@@ -158,6 +157,18 @@ module.exports = (api, options) => {
                 }
             })
         );
+
+
+        if (options._args.sentry) {
+            // --sentry 开启sourcemap
+            webpackConfig.plugin('SourceMapDevToolPlugin').use(require('webpack/lib/SourceMapDevToolPlugin'), [{
+                    filename: 'sourcemaps/[file].map',
+                    append: false
+                }
+
+            ]);
+        }
+
 
         // keep module.id stable when vendor modules does not change
         webpackConfig.plugin('hash-module-ids').use(require('webpack/lib/HashedModuleIdsPlugin'), [
