@@ -17,8 +17,30 @@ const fs = require('fs');
 const childProcess = require('child_process');
 const error = require('@baidu/hulk-utils/logger').error;
 const cosmiconfig = require('cosmiconfig');
-const SentryUpload = require('@sentry/webpack-plugin');
-const sentryInsert = require('../webpack/sentryInsertPlugin');
+const sentryInsert = require('../webpack/SentryInsertPlugin');
+const mkdirp = require('mkdirp');
+const getDirName = require('path').dirname;
+
+// 基础功能 - 文件写入方法封装
+let writeFileSync = (path, contents, cb) => {
+    try {
+        if (fs.existsSync(path)) {
+            fs.writeFileSync(path, contents);
+        } else {
+            mkdirp(getDirName(path), function(err) {
+                if (err) {
+                    return cb(err);
+                }
+                fs.writeFileSync(path, contents);
+            });
+        }
+
+    } catch (e) {
+        error('★[sentry] Create .sentryclirc file fail!!', e);
+    }
+
+};
+
 
 // 基础功能 - 获取分支名称
 let sBranchName = (() => {
@@ -74,13 +96,44 @@ let getSentryInfo = (config = {}) => {
     return config || {};
 };
 
+let getFiles = (sentryInfo = {}) => {
+
+    // 参数准备 - 上传生成两个文件，一个插件必备，一个上传参数
+    const sentryConfigFileBase = sentryInfo.sOutputDir + '/sourcemaps/';
+
+    const sentryConfFilePlugin = sentryConfigFileBase + '.sentryclirc';
+    const sentryConfFileUpParam = sentryConfigFileBase + '.sentryupparam';
+
+    let SentryConfig = `[defaults]
+                        url = ${sentryInfo.sHost}
+                        org = ${sentryInfo.sOrg}
+                        project = ${sentryInfo.sName}
+                        [auth]
+                        token = ${sentryInfo.sToken}`;
+
+    let SentryUploadParamInfo = `${sentryInfo.sName}@${sentryInfo.sBranchName}|${sentryInfo.sUrlPrefix}`;
+    return [{
+            name: sentryConfFilePlugin,
+            value: SentryConfig
+        },
+        {
+            name: sentryConfFileUpParam,
+            value: SentryUploadParamInfo
+        }
+    ];
+};
+
 module.exports = {
     id: 'sentry',
     apply: (api, options) => {
         // setp1: 获取hulk.conf里的参数配置
         let sentryInfo = getSentryInfo(options.sentryOptions || {});
 
-        // 参数准备 - 植入脚本
+        // step2: 接受hulkconf里的output， 默认output
+        let sOutputDir = options.outputDir || './output';
+        sentryInfo.sOutputDir = sOutputDir.indexOf('./') !== 0 ? './' + sOutputDir : sOutputDir;
+
+        // [参数准备] - 植入JSSDK所需参数
         let sentryInsertConfig = [{
             scripts: [{
                     tagName: 'script',
@@ -101,35 +154,22 @@ module.exports = {
             ]
         }];
 
-
-        // 参数准备 - 上传参数sentryConfig
-        const fileName = '.sentryclirc';
-        let SentryConfig = `[defaults]
-                        url = ${sentryInfo.sHost}
-                        org = ${sentryInfo.sOrg}
-                        project = ${sentryInfo.sName}
-                        [auth]
-                        token = ${sentryInfo.sToken}`;
-
-        // step2: 接受外部参数
-        let sOutputDir = options.outputDir;
+        let sentryConf = getFiles(sentryInfo);
 
         if (sBranchName) {
-            // step3: 创建一个.sentryclirc文件
-            fs.writeFileSync(fileName, SentryConfig);
-            // step4: 分别调用两个插件
+            // step3: 创建文件 outputDir -> sourcemaps -> .sentryclirc
+            setTimeout(() => {
+                sentryConf.forEach((ele) => {
+                    writeFileSync(ele.name, ele.value);
+                });
+            }, 2000);
+
+
+            // step4: 插件将JSSDK写入页面
             api.chainWebpack(webpackConfig => {
                 webpackConfig
                     .plugin('sentryInsert')
                     .use(sentryInsert, sentryInsertConfig);
-                webpackConfig
-                    .plugin('sentryUpload')
-                    .use(SentryUpload, [{
-                        release: sentryInfo.sName + '@' + sBranchName,
-                        include: sOutputDir,
-                        configFile: 'sentry.properties',
-                        urlPrefix: sentryInfo.sUrlPrefix
-                    }]);
             });
 
         }
