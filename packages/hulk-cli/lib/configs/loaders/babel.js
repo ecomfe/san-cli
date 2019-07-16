@@ -21,6 +21,7 @@ module.exports = ({browserslist, _args = {}, loaderOptions: {babel = {}}}) => {
         // 添加 san-hmr 插件
         plugins.push(sanHmrPlugin);
     }
+
     return {
         name: 'babel-loader',
         loader: require.resolve('babel-loader'),
@@ -39,6 +40,7 @@ module.exports = ({browserslist, _args = {}, loaderOptions: {babel = {}}}) => {
                 ]
             ],
             plugins: [
+                ...plugins,
                 require('@babel/plugin-syntax-dynamic-import'),
                 require('@babel/plugin-syntax-import-meta'),
                 require('@babel/plugin-proposal-class-properties'),
@@ -53,8 +55,7 @@ module.exports = ({browserslist, _args = {}, loaderOptions: {babel = {}}}) => {
                         useESModules: false, // 不使用 es modules helpers, 减少 commonJS 语法代码
                         absoluteRuntime: path.dirname(require.resolve('@babel/runtime/package.json'))
                     }
-                ],
-                ...plugins
+                ]
             ]
         }
     };
