@@ -2,18 +2,13 @@ Global:
   tool: build_submitter
 
 Default:
-  profile: [buildProduction]
+  profile: [docSiteDeloy]
 
 Profiles:
 
   - profile:
-    name: buildProduction
+    name: docSiteDeloy
     env: cmc_standard
     command: export NODE_ENV=production && sh doc-site.sh
     release: true
 
-  - profile:
-    name: buildDevelopment
-    env: cmc_standard
-    command: export NODE_ENV=development && sh doc-site.sh
-    release: true
