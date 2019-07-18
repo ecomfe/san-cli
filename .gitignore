@@ -2,7 +2,7 @@
 yarn.lock
 temp
 hulk-docs.tar.gz
-
+output
 # Logs
 logs
 *.log

@@ -8,4 +8,6 @@ export PATH=$NODEJS_BIN_LATEST:$PATH
 
 moduleName=hulk-docs
 
+mkdir -p output
 tar czf ${moduleName}.tar.gz ./docs
+mv ${moduleName}.tar.gz output/
