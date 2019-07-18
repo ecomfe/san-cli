@@ -2,7 +2,7 @@
 
 > 为 San 项目提供开发脚手架和组件化开发解决方案
 
-hulk-cli 新版本暂时未发布正式版，需要使用`@baidu/hulk-cli@next`方式安装，新版本的 hulk-cli 内置了 webpack，针对手百现有 webpack 使用情况整理成最佳实践。提供项目创建（init）、项目开发启动（serve）和项目打包上线（build）三个主要命令，还有组件化开发（component）、代码 lint 等其他辅助工具集。
+hulk-cli 使用`@baidu/hulk-cli`方式安装，新版本的 hulk-cli 内置了 webpack，针对手百现有 webpack 使用情况整理成最佳实践。提供项目创建（init）、项目开发启动（serve）和项目打包上线（build）三个主要命令，还有组件化开发（component）、代码 lint 等其他辅助工具集。
 
 ## 预备知识
 
@@ -12,7 +12,7 @@ hulk-cli 新版本暂时未发布正式版，需要使用`@baidu/hulk-cli@next`�
 
 ## Hulk 1.x 迁移 Hulk 2.x
 
-hulk-cli 目前 2.0 版本已经开始测试，需要使用`@baidu/hulk-cli@next`方式安装，hulk 1.x 版本迁移 hulk2 [参考文档](./migration.md)。
+hulk-cli 目前 2.0 版本已经开始测试，需要使用`@baidu/hulk-cli`方式安装，hulk 1.x 版本迁移 hulk2 [参考文档](./migration.md)。
 
 ## 安装 CLI 工具
 

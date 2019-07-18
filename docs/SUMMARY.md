@@ -1,5 +1,5 @@
--   [安装](./hulk-cli.md)
--   [迁移 hulk2](./migration.md)
+-   [Hulk 使用和配置](./hulk-cli.md)
+-   [hulk 1 迁移 hulk2](./migration.md)
 -   项目脚手架
     -   [项目脚手架安装和介绍](./project.md)
     -   [移动端多屏适配方案：vw & rem 切图](./rem.md)

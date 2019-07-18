@@ -94,6 +94,8 @@ loaderOptions:{
 },
 ```
 
+!> Tips：postcss 配置支持在根目录直接添加配置文件。
+
 ## 5. 添加 babel 插件
 
 ```js
@@ -115,6 +117,8 @@ loaderOptions: {
     }
 }
 ```
+
+!> Tips：Babel 配置支持在根目录直接添加配置文件。
 
 ## 6. hulk.config.js 的向上查找
 
@@ -183,3 +187,24 @@ copy: {
 ```
 
 配置项参考 [copy-webpack-plugin](https://github.com/webpack-contrib/copy-webpack-plugin)
+
+## 14. 指定 browserslist
+
+默认配置的 browserslist 如下，可以在`hulk.config.js`里面修改
+
+```js
+//
+browserslist: {
+    production: [
+        '> 1.2% in cn',
+        'last 2 versions',
+        'iOS >=8', // 这里有待商榷
+        'android>4.4',
+        'not bb>0',
+        'not ff>0',
+        'not ie>0',
+        'not ie_mob>0'
+    ],
+    development: ['> 1.2% in cn', 'last 2 versions', 'iOS 11']
+},
+```
