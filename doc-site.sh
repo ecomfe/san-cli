@@ -11,3 +11,5 @@ moduleName=hulk-docs
 mkdir -p output
 tar czf ${moduleName}.tar.gz ./docs
 mv ${moduleName}.tar.gz output/
+
+echo 'docs pack success'
