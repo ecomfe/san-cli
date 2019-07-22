@@ -95,6 +95,7 @@ module.exports = (api, options) => {
                     // 公共js代码抽离
                     common: {
                         name: 'common',
+                        test: /\.(js|ejs)$/,
                         // 只抽取公共依赖模块，保证页面之间公用，并且不经常变化，否则 http cache 不住
                         // test(mod) {
                         //     return /[\\/]node_modules[\\/]/.test(mod.resource) && mod.type === 'javascript/auto';
