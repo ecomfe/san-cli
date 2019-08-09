@@ -50,7 +50,7 @@
         "ejs-loader": "^0.3.1",
         "execa": "^1.0.0",
         "friendly-errors-webpack-plugin": "^1.7.0",
-        "fs-extra": "^7.0.1",
+        "fs-extra": "^8.0.0",
         "git-clone": "^0.1.0",
         "globby": "^9.1.0",
         "gulp-filter": "^5.1.0",
