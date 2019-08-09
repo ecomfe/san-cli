@@ -55,7 +55,11 @@ module.exports = (api, options) => {
                     collapseWhitespace: false,
                     removeAttributeQuotes: true,
                     collapseBooleanAttributes: true,
-                    removeScriptTypeAttributes: false
+                    removeScriptTypeAttributes: false,
+                    minifyCSS: true,
+                    minifyJS: {
+                        compress: {}
+                    }
                     // more options:
                     // https://github.com/kangax/html-minifier#options-quick-reference
                 }
