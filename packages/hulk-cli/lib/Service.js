@@ -11,7 +11,7 @@ const Config = require('webpack-chain');
 const merge = require('webpack-merge');
 const cosmiconfig = require('cosmiconfig');
 
-const {error} = require('@baidu/hulk-utils/logger'); // eslint-disable-line
+const {error, warn} = require('@baidu/hulk-utils/logger'); // eslint-disable-line
 const {getDebugLogger} = require('@baidu/hulk-utils/get-debug'); // eslint-disable-line
 const defaults = require('./defaultConfig');
 const PluginAPI = require('./PluginAPI');
@@ -153,6 +153,10 @@ module.exports = class Service {
                 config = config(this.mode);
             }
         } catch (e) {
+            if (e && e.code === 'MODULE_NOT_FOUND') {
+                warn(`${chalk.bold(configFile)} Cannot find!`);
+                return {};
+            }
             error(`${chalk.bold(configFile)} 内容存在错误，请查看错误信息`);
             /* eslint-disable no-console */
             console.log(e);

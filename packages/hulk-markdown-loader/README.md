@@ -1,6 +1,6 @@
 # hulk-markdown-loader
 
-专门给 Component 命令使用的 markdown loader，会将 markdown 文档中的 demo 部分代码解析出来，生成可展现的 san。
+专门给 Component 命令使用的 markdown loader，会将 markdown 文档中的 demo 部分代码解析出来，生成可展现的 [San](https://baidu.github.io/san/) 组件。
 
 ## Usage
 

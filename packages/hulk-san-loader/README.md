@@ -1,4 +1,4 @@
-## 修改一下，增加 mdurl 支持，去掉 rootcontext 支持
+## fork from [san-webpack-loader](https://jiangjiu.github.io/san-webpack-loader)，主要修改：增加 mdurl 支持，去掉 rootcontext 支持
 
 
 <div align="center">
@@ -14,7 +14,7 @@
 ![](http://progressed.io/bar/80?title=done)
 ![](https://img.shields.io/npm/dt/san-webpack-loader.svg)
 
-![san-webpack-loade](http://ov35lvdq9.bkt.clouddn.com/san-webpack-hot.gif)
+![san-webpack-loader](http://ov35lvdq9.bkt.clouddn.com/san-webpack-hot.gif)
 
 ## Install
 
