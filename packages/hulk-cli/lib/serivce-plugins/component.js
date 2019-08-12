@@ -18,7 +18,7 @@ module.exports = {
                 .rule('md')
                 .test(/\.md$/)
                 .use('markdown')
-                .loader(require.resolve('@baidu/hulk-markdown-loader'))
+                .loader(require.resolve('hulk-markdown-loader'))
                 .options({context, template, ignore});
 
             // html 模板
