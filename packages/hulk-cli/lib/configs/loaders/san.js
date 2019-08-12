@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-module.exports = ({isProd, loaderOptions: {}}) => {
+module.exports = ({isProd}) => {
     return {
         name: 'san-loader',
         loader: require.resolve('hulk-san-loader'),
