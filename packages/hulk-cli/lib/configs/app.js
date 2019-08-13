@@ -4,6 +4,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const minify = require('html-minifier').minify;
 
 module.exports = (api, options) => {
     api.chainWebpack(webpackConfig => {
@@ -59,7 +60,8 @@ module.exports = (api, options) => {
                     minifyCSS: true,
                     minifyJS: {
                         compress: {}
-                    }
+                    },
+                    ignoreCustomFragments: [/{%[\s\S]*?%}/, /<%[\s\S]*?%>/, /<\?[\s\S]*?\?>/]
                     // more options:
                     // https://github.com/kangax/html-minifier#options-quick-reference
                 }
@@ -190,7 +192,20 @@ module.exports = (api, options) => {
                     copyArgs.push({
                         from,
                         to: path.join(outputDir, to),
-                        ignore
+                        ignore,
+                        transform: (content, path) => {
+                            if (/\.(tpl|html)$/.test(path)) {
+                                return minify(content.toString(), {
+                                    minifyCSS: true,
+                                    minifyJS: {
+                                        compress: {}
+                                    },
+                                    ignoreCustomFragments: [/{%[\s\S]*?%}/, /<%[\s\S]*?%>/, /<\?[\s\S]*?\?>/]
+                                });
+                            } else {
+                                return content;
+                            }
+                        }
                     });
                 } else {
                     // 正则的，不处理
