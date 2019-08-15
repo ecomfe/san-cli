@@ -1,6 +1,6 @@
 {
     "name": "@baidu/hulk-cli",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "description": "SearchBox Front-end Command Line Interface",
     "bin": {
         "hulk": "bin/hulk.js"
@@ -27,10 +27,8 @@
         "@babel/plugin-transform-runtime": "^7.4.0",
         "@babel/preset-env": "^7.4.0",
         "@babel/runtime": "^7.4.0",
-        "@baidu/hulk-lint": "^2.0.0",
-        "hulk-markdown-loader": "^2.0.0",
-        "hulk-san-loader": "^2.0.0",
-        "@baidu/hulk-utils": "^2.0.0",
+        "@baidu/hulk-lint": "^2.1.0",
+        "@baidu/hulk-utils": "^2.1.0",
         "@baidu/matrix-loader": "^1.1.1",
         "@baidu/sentry-webpack-configext": "^1.0.10",
         "@baidu/upload-file": "^0.0.2",
@@ -59,6 +57,8 @@
         "html-loader": "^0.5.5",
         "html-webpack-harddisk-plugin": "^1.0.1",
         "html-webpack-plugin": "^3.2.0",
+        "hulk-markdown-loader": "^2.0.9",
+        "hulk-san-loader": "^2.0.0",
         "import-lazy": "^3.1.0",
         "inquirer": "^6.2.2",
         "less": "^3.9.0",
@@ -97,5 +97,5 @@
         "webpack-merge": "^4.2.1",
         "write-file-webpack-plugin": "^4.5.0"
     },
-    "gitHead": "9c78cf4439df7ecede9b648942e10b826787daab"
+    "gitHead": "c0d7a1aa44e46a570094a0316fd4176dd5e312e0"
 }

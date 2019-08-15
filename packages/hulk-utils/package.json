@@ -1,6 +1,6 @@
 {
     "name": "@baidu/hulk-utils",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -30,5 +30,5 @@
         "string.prototype.padstart": "^3.0.0",
         "strip-ansi": "^5.2.0"
     },
-    "gitHead": "9c78cf4439df7ecede9b648942e10b826787daab"
+    "gitHead": "c0d7a1aa44e46a570094a0316fd4176dd5e312e0"
 }
