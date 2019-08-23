@@ -23,7 +23,7 @@ hulk-cli 目前 2.0 版本已经开始测试，需要使用`@baidu/hulk-cli`方�
 -   [项目脚手架](./project.md)
 -   [如何创建一个脚手架](./create-scaffold.md)
 
-## 内置解决方案
+## Hulk CLI 内置解决方案
 Hulk 力求做到零配置打包方案，内置的方案都是通用的解决方案，日常项目不需要关心优化和解决方案可以直接使用。同时针对特殊的项目配置，hulk 项目可以使用`hulk.config.js`进行精细化调整。
 
 1. css 相关：
@@ -51,10 +51,12 @@ Hulk 力求做到零配置打包方案，内置的方案都是通用的解决方
     3. smarty、html 中的 script 和 style 标签内容会自动压缩（minify）
 5. 内置了 sentry、martix（矩阵页面）打包
 6. 内置了 modern mode 打包
-7. 内置 San 组件开发解决方案，详见下面[组件开发](#组件开发)
+7. 内置 San 组件开发解决方案，详见下面[组件开发](./component.md)
 8. 代码规范和质量检测：
     1. hulk 项目脚手架内置了 hulk-lint、lintstage 和 husky
     2. 针对之前出现过的调试代码进入生产环境的case，增加 `alert`、`console.log`和`debugger` error 级别检测，如果真的要用，请添加 eslint 注释
+
+更多内容[继续阅读](./hulk-cli.md)。
 
 ## 组件开发
 

@@ -42,9 +42,17 @@ hulk <command> --help
 
 安装模板后会自动安装依赖文件。
 
-## 配置
+## 命令
 
-hulk 支持多个配置，具体包括：
+hulk 有`init`、`serve`、`build`、`lint`、`component`五个主要命令：
+
+-   init：项目脚手架初始化项目，生成标准项目，后面可以跟 icode、github 的 repo；
+-   serve：是本地开发服务器；
+-   build：打包命令，支持`--analyzer`、`--modern`等多个配置项目
+-   lint：lint 规范检测
+-   component：是针对 San 组件内置的一套组件化开发方案，具体[查看](./component.md)和 San C 端组件库项目[`@baidu/nano`](http://hulk.baidu-int.com/docs/nano/)
+
+其中命令 alias 如下：
 
 -   默认 alias：
     -   init：new
