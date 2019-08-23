@@ -55,7 +55,11 @@ Hulk 力求做到零配置打包方案，内置的方案都是通用的解决方
 8. 代码规范和质量检测：
     1. hulk 项目脚手架内置了 hulk-lint、lintstage 和 husky
     2. 针对之前出现过的调试代码进入生产环境的case，增加 `alert`、`console.log`和`debugger` error 级别检测，如果真的要用，请添加 eslint 注释
+9. 远程部署：
+    1. 在hulk.config.js中配置deployMap字段；
+    2. 执行build命令时添加`-r`(或`--remote`)参数即可部署到远程机器；详见[远程部署](./remote-deployment.md)；
 
+这样就能把build的编译产物推送到远程机器了
 更多内容[继续阅读](./hulk-cli.md)。
 
 ## 组件开发
@@ -69,5 +73,6 @@ Hulk 力求做到零配置打包方案，内置的方案都是通用的解决方
 -   [mock server：推荐公司的 yapi](http://yapi.baidu-int.com)
 -   [移动端多屏适配方案：vw & rem 切图](./rem.md)
 -   [service 层：fly.io 来做业务请求库，统一 service](./service.md)
+-   [远程部署](./remote-deployment.md)
 -   [mock native](./mock-native.md)
 -   [一些小规范](./practice.md)
