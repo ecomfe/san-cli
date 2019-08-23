@@ -20,3 +20,41 @@ h2 {
 }
 ```
 
+## 修改设计稿宽度比例
+即修改`pr2rem`插件的配置，hulk 内置的插件配置为：
+
+```js
+{
+    // 设计图为1242px
+    rootValue: 124.2,
+    unitPrecision: 5,
+    propWhiteList: [],
+    propBlackList: [],
+    selectorBlackList: [],
+    ignoreIdentifier: '00',
+    replace: true,
+    mediaQuery: false,
+    minPixelValue: 0
+}
+```
+
+如果要修改配置，可以通过`hulk.config.js`的`loaderOptions`对 postcss 的内置插件配置进行修改，具体代码示例如下：
+
+```js
+loaderOptions: {
+    // babel plugins
+    // babel: {
+    //     plugins: [require(xxx)]
+    // }
+    // postcss plugins
+    postcss:{
+    //     plugins: [rquire(xxx), options],
+        builtInPluginConfig: {pr2rem: {
+            rootValue: 124.2,
+            unitPrecision: 5,
+        }}
+    }
+}
+```
+
+如果项目有自己的 postcss 配置，那么可以直接修改自己的 postcss 配置，hulk 会优先使用项目根目录的 postcss 配置文件。

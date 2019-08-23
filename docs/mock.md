@@ -1,5 +1,5 @@
 # mock server
-> 为了方便本地假数据调试，减少联调成本，项目支持[apim](http://apim.baidu.com/docs#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C) 和 [本地实现 Mock Server](http://icode.baidu.com/repos/baidu/hulk/mock-server/tree/master) 两种 mock 方案，在创建项目的时候有选择，**推荐使用`apim`**
+> 为了方便本地假数据调试，减少联调成本，项目支持[yapi](http://yapi.baidu-int.com)、[apim](http://apim.baidu.com/docs#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C) 和 [本地实现 Mock Server](http://icode.baidu.com/repos/baidu/hulk/mock-server/tree/master) 三种 mock 方案，在创建项目的时候有选择，**推荐使用`yapi`**
 
 ## Local Mock Server
 Mock Server 实现涉及到代码和说明
