@@ -42,7 +42,7 @@
         "concat-stream": "^2.0.0",
         "consolidate": "^0.15.1",
         "copy-webpack-plugin": "^5.0.1",
-        "core-js": "^3.0.0",
+        "core-js": "3.1.4",
         "cosmiconfig": "5.2.0",
         "css-loader": "^2.1.1",
         "ejs-loader": "^0.3.1",

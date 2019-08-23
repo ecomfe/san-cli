@@ -111,6 +111,7 @@ module.exports = (api, options) => {
             const normalizePageConfig = c => (typeof c === 'string' ? {entry: c} : c);
 
             pages.forEach(name => {
+                let pageConfig = normalizePageConfig(multiPageConfig[name]);
                 let {
                     title,
                     entry,
@@ -118,7 +119,8 @@ module.exports = (api, options) => {
                     filename,
                     // 这里需要跟 mode 里面的 splitChunks 遥相呼应
                     chunks = ['common', 'vendors', 'css-common', name]
-                } = normalizePageConfig(multiPageConfig[name]);
+                } = pageConfig;
+
                 // inject entry
                 webpackConfig.entry(name).add(api.resolve(entry));
 
@@ -139,8 +141,8 @@ module.exports = (api, options) => {
                 const templatePath = hasDedicatedTemplate
                     ? template
                     : fs.existsSync(htmlPath)
-                        ? htmlPath
-                        : defaultHtmlPath;
+                    ? htmlPath
+                    : defaultHtmlPath;
 
                 // inject html plugin for the page
                 const pageHtmlOptions = Object.assign(
@@ -148,6 +150,7 @@ module.exports = (api, options) => {
                         alwaysWriteToDisk: true
                     },
                     htmlOptions,
+                    pageConfig,
                     {
                         chunks,
                         entry: name,
@@ -159,7 +162,8 @@ module.exports = (api, options) => {
                 );
                 webpackConfig.plugin(`html-${name}`).use(HTMLPlugin, [pageHtmlOptions]);
                 const isMatrix = options.enableMatrix && Array.isArray(options.matrixEnv);
-                webpackConfig.plugin(`hulk-html-${name}`)
+                webpackConfig
+                    .plugin(`hulk-html-${name}`)
                     .use(isMatrix ? MatrixTplPlugin : HulkHtmlPlugin, [{matrixEnv: options.matrixEnv}]);
             });
             useHtmlPlugin = true;
@@ -226,7 +230,6 @@ module.exports = (api, options) => {
         if (copyArgs.length) {
             webpackConfig.plugin('copy-webpack-plugin').use(require('copy-webpack-plugin'), [copyArgs]);
         }
-
     });
 };
 
