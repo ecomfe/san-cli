@@ -24,6 +24,7 @@ hulk-cli 目前 2.0 版本已经开始测试，需要使用`@baidu/hulk-cli`方�
 -   [如何创建一个脚手架](./create-scaffold.md)
 
 ## 内置解决方案
+Hulk 力求做到零配置打包方案，内置的方案都是通用的解决方案，日常项目不需要关心优化和解决方案可以直接使用。同时针对特殊的项目配置，hulk 项目可以使用`hulk.config.js`进行精细化调整。
 
 1. css 相关：
     1. 内置 postcss、less、cssnano、autoprefixer
