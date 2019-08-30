@@ -2,6 +2,7 @@
 -   [hulk 1 迁移 hulk2](./migration.md)
 -   项目脚手架
     -   [项目脚手架安装和介绍](./project.md)
+    -   [远程部署](././remote-deployment.md)
     -   [移动端多屏适配方案：vw & rem 切图](./rem.md)
     -   [Mock Server：apim & local mock server](./mock.md)
     -   [Mock 客户端](./mock-native.md)

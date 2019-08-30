@@ -29,7 +29,7 @@
 ```
 
 > **说明**
-> host配置项用于fsr部署（强烈推荐使用fsr的方式，符合公司安全规范），要求远程机器启动了fsr服务（详见：http://agroup.baidu.com/fis/md/article/196978）。
+> host配置项用于fsr部署（强烈推荐使用fsr的方式，符合公司安全规范），要求远程机器启动了fsr服务（详见：http://agroup.baidu.com/fis/md/article/196978 ）。
 > 如果远程机器无法安装fsr，可以通过`disableFsr: 1`来禁用，这样就切换了到使用`receiver.php`这种不太安全的方式了。
 
 ### 执行命令
