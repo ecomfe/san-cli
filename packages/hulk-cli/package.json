@@ -31,7 +31,7 @@
         "@baidu/hulk-utils": "^2.1.0",
         "@baidu/matrix-loader": "^1.1.1",
         "@baidu/sentry-webpack-configext": "^1.0.10",
-        "@baidu/upload-file": "^0.0.4",
+        "@baidu/upload-file": "^0.1.0",
         "@samverschueren/stream-to-observable": "^0.3.0",
         "autoprefixer": "^9.6.0",
         "babel-loader": "^8.0.5",
