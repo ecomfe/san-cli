@@ -66,15 +66,15 @@ module.exports = program => {
 
 > `run.js` 推荐用 import-lazy 来引入模块，尽量避免一开始就执行，不然会拖累 cli 的执行速度
 
-
 ## 远程部署
 
-### config配置
-在Hulk.config.js中配置deployMap字段
+### config 配置
+
+在 Hulk.config.js 中配置 deployMap 字段
 
 ```
  // receiver等字段参考fis的配置方式，示例如下
- 
+
  deployMap: {
     ...
     sandbox: {
@@ -97,10 +97,10 @@ module.exports = program => {
 
 ### 执行命令
 
-在build命令中添加，`-r`(或`--remote`)参数，值为`deployMap`中的key
+在 build 命令中添加，`-r`(或`--remote`)参数，值为`deployMap`中的 key
 
-``` 
+```
 hulk build --config hulk.config.js -r sandbox
 ```
 
-这样就能把build的编译产物推送到远程机器了
+这样就能把 build 的编译产物推送到远程机器了
