@@ -52,11 +52,12 @@ class Upload {
 
     getContent(filename, compilation) {
         const isContainCdn = /\.(css|js|tpl)$/.test(filename);
-        const source = compilation.assets[filename].source().toString();
-        if (!isContainCdn) {
-            return source;
+        const source = compilation.assets[filename].source();
+        if (isContainCdn) {
+            const reg = new RegExp(this.options.baseUrl, 'g');
+            return source.toString().replace(reg, this.options.staticDomain);
         }
-        return source.replace(new RegExp(this.options.baseUrl, 'gm'), this.options.staticDomain);
+        return source;
     }
 }
 
