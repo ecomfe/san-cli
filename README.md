@@ -79,6 +79,7 @@ module.exports = program => {
     ...
     sandbox: {
         receiver: 'http://fe.fis.searchbox.otp.baidu.com/fis/receiver',
+        host: 'http://fe.fis.searchbox.otp.baidu.com:8888',
         templatePath: '/home/work/orp',
         staticPath: '/home/work/orp/nginx.static/htdocs',
         staticDomain: 'http://yq01-wyneeyue.epc.baidu.com:8888'
@@ -86,6 +87,7 @@ module.exports = program => {
     ...
     anotherSandbox: {
         receiver: 'http://fe.fis.searchbox.otp.baidu.com/fis/receiver',
+        host: 'http://fe.fis.searchbox.otp.baidu.com:8888',
         templatePath: '/home/work/orp',
         staticPath: '/home/work/orp/nginx.static/htdocs',
         staticDomain: 'http://yq01-wyneeyue.epc.baidu.com:8888'
