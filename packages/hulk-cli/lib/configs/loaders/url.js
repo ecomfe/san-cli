@@ -4,7 +4,7 @@
  */
 const {getAssetPath} = require('../../utils'); // eslint-disable-line
 
-module.exports = ({isProd, dir, assetsDir, largeAssetSize = 1024, loaderOptions: {url = {}}}) => {
+module.exports = ({isProd, dir, assetsDir, largeAssetSize = 1024}) => {
     return {
         name: 'url-loader',
 
