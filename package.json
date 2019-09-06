@@ -11,25 +11,7 @@
     "scripts": {
         "lint": "lint-staged"
     },
-    "husky": {
-        "hooks": {
-            "pre-commit": "node ./packages/hulk-lint/node_modules/lint-staged/index.js",
-            "commit-msg": "node ./packages/hulk-lint/node_modules/commitlint/node_modules/.bin/commitlint -E HUSKY_GIT_PARAMS"
-        }
-    },
-    "lint-staged": {
-        "linters": {
-            "*.js": [
-                "node ./packages/hulk-lint/bin/hulk-lint"
-            ]
-        },
-        "ignore": [
-            "**/dist/**",
-            "**/docs/**",
-            "**/output/**",
-            "**/*.min.js"
-        ]
-    },
+
     "commitlint": {
         "rules": {
             "body-leading-blank": [

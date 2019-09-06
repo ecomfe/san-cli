@@ -6,9 +6,6 @@
     1. build
     2. serve
     3. init
-    4. Create
-    5. Invoke
-    6. add
     7. Inspect
 2. 插件化
     1. command

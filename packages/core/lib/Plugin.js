@@ -1,0 +1,5 @@
+// 1. 注册某个命令的 flag 激活
+// 2. 获取 webpackchain api
+// 3. 获取user config
+// 4. 注册 hook 时机
+// 5. 添加 log

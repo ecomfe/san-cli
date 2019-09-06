@@ -1,6 +1,7 @@
 {
-  "name": "@scope/command-lint",
+  "name": "@baidu/hulk-sbox",
   "version": "1.0.0",
+  "description": "hulk-cli searchbox ",
   "main": "index.js",
   "author": "ksky521",
   "license": "MIT"

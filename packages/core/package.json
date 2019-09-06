@@ -1,6 +1,7 @@
 {
-  "name": "@scope/command-lint",
+  "name": "@scope/hulk-core",
   "version": "1.0.0",
+  "description": "hulk-cli core",
   "main": "index.js",
   "author": "ksky521",
   "license": "MIT"

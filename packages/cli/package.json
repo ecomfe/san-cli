@@ -1,5 +1,5 @@
 {
-  "name": "@scope/command-lint",
+  "name": "@scope/hulk-cli",
   "version": "1.0.0",
   "main": "index.js",
   "author": "ksky521",
