@@ -1,7 +1,0 @@
-{
-  "name": "@scope/command-lint",
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "ksky521",
-  "license": "MIT"
-}
