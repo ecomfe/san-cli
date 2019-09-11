@@ -10,6 +10,7 @@ const path = require('path');
 const updateNotifier = require('update-notifier');
 const yargs = require('yargs/yargs');
 const semver = require('semver');
+const npmlog = require('npmlog');
 
 const {error, chalk} = require('@hulk/core/ttyLogger');
 
@@ -34,7 +35,6 @@ if (~buildinCmds.indexOf(cmd) || cmd === '' || cmd.indexOf('-') === 0) {
     // 内置的命令
     const cli = yargs();
 
-    const npmlog = require('npmlog');
     cli.scriptName(scriptName)
         .usage('Usage: $0 <command> [options]')
         .option('verbose', {
@@ -49,17 +49,7 @@ if (~buildinCmds.indexOf(cmd) || cmd === '' || cmd.indexOf('-') === 0) {
             type: 'string',
             describe: 'set log level'
         })
-        .middleware(argv => {
-            // 利用中间件机制，增加公共参数处理和函数等
-            if (argv.verbose) {
-                // 增加 logger
-                npmlog.level = 'info';
-            } else {
-                npmlog.level = argv.logLevel;
-            }
-            // eslint-disable-next-line
-            return {_cwd: process.cwd(), _logger: npmlog, _version: pkgVersion};
-        })
+        .middleware(getCommonArgv)
         .wrap(cli.terminalWidth())
         .strict()
         .alias('h', 'help')
@@ -73,7 +63,27 @@ if (~buildinCmds.indexOf(cmd) || cmd === '' || cmd.indexOf('-') === 0) {
     cli.parse(process.argv.slice(2));
 } else {
     // 默认
-    require('./commands/default');
+    const yParser = require('yargs-parser');
+    let argv = yParser(process.argv.slice(2));
+    argv = Object.assign(argv, getCommonArgv(argv));
+
+    require('./commands/default')(cmd, argv);
+}
+
+/**
+ * 通过 yargs middleware 添加公共变量
+ * @param {Object} argv
+ */
+function getCommonArgv(argv) {
+    // 利用中间件机制，增加公共参数处理和函数等
+    if (argv.verbose) {
+        // 增加 logger
+        npmlog.level = 'info';
+    } else {
+        npmlog.level = argv.logLevel;
+    }
+    // eslint-disable-next-line
+    return {_cwd: process.cwd(), _logger: npmlog, _version: pkgVersion};
 }
 
 function checkNodeVersion(wanted, id) {

@@ -2,14 +2,26 @@
     "name": "root",
     "private": true,
     "devDependencies": {
-        "fecs": "^1.6.2",
+        "fecs": "^1.6.4",
         "husky": "^1.3.0",
         "lerna": "^3.13.2",
-        "lint-staged": "^8.1.5",
+        "lint-staged": "^9.2.5",
+        "commitlint": "^8.1.0",
         "stylelint": "^9.10.1"
     },
     "scripts": {
         "lint": "lint-staged"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged",
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+        }
+    },
+    "lint-staged": {
+        "*.js": [
+            "fecs"
+        ]
     },
     "commitlint": {
         "rules": {
@@ -77,6 +89,5 @@
                 ]
             ]
         }
-    },
-    "dependencies": {}
+    }
 }
