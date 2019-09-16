@@ -30,31 +30,39 @@ upNotifier(pkgVersion, pkgName);
 // 3. 加载全部的命令
 const buildinCmds = ['build', 'init', 'serve', 'inspect'];
 const cmd = process.argv[2] || '';
+// 内置的命令
+const cli = yargs();
 
+cli.scriptName(scriptName)
+    .usage('Usage: $0 <command> [options]')
+    .option('verbose', {
+        type: 'boolean',
+        describe: 'output verbose messages on internal operations'
+    })
+
+    .option('log-level', {
+        alias: 'logLevel',
+        default: 'silent',
+        hidden: true,
+        choices: ['info', 'debug', 'warn', 'error', 'silent', 'notice', 'silly', 'timing', 'http'],
+        type: 'string',
+        describe: 'set log level'
+    })
+    .wrap(cli.terminalWidth())
+    .middleware(function getCommonArgv(argv) {
+        // 利用中间件机制，增加公共参数处理和函数等
+        if (argv.verbose) {
+            // 增加 logger
+            npmlog.level = 'info';
+        } else {
+            npmlog.level = argv.logLevel;
+        }
+        // eslint-disable-next-line
+        return {_cwd: process.cwd(), _logger: npmlog, _version: pkgVersion, _scriptName: scriptName};
+    })
+    .alias('h', 'help')
+    .alias('v', 'version');
 if (~buildinCmds.indexOf(cmd) || cmd === '' || cmd.indexOf('-') === 0) {
-    // 内置的命令
-    const cli = yargs();
-
-    cli.scriptName(scriptName)
-        .usage('Usage: $0 <command> [options]')
-        .option('verbose', {
-            type: 'boolean',
-            describe: 'output verbose messages on internal operations'
-        })
-        .option('log-level', {
-            alias: 'logLevel',
-            default: 'silent',
-            hidden: true,
-            choices: ['info', 'debug', 'warn', 'error', 'silent', 'notice', 'silly', 'timing', 'http'],
-            type: 'string',
-            describe: 'set log level'
-        })
-        .middleware(getCommonArgv)
-        .wrap(cli.terminalWidth())
-        .strict()
-        .alias('h', 'help')
-        .alias('v', 'version');
-
     buildinCmds.forEach(cmd => {
         const instance = require(path.join(__dirname, `./commands/${cmd}`));
         cli.command(instance);
@@ -63,27 +71,7 @@ if (~buildinCmds.indexOf(cmd) || cmd === '' || cmd.indexOf('-') === 0) {
     cli.parse(process.argv.slice(2));
 } else {
     // 默认
-    const yParser = require('yargs-parser');
-    let argv = yParser(process.argv.slice(2));
-    argv = Object.assign(argv, getCommonArgv(argv));
-
-    require('./commands/default')(cmd, argv);
-}
-
-/**
- * 通过 yargs middleware 添加公共变量
- * @param {Object} argv
- */
-function getCommonArgv(argv) {
-    // 利用中间件机制，增加公共参数处理和函数等
-    if (argv.verbose) {
-        // 增加 logger
-        npmlog.level = 'info';
-    } else {
-        npmlog.level = argv.logLevel;
-    }
-    // eslint-disable-next-line
-    return {_cwd: process.cwd(), _logger: npmlog, _version: pkgVersion};
+    require('./commands/default')(cli, cmd, process.argv.slice(2));
 }
 
 function checkNodeVersion(wanted, id) {

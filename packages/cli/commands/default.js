@@ -4,6 +4,6 @@
  */
 const Service = require('@hulk/core/lib/Service');
 
-module.exports = (cmd, argv) => {
-    new Service(argv).run(cmd);
+module.exports = (cli, cmd, argv) => {
+    new Service(process.cwd(), {cli}).runCommand(cmd, argv);
 };
