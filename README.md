@@ -24,6 +24,7 @@ Hulk2 已经满足手百 San 日常开发功能，但是在插件化和可扩展
     7. plugin-yapi：针对 yapi mock proxy 做支持
     8. plugin-smarty：针对 smarty 做支持
     9. plugin-modern：modern mode
+    10. plugin-martix：支持矩阵产品代码
 1. 基于 yargs 实现 command 机制，基础 Command 命令包括：
     1. init：脚手架工具（alias create）
     2. serve、build：基于 Webpack chain 的 webpack 配置，内置了部分 config，增加 Service 和 PluginAPI 作为插件化；
@@ -79,18 +80,18 @@ module.exports = {
 
 > PS：`hulk`的 flag `--verbose`实际等于`--logLevel info`
 
-
 ### Hulk3 事件流设计（非必须）
+
 目前 PluginAPI 中有`on`和`emit`两个方法，但是事件待设计
 
 ### Hulk3 UI 设计
-待设计
 
+待设计
 
 ### Hulk3 hulk.config.js
 
-* pluginMethods：提供给 plugin 调用的方法
-*
+-   pluginMethods：提供给 plugin 调用的方法
+-
 
 ## Hulk 2.0
 
