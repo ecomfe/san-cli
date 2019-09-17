@@ -5,6 +5,8 @@
 // const fs = require('fs');
 // const {resolve, isAbsolute} = require('path');
 
+const EventEmitter = require('events').EventEmitter;
+
 const Config = require('webpack-chain');
 const webpackMerge = require('webpack-merge');
 const yargs = require('yargs/yargs');
@@ -16,7 +18,7 @@ const {chalk, error, warn} = require('../ttyLogger');
 
 const BUILDIN_PLUGINS = ['../configs'];
 
-module.exports = class Service {
+module.exports = class Service extends EventEmitter {
     constructor(cwd, {plugins, useBuiltInPlugin = true, cli} = {}) {
         this.cwd = cwd || process.cwd();
         this.initialized = false;
@@ -71,7 +73,7 @@ module.exports = class Service {
                     return pluginMethod;
                 }
 
-                if (['registerCommand'].includes(prop)) {
+                if (['registerCommand', 'version', 'on', 'emit'].includes(prop)) {
                     if (typeof self[prop] === 'function') {
                         return self[prop].bind(self);
                     } else {
