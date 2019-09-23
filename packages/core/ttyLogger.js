@@ -4,12 +4,15 @@
  */
 
 const chalk = require('chalk');
+const ora = require('ora');
+const figures = require('figures');
 const stripAnsi = require('strip-ansi');
 chalk.stripColor = stripAnsi;
 
 const importLazy = require('import-lazy')(require);
 const readline = importLazy('readline');
 const padStart = importLazy('string.prototype.padstart');
+const debug = importLazy('debug');
 
 /* eslint-disable no-console */
 const logger = console.log;
@@ -71,4 +74,13 @@ exports.clearConsole = () => {
     }
 };
 
+exports.debug = (ns, scope = 'hulk') => {
+    const ms = [scope, ns].filter(v => v).join(':');
+    return debug(ms);
+};
+
 exports.chalk = chalk;
+
+exports.ora = ora;
+
+exports.figures = figures;
