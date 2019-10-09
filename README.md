@@ -2,9 +2,9 @@
 
 ## Hulk 3.0 roadmap
 
-Hulk2 已经满足手百 San 日常开发功能，但是在插件化和可扩展性做的不够好，因此启用 Hulk3 项目，旨在做可定制化的前端开发工具集，不再局限 San 的应用，而是做到通用化配置。所以整体规划如下：
+Hulk2 已经满足手百 San 日常开发功能，但是在插件化和可扩展性做的不够好，因此启用新的 CLI 开发计划，该 CLI 面向对象旨在做可定制化的前端开发工具集，不再局限 San 的应用，而是做到通用化配置。所以整体规划如下：
 
-0. 继续使用 lerna 做包管理，拆包如下：
+1. 继续使用 lerna 做包管理，拆包如下：
     1. cli：hulk-cli 的实例实现
         1. commands：符合 [yargs command API](https://github.com/yargs/yargs/blob/master/docs/api.md#commandcmd-desc-builder-handler)
             1. default：是最后兜底的命令，用于扩展 hulk 命令
@@ -25,15 +25,15 @@ Hulk2 已经满足手百 San 日常开发功能，但是在插件化和可扩展
     8. plugin-smarty：针对 smarty 做支持
     9. plugin-modern：modern mode
     10. plugin-martix：支持矩阵产品代码
-1. 基于 yargs 实现 command 机制，基础 Command 命令包括：
+2. 基于 yargs 实现 command 机制，基础 Command 命令包括：
     1. init：脚手架工具（alias create）
     2. serve、build：基于 Webpack chain 的 webpack 配置，内置了部分 config，增加 Service 和 PluginAPI 作为插件化；
     3. inspect：用于检视 webpack config 内容。
-1. 插件化设计：
-1. 统一日志设计：
-1. 事件流（生命周期）：
-1. UI 支持（优先级低）：
-1. 私有 hulk-sbox 由一份内置 hulk.config.js 配置而成
+3. 插件化设计：
+4. 统一日志设计：
+5. 事件流（生命周期）：
+6. UI 支持（优先级低）：
+7. 私有 hulk-sbox 由一份内置 hulk.config.js 配置而成
 
 ### Hulk3 插件机制设计
 
