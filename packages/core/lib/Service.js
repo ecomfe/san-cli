@@ -17,16 +17,17 @@ const PluginAPI = require('./PluginAPI');
 const {chalk, error, warn} = require('../ttyLogger');
 
 const BUILDIN_PLUGINS = ['../configs'];
-
+/* global Map, Proxy */
 module.exports = class Service extends EventEmitter {
-    constructor(cwd, {plugins, useBuiltInPlugin = true, cli} = {}) {
+    constructor(cwd, {plugins, useBuiltInPlugin = true, cli = yargs()} = {}) {
+        super();
         this.cwd = cwd || process.cwd();
         this.initialized = false;
         // webpack chain & merge array
         this.webpackChainFns = [];
         this.webpackRawConfigFns = [];
         this.devServerConfigFns = [];
-        this.cli = cli || yargs();
+        this.cli = cli;
 
         // 相关的 Map
         this.commands = new Map();
