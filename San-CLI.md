@@ -1,5 +1,12 @@
 ## San-CLI Roadmap
 
+### 功能拆分
+
+-   [](init 增加 preset 功能)
+-   [](lib/Service 完成)
+-   [] 加上 loadEnv
+-   [] 加上 lint
+
 Hulk2 已经满足手百 San 日常开发功能，但是在插件化和可扩展性做的不够好，因此启用新的 CLI 开发计划，该 CLI 旨在完善 San 生态，做可定制化的前端开发工具集，在兼顾 San 生态的同时，遵守微核心和插件化的设计思想，尽量不局限 San 的应用，做到通用化配置。
 
 ### 具体要求和功能点如下
@@ -81,7 +88,8 @@ Hulk2 已经满足手百 San 日常开发功能，但是在插件化和可扩展
 整个 CLI 的打包部分由 Service 驱动，插件通过传入 PluginAPI 实例来实现扩展，PluginAPI 的重要 API 如下：
 
 -   `getVersion()`、`getLogger()`、`getCwd()`、`getProjectOptions()`：获取 CLI 版本、npmlog 对象、cwd、最终配置；
--   `registerCommand(cmdName, handler)`：注册命令;
+-   `registerCommand(cmdName, handler)`：注册命令，参数对标`yargs.command`方法参数，**builder 为`{}`格式**
+-   `registerCommandFlag(cmdName,{flags}, handler)`：给现有命令注册 flag；hanlder 会在`registerCommand`的 handler 之前执行
 -   `chainWebpack(webpackConfig)`：传入 Webpack-chain 的 API
 -   `on()`：监听生命周期，获取对应的产出
 
@@ -90,24 +98,6 @@ Hulk2 已经满足手百 San 日常开发功能，但是在插件化和可扩展
 ```js
 module.exports = {
     id: 'name',
-    // 命令相关，会在 service 实例化之后，具体来 run 对应的命令
-    // 这里作用：1. 用于 yargs 展现help 信息；2. 用于 service.run 具体的命令；
-    // 此处增加的 cmd 命令，比如在`apply`中使用`api.registerCommand`传入对应的 handler
-    // 这样可以保证`service.run(cmdName)`时可以找到对应的 handler
-    commands: {
-        cmdName:{
-            desc,
-            builder
-        }
-    },
-    // 这里是给现有命令添加自定义 flag 说明，例如给 build 增加`--target`
-    // 使用的时候可以使用 build 的 argv 对象
-    // 用于 help 说明而已
-    flags: {
-        build: {
-            modern:'生成 modern 代码'
-        }
-    },
     apply (api, projectOptions, pluginOptions)=>{},
     // ui 设计待定，预留
     ui(){}
@@ -149,23 +139,21 @@ module.exports = {
 
 ### `.sanrc`详细配置项
 
-- plugins
-- configs
-- cssPreprocessor
-
-
+-   plugins：默认的 service plugins
+-   commands：增加的的 cli commands，不能与内置的命令重名
+-   configs：默认的 project.config.js，会被作为默认值合并
 
 ### san.config.js 详细配置项
 
-- pages
-- outputDir
-- assetsDir
-- publicPath
-- devServer
-- chainWebpack
-- configureWebpack
-- css
-- css.loaderOptions
-- css.sourceMap
-- pluginOptions
-- productionSourceMap
+-   pages
+-   outputDir
+-   assetsDir
+-   publicPath
+-   devServer
+-   chainWebpack
+-   configureWebpack
+-   css
+-   css.loaderOptions
+-   css.sourceMap
+-   pluginOptions
+-   productionSourceMap

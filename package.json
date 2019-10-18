@@ -9,6 +9,11 @@
         "commitlint": "^8.1.0",
         "stylelint": "^9.10.1"
     },
+    "husky": {
+        "hooks": {
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+        }
+    },
     "scripts": {
         "lint": "lint-staged"
     },
