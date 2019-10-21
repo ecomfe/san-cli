@@ -1,7 +1,7 @@
 {
-    "name": "san-cli-command-component",
-    "version": "1.0.0",
+    "name": "san-cli-plugin-modern-mode",
     "main": "index.js",
+    "version": "1.0.0",
     "license": "MIT",
     "engines": {
         "node": ">=8"
