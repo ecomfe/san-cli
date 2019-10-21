@@ -6,6 +6,9 @@
 const joi = require('@hapi/joi');
 const schema = joi.object({
     build: joi.object(),
+    jsonpFunction: joi.string(),
+    filenameHashing: joi.boolean(),
+    splitChunksCacheGroups: joi.object(),
     indexPath: joi.string().valid('less', 'sass', 'styl'),
     cssPreprocessor: joi.string(),
     templateDir: joi.string().allow(''),
@@ -23,6 +26,7 @@ const schema = joi.object({
             ignore: joi.alternatives().try(joi.string(), joi.object().instance(RegExp))
         })
     ),
+    terserOptions: joi.object(),
     publicPath: joi.string().allow(''),
     outputDir: joi.string(),
     assetsDir: joi.string().allow(''),
