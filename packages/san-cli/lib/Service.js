@@ -53,11 +53,7 @@ module.exports = class Service extends EventEmitter {
             builtInPlugins = BUILDIN_PLUGINS.map(id => require(`../configs/${id}`));
         }
         plugins = Array.isArray(plugins) ? plugins : [];
-        let rcPlugins = this._rc.plugins;
-        // 1. 添加 rc 文件中的 plugins
-        if (rcPlugins && Array.isArray(rcPlugins)) {
-            plugins = [...plugins, ...rcPlugins];
-        }
+
         if (plugins.length) {
             // 2. 真正加载
             plugins = plugins.map(this._resolvePlugin);
@@ -240,7 +236,7 @@ module.exports = class Service extends EventEmitter {
             searchPlaces: ['.san/config.js', 'san.config.js']
         });
         const result = explorer.searchSync(this.cwd) || {};
-        if (result) {
+        if (result && result.config) {
             configPath = result.filepath;
 
             if (!result.config || typeof result.config !== 'object') {

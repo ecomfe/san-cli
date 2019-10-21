@@ -4,10 +4,10 @@
  */
 /* eslint-disable no-console */
 
-const {error} = require('./ttyLogger');
+const {error: eLog} = require('./ttyLogger');
 
 process.on('uncaughtException', error => {
-    error(`Uncaught exception: ${error}`);
+    eLog(`Uncaught exception: ${error}`);
     if (error && error.stack) {
         console.log(error.stack);
     }
@@ -15,7 +15,7 @@ process.on('uncaughtException', error => {
 });
 
 process.on('unhandledRejection', error => {
-    error(`Promise rejection: ${error}`);
+    eLog(`Promise rejection: ${error}`);
 
     if (error && error.stack) {
         console.log(error.stack);
