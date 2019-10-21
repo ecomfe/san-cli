@@ -12,8 +12,9 @@ exports.isLocalPath = templatePath => {
     return /^[./]|(^[a-zA-Z]:)/.test(templatePath);
 };
 exports.resolveLocal = function resolveLocal(...args) {
-    return path.join(__dirname, '../../', ...args);
+    return path.join(__dirname, '../', ...args);
 };
+exports.getAssetPath = (assetsDir, filePath) => (assetsDir ? path.posix.join(assetsDir, filePath) : filePath);
 
 exports.getTemplatePath = templatePath => {
     const cwd = process.cwd();
