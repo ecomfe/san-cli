@@ -1,6 +1,8 @@
 const path = require('path');
 const fs = require('fs');
 const minify = require('html-minifier').minify;
+const defaultsDeep = require('lodash.defaultsdeep');
+
 module.exports = {
     id: 'built-in:app',
     apply(api, options) {
@@ -44,7 +46,7 @@ module.exports = {
 
             if (isProd) {
                 // 压缩 html
-                Object.assign(htmlOptions, {
+                defaultsDeep(htmlOptions, {
                     minify: {
                         removeComments: true,
                         collapseWhitespace: false,
@@ -73,11 +75,6 @@ module.exports = {
             const publicCopyIgnore = ['index.html', '.DS_Store'];
             let useHtmlPlugin = false;
             if (!multiPageConfig) {
-                webpackConfig
-                    .entry('app')
-                    .add(require.resolve('../template/main.js'))
-                    .end();
-
                 // default, single page setup.
                 htmlOptions.alwaysWriteToDisk = true;
                 htmlOptions.inject = true;

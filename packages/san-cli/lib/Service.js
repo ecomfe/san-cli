@@ -2,7 +2,7 @@
  * @file Service Class
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const {join, resolve, isAbsolute} = require('path');
+// const {join, resolve, isAbsolute} = require('path');
 const EventEmitter = require('events').EventEmitter;
 
 const fs = require('fs-extra');
