@@ -10,16 +10,19 @@ const Config = require('webpack-chain');
 const webpackMerge = require('webpack-merge');
 const cosmiconfig = require('cosmiconfig');
 const defaultsDeep = require('lodash.defaultsdeep');
+const dotenv = require('dotenv');
 
 const {findExisting} = require('./utils');
 const commander = require('./commander');
 const SError = require('./SError');
 const argsert = require('./argsert');
 const PluginAPI = require('./PluginAPI');
-const {chalk, error, warn} = require('./ttyLogger');
+const {chalk, debug} = require('./ttyLogger');
 const {defaults: defaultConfig, validateSync: validateOptions} = require('./options');
 
 const BUILDIN_PLUGINS = ['base', 'css', 'app', 'optimization'];
+
+const logger = debug('Service');
 /* global Map, Proxy */
 module.exports = class Service extends EventEmitter {
     constructor(cwd, {plugins = [], useBuiltInPlugin = true, projectOptions = {}, cli = commander()} = {}) {
@@ -42,9 +45,52 @@ module.exports = class Service extends EventEmitter {
         this._cli = cli;
         this.plugins = this.resolvePlugins(plugins, useBuiltInPlugin);
     }
-    // TODO: 完成它
-    loadEnv() {
+    loadEnv(mode) {
         // this._configDir
+        // 1. 优先查找 .san 的文件，
+        // 2. 查找到默认的之后，后续查找继续在 .san 查找
+        // 3. 后续为：local 内容
+        const modeEnvName = `.env${mode ? `.${mode}` : ''}`;
+        const envPath = findExisting(this.cwd, [`.san/${modeEnvName}`, modeEnvName]);
+        if (!envPath) {
+            // 不存在默认的，则不往下执行了
+            return;
+        }
+        const localEnvPath = `${envPath}.local`;
+
+        const load = envPath => {
+            try {
+                const content = fs.readFileSync(envPath);
+                const env = dotenv.parse(content) || {};
+                logger('loadEnv', envPath, env);
+                return env;
+            } catch (err) {
+                // only ignore error if file is not found
+                if (err.toString().indexOf('ENOENT') < 0) {
+                    logger.error('loadEnv', err);
+                }
+            }
+        };
+
+        const localEnv = load(localEnvPath);
+        const defaultEnv = load(envPath);
+
+        const envObj = Object.assign(defaultEnv, localEnv);
+        Object.keys(envObj).forEach(key => {
+            if (!process.env.hasOwnProperty(key)) {
+                process.env[key] = envObj[key];
+            }
+        });
+
+        if (mode) {
+            const defaultNodeEnv = mode === 'production' ? mode : 'development';
+            // 下面属性如果为空，会根据 mode 设置的
+            ['NODE_ENV', 'BABEL_ENV'].forEach(k => {
+                if (process.env[k] === null) {
+                    process.env[k] = defaultNodeEnv;
+                }
+            });
+        }
     }
     resolvePlugins(plugins = [], useBuiltInPlugin = true) {
         // 0. 判断是否需要加载 builtin plugin
@@ -114,7 +160,6 @@ module.exports = class Service extends EventEmitter {
         }
         this.initialized = true;
         this.mode = mode;
-        this.loadEnv();
 
         this.plugins.forEach(plugin => {
             this.initPlugin(plugin);
@@ -202,7 +247,7 @@ module.exports = class Service extends EventEmitter {
 
         if (typeof handler !== 'function') {
             handler = argv => {
-                warn(`${name} has an empty handler.`);
+                logger.warn('registerCommand', `${name} has an empty handler.`);
             };
         }
         // 绑定 run，实际是通过 run 之后执行的
@@ -240,13 +285,13 @@ module.exports = class Service extends EventEmitter {
             configPath = result.filepath;
 
             if (!result.config || typeof result.config !== 'object') {
-                error(`${chalk.bold(configPath)}: 格式必须是对象.`);
+                logger.error('loadProjectOptions', `${chalk.bold(configPath)}: 格式必须是对象.`);
             } else {
                 // 校验config.js schema 格式
                 try {
                     await validateOptions(result.config);
                 } catch (e) {
-                    error(`${chalk.bold(configPath)}: 格式不正确.`);
+                    logger.error('loadProjectOptions', `${chalk.bold(configPath)}: 格式不正确.`);
                     throw new SError(e);
                 }
             }
@@ -254,7 +299,7 @@ module.exports = class Service extends EventEmitter {
             // 加载默认的 config 配置
             config = defaultsDeep(result.config, config);
         } else {
-            warn(`${chalk.bold('san.config.js')} Cannot find! Use default config.`);
+            logger.warn('loadProjectOptions', `${chalk.bold('san.config.js')} Cannot find! Use default config.`);
         }
 
         // normalize some options
@@ -268,14 +313,14 @@ module.exports = class Service extends EventEmitter {
     runCommand(cmd, rawArgs) {
         // 组装 command，然后解析执行
         // 0. registerCommand 和 registerCommandFlag 记录 command
-        const handlers = this.registeredCommandHandlers.get(cmd);
+        let handlers = this.registeredCommandHandlers.get(cmd);
         let flags = this.registeredCommandFlags.get(cmd) || {};
         /* eslint-disable fecs-camelcase */
         const _command = this.registeredCommands.get(cmd);
         /* eslint-enable fecs-camelcase */
         if (!_command) {
             // 命令不存在哦~
-            error(`${this._cli.$0} ${cmd} is not exist!`);
+            logger.error('runCommand', `${this._cli.$0} ${cmd} is not exist!`);
             return this;
         }
         /* eslint-disable fecs-camelcase */
@@ -285,14 +330,29 @@ module.exports = class Service extends EventEmitter {
         const builder = Object.assign(flags, oFlags || {});
         // 0.2 处理 handler
         const handler = argv => {
-            if (Array.isArray(handlers)) {
-                handlers.forEach(handler => typeof handler === 'function' && handler(argv));
-            } else if (typeof handlers === 'function') {
-                handlers(argv);
+            if (!Array.isArray(handlers) && typeof handlers === 'function') {
+                handlers = [handlers];
             }
+            let doit = true;
+            if (Array.isArray(handlers)) {
+                for (let i = 0, len = handlers.length; i < len; i++) {
+                    const handler = handlers[i];
+                    if (typeof handler === 'function') {
+                        doit = handler(argv);
+                        // ！！！返回 false 则则停止后续操作！！！
+                        if (doit === false) {
+                            // 跳出循环
+                            break;
+                        }
+                    }
+                }
+            }
+            // waring 注意：
+            // 如果任何注入的命令 flag handler 返回为 false，则会停止后续命令执行
+            // 所以这里不一定会执行，看 doit 的结果
             // 最后执行，因为插入的 flags 都是前置的函数，
             // 而注册 command 的 handler 才是主菜
-            oHandler(argv);
+            doit !== false && oHandler(argv);
         };
         // 1. cli 添加命令
         this._registerCommand(command, handler, description, builder, middlewares);
@@ -307,14 +367,19 @@ module.exports = class Service extends EventEmitter {
     async run(cmd, argv = {}, rawArgv = process.argv.slice(2)) {
         // eslint-disable-next-line
         let {_version: version, _logger: logger} = argv;
+        // 保证 Api.getxx 能够获取
         this.version = version;
         this.logger = logger;
 
         const mode = argv.mode || (cmd === 'build' && argv.watch ? 'development' : 'production');
+        this.loadEnv(mode);
+
         // set mode
         // load user config
         const projectOptions = await this.loadProjectOptions(argv.configFile);
-        logger.info('options', projectOptions);
+        const logInfo = logger('run:options');
+        logInfo(projectOptions);
+
         this.projectOptions = projectOptions;
 
         // 开始添加依赖 argv 的内置 plugin

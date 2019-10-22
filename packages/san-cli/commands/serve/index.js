@@ -42,6 +42,7 @@ const servePlugin = {
             handler: argv => {
                 const webpackConfig = api.resolveWebpackConfig();
                 console.log(webpackConfig);
+                // TODO: target 处理
             }
         });
     }

@@ -71,3 +71,7 @@ exports.findExisting = (context, files) => {
         }
     }
 };
+
+exports.flatten = arr => arr.reduce((prev, curr) => prev.concat(curr), []);
+exports.isJS = val => /\.js$/.test(val);
+exports.isCSS = val => /\.css$/.test(val);

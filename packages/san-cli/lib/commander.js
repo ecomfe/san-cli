@@ -34,7 +34,7 @@ module.exports = () => {
         })
         .option('log-level', {
             alias: 'logLevel',
-            default: 'silent',
+            default: 'error',
             hidden: true,
             choices: ['info', 'debug', 'warn', 'error', 'silent', 'notice', 'silly', 'timing', 'http'],
             type: 'string',
@@ -57,9 +57,17 @@ function getCommonArgv(argv) {
     } else {
         npmlog.level = argv.logLevel;
     }
+    // // 让他增加 prefix 返回函数用法，实现 debug 功能
+    const logger = (prefix, level = 'info') => (...args) => npmlog[level](prefix, ...args);
+
+    Object.keys(npmlog).forEach(key => {
+        if (typeof npmlog[key] === 'function') {
+            logger[key] = (...args) => npmlog[key](...args);
+        }
+    });
     return {
         /* eslint-disable fecs-camelcase */
-        _logger: npmlog,
+        _logger: logger,
         _version: pkgVersion,
         _scriptName: scriptName
         /* eslint-enable fecs-camelcase */
