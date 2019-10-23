@@ -2,7 +2,7 @@
  * @file Service Class
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-// const {join, resolve, isAbsolute} = require('path');
+const {join, resolve, isAbsolute} = require('path');
 const EventEmitter = require('events').EventEmitter;
 
 const fs = require('fs-extra');
@@ -20,7 +20,7 @@ const PluginAPI = require('./PluginAPI');
 const {chalk, debug} = require('./ttyLogger');
 const {defaults: defaultConfig, validateSync: validateOptions} = require('./options');
 
-const BUILDIN_PLUGINS = ['base', 'css', 'app', 'optimization'];
+const BUILDIN_PLUGINS = ['base', 'css', 'app', 'optimization', 'babel'];
 
 const logger = debug('Service');
 /* global Map, Proxy */
@@ -301,11 +301,40 @@ module.exports = class Service extends EventEmitter {
         } else {
             logger.warn('loadProjectOptions', `${chalk.bold('san.config.js')} Cannot find! Use default config.`);
         }
+        const searchFor = resolve(this.cwd, '.');
+        // 1. 加载 postcss 配置
+        if (!(config.css && config.css.postcss)) {
+            // 赋值给 css 配置
+            const postcss = (cosmiconfig('postcss').searchSync(searchFor) || {}).config;
 
-        // normalize some options
-        ensureSlash(config, 'baseUrl');
-        if (typeof config.baseUrl === 'string') {
-            config.config = config.baseUrl.replace(/^\.\//, '');
+            config.css = Object.assign(
+                {
+                    postcss
+                },
+                config.css || {}
+            );
+        }
+
+        if (!config.browserslist) {
+            // 2. 加载 browserslist 配置
+            const browserslist = (cosmiconfig('postcss').searchSync(searchFor) || {}).config;
+            // 赋值给 config 的 browserslist
+            config.browserslist = browserslist || [
+                '> 1.2% in cn',
+                'last 2 versions',
+                'iOS >=8', // 这里有待商榷
+                'android>4.4',
+                'not bb>0',
+                'not ff>0',
+                'not ie>0',
+                'not ie_mob>0'
+            ];
+        }
+
+        // normalize publicPath
+        ensureSlash(config, 'publicPath');
+        if (typeof config.publicPath === 'string') {
+            config.publicPath = config.publicPath.replace(/^\.\//, '');
         }
         removeSlash(config, 'outputDir');
         return config;
@@ -347,7 +376,7 @@ module.exports = class Service extends EventEmitter {
                     }
                 }
             }
-            // waring 注意：
+            // waring：
             // 如果任何注入的命令 flag handler 返回为 false，则会停止后续命令执行
             // 所以这里不一定会执行，看 doit 的结果
             // 最后执行，因为插入的 flags 都是前置的函数，
@@ -430,15 +459,6 @@ module.exports = class Service extends EventEmitter {
         // vue inspect works properly. (hulk inspect)
         if (config !== original) {
             cloneRuleNames(config.module && config.module.rules, original.module && original.module.rules);
-        }
-        // check if the user has manually mutated output.publicPath
-        if (config.output.publicPath !== this.projectOptions.publicPath) {
-            /* eslint-disable operator-linebreak */
-            throw new SError(
-                'Do not modify webpack output.publicPath directly. ' +
-                    'Use the "publicPath" option in san.config.js instead.'
-            );
-            /* eslint-enable operator-linebreak */
         }
 
         return config;

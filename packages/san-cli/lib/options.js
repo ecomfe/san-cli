@@ -6,7 +6,10 @@
 const joi = require('@hapi/joi');
 const schema = joi.object({
     build: joi.object(),
+    parallel: joi.alternatives().try(joi.boolean(), joi.number().integer()),
+    browserslist: joi.alternatives().try(joi.array(), joi.object()),
     jsonpFunction: joi.string(),
+    transpileDependencies: joi.array(),
     filenameHashing: joi.boolean(),
     splitChunksCacheGroups: joi.object(),
     indexPath: joi.string().valid('less', 'sass', 'styl'),
