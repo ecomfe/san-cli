@@ -98,22 +98,6 @@ module.exports = {
                 dir: 'fonts'
             });
 
-            // js file
-            // prettier-ignore
-            /* eslint-disable*/
-            // webpackConfig.module
-            // .rule('js')
-            //     .test(/\.m?js$/)
-            //     .include
-            //         .clear()
-            //         .end()
-            //     .exclude
-            //         .add(/node_modules\/(?!@baidu)/) // 排除@baidu/xbox这类库
-            //         .add(/@baidu\/hulk-cli/)
-            //     .end()
-            // /* eslint-enable*/
-            // setLoader('js', /\.m?js$/, 'babel');
-
             // ----------------------pulgins---------------------
             // 大小写敏感！！！！
             webpackConfig.plugin('case-sensitive-paths').use(require('case-sensitive-paths-webpack-plugin'));
