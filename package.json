@@ -1,87 +1,98 @@
 {
-    "name": "root",
-    "private": true,
-    "devDependencies": {
-        "fecs": "^1.6.4",
-        "husky": "^3.0.9",
-        "lerna": "^3.13.2",
-        "lint-staged": "^9.2.5",
-        "commitlint": "^8.1.0",
-        "stylelint": "^11.1.1"
-    },
-    "husky": {
-        "hooks": {
-            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-        }
-    },
-    "scripts": {
-        "lint": "lint-staged"
-    },
-    "commitlint": {
-        "rules": {
-            "body-leading-blank": [
-                1,
-                "always"
-            ],
-            "footer-leading-blank": [
-                1,
-                "always"
-            ],
-            "header-max-length": [
-                2,
-                "always",
-                72
-            ],
-            "scope-case": [
-                2,
-                "always",
-                "lower-case"
-            ],
-            "subject-case": [
-                2,
-                "never",
-                [
-                    "sentence-case",
-                    "start-case",
-                    "pascal-case",
-                    "upper-case"
-                ]
-            ],
-            "subject-empty": [
-                2,
-                "never"
-            ],
-            "subject-full-stop": [
-                2,
-                "never",
-                "."
-            ],
-            "type-case": [
-                2,
-                "always",
-                "lower-case"
-            ],
-            "type-empty": [
-                2,
-                "never"
-            ],
-            "type-enum": [
-                2,
-                "always",
-                [
-                    "build",
-                    "chore",
-                    "ci",
-                    "docs",
-                    "feat",
-                    "fix",
-                    "perf",
-                    "refactor",
-                    "revert",
-                    "style",
-                    "test"
-                ]
-            ]
-        }
+  "name": "root",
+  "private": true,
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "commitlint": "^8.1.0",
+    "fecs": "^1.6.4",
+    "husky": "^3.0.9",
+    "jest": "^24.8.0",
+    "lerna": "^3.13.2",
+    "lint-staged": "^9.2.5",
+    "stylelint": "^11.1.1"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
+  },
+  "scripts": {
+    "lint": "lint-staged",
+    "test": "node scripts/test.js"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/__tests__/**/*.spec.js"
+    ]
+  },
+  "commitlint": {
+    "rules": {
+      "body-leading-blank": [
+        1,
+        "always"
+      ],
+      "footer-leading-blank": [
+        1,
+        "always"
+      ],
+      "header-max-length": [
+        2,
+        "always",
+        72
+      ],
+      "scope-case": [
+        2,
+        "always",
+        "lower-case"
+      ],
+      "subject-case": [
+        2,
+        "never",
+        [
+          "sentence-case",
+          "start-case",
+          "pascal-case",
+          "upper-case"
+        ]
+      ],
+      "subject-empty": [
+        2,
+        "never"
+      ],
+      "subject-full-stop": [
+        2,
+        "never",
+        "."
+      ],
+      "type-case": [
+        2,
+        "always",
+        "lower-case"
+      ],
+      "type-empty": [
+        2,
+        "never"
+      ],
+      "type-enum": [
+        2,
+        "always",
+        [
+          "build",
+          "chore",
+          "ci",
+          "docs",
+          "feat",
+          "fix",
+          "perf",
+          "refactor",
+          "revert",
+          "style",
+          "test"
+        ]
+      ]
+    }
+  },
+  "dependencies": {}
 }
