@@ -38,6 +38,10 @@ buildinCmds.forEach(cmd => {
 
 // 5. 加载 cli rc 扩展命令
 // 通过 rc 文件预设的默认值，包括扩展的 command
+// 原则：
+// 1. rc 文件应该尽量「表现的显性」
+// 2. 对于每个执行命令的 fe 应该清楚自己的环境，而不是稀里糊涂的用全局 rc
+// 3. 方便配置默认 preset 统一命令和配置
 const {plugins, configs, commands, useBuiltInPlugin} = require('./lib/loadRc')();
 if (typeof commands === 'object') {
     // 扩展命令行

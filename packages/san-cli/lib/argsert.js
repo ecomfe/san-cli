@@ -1,6 +1,7 @@
 /**
  * @file  argument assert 函数
  * @author wangyongqing <wangyongqing01@baidu.com>
+ * @from yargs
  */
 
 module.exports = argsert;
