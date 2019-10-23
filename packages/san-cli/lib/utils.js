@@ -12,8 +12,9 @@ exports.isLocalPath = templatePath => {
     return /^[./]|(^[a-zA-Z]:)/.test(templatePath);
 };
 exports.resolveLocal = function resolveLocal(...args) {
-    return path.join(__dirname, '../../', ...args);
+    return path.join(__dirname, '../', ...args);
 };
+exports.getAssetPath = (assetsDir, filePath) => (assetsDir ? path.posix.join(assetsDir, filePath) : filePath);
 
 exports.getTemplatePath = templatePath => {
     const cwd = process.cwd();
@@ -70,3 +71,7 @@ exports.findExisting = (context, files) => {
         }
     }
 };
+
+exports.flatten = arr => arr.reduce((prev, curr) => prev.concat(curr), []);
+exports.isJS = val => /\.js$/.test(val);
+exports.isCSS = val => /\.css$/.test(val);
