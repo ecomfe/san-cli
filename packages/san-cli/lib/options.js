@@ -11,9 +11,10 @@ const schema = joi.object({
     jsonpFunction: joi.string(),
     transpileDependencies: joi.array(),
     filenameHashing: joi.boolean(),
+    largeAssetSize: joi.number(),
+    copyPublicDir: joi.boolean(),
     splitChunksCacheGroups: joi.object(),
-    indexPath: joi.string().valid('less', 'sass', 'styl'),
-    cssPreprocessor: joi.string(),
+    indexPath: joi.string(),
     templateDir: joi.string().allow(''),
     copy: joi.alternatives().try(
         joi.array().items(
@@ -34,10 +35,12 @@ const schema = joi.object({
     outputDir: joi.string(),
     assetsDir: joi.string().allow(''),
     sourceMap: joi.boolean(),
-    devServer: joi.object({
-        port: joi.number()
-    }),
-    devServerMiddlewares: joi.alternatives().try(joi.array().items(joi.func), joi.func),
+    devServer: joi
+        .object({
+            port: joi.number()
+        })
+        .unknown(true),
+    devServerMiddlewares: joi.alternatives().try(joi.array().items(joi.func()), joi.func()),
     pages: joi.object().pattern(
         /\w+/,
         joi.alternatives().try(
@@ -57,6 +60,9 @@ const schema = joi.object({
     ),
     loaderOptions: joi.object(),
     css: joi.object({
+        cssPreprocessor: joi.string().valid('less', 'sass', 'styl', 'stylus', 'scss'),
+        extract: joi.boolean(),
+        sourceMap: joi.boolean(),
         loaderOptions: joi.object({
             css: joi.object(),
             sass: joi.object(),
@@ -74,7 +80,7 @@ const schema = joi.object({
 exports.validate = (options, cb) => {
     schema.validate(options, cb);
 };
-exports.validateSync = schema.validateAsync;
+exports.validateSync = async (value, options) => await schema.validateAsync(value, options);
 
 exports.defaults = {
     build: {},
@@ -83,7 +89,28 @@ exports.defaults = {
     outputDir: 'output',
     assetsDir: '',
     publicPath: '/',
-    devServer: {},
+    copyPublicDir: false,
+    devServer: {
+        clientLogLevel: 'info',
+        overlay: {warnings: false, errors: true},
+        hot: true,
+        noInfo: true,
+        stats: 'errors-only',
+        inline: false,
+        lazy: false,
+        quiet: true,
+        index: 'index.html',
+        watchOptions: {
+            aggregateTimeout: 300,
+            ignored: /node_modules/,
+            poll: 100
+        },
+        disableHostCheck: true,
+        compress: false,
+        host: '0.0.0.0',
+        port: 8899,
+        https: false
+    },
     css: {},
     loaderOptions: {},
     pluginOptions: {},

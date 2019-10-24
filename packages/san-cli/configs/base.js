@@ -1,4 +1,5 @@
 const path = require('path');
+const resolve = require('resolve');
 const {resolveLocal} = require('../lib/utils');
 const defaultsDeep = require('lodash.defaultsdeep');
 
@@ -34,9 +35,9 @@ module.exports = {
             webpackConfig
                 .resolve
                     .set('symlinks', false)
+                    // 默认加上 less 吧，less 内部用的最多
                     .extensions.merge(['.js', '.css', '.less', '.san'])
                     .end()
-                // set resolveLoader
                 .modules
                     .add('node_modules')
                     .add(api.resolve('node_modules'))
@@ -47,6 +48,16 @@ module.exports = {
                     .set('@', api.resolve('src'))
                     .set('core-js', path.dirname(require.resolve('core-js')))
                     .set('regenerator-runtime', path.dirname(require.resolve('regenerator-runtime')));
+
+            // prettier-ignore
+            // set resolveLoader
+            webpackConfig
+                .resolveLoader
+                .modules
+                    .add('node_modules')
+                    .add(api.resolve('node_modules'))
+                    .add(resolveLocal('node_modules'));
+            /* eslint-enable */
 
             // set san alias
             try {

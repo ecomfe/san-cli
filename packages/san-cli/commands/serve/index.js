@@ -2,6 +2,7 @@
  * @file serve command
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+const getHandler = require('./run');
 const command = (exports.command = 'serve [entry]');
 const description = (exports.description = 'serve description');
 const builder = (exports.builder = {
@@ -9,6 +10,10 @@ const builder = (exports.builder = {
         type: 'boolean',
         default: false,
         describe: 'program specifications'
+    },
+    public: {
+        type: 'string',
+        describe: 'specify the public network URL for the HMR client'
     },
     port: {
         alias: 'p',
@@ -35,17 +40,7 @@ const builder = (exports.builder = {
 });
 const servePlugin = {
     id: 'san-cli-command-serve',
-    apply(api, options, argv) {
-        api.registerCommand(command, {
-            builder,
-            description,
-            handler: argv => {
-                const webpackConfig = api.resolveWebpackConfig();
-                console.log(webpackConfig);
-                // TODO: target 处理
-            }
-        });
-    }
+    apply: getHandler(command, description, builder)
 };
 
 exports.handler = argv => {

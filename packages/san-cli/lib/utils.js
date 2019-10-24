@@ -2,9 +2,11 @@
  * @file 工具函数全部整理到 utils.js
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const fs = require('fs');
+const fse = require('fs-extra');
+const url = require('url');
 const path = require('path');
 const {execSync} = require('child_process');
+const address = require('address');
 
 const {chalk} = require('./ttyLogger');
 
@@ -66,7 +68,7 @@ exports.getGitUser = () => {
 
 exports.findExisting = (context, files) => {
     for (const file of files) {
-        if (fs.existsSync(path.join(context, file))) {
+        if (fse.existsSync(path.join(context, file))) {
             return file;
         }
     }
@@ -75,3 +77,93 @@ exports.findExisting = (context, files) => {
 exports.flatten = arr => arr.reduce((prev, curr) => prev.concat(curr), []);
 exports.isJS = val => /\.js$/.test(val);
 exports.isCSS = val => /\.css$/.test(val);
+
+// ref @vue/cli-shared-utils prepareurls
+exports.prepareUrls = (protocol, host, port, pathname = '/') => {
+    const formatUrl = hostname =>
+        url.format({
+            protocol,
+            hostname,
+            port,
+            pathname
+        });
+    const prettyPrintUrl = hostname =>
+        url.format({
+            protocol,
+            hostname,
+            port: chalk.bold(port),
+            pathname
+        });
+
+    const isUnspecifiedHost = host === '0.0.0.0' || host === '::';
+    let prettyHost;
+    let lanUrlForConfig;
+    let lanUrlForTerminal = chalk.gray('unavailable');
+    if (isUnspecifiedHost) {
+        prettyHost = 'localhost';
+        try {
+            // This can only return an IPv4 address
+            lanUrlForConfig = address.ip();
+            if (lanUrlForConfig) {
+                // Check if the address is a private ip
+                // https://en.wikipedia.org/wiki/Private_network#Private_IPv4_address_spaces
+                if (/^10[.]|^172[.](1[6-9]|2[0-9]|3[0-1])[.]|^192[.]168[.]/.test(lanUrlForConfig)) {
+                    // Address is private, format it for later use
+                    lanUrlForTerminal = prettyPrintUrl(lanUrlForConfig);
+                } else {
+                    // Address is not private, so we will discard it
+                    lanUrlForConfig = undefined;
+                }
+            }
+        } catch (_e) {
+            // ignored
+        }
+    } else {
+        prettyHost = host;
+    }
+    const localUrlForTerminal = prettyPrintUrl(prettyHost);
+    const localUrlForBrowser = formatUrl(prettyHost);
+    return {
+        lanUrlForConfig,
+        lanUrlForTerminal,
+        localUrlForTerminal,
+        localUrlForBrowser
+    };
+};
+
+exports.addDevClientToEntry = (config, devClient) => {
+    const {entry} = config; // eslint-disable-line
+    if (typeof entry === 'object' && !Array.isArray(entry)) {
+        Object.keys(entry).forEach(key => {
+            entry[key] = devClient.concat(entry[key]);
+        });
+    } else if (typeof entry === 'function') {
+        config.entry = entry(devClient);
+    } else {
+        config.entry = devClient.concat(entry);
+    }
+};
+
+exports.resolveEntry = entry => {
+    let isFile = false;
+    try {
+        const stats = fse.statSync(entry);
+        if (stats.isFile()) {
+            const ext = path.extname(entry);
+            if (ext === '.js' || ext === '.san') {
+                isFile = true;
+            } else {
+                console.log(chalk.red('Valid entry file should be one of: *.js or *.san.'));
+                process.exit(1);
+            }
+            isFile = true;
+        }
+    } catch (e) {
+        console.log(chalk.red('Valid entry is not a file or directory.'));
+        process.exit(1);
+    }
+    return {
+        entry,
+        isFile
+    };
+};

@@ -34,7 +34,8 @@ module.exports = {
             } catch (e) {}
 
             // 这里loaderOptions直接用 projectOptions.css 的内容
-            const {extract = isProd, sourceMap = rootOptions.sourceMap, loaderOptions = {}} = rootOptions.css || {};
+            const {extract = isProd, sourceMap = rootOptions.sourceMap, loaderOptions = {}, cssPreprocessor} =
+                rootOptions.css || {};
 
             let {requireModuleExtension} = rootOptions.css || {};
             if (typeof requireModuleExtension === 'undefined') {
@@ -159,61 +160,68 @@ module.exports = {
 
             createCSSRule('css', /\.css$/);
             createCSSRule('postcss', /\.p(ost)?css$/);
-            createCSSRule(
-                'scss',
-                /\.scss$/,
-                'sass-loader',
-                Object.assign({}, defaultSassLoaderOptions, loaderOptions.scss || loaderOptions.sass)
-            );
-            if (sassLoaderVersion < 8) {
+            if (!cssPreprocessor || cssPreprocessor === 'scss' || cssPreprocessor === 'sass') {
+                // 添加 sass 逻辑
                 createCSSRule(
-                    'sass',
-                    /\.sass$/,
+                    'scss',
+                    /\.scss$/,
                     'sass-loader',
+                    Object.assign({}, defaultSassLoaderOptions, loaderOptions.scss || loaderOptions.sass)
+                );
+                if (sassLoaderVersion < 8) {
+                    createCSSRule(
+                        'sass',
+                        /\.sass$/,
+                        'sass-loader',
+                        Object.assign(
+                            {},
+                            defaultSassLoaderOptions,
+                            {
+                                indentedSyntax: true
+                            },
+                            loaderOptions.sass
+                        )
+                    );
+                } else {
+                    createCSSRule(
+                        'sass',
+                        /\.sass$/,
+                        'sass-loader',
+                        Object.assign({}, defaultSassLoaderOptions, loaderOptions.sass, {
+                            sassOptions: Object.assign({}, loaderOptions.sass && loaderOptions.sass.sassOptions, {
+                                indentedSyntax: true
+                            })
+                        })
+                    );
+                }
+            }
+            if (!cssPreprocessor || cssPreprocessor === 'less') {
+                createCSSRule(
+                    'less',
+                    /\.less$/,
+                    'less-loader',
                     Object.assign(
-                        {},
-                        defaultSassLoaderOptions,
                         {
-                            indentedSyntax: true
+                            javascriptEnabled: true,
+                            compress: false
                         },
-                        loaderOptions.sass
+                        loaderOptions.less
                     )
                 );
-            } else {
+            }
+            if (!cssPreprocessor || cssPreprocessor === 'stylus' || cssPreprocessor === 'styl') {
                 createCSSRule(
-                    'sass',
-                    /\.sass$/,
-                    'sass-loader',
-                    Object.assign({}, defaultSassLoaderOptions, loaderOptions.sass, {
-                        sassOptions: Object.assign({}, loaderOptions.sass && loaderOptions.sass.sassOptions, {
-                            indentedSyntax: true
-                        })
-                    })
+                    'stylus',
+                    /\.styl(us)?$/,
+                    'stylus-loader',
+                    Object.assign(
+                        {
+                            preferPathResolver: 'webpack'
+                        },
+                        loaderOptions.stylus
+                    )
                 );
             }
-            createCSSRule(
-                'less',
-                /\.less$/,
-                'less-loader',
-                Object.assign(
-                    {
-                        javascriptEnabled: true,
-                        compress: false
-                    },
-                    loaderOptions.less
-                )
-            );
-            createCSSRule(
-                'stylus',
-                /\.styl(us)?$/,
-                'stylus-loader',
-                Object.assign(
-                    {
-                        preferPathResolver: 'webpack'
-                    },
-                    loaderOptions.stylus
-                )
-            );
 
             // inject CSS extraction plugin
             if (shouldExtract) {

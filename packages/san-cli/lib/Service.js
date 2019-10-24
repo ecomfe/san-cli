@@ -33,9 +33,7 @@ module.exports = class Service extends EventEmitter {
         // webpack chain & merge array
         this.webpackChainFns = [];
         this.webpackRawConfigFns = [];
-        this.devServerConfigFns = [];
         // 相关的 Map
-        this.pluginMethods = new Map();
         // 下面是注册命令 map
         this.registeredCommands = new Map();
         // 下面是注册 command flag map
@@ -92,6 +90,7 @@ module.exports = class Service extends EventEmitter {
             });
         }
     }
+
     resolvePlugins(plugins = [], useBuiltInPlugin = true) {
         // 0. 判断是否需要加载 builtin plugin
         let builtInPlugins = [];
@@ -184,12 +183,18 @@ module.exports = class Service extends EventEmitter {
         const api = new Proxy(new PluginAPI(id, this), {
             get(target, prop) {
                 // 传入配置的自定义 pluginAPI 方法
-                const pluginMethod = self.pluginMethods.get(prop);
-                if (pluginMethod) {
-                    return pluginMethod;
-                }
 
-                if (['registerCommand', 'version', 'on', 'emit', 'registerCommandFlag', 'addPlugin'].includes(prop)) {
+                if (
+                    [
+                        'registerCommand',
+                        'version',
+                        'on',
+                        'emit',
+                        'registerCommandFlag',
+                        'addPlugin',
+                        'resolveWebpackConfig'
+                    ].includes(prop)
+                ) {
                     if (typeof self[prop] === 'function') {
                         return self[prop].bind(self);
                     } else {
@@ -270,19 +275,32 @@ module.exports = class Service extends EventEmitter {
         this._cli.command(command, description, builder, handler, middlewares);
         return this;
     }
-    async loadProjectOptions(configFile = 'san.config.js') {
+    async loadProjectOptions(configFile) {
+        let originalConfigFile = configFile;
+        if (configFile && typeof configFile === 'string') {
+            configFile = isAbsolute(configFile) ? configFile : resolve(this.cwd, configFile);
+            if (!fs.existsSync(configFile)) {
+                configFile = false;
+                logger.warn('config-file', `${originalConfigFile} is not exists!`);
+            }
+        }
         // 首先试用 argv 的 config，然后寻找默认的，找到则读取，格式失败则报错
         let config = defaultsDeep(this._initProjectOptions, defaultConfig);
-        let configPath;
+        let result = {
+            filepath: originalConfigFile,
+            config: configFile ? require(configFile) : false
+        };
+        if (!configFile) {
+            // 使用 cosmiconfig 查找
+            const explorer = cosmiconfig('san', {
+                // 寻找.san文件夹优先于 cwd
+                searchPlaces: ['.san/config.js', 'san.config.js']
+            });
+            result = explorer.searchSync(this.cwd) || {};
+        }
 
-        // 使用 cosmiconfig 查找
-        const explorer = cosmiconfig('san', {
-            // 寻找.san文件夹优先于 cwd
-            searchPlaces: ['.san/config.js', 'san.config.js']
-        });
-        const result = explorer.searchSync(this.cwd) || {};
         if (result && result.config) {
-            configPath = result.filepath;
+            let configPath = result.filepath;
 
             if (!result.config || typeof result.config !== 'object') {
                 logger.error('loadProjectOptions', `${chalk.bold(configPath)}: 格式必须是对象.`);
@@ -291,6 +309,7 @@ module.exports = class Service extends EventEmitter {
                 try {
                     await validateOptions(result.config);
                 } catch (e) {
+                    console.log(e);
                     logger.error('loadProjectOptions', `${chalk.bold(configPath)}: 格式不正确.`);
                     throw new SError(e);
                 }
@@ -317,7 +336,7 @@ module.exports = class Service extends EventEmitter {
 
         if (!config.browserslist) {
             // 2. 加载 browserslist 配置
-            const browserslist = (cosmiconfig('postcss').searchSync(searchFor) || {}).config;
+            const browserslist = (cosmiconfig('browserslist').searchSync(searchFor) || {}).config;
             // 赋值给 config 的 browserslist
             config.browserslist = browserslist || [
                 '> 1.2% in cn',

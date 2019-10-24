@@ -2,7 +2,9 @@
  * @file 修改自： @vue/cli-plugin-babel
  */
 const path = require('path');
-
+// 根据 config.transpileDependencies 生成babel 处理的正则
+// 这里是在 node_modules 中的模块如果是 es6 的，那么可以用这个方式让 babel 处理
+// 有利于 Tree-Shaking
 function genTranspileDepRegex(transpileDependencies) {
     const deps = transpileDependencies.map(dep => {
         if (typeof dep === 'string') {
@@ -33,7 +35,7 @@ module.exports = {
 
             const jsRule = webpackConfig.module
                 .rule('js')
-                .test(/\.m?jsx?$/)
+                .test(/\.m?js?$/)
                 .exclude.add(filepath => {
                     // exclude dynamic entries from cli-service
                     if (filepath.startsWith(cliServicePath)) {
@@ -57,7 +59,6 @@ module.exports = {
             }
 
             const {name, loader, options: babelOptions} = require('./loaders/babel')(loaderOptions.babel, options, api);
-
             jsRule
                 .use(name)
                 .loader(loader)
