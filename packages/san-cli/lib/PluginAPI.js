@@ -13,13 +13,6 @@ module.exports = class PluginAPI {
     isProd() {
         return this.service.mode === 'production';
     }
-    configureDevServer(fn) {
-        this.service.devServerConfigFns.push(fn);
-    }
-
-    resolveWebpackConfig(chainableConfig) {
-        return this.service.resolveWebpackConfig(chainableConfig);
-    }
 
     chainWebpack(fn) {
         this.service.webpackChainFns.push(fn);
@@ -30,4 +23,5 @@ module.exports = class PluginAPI {
     resolve(p) {
         return path.resolve(this.service.cwd, p);
     }
+
 };

@@ -14,6 +14,7 @@
         "node": ">=8"
     },
     "dependencies": {
+        "address": "^1.1.2",
         "dotenv": "^8.2.0",
         "debug": "^4.1.1",
         "html-minifier": "^4.0.0",
@@ -27,6 +28,7 @@
         "mini-css-extract-plugin": "^0.8.0",
         "html-webpack-plugin": "^3.2.0",
         "case-sensitive-paths-webpack-plugin": "^2.2.0",
+        "qrcode-terminal": "^0.12.0",
         "babel-plugin-san-hmr": "^1.0.1",
         "babel-loader": "^8.0.6",
         "@babel/core": "^7.6.4",
@@ -56,6 +58,7 @@
         "webpack-merge": "~4.2.2",
         "html-loader": "^0.5.5",
         "ejs-loader": "^0.3.5",
+        "resolve": "^1.12.0",
         "webpack-bundle-analyzer": "^3.3.2",
         "html-webpack-harddisk-plugin": "^1.0.1",
         "svg-url-loader": "^3.0.2",
