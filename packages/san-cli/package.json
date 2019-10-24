@@ -78,12 +78,14 @@
         "gulp-filter": "^6.0.0",
         "consolidate": "^0.15.1",
         "concat-stream": "^2.0.0",
+        "tty-table": "^2.8.0",
         "vinyl-fs": "^3.0.3",
         "gulp-rename": "^1.4.0",
         "cosmiconfig": "^5.2.1",
         "lodash.defaultsdeep": "^4.6.1",
         "webpack": "^4.41.2",
-        "@hapi/joi": "^16.1.7"
+        "@hapi/joi": "^16.1.7",
+        "deploy-files": "^0.0.3"
     },
     "devDependencies": {
         "fibers": ">= 3.1.1 <5.0.0",

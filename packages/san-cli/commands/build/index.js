@@ -2,41 +2,70 @@
  * @file build command
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-exports.command = 'build [entry]';
+const getHandler = require('./run');
+const command = (exports.command = 'build [entry]');
+const description = (exports.description = 'build description');
 
-exports.description = 'build description';
-
-exports.builder = {
-    target: {
-        type: 'string',
-        default: 'app',
-        choices: ['app', 'lib', 'component'],
-        describe: ''
-    },
-    'no-progress': {
-        type: 'boolean',
-        default: false,
-        describe: 'program specifications'
-    },
-    mode: {
-        alias: 'm',
-        type: 'string',
-        default: 'production',
-        choices: ['development', 'production'],
-        describe: 'program specifications'
-    },
+const builder = (exports.builder = {
     watch: {
         alias: 'w',
         type: 'boolean',
         default: false,
         describe: 'watch mode'
     },
-    c: {
-        alias: 'config-file',
+    analyze: {
+        type: 'boolean',
+        default: false,
+        describe: 'webpack-analyze-bunlde 模式'
+    },
+    'no-clean': {
+        type: 'boolean',
+        default: false,
+        describe: '构建之前不删除 dist 目录'
+    },
+    'no-colors':{
+        alias:'no-color',
+        type:'boolean',
+        default: false,
+        describe: 'log 不显示颜色'
+    },
+    stats: {
         type: 'string',
-        describe: 'program specifications'
+        default: 'table',
+        hidden: true,
+        choices: ['none', 'table', 'errors-only', 'minimal', 'normal', 'detailed'],
+        describe: '显示webpack stats 参数'
+    },
+    'report-json': {
+        alias: 'reportJson',
+        type: 'boolean',
+        default: false,
+        describe: '生成打包报告 report.json'
+    },
+    remote: {
+        type: 'string',
+        alias: 'r',
+        describe: '将产出发送到 remote 目标机器'
+    },
+    report: {
+        type: 'boolean',
+        default: false,
+        describe: '生成打包报告 report.html'
+    },
+    dest: {
+        alias: 'd',
+        type: 'string',
+        describe: '输出文件路径'
     }
+});
+const buildPlugin = {
+    id: 'san-cli-command-serve',
+    apply: getHandler(command, description, builder)
+};
+exports.handler = argv => {
+    const getService = require('../getServiceInstance');
+    const service = getService(argv, buildPlugin);
+    service.run('build', argv);
 };
 
-exports.handler = argv => {
-};
+exports.buildPlugin = buildPlugin;
