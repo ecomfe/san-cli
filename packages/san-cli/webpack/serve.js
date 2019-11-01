@@ -147,7 +147,7 @@ module.exports = async function devServer({
             url: urls.localUrlForBrowser
         });
         if (isFirstCompile) {
-            isOpenBrowser && require('react-dev-utils/openBrowser')(urls.localUrlForBrowser);
+            isOpenBrowser && require('opener')(urls.localUrlForBrowser);
             // 重置一下
             isFirstCompile = false;
         }
