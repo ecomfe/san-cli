@@ -201,7 +201,7 @@ module.exports = class Service extends EventEmitter {
                     } else {
                         return self[prop];
                     }
-                } else if (['getLogger', 'getCwd', 'getProjectOptions', 'getVersion'].includes(prop)) {
+                } else if (['getCwd', 'getProjectOptions', 'getVersion'].includes(prop)) {
                     // 将属性转换成 getXXX 模式
                     prop = prop.replace(/^get([A-Z])/, (m, $1) => $1.toLowerCase());
                     return () => self[prop];

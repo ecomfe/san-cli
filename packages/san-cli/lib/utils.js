@@ -167,3 +167,19 @@ exports.resolveEntry = entry => {
         isFile
     };
 };
+
+exports.getWebpackErrorInfoFromStats = (err, stats) => {
+    if (!stats.stats) {
+        return {
+            err: err || (stats.compilation && stats.compilation.errors && stats.compilation.errors[0]),
+            stats,
+            rawStats: stats
+        };
+    }
+    const [curStats] = stats.stats;
+    return {
+        err: err || (curStats.compilation && curStats.compilation.errors && curStats.compilation.errors[0]),
+        stats: curStats,
+        rawStats: stats
+    };
+};

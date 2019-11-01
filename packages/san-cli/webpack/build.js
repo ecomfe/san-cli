@@ -5,14 +5,8 @@
 const webpack = require('webpack');
 const {debug, getWebpackErrorInfoFromStats} = require('../lib/ttyLogger');
 const log = debug('webpack/build');
-module.exports = function build({webpackConfig, success, fail}) {
-    if (typeof success !== 'function') {
-        success = () => {};
-    }
-    if (typeof fail !== 'function') {
-        fail = () => {};
-    }
 
+module.exports = function build({webpackConfig, success, fail}) {
     log.info('start');
     webpack(webpackConfig, (err, stats) => {
         log.info('done');

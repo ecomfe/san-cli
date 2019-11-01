@@ -3,7 +3,8 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-const {info, error, chalk, success} = require('../../lib/ttyLogger');
+const {info, error, chalk, success: successLog} = require('../../lib/ttyLogger');
+const fse = require('fs-extra');
 
 // 合并 config 的方式
 const modifyConfig = (config, fn) => {
@@ -25,6 +26,9 @@ module.exports = (command, desc, builder) =>
             const {watch, analyze, verbose, dest} = argv;
             info(`Building for ${mode}...`);
 
+            // 获取 webpack 配置
+            const config = getNormalizeWebpackConfig(api, projectOptions, argv);
+
             // require sth..
             const path = require('path');
 
@@ -32,24 +36,24 @@ module.exports = (command, desc, builder) =>
              * 失败处理逻辑
              * @param {Error|Stats} err - error 对象
              */
-            function failBuild(err) {
-                if (err && err.toJson) {
+            function fail({err, stats}) {
+                if (stats && stats.toJson) {
                     console.log('Build failed with errors.');
                     process.stderr.write(
-                        err.toString({
+                        stats.toString({
                             colors: !!argv.colors || !!argv.color,
                             children: false,
                             modules: false,
                             chunkModules: false
                         })
                     );
-                    process.exit(1);
                 } else {
                     console.log(err);
                 }
+                process.exit(1);
             }
             // 编译成功处理逻辑
-            function successBuild({stats: webpackStats, config}) {
+            function success({stats: webpackStats}) {
                 if (!analyze) {
                     // 只有在非 analyze 模式下才会输出 log
                     const targetDir = api.resolve(config.output.path || dest || projectOptions.outputDir);
@@ -84,7 +88,7 @@ module.exports = (command, desc, builder) =>
                         const duration = (Date.now() - startTime) / 1e3;
 
                         const {time, version} = stats;
-                        success(
+                        successLog(
                             `The ${chalk.cyan(targetDirShort)} directory is ready to be deployed. Duration ${chalk.cyan(
                                 `${duration}/${time / 1e3}s`
                             )}, Webpack ${version}.`
@@ -92,14 +96,13 @@ module.exports = (command, desc, builder) =>
                     }
                 }
                 if (watch) {
-                    success('Build complete. Watching for changes...');
+                    successLog('Build complete. Watching for changes...');
                 }
             }
 
-            // 普通模式打包
-            build(api, projectOptions, argv)
-                .then(data => successBuild(data))
-                .catch(err => failBuild(err));
+            // 放到这里 require 是让命令行更快加载，而不是等 webpack 这大坨东西。。
+            const build = require('../../webpack/build');
+            build({webpackConfig: config, success, fail});
         };
 
         // 注册命令
@@ -110,12 +113,9 @@ module.exports = (command, desc, builder) =>
         });
     };
 
-async function build(api, projectOptions, argv) {
+function getNormalizeWebpackConfig(api, projectOptions, argv) {
     const {mode, entry, dest, analyze, watch, clean, remote, report} = argv;
     // const isProduction = mode ? mode === 'production' : process.env.NODE_ENV === 'production';
-
-    const fse = require('fs-extra');
-    const webpack = require('webpack');
 
     if (remote) {
         const DeployPlugin = require('deploy-files');
@@ -125,7 +125,7 @@ async function build(api, projectOptions, argv) {
     const targetDir = api.resolve(dest || projectOptions.outputDir);
 
     if (clean) {
-        await fse.remove(targetDir);
+        fse.removeSync(targetDir);
     }
 
     const chainConfig = api.resolveChainableWebpackConfig();
@@ -194,17 +194,5 @@ async function build(api, projectOptions, argv) {
         process.exit(1);
     }
 
-    return new Promise((resolve, reject) => {
-        webpack(webpackConfig, (err, stats) => {
-            if (err) {
-                return reject(err);
-            }
-
-            if (stats.hasErrors()) {
-                return reject(stats);
-            }
-            // 这里 resolve 传出三个值：stats config 和 options
-            resolve({stats, config: webpackConfig});
-        });
-    });
+    return webpackConfig;
 }
