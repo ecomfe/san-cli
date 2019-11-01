@@ -5,8 +5,8 @@
     "scriptName": "san",
     "main": "index.js",
     "bin": {
-        "san": "index.js",
-        "3": "index.js"
+        "3": "index.js",
+        "san": "index.js"
     },
     "author": "ksky521",
     "license": "MIT",

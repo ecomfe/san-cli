@@ -2,6 +2,7 @@
  * @file Service Class
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+
 const {join, resolve, isAbsolute} = require('path');
 const EventEmitter = require('events').EventEmitter;
 
@@ -57,17 +58,21 @@ module.exports = class Service extends EventEmitter {
         const localEnvPath = `${envPath}.local`;
 
         const load = envPath => {
+            let env = {};
             try {
                 const content = fs.readFileSync(envPath);
-                const env = dotenv.parse(content) || {};
-                logger('loadEnv', envPath, env);
-                return env;
+                env = dotenv.parse(content) || {};
+                logger.info('loadEnv', envPath, env);
             } catch (err) {
                 // only ignore error if file is not found
                 if (err.toString().indexOf('ENOENT') < 0) {
                     logger.error('loadEnv', err);
                 }
+                else {
+                    return {};
+                }
             }
+            return env;
         };
 
         const localEnv = load(localEnvPath);
@@ -84,7 +89,7 @@ module.exports = class Service extends EventEmitter {
             const defaultNodeEnv = mode === 'production' ? mode : 'development';
             // 下面属性如果为空，会根据 mode 设置的
             ['NODE_ENV', 'BABEL_ENV'].forEach(k => {
-                if (process.env[k] === null) {
+                if (!process.env[k]) {
                     process.env[k] = defaultNodeEnv;
                 }
             });
@@ -326,11 +331,9 @@ module.exports = class Service extends EventEmitter {
         if (!(config.css && config.css.postcss)) {
             // 赋值给 css 配置
             const postcss = (cosmiconfig('postcss').searchSync(searchFor) || {}).config;
-
+            const postcssConfig = postcss ? {postcss} : {};
             config.css = Object.assign(
-                {
-                    postcss
-                },
+                postcssConfig,
                 config.css || {}
             );
         }

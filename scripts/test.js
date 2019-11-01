@@ -15,6 +15,7 @@ if (packagename) {
 
 const jestArgs = [
     '--runInBand',
+    '--coverage',
     ...(regx ? [regx] : [])
 ];
 

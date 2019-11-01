@@ -68,8 +68,9 @@ exports.getGitUser = () => {
 
 exports.findExisting = (context, files) => {
     for (const file of files) {
-        if (fse.existsSync(path.join(context, file))) {
-            return file;
+        const filePath = path.join(context, file);
+        if (fse.existsSync(filePath)) {
+            return filePath;
         }
     }
 };
