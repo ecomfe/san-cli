@@ -4,7 +4,7 @@
  */
 
 module.exports = (argv, plugin) => {
-    const Service = require('../lib/Service');
+    const Service = require('./Service');
     if (argv.entry) {
         // 存在 entry
     }

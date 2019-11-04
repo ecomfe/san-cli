@@ -5,6 +5,7 @@
 const path = require('path');
 const {info, error, chalk, success: successLog} = require('../../lib/ttyLogger');
 const fse = require('fs-extra');
+const resolveEntry = require('../../lib/resolveEntry');
 
 // 合并 config 的方式
 const modifyConfig = (config, fn) => {
@@ -169,8 +170,9 @@ function getNormalizeWebpackConfig(api, projectOptions, argv) {
     }
 
     // resolve webpack config
-    const webpackConfig = api.resolveWebpackConfig(chainConfig);
+    let webpackConfig = api.resolveWebpackConfig(chainConfig);
 
+    // --dest
     if (dest) {
         modifyConfig(webpackConfig, config => {
             config.output.path = targetDir;
@@ -184,33 +186,11 @@ function getNormalizeWebpackConfig(api, projectOptions, argv) {
         });
     }
 
+    // --mode
     webpackConfig.mode = mode;
 
-    if (entry) {
-        if (/\.san$/.test(entry)) {
-            webpackConfig.resolve.alias['~entry'] = api.resolve(entry);
-        } else {
-            webpackConfig.entry = {
-                app: entry
-            };
-        }
-        // 默认san.config page 里面配置的就有 app 呢？
-    } else if (entry && !projectOptions.pages) {
-        webpackConfig.entry = {app: api.resolve(entry)};
-        // 默认san.config page 里面配置的就有 app 呢？
-        // delete webpackConfig.entry.app;
-    }
-
-    // 处理 entry 不存在的情况
-    if (
-        /* eslint-disable operator-linebreak */
-        !webpackConfig.entry ||
-        /* eslint-enable operator-linebreak */
-        (!Array.isArray(webpackConfig.entry) && Object.keys(webpackConfig.entry).length === 0)
-    ) {
-        error('没有找到 Entry，请命令后面添加 entry 或者配置 san.config.js');
-        process.exit(1);
-    }
+    // entry
+    webpackConfig = resolveEntry(entry, api.resolve(entry), webpackConfig);
 
     return webpackConfig;
 }

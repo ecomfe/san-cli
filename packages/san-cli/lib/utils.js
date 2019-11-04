@@ -145,29 +145,7 @@ exports.addDevClientToEntry = (config, devClient) => {
     }
 };
 
-exports.resolveEntry = entry => {
-    let isFile = false;
-    try {
-        const stats = fse.statSync(entry);
-        if (stats.isFile()) {
-            const ext = path.extname(entry);
-            if (ext === '.js' || ext === '.san') {
-                isFile = true;
-            } else {
-                console.log(chalk.red('Valid entry file should be one of: *.js or *.san.'));
-                process.exit(1);
-            }
-            isFile = true;
-        }
-    } catch (e) {
-        console.log(chalk.red('Valid entry is not a file or directory.'));
-        process.exit(1);
-    }
-    return {
-        entry,
-        isFile
-    };
-};
+
 
 exports.getWebpackErrorInfoFromStats = (err, stats) => {
     if (!stats.stats) {

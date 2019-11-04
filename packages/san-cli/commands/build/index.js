@@ -36,9 +36,15 @@ const builder = (exports.builder = {
         choices: ['none', 'table', 'errors-only', 'minimal', 'normal', 'detailed'],
         describe: '显示webpack stats 参数'
     },
+    modern: {
+        type: 'boolean',
+        default: false,
+        describe: 'modern 模式打包'
+    },
     'report-json': {
         alias: 'reportJson',
         type: 'boolean',
+        hidden: true,
         default: false,
         describe: '生成打包报告 report.json'
     },
@@ -63,7 +69,7 @@ const buildPlugin = {
     apply: getHandler(command, description, builder)
 };
 exports.handler = argv => {
-    const getService = require('../getServiceInstance');
+    const getService = require('../../lib/getServiceInstance');
     const service = getService(argv, buildPlugin);
     service.run('build', argv);
 };

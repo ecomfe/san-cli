@@ -4,6 +4,7 @@
  */
 const {info, success: sucLog, error, chalk} = require('../../lib/ttyLogger');
 const devServer = require('../../webpack/serve');
+const resolveEntry = require('../../lib/resolveEntry');
 
 module.exports = (command, desc, builder) =>
     function apply(api, projectOptions, argv) {
@@ -82,26 +83,9 @@ function getNormalizeWebpackConfig(api, projectOptions, argv) {
     const {resolveEntry} = require('../../lib/utils');
 
     // 开始正式的操作
-    const webpackConfig = api.resolveWebpackConfig();
-    let entry = argv.entry;
-    // entry arg
-    if (entry) {
-        // 1. 判断 entry 是文件还是目
-        // 2. 文件，直接启动 file server
-        // 3. 目录，则直接启动 devServer
-        const obj = resolveEntry(api.resolve(entry));
-        entry = obj.entry;
-        const isFile = obj.isFile;
+    let webpackConfig = api.resolveWebpackConfig();
+    const entry = argv.entry;
 
-        if (isFile && !/\.san$/.test(entry)) {
-            webpackConfig.entry.app = entry;
-        } else {
-            // san 文件/目录的情况需要指定 ~entry
-            webpackConfig.resolve.alias['~entry'] = api.resolve(entry);
-        }
-    }
-    if (!webpackConfig.entry || Object.keys(webpackConfig.entry).length === 0) {
-        error('没有找到 Webpack.entry，请命令后面添加 entry 或者配置 san.config.js pages');
-        process.exit(1);
-    }
+    webpackConfig = resolveEntry(entry, api.resolve(entry), webpackConfig);
+    return webpackConfig;
 }
