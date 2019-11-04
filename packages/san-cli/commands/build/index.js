@@ -23,9 +23,9 @@ const builder = (exports.builder = {
         default: false,
         describe: '构建之前不删除 dist 目录'
     },
-    'no-colors':{
-        alias:'no-color',
-        type:'boolean',
+    'no-colors': {
+        alias: 'no-color',
+        type: 'boolean',
         default: false,
         describe: 'log 不显示颜色'
     },
