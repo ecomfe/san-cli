@@ -8,11 +8,9 @@ const url = require('url');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const portfinder = require('portfinder');
-const qrcode = require('qrcode-terminal');
 
-const argsert = require('../lib/argsert');
-const {prepareUrls, addDevClientToEntry, resolveEntry} = require('../lib/utils');
-const {chalk, getWebpackErrorInfoFromStats, debug} = require('../lib/ttyLogger');
+const {prepareUrls, addDevClientToEntry, getWebpackErrorInfoFromStats} = require('../lib/utils');
+const {debug} = require('../lib/ttyLogger');
 
 const log = debug('webpack/serve');
 module.exports = async function devServer({
@@ -20,8 +18,6 @@ module.exports = async function devServer({
     devServerMiddlewares,
     devServerConfig,
     publicPath,
-    beforeServer,
-    afterServer,
     isQrCode = true,
     isOpenBrowser = false,
     success,
@@ -118,36 +114,16 @@ module.exports = async function devServer({
             return;
         }
 
-        /* eslint-disable no-console */
-        console.log();
-        console.log('  App running at:');
-        const networkUrl = publicUrl ? publicUrl.replace(/([^/])$/, '$1/') : urls.lanUrlForTerminal;
-        console.log(`  - Network: ${chalk.cyan(networkUrl)}`);
-        console.log();
-        /* eslint-enable no-console */
-
-        if (isQrCode) {
-            qrcode.generate(
-                networkUrl,
-                {
-                    small: true
-                },
-                qrcode => {
-                    // eslint-disable-next-line
-                    console.log(qrcode);
-                }
-            );
-        }
         // 革命成功啦
         success({
             stats,
             server,
             isFirstCompile,
             port,
+            publicUrl,
             url: urls.localUrlForBrowser
         });
         if (isFirstCompile) {
-            isOpenBrowser && require('opener')(urls.localUrlForBrowser);
             // 重置一下
             isFirstCompile = false;
         }
@@ -161,18 +137,10 @@ module.exports = async function devServer({
         });
     });
 
-    if (typeof beforeServer === 'function') {
-        beforeServer(server);
-    }
-
     server.listen(port, host, err => {
         if (err) {
             fail({err, type: 'server'});
             return;
-        }
-
-        if (typeof afterServer === 'function') {
-            afterServer(server, port);
         }
     });
 };

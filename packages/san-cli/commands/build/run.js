@@ -2,7 +2,7 @@
  * @file build run
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-
+const path = require('path');
 const {info, error, chalk, success: successLog} = require('../../lib/ttyLogger');
 const fse = require('fs-extra');
 
@@ -16,7 +16,7 @@ const modifyConfig = (config, fn) => {
 };
 module.exports = (command, desc, builder) =>
     function apply(api, projectOptions) {
-        const handler = async argv => {
+        const handler = argv => {
             // 开始时间
             const startTime = Date.now();
             const mode = argv.mode || process.env.NODE_ENV || 'production'; // 默认是 production
@@ -29,19 +29,12 @@ module.exports = (command, desc, builder) =>
             // 获取 webpack 配置
             const config = getNormalizeWebpackConfig(api, projectOptions, argv);
 
-            // require sth..
-            const path = require('path');
-
-            /**
-             * 失败处理逻辑
-             * @param {Error|Stats} err - error 对象
-             */
             function fail({err, stats}) {
+                console.log('Build failed with errors.');
                 if (stats && stats.toJson) {
-                    console.log('Build failed with errors.');
                     process.stderr.write(
                         stats.toString({
-                            colors: !!argv.colors || !!argv.color,
+                            colors: true,
                             children: false,
                             modules: false,
                             chunkModules: false
@@ -114,17 +107,12 @@ module.exports = (command, desc, builder) =>
     };
 
 function getNormalizeWebpackConfig(api, projectOptions, argv) {
+    // 读取 cli 传入的 argv
     const {mode, entry, dest, analyze, watch, clean, remote, report} = argv;
-    // const isProduction = mode ? mode === 'production' : process.env.NODE_ENV === 'production';
-
-    if (remote) {
-        const DeployPlugin = require('deploy-files');
-        // TODO 从 env 读取？
-    }
-
     const targetDir = api.resolve(dest || projectOptions.outputDir);
 
     if (clean) {
+        // 删掉目录
         fse.removeSync(targetDir);
     }
 
@@ -148,6 +136,13 @@ function getNormalizeWebpackConfig(api, projectOptions, argv) {
                 generateStatsFile: !!argv['report-json']
             })
         );
+    }
+    // 添加远程部署
+    if (remote) {
+        const DeployPlugin = require('deploy-files');
+        // TODO config 从 env 读取？
+
+        chainConfig.plugin('deploy-files').use(new DeployPlugin());
     }
 
     // resolve webpack config

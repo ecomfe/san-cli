@@ -21,6 +21,12 @@ const builder = (exports.builder = {
         type: 'number',
         describe: 'program specifications'
     },
+    open: {
+        alias: 'O',
+        type: 'boolean',
+        default: false,
+        describe: 'Open Bowser after build'
+    },
     host: {
         alias: 'H',
         type: 'string',
