@@ -140,9 +140,32 @@ function getNormalizeWebpackConfig(api, projectOptions, argv) {
     // 添加远程部署
     if (remote) {
         const DeployPlugin = require('deploy-files');
-        // TODO config 从 env 读取？
-
-        chainConfig.plugin('deploy-files').use(new DeployPlugin());
+        // 从 env 文件中读取 remote 配置，这样可以将 env.local 加到 .gitignore 中防止提交
+        // 详细配置：https://github.com/jinzhan/deploy-files
+        // receiver: 'http://YOUR_HOST/receiver',
+        // templatePath: '/home/work/nginx_static/html/test/template',
+        // staticPath: '//home/work/nginx_static/html/test/static',
+        // staticDomain: 'http://test.com:8888'
+        const remoteObj = {};
+        const upperRemote = remote.toUpperCase();
+        ['receiver', 'templatePath', 'staticPath', 'staticDomain'].forEach(key => {
+            // templatePath → TEMPLATE_PATH
+            const upperKey = key.replace(/[A-Z]/g, $1 => `_${$1}`).toUpperCase();
+            const val = process.env[`SAN_REMOTE_${upperRemote}_${upperKey}`];
+            if (!val) {
+                error(
+                    /* eslint-disable max-len */
+                    `Use --remote ${remote} to upload files, but donot get ${chalk.red(
+                        `SAN_REMOTE_${upperRemote}_${upperKey}`
+                    )} from process.env.`
+                    /* eslint-enable max-len */
+                );
+                process.exit(1);
+            } else {
+                remoteObj[key] = process.env[`SAN_REMOTE_${upperRemote}_${upperKey}`];
+            }
+        });
+        chainConfig.plugin('deploy-files').use(new DeployPlugin(), [remoteObj]);
     }
 
     // resolve webpack config
