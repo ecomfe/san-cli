@@ -18,8 +18,6 @@ module.exports = async function devServer({
     devServerMiddlewares,
     devServerConfig,
     publicPath,
-    isQrCode = true,
-    isOpenBrowser = false,
     success,
     fail
 }) {
