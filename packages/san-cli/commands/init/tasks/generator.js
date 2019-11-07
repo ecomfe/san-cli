@@ -6,15 +6,15 @@ const path = require('path');
 const fs = require('fs');
 const rxjs = require('rxjs');
 const through = require('through2');
-const Handlebars = require('./handlerbars');
+const Handlebars = require('../handlerbars');
 const vfs = require('vinyl-fs');
 const render = require('consolidate').handlebars.render;
 const concat = require('concat-stream');
 const filter = require('gulp-filter');
 const rename = require('gulp-rename');
-const debug = require('../../lib/ttyLogger').debug('generate');
-const {evaluate, getGitUser} = require('../../lib/utils');
-const ask = require('./ask');
+const debug = require('../../../lib/ttyLogger').debug('generate');
+const {evaluate, getGitUser} = require('../../../lib/utils');
+const ask = require('../ask');
 const exists = fs.existsSync;
 
 module.exports = (name, dest, options) => {

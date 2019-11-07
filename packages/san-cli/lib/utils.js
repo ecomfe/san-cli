@@ -145,8 +145,6 @@ exports.addDevClientToEntry = (config, devClient) => {
     }
 };
 
-
-
 exports.getWebpackErrorInfoFromStats = (err, stats) => {
     if (!stats.stats) {
         return {
@@ -162,3 +160,19 @@ exports.getWebpackErrorInfoFromStats = (err, stats) => {
         rawStats: stats
     };
 };
+
+// 下面是 init command 用到的
+const inquirer = require('inquirer');
+
+// 交互式问询
+exports.prompt = input => {
+    if (!Array.isArray(input)) {
+        input = [input];
+    }
+    return inquirer.prompt(input);
+};
+
+const home = require('user-home');
+// 获取本地模板路径
+exports.getLocalTplPath = template =>
+    path.join(home, '.san-templates', template.replace(/[/:#]/g, '-').substring(template.lastIndexOf('/') + 1));

@@ -1,5 +1,5 @@
 /**
- * @file 修改字 vue-cli,prompt 收集答案
+ * @file 修改自 vue-cli,prompt 收集答案
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 

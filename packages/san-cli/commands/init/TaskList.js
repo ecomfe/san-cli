@@ -76,7 +76,7 @@ module.exports = class TaskList {
         console.log(chalk.dim(p) + ` ${title}`);
 
         if (!this._spinner) {
-            this._spinner = ora('正在处理中...', {spinner: 'point'}).start();
+            this._spinner = ora('In processing...', {spinner: 'point'}).start();
         }
         task.status = 'running';
 

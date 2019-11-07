@@ -6,10 +6,8 @@
 const rxjs = require('rxjs');
 const path = require('path');
 const fs = require('fs-extra');
-const prompt = require('./prompt');
-const {chalk} = require('../../lib/ttyLogger');
-const getLocalTplPath = require('./getLocalTplPath');
-const {isLocalPath} = require('../../lib/utils');
+const {chalk} = require('../../../lib/ttyLogger');
+const {isLocalPath, getLocalTplPath, prompt} = require('../../../lib/utils');
 
 module.exports = (template, dest, options) => {
     return (ctx, task) => {
@@ -21,7 +19,7 @@ module.exports = (template, dest, options) => {
                 if (options.force) {
                     observer.next('--force 删除目录');
                     return fs.remove(dest);
-                // 如果是当前目录下建
+                    // 如果是当前目录下建
                 } else if (options._inPlace) {
                     // 来一个疑问句，问是否确定在当前目录创建？
                     // eslint-disable-next-line
@@ -57,7 +55,7 @@ module.exports = (template, dest, options) => {
                     // 选了取消
                     if (!action) {
                         return observer.error(`取消覆盖 ${shortDest} 文件夹`);
-                    // 选了覆盖
+                        // 选了覆盖
                     } else if (action === 'overwrite') {
                         observer.next(`选择覆盖，首先删除 ${shortDest}...`);
                         await fs.remove(dest);

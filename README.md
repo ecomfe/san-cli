@@ -2,9 +2,9 @@
 
 ### 功能拆分
 
--   [](init 增加 preset 功能)
--   [](lib/Service 完成)
--   [] 加上 loadEnv
+-   [] init 增加 preset 功能
+-   [x] lib/Service 完成
+-   [x] 加上 loadEnv
 -   [] 加上 lint
 
 Hulk2 已经满足手百 San 日常开发功能，但是在插件化和可扩展性做的不够好，因此启用新的 CLI 开发计划，该 CLI 旨在完善 San 生态，做可定制化的前端开发工具集，在兼顾 San 生态的同时，遵守微核心和插件化的设计思想，尽量不局限 San 的应用，做到通用化配置。
@@ -79,9 +79,9 @@ Hulk2 已经满足手百 San 日常开发功能，但是在插件化和可扩展
         5. martix：build 和 serve 支持 `--martix`打包，即 martix-loader
 8. 更新检测使用 update-notify
 9. inspect 命令：
-10. 支持输出全部
-11. 支持 plugin 和 loader 配置查询
-12. UI 支持：优先级低，暂无详细设计，插件部分会预留接口
+    1. 支持输出全部
+    2. 支持 plugin 和 loader 配置查询
+10. UI 支持：优先级低，暂无详细设计，插件部分会预留接口
 
 ### 插件机制设计
 

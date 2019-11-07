@@ -5,8 +5,8 @@
 
 const rxjs = require('rxjs');
 const fs = require('fs-extra');
-const getLocalTplPath = require('../getLocalTplPath');
-const dRepo = require('@hulk/core/downloadRepo');
+const {getLocalTplPath} = require('../../../lib/utils');
+const dRepo = require('../../../lib/downloadRepo');
 
 module.exports = (template, dest, options) => {
     return (ctx, task) => {

@@ -6,10 +6,9 @@
 const rxjs = require('rxjs');
 const fs = require('fs-extra');
 const execa = require('execa');
-const prompt = require('./prompt');
-const registries = require('./registries');
+const registries = require('../registries');
 const path = require('path');
-const {hasYarn} = require('../../lib/utils');
+const {hasYarn, prompt} = require('../../../lib/utils');
 
 module.exports = (template, dest, options) => {
     return (ctx, task) => {
@@ -56,13 +55,13 @@ function installDeps(dest, verbose = false, registry) {
     let command;
     // 优先使用yarn
     if (hasYarn()) {
-        registry = registry || registries['yarn'];
+        registry = registry || registries.yarn;
         args = ['--registry=' + registry];
         command = 'yarn';
     }
     // 使用npm
     else {
-        registry = registry || registries['taobao'];
+        registry = registry || registries.taobao;
         args = ['install', '--loglevel', 'error', '--registry=' + registry];
         command = 'npm';
     }

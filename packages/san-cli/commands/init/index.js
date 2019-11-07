@@ -32,10 +32,10 @@ exports.handler = argv => {
     const template = argv._[1];
     const appName = argv._[2];
     const TaskList = require('./TaskList');
-    const checkStatus = require('./checkStatus');
-    const download = require('./download');
-    const generator = require('./generator');
-    const installDep = require('./installDep');
+    const checkStatus = require('./tasks/checkStatus');
+    const download = require('./tasks/download');
+    const generator = require('./tasks/generator');
+    const installDep = require('./tasks/installDep');
     const path = require('path');
     const {error} = require('../../lib/ttyLogger');
 

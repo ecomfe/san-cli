@@ -11,7 +11,7 @@
     "author": "ksky521",
     "license": "MIT",
     "engines": {
-        "node": ">=8"
+        "node": ">=8.16"
     },
     "dependencies": {
         "address": "^1.1.2",
@@ -84,7 +84,7 @@
         "cosmiconfig": "^5.2.1",
         "lodash.defaultsdeep": "^4.6.1",
         "webpack": "^4.41.2",
-        "opener":"^1.5.1",
+        "opener": "^1.5.1",
         "@hapi/joi": "^16.1.7",
         "deploy-files": "^0.0.3"
     },
