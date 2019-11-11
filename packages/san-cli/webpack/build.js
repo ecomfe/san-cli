@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const webpack = require('webpack');
-const {debug, getWebpackErrorInfoFromStats} = require('../lib/ttyLogger');
+const {debug} = require('../lib/ttyLogger');
 const log = debug('webpack/build');
 
 module.exports = function build({webpackConfig, success, fail}) {
@@ -13,7 +13,7 @@ module.exports = function build({webpackConfig, success, fail}) {
 
         if (err || stats.hasErrors()) {
             if (fail) {
-                fail(getWebpackErrorInfoFromStats(err, stats));
+                fail({err, stats});
             }
 
             const isWatch = webpackConfig.watch;

@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-const {ora, chalk, figures} = require('../../lib/ttyLogger');
+const {ora, figures, chalk} = require('../../lib/ttyLogger');
 const SError = require('../../lib/SError');
 
 module.exports = class TaskList {

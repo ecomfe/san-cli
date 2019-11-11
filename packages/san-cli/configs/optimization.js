@@ -80,8 +80,10 @@ module.exports = {
                 )
             });
 
+            // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
+            const isLegacyBundle = process.env.SAN_CLI_LEGACY_BUILD;
             // sourcemap
-            const filename = getAssetPath(assetsDir, 'js/[name].[chunkhash:8].js');
+            const filename = getAssetPath(assetsDir, `js/[name]${isLegacyBundle ? '-legacy' : ''}.[chunkhash:8].js`);
 
             // 条件判断sourcemap是否开启，san.config.js传入
             let ifSourcemap = false;

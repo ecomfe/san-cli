@@ -65,7 +65,7 @@ const builder = (exports.builder = {
     }
 });
 const buildPlugin = {
-    id: 'san-cli-command-serve',
+    id: 'san-cli-command-build',
     apply: getHandler(command, description, builder)
 };
 exports.handler = argv => {

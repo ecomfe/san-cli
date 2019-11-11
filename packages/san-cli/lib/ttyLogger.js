@@ -4,6 +4,8 @@
  */
 
 const chalk = require('chalk');
+const ora = require('ora');
+const figures = require('figures');
 const npmlog = require('npmlog');
 const stripAnsi = require('strip-ansi');
 chalk.stripColor = stripAnsi;
@@ -92,3 +94,7 @@ exports.clearConsole = () => {
 };
 
 exports.chalk = chalk;
+
+exports.ora = ora;
+
+exports.figures = figures;
