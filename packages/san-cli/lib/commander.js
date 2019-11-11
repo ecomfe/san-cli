@@ -45,7 +45,7 @@ module.exports = () => {
         .help()
         .alias('help', 'h')
         .alias('version', 'v')
-        .epilogue('for more information, find our manual at http://hulk.baidu-int.com');
+        .epilogue('for more information, find our manual at http://ecomfe.github.com/san-cli');
     return cli;
 };
 

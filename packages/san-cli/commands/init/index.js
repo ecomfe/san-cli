@@ -70,7 +70,6 @@ exports.handler = argv => {
         })
         .catch(e => {
             error(e);
-            // info(`使用 ${chalk.yellow('DEBUG=hulk:*')} 查看报错信息`);
 
             process.exit(1);
         });

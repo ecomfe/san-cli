@@ -4,7 +4,6 @@
  */
 const {info, success: sucLog, error, chalk} = require('../../lib/ttyLogger');
 const devServer = require('../../webpack/serve');
-const resolveEntry = require('../../lib/resolveEntry');
 
 module.exports = (command, desc, builder) =>
     function apply(api, projectOptions, argv) {
@@ -80,7 +79,7 @@ module.exports = (command, desc, builder) =>
     };
 
 function getNormalizeWebpackConfig(api, projectOptions, argv) {
-    const {resolveEntry} = require('../../lib/utils');
+    const resolveEntry = require('../../lib/resolveEntry');
 
     // 开始正式的操作
     let webpackConfig = api.resolveWebpackConfig();
