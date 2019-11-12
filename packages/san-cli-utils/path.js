@@ -13,17 +13,18 @@ const address = importLazy('address');
 const fse = importLazy('fs-extra');
 const {chalk} = require('./ttyLogger');
 
-
 exports.resolveLocal = function resolveLocal(...args) {
     return path.join(__dirname, '../', ...args);
 };
-exports.getAssetPath = (assetsDir, filePath) => (assetsDir ? path.posix.join(assetsDir, filePath) : filePath);
+exports.getAssetPath = (assetsDir, filePath) =>
+    assetsDir ? path.posix.join(assetsDir, filePath) : filePath;
 
 exports.getTemplatePath = templatePath => {
     const cwd = process.cwd();
-    return path.isAbsolute(templatePath) ? templatePath : path.normalize(path.join(cwd, templatePath));
+    return path.isAbsolute(templatePath)
+        ? templatePath
+        : path.normalize(path.join(cwd, templatePath));
 };
-
 
 exports.findExisting = (context, files) => {
     for (const file of files) {
@@ -63,6 +64,7 @@ exports.prepareUrls = (protocol, host, port, pathname = '/') => {
             if (lanUrlForConfig) {
                 // Check if the address is a private ip
                 // https://en.wikipedia.org/wiki/Private_network#Private_IPv4_address_spaces
+                // prettier-ignore
                 if (/^10[.]|^172[.](1[6-9]|2[0-9]|3[0-1])[.]|^192[.]168[.]/.test(lanUrlForConfig)) {
                     // Address is private, format it for later use
                     lanUrlForTerminal = prettyPrintUrl(lanUrlForConfig);
@@ -71,7 +73,7 @@ exports.prepareUrls = (protocol, host, port, pathname = '/') => {
                     lanUrlForConfig = undefined;
                 }
             }
-        } catch (_e) {
+        } catch (e) {
             // ignored
         }
     } else {
@@ -89,4 +91,8 @@ exports.prepareUrls = (protocol, host, port, pathname = '/') => {
 
 // 获取本地模板路径
 exports.getLocalTplPath = template =>
-    path.join(home, '.san-templates', template.replace(/[/:#]/g, '-').substring(template.lastIndexOf('/') + 1));
+    path.join(
+        home,
+        '.san-templates',
+        template.replace(/[/:#]/g, '-').substring(template.lastIndexOf('/') + 1)
+    );

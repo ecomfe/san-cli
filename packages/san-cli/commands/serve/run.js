@@ -2,7 +2,12 @@
  * @file serve run
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const {info, success: sucLog, error, chalk} = require('../../../san-cli-utils/ttyLogger');
+const {
+    info,
+    success: sucLog,
+    error,
+    chalk
+} = require('../../../san-cli-utils/ttyLogger');
 const devServer = require('../../webpack/serve');
 const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
 // 可以通过传入 api 和 options，获得 yarg 的 handler
@@ -13,8 +18,16 @@ module.exports = function apply(api, projectOptions) {
         const mode = argv.mode;
         info(`Starting ${mode} server...`);
 
-        const {publicPath, devServer: projectDevServerOptions, devServerMiddlewares} = projectOptions;
-        const webpackConfig = getNormalizeWebpackConfig(api, projectOptions, argv);
+        const {
+            publicPath,
+            devServer: projectDevServerOptions,
+            devServerMiddlewares
+        } = projectOptions;
+        const webpackConfig = getNormalizeWebpackConfig(
+            api,
+            projectOptions,
+            argv
+        );
 
         devServer({
             webpackConfig,
@@ -39,15 +52,17 @@ module.exports = function apply(api, projectOptions) {
                     console.log(err);
                 }
             },
-            success: ({isFirstCompile, url, publicUrl}) => {
+            success: ({isFirstCompile, networkUrl}) => {
                 if (isFirstCompile) {
-                    argv.open && require('opener')(url);
                     /* eslint-disable no-console */
                     console.log();
                     console.log('  App running at:');
-                    const networkUrl = publicUrl ? publicUrl.replace(/([^/])$/, '$1/') : url;
+
                     console.log(`  - Network: ${chalk.cyan(networkUrl)}`);
                     console.log();
+
+                    argv.open && require('opener')(networkUrl);
+
                     /* eslint-enable no-console */
 
                     if (argv.qrcode) {

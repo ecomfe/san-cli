@@ -9,7 +9,10 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const portfinder = require('portfinder');
 
-const {addDevClientToEntry, getWebpackErrorInfoFromStats} = require('san-cli-utils/webpack');
+const {
+    addDevClientToEntry,
+    getWebpackErrorInfoFromStats
+} = require('san-cli-utils/webpack');
 const {prepareUrls} = require('san-cli-utils/path');
 const debug = require('../lib/debug');
 
@@ -30,7 +33,13 @@ module.exports = async function devServer({
     }
 
     log.info('start');
-    const {https, host, port: basePort, public: rawPublicUrl, hotOnly} = devServerConfig;
+    const {
+        https,
+        host,
+        port: basePort,
+        public: rawPublicUrl,
+        hotOnly
+    } = devServerConfig;
     const protocol = https ? 'https' : 'http';
     portfinder.basePort = basePort;
     // 查找空闲的 port
@@ -58,7 +67,11 @@ module.exports = async function devServer({
             // dev server client
             require.resolve('webpack-dev-server/client') + sockjsUrl,
             // hmr client
-            require.resolve(hotOnly ? 'webpack/hot/dev-server' : 'webpack/hot/only-dev-server')
+            require.resolve(
+                hotOnly
+                    ? 'webpack/hot/dev-server'
+                    : 'webpack/hot/only-dev-server'
+            )
         ];
         // inject dev/hot client
         addDevClientToEntry(webpackConfig, devClients);
@@ -119,8 +132,19 @@ module.exports = async function devServer({
             server,
             isFirstCompile,
             port,
+            protocol,
             publicUrl,
-            url: urls.localUrlForBrowser
+            url: urls.localUrlForBrowserz,
+            networkUrl: publicUrl
+                ? publicUrl.replace(/([^/])$/, '$1/')
+                : url.format({
+                      /* eslint-disable fecs-indent */
+                      protocol,
+                      port,
+                      hostname: urls.lanUrlForConfig || 'localhost'
+                  }),
+            /* eslint-enable fecs-indent */
+            urls
         });
         if (isFirstCompile) {
             // 重置一下

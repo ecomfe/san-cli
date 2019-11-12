@@ -1,15 +1,5 @@
 {
     "singleQuote": true,
-    "semi": true,
-    "printWidth": 120,
-    "tabWidth": 4,
     "bracketSpacing": false,
-    "jsxBracketSameLine": true,
-    "endOfLine": "lf",
-    "overrides": [
-        {
-            "files": ".prettierrc",
-            "options": {"parser": "json"}
-        }
-    ]
+    "useTabs": false
 }
