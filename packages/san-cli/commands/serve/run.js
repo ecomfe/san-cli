@@ -2,12 +2,7 @@
  * @file serve run
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const {
-    info,
-    success: sucLog,
-    error,
-    chalk
-} = require('../../../san-cli-utils/ttyLogger');
+const {info, success: sucLog, error, chalk} = require('../../../san-cli-utils/ttyLogger');
 const devServer = require('../../webpack/serve');
 const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
 // 可以通过传入 api 和 options，获得 yarg 的 handler
@@ -18,16 +13,8 @@ module.exports = function apply(api, projectOptions) {
         const mode = argv.mode;
         info(`Starting ${mode} server...`);
 
-        const {
-            publicPath,
-            devServer: projectDevServerOptions,
-            devServerMiddlewares
-        } = projectOptions;
-        const webpackConfig = getNormalizeWebpackConfig(
-            api,
-            projectOptions,
-            argv
-        );
+        const {publicPath, devServer: projectDevServerOptions, devServerMiddlewares} = projectOptions;
+        const webpackConfig = getNormalizeWebpackConfig(api, projectOptions, argv);
 
         devServer({
             webpackConfig,
@@ -60,12 +47,12 @@ module.exports = function apply(api, projectOptions) {
 
                     console.log(`  - Network: ${chalk.cyan(networkUrl)}`);
                     console.log();
-
+                    /* eslint-enable no-console */
+                    // 打开浏览器地址
                     argv.open && require('opener')(networkUrl);
 
-                    /* eslint-enable no-console */
-
                     if (argv.qrcode) {
+                        // 显示 terminal 二维码
                         require('qrcode-terminal').generate(
                             networkUrl,
                             {

@@ -67,7 +67,6 @@ exports.handler = argv => {
     const getService = require('../../lib/getServiceInstance');
     const service = getService(argv, [servePlugin, require('../../plugins/servePlugin')]);
     service.run('serve', argv);
-    // resolve webpack config
 };
 
 exports.servePlugin = servePlugin;

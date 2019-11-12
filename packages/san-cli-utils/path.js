@@ -16,14 +16,11 @@ const {chalk} = require('./ttyLogger');
 exports.resolveLocal = function resolveLocal(...args) {
     return path.join(__dirname, '../', ...args);
 };
-exports.getAssetPath = (assetsDir, filePath) =>
-    assetsDir ? path.posix.join(assetsDir, filePath) : filePath;
+exports.getAssetPath = (assetsDir, filePath) => (assetsDir ? path.posix.join(assetsDir, filePath) : filePath);
 
 exports.getTemplatePath = templatePath => {
     const cwd = process.cwd();
-    return path.isAbsolute(templatePath)
-        ? templatePath
-        : path.normalize(path.join(cwd, templatePath));
+    return path.isAbsolute(templatePath) ? templatePath : path.normalize(path.join(cwd, templatePath));
 };
 
 exports.findExisting = (context, files) => {
@@ -91,8 +88,4 @@ exports.prepareUrls = (protocol, host, port, pathname = '/') => {
 
 // 获取本地模板路径
 exports.getLocalTplPath = template =>
-    path.join(
-        home,
-        '.san-templates',
-        template.replace(/[/:#]/g, '-').substring(template.lastIndexOf('/') + 1)
-    );
+    path.join(home, '.san-templates', template.replace(/[/:#]/g, '-').substring(template.lastIndexOf('/') + 1));
