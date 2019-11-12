@@ -14,6 +14,7 @@ const builder = (exports.builder = {
         describe: 'watch mode'
     },
     analyze: {
+        alias: 'analyzer',
         type: 'boolean',
         default: false,
         describe: 'webpack-analyze-bunlde 模式'
