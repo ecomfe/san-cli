@@ -12,8 +12,10 @@ const render = require('consolidate').handlebars.render;
 const concat = require('concat-stream');
 const filter = require('gulp-filter');
 const rename = require('gulp-rename');
-const debug = require('../../../lib/ttyLogger').debug('generate').info;
-const {evaluate, getGitUser} = require('../../../lib/utils');
+const debug = require('debug')('init:generate');
+const evaluate = require('../utils/evaluate');
+const {getGitUser} = require('../utils/env');
+
 const ask = require('../ask');
 const exists = fs.existsSync;
 

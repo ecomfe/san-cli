@@ -8,7 +8,7 @@
 const updateNotifier = require('update-notifier');
 const semver = require('semver');
 
-const {error, chalk} = require('./lib/ttyLogger');
+const {error, chalk} = require('san-cli-utils/ttyLogger');
 const commander = require('./lib/commander');
 
 const {

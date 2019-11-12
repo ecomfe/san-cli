@@ -3,9 +3,8 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-const chalk = require('chalk');
-const npmlog = require('npmlog');
 const stripAnsi = require('strip-ansi');
+const chalk = require('chalk');
 chalk.stripColor = stripAnsi;
 
 const importLazy = require('import-lazy')(require);
@@ -13,27 +12,9 @@ const readline = importLazy('readline');
 const padStart = importLazy('string.prototype.padstart');
 
 // exports
+exports.chalk = chalk;
 exports.ora = importLazy('ora');
 exports.figures = importLazy('figures');
-
-exports.debug = prefix => {
-    const logFactory = fn => {
-        if (typeof npmlog[fn] === 'function') {
-            const log = npmlog[fn];
-            return (pre, ...args) => {
-                if (typeof pre !== 'string') {
-                    return log(prefix, pre, ...args);
-                } else {
-                    return log(`${prefix}:${pre}`, ...args);
-                }
-            };
-        }
-        return console.log;
-    };
-    const rs = {};
-    ['info', 'warn', 'error'].forEach(k => (rs[k] = logFactory(k)));
-    return rs;
-};
 
 /* eslint-disable no-console */
 const logger = console.log;
@@ -94,5 +75,3 @@ exports.clearConsole = () => {
         readline.clearScreenDown(process.stdout);
     }
 };
-
-exports.chalk = chalk;

@@ -10,7 +10,7 @@ module.exports = {
     id: 'built-in:css',
     apply(api, rootOptions) {
         api.chainWebpack(webpackConfig => {
-            const {getAssetPath} = require('../lib/utils');
+            const {getAssetPath} = require('san-cli-utils/path');
 
             const isProd = api.isProd();
 

@@ -4,7 +4,7 @@
 // 4. 注册 hook 时机
 // 5. 添加 log
 const path = require('path');
-const {debug} = require('./ttyLogger');
+const debug = require('../lib/debug');
 const npmlog = require('npmlog');
 module.exports = class PluginAPI {
     constructor(id, service) {

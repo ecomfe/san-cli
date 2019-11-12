@@ -4,7 +4,7 @@
  */
 const fse = require('fs-extra');
 const resolveEntry = require('../../lib/resolveEntry');
-const {error, chalk} = require('../../lib/ttyLogger');
+const {error, chalk} = require('san-cli-utils/ttyLogger');
 
 module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     // 读取 cli 传入的 argv

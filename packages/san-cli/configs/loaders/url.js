@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-const {getAssetPath} = require('../../lib/utils'); // eslint-disable-line
+const {getAssetPath} = require('san-cli-utils/path'); // eslint-disable-line
 const wrapper = require('./loaderWrapper');
 
 module.exports = wrapper((options, {filenameHashing, assetsDir, largeAssetSize = 1024}) => {

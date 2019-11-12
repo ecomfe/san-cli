@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const TerserPlugin = require('terser-webpack-plugin');
-const {getAssetPath} = require('../lib/utils');
+const {getAssetPath} = require('san-cli-utils/path');
 
 module.exports = {
     id: 'built-in:optimization',

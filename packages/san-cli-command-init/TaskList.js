@@ -3,8 +3,8 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-const {ora, figures, chalk} = require('../../lib/ttyLogger');
-const SError = require('../../lib/SError');
+const {ora, figures, chalk} = require('san-cli-utils/ttyLogger');
+const SError = require('san-cli-utils/SError');
 
 module.exports = class TaskList {
     constructor(tasks, options = {}) {

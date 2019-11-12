@@ -4,7 +4,7 @@
  */
 const path = require('path');
 const fse = require('fs-extra');
-const {chalk, error} = require('./ttyLogger');
+const {chalk, error} = require('san-cli-utils/ttyLogger');
 module.exports = (resolveEntryPath, absoluteEntryPath, webpackConfig) => {
     // entry arg
     if (resolveEntryPath) {

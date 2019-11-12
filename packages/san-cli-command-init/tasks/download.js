@@ -5,8 +5,8 @@
 
 const rxjs = require('rxjs');
 const fs = require('fs-extra');
-const {getLocalTplPath} = require('../../../lib/utils');
-const downloadRepo = require('../../../lib/downloadRepo');
+const {getLocalTplPath} = require('san-cli-utils/path');
+const downloadRepo = require('../utils/downloadRepo');
 
 module.exports = (template, dest, options) => {
     return (ctx, task) => {

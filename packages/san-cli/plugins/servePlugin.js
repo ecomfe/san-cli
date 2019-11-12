@@ -2,7 +2,7 @@
  * @file serve command plugin
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const {chalk} = require('../lib/ttyLogger');
+const {chalk} = require('san-cli-utils/ttyLogger');
 const rules = [
     {
         type: 'cant-resolve-loader',

@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const path = require('path');
-const {info, chalk, success: successLog} = require('../../lib/ttyLogger');
+const {info, chalk, success: successLog} = require('san-cli-utils/ttyLogger');
 const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
 module.exports = function apply(api, projectOptions) {
     return argv => {
@@ -22,7 +22,6 @@ module.exports = function apply(api, projectOptions) {
         info(`Building ${bundleTag}for ${mode}...`);
 
         // 获取 webpack 配置
-        const config = getNormalizeWebpackConfig(api, projectOptions, argv);
         function fail({err, stats}) {
             console.log('Build failed with errors.');
             if (stats && stats.toJson) {
@@ -61,7 +60,7 @@ module.exports = function apply(api, projectOptions) {
                 if (argv.stats === 'table') {
                     //  TODO：这里有问题，需要调试下 hulk 的 report 代码
                     console.log(
-                        require('../../lib/report')(stats, targetDirShort, {
+                        require('../../webpack/report')(stats, targetDirShort, {
                             resolve: p => api.resolve(p)
                         })
                     );
@@ -120,6 +119,7 @@ module.exports = function apply(api, projectOptions) {
                         const cliBin = require('path').resolve(__dirname, '../../index.js');
                         const rawArgs = process.argv.slice(3);
                         // TODO 这里会有权限问题？还是自己电脑权限问题？
+                        // https://github.com/sindresorhus/execa/issues/75
                         await execa(cliBin, ['build', ...rawArgs], {
                             stdio: 'inherit',
                             env: {

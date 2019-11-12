@@ -1,0 +1,23 @@
+{
+    "name": "san-cli-command-init",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "ksky521",
+    "license": "MIT",
+    "dependencies": {
+        "concat-stream": "^2.0.0",
+        "consolidate": "^0.15.1",
+        "execa": "^3.2.0",
+        "fs-extra": "^8.1.0",
+        "gulp-filter": "^6.0.0",
+        "gulp-rename": "^1.4.0",
+        "handlebars": "^4.5.1",
+        "debug": "^4.1.1",
+        "git-clone": "^0.1.0",
+        "rxjs": "^6.5.3",
+        "through2": "^3.0.1",
+        "inquirer": "^7.0.0",
+        "vinyl-fs": "^3.0.3",
+        "san-cli-utils": "^1.0.0"
+    }
+}

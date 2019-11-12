@@ -2,7 +2,7 @@
  * @file serve run
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const {info, success: sucLog, error, chalk} = require('../../lib/ttyLogger');
+const {info, success: sucLog, error, chalk} = require('../../../san-cli-utils/ttyLogger');
 const devServer = require('../../webpack/serve');
 const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
 // 可以通过传入 api 和 options，获得 yarg 的 handler

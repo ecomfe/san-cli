@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-const {join, resolve, isAbsolute} = require('path');
+const {resolve, isAbsolute} = require('path');
 const EventEmitter = require('events').EventEmitter;
 
 const fs = require('fs-extra');
@@ -13,12 +13,14 @@ const cosmiconfig = require('cosmiconfig');
 const defaultsDeep = require('lodash.defaultsdeep');
 const dotenv = require('dotenv');
 
-const {findExisting} = require('./utils');
 const commander = require('./commander');
-const SError = require('./SError');
+const SError = require('san-cli-utils/SError');
 const argsert = require('./argsert');
 const PluginAPI = require('./PluginAPI');
-const {chalk, debug} = require('./ttyLogger');
+const {findExisting} = require('san-cli-utils/path');
+const {chalk} = require('san-cli-utils/ttyLogger');
+const debug = require('./debug');
+
 const {defaults: defaultConfig, validateSync: validateOptions} = require('./options');
 
 const BUILDIN_PLUGINS = ['base', 'css', 'app', 'optimization', 'babel'];
@@ -67,8 +69,7 @@ module.exports = class Service extends EventEmitter {
                 // only ignore error if file is not found
                 if (err.toString().indexOf('ENOENT') < 0) {
                     logger.error('loadEnv', err);
-                }
-                else {
+                } else {
                     return {};
                 }
             }
@@ -332,10 +333,7 @@ module.exports = class Service extends EventEmitter {
             // 赋值给 css 配置
             const postcss = (cosmiconfig('postcss').searchSync(searchFor) || {}).config;
             const postcssConfig = postcss ? {postcss} : {};
-            config.css = Object.assign(
-                postcssConfig,
-                config.css || {}
-            );
+            config.css = Object.assign(postcssConfig, config.css || {});
         }
 
         if (!config.browserslist) {

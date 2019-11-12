@@ -4,7 +4,7 @@
  */
 const path = require('path');
 const resolve = require('resolve');
-const {resolveLocal} = require('../lib/utils');
+const {resolveLocal} = require('san-cli-utils/path');
 const defaultsDeep = require('lodash.defaultsdeep');
 
 module.exports = {

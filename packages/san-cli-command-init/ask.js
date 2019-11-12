@@ -5,7 +5,7 @@
 
 const inquirer = require('inquirer');
 // eslint-disable-next-line
-const {evaluate} = require('../../lib/utils');
+const evaluate = require('./utils/evaluate');
 
 const promptMapping = {
     string: 'input',

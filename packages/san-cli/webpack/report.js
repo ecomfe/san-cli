@@ -6,9 +6,9 @@
 const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
-const {chalk} = require('./ttyLogger');
+const {chalk} = require('san-cli-utils/ttyLogger');
 
-const flatten = require('./utils').flatten;
+const flatten = require('san-cli-utils/utils').flatten;
 
 const ConsoleTable = require('tty-table');
 // const MAX_GZIPPED_SIZE = 150 * 1024;

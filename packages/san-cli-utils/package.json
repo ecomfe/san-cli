@@ -1,0 +1,19 @@
+{
+    "name": "san-cli-utils",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "ksky521",
+    "license": "MIT",
+    "dependencies": {
+        "address": "^1.1.2",
+        "chalk": "^3.0.0",
+        "figures": "^3.1.0",
+        "fs-extra": "^8.1.0",
+        "import-lazy": "^4.0.0",
+        "user-home": "^2.0.0",
+        "readline": "^1.3.0",
+        "ora": "^4.0.2",
+        "string.prototype.padstart": "^3.0.0",
+        "strip-ansi": "^6.0.0"
+    }
+}

@@ -2,10 +2,9 @@
  * @file 下载 github/icode repo
  */
 
-const importLazy = require('import-lazy')(require);
-const gitclone = importLazy('git-clone');
-const fse = importLazy('fs-extra');
-const debug = require('./ttyLogger').debug('download-repo');
+const gitclone = require('git-clone');
+const fse = require('fs-extra');
+const debug = require('debug')('init:download-repo');
 
 module.exports = (url, dest, checkout = 'master') => {
     const rm = fse.removeSync;

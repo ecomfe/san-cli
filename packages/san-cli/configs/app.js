@@ -1,3 +1,7 @@
+/**
+ * @file 主要配置 html-plugin
+ * @author wangyongqing <wangyongqing01@baidu.com>
+ */
 const path = require('path');
 const fs = require('fs');
 const minify = require('html-minifier').minify;

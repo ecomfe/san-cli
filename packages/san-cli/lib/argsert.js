@@ -5,7 +5,7 @@
  */
 
 module.exports = argsert;
-const SError = require('./SError');
+const SError = require('san-cli-utils/SError');
 
 const positionName = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth'];
 function argsert(expected, callerArguments, length) {

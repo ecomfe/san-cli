@@ -9,8 +9,9 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const portfinder = require('portfinder');
 
-const {prepareUrls, addDevClientToEntry, getWebpackErrorInfoFromStats} = require('../lib/utils');
-const {debug} = require('../lib/ttyLogger');
+const {addDevClientToEntry, getWebpackErrorInfoFromStats} = require('san-cli-utils/webpack');
+const {prepareUrls} = require('san-cli-utils/path');
+const debug = require('../lib/debug');
 
 const log = debug('webpack/serve');
 module.exports = async function devServer({

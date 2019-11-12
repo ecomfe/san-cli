@@ -3,8 +3,8 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const webpack = require('webpack');
-const {debug} = require('../lib/ttyLogger');
-const {getWebpackErrorInfoFromStats} = require('../lib/utils');
+const debug = require('../lib/debug');
+const {getWebpackErrorInfoFromStats} = require('san-cli-utils/webpack');
 const log = debug('webpack/build');
 
 module.exports = function build({webpackConfig, success, fail}) {

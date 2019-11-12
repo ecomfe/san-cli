@@ -6,8 +6,9 @@
 const rxjs = require('rxjs');
 const path = require('path');
 const fs = require('fs-extra');
-const {chalk} = require('../../../lib/ttyLogger');
-const {isLocalPath, getLocalTplPath, prompt} = require('../../../lib/utils');
+const {chalk} = require('san-cli-utils/ttyLogger');
+const {isLocalPath, getLocalTplPath} = require('san-cli-utils/path');
+const prompt = require('../utils/prompt');
 
 module.exports = (template, dest, options) => {
     return (ctx, task) => {

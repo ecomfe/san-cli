@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const {isCSS, isJS} = require('../lib/utils');
+const {isCSS, isJS} = require('san-cli-utils/webpack');
 const SMARTY_BLOCK = /{%block name=(["'])__(body|head)_asset[s]?\1%}(.+?){%\/block%}/g;
 
 function main(pluginData, compilation) {
