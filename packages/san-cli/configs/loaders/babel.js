@@ -15,7 +15,15 @@ module.exports = wrapper((babelOptions = {}, projectOptions, api) => {
 
     const {useBuiltIns = 'usage', debug = false, loose = false, modules = false, ignoreBrowserslistConfig} = presets;
     let targets = presets.targets;
-    if (!targets && !ignoreBrowserslistConfig) {
+
+    const isModernBundle = process.env.SAN_CLI_MODERN_BUILD;
+
+    if (isModernBundle) {
+        // 这个是 modern 打包
+        targets = {esmodules: true};
+    }
+    else if (!targets && !ignoreBrowserslistConfig) {
+        // 赋一个browserslist默认值
         targets = {
             browsers: projectOptions.browserslist || [
                 '> 1.2% in cn',

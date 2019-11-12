@@ -13,8 +13,13 @@ module.exports = function apply(api, projectOptions) {
         // 重新赋值
         argv.mode = mode;
 
-        const {watch, analyze, verbose, dest} = argv;
-        info(`Building for ${mode}...`);
+        const {watch, analyze, verbose, dest, modern} = argv;
+        // --modern + --analyze 应该显示 modern 的 analyze 的结果
+        if (modern && analyze) {
+            process.env.SAN_CLI_MODERN_BUILD = true;
+        }
+        const bundleTag = modern ? (process.env.SAN_CLI_MODERN_BUILD ? 'modern bundle ' : 'legacy bundle ') : '';
+        info(`Building ${bundleTag}for ${mode}...`);
 
         // 获取 webpack 配置
         const config = getNormalizeWebpackConfig(api, projectOptions, argv);
@@ -35,10 +40,10 @@ module.exports = function apply(api, projectOptions) {
             process.exit(1);
         }
         // 编译成功处理逻辑
-        function success({stats: webpackStats}) {
+        function success({stats: webpackStats}, {isModern, isModernBuild} = {}) {
             if (!analyze) {
                 // 只有在非 analyze 模式下才会输出 log
-                const targetDir = api.resolve(config.output.path || dest || projectOptions.outputDir);
+                const targetDir = api.resolve(dest || projectOptions.outputDir);
                 const targetDirShort = path.relative(api.getCwd(), targetDir);
                 const stats = webpackStats.toJson({
                     all: false,
@@ -68,7 +73,15 @@ module.exports = function apply(api, projectOptions) {
                 }
                 if (!watch) {
                     const duration = (Date.now() - startTime) / 1e3;
-
+                    if (isModern) {
+                        if (isModernBuild) {
+                            successLog('Build modern bundle success');
+                        } else {
+                            successLog('Build legacy bundle success');
+                            console.log();
+                        }
+                        return;
+                    }
                     const {time, version} = stats;
                     successLog(
                         `The ${chalk.cyan(targetDirShort)} directory is ready to be deployed. Duration ${chalk.cyan(
@@ -84,6 +97,65 @@ module.exports = function apply(api, projectOptions) {
 
         // 放到这里 require 是让命令行更快加载，而不是等 webpack 这大坨东西。。
         const build = require('../../webpack/build');
-        build({webpackConfig: config, success, fail});
+        if (modern) {
+            // 2.1 modern mode，会fork execa 执行一次打包
+            // modern mode 必须要保证 legacy 先打包完成
+            if (!process.env.SAN_CLI_MODERN_BUILD) {
+                process.env.SAN_CLI_LEGACY_BUILD = true;
+                // 获取 webpack 配置
+                let config = getNormalizeWebpackConfig(
+                    api,
+                    projectOptions,
+                    Object.assign({}, argv, {
+                        modernBuild: false
+                    })
+                );
+                // for legacy build
+                build({
+                    webpackConfig: config,
+                    success: async data => {
+                        success(data, {isModern: true});
+                        // execa 打包，保证打包环境的纯洁性
+                        const execa = require('execa');
+                        const cliBin = require('path').resolve(__dirname, '../../index.js');
+                        const rawArgs = process.argv.slice(3);
+                        // TODO 这里会有权限问题？还是自己电脑权限问题？
+                        await execa(cliBin, ['build', ...rawArgs], {
+                            stdio: 'inherit',
+                            env: {
+                                SAN_CLI_MODERN_BUILD: true,
+                                SAN_CLI_LEGACY_BUILD: false
+                            }
+                        });
+                    },
+                    fail
+                });
+            } else {
+                // 这里是 modern mode 的打包
+                // 注意要用 clean = false 哦！！！不然会删掉 legacy-${filename}.json，legacy 打包就白费了！
+                // 获取 webpack 配置
+                let config = getNormalizeWebpackConfig(
+                    api,
+                    projectOptions,
+                    Object.assign({}, argv, {
+                        modernBuild: true,
+                        clean: false
+                    })
+                );
+                // for modern build
+                build({
+                    webpackConfig: config,
+                    success: data => {
+                        success(data, {isModern: true, isModernBuild: true});
+                    },
+                    fail
+                });
+            }
+        } else {
+            // 获取 webpack 配置
+            let config = getNormalizeWebpackConfig(api, projectOptions, argv);
+            // for build
+            build({webpackConfig: config, success, fail});
+        }
     };
 };

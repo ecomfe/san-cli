@@ -1,3 +1,7 @@
+/**
+ * @file base webpack config
+ * @author wangyongqing <wangyongqing01@baidu.com>
+ */
 const path = require('path');
 const resolve = require('resolve');
 const {resolveLocal} = require('../lib/utils');
@@ -9,16 +13,15 @@ module.exports = {
         api.chainWebpack(webpackConfig => {
             const isProd = api.isProd();
             // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
-
+            const isLegacyBundle = process.env.SAN_CLI_LEGACY_BUILD;
             // set mode
             webpackConfig.mode(isProd ? 'production' : 'development').context(api.service.cwd);
-            const filename = `[name]${isProd ? '.[hash:8]' : ''}.js`;
             // set output
             webpackConfig.output
                 .path(api.resolve(projectOptions.outputDir))
                 // 留个小彩蛋吧~
                 .jsonpFunction(projectOptions.jsonpFunction || 'HK3')
-                .filename(filename)
+                .filename((isLegacyBundle ? '[name]-legacy' : '[name]') + `${isProd ? '.[hash:8]' : ''}.js`)
                 .publicPath(projectOptions.publicPath);
 
             if (!isProd) {

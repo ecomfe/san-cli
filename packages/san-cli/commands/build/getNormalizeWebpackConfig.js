@@ -8,7 +8,7 @@ const {error, chalk} = require('../../lib/ttyLogger');
 
 module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     // 读取 cli 传入的 argv
-    const {mode, entry, dest, analyze, watch, clean, remote, report} = argv;
+    const {mode, entry, dest, analyze, watch, clean, remote, report, modern, modernBuild = false} = argv;
     const targetDir = api.resolve(dest || projectOptions.outputDir);
 
     if (clean) {
@@ -17,7 +17,27 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     }
 
     const chainConfig = api.resolveChainableWebpackConfig();
-
+    // modern mode
+    if (modern && !analyze) {
+        const ModernModePlugin = require('../../webpack/ModernModePlugin');
+        if (!modernBuild) {
+            // Inject plugin to extract build stats and write to disk
+            chainConfig.plugin('modern-mode-legacy').use(ModernModePlugin, [
+                {
+                    targetDir,
+                    isModernBuild: false
+                }
+            ]);
+        } else {
+            // Inject plugin to read non-modern build stats and inject HTML
+            chainConfig.plugin('modern-mode-modern').use(ModernModePlugin, [
+                {
+                    targetDir,
+                    isModernBuild: true
+                }
+            ]);
+        }
+    }
     if (analyze) {
         // 添加 analyze
         const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
@@ -25,7 +45,8 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     } else if (report || argv['report-json']) {
         const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
         // 单独标示 modern 打包
-        const bundleName = '';
+        const bundleName = modern ? (modernBuild ? 'modern-' : 'legacy-') : '';
+
         chainConfig.plugin('bundle-analyzer').use(
             new BundleAnalyzerPlugin({
                 logLevel: 'warn',
@@ -85,7 +106,8 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     webpackConfig.mode = mode;
 
     // entry
-    webpackConfig = resolveEntry(entry, api.resolve(entry), webpackConfig);
-
+    if (entry) {
+        webpackConfig = resolveEntry(entry, api.resolve(entry), webpackConfig);
+    }
     return webpackConfig;
 };

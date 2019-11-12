@@ -6,7 +6,7 @@
 const rxjs = require('rxjs');
 const fs = require('fs-extra');
 const {getLocalTplPath} = require('../../../lib/utils');
-const dRepo = require('../../../lib/downloadRepo');
+const downloadRepo = require('../../../lib/downloadRepo');
 
 module.exports = (template, dest, options) => {
     return (ctx, task) => {
@@ -27,8 +27,7 @@ module.exports = (template, dest, options) => {
             } else {
                 // 否则拉取远程仓库的模板
                 observer.next('拉取模板ing...');
-                dRepo
-                    .downloadRepo(template, tmp)
+                downloadRepo(template, tmp)
                     .then(() => {
                         ctx.localTemplatePath = tmp;
                         observer.complete();
