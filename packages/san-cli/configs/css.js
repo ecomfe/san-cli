@@ -4,6 +4,7 @@
  */
 const semver = require('semver');
 const npmlog = require('npmlog');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
     id: 'built-in:css',
@@ -24,18 +25,14 @@ module.exports = {
                 );
             }
 
-            const defaultSassLoaderOptions = {};
-            try {
-                defaultSassLoaderOptions.implementation = require('sass');
-                // since sass-loader 8, fibers will be automatically detected and used
-                if (sassLoaderVersion < 8) {
-                    defaultSassLoaderOptions.fiber = require('fibers');
-                }
-            } catch (e) {}
-
             // 这里loaderOptions直接用 projectOptions.css 的内容
-            const {extract = isProd, sourceMap = rootOptions.sourceMap, loaderOptions = {}, cssPreprocessor} =
-                rootOptions.css || {};
+            // prettier-ignore
+            const {
+                extract = isProd,
+                sourceMap = rootOptions.sourceMap,
+                loaderOptions = {},
+                cssPreprocessor
+            } = rootOptions.css || {};
 
             let {requireModuleExtension} = rootOptions.css || {};
             if (typeof requireModuleExtension === 'undefined') {
@@ -116,7 +113,6 @@ module.exports = {
                             sourceMap,
                             importLoaders:
                                 // prettier-ignore
-                                // stylePostLoader injected by vue-loader
                                 1 + (postCSSOptions ? 1 : 0) + (needInlineMinification ? 1 : 0)
                         },
                         loaderOptions.css
@@ -162,12 +158,7 @@ module.exports = {
             createCSSRule('postcss', /\.p(ost)?css$/);
             if (!cssPreprocessor || cssPreprocessor === 'scss' || cssPreprocessor === 'sass') {
                 // 添加 sass 逻辑
-                createCSSRule(
-                    'scss',
-                    /\.scss$/,
-                    'sass-loader',
-                    Object.assign({}, defaultSassLoaderOptions, loaderOptions.scss || loaderOptions.sass)
-                );
+                createCSSRule('scss', /\.scss$/, 'sass-loader', Object.assign({}, loaderOptions.sass));
                 if (sassLoaderVersion < 8) {
                     createCSSRule(
                         'sass',
@@ -175,7 +166,6 @@ module.exports = {
                         'sass-loader',
                         Object.assign(
                             {},
-                            defaultSassLoaderOptions,
                             {
                                 indentedSyntax: true
                             },
@@ -187,7 +177,7 @@ module.exports = {
                         'sass',
                         /\.sass$/,
                         'sass-loader',
-                        Object.assign({}, defaultSassLoaderOptions, loaderOptions.sass, {
+                        Object.assign({}, loaderOptions.sass, {
                             sassOptions: Object.assign({}, loaderOptions.sass && loaderOptions.sass.sassOptions, {
                                 indentedSyntax: true
                             })
@@ -229,12 +219,29 @@ module.exports = {
 
                 // minify extracted CSS
                 if (isProd) {
-                    webpackConfig.plugin('optimize-css').use(require('@intervolga/optimize-cssnano-plugin'), [
-                        {
-                            sourceMap,
-                            cssnanoOptions
-                        }
-                    ]);
+                    // 压缩
+                    webpackConfig.optimization.minimizer('css').use(
+                        new OptimizeCSSAssetsPlugin({
+                            assetNameRegExp: /\.css$/g,
+                            cssProcessorOptions: {
+                                normalizeUrl: false,
+                                discardUnused: false,
+                                // 避免 cssnano 重新计算 z-index
+                                zindex: false,
+                                reduceIdents: false,
+                                safe: true,
+                                // cssnano 集成了autoprefixer的功能
+                                // 会使用到autoprefixer进行无关前缀的清理
+                                // 关闭autoprefixer功能
+                                // 使用postcss的autoprefixer功能
+                                autoprefixer: false,
+                                discardComments: {
+                                    removeAll: true
+                                }
+                            },
+                            canPrint: true
+                        })
+                    );
                 }
             }
         });

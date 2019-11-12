@@ -37,15 +37,15 @@ module.exports = {
                 .rule('js')
                 .test(/\.m?js?$/)
                 .exclude.add(filepath => {
-                    // exclude dynamic entries from cli-service
+                    // 排除 cli 的路径
                     if (filepath.startsWith(cliServicePath)) {
                         return true;
                     }
-                    // check if this is something the user explicitly wants to transpile
+                    // 使用排除
                     if (transpileDepRegex && transpileDepRegex.test(filepath)) {
                         return false;
                     }
-                    // Don't transpile node_modules
+                    // 默认不编译 node_modules，如果要编译使用排除
                     return /node_modules/.test(filepath);
                 })
                 .end();

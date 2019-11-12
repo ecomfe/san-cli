@@ -25,6 +25,10 @@ module.exports = class PluginAPI {
         this.service.webpackRawConfigFns.push(fn);
     }
     resolve(p) {
-        return path.resolve(this.service.cwd, p);
+        if (p) {
+            return path.resolve(this.service.cwd, p);
+        } else {
+            return this.service.cwd;
+        }
     }
 };

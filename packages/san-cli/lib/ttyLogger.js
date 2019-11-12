@@ -12,6 +12,10 @@ const importLazy = require('import-lazy')(require);
 const readline = importLazy('readline');
 const padStart = importLazy('string.prototype.padstart');
 
+// exports
+exports.ora = importLazy('ora');
+exports.figures = importLazy('figures');
+
 exports.debug = prefix => {
     const logFactory = fn => {
         if (typeof npmlog[fn] === 'function') {

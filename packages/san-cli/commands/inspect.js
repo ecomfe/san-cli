@@ -21,7 +21,6 @@ exports.builder = {
         type: 'string',
         describe: '根据插件名称输出配置'
     }
-}
-
+};
 
 exports.handler = argv => {};

@@ -12,21 +12,19 @@ module.exports = {
 
             // set mode
             webpackConfig.mode(isProd ? 'production' : 'development').context(api.service.cwd);
+            const filename = `[name]${isProd ? '.[hash:8]' : ''}.js`;
             // set output
             webpackConfig.output
                 .path(api.resolve(projectOptions.outputDir))
                 // 留个小彩蛋吧~
                 .jsonpFunction(projectOptions.jsonpFunction || 'HK3')
-                .filename(`${isProd ? '.[hash:8]' : ''}.js`)
+                .filename(filename)
                 .publicPath(projectOptions.publicPath);
+
             if (!isProd) {
                 // dev mode
                 webpackConfig.devtool('cheap-module-eval-source-map');
-
                 webpackConfig.plugin('hmr').use(require('webpack/lib/HotModuleReplacementPlugin'));
-
-                // https://github.com/webpack/webpack/issues/6642
-                webpackConfig.output.globalObject('this');
                 webpackConfig.plugin('no-emit-on-errors').use(require('webpack/lib/NoEmitOnErrorsPlugin'));
             }
 

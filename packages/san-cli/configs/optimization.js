@@ -1,6 +1,9 @@
+/**
+ * @file 优化相关
+ * @author wangyongqing <wangyongqing01@baidu.com>
+ */
 const TerserPlugin = require('terser-webpack-plugin');
 const {getAssetPath} = require('../lib/utils');
-const defaultsDeep = require('lodash.defaultsdeep');
 
 module.exports = {
     id: 'built-in:optimization',
@@ -10,6 +13,7 @@ module.exports = {
             if (!isProd) {
                 return;
             }
+
             const {assetsDir, splitChunksCacheGroups = {}, terserOptions = {}} = options;
 
             // splitChunks
@@ -21,7 +25,7 @@ module.exports = {
                 maxAsyncRequests: 5,
                 maxInitialRequests: 3,
                 automaticNameDelimiter: '.',
-                cacheGroups: defaultsDeep(
+                cacheGroups: Object.assign(
                     {
                         default: false,
                         // 公共css代码抽离
@@ -76,7 +80,7 @@ module.exports = {
                             reuseExistingChunk: true
                         }
                     },
-                    splitChunksCacheGroups
+                    options.splitChunks || splitChunksCacheGroups
                 )
             });
 
@@ -88,18 +92,19 @@ module.exports = {
             if (options.sourceMap) {
                 ifSourcemap = true;
             }
-
+            // TODO chunkname 没有 hash
             webpackConfig
-                .devtool('source-map')
+                .devtool(ifSourcemap ? 'source-map' : false)
                 .output.filename(filename)
                 .chunkFilename(filename);
+
             webpackConfig.optimization.minimizer('js').use(
                 new TerserPlugin({
                     extractComments: false,
                     sourceMap: ifSourcemap,
                     parallel: true,
                     cache: true,
-                    terserOptions: defaultsDeep(
+                    terserOptions: Object.assign(
                         {
                             comments: false,
                             compress: {

@@ -15,6 +15,13 @@ const builder = (exports.builder = {
         type: 'string',
         describe: 'specify the public network URL for the HMR client'
     },
+    mode: {
+        alias: 'm',
+        type: 'string',
+        default: 'development',
+        choices: ['development', 'production'],
+        describe: 'program specifications'
+    },
     port: {
         alias: 'p',
         default: 8888,
@@ -46,7 +53,14 @@ const builder = (exports.builder = {
 });
 const servePlugin = {
     id: 'san-cli-command-serve',
-    apply: getHandler(command, description, builder)
+    apply(api, projectOptions) {
+        // 注册命令
+        api.registerCommand(command, {
+            builder,
+            description,
+            handler: getHandler(api, projectOptions)
+        });
+    }
 };
 
 exports.handler = argv => {

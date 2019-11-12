@@ -4,7 +4,6 @@
  */
 /* eslint-disable fecs-camelcase */
 const path = require('path');
-const defaultsDeep = require('lodash.defaultsdeep');
 const sanHmrPlugin = require('babel-plugin-san-hmr');
 const wrapper = require('./loaderWrapper');
 
@@ -44,7 +43,7 @@ module.exports = wrapper((babelOptions = {}, projectOptions, api) => {
             presets: [
                 [
                     require('@babel/preset-env'),
-                    defaultsDeep(
+                    Object.assign(
                         {
                             debug,
                             loose,

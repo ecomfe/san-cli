@@ -19,13 +19,6 @@ module.exports = () => {
             type: 'string',
             describe: 'program specifications'
         })
-        .option('mode', {
-            alias: 'm',
-            type: 'string',
-            default: 'development',
-            choices: ['development', 'production'],
-            describe: 'program specifications'
-        })
         .option('no-progress', {
             type: 'boolean',
             default: false,

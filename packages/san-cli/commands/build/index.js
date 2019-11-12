@@ -53,6 +53,13 @@ const builder = (exports.builder = {
         alias: 'r',
         describe: '将产出发送到 remote 目标机器'
     },
+    mode: {
+        alias: 'm',
+        type: 'string',
+        default: 'production',
+        choices: ['development', 'production'],
+        describe: 'program specifications'
+    },
     report: {
         type: 'boolean',
         default: false,
@@ -65,8 +72,15 @@ const builder = (exports.builder = {
     }
 });
 const buildPlugin = {
-    id: 'san-cli-command-serve',
-    apply: getHandler(command, description, builder)
+    id: 'san-cli-command-build',
+    apply(api, projectOptions) {
+        // 注册命令
+        api.registerCommand(command, {
+            builder,
+            description,
+            handler: getHandler(api, projectOptions)
+        });
+    }
 };
 exports.handler = argv => {
     const getService = require('../../lib/getServiceInstance');
