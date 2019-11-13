@@ -36,6 +36,8 @@
         "copy-webpack-plugin": "^5.0.4",
         "core-js": "^3.3.3",
         "cosmiconfig": "^5.2.1",
+        "friendly-errors-webpack-plugin": "^1.7.0",
+        "write-file-webpack-plugin": "^4.5.1",
         "css-loader": "^3.2.0",
         "execa": "^1.0.0",
         "cssnano": "^4.1.10",

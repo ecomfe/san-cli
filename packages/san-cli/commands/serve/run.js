@@ -15,7 +15,6 @@ module.exports = function apply(api, projectOptions) {
 
         const {publicPath, devServer: projectDevServerOptions, devServerMiddlewares} = projectOptions;
         const webpackConfig = getNormalizeWebpackConfig(api, projectOptions, argv);
-
         devServer({
             webpackConfig,
             publicPath,

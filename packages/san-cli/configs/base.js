@@ -17,11 +17,14 @@ module.exports = {
             // set mode
             webpackConfig.mode(isProd ? 'production' : 'development').context(api.service.cwd);
             // set output
+            // prettier-ignore
             webpackConfig.output
                 .path(api.resolve(projectOptions.outputDir))
                 // 留个小彩蛋吧~
                 .jsonpFunction(projectOptions.jsonpFunction || 'HK3')
-                .filename((isLegacyBundle ? '[name]-legacy' : '[name]') + `${isProd ? '.[hash:8]' : ''}.js`)
+                /* eslint-disable max-len */
+                .filename((isLegacyBundle ? '[name]-legacy' : '[name]') + `${projectOptions.filenameHashing ? '.[hash:8]' : ''}.js`)
+                /* eslint-enable max-len */
                 .publicPath(projectOptions.publicPath);
 
             if (!isProd) {

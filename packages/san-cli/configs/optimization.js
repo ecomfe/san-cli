@@ -15,6 +15,23 @@ module.exports = {
             }
 
             const {assetsDir, splitChunksCacheGroups = {}, terserOptions = {}} = options;
+            // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
+            const isLegacyBundle = process.env.SAN_CLI_LEGACY_BUILD;
+            // sourcemap
+            const filename = getAssetPath(
+                assetsDir,
+                `js/[name]${isLegacyBundle ? '-legacy' : ''}${options.filenameHashing ? '.[hash:8]' : ''}.js`
+            );
+
+            // 条件判断sourcemap是否开启，san.config.js传入
+            let ifSourcemap = false;
+            if (options.sourceMap) {
+                ifSourcemap = true;
+            }
+            webpackConfig
+                .devtool(ifSourcemap ? 'source-map' : false)
+                .output.filename(filename)
+                .chunkFilename(filename);
 
             // splitChunks
             webpackConfig.optimization.splitChunks({
@@ -83,22 +100,6 @@ module.exports = {
                     options.splitChunks || splitChunksCacheGroups
                 )
             });
-
-            // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
-            const isLegacyBundle = process.env.SAN_CLI_LEGACY_BUILD;
-            // sourcemap
-            const filename = getAssetPath(assetsDir, `js/[name]${isLegacyBundle ? '-legacy' : ''}.[chunkhash:8].js`);
-
-            // 条件判断sourcemap是否开启，san.config.js传入
-            let ifSourcemap = false;
-            if (options.sourceMap) {
-                ifSourcemap = true;
-            }
-            // TODO chunkname 没有 hash
-            webpackConfig
-                .devtool(ifSourcemap ? 'source-map' : false)
-                .output.filename(filename)
-                .chunkFilename(filename);
 
             webpackConfig.optimization.minimizer('js').use(
                 new TerserPlugin({

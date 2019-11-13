@@ -66,7 +66,7 @@ module.exports = class Service extends EventEmitter {
                 env = dotenv.parse(content) || {};
                 logger.info('loadEnv', envPath, env);
             } catch (err) {
-                // only ignore error if file is not found
+                // 文件不存在
                 if (err.toString().indexOf('ENOENT') < 0) {
                     logger.error('loadEnv', err);
                 } else {
@@ -85,7 +85,6 @@ module.exports = class Service extends EventEmitter {
                 process.env[key] = envObj[key];
             }
         });
-
         if (mode) {
             const defaultNodeEnv = mode === 'production' ? mode : 'development';
             // 下面属性如果为空，会根据 mode 设置的
@@ -169,7 +168,7 @@ module.exports = class Service extends EventEmitter {
         this.plugins.forEach(plugin => {
             this.initPlugin(plugin);
         });
-        // apply webpack configs from project config file
+        // webpack 配置
         if (this.projectOptions.chainWebpack) {
             this.webpackChainFns.push(this.projectOptions.chainWebpack);
         }
@@ -475,9 +474,6 @@ module.exports = class Service extends EventEmitter {
             }
         });
 
-        // #2206 If config is merged by merge-webpack, it discards the __ruleNames
-        // information injected by webpack-chain. Restore the info so that
-        // vue inspect works properly. (hulk inspect)
         if (config !== original) {
             cloneRuleNames(config.module && config.module.rules, original.module && original.module.rules);
         }

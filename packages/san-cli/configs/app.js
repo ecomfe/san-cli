@@ -190,7 +190,7 @@ module.exports = {
                             to: path.join(outputDir, to),
                             ignore,
                             transform: (content, path) => {
-                                if (/\.(tpl|html)$/.test(path)) {
+                                if (/\.(tpl|html|htm)$/.test(path)) {
                                     return minify(content.toString(), {
                                         minifyCSS: true,
                                         minifyJS: {

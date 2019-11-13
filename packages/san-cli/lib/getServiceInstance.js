@@ -5,9 +5,8 @@
 
 module.exports = (argv, plugin) => {
     const Service = require('./Service');
-    if (argv.entry) {
-        // 存在 entry
-    }
+    const flatten = require('san-cli-utils/utils').flatten;
+
     // 处理 rc 文件传入的 Service Class arguments
     let {plugins, useBuiltInPlugin = true, projectOptions} = argv._rcServiceArgs || {};
     if (Array.isArray(plugins)) {
@@ -16,5 +15,5 @@ module.exports = (argv, plugin) => {
         plugins = [plugin];
     }
 
-    return new Service(process.cwd(), {plugins, useBuiltInPlugin, projectOptions});
+    return new Service(process.cwd(), {plugins: flatten(plugins), useBuiltInPlugin, projectOptions});
 };

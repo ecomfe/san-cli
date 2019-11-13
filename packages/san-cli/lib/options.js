@@ -6,7 +6,6 @@
 const joi = require('@hapi/joi');
 const schema = joi
     .object({
-        build: joi.object(),
         parallel: joi.alternatives().try(joi.boolean(), joi.number().integer()),
         browserslist: joi.alternatives().try(joi.array(), joi.object()),
         jsonpFunction: joi.string(),
@@ -88,13 +87,12 @@ exports.validate = (options, cb) => {
 exports.validateSync = async (value, options) => await schema.validateAsync(value, options);
 
 exports.defaults = {
-    build: {},
     pages: undefined,
     indexPath: 'index.html',
     outputDir: 'output',
     assetsDir: '',
     publicPath: '/',
-    filenameHashing: true,
+    filenameHashing: false,
     copyPublicDir: false,
     devServer: {
         clientLogLevel: 'info',

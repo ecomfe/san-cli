@@ -50,7 +50,7 @@ function getCommonArgv(argv) {
     } else {
         npmlog.level = argv.logLevel;
     }
-    // // 让他增加 prefix 返回函数用法，实现 debug 功能
+    // 让他增加 prefix 返回函数用法，实现 debug 功能
     const logger = (prefix, level = 'info') => (...args) => npmlog[level](prefix, ...args);
 
     Object.keys(npmlog).forEach(key => {
