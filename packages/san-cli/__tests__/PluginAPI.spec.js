@@ -1,5 +1,5 @@
 /**
- * @file PluginAPI单测
+ * @file PluginAPI test
  */
 
 import PluginAPI from '../lib/PluginAPI';

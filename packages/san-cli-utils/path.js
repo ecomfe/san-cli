@@ -13,6 +13,10 @@ const address = importLazy('address');
 const fse = importLazy('fs-extra');
 const {chalk} = require('./ttyLogger');
 
+exports.isLocalPath = templatePath => {
+    return /^[./]|(^[a-zA-Z]:)/.test(templatePath);
+};
+
 exports.resolveLocal = function resolveLocal(...args) {
     return path.join(__dirname, '../', ...args);
 };

@@ -1,5 +1,5 @@
 /**
- * @file downloadrepo单测
+ * @file downloadrepo test
  */
 
 import loadRc from '../lib/loadRc';

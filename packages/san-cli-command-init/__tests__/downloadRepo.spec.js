@@ -1,8 +1,8 @@
 /**
- * @file downloadrepo单测
+ * @file downloadRepo test
  */
 
-import downloadrepo from '../lib/downloadrepo';
+import downloadrepo from '../utils/downloadrepo';
 import {removeSync} from 'fs-extra';
 
 jest.mock('git-clone');
