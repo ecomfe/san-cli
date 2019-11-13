@@ -55,8 +55,6 @@ module.exports = {
             ]);
             // 处理 tpl 的情况，smarty copy 到 output
             webpackConfig.plugin('write-file').use(require('write-file-webpack-plugin'), [{test: /\.tpl$/}]);
-            // 添加 sourcemap
-            webpackConfig.devtools
         });
     }
 };
