@@ -1,5 +1,5 @@
 /**
- * @file 作为html-webpack-plugin-addons的一个回调，用于将 页面静态资源插入到smarty 中
+ * @file 作为html-webpack-plugin的一个插件，用于将页面静态资源插入到smarty 中
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -77,8 +77,7 @@ module.exports = class HulkHtmlWebpackPlugin {
             const alterAssetTags = this.alterAssetTags.bind(this, compilation);
             const afterHTMLProcessing = this.afterHTMLProcessing.bind(this, compilation);
             if (HtmlWebpackPlugin.getHooks) {
-                // v4
-
+                // 我们支持v4
                 HtmlWebpackPlugin.getHooks(compilation).alterAssetTags.tapAsync(name, alterAssetTags);
                 HtmlWebpackPlugin.getHooks(compilation).afterTemplateExecution.tap(name, alterAssetTags);
             } else {
