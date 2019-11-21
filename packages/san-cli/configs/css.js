@@ -13,22 +13,11 @@ module.exports = {
             const {getAssetPath} = require('san-cli-utils/path');
 
             const isProd = api.isProd();
-
-            let sassLoaderVersion;
-            try {
-                sassLoaderVersion = semver.major(require('sass-loader/package.json').version);
-            } catch (e) {}
-            if (sassLoaderVersion < 8) {
-                npmlog.warn(
-                    'webpackConfig.css',
-                    'A new version of sass-loader is available. Please upgrade for best experience.'
-                );
-            }
-
             // 这里loaderOptions直接用 projectOptions.css 的内容
             // prettier-ignore
             const {
                 extract = isProd,
+                // 不在 css 中单独配置，默认跟 rootOptions.sourceMap 一致
                 sourceMap = rootOptions.sourceMap,
                 loaderOptions = {},
                 cssPreprocessor
@@ -64,23 +53,6 @@ module.exports = {
             // 优先使用 san.config 定义的内容
             const postCSSOptions = loaderOptions.postcss;
 
-            // if building for production but not extracting CSS, we need to minimize
-            // the embbeded inline CSS as they will not be going through the optimizing
-            // plugin.
-            const needInlineMinification = isProd && !shouldExtract;
-
-            const cssnanoOptions = {
-                preset: [
-                    'default',
-                    {
-                        mergeLonghand: false,
-                        cssDeclarationSorter: false
-                    }
-                ]
-            };
-            if (rootOptions.productionSourceMap && sourceMap) {
-                cssnanoOptions.map = {inline: false};
-            }
             const styleLoader = require('./loaders/style')(loaderOptions.style, rootOptions, api);
 
             function createCSSRule(lang, test, loader, options) {
@@ -113,7 +85,7 @@ module.exports = {
                             sourceMap,
                             importLoaders:
                                 // prettier-ignore
-                                1 + (postCSSOptions ? 1 : 0) + (needInlineMinification ? 1 : 0)
+                                1 + (postCSSOptions ? 1 : 0)
                         },
                         loaderOptions.css
                     );
@@ -130,15 +102,6 @@ module.exports = {
                     rule.use('css-loader')
                         .loader('css-loader')
                         .options(cssLoaderOptions);
-
-                    if (needInlineMinification) {
-                        rule.use('cssnano')
-                            .loader('postcss-loader')
-                            .options({
-                                sourceMap,
-                                plugins: [require('cssnano')(cssnanoOptions)]
-                            });
-                    }
 
                     if (postCSSOptions) {
                         rule.use('postcss-loader')
@@ -157,6 +120,16 @@ module.exports = {
             createCSSRule('css', /\.css$/);
             createCSSRule('postcss', /\.p(ost)?css$/);
             if (!cssPreprocessor || cssPreprocessor === 'scss' || cssPreprocessor === 'sass') {
+                let sassLoaderVersion;
+                try {
+                    sassLoaderVersion = semver.major(require('sass-loader/package.json').version);
+                } catch (e) {}
+                if (sassLoaderVersion < 8) {
+                    npmlog.warn(
+                        'webpackConfig.css',
+                        'A new version of sass-loader is available. Please upgrade for best experience.'
+                    );
+                }
                 // 添加 sass 逻辑
                 createCSSRule('scss', /\.scss$/, 'sass-loader', Object.assign({}, loaderOptions.sass));
                 if (sassLoaderVersion < 8) {
@@ -216,14 +189,14 @@ module.exports = {
             // inject CSS extraction plugin
             if (shouldExtract) {
                 webpackConfig.plugin('extract-css').use(require('mini-css-extract-plugin'), [extractOptions]);
-
                 // minify extracted CSS
                 if (isProd) {
-                    // 压缩
-                    webpackConfig.optimization.minimizer('css').use(
-                        new OptimizeCSSAssetsPlugin({
-                            assetNameRegExp: /\.css$/g,
-                            cssProcessorOptions: {
+                    const cssnanoOptions = {
+                        preset: [
+                            'default',
+                            {
+                                mergeLonghand: false,
+                                cssDeclarationSorter: false,
                                 normalizeUrl: false,
                                 discardUnused: false,
                                 // 避免 cssnano 重新计算 z-index
@@ -238,7 +211,14 @@ module.exports = {
                                 discardComments: {
                                     removeAll: true
                                 }
-                            },
+                            }
+                        ]
+                    };
+                    // 压缩
+                    webpackConfig.optimization.minimizer('css').use(
+                        new OptimizeCSSAssetsPlugin({
+                            assetNameRegExp: /\.css$/g,
+                            cssProcessorOptions: cssnanoOptions,
                             canPrint: true
                         })
                     );

@@ -2,6 +2,7 @@
  * @file build command
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+// TODO: 整理文案
 const getHandler = require('./run');
 const command = (exports.command = 'build [entry]');
 const description = (exports.description = 'build description');

@@ -21,3 +21,4 @@ module.exports = wrapper((options, {filenameHashing, assetsDir, largeAssetSize =
         )
     };
 });
+

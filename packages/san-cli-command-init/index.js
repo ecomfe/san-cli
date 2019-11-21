@@ -19,6 +19,7 @@ module.exports = (template, appName, argv = {}) => {
     const dest = path.resolve(appName || '.');
     // 记录一下开始新建工程时的起始时间
     const startTime = Date.now();
+    // TODO: 整理文案
     const taskList = [
         {title: '🔍 检测目录和离线包状态...', task: checkStatus(template, dest, argv)},
         {title: '🚚 下载项目脚手架模板...', task: download(template, dest, argv)},

@@ -11,6 +11,7 @@ const Config = require('webpack-chain');
 const webpackMerge = require('webpack-merge');
 const cosmiconfig = require('cosmiconfig');
 const defaultsDeep = require('lodash.defaultsdeep');
+const lMerge = require('lodash.merge');
 const dotenv = require('dotenv');
 
 const commander = require('./commander');
@@ -44,6 +45,7 @@ module.exports = class Service extends EventEmitter {
         this.registeredCommandHandlers = new Map();
 
         this._cli = cli;
+        this.devServerMiddlewares = [];
         this.plugins = this.resolvePlugins(plugins, useBuiltInPlugin);
     }
     loadEnv(mode) {
@@ -124,8 +126,10 @@ module.exports = class Service extends EventEmitter {
         if (typeof p === 'string') {
             // 处理引入
             try {
-                let plugin = require(p);
-                if (plugin.default) {
+                // 是从工作目录开始的
+                // san cli 内部使用 require
+                let plugin = require(resolve(this.cwd, p));
+                if (plugin.__esModule) {
                     // 重新赋值 esmodule
                     plugin = plugin.default;
                 }
@@ -150,8 +154,11 @@ module.exports = class Service extends EventEmitter {
             }
         } else if (typeof p === 'object' && p.id && typeof p.apply === 'function') {
             // 处理 object
-            return p;
+            return [p, pluginOptions];
         } else {
+            if (p.toString() === '[object Object]') {
+                console.log(p);
+            }
             // 写明白这里是需要 id 的
             throw new SError('Plugin is valid : ' + p);
         }
@@ -198,7 +205,8 @@ module.exports = class Service extends EventEmitter {
                         'registerCommandFlag',
                         'addPlugin',
                         'resolveChainableWebpackConfig',
-                        'resolveWebpackConfig'
+                        'resolveWebpackConfig',
+                        'addDevServerMiddleware'
                     ].includes(prop)
                 ) {
                     if (typeof self[prop] === 'function') {
@@ -430,19 +438,29 @@ module.exports = class Service extends EventEmitter {
         logInfo(projectOptions);
 
         this.projectOptions = projectOptions;
-
+        // 添加插件
+        if (Array.isArray(projectOptions.plugins) && projectOptions.plugins.length) {
+            projectOptions.plugins.forEach(p => this.addPlugin(p));
+        }
         // 开始添加依赖 argv 的内置 plugin
         // 添加progress plugin
         if (!argv.noProgress) {
-            this.addPlugin('../plugins/progress');
+            this.addPlugin(require('../plugins/progress'), {name: cmd});
         }
         this.init(mode);
         this.runCommand(cmd, rawArgv);
         return this;
     }
     addPlugin(name, options = {}) {
+        if (Array.isArray(name)) {
+            [name, options = {}] = name;
+        }
         const plugin = this._resolvePlugin([name, options]);
         this.plugins.push(plugin);
+        return this;
+    }
+    addDevServerMiddleware(middlewares) {
+        this.devServerMiddlewares.push(middlewares);
         return this;
     }
 
@@ -477,7 +495,22 @@ module.exports = class Service extends EventEmitter {
         if (config !== original) {
             cloneRuleNames(config.module && config.module.rules, original.module && original.module.rules);
         }
-
+        // 这里需要将 devServer 和 this.projectOptions.devServer 进行 merge
+        config.devServer = lMerge(config.devServer || {}, this.projectOptions.devServer || {}) || {};
+        let before = config.devServer.before;
+        if (this.devServerMiddlewares.length) {
+            /* eslint-disable space-before-function-paren */
+            before = (function(before, devServerMiddlewares) {
+                /* eslint-enable space-before-function-paren */
+                return (app, server) => {
+                    // 因为一些中间件存在监听等逻辑，所以这里包了一层 fn
+                    devServerMiddlewares.forEach(fn => typeof fn === 'function' && app.use(fn()));
+                    // 还原配置的 before
+                    typeof before === 'function' && before(app, server);
+                };
+            })(before, this.devServerMiddlewares);
+        }
+        config.devServer.before = before;
         return config;
     }
 };

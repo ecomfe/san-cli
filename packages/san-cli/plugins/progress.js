@@ -5,10 +5,10 @@
 
 module.exports = {
     id: 'built-in:plugin-progress',
-    apply(api) {
+    apply(api, projectOptions, options) {
         // 添加progress
         api.chainWebpack(webpackConfig => {
-            webpackConfig.plugin('progress').use(require('webpack/lib/ProgressPlugin'));
+            webpackConfig.plugin('progress').use(require('webpackbar'), [options]);
         });
     }
 };

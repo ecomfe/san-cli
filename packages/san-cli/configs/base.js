@@ -27,13 +27,6 @@ module.exports = {
                 /* eslint-enable max-len */
                 .publicPath(projectOptions.publicPath);
 
-            if (!isProd) {
-                // dev mode
-                webpackConfig.devtool('cheap-module-eval-source-map');
-                webpackConfig.plugin('hmr').use(require('webpack/lib/HotModuleReplacementPlugin'));
-                webpackConfig.plugin('no-emit-on-errors').use(require('webpack/lib/NoEmitOnErrorsPlugin'));
-            }
-
             // prettier-ignore
             /* eslint-disable*/
             webpackConfig
@@ -49,6 +42,7 @@ module.exports = {
                     .end()
                 // set alias
                 .alias
+                    // 加个@默认值
                     .set('@', api.resolve('src'))
                     .set('core-js', path.dirname(require.resolve('core-js')))
                     .set('regenerator-runtime', path.dirname(require.resolve('regenerator-runtime')));
@@ -112,10 +106,34 @@ module.exports = {
             setLoader('fonts', /\.(woff2?|eot|ttf|otf)(\?.*)?$/i, 'url', {
                 dir: 'fonts'
             });
-
             // ----------------------pulgins---------------------
             // 大小写敏感！！！！
             webpackConfig.plugin('case-sensitive-paths').use(require('case-sensitive-paths-webpack-plugin'));
+            // 定义 env 中的变量
+            webpackConfig.plugin('define').use(require('webpack/lib/DefinePlugin'), [defineVar()]);
+            if (!isProd) {
+                // dev mode
+                webpackConfig.devtool('cheap-module-eval-source-map');
+                webpackConfig.plugin('hmr').use(require('webpack/lib/HotModuleReplacementPlugin'));
+                webpackConfig.plugin('no-emit-on-errors').use(require('webpack/lib/NoEmitOnErrorsPlugin'));
+            }
+            // 将 env 中的值进行赋值
+            function defineVar() {
+                const vars = {
+                    NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+                    PRODUCTION: JSON.stringify(isProd),
+                    BASE_URL: JSON.stringify(projectOptions.publicPath)
+                };
+                // 这里把var 变量名拆出来
+                const re = /^SAN_VAR_([\w\d\_]+)$/;
+                Object.keys(process.env).forEach(key => {
+                    if (re.test(key)) {
+                        const name = re.exec(key)[1];
+                        vars[name] = JSON.stringify(process.env[key]);
+                    }
+                });
+                return vars;
+            }
         });
     }
 };

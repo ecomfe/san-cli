@@ -58,7 +58,6 @@ module.exports = function apply(api, projectOptions) {
                     argv.stats = 'verbose';
                 }
                 if (argv.stats === 'table') {
-                    //  TODO：这里有问题，需要调试下 hulk 的 report 代码
                     console.log(
                         require('../../webpack/formatStats')(stats, targetDirShort, {
                             resolve: p => api.resolve(p)

@@ -2,7 +2,7 @@
  * @file serve run
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const {info, success: sucLog, error, chalk} = require('../../../san-cli-utils/ttyLogger');
+const {info, error, chalk} = require('../../../san-cli-utils/ttyLogger');
 const devServer = require('../../webpack/serve');
 const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
 // 可以通过传入 api 和 options，获得 yarg 的 handler
@@ -13,13 +13,12 @@ module.exports = function apply(api, projectOptions) {
         const mode = argv.mode;
         info(`Starting ${mode} server...`);
 
-        const {publicPath, devServer: projectDevServerOptions, devServerMiddlewares} = projectOptions;
+        const {publicPath} = projectOptions;
         const webpackConfig = getNormalizeWebpackConfig(api, projectOptions, argv);
         devServer({
             webpackConfig,
             publicPath,
-            devServerMiddlewares,
-            devServerConfig: projectDevServerOptions,
+            devServerConfig: webpackConfig.devServer,
             fail: ({type, stats, err}) => {
                 // TODO: 错误处理
                 if (type === 'server') {
@@ -42,9 +41,7 @@ module.exports = function apply(api, projectOptions) {
                 if (isFirstCompile) {
                     /* eslint-disable no-console */
                     console.log();
-                    console.log('  App running at:');
-
-                    console.log(`  - Network: ${chalk.cyan(networkUrl)}`);
+                    console.log(`  App running at: ${chalk.green(networkUrl)}`);
                     console.log();
                     /* eslint-enable no-console */
                     // 打开浏览器地址
@@ -63,9 +60,6 @@ module.exports = function apply(api, projectOptions) {
                             }
                         );
                     }
-                } else {
-                    // TODO： rebuild log
-                    sucLog('Build success!');
                 }
             }
         });

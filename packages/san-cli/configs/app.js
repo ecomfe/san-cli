@@ -4,8 +4,8 @@
  */
 const path = require('path');
 const fs = require('fs');
-const minify = require('html-minifier').minify;
-const defaultsDeep = require('lodash.defaultsdeep');
+const minify = require('html-minifier-terser').minify;
+const lMerge = require('lodash.merge');
 
 module.exports = {
     id: 'built-in:app',
@@ -13,6 +13,25 @@ module.exports = {
         api.chainWebpack(webpackConfig => {
             const isProd = api.isProd();
             const outputDir = api.resolve(options.outputDir);
+            const terserOptions = Object.assign(
+                {
+                    comments: false,
+                    compress: {
+                        unused: true,
+                        // 删掉 debugger
+                        drop_debugger: true, // eslint-disable-line
+                        // 移除 console
+                        drop_console: true, // eslint-disable-line
+                        // 移除无用的代码
+                        dead_code: true // eslint-disable-line
+                    },
+                    ie8: false,
+                    safari10: true,
+                    warnings: false,
+                    toplevel: true
+                },
+                options.terserOptions
+            );
 
             // 1. 判断 pages
             // 2. build 做的事情是判断 serve 对象
@@ -50,7 +69,7 @@ module.exports = {
 
             if (isProd) {
                 // 压缩 html
-                defaultsDeep(htmlOptions, {
+                lMerge(htmlOptions, {
                     minify: {
                         removeComments: true,
                         collapseWhitespace: false,
@@ -58,9 +77,8 @@ module.exports = {
                         collapseBooleanAttributes: true,
                         removeScriptTypeAttributes: false,
                         minifyCSS: true,
-                        minifyJS: {
-                            compress: {}
-                        },
+                        // 跟 terserOptions 打平
+                        minifyJS: terserOptions,
                         // 处理 smarty 和 php 情况
                         ignoreCustomFragments: [/{%[\s\S]*?%}/, /<%[\s\S]*?%>/, /<\?[\s\S]*?\?>/]
                         // more options:
@@ -127,7 +145,7 @@ module.exports = {
                             filename = `${name}.html`;
                         }
                     }
-                    filename = path.join(options.templateDir, filename);
+                    // filename = path.join(options.templateDir, filename);
                     // resolve page index template
                     const hasDedicatedTemplate = fs.existsSync(api.resolve(template));
                     if (hasDedicatedTemplate) {
@@ -165,51 +183,62 @@ module.exports = {
                 // html-webpack-harddisk-plugin
                 webpackConfig.plugin('html-webpack-harddisk-plugin').use(require('html-webpack-harddisk-plugin'));
             }
-
-            // copy static assets in public/
-            const publicDir = api.resolve('public');
             const copyArgs = [];
-            if (options.copyPublicDir && fs.existsSync(publicDir)) {
-                copyArgs.push({
-                    from: publicDir,
-                    to: outputDir,
-                    ignore: publicCopyIgnore
-                });
-            }
+            // copy static assets in public/
+            // 这里不属于 cli 的范畴，所以暂时不加了，让打包脚本自己处理吧
+            // const publicDir = api.resolve('public');
+            // if (options.copyPublicDir && fs.existsSync(publicDir)) {
+            //     copyArgs.push({
+            //         from: publicDir,
+            //         to: outputDir,
+            //         ignore: publicCopyIgnore
+            //     });
+            // }
             // ------ 这里把 copy 拿到这里来处理是为了合并 ignore
             if (options.copy) {
-                const addCopyOptions = ({from, to = './', ignore = []}) => {
+                const addCopyOptions = options => {
+                    let {from, to = './', ignore = [], compress = true} = options;
+                    /* eslint-disable fecs-indent */
+                    // 默认开启压缩 tpl 和 html 文件，smarty 的专属
+                    const defaultTransformOptions = compress
+                        ? {
+                              transform: (content, path) => {
+                                  if (/\.(tpl|html|htm)$/.test(path)) {
+                                      return minify(content.toString(), {
+                                          minifyCSS: true,
+                                          minifyJS: terserOptions,
+                                          ignoreCustomFragments: [/{%[\s\S]*?%}/, /<%[\s\S]*?%>/, /<\?[\s\S]*?\?>/]
+                                      });
+                                  } else {
+                                      return content;
+                                  }
+                              }
+                          }
+                        : {};
+                    /* eslint-enable fecs-indent */
+
                     // 排除 templte 的情况
                     ignore = publicCopyIgnore.concat(typeof ignore === 'string' ? [ignore] : ignore);
                     if (from && !/[$^*?!]+/.test(from) && fs.existsSync(api.resolve(from))) {
                         from = api.resolve(from);
                         // 保证template的相对路径
                         ignore = ignore.map((f, i) => (i > 1 ? ensureRelative(from, api.resolve(f)) : f));
-                        copyArgs.push({
-                            from,
-                            to: path.join(outputDir, to),
-                            ignore,
-                            transform: (content, path) => {
-                                if (/\.(tpl|html|htm)$/.test(path)) {
-                                    return minify(content.toString(), {
-                                        minifyCSS: true,
-                                        minifyJS: {
-                                            compress: {}
-                                        },
-                                        ignoreCustomFragments: [/{%[\s\S]*?%}/, /<%[\s\S]*?%>/, /<\?[\s\S]*?\?>/]
-                                    });
-                                } else {
-                                    return content;
-                                }
-                            }
-                        });
+                        copyArgs.push(
+                            Object.assign(defaultTransformOptions, options, {
+                                from,
+                                to: path.join(outputDir, to),
+                                ignore
+                            })
+                        );
                     } else {
                         // 正则的，不处理
-                        copyArgs.push({
-                            from,
-                            to: path.join(outputDir, to),
-                            ignore
-                        });
+                        copyArgs.push(
+                            Object.assign(defaultTransformOptions, options, {
+                                from,
+                                to: path.join(outputDir, to),
+                                ignore
+                            })
+                        );
                     }
                 };
                 if (Array.isArray(options.copy)) {

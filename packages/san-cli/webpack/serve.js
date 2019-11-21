@@ -4,6 +4,7 @@
  */
 const path = require('path');
 const url = require('url');
+const lMerge = require('lodash.merge');
 
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
@@ -16,7 +17,6 @@ const debug = require('../lib/debug');
 const log = debug('webpack/serve');
 module.exports = async function devServer({
     webpackConfig,
-    devServerMiddlewares,
     devServerConfig,
     publicPath,
     success,
@@ -85,19 +85,12 @@ module.exports = async function devServer({
         watchContentBase: false,
         publicPath
     };
-
     const server = new WebpackDevServer(
         compiler,
         Object.assign(defaultDevServer, devServerConfig, {
             https,
             port,
-            host,
-            before(app, server) {
-                // allow other plugins to register middlewares, e.g. PWA
-                (devServerMiddlewares || []).forEach(fn => app.use(fn()));
-                // apply in project middlewares
-                devServerConfig.before && devServerConfig.before(app, server);
-            }
+            host
         })
     );
 

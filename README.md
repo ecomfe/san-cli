@@ -155,5 +155,6 @@ module.exports = {
 -   css
 -   css.loaderOptions
 -   css.sourceMap
--   pluginOptions
--   productionSourceMap
+
+## env 特殊
+SAN_VAR_ABC=哈哈

@@ -8,8 +8,6 @@ const outputDir = 'output';
 module.exports = {
     outputDir,
     // baseUrl: '/',
-    // 不复制 publicDir
-    copyPublicDir: false,
     // output 路径
     // 这个是 template在 output 的路径
     templateDir: 'template',
@@ -38,10 +36,6 @@ module.exports = {
         // 如果是 contentBase = outputDir 谨慎watchContentBase打开，打开后 template 每次文件都会重写，从而导致 hmr 失效，每次都 reload 页面
         port: 9003
     },
-    // dev-server 中间件
-    devServerMiddlewares: [
-        ()=>{}
-    ],
     // 生产环境配置，内部配置跟config 一级配置一样，会覆盖默认的一级同名配置
     build: {
         // 推荐使用 s.bdstatic.com CDN域名

@@ -5,6 +5,7 @@
 
 exports.command = 'init';
 exports.desc = 'Create an empty repo';
+// TODO: 整理文案
 exports.builder = {
     useCache: {
         default: false
