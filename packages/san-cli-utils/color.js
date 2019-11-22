@@ -4,7 +4,7 @@
  */
 
 const chalk = require('chalk');
-
+// eslint-disable-next-line
 const colorMap = new Map();
 
 function chalkColor(name) {
@@ -24,6 +24,7 @@ function chalkColor(name) {
 }
 exports.chalkColor = chalkColor;
 
+// eslint-disable-next-line
 const bgColorMap = new Map();
 
 function chalkBgColor(name) {
