@@ -4,7 +4,6 @@
  */
 const path = require('path');
 const url = require('url');
-const lMerge = require('lodash.merge');
 
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');

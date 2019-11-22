@@ -429,6 +429,7 @@ module.exports = class Service extends EventEmitter {
         this.logger = logger;
 
         const mode = argv.mode || (cmd === 'build' && argv.watch ? 'development' : 'production');
+        // 先加载 env 文件，保证 config 文件中可以用到
         this.loadEnv(mode);
 
         // set mode

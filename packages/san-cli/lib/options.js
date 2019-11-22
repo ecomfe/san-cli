@@ -115,14 +115,12 @@ exports.defaults = {
     publicPath: '/',
     filenameHashing: false,
     devServer: {
-        clientLogLevel: 'info',
+        logLevel: 'silent',
+        clientLogLevel: 'silent',
         overlay: {warnings: false, errors: true},
-        hot: true,
-        noInfo: true,
         stats: 'errors-only',
         inline: false,
         lazy: false,
-        quiet: false,
         index: 'index.html',
         watchOptions: {
             aggregateTimeout: 300,

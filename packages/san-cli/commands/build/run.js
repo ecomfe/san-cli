@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const path = require('path');
-const {info, chalk, success: successLog} = require('san-cli-utils/ttyLogger');
+const {title, chalk, success: successLog} = require('san-cli-utils/ttyLogger');
 const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
 module.exports = function apply(api, projectOptions) {
     return argv => {
@@ -19,7 +19,7 @@ module.exports = function apply(api, projectOptions) {
             process.env.SAN_CLI_MODERN_BUILD = true;
         }
         const bundleTag = modern ? (process.env.SAN_CLI_MODERN_BUILD ? 'modern bundle ' : 'legacy bundle ') : '';
-        info(`Building ${bundleTag}for ${mode}...`);
+        title('info', `Building ${bundleTag}for ${mode}...`);
 
         // 获取 webpack 配置
         function fail({err, stats}) {
