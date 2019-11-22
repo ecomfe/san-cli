@@ -105,7 +105,10 @@ const schema = joi
 exports.validate = (options, cb) => {
     schema.validate(options, cb);
 };
-exports.validateSync = async (value, options) => await schema.validateAsync(value, options);
+exports.validateSync = async (value, options) => {
+    const rs = await schema.validateAsync(value, options);
+    return rs;
+};
 
 exports.defaults = {
     pages: undefined,
