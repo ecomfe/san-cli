@@ -1,0 +1,41 @@
+/**
+ * @file checkStatus test
+ */
+
+jest.unmock('vinyl-fs');
+jest.unmock('fs-extra');
+jest.mock('rxjs')
+jest.mock('inquirer');
+jest.mock('child_process');
+
+import fs from 'fs';
+import fse from 'fs-extra';
+import inquirer from 'inquirer';
+import rxjs from 'rxjs';
+import generator from '../tasks/generator';
+
+test('meta.js', async () => {
+    // 选择smarty、false
+    inquirer.prompt.mockResolvedValueOnce({tplEngine: 'smarty'});
+    inquirer.prompt.mockResolvedValueOnce({enableMatrix: false});
+
+    let ctx = {
+        localTemplatePath: __dirname + '/mock-template'
+    };
+    await generator('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-dest', {})(ctx).then(data => {
+        // 将_下划线文件转为.文件
+        expect(fs.existsSync(__dirname + '/mock-dest/.env')).toBeTruthy();
+        // 检验filters是否生效
+        expect(fs.existsSync(__dirname + '/mock-dest/test.js')).toBeFalsy();
+        // 检验handlerbars渲染
+        const req = require(__dirname + '/mock-dest/san.config.js');
+        expect(req.enableMatrix).toBeFalsy();
+        expect(req.pages.index).toEqual({
+            entry: './src/pages/index/index.js',
+            template: './template/index/index.tpl',
+            filename: 'index/index.tpl'
+        });
+    });
+
+    fse.removeSync(__dirname + '/mock-dest');
+});

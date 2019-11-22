@@ -58,11 +58,11 @@ module.exports = (name, dest, options) => {
             ctx.tplData = data;
 
             observer.next('生成目录结构ing...');
-            startTask(src, dest, ctx, observer);
+            await startTask(src, dest, ctx, observer);
         });
     };
 };
-function startTask(src, dest, ctx, observer) {
+async function startTask(src, dest, ctx, observer) {
     const {metaData: opts, tplData: data} = ctx;
     // 处理过滤
     const rootSrc = ['**/*', '!node_modules/**'];
@@ -95,7 +95,8 @@ function startTask(src, dest, ctx, observer) {
         // 不存在 template 则以整个文件夹做根目录
         templateDir = src;
     }
-    vfs.src(rootSrc, {cwd: templateDir, cwdbase: true, dot: true})
+    return new Promise((resolve, reject) => {
+        vfs.src(rootSrc, {cwd: templateDir, cwdbase: true, dot: true})
         // 过滤
         // .pipe(f)
         // 4. 增加 handlerbar
@@ -130,11 +131,14 @@ function startTask(src, dest, ctx, observer) {
         .pipe(vfs.dest(dest))
         .on('end', () => {
             observer.complete();
+            resolve();
         })
         .on('error', err => {
             observer.error(err);
+            reject();
         })
         .resume();
+    });
 }
 
 function getMetadata(dir) {

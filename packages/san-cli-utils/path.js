@@ -6,8 +6,6 @@
 const url = require('url');
 const path = require('path');
 const importLazy = require('import-lazy')(require);
-
-const home = importLazy('user-home');
 const address = importLazy('address');
 
 const fse = importLazy('fs-extra');
@@ -91,5 +89,7 @@ exports.prepareUrls = (protocol, host, port, pathname = '/') => {
 };
 
 // 获取本地模板路径
-exports.getLocalTplPath = template =>
-    path.join(home, '.san-templates', template.replace(/[/:#]/g, '-').substring(template.lastIndexOf('/') + 1));
+exports.getLocalTplPath = template => {
+    const home = require('user-home');
+    return path.join(home, '.san-templates', template.replace(/[/:#]/g, '-').substring(template.lastIndexOf('/') + 1));
+};
