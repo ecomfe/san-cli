@@ -4,11 +4,9 @@
  */
 const {chalkColor, chalkBgColor} = require('./color');
 const COLORS = [
-    'cyan',
     'orange',
     'blueBright',
     'cyanBright',
-    'greenBright',
     'magentaBright',
     '#ED6A5E',
     '#FFAC00',

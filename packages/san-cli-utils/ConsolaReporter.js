@@ -60,8 +60,9 @@ module.exports = class ConsolaReporter extends FancyReporter {
         const isBadge = typeof logObj.badge !== 'undefined' ? Boolean(logObj.badge) : logObj.level < 2;
 
         const secondaryColor = chalkColor(this.options.secondaryColor);
-
-        const date = secondaryColor(this.formatDate(logObj.date));
+        const date = secondaryColor(
+            logObj.date.toLocaleTimeString ? logObj.date.toLocaleTimeString() : this.formatDate(logObj.date)
+        );
 
         const type = this.formatType(logObj, isBadge);
 
@@ -72,7 +73,9 @@ module.exports = class ConsolaReporter extends FancyReporter {
         let line;
         const left = this.filterAndJoin([type, formattedMessage]);
         const right = this.filterAndJoin([tag, date]);
-        const space = width - stringWidth(left) - stringWidth(right) - 2;
+        // 下面右对齐，跟 firendly error 的 log 对齐
+        const space = width - stringWidth(left) - stringWidth(right);
+        // const space = width - stringWidth(left) - stringWidth(right) - 2;
 
         if (space > 0 && width >= 80) {
             line = left + ' '.repeat(space) + right;
