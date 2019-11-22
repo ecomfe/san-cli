@@ -7,18 +7,11 @@
 const {error: eLog} = require('san-cli-utils/ttyLogger');
 
 process.on('uncaughtException', error => {
-    eLog(`Uncaught exception: ${error}`);
-    if (error && error.stack) {
-        console.log(error.stack);
-    }
+    eLog(error);
     process.exit(1);
 });
 
 process.on('unhandledRejection', error => {
-    eLog(`Promise rejection: ${error}`);
-
-    if (error && error.stack) {
-        console.log(error.stack);
-    }
+    eLog(error);
     process.exit(1);
 });

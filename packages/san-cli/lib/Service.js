@@ -16,7 +16,6 @@ const dotenv = require('dotenv');
 
 const commander = require('./commander');
 const SError = require('san-cli-utils/SError');
-const argsert = require('./argsert');
 const PluginAPI = require('./PluginAPI');
 const {findExisting} = require('san-cli-utils/path');
 const {chalk} = require('san-cli-utils/ttyLogger');
@@ -32,6 +31,8 @@ module.exports = class Service extends EventEmitter {
     constructor(cwd, {plugins = [], useBuiltInPlugin = true, projectOptions = {}, cli = commander()} = {}) {
         super();
         this.cwd = cwd || process.cwd();
+        this.logger = logger;
+
         this.initialized = false;
         this._initProjectOptions = projectOptions;
         // webpack chain & merge array
@@ -66,11 +67,11 @@ module.exports = class Service extends EventEmitter {
             try {
                 const content = fs.readFileSync(envPath);
                 env = dotenv.parse(content) || {};
-                logger.info('loadEnv', envPath, env);
+                logger.debug('loadEnv', envPath, env);
             } catch (err) {
                 // 文件不存在
                 if (err.toString().indexOf('ENOENT') < 0) {
-                    logger.error('loadEnv', err);
+                    logger.error(err);
                 } else {
                     return {};
                 }
@@ -229,7 +230,6 @@ module.exports = class Service extends EventEmitter {
         return this;
     }
     registerCommandFlag(cmdName, flag, handler) {
-        argsert('<string> <object> <function>', [cmdName, flag, handler], arguments.length);
         cmdName = getCommandName(cmdName);
         const flagMap = this.registeredCommandFlags;
         let flags = flagMap.get(cmdName) || {};
@@ -242,7 +242,6 @@ module.exports = class Service extends EventEmitter {
         return this;
     }
     registerCommand(name, yargsModule) {
-        argsert('<string|<object> [function|object]', [name, yargsModule], arguments.length);
         /* eslint-disable one-var */
         let command, description, builder, handler, middlewares;
         /* eslint-enable one-var */
@@ -281,11 +280,7 @@ module.exports = class Service extends EventEmitter {
         return this;
     }
     _registerCommand(command, handler, description, builder, middlewares) {
-        argsert(
-            '<string> <function> [string|boolean] [object|function] [array]',
-            [command, handler, description, builder, middlewares],
-            arguments.length
-        );
+
         this._cli.command(command, description, builder, handler, middlewares);
         return this;
     }
@@ -323,7 +318,6 @@ module.exports = class Service extends EventEmitter {
                 try {
                     await validateOptions(result.config);
                 } catch (e) {
-                    console.log(e);
                     logger.error('loadProjectOptions', `${chalk.bold(configPath)}: 格式不正确.`);
                     throw new SError(e);
                 }
@@ -423,10 +417,9 @@ module.exports = class Service extends EventEmitter {
 
     async run(cmd, argv = {}, rawArgv = process.argv.slice(2)) {
         // eslint-disable-next-line
-        let {_version: version, _logger: logger} = argv;
+        let {_version: version} = argv;
         // 保证 Api.getxx 能够获取
         this.version = version;
-        this.logger = logger;
 
         const mode = argv.mode || (cmd === 'build' && argv.watch ? 'development' : 'production');
         // 先加载 env 文件，保证 config 文件中可以用到
@@ -435,8 +428,7 @@ module.exports = class Service extends EventEmitter {
         // set mode
         // load user config
         const projectOptions = await this.loadProjectOptions(argv.configFile);
-        const logInfo = logger('run:options');
-        logInfo(projectOptions);
+        logger.debug('projectOptions', projectOptions);
 
         this.projectOptions = projectOptions;
         // 添加插件

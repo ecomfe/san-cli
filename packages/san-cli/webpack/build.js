@@ -8,9 +8,9 @@ const {getWebpackErrorInfoFromStats} = require('san-cli-utils/webpack');
 const log = debug('webpack/build');
 
 module.exports = function build({webpackConfig, success, fail}) {
-    log.info('start');
+    log.debug('build start');
     webpack(webpackConfig, (err, stats) => {
-        log.info('done');
+        log.debug('build done');
 
         if (err || stats.hasErrors()) {
             if (fail) {

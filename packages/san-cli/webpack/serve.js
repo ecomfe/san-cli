@@ -11,16 +11,11 @@ const portfinder = require('portfinder');
 
 const {addDevClientToEntry, getWebpackErrorInfoFromStats} = require('san-cli-utils/webpack');
 const {prepareUrls} = require('san-cli-utils/path');
+const {error} = require('san-cli-utils/ttyLogger');
 const debug = require('../lib/debug');
 
 const log = debug('webpack/serve');
-module.exports = async function devServer({
-    webpackConfig,
-    devServerConfig,
-    publicPath,
-    success,
-    fail
-}) {
+module.exports = async function devServer({webpackConfig, devServerConfig, publicPath, success, fail}) {
     if (typeof success !== 'function') {
         success = () => {};
     }
@@ -28,7 +23,7 @@ module.exports = async function devServer({
         fail = () => {};
     }
 
-    log.info('start');
+    log.debug('serve start');
     const {https, host, port: basePort, public: rawPublicUrl, hotOnly} = devServerConfig;
     const protocol = https ? 'https' : 'http';
     portfinder.basePort = basePort;
@@ -68,9 +63,8 @@ module.exports = async function devServer({
         compiler = webpack(webpackConfig);
     } catch (e) {
         // 捕捉参数不正确的错误信息
-        log.warn('webpack compile error!');
+        error('webpack compile error!', e);
         if (e instanceof webpack.WebpackOptionsValidationError) {
-            console.error(e.message); // eslint-disable-line no-console
             process.exit(1);
         }
         throw e;
@@ -97,7 +91,7 @@ module.exports = async function devServer({
     let isFirstCompile = true;
 
     compiler.hooks.done.tap('san-cli-serve', stats => {
-        log.info('done');
+        log.debug('done');
         if (stats.hasErrors()) {
             const errObj = getWebpackErrorInfoFromStats(undefined, stats);
             errObj.type = 'webpack';

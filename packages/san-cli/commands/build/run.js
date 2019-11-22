@@ -3,7 +3,8 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const path = require('path');
-const {title, chalk, success: successLog} = require('san-cli-utils/ttyLogger');
+const {info, chalk, success: successLog, error} = require('san-cli-utils/ttyLogger');
+const {textColor} = require('san-cli-utils/randomColor');
 const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
 module.exports = function apply(api, projectOptions) {
     return argv => {
@@ -19,11 +20,11 @@ module.exports = function apply(api, projectOptions) {
             process.env.SAN_CLI_MODERN_BUILD = true;
         }
         const bundleTag = modern ? (process.env.SAN_CLI_MODERN_BUILD ? 'modern bundle ' : 'legacy bundle ') : '';
-        title('info', `Building ${bundleTag}for ${mode}...`);
+        info(`Building ${bundleTag}for ${mode}...`);
 
         // 获取 webpack 配置
         function fail({err, stats}) {
-            console.log('Build failed with errors.');
+            info('Build failed with errors.');
             if (stats && stats.toJson) {
                 process.stderr.write(
                     stats.toString({
@@ -34,7 +35,7 @@ module.exports = function apply(api, projectOptions) {
                     })
                 );
             } else {
-                console.log(err);
+                error(err);
             }
             process.exit(1);
         }
@@ -82,7 +83,7 @@ module.exports = function apply(api, projectOptions) {
                     }
                     const {time, version} = stats;
                     successLog(
-                        `The ${chalk.cyan(targetDirShort)} directory is ready to be deployed. Duration ${chalk.cyan(
+                        `The ${textColor(targetDirShort)} directory is ready to be deployed. Duration ${textColor(
                             `${duration}/${time / 1e3}s`
                         )}, Webpack ${version}.`
                     );

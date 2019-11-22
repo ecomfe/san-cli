@@ -4,19 +4,16 @@
 // 4. 注册 hook 时机
 // 5. 添加 log
 const path = require('path');
-const debug = require('../lib/debug');
-const npmlog = require('npmlog');
+const {logger} = require('san-cli-utils/ttyLogger');
 module.exports = class PluginAPI {
     constructor(id, service) {
         this.id = id;
         this.service = service;
-        this.log = npmlog;
+        this.log = logger;
+        this.logger = logger;
     }
     isProd() {
         return this.service.mode === 'production';
-    }
-    debug(prefix) {
-        return debug(prefix);
     }
     chainWebpack(fn) {
         this.service.webpackChainFns.push(fn);

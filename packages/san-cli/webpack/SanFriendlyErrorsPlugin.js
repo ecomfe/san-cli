@@ -4,7 +4,7 @@
  */
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 
-module.exports = class SanFriendlyErrorsPlugin extends FriendlyErrorsPlugin{
+module.exports = class SanFriendlyErrorsPlugin extends FriendlyErrorsPlugin {
     // 置空，太多 log 了
     displaySuccess() {}
-}
+};

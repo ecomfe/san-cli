@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const yargs = require('yargs/yargs');
-const npmlog = require('npmlog');
+const {setLevel, logger} = require('san-cli-utils/ttyLogger');
 const {scriptName, version: pkgVersion} = require('../package.json');
 
 module.exports = () => {
@@ -29,7 +29,7 @@ module.exports = () => {
             alias: 'logLevel',
             default: 'error',
             hidden: true,
-            choices: ['info', 'debug', 'warn', 'error', 'silent', 'notice', 'silly', 'timing', 'http'],
+            choices: ['info', 'debug', 'warn', 'error', 'silent'],
             type: 'string',
             describe: 'set log level'
         })
@@ -46,18 +46,11 @@ function getCommonArgv(argv) {
     // 利用中间件机制，增加公共参数处理和函数等
     if (argv.verbose) {
         // 增加 logger
-        npmlog.level = 'info';
+        setLevel(4);
     } else {
-        npmlog.level = argv.logLevel;
+        setLevel(argv.logLevel);
     }
-    // 让他增加 prefix 返回函数用法，实现 debug 功能
-    const logger = (prefix, level = 'info') => (...args) => npmlog[level](prefix, ...args);
 
-    Object.keys(npmlog).forEach(key => {
-        if (typeof npmlog[key] === 'function') {
-            logger[key] = (...args) => npmlog[key](...args);
-        }
-    });
     return {
         /* eslint-disable fecs-camelcase */
         _logger: logger,

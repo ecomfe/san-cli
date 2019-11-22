@@ -32,8 +32,8 @@ const buildinCmds = ['build', 'init', 'serve', 'inspect', 'default'];
 const cmd = process.argv[2];
 if (!process.env.SAN_CLI_MODERN_BUILD && buildinCmds.includes(cmd)) {
     // modern 打包不要输出这个了
-    console.log(chalk.bold(`${scriptName} ${cmd} v${pkgVersion}`));
-    console.log();
+    const {textColor} = require('san-cli-utils/randomColor');
+    console.log(textColor(`${scriptName} ${cmd} v${pkgVersion}`));
 }
 // 4. 内置的命令
 const cli = commander();

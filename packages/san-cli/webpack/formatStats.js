@@ -6,6 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
+const {textColor, bgColor} = require('san-cli-utils/randomColor');
 const {chalk} = require('san-cli-utils/ttyLogger');
 
 const flatten = require('san-cli-utils/utils').flatten;
@@ -186,12 +187,12 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
                 showReport = true;
                 return chalk.bgRed(formatSize(size));
             }
-            return chalk.cyan(formatSize(size));
+            return textColor(formatSize(size));
         });
         /* eslint-disable fecs-max-calls-in-template */
-        return `  Entrypoints ${chalk.cyan(name)}${showReport ? chalk.yellow(' [big]') : ''}, initial Size ${
+        return `  Entrypoints ${textColor(name)}${showReport ? chalk.yellowBright(' [big]') : ''}, initial Size ${
             size[0]
-        }, Gzipped ${chalk.cyan(formatSize(totalGzippedSize))}.${table.render()}`;
+        }, Gzipped ${textColor(formatSize(totalGzippedSize))}.${table.render()}`;
         /* eslint-enable fecs-max-calls-in-template */
     }
 
@@ -222,7 +223,10 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
                 );
             }
         );
-        return getTableString(name, files.filter(f => f));
+        return getTableString(
+            name,
+            files.filter(f => f)
+        );
     });
 
     return `\n${strArray.join('\n\n')}\n\n  ${chalk.gray('Images and other types of assets omitted.')}\n`;

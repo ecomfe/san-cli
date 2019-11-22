@@ -2,7 +2,7 @@
  * @file serve run
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const {title, error, chalk} = require('../../../san-cli-utils/ttyLogger');
+const {info, error} = require('../../../san-cli-utils/ttyLogger');
 const devServer = require('../../webpack/serve');
 const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
 // 可以通过传入 api 和 options，获得 yarg 的 handler
@@ -11,7 +11,7 @@ const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
 module.exports = function apply(api, projectOptions) {
     return async argv => {
         const mode = argv.mode;
-        title('info', `Starting ${mode} server...`);
+        info(`Starting ${mode} server...`);
 
         const {publicPath} = projectOptions;
         const webpackConfig = getNormalizeWebpackConfig(api, projectOptions, argv);
@@ -22,17 +22,18 @@ module.exports = function apply(api, projectOptions) {
             fail: ({type, stats, err}) => {
                 // TODO: 错误处理
                 if (type === 'server') {
-                    error('Local server start fail！');
+                    error('Local server start fail！', err);
                 } else if (stats && stats.toJson) {
                 } else {
-                    console.log(err);
+                    error(err);
                 }
             },
             success: ({isFirstCompile, networkUrl}) => {
                 if (isFirstCompile) {
+                    const {textColor} = require('san-cli-utils/randomColor');
                     /* eslint-disable no-console */
                     console.log();
-                    console.log(`  Your application is running at: ${chalk.green(networkUrl)}`);
+                    console.log(`  Your application is running at: ${textColor(networkUrl)}`);
                     console.log('  The URL QRCode is: ');
                     /* eslint-enable no-console */
                     // 打开浏览器地址
