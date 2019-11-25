@@ -245,23 +245,23 @@ module.exports = class Service extends EventEmitter {
     }
     registerCommand(name, yargsModule) {
         /* eslint-disable one-var */
-        let command, description, builder, handler, middlewares;
+        let command, description, builder, handler, aliases;
         /* eslint-enable one-var */
         if (typeof name === 'object') {
             command = name.command;
-            description = name.description || name.desc;
+            description = name.describe || name.description || name.desc;
             builder = name.builder;
             handler = name.handler;
-            middlewares = name.middlewares;
+            aliases = name.aliases;
         } else {
             command = name;
             if (typeof yargsModule === 'function') {
                 handler = yargsModule;
             } else {
-                description = yargsModule.description || yargsModule.desc;
+                description = yargsModule.describe || yargsModule.description || yargsModule.desc;
                 builder = yargsModule.builder;
                 handler = yargsModule.handler;
-                middlewares = yargsModule.middlewares;
+                aliases = yargsModule.aliases;
             }
         }
 
@@ -275,14 +275,14 @@ module.exports = class Service extends EventEmitter {
         this.registeredCommands.set(cmdName, {
             command,
             handler,
-            description: description ? description : false,
-            builder: builder ? builder : {},
-            middlewares: middlewares ? middlewares : []
+            aliases,
+            describe: description ? description : false,
+            builder: builder ? builder : {}
         });
         return this;
     }
-    _registerCommand(command, handler, description, builder, middlewares) {
-        this._cli.command(command, description, builder, handler, middlewares);
+    _registerCommand(yargsModule) {
+        this._cli.command(yargsModule);
         return this;
     }
     async loadProjectOptions(configFile) {
@@ -396,7 +396,7 @@ module.exports = class Service extends EventEmitter {
             return this;
         }
         /* eslint-disable fecs-camelcase */
-        const {command, handler: oHandler, description, builder: oFlags, middlewares} = _command;
+        const {command, handler: oHandler, describe, builder: oFlags, aliases} = _command;
         /* eslint-enable fecs-camelcase */
         // 0.1 处理 flags
         const builder = Object.assign(flags, oFlags || {});
@@ -427,7 +427,13 @@ module.exports = class Service extends EventEmitter {
             doit !== false && oHandler(argv);
         };
         // 1. cli 添加命令
-        this._registerCommand(command, handler, description, builder, middlewares);
+        this._registerCommand({
+            command,
+            handler,
+            describe,
+            builder,
+            aliases
+        });
         // 2. cli.parse 解析
         if (rawArgs[0] !== cmd) {
             rawArgs.unshift(cmd);

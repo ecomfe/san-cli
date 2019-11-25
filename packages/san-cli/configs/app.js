@@ -6,32 +6,14 @@ const path = require('path');
 const fs = require('fs');
 const minify = require('html-minifier-terser').minify;
 const lMerge = require('lodash.merge');
-
+const {terserOptions: defaultTerserOptions, htmlMinifyOptions} = require('../lib/const');
 module.exports = {
     id: 'built-in:app',
     apply(api, options) {
         api.chainWebpack(webpackConfig => {
             const isProd = api.isProd();
             const outputDir = api.resolve(options.outputDir);
-            const terserOptions = Object.assign(
-                {
-                    comments: false,
-                    compress: {
-                        unused: true,
-                        // 删掉 debugger
-                        drop_debugger: true, // eslint-disable-line
-                        // 移除 console
-                        drop_console: true, // eslint-disable-line
-                        // 移除无用的代码
-                        dead_code: true // eslint-disable-line
-                    },
-                    ie8: false,
-                    safari10: true,
-                    warnings: false,
-                    toplevel: true
-                },
-                options.terserOptions
-            );
+            const terserOptions = Object.assign(defaultTerserOptions, options.terserOptions);
 
             // 1. 判断 pages
             // 2. build 做的事情是判断 serve 对象
@@ -69,21 +51,10 @@ module.exports = {
 
             if (isProd) {
                 // 压缩 html
+                // 跟 terserOptions 打平
+                htmlMinifyOptions.minifyJS = terserOptions;
                 lMerge(htmlOptions, {
-                    minify: {
-                        removeComments: true,
-                        collapseWhitespace: false,
-                        removeAttributeQuotes: true,
-                        collapseBooleanAttributes: true,
-                        removeScriptTypeAttributes: false,
-                        minifyCSS: true,
-                        // 跟 terserOptions 打平
-                        minifyJS: terserOptions,
-                        // 处理 smarty 和 php 情况
-                        ignoreCustomFragments: [/{%[\s\S]*?%}/, /<%[\s\S]*?%>/, /<\?[\s\S]*?\?>/]
-                        // more options:
-                        // https://github.com/kangax/html-minifier#options-quick-reference
-                    }
+                    minify: htmlMinifyOptions
                 });
             }
 

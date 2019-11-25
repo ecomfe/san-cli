@@ -8,6 +8,12 @@ const {scriptName, version: pkgVersion} = require('../package.json');
 
 module.exports = () => {
     const cli = yargs();
+    cli.command({
+        command:'hh',
+        describe:'hhhhh',
+        aliases:: ['h'],
+        middlewares:
+    });
     cli.scriptName(scriptName)
         .usage('Usage: $0 <command> [options]')
         .option('verbose', {
