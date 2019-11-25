@@ -20,10 +20,18 @@ module.exports = function apply(api, projectOptions) {
             publicPath,
             devServerConfig: webpackConfig.devServer,
             fail: ({type, stats, err}) => {
-                // TODO: 错误处理
                 if (type === 'server') {
                     error('Local server start fail！', err);
                 } else if (stats && stats.toJson) {
+                    // // TODO: 这里删掉，调试用的
+                    // process.stderr.write(
+                    //     stats.toString({
+                    //         colors: true,
+                    //         children: false,
+                    //         modules: false,
+                    //         chunkModules: false
+                    //     })
+                    // );
                 } else {
                     error(err);
                 }

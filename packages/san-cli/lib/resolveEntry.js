@@ -4,7 +4,7 @@
  */
 const path = require('path');
 const fse = require('fs-extra');
-const {chalk, error} = require('san-cli-utils/ttyLogger');
+const {error} = require('san-cli-utils/ttyLogger');
 module.exports = (resolveEntryPath, absoluteEntryPath, webpackConfig) => {
     // entry arg
     if (resolveEntryPath) {
@@ -15,9 +15,11 @@ module.exports = (resolveEntryPath, absoluteEntryPath, webpackConfig) => {
         resolveEntryPath = obj.entry;
         const isFile = obj.isFile;
 
+        webpackConfig.entry = webpackConfig.entry || {};
         if (isFile && !/\.san$/.test(resolveEntryPath)) {
             webpackConfig.entry.app = resolveEntryPath;
         } else {
+            webpackConfig.entry.app = require.resolve('../template/main.js');
             // san 文件/目录的情况需要指定 ~entry
             webpackConfig.resolve.alias['~entry'] = absoluteEntryPath;
         }
@@ -44,13 +46,13 @@ function resolveEntry(entry) {
             if (ext === '.js' || ext === '.san') {
                 isFile = true;
             } else {
-                console.log(chalk.red('Valid entry file should be one of: *.js or *.san.'));
+                error('Valid entry file should be one of: *.js or *.san.');
                 process.exit(1);
             }
             isFile = true;
         }
     } catch (e) {
-        console.log(chalk.red('Valid entry is not a file or directory.'));
+        error('Valid entry is not a file or directory.');
         process.exit(1);
     }
     return {

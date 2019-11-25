@@ -6,7 +6,6 @@
 module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     const resolveEntry = require('../../lib/resolveEntry');
     const isProd = api.isProd();
-
     // 开始正式的操作
     let webpackConfig = api.resolveWebpackConfig();
     const entry = argv.entry;

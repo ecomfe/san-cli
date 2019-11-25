@@ -280,7 +280,6 @@ module.exports = class Service extends EventEmitter {
         return this;
     }
     _registerCommand(command, handler, description, builder, middlewares) {
-
         this._cli.command(command, description, builder, handler, middlewares);
         return this;
     }
@@ -312,13 +311,13 @@ module.exports = class Service extends EventEmitter {
             let configPath = result.filepath;
 
             if (!result.config || typeof result.config !== 'object') {
-                logger.error('loadProjectOptions', `${chalk.bold(configPath)}: 格式必须是对象.`);
+                logger.error(`${chalk.bold(configPath)}: 格式必须是对象.`);
             } else {
                 // 校验config.js schema 格式
                 try {
                     await validateOptions(result.config);
                 } catch (e) {
-                    logger.error('loadProjectOptions', `${chalk.bold(configPath)}: 格式不正确.`);
+                    logger.error(`${chalk.bold(configPath)}: 格式不正确.`);
                     throw new SError(e);
                 }
             }
@@ -326,7 +325,7 @@ module.exports = class Service extends EventEmitter {
             // 加载默认的 config 配置
             config = defaultsDeep(result.config, config);
         } else {
-            logger.warn('loadProjectOptions', `${chalk.bold('san.config.js')} Cannot find! Use default config.`);
+            logger.warn(`${chalk.bold('san.config.js')} Cannot find! Use default config.`);
         }
         const searchFor = resolve(this.cwd, '.');
         // 1. 加载 postcss 配置
