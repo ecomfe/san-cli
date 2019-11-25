@@ -50,6 +50,9 @@ function getCommonArgv(argv) {
     } else {
         setLevel(argv.logLevel);
     }
+    if (argv.mode) {
+        process.env.NODE_ENV = argv.mode;
+    }
 
     return {
         /* eslint-disable fecs-camelcase */
