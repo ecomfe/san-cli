@@ -5,6 +5,7 @@
 const semver = require('semver');
 const npmlog = require('npmlog');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const {cssnanoOptions: defaultCssnanoOptions} = require('../lib/const');
 
 module.exports = {
     id: 'built-in:css',
@@ -20,7 +21,8 @@ module.exports = {
                 // 不在 css 中单独配置，默认跟 rootOptions.sourceMap 一致
                 sourceMap = rootOptions.sourceMap,
                 loaderOptions = {},
-                cssPreprocessor
+                cssPreprocessor,
+                cssnanoOptions
             } = rootOptions.css || {};
 
             let {requireModuleExtension} = rootOptions.css || {};
@@ -191,34 +193,14 @@ module.exports = {
                 webpackConfig.plugin('extract-css').use(require('mini-css-extract-plugin'), [extractOptions]);
                 // minify extracted CSS
                 if (isProd) {
-                    const cssnanoOptions = {
-                        preset: [
-                            'default',
-                            {
-                                mergeLonghand: false,
-                                cssDeclarationSorter: false,
-                                normalizeUrl: false,
-                                discardUnused: false,
-                                // 避免 cssnano 重新计算 z-index
-                                zindex: false,
-                                reduceIdents: false,
-                                safe: true,
-                                // cssnano 集成了autoprefixer的功能
-                                // 会使用到autoprefixer进行无关前缀的清理
-                                // 关闭autoprefixer功能
-                                // 使用postcss的autoprefixer功能
-                                autoprefixer: false,
-                                discardComments: {
-                                    removeAll: true
-                                }
-                            }
-                        ]
+                    const nanoOptions = {
+                        preset: ['default', Object.assign(defaultCssnanoOptions, cssnanoOptions || {})]
                     };
                     // 压缩
                     webpackConfig.optimization.minimizer('css').use(
                         new OptimizeCSSAssetsPlugin({
                             assetNameRegExp: /\.css$/g,
-                            cssProcessorOptions: cssnanoOptions,
+                            cssProcessorOptions: nanoOptions,
                             canPrint: true
                         })
                     );

@@ -6,7 +6,7 @@
 module.exports = ({isProd}) => {
     return {
         name: 'san-loader',
-        loader: 'hulk-san-loader',
+        loader: require.resolve('hulk-san-loader'),
         options: {
             hotReload: !isProd,
             sourceMap: !isProd,

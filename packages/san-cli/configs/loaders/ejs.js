@@ -7,7 +7,7 @@ const wrapper = require('./loaderWrapper');
 module.exports = wrapper((options, projectOptions) => {
     return {
         name: 'ejs-loader',
-        loader: 'ejs-loader',
+        loader: require.resolve('ejs-loader'),
         options
     };
 });

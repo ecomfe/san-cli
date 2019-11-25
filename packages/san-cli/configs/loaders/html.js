@@ -7,7 +7,7 @@ module.exports = wrapper(
     (options, projectOptions) => {
         return {
             name: 'html-loader',
-            loader: 'html-loader',
+            loader: require.resolve('html-loader'),
             options
         };
     },

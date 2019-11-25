@@ -7,7 +7,7 @@ const wrapper = require('./loaderWrapper');
 module.exports = wrapper(options => {
     return {
         name: 'style-loader',
-        loader: 'style-loader',
+        loader: require.resolve('style-loader'),
         options
     };
 });

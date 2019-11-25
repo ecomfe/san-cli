@@ -11,7 +11,7 @@ module.exports = wrapper((options, {filenameHashing, assetsDir, largeAssetSize =
     delete options.dir;
     return {
         name: 'url-loader',
-        loader: 'url-loader',
+        loader: require.resolve('url-loader'),
         options: Object.assign(
             {
                 limit: largeAssetSize,

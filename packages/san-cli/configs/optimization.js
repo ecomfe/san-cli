@@ -4,6 +4,7 @@
  */
 const TerserPlugin = require('terser-webpack-plugin');
 const {getAssetPath} = require('san-cli-utils/path');
+const {terserOptions: defaultTerserOptions} = require('../lib/const');
 
 module.exports = {
     id: 'built-in:optimization',
@@ -107,25 +108,7 @@ module.exports = {
                     sourceMap: ifSourcemap,
                     parallel: true,
                     cache: true,
-                    terserOptions: Object.assign(
-                        {
-                            comments: false,
-                            compress: {
-                                unused: true,
-                                // 删掉 debugger
-                                drop_debugger: true, // eslint-disable-line
-                                // 移除 console
-                                drop_console: true, // eslint-disable-line
-                                // 移除无用的代码
-                                dead_code: true // eslint-disable-line
-                            },
-                            ie8: false,
-                            safari10: true,
-                            warnings: false,
-                            toplevel: true
-                        },
-                        terserOptions
-                    )
+                    terserOptions: Object.assign(defaultTerserOptions, terserOptions)
                 })
             );
 

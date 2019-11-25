@@ -21,20 +21,10 @@ module.exports = wrapper((babelOptions = {}, projectOptions, api) => {
     if (isModernBundle) {
         // 这个是 modern 打包
         targets = {esmodules: true};
-    }
-    else if (!targets && !ignoreBrowserslistConfig) {
+    } else if (!targets && !ignoreBrowserslistConfig && projectOptions.browserslist) {
         // 赋一个browserslist默认值
         targets = {
-            browsers: projectOptions.browserslist || [
-                '> 1.2% in cn',
-                'last 2 versions',
-                'iOS >=8', // 这里有待商榷
-                'android>4.4',
-                'not bb>0',
-                'not ff>0',
-                'not ie>0',
-                'not ie_mob>0'
-            ]
+            browsers: projectOptions.browserslist
         };
     }
 

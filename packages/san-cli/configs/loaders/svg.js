@@ -10,7 +10,7 @@ module.exports = wrapper((options, {filenameHashing, assetsDir, largeAssetSize =
     delete options.dir;
     return {
         name: 'svg-url-loader',
-        loader: 'svg-url-loader',
+        loader: require.resolve('svg-url-loader'),
         options: Object.assign(
             {
                 limit: largeAssetSize,
