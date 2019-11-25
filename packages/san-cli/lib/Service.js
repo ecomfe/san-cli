@@ -22,6 +22,7 @@ const {chalk} = require('san-cli-utils/ttyLogger');
 const debug = require('./debug');
 
 const {defaults: defaultConfig, validateSync: validateOptions} = require('./options');
+const {browserslist: defaultBrowserslist} = require('./const');
 
 const BUILDIN_PLUGINS = ['base', 'css', 'app', 'optimization', 'babel'];
 
@@ -327,29 +328,37 @@ module.exports = class Service extends EventEmitter {
         } else {
             logger.warn(`${chalk.bold('san.config.js')} Cannot find! Use default config.`);
         }
-        const searchFor = resolve(this.cwd, '.');
+        // 从.san 文件夹开始查找
+        const searchFor = resolve(this.cwd, '.san');
         // 1. 加载 postcss 配置
         if (!(config.css && config.css.postcss)) {
             // 赋值给 css 配置
-            const postcss = (cosmiconfig('postcss').searchSync(searchFor) || {}).config;
+            let b = cosmiconfig('postcss').searchSync(searchFor) || {};
+            if (b.filepath) {
+                logger.debug('find postcss option file at ', b.filepath);
+            }
+            const postcss = b.config;
             const postcssConfig = postcss ? {postcss} : {};
             config.css = Object.assign(postcssConfig, config.css || {});
         }
 
         if (!config.browserslist) {
             // 2. 加载 browserslist 配置
-            const browserslist = (cosmiconfig('browserslist').searchSync(searchFor) || {}).config;
-            // 赋值给 config 的 browserslist
-            config.browserslist = browserslist || [
-                '> 1.2% in cn',
-                'last 2 versions',
-                'iOS >=8', // 这里有待商榷
-                'android>4.4',
-                'not bb>0',
-                'not ff>0',
-                'not ie>0',
-                'not ie_mob>0'
-            ];
+            let b = cosmiconfig('browserslist').searchSync(searchFor) || {};
+            if (b.filepath) {
+                logger.debug('find browserslist option file at ', b.filepath);
+                let blist = b.config;
+                if (!Array.isArray(blist)) {
+                    // 换成数组
+                    blist = fs
+                        .readFileSync(b.filepath)
+                        .toString()
+                        .split(/\n/)
+                        .filter(d => d);
+                }
+                // 赋值给 config 的 browserslist
+                config.browserslist = blist || defaultBrowserslist;
+            }
         }
 
         // normalize publicPath

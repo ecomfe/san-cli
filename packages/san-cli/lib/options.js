@@ -71,6 +71,7 @@ const schema = joi
         largeAssetSize: joi.number(),
         // css 相关
         css: joi.object({
+            cssnanoOptions: joi.object(),
             cssPreprocessor: joi.string().valid('less', 'sass', 'styl', 'stylus', 'scss'),
             extract: joi.boolean(),
             sourceMap: joi.boolean(),
