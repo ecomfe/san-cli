@@ -3,14 +3,15 @@
  */
 
 module.exports = {
-    'presets': [
+    presets: [
         [
-            '@babel/preset-env', {
+            '@babel/preset-env',
+            {
                 targets: {
-                    node: 'current',
+                    node: 'current'
                 }
             }
         ]
     ],
-    'exclude': 'node_modules'
+    exclude: 'node_modules'
 };

@@ -86,6 +86,7 @@ const schema = joi
             })
         }),
         // webpack 相关配置
+        alias: joi.object(),
         // 内置 loader 的 options
         loaderOptions: joi.object(),
         splitChunks: joi.object(),

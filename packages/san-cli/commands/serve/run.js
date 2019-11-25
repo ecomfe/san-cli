@@ -42,7 +42,7 @@ module.exports = function apply(api, projectOptions) {
                     /* eslint-disable no-console */
                     console.log();
                     console.log(`  Your application is running at: ${textColor(networkUrl)}`);
-                    console.log('  The URL QRCode is: ');
+                    console.log('  URL QRCode is: ');
                     /* eslint-enable no-console */
                     // 打开浏览器地址
                     argv.open && require('opener')(networkUrl);

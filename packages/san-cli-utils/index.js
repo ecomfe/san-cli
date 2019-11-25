@@ -3,6 +3,6 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-['ttyLogger', 'path', 'webpack', 'utils'].forEach(m => {
+['ttyLogger', 'path', 'webpack', 'utils', 'randomColor'].forEach(m => {
     Object.assign(exports, require(`./${m}`));
 });

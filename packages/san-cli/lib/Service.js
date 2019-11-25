@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-const {resolve, isAbsolute} = require('path');
+const {resolve, isAbsolute, join, dirname} = require('path');
 const EventEmitter = require('events').EventEmitter;
 
 const fs = require('fs-extra');
@@ -56,7 +56,7 @@ module.exports = class Service extends EventEmitter {
         // 2. 查找到默认的之后，后续查找继续在 .san 查找
         // 3. 后续为：local 内容
         const modeEnvName = `.env${mode ? `.${mode}` : ''}`;
-        const envPath = findExisting(this.cwd, [`.san/${modeEnvName}`, modeEnvName]);
+        const envPath = findExisting([`.san/${modeEnvName}`, modeEnvName].map(k => join(this.cwd, k)));
         if (!envPath) {
             // 不存在默认的，则不往下执行了
             return;
@@ -152,6 +152,7 @@ module.exports = class Service extends EventEmitter {
                     throw new SError('Plugin is valid : ' + p);
                 }
             } catch (e) {
+                logger.debug(e);
                 throw new SError('Require plugin is valid : ' + p);
             }
         } else if (typeof p === 'object' && p.id && typeof p.apply === 'function') {
@@ -301,11 +302,16 @@ module.exports = class Service extends EventEmitter {
         };
         if (!configFile) {
             // 使用 cosmiconfig 查找
-            const explorer = cosmiconfig('san', {
-                // 寻找.san文件夹优先于 cwd
-                searchPlaces: ['.san/config.js', 'san.config.js']
-            });
-            result = explorer.searchSync(this.cwd) || {};
+            // const explorer = cosmiconfig('san', {
+            //     // 寻找.san文件夹优先于 cwd
+            //     searchPlaces: ['.san/config.js', 'san.config.js']
+            // });
+            // result.filepath = findExisting(['.san/config.js', 'san.config.js'], this.cwd);
+
+            if (result.filepath) {
+                // 加载 config 文件
+                result.config = require(result.filepath);
+            }
         }
 
         if (result && result.config) {
@@ -322,6 +328,13 @@ module.exports = class Service extends EventEmitter {
                     throw new SError(e);
                 }
             }
+            logger.debug('loadProjectOptions from ', configPath);
+            // 这里特殊处理下 plugins 字段吧
+            // if (result.config.plugins && result.config.plugins.length) {
+            //     result.config.plugins = result.config.plugins.map(k =>
+            //         typeof k === 'string' ? resolve(dirname(result.filepath), k) : k
+            //     );
+            // }
 
             // 加载默认的 config 配置
             config = defaultsDeep(result.config, config);

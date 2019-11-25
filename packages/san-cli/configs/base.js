@@ -66,7 +66,16 @@ module.exports = {
                 const sanPath = path.dirname(require.resolve('san'));
                 webpackConfig.resolve.alias.set('san', `${sanPath}/${!isProd ? 'san.spa.dev.js' : 'san.spa.js'}`);
             }
-            // set resolver
+            // projectOptions.alias
+            if (projectOptions.alias) {
+                let alias = projectOptions.alias;
+                Object.keys(alias).forEach(k => {
+                    let p = path.isAbsolute(alias[k]) ? alias[k] : api.resolve(alias[k]);
+                    webpackConfig.alias.set(k, p);
+                });
+            }
+
+            // set loaders
             // ------------------------loaders------------
             const loaderOptions = projectOptions.loaderOptions || {};
             function setLoader(lang, test, loaders, curLoaderOptions = {}) {
@@ -110,6 +119,7 @@ module.exports = {
             // 大小写敏感！！！！
             webpackConfig.plugin('case-sensitive-paths').use(require('case-sensitive-paths-webpack-plugin'));
             // 定义 env 中的变量
+            // TODO: 这里需要写到文档，以 SAN_VAR 开头的 env 变量
             webpackConfig.plugin('define').use(require('webpack/lib/DefinePlugin'), [defineVar()]);
             if (!isProd) {
                 // dev mode

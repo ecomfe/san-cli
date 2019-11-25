@@ -25,9 +25,9 @@ exports.getTemplatePath = templatePath => {
     return path.isAbsolute(templatePath) ? templatePath : path.normalize(path.join(cwd, templatePath));
 };
 
-exports.findExisting = (context, files) => {
+exports.findExisting = (files, context) => {
     for (const file of files) {
-        const filePath = path.join(context, file);
+        const filePath = context ? path.join(context, file) : file;
         if (fse.existsSync(filePath)) {
             return filePath;
         }
