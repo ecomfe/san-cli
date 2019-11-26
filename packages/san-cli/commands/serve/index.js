@@ -68,6 +68,7 @@ const servePlugin = {
 exports.handler = argv => {
     const getService = require('../../lib/getServiceInstance');
     const service = getService(argv, [servePlugin]);
+
     service.run('serve', argv);
 };
 

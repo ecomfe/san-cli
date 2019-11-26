@@ -28,12 +28,7 @@ checkNodeVersion(requiredNodeVersion, pkgName);
 upNotifier(pkgVersion, pkgName);
 // 3. 加载全部的命令
 const buildinCmds = ['build', 'init', 'serve', 'inspect', 'default'];
-const cmd = process.argv[2];
-if (!process.env.SAN_CLI_MODERN_BUILD && buildinCmds.includes(cmd)) {
-    // modern 打包不要输出这个了
-    const {textColor} = require('san-cli-utils/randomColor');
-    console.log(chalk.bold(textColor(`${scriptName[0].toUpperCase()}${scriptName.slice(1)} ${cmd} v${pkgVersion}`)));
-}
+
 // 4. 内置的命令
 const cli = commander();
 buildinCmds.forEach(cmd => {

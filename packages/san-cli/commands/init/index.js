@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-exports.command = 'init';
+exports.command = 'init <template> <app-name>';
 exports.desc = 'Create an empty repo';
 // TODO: 整理文案
 exports.builder = {
@@ -30,7 +30,6 @@ exports.builder = {
     }
 };
 exports.handler = argv => {
-    const template = argv._[1];
-    const appName = argv._[2];
+    const {template, appName} = argv;
     require('san-cli-command-init')(template, appName, argv);
 };

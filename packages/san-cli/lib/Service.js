@@ -5,10 +5,11 @@
 
 const {resolve, isAbsolute, join} = require('path');
 const EventEmitter = require('events').EventEmitter;
-
+const {logger: consola, time, timeEnd} = require('san-cli-utils/ttyLogger');
+const importLazy = require('import-lazy');
 const fs = require('fs-extra');
-const Config = require('webpack-chain');
-const webpackMerge = require('webpack-merge');
+const Config = importLazy(require)('webpack-chain');
+const webpackMerge = importLazy(require)('webpack-merge');
 const cosmiconfig = require('cosmiconfig');
 const defaultsDeep = require('lodash.defaultsdeep');
 const lMerge = require('lodash.merge');
@@ -18,7 +19,6 @@ const commander = require('./commander');
 const SError = require('san-cli-utils/SError');
 const PluginAPI = require('./PluginAPI');
 const {findExisting} = require('san-cli-utils/path');
-const {logger: consola} = require('san-cli-utils/ttyLogger');
 const {textColor} = require('san-cli-utils/randomColor');
 
 const {defaults: defaultConfig, validateSync: validateOptions} = require('./options');
@@ -27,6 +27,7 @@ const {browserslist: defaultBrowserslist} = require('./const');
 const BUILDIN_PLUGINS = ['base', 'css', 'app', 'optimization', 'babel'];
 
 const logger = consola.withTag('Service');
+
 /* global Map, Proxy */
 module.exports = class Service extends EventEmitter {
     constructor(cwd, {plugins = [], useBuiltInPlugin = true, projectOptions = {}, cli = commander()} = {}) {
@@ -301,19 +302,19 @@ module.exports = class Service extends EventEmitter {
             config: configFile ? require(configFile) : false
         };
         if (!configFile) {
-            // 使用 cosmiconfig 查找
+            // 主动查找 cwd 目录的.san
+            // // 使用 cosmiconfig 查找
             // const explorer = cosmiconfig('san', {
             //     // 寻找.san文件夹优先于 cwd
             //     searchPlaces: ['.san/config.js', 'san.config.js']
             // });
-            // result.filepath = findExisting(['.san/config.js', 'san.config.js'], this.cwd);
+            result.filepath = findExisting(['.san/config.js', 'san.config.js'], this.cwd);
 
             if (result.filepath) {
                 // 加载 config 文件
                 result.config = require(result.filepath);
             }
         }
-
         if (result && result.config) {
             let configPath = result.filepath;
 
@@ -339,12 +340,15 @@ module.exports = class Service extends EventEmitter {
             // 加载默认的 config 配置
             config = defaultsDeep(result.config, config);
         } else {
-            this.logger.warn(`${textColor('san.config.js')} Cannot find! Use default config.`);
+            this.logger.warn(`${textColor('san.config.js')} Cannot find! Use default configuration.`);
         }
         // 从.san 文件夹开始查找
         const searchFor = resolve(this.cwd, '.san');
         // 1. 加载 postcss 配置
         if (!(config.css && config.css.postcss)) {
+            // 向上查找效率太低！！去掉还是控制层数吧？
+            // 这里是为了方便 components 文件夹内的组件使用通用 postcss 配置增加的功能
+            time('postcss.config');
             // 赋值给 css 配置
             let b = cosmiconfig('postcss').searchSync(searchFor) || {};
             if (b.filepath) {
@@ -353,9 +357,11 @@ module.exports = class Service extends EventEmitter {
             const postcss = b.config;
             const postcssConfig = postcss ? {postcss} : {};
             config.css = Object.assign(postcssConfig, config.css || {});
+            timeEnd('postcss.config');
         }
 
         if (!config.browserslist) {
+            time('browserslist');
             // 2. 加载 browserslist 配置
             let b = cosmiconfig('browserslist').searchSync(searchFor) || {};
             if (b.filepath) {
@@ -372,6 +378,7 @@ module.exports = class Service extends EventEmitter {
                 // 赋值给 config 的 browserslist
                 config.browserslist = blist || defaultBrowserslist;
             }
+            timeEnd('browserslist');
         }
 
         // normalize publicPath
@@ -450,12 +457,16 @@ module.exports = class Service extends EventEmitter {
 
         const mode = argv.mode || (cmd === 'build' && argv.watch ? 'development' : 'production');
         // 先加载 env 文件，保证 config 文件中可以用到
+        time('loadEnv');
         this.loadEnv(mode);
+        timeEnd('loadEnv');
 
         // set mode
         // load user config
+        time('loadProjectOptions');
         const projectOptions = await this.loadProjectOptions(argv.configFile);
         logger.debug('projectOptions', projectOptions);
+        timeEnd('loadProjectOptions');
 
         this.projectOptions = projectOptions;
         // 添加插件
@@ -467,8 +478,14 @@ module.exports = class Service extends EventEmitter {
         if (!argv.noProgress) {
             this.addPlugin(require('../plugins/progress'), {name: cmd});
         }
+        time('init');
         this.init(mode);
+        timeEnd('init');
+
+        time('runCommand');
         this.runCommand(cmd, rawArgv);
+        timeEnd('runCommand');
+
         return this;
     }
     addPlugin(name, options = {}) {

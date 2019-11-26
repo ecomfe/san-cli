@@ -2,9 +2,9 @@
  * @file 跟 tty 输出相关的log
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const ConsolaReporter = require('./ConsolaReporter');
+
 const stripAnsi = require('strip-ansi');
-const consola = require('consola');
+const Consola = require('./Consola');
 const chalk = require('chalk');
 chalk.stripColor = stripAnsi;
 
@@ -16,12 +16,23 @@ exports.chalk = chalk;
 exports.ora = importLazy('ora');
 exports.figures = importLazy('figures');
 
-const logger = consola.create({
-    level: process.env.CONSOLA_LEVEL || 3,
-    reporters: [new ConsolaReporter()]
-});
+const logger = new Consola();
 
-['fatal', 'ready', 'start', 'error', 'warn', 'log', 'info', 'success', 'debug', 'trace', 'silent'].forEach(k => {
+[
+    'fatal',
+    'ready',
+    'start',
+    'error',
+    'warn',
+    'log',
+    'info',
+    'success',
+    'debug',
+    'trace',
+    'silent',
+    'time',
+    'timeEnd'
+].forEach(k => {
     exports[k] = logger[k];
 });
 exports.logger = logger;
