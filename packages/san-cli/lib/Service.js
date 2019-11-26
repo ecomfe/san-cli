@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-const {resolve, isAbsolute, join, dirname} = require('path');
+const {resolve, isAbsolute, join} = require('path');
 const EventEmitter = require('events').EventEmitter;
 
 const fs = require('fs-extra');
@@ -18,21 +18,21 @@ const commander = require('./commander');
 const SError = require('san-cli-utils/SError');
 const PluginAPI = require('./PluginAPI');
 const {findExisting} = require('san-cli-utils/path');
-const {chalk} = require('san-cli-utils/ttyLogger');
-const debug = require('./debug');
+const {logger: consola} = require('san-cli-utils/ttyLogger');
+const {textColor} = require('san-cli-utils/randomColor');
 
 const {defaults: defaultConfig, validateSync: validateOptions} = require('./options');
 const {browserslist: defaultBrowserslist} = require('./const');
 
 const BUILDIN_PLUGINS = ['base', 'css', 'app', 'optimization', 'babel'];
 
-const logger = debug('Service');
+const logger = consola.withTag('Service');
 /* global Map, Proxy */
 module.exports = class Service extends EventEmitter {
     constructor(cwd, {plugins = [], useBuiltInPlugin = true, projectOptions = {}, cli = commander()} = {}) {
         super();
         this.cwd = cwd || process.cwd();
-        this.logger = logger;
+        this.logger = consola;
 
         this.initialized = false;
         this._initProjectOptions = projectOptions;
@@ -160,7 +160,7 @@ module.exports = class Service extends EventEmitter {
             return [p, pluginOptions];
         } else {
             if (p.toString() === '[object Object]') {
-                console.log(p);
+                logger.log(p);
             }
             // 写明白这里是需要 id 的
             throw new SError('Plugin is valid : ' + p);
@@ -291,7 +291,7 @@ module.exports = class Service extends EventEmitter {
             configFile = isAbsolute(configFile) ? configFile : resolve(this.cwd, configFile);
             if (!fs.existsSync(configFile)) {
                 configFile = false;
-                logger.warn('config-file', `${originalConfigFile} is not exists!`);
+                this.logger.warn('config-file', `${originalConfigFile} is not exists!`);
             }
         }
         // 首先试用 argv 的 config，然后寻找默认的，找到则读取，格式失败则报错
@@ -318,13 +318,13 @@ module.exports = class Service extends EventEmitter {
             let configPath = result.filepath;
 
             if (!result.config || typeof result.config !== 'object') {
-                logger.error(`${chalk.bold(configPath)}: 格式必须是对象.`);
+                logger.error(`${textColor(configPath)}: 格式必须是对象.`);
             } else {
                 // 校验config.js schema 格式
                 try {
                     await validateOptions(result.config);
                 } catch (e) {
-                    logger.error(`${chalk.bold(configPath)}: 格式不正确.`);
+                    logger.error(`${textColor(configPath)}: 格式不正确.`);
                     throw new SError(e);
                 }
             }
@@ -339,7 +339,7 @@ module.exports = class Service extends EventEmitter {
             // 加载默认的 config 配置
             config = defaultsDeep(result.config, config);
         } else {
-            logger.warn(`${chalk.bold('san.config.js')} Cannot find! Use default config.`);
+            this.logger.warn(`${textColor('san.config.js')} Cannot find! Use default config.`);
         }
         // 从.san 文件夹开始查找
         const searchFor = resolve(this.cwd, '.san');

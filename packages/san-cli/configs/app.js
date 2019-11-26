@@ -61,7 +61,7 @@ module.exports = {
             // resolve HTML file(s)
             const multiPageConfig = options.pages;
             const HTMLPlugin = require('html-webpack-plugin');
-            const SanHtmlPlugin = require('../webpack/HTMLPlugin');
+            const SanHtmlPlugin = require('san-cli-webpack/lib/HTMLPlugin');
             const htmlPath = api.resolve('public/index.html');
             // 默认路径
             const defaultHtmlPath = path.resolve(__dirname, '../template/index.html');

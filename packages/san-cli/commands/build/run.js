@@ -2,12 +2,13 @@
  * @file build run
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const path = require('path');
-const {info, chalk, success: successLog, error} = require('san-cli-utils/ttyLogger');
-const {textColor} = require('san-cli-utils/randomColor');
-const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
+
 module.exports = function apply(api, projectOptions) {
     return argv => {
+        const path = require('path');
+        const {info, chalk, success: successLog, error} = require('san-cli-utils/ttyLogger');
+        const {textColor} = require('san-cli-utils/randomColor');
+        const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
         // 开始时间
         const startTime = Date.now();
         const mode = argv.mode || process.env.NODE_ENV || 'production'; // 默认是 production
@@ -60,7 +61,7 @@ module.exports = function apply(api, projectOptions) {
                 }
                 if (argv.stats === 'table') {
                     console.log(
-                        require('../../webpack/formatStats')(stats, targetDirShort, {
+                        require('san-cli-webpack/lib/formatStats')(stats, targetDirShort, {
                             resolve: p => api.resolve(p)
                         })
                     );
@@ -95,7 +96,7 @@ module.exports = function apply(api, projectOptions) {
         }
 
         // 放到这里 require 是让命令行更快加载，而不是等 webpack 这大坨东西。。
-        const build = require('../../webpack/build');
+        const build = require('san-cli-webpack/build');
         if (modern) {
             // 2.1 modern mode，会fork execa 执行一次打包
             // modern mode 必须要保证 legacy 先打包完成

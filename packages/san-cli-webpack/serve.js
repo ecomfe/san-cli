@@ -9,12 +9,18 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const portfinder = require('portfinder');
 
-const {addDevClientToEntry, getWebpackErrorInfoFromStats} = require('san-cli-utils/webpack');
-const {prepareUrls} = require('san-cli-utils/path');
-const {error} = require('san-cli-utils/ttyLogger');
-const debug = require('../lib/debug');
+// webpack Plugins
+const NameModulesPlugin = require('webpack/lib/NamedModulesPlugin');
+const SanFriendlyErrorsPlugin = require('./lib/SanFriendlyErrorsPlugin');
+const WriteFileWebpackPlugin = require('write-file-webpack-plugin');
 
-const log = debug('webpack/serve');
+const {prepareUrls} = require('san-cli-utils/path');
+const {error, logger} = require('san-cli-utils/ttyLogger');
+
+const {addDevClientToEntry, getWebpackErrorInfoFromStats} = require('./utils');
+
+const log = logger.withTag('webpack/serve');
+
 module.exports = async function devServer({webpackConfig, devServerConfig, publicPath, success, fail}) {
     if (typeof success !== 'function') {
         success = () => {};
@@ -57,6 +63,14 @@ module.exports = async function devServer({webpackConfig, devServerConfig, publi
         // inject dev/hot client
         addDevClientToEntry(webpackConfig, devClients);
     }
+
+    // 添加插件
+    // 在 serve 情况下添加
+    webpackConfig.plugins.push(new NameModulesPlugin());
+    webpackConfig.plugins.push(new SanFriendlyErrorsPlugin({clearConsole: false}));
+    // 处理 tpl 的情况，smarty copy 到 output
+    webpackConfig.plugins.push(new WriteFileWebpackPlugin({test: /\.tpl$/}));
+
     // create compiler
     let compiler;
     try {

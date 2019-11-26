@@ -1,0 +1,18 @@
+{
+    "name": "san-cli-webpack",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "ksky521",
+    "dependencies": {
+        "san-cli-utils": "^1.0.0",
+        "tty-table": "^2.8.2",
+        "html-webpack-plugin": "^3.2.0",
+        "friendly-errors-webpack-plugin": "^1.7.0",
+        "webpack": "^4.41.2",
+        "portfinder": "^1.0.25",
+        "webpack-dev-server": "^3.9.0",
+        "fs-extra": "^8.1.0",
+        "write-file-webpack-plugin": "^4.5.1"
+    },
+    "license": "MIT"
+}

@@ -10,7 +10,6 @@ const semver = require('semver');
 
 const {error, chalk} = require('san-cli-utils/ttyLogger');
 const commander = require('./lib/commander');
-
 const {
     scriptName,
     engines: {node: requiredNodeVersion},

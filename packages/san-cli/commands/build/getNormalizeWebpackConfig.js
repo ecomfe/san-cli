@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const fse = require('fs-extra');
-const resolveEntry = require('../../lib/resolveEntry');
+const {resolveEntry} = require('san-cli-webpack/utils');
 const {error, chalk} = require('san-cli-utils/ttyLogger');
 
 module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
@@ -19,7 +19,7 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     const chainConfig = api.resolveChainableWebpackConfig();
     // modern mode
     if (modern && !analyze) {
-        const ModernModePlugin = require('../../webpack/ModernModePlugin');
+        const ModernModePlugin = require('san-cli-webpack/lib/ModernModePlugin');
         if (!modernBuild) {
             // Inject plugin to extract build stats and write to disk
             chainConfig.plugin('modern-mode-legacy').use(ModernModePlugin, [

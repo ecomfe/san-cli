@@ -5,5 +5,7 @@
 exports.command = '$0';
 exports.handler = argv => {
     const Service = require('../lib/Service');
-    new Service(process.cwd()).run(process.argv[2], argv, process.argv.slice(2));
+    // 添加插件
+    const plugins = [require('san-cli-command-doc')];
+    new Service(process.cwd(), {plugins}).run(process.argv[2], argv, process.argv.slice(2));
 };

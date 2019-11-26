@@ -6,12 +6,13 @@
 const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
-const {textColor, bgColor} = require('san-cli-utils/randomColor');
+const ConsoleTable = require('tty-table');
+
+const {textColor} = require('san-cli-utils/randomColor');
 const {chalk} = require('san-cli-utils/ttyLogger');
 
 const flatten = require('san-cli-utils/utils').flatten;
 
-const ConsoleTable = require('tty-table');
 // const MAX_GZIPPED_SIZE = 150 * 1024;
 const MAX_SIZE = 500 * 1024;
 // const RECOMMEND_SIZE = 244;
