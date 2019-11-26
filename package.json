@@ -1,94 +1,144 @@
 {
-  "name": "root",
-  "private": true,
-  "devDependencies": {
-    "@babel/core": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
-    "commitlint": "^8.1.0",
-    "fecs": "^1.6.4",
-    "husky": "^3.0.9",
-    "jest": "^24.8.0",
-    "lerna": "^3.13.2",
-    "lint-staged": "^9.2.5",
-    "stylelint": "^11.1.1"
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "scripts": {
-    "lint": "lint-staged",
-    "test": "node scripts/test.js"
-  },
-  "commitlint": {
-    "rules": {
-      "body-leading-blank": [
-        1,
-        "always"
-      ],
-      "footer-leading-blank": [
-        1,
-        "always"
-      ],
-      "header-max-length": [
-        2,
-        "always",
-        72
-      ],
-      "scope-case": [
-        2,
-        "always",
-        "lower-case"
-      ],
-      "subject-case": [
-        2,
-        "never",
-        [
-          "sentence-case",
-          "start-case",
-          "pascal-case",
-          "upper-case"
+    "name": "root",
+    "private": true,
+    "devDependencies": {
+        "@babel/core": "^7.4.5",
+        "@babel/preset-env": "^7.4.5",
+        "@ksky521/cz-emoji": "^1.2.1",
+        "commitizen": "^4.0.3",
+        "commitlint": "^8.1.0",
+        "fecs": "^1.6.4",
+        "husky": "^3.0.9",
+        "jest": "^24.8.0",
+        "lerna": "^3.13.2",
+        "lint-staged": "^9.2.5",
+        "memfs": "^2.16.1",
+        "stylelint": "^11.1.1"
+    },
+    "husky": {
+        "hooks": {
+            "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+        }
+    },
+    "scripts": {
+        "commit": "git-cz",
+        "lint": "lint-staged",
+        "test": "node scripts/test.js"
+    },
+    "config": {
+        "commitizen": {
+            "path": "@ksky521/cz-emoji"
+        },
+        "@ksky521/cz-emoji": {
+            "types": [
+                {
+                    "emoji": "🌟",
+                    "code": ":sparkles:",
+                    "description": "Introducing new features.",
+                    "name": "feat"
+                },
+                {
+                    "emoji": "🐛",
+                    "code": ":bug:",
+                    "description": "Fixing a bug.",
+                    "name": "fix"
+                },
+                {
+                    "emoji": "🚑",
+                    "code": ":ambulance:",
+                    "description": "Critical hotfix.",
+                    "name": "quickfix"
+                },
+                {
+                    "emoji": "✅",
+                    "code": ":white_check_mark:",
+                    "description": "Adding tests.",
+                    "name": "test"
+                },
+                {
+                    "emoji": "💬",
+                    "code": ":speech_balloon:",
+                    "description": "Updating text and literals.",
+                    "name": "chore"
+                },
+                {
+                    "emoji": "📦",
+                    "code": ":package:",
+                    "description": "Releasing / Version tags.",
+                    "name": "release"
+                },
+                {
+                    "emoji": "📝",
+                    "code": ":pencil:",
+                    "description": "Writing docs.",
+                    "name": "docs"
+                },
+                {
+                    "emoji": "🚨",
+                    "code": ":rotating_light:",
+                    "description": "Removing linter warnings.",
+                    "name": "lint"
+                },
+                {
+                    "emoji": "⏪",
+                    "code": ":rewind:",
+                    "description": "Reverting changes.",
+                    "name": "revert"
+                },
+                {
+                    "emoji": "🔀",
+                    "code": ":twisted_rightwards_arrows:",
+                    "description": "Merging branches.",
+                    "name": "merge"
+                },
+                {
+                    "emoji": "👌",
+                    "code": ":ok_hand:",
+                    "description": "Updating code due to code review changes.",
+                    "name": "review"
+                },
+                {
+                    "emoji": "🎨",
+                    "code": ":art:",
+                    "description": "Improving structure / format of the code.",
+                    "name": "style"
+                },
+                {
+                    "emoji": "💄",
+                    "code": ":lipstick:",
+                    "description": "Updating the UI and style files.",
+                    "name": "ui"
+                },
+                {
+                    "emoji": "👽",
+                    "code": ":alien:",
+                    "description": "Updating code due to external API changes.",
+                    "name": "compat"
+                },
+                {
+                    "emoji": "💥",
+                    "code": ":boom:",
+                    "description": " Refactoring code.",
+                    "name": "refactor"
+                },
+                {
+                    "emoji": "🎉",
+                    "code": ":tada:",
+                    "description": "Initial commit.",
+                    "name": "init"
+                }
+            ],
+            "skipQuestions": [
+                "scope",
+                "body",
+                "issues"
+            ]
+        }
+    },
+    "commitlint": {
+        "extends": [
+            "./scripts/lib/commitlint"
         ]
-      ],
-      "subject-empty": [
-        2,
-        "never"
-      ],
-      "subject-full-stop": [
-        2,
-        "never",
-        "."
-      ],
-      "type-case": [
-        2,
-        "always",
-        "lower-case"
-      ],
-      "type-empty": [
-        2,
-        "never"
-      ],
-      "type-enum": [
-        2,
-        "always",
-        [
-          "build",
-          "chore",
-          "ci",
-          "docs",
-          "feat",
-          "fix",
-          "perf",
-          "refactor",
-          "revert",
-          "style",
-          "test"
-        ]
-      ]
     }
-  },
-  "dependencies": {
-    "memfs": "^2.16.1"
-  }
 }
