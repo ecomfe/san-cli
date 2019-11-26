@@ -25,6 +25,7 @@ const logger = consola.create({
     exports[k] = logger[k];
 });
 exports.logger = logger;
+
 logger.getScopeLogger = (scope, level = process.env.CONSOLA_LEVEL) => {
     const l = logger.withTag(scope);
     setLevel(level, l);
@@ -34,9 +35,10 @@ exports.getScopeLogger = logger.getScopeLogger;
 
 function setLevel(level, l) {
     level = consola._types[level] ? consola._types[level].level : parseInt(level, 10);
-    if (!level) {
+    if (!level || isNaN(level)) {
         return;
     }
+
     if (l && typeof l.fatal === 'function' && l.level) {
         return (l.level = level);
     }
