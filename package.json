@@ -4,9 +4,11 @@
     "devDependencies": {
         "@babel/core": "^7.4.5",
         "@babel/preset-env": "^7.4.5",
+        "@commitlint/core": "^8.2.0",
         "@ksky521/cz-emoji": "^1.2.1",
         "commitizen": "^4.0.3",
-        "commitlint": "^8.1.0",
+        "@commitlint/cli": "^8.2.0",
+        "commitlint-config-gitmoji": "^1.0.1",
         "fecs": "^1.6.4",
         "husky": "^3.0.9",
         "jest": "^24.8.0",
@@ -22,9 +24,13 @@
         }
     },
     "scripts": {
-        "commit": "git-cz",
         "lint": "lint-staged",
         "test": "node scripts/test.js"
+    },
+    "commitlint": {
+        "extends": [
+            "gitmoji"
+        ]
     },
     "config": {
         "commitizen": {
@@ -34,97 +40,97 @@
             "types": [
                 {
                     "emoji": "🌟",
-                    "code": "feat: :sparkles:",
+                    "code": ":sparkles:",
                     "description": "Introducing new features.",
                     "name": "feat"
                 },
                 {
                     "emoji": "🐛",
-                    "code": "fix: :bug:",
+                    "code": ":bug:",
                     "description": "Fixing a bug.",
                     "name": "fix"
                 },
                 {
                     "emoji": "🚑",
-                    "code": "quickfix: :ambulance:",
+                    "code": ":ambulance:",
                     "description": "Critical hotfix.",
                     "name": "quickfix"
                 },
                 {
                     "emoji": "✅",
-                    "code": "test: :white_check_mark:",
+                    "code": ":white_check_mark:",
                     "description": "Adding tests.",
                     "name": "test"
                 },
                 {
                     "emoji": "💬",
-                    "code": "chore: :speech_balloon:",
+                    "code": ":speech_balloon:",
                     "description": "Updating text and literals.",
                     "name": "chore"
                 },
                 {
                     "emoji": "📦",
-                    "code": "release: :package:",
+                    "code": ":package:",
                     "description": "Releasing / Version tags.",
                     "name": "release"
                 },
                 {
                     "emoji": "📝",
-                    "code": "docs: :pencil:",
+                    "code": ":pencil:",
                     "description": "Writing docs.",
                     "name": "docs"
                 },
                 {
                     "emoji": "🚨",
-                    "code": "lint: :rotating_light:",
+                    "code": ":rotating_light:",
                     "description": "Removing linter warnings.",
                     "name": "lint"
                 },
                 {
                     "emoji": "⏪",
-                    "code": "revert: :rewind:",
+                    "code": ":rewind:",
                     "description": "Reverting changes.",
                     "name": "revert"
                 },
                 {
                     "emoji": "🔀",
-                    "code": "merge: :twisted_rightwards_arrows:",
+                    "code": ":twisted_rightwards_arrows:",
                     "description": "Merging branches.",
                     "name": "merge"
                 },
                 {
                     "emoji": "👌",
-                    "code": "review: :ok_hand:",
+                    "code": ":ok_hand:",
                     "description": "Updating code due to code review changes.",
                     "name": "review"
                 },
                 {
                     "emoji": "🎨",
-                    "code": "style: :art:",
+                    "code": ":art:",
                     "description": "Improving structure / format of the code.",
                     "name": "style"
                 },
                 {
                     "emoji": "💄",
-                    "code": "ui: :lipstick:",
+                    "code": ":lipstick:",
                     "description": "Updating the UI and style files.",
                     "name": "ui"
                 },
                 {
                     "emoji": "👽",
-                    "code": "compat: :alien:",
+                    "code": ":alien:",
                     "description": "Updating code due to external API changes.",
                     "name": "compat"
                 },
                 {
                     "emoji": "💥",
-                    "code": "refactor: :boom:",
+                    "code": ":boom:",
                     "description": " Refactoring code.",
                     "name": "refactor"
                 },
                 {
                     "emoji": "🎉",
-                    "code": "init: :tada:",
+                    "code": ":tada:",
                     "description": "Initial commit.",
                     "name": "init"
                 }
@@ -135,10 +141,5 @@
                 "issues"
             ]
         }
-    },
-    "commitlint": {
-        "extends": [
-            "./scripts/lib/commitlint"
-        ]
     }
 }
