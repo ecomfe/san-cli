@@ -34,97 +34,97 @@
             "types": [
                 {
                     "emoji": "🌟",
-                    "code": ":sparkles:",
+                    "code": "feat: :sparkles:",
                     "description": "Introducing new features.",
                     "name": "feat"
                 },
                 {
                     "emoji": "🐛",
-                    "code": ":bug:",
+                    "code": "fix: :bug:",
                     "description": "Fixing a bug.",
                     "name": "fix"
                 },
                 {
                     "emoji": "🚑",
-                    "code": ":ambulance:",
+                    "code": "quickfix: :ambulance:",
                     "description": "Critical hotfix.",
                     "name": "quickfix"
                 },
                 {
                     "emoji": "✅",
-                    "code": ":white_check_mark:",
+                    "code": "test: :white_check_mark:",
                     "description": "Adding tests.",
                     "name": "test"
                 },
                 {
                     "emoji": "💬",
-                    "code": ":speech_balloon:",
+                    "code": "chore: :speech_balloon:",
                     "description": "Updating text and literals.",
                     "name": "chore"
                 },
                 {
                     "emoji": "📦",
-                    "code": ":package:",
+                    "code": "release: :package:",
                     "description": "Releasing / Version tags.",
                     "name": "release"
                 },
                 {
                     "emoji": "📝",
-                    "code": ":pencil:",
+                    "code": "docs: :pencil:",
                     "description": "Writing docs.",
                     "name": "docs"
                 },
                 {
                     "emoji": "🚨",
-                    "code": ":rotating_light:",
+                    "code": "lint: :rotating_light:",
                     "description": "Removing linter warnings.",
                     "name": "lint"
                 },
                 {
                     "emoji": "⏪",
-                    "code": ":rewind:",
+                    "code": "revert: :rewind:",
                     "description": "Reverting changes.",
                     "name": "revert"
                 },
                 {
                     "emoji": "🔀",
-                    "code": ":twisted_rightwards_arrows:",
+                    "code": "merge: :twisted_rightwards_arrows:",
                     "description": "Merging branches.",
                     "name": "merge"
                 },
                 {
                     "emoji": "👌",
-                    "code": ":ok_hand:",
+                    "code": "review: :ok_hand:",
                     "description": "Updating code due to code review changes.",
                     "name": "review"
                 },
                 {
                     "emoji": "🎨",
-                    "code": ":art:",
+                    "code": "style: :art:",
                     "description": "Improving structure / format of the code.",
                     "name": "style"
                 },
                 {
                     "emoji": "💄",
-                    "code": ":lipstick:",
+                    "code": "ui: :lipstick:",
                     "description": "Updating the UI and style files.",
                     "name": "ui"
                 },
                 {
                     "emoji": "👽",
-                    "code": ":alien:",
+                    "code": "compat: :alien:",
                     "description": "Updating code due to external API changes.",
                     "name": "compat"
                 },
                 {
                     "emoji": "💥",
-                    "code": ":boom:",
+                    "code": "refactor: :boom:",
                     "description": " Refactoring code.",
                     "name": "refactor"
                 },
                 {
                     "emoji": "🎉",
-                    "code": ":tada:",
+                    "code": "init: :tada:",
                     "description": "Initial commit.",
                     "name": "init"
                 }
