@@ -20,9 +20,9 @@ const SError = require('san-cli-utils/SError');
 const PluginAPI = require('./PluginAPI');
 const {findExisting} = require('san-cli-utils/path');
 const {textColor} = require('san-cli-utils/randomColor');
+const readPkg = require('./readPkg');
 
 const {defaults: defaultConfig, validateSync: validateOptions} = require('./options');
-const {browserslist: defaultBrowserslist} = require('./const');
 
 const BUILDIN_PLUGINS = ['base', 'css', 'app', 'optimization', 'babel'];
 
@@ -34,6 +34,7 @@ module.exports = class Service extends EventEmitter {
         super();
         this.cwd = cwd || process.cwd();
         this.logger = consola;
+        this.pkg = readPkg(this.cwd);
 
         this.initialized = false;
         this._initProjectOptions = projectOptions;
@@ -51,6 +52,7 @@ module.exports = class Service extends EventEmitter {
         this.devServerMiddlewares = [];
         this.plugins = this.resolvePlugins(plugins, useBuiltInPlugin);
     }
+
     loadEnv(mode) {
         // this._configDir
         // 后续为：local 内容
@@ -216,7 +218,7 @@ module.exports = class Service extends EventEmitter {
                     } else {
                         return self[prop];
                     }
-                } else if (['getCwd', 'getProjectOptions', 'getVersion'].includes(prop)) {
+                } else if (['getCwd', 'getProjectOptions', 'getVersion', 'getPkg'].includes(prop)) {
                     // 将属性转换成 getXXX 模式
                     prop = prop.replace(/^get([A-Z])/, (m, $1) => $1.toLowerCase());
                     return () => self[prop];
@@ -340,45 +342,6 @@ module.exports = class Service extends EventEmitter {
         } else {
             this.logger.warn(`${textColor('san.config.js')} Cannot find! Use default configuration.`);
         }
-        // 从cwd文件夹开始查找
-        const searchFor = resolve(this.cwd);
-        // 1. 加载 postcss 配置
-        if (!(config.css && config.css.postcss)) {
-            // 向上查找效率太低！！去掉还是控制层数吧？
-            // 这里是为了方便 components 文件夹内的组件使用通用 postcss 配置增加的功能
-            time('postcss.config');
-            // 赋值给 css 配置
-            let b = cosmiconfig('postcss').searchSync(searchFor) || {};
-            if (b.filepath) {
-                logger.debug('find postcss option file at ', b.filepath);
-            }
-            const postcss = b.config;
-            const postcssConfig = postcss ? {postcss} : {};
-            config.css = Object.assign(postcssConfig, config.css || {});
-            timeEnd('postcss.config');
-        }
-
-        if (!config.browserslist) {
-            time('browserslist');
-            // 2. 加载 browserslist 配置
-            let b = cosmiconfig('browserslist').searchSync(searchFor) || {};
-            if (b.filepath) {
-                logger.debug('find browserslist option file at ', b.filepath);
-                let blist = b.config;
-                if (!Array.isArray(blist)) {
-                    // 换成数组
-                    blist = fs
-                        .readFileSync(b.filepath)
-                        .toString()
-                        .split(/\n/)
-                        .filter(d => d);
-                }
-                // 赋值给 config 的 browserslist
-                config.browserslist = blist || defaultBrowserslist;
-            }
-            timeEnd('browserslist');
-        }
-
         // normalize publicPath
         ensureSlash(config, 'publicPath');
         if (typeof config.publicPath === 'string') {

@@ -24,7 +24,7 @@ module.exports = wrapper((babelOptions = {}, projectOptions, api) => {
     } else if (!targets && !ignoreBrowserslistConfig && projectOptions.browserslist) {
         // 赋一个browserslist默认值
         targets = {
-            browsers: projectOptions.browserslist
+            browsers: projectOptions.browserslist || api.service.pkg.browserslist
         };
     }
 

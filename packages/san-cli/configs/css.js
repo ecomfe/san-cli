@@ -6,6 +6,7 @@ const semver = require('semver');
 const npmlog = require('npmlog');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const {cssnanoOptions: defaultCssnanoOptions} = require('../lib/const');
+const {findExisting} = require('san-cli-utils/path');
 
 module.exports = {
     id: 'built-in:css',
@@ -14,6 +15,8 @@ module.exports = {
             const {getAssetPath} = require('san-cli-utils/path');
 
             const isProd = api.isProd();
+            const cssOptions = rootOptions.css || {};
+
             // 这里loaderOptions直接用 projectOptions.css 的内容
             // prettier-ignore
             const {
@@ -23,7 +26,17 @@ module.exports = {
                 loaderOptions = {},
                 cssPreprocessor,
                 cssnanoOptions
-            } = rootOptions.css || {};
+            } = cssOptions;
+            const postCSSOptions = loaderOptions.postcss;
+            // prettier-ignore
+            const hasPostCSSConfig = !!(
+                postCSSOptions
+                || api.service.pkg.postcss
+                || findExisting(
+                    ['.postcssrc', '.postcssrc.js', 'postcss.config.js', '.postcssrc.yaml', '.postcssrc.json'],
+                    api.resolve('.')
+                )
+            );
 
             let {requireModuleExtension} = rootOptions.css || {};
             if (typeof requireModuleExtension === 'undefined') {
@@ -53,7 +66,6 @@ module.exports = {
                 extractOptions.filename.replace(/^\.[\/\\]/, '').split(/[\/\\]/g).length - 1
             );
             // 优先使用 san.config 定义的内容
-            const postCSSOptions = loaderOptions.postcss;
 
             const styleLoader = require('./loaders/style')(loaderOptions.style, rootOptions, api);
 
@@ -87,7 +99,7 @@ module.exports = {
                             sourceMap,
                             importLoaders:
                                 // prettier-ignore
-                                1 + (postCSSOptions ? 1 : 0)
+                                1 + (hasPostCSSConfig ? 1 : 0)
                         },
                         loaderOptions.css
                     );
@@ -105,7 +117,7 @@ module.exports = {
                         .loader('css-loader')
                         .options(cssLoaderOptions);
 
-                    if (postCSSOptions) {
+                    if (hasPostCSSConfig) {
                         rule.use('postcss-loader')
                             .loader('postcss-loader')
                             .options(Object.assign({sourceMap}, postCSSOptions));
@@ -194,7 +206,7 @@ module.exports = {
                 // minify extracted CSS
                 if (isProd) {
                     const nanoOptions = {
-                        preset: ['default', Object.assign(defaultCssnanoOptions, cssnanoOptions || {})]
+                        preset: ['default', Object.assign(defaultCssnanoOptions, cssnanoOptions)]
                     };
                     // 压缩
                     webpackConfig.optimization.minimizer('css').use(

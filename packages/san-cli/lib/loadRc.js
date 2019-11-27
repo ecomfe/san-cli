@@ -6,6 +6,7 @@ const path = require('path');
 const importLazy = require('import-lazy')(require);
 const cosmiconfig = importLazy('cosmiconfig');
 const fse = importLazy('fs-extra');
+const readPkg = require('./readPkg');
 
 const {findExisting} = require('san-cli-utils/path');
 const {error, logger} = require('san-cli-utils/ttyLogger');
@@ -30,13 +31,10 @@ module.exports = (rootSrc = process.cwd()) => {
         return fse.readJsonSync(rcpath);
     }
     // 2. 查找 package.json 的文件
-    rcpath = findExisting(['package.json'], rootSrc);
-    if (rcpath) {
-        const pkg = require(rcpath);
-        if (pkg.san) {
-            logger.debug('在 cwd 目录找到 package.json 的 sanrc 配置', rcpath);
-            return pkg.san;
-        }
+    const pkg = readPkg(rootSrc);
+    if (pkg.san) {
+        logger.debug('在 cwd 目录找到 package.json 的 sanrc 配置', rcpath);
+        return pkg.san;
     }
     // 3. 使用 cosmiconfig 从上层开始查找，找到用户目录结束
     // 使用 cosmiconfig 查找
