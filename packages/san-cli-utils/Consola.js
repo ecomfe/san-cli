@@ -6,6 +6,7 @@ const ConsolaReporter = require('./ConsolaReporter');
 const Consola = require('consola').Consola;
 const chalk = require('chalk');
 const figures = require('figures');
+const {textColor, bgColor} = require('./randomColor');
 
 module.exports = class SanConsola extends Consola {
     constructor(options = {}) {
@@ -18,6 +19,10 @@ module.exports = class SanConsola extends Consola {
         );
 
         super(options);
+        // 扩展命令
+        // 增加两个常用的方法
+        this.textColor = textColor;
+        this.bgColor = bgColor;
         // 添加耗时打点
         /* eslint-disable no-undef */
         const map = new Map();
@@ -25,6 +30,7 @@ module.exports = class SanConsola extends Consola {
         this.time = name => {
             map.set(name, Date.now());
         };
+
         this.timeEnd = name => {
             const start = map.get(name);
             // 只在 SAN_DEBUG 下面输出性能日志

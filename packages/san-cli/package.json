@@ -5,7 +5,6 @@
     "scriptName": "san",
     "main": "index.js",
     "bin": {
-        "s": "index.js",
         "3": "index.js",
         "san": "index.js"
     },

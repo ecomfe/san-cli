@@ -5,7 +5,9 @@
 
 const stripAnsi = require('strip-ansi');
 const Consola = require('./Consola');
+/* eslint-disable fecs-camelcase,fecs-no-require */
 const {_types: consolaTypes} = require('consola');
+/* eslint-enable fecs-camelcase,fecs-no-require */
 const chalk = require('chalk');
 chalk.stripColor = stripAnsi;
 
