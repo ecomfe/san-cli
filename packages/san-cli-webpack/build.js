@@ -20,7 +20,7 @@ module.exports = function build({webpackConfig, success, fail}) {
 
             const isWatch = webpackConfig.watch;
 
-            if (!process.env.SAN_TEST && !isWatch) {
+            if (!process.env.SAN_DEBUG && !isWatch) {
                 process.exit(1);
             }
         }

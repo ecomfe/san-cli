@@ -4,8 +4,10 @@
  */
 exports.command = '$0';
 exports.handler = argv => {
-    const Service = require('../lib/Service');
     // 添加插件
-    const plugins = [require('san-cli-command-doc')];
-    new Service(process.cwd(), {plugins}).run(process.argv[2], argv, process.argv.slice(2));
+    const cmdDoc = require('san-cli-command-doc');
+    const plugins = [cmdDoc];
+    const getService = require('../lib/getServiceInstance');
+    const service = getService(argv, plugins);
+    service.run(process.argv[2], argv, process.argv.slice(2));
 };

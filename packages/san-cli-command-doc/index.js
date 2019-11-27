@@ -51,6 +51,7 @@ const builder = {
     }
 };
 const describe = '';
+const command = 'doc [entry]';
 module.exports = {
     id: 'san-cli-command-component',
     apply(api, projectOptions) {
@@ -88,10 +89,9 @@ module.exports = {
         // });
 
         // 给 service 注册命令
-        api.registerCommand('doc [entry]', {
+        api.registerCommand(command, {
             builder,
             describe,
-            aliases: ['play', 'md', 'doc'],
             handler(argv) {
                 const {info, error} = require('san-cli-utils/ttyLogger');
                 const mode = argv.mode;
@@ -152,6 +152,11 @@ module.exports = {
                 });
             }
         });
+    },
+    command: {
+        name: command,
+        describe,
+        builder
     }
 };
 

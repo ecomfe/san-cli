@@ -5,6 +5,7 @@
 
 const stripAnsi = require('strip-ansi');
 const Consola = require('./Consola');
+const {_types: consolaTypes} = require('consola');
 const chalk = require('chalk');
 chalk.stripColor = stripAnsi;
 
@@ -45,7 +46,7 @@ logger.getScopeLogger = (scope, level = process.env.CONSOLA_LEVEL) => {
 exports.getScopeLogger = logger.getScopeLogger;
 
 function setLevel(level, l) {
-    level = consola._types[level] ? consola._types[level].level : parseInt(level, 10);
+    level = consolaTypes[level] ? consolaTypes[level].level : parseInt(level, 10);
     if (!level || isNaN(level)) {
         return;
     }
@@ -58,7 +59,6 @@ function setLevel(level, l) {
     process.env.CONSOLA_LEVEL = level;
 }
 exports.setLevel = setLevel;
-exports.consola = consola;
 // alias
 exports.done = logger.success;
 exports.warning = logger.warn;

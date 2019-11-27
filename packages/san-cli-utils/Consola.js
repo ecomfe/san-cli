@@ -18,13 +18,16 @@ module.exports = class SanConsola extends Consola {
 
         super(options);
         // 添加耗时打点
+        /* eslint-disable no-undef */
         const map = new Map();
+        /* eslint-enable no-undef */
         this.time = name => {
             map.set(name, Date.now());
         };
         this.timeEnd = name => {
             const start = map.get(name);
-            if (start && this.level >= 4) {
+            // 只在 SAN_DEBUG 下面输出性能日志
+            if (start && process.env.SAN_DEBUG) {
                 // debug 输出
                 let d = Date.now() - start;
                 if (d >= 1e3) {
