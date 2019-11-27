@@ -8,7 +8,7 @@
 const updateNotifier = require('update-notifier');
 const semver = require('semver');
 
-const {error, chalk} = require('san-cli-utils/ttyLogger');
+const {error, chalk, time, timeEnd} = require('san-cli-utils/ttyLogger');
 const commander = require('./lib/commander');
 const {
     scriptName,
@@ -20,7 +20,6 @@ const {
 // set process
 process.title = scriptName;
 require('./lib/processLog');
-
 // 1. 检测 node 版本
 checkNodeVersion(requiredNodeVersion, pkgName);
 
@@ -32,8 +31,10 @@ const buildinCmds = ['build', 'init', 'serve', 'inspect', 'default'];
 // 4. 内置的命令
 const cli = commander();
 buildinCmds.forEach(cmd => {
+    time(`load-${cmd}`);
     const instance = require(`./commands/${cmd}`);
     cli.command(instance);
+    timeEnd(`load-${cmd}`);
 });
 
 // 5. 加载 cli rc 扩展命令
@@ -42,11 +43,13 @@ buildinCmds.forEach(cmd => {
 // 1. rc 文件应该尽量「表现的显性」
 // 2. 对于每个执行命令的 fe 应该清楚自己的环境，而不是稀里糊涂的用全局 rc
 // 3. 方便配置默认 preset 统一命令和配置
+time('loadRc');
 const {plugins, configs, commands, useBuiltInPlugin} = require('./lib/loadRc')();
+timeEnd('loadRc');
 if (typeof commands === 'object') {
     // 扩展命令行
     Object.keys(commands).forEach(cmd => {
-        const instance = require(commands[cmd]);
+        const instance = typeof commands[cmd] === 'string' ? require(commands[cmd]) : commands[cmd];
         cli.command(instance);
     });
 }

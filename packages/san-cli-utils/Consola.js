@@ -5,6 +5,7 @@
 const ConsolaReporter = require('./ConsolaReporter');
 const Consola = require('consola').Consola;
 const chalk = require('chalk');
+const figures = require('figures');
 
 module.exports = class SanConsola extends Consola {
     constructor(options = {}) {
@@ -38,9 +39,9 @@ module.exports = class SanConsola extends Consola {
                     d = chalk.yellowBright.bold(`${d}ms`);
                 } else {
                     // green
-                    d = chalk.greenBright.bold(`${d}ms`);
+                    d = chalk.greenBright(`${d}ms`);
                 }
-                this.debug(`${name}: ${d}`);
+                this.log(`${chalk.grey(figures.play)} ${name}: ${d}`);
             }
         };
     }

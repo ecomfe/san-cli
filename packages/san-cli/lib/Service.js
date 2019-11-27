@@ -53,11 +53,9 @@ module.exports = class Service extends EventEmitter {
     }
     loadEnv(mode) {
         // this._configDir
-        // 1. 优先查找 .san 的文件，
-        // 2. 查找到默认的之后，后续查找继续在 .san 查找
-        // 3. 后续为：local 内容
+        // 后续为：local 内容
         const modeEnvName = `.env${mode ? `.${mode}` : ''}`;
-        const envPath = findExisting([`.san/${modeEnvName}`, modeEnvName].map(k => join(this.cwd, k)));
+        const envPath = findExisting([modeEnvName].map(k => join(this.cwd, k)));
         if (!envPath) {
             // 不存在默认的，则不往下执行了
             return;
@@ -306,9 +304,9 @@ module.exports = class Service extends EventEmitter {
             // // 使用 cosmiconfig 查找
             // const explorer = cosmiconfig('san', {
             //     // 寻找.san文件夹优先于 cwd
-            //     searchPlaces: ['.san/config.js', 'san.config.js']
+            //     searchPlaces: ['.san.config.js', 'san.config.js']
             // });
-            result.filepath = findExisting(['.san/config.js', 'san.config.js'], this.cwd);
+            result.filepath = findExisting(['san.config.js', '.san.config.js'], this.cwd);
 
             if (result.filepath) {
                 // 加载 config 文件
@@ -342,8 +340,8 @@ module.exports = class Service extends EventEmitter {
         } else {
             this.logger.warn(`${textColor('san.config.js')} Cannot find! Use default configuration.`);
         }
-        // 从.san 文件夹开始查找
-        const searchFor = resolve(this.cwd, '.san');
+        // 从cwd文件夹开始查找
+        const searchFor = resolve(this.cwd);
         // 1. 加载 postcss 配置
         if (!(config.css && config.css.postcss)) {
             // 向上查找效率太低！！去掉还是控制层数吧？
