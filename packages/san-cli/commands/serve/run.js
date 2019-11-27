@@ -19,25 +19,9 @@ module.exports = function apply(api, projectOptions) {
         devServer({
             webpackConfig,
             publicPath,
-            devServerConfig: webpackConfig.devServer,
-            fail: ({type, stats, err}) => {
-                if (type === 'server') {
-                    error('Local server start fail！', err);
-                } else if (stats && stats.toJson) {
-                    // // TODO: 这里删掉，调试用的
-                    // process.stderr.write(
-                    //     stats.toString({
-                    //         colors: true,
-                    //         children: false,
-                    //         modules: false,
-                    //         chunkModules: false
-                    //     })
-                    // );
-                } else {
-                    error(err);
-                }
-            },
-            success: ({isFirstCompile, networkUrl}) => {
+            devServerConfig: webpackConfig.devServer
+        })
+            .then(({isFirstCompile, networkUrl}) => {
                 if (isFirstCompile) {
                     const {textColor} = require('san-cli-utils/randomColor');
                     /* eslint-disable no-console */
@@ -63,7 +47,23 @@ module.exports = function apply(api, projectOptions) {
                         );
                     }
                 }
-            }
-        });
+            })
+            .catch(({type, stats, err}) => {
+                if (type === 'server') {
+                    error('Local server start fail！', err);
+                } else if (stats && stats.toJson) {
+                    // // TODO: 这里删掉，调试用的
+                    // process.stderr.write(
+                    //     stats.toString({
+                    //         colors: true,
+                    //         children: false,
+                    //         modules: false,
+                    //         chunkModules: false
+                    //     })
+                    // );
+                } else {
+                    error(err);
+                }
+            });
     };
 };

@@ -9,24 +9,20 @@ const {getWebpackErrorInfoFromStats} = require('./utils');
 const log = logger.withTag('webpack/serve');
 
 module.exports = function build({webpackConfig, success, fail}) {
-    log.debug('build start', webpackConfig);
-    webpack(webpackConfig, (err, stats) => {
-        log.debug('build done');
+    return new Promise((resolve, reject) => {
+        log.debug('build start', webpackConfig);
+        webpack(webpackConfig, (err, stats) => {
+            log.debug('build done');
 
-        if (err || stats.hasErrors()) {
-            if (fail) {
-                fail(getWebpackErrorInfoFromStats(err, stats));
+            if (err || stats.hasErrors()) {
+                reject(getWebpackErrorInfoFromStats(err, stats));
+                const isWatch = webpackConfig.watch;
+                if (!process.env.SAN_DEBUG && !isWatch) {
+                    process.exit(1);
+                }
             }
 
-            const isWatch = webpackConfig.watch;
-
-            if (!process.env.SAN_DEBUG && !isWatch) {
-                process.exit(1);
-            }
-        }
-
-        if (success) {
-            success({stats});
-        }
+            resolve({stats});
+        });
     });
 };

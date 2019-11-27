@@ -112,8 +112,9 @@ module.exports = function apply(api, projectOptions) {
                 );
                 // for legacy build
                 build({
-                    webpackConfig: config,
-                    success: async data => {
+                    webpackConfig: config
+                })
+                    .then(async data => {
                         success(data, {isModern: true});
                         // execa 打包，保证打包环境的纯洁性
                         const execa = require('execa');
@@ -128,9 +129,8 @@ module.exports = function apply(api, projectOptions) {
                                 SAN_CLI_LEGACY_BUILD: false
                             }
                         });
-                    },
-                    fail
-                });
+                    })
+                    .catch(fail);
             } else {
                 // 这里是 modern mode 的打包
                 // 注意要用 clean = false 哦！！！不然会删掉 legacy-${filename}.json，legacy 打包就白费了！
@@ -145,18 +145,19 @@ module.exports = function apply(api, projectOptions) {
                 );
                 // for modern build
                 build({
-                    webpackConfig: config,
-                    success: data => {
+                    webpackConfig: config
+                })
+                    .then(data => {
                         success(data, {isModern: true, isModernBuild: true});
-                    },
-                    fail
-                });
+                    })
+                    .catch(fail);
             }
         } else {
             // 获取 webpack 配置
-            let config = getNormalizeWebpackConfig(api, projectOptions, argv);
             // for build
-            build({webpackConfig: config, success, fail});
+            build({webpackConfig: getNormalizeWebpackConfig(api, projectOptions, argv)})
+                .then(success)
+                .catch(fail);
         }
     };
 };
