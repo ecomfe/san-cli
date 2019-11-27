@@ -9,10 +9,11 @@
 module.exports = function apply(api, projectOptions) {
     return async argv => {
         const {info, error} = require('san-cli-utils/ttyLogger');
-        const devServer = require('san-cli-webpack/serve');
-        const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
         const mode = argv.mode;
         info(`Starting ${mode} server...`);
+
+        const devServer = require('san-cli-webpack/serve');
+        const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
 
         const {publicPath} = projectOptions;
         const webpackConfig = getNormalizeWebpackConfig(api, projectOptions, argv);
