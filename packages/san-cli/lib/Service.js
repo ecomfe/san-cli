@@ -292,7 +292,7 @@ module.exports = class Service extends EventEmitter {
             configFile = isAbsolute(configFile) ? configFile : resolve(this.cwd, configFile);
             if (!fs.existsSync(configFile)) {
                 configFile = false;
-                this.logger.warn('config-file', `${originalConfigFile} is not exists!`);
+                // this.logger.warn('config-file', `${originalConfigFile} is not exists!`);
             }
         }
         // 首先试用 argv 的 config，然后寻找默认的，找到则读取，格式失败则报错
@@ -340,7 +340,7 @@ module.exports = class Service extends EventEmitter {
             // 加载默认的 config 配置
             config = defaultsDeep(result.config, config);
         } else {
-            this.logger.warn(`${textColor('san.config.js')} Cannot find! Use default configuration.`);
+            // this.logger.warn(`${textColor('san.config.js')} Cannot find! Use default configuration.`);
         }
         // normalize publicPath
         ensureSlash(config, 'publicPath');

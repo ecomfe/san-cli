@@ -1,12 +1,12 @@
 /**
- * @file webpack test
+ * @file utils test
  */
 
 import {
     isJS,
     isCSS,
     addDevClientToEntry
-} from '../webpack';
+} from '../utils';
 
 describe('测试isJS', () => {
     test('.js文件', () => {
