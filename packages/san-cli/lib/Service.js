@@ -111,7 +111,7 @@ module.exports = class Service extends EventEmitter {
 
         if (plugins.length) {
             // 2. 真正加载
-            plugins = plugins.map(this._resolvePlugin);
+            plugins = plugins.map(this._resolvePlugin.bind(this));
             plugins = [...builtInPlugins, ...plugins];
         } else {
             plugins = builtInPlugins;
@@ -158,7 +158,10 @@ module.exports = class Service extends EventEmitter {
             }
         } else if (typeof p === 'object' && p.id && typeof p.apply === 'function') {
             // 处理 object
-            return [p, pluginOptions];
+            if (pluginOptions) {
+                return [p, pluginOptions];
+            }
+            return p;
         } else {
             if (p.toString() === '[object Object]') {
                 logger.log(p);

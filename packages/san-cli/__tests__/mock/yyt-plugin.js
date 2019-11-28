@@ -3,6 +3,7 @@
  */
 
 module.exports = {
+    '__esModule': true,
     default: {
         id: 'yyt-plugin',
         apply: () => {}

@@ -13,13 +13,13 @@ describe('constructor resolvePlugins _resolvePlugin', () => {
         const service = new Service(__dirname + '/mock', {
             plugins: [
                 // string格式
-                __dirname + '/mock/yyt-plugin.js',
+                './yyt-plugin.js',
                 // obj格式
                 {id: 'yyt1-plugin', apply: () => {}},
                 // array格式两项，参数一obj
                 [{id: 'yyt3-plugin', apply: () => {}}, {}],
                 // array格式两项，参数一string
-                [__dirname + '/mock/yyt2-plugin.js', {a: 1}]
+                ['./yyt2-plugin.js', {a: 1}]
             ],
             useBuiltInPlugin: true,
             projectOptions: {
@@ -45,7 +45,7 @@ describe('constructor resolvePlugins _resolvePlugin', () => {
             'yyt2-plugin'
         ]);
         // 检测对于加options的插件是否已加入进去
-        expect(service.plugins.filter(item => Array.isArray(item))[0][1]).toEqual({a: 1});
+        expect(service.plugins.filter(item => Array.isArray(item))[1][1]).toEqual({a: 1});
         // 检测新增的projectOptions是否已加入进去
         expect(service['_initProjectOptions']).toEqual({outputDir: 'output'});
     });
@@ -94,12 +94,9 @@ describe('loadEnv', () => {
         expect(process.env.TEST_ENV_PRODUCTION_PATH).toBe('/home/work/env/production');
         expect(process.env.TEST_ENV_PRODUCTION_LOACAL_PATH).toBe('/home/work/env/production/local');
     });
-    test('没有mode值', () => {
+    test('没有mode值, 不存在某个.env文件', () => {
         service.loadEnv();
-        expect(process.env.TEST_ENV_PATH).toBe('/home/work/env');
-    });
-    test('不存在某个.env文件', () => {
-        service.loadEnv('development');
+        expect(process.env.TEST_ENV_PATH).toBeUndefined();
     });
 });
 
@@ -116,14 +113,12 @@ describe('loadProjectOptions', () => {
         expect(config.devServer).toEqual({
             contentBase: 'output',
             port: 9003,
-            clientLogLevel: 'info',
+            logLevel: 'silent',
+            clientLogLevel: 'silent',
             overlay: {warnings: false, errors: true},
-            hot: true,
-            noInfo: true,
             stats: 'errors-only',
             inline: false,
             lazy: false,
-            quiet: true,
             index: 'index.html',
             watchOptions: {aggregateTimeout: 300, ignored: /node_modules/, poll: 100},
             disableHostCheck: true,
@@ -132,20 +127,7 @@ describe('loadProjectOptions', () => {
             https: false
         });
         // 检测是否加了css配置项
-        expect(config.css).toEqual({
-            postcss: undefined
-        });
-        // 检测是否加了browserslist配置项
-        expect(config.browserslist).toEqual([
-            '> 1.2% in cn',
-            'last 2 versions',
-            'iOS >=8',
-            'android>4.4',
-            'not bb>0',
-            'not ff>0',
-            'not ie>0',
-            'not ie_mob>0'
-        ]);
+        expect(config.css).toBeUndefined();
     });
     test('不可查到的文件路径，但是工程中存在san.config.js', async () => {
         const config = await service.loadProjectOptions();
@@ -228,13 +210,13 @@ describe('registerCommand', () => {
             builder: {},
             description: 'yyt description',
             handler(argv) {},
-            middlewares: []
+            aliases: []
         });
-        expect(service.registeredCommands.get('yyt').description).toBe('yyt description');
+        expect(service.registeredCommands.get('yyt').describe).toBe('yyt description');
     });
     test('name为string，yargsModule为function', () => {
         service.registerCommand('yyt [component]', argv => {});
-        expect(service.registeredCommands.get('yyt').description).toBeFalsy();
+        expect(service.registeredCommands.get('yyt').describe).toBeFalsy();
     });
     test('只有name值（只有第一个参数）', () => {
         service.registerCommand({
@@ -242,9 +224,9 @@ describe('registerCommand', () => {
             builder: {},
             description: 'yyt only name description',
             handler(argv) {},
-            middlewares: []
+            aliases: []
         });
-        expect(service.registeredCommands.get('yyt').description).toBe('yyt only name description');
+        expect(service.registeredCommands.get('yyt').describe).toBe('yyt only name description');
     });
 });
 
