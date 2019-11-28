@@ -8,7 +8,7 @@ module.exports = (argv, plugin) => {
     const flatten = require('san-cli-utils/utils').flatten;
 
     // 处理 rc 文件传入的 Service Class arguments
-    let {plugins, useBuiltInPlugin = true, projectOptions} = argv._rcServiceArgs || {};
+    let {servicePlugins: plugins, useBuiltInPlugin = true, projectOptions} = argv._rcServiceArgs || {};
     if (Array.isArray(plugins)) {
         plugins.push(plugin);
     } else {

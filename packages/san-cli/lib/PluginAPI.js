@@ -9,8 +9,10 @@ module.exports = class PluginAPI {
     constructor(id, service) {
         this.id = id;
         this.service = service;
-        this.log = logger;
-        this.logger = logger;
+        // 添加个 scope
+        const l = logger.withTag(id || 'unknown-plugin');
+        this.log = l;
+        this.logger = l;
     }
     isProd() {
         return this.service.mode === 'production';
@@ -18,7 +20,7 @@ module.exports = class PluginAPI {
     chainWebpack(fn) {
         this.service.webpackChainFns.push(fn);
     }
-    configureWebpack(fn) {
+    configWebpack(fn) {
         this.service.webpackRawConfigFns.push(fn);
     }
     resolve(p) {

@@ -182,8 +182,8 @@ describe('initPlugin', () => {
         expect(typeof api.registerCommandFlag).toBe('function');
         expect(typeof api.registerCommandFlag).toBe('function');
         expect(typeof api.addPlugin).toBe('function');
-        expect(typeof api.resolveChainableWebpackConfig).toBe('function');
-        expect(typeof api.resolveWebpackConfig).toBe('function');
+        expect(typeof api.getWebpackChainConfig).toBe('function');
+        expect(typeof api.getWebpackConfig).toBe('function');
         expect(typeof api.getProjectOptions).toBe('function');
         expect(typeof api.getCwd).toBe('function');
         expect(typeof api.getVersion).toBe('function');

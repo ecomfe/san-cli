@@ -16,7 +16,7 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
         fse.removeSync(targetDir);
     }
 
-    const chainConfig = api.resolveChainableWebpackConfig();
+    const chainConfig = api.getWebpackChainConfig();
     // modern mode
     if (modern && !analyze) {
         const ModernModePlugin = require('san-cli-webpack/lib/ModernModePlugin');
@@ -90,7 +90,7 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     }
 
     // resolve webpack config
-    let webpackConfig = api.resolveWebpackConfig(chainConfig);
+    let webpackConfig = api.getWebpackConfig(chainConfig);
 
     // --dest
     if (dest) {

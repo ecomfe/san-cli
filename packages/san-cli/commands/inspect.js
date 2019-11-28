@@ -46,7 +46,7 @@ exports.handler = async argv => {
     const service = getService(argv, inspectPlugin);
     await service.run('inspect', argv);
 
-    const config = service.resolveWebpackConfig();
+    const config = service.getWebpackConfig();
     let res;
     let hasUnnamedRule;
 

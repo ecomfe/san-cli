@@ -24,9 +24,9 @@ test('测试chainWebpack', () => {
     expect(pluginApi.service.webpackChainFns.length).toBe(1);
 });
 
-test('测试configureWebpack', () => {
+test('测试configWebpack', () => {
     const cb = jest.fn();
-    pluginApi.configureWebpack(cb);
+    pluginApi.configWebpack(cb);
     expect(pluginApi.service.webpackRawConfigFns.length).toBe(1);
 });
 

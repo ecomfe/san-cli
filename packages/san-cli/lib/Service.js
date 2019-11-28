@@ -183,8 +183,8 @@ module.exports = class Service extends EventEmitter {
         if (this.projectOptions.chainWebpack) {
             this.webpackChainFns.push(this.projectOptions.chainWebpack);
         }
-        if (this.projectOptions.configureWebpack) {
-            this.webpackRawConfigFns.push(this.projectOptions.configureWebpack);
+        if (this.projectOptions.configWebpack) {
+            this.webpackRawConfigFns.push(this.projectOptions.configWebpack);
         }
         return this;
     }
@@ -208,8 +208,8 @@ module.exports = class Service extends EventEmitter {
                         'emit',
                         'registerCommandFlag',
                         'addPlugin',
-                        'resolveChainableWebpackConfig',
-                        'resolveWebpackConfig',
+                        'getWebpackChainConfig',
+                        'getWebpackConfig',
                         'addDevServerMiddleware'
                     ].includes(prop)
                 ) {
@@ -462,16 +462,16 @@ module.exports = class Service extends EventEmitter {
         return this;
     }
 
-    resolveChainableWebpackConfig() {
+    getWebpackChainConfig() {
         const chainableConfig = new Config();
         // apply chains
         this.webpackChainFns.forEach(fn => fn(chainableConfig));
         return chainableConfig;
     }
 
-    resolveWebpackConfig(chainableConfig = this.resolveChainableWebpackConfig()) {
+    getWebpackConfig(chainableConfig = this.getWebpackChainConfig()) {
         if (!this.initialized) {
-            throw new SError('Service must call init() before calling resolveWebpackConfig().');
+            throw new SError('Service must call init() before calling getWebpackConfig().');
         }
         // get raw config
         let config = chainableConfig.toConfig();

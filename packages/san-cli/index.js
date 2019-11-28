@@ -44,7 +44,7 @@ buildinCmds.forEach(cmd => {
 // 2. 对于每个执行命令的 fe 应该清楚自己的环境，而不是稀里糊涂的用全局 rc
 // 3. 方便配置默认 preset 统一命令和配置
 time('loadRc');
-const {plugins, configs, commands, useBuiltInPlugin} = require('./lib/loadRc')();
+const {servicePlugins, configs: projectOptions, commands, useBuiltInPlugin} = require('./lib/loadRc')();
 timeEnd('loadRc');
 if (typeof commands === 'object') {
     // 扩展命令行
@@ -59,8 +59,8 @@ cli.middleware(argv => {
     return {
         /* eslint-disable fecs-camelcase */
         _rcServiceArgs: {
-            plugins,
-            projectOptions: configs,
+            servicePlugins,
+            projectOptions,
             useBuiltInPlugin
         }
         /* eslint-enable fecs-camelcase */

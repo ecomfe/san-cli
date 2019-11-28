@@ -94,7 +94,7 @@ const schema = joi
         splitChunksCacheGroups: joi.object(),
         // 纯自定义的函数
         chainWebpack: joi.func(),
-        configureWebpack: joi.alternatives().try(joi.object(), joi.func()),
+        configWebpack: joi.alternatives().try(joi.object(), joi.func()),
         // dev server
         devServer: joi
             .object({

@@ -7,7 +7,7 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     const {resolveEntry} = require('san-cli-webpack/utils');
     const isProd = api.isProd();
     // 开始正式的操作
-    let webpackConfig = api.resolveWebpackConfig();
+    let webpackConfig = api.getWebpackConfig();
     const entry = argv.entry;
 
     webpackConfig = resolveEntry(entry, api.resolve(entry), webpackConfig, require.resolve('../../template/main.js'));

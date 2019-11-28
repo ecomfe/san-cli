@@ -1,13 +1,26 @@
-## San-CLI Roadmap
+# San-CLI
 
-### 功能拆分
+## 快速开始
 
--   [] init 增加 preset 功能
--   [x] lib/Service 完成
--   [x] 加上 loadEnv
--   [] 加上 lint
+## 如何贡献
+
+## 测试
+
+## 维护者
+
+
+
+## 讨论
+
+## TODO List
+
+-   [ ] init 增加 preset 功能？
+-   [ ] 加上 lint
 
 Hulk2 已经满足手百 San 日常开发功能，但是在插件化和可扩展性做的不够好，因此启用新的 CLI 开发计划，该 CLI 旨在完善 San 生态，做可定制化的前端开发工具集，在兼顾 San 生态的同时，遵守微核心和插件化的设计思想，尽量不局限 San 的应用，做到通用化配置。
+
+
+
 
 ### 具体要求和功能点如下
 
@@ -151,7 +164,7 @@ module.exports = {
 -   publicPath
 -   devServer
 -   chainWebpack
--   configureWebpack
+-   configWebpack
 -   css
 -   css.loaderOptions
 -   css.sourceMap
