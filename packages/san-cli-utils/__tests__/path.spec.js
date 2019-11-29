@@ -58,7 +58,7 @@ describe('测试getTemplatePath', () => {
 
 describe('测试findExisting', () => {
     test('', () => {
-        expect(findExisting('User/yyt/wiki', ['a/b', 'b']))
+        expect(findExisting(['a/b', 'b'], 'User/yyt/wiki'))
             .toBe('User/yyt/wiki/a/b');
     });
 });

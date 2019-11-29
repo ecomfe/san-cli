@@ -50,7 +50,6 @@ exports.handler = async argv => {
     let res;
     let hasUnnamedRule;
 
-    console.log(argv.paths);
     if (argv.rule) {
         res = config.module.rules.find(r => r.__ruleNames[0] === argv.rule);
     }

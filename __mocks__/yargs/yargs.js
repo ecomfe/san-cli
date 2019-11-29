@@ -12,7 +12,7 @@ Yargs.prototype.terminalWidth = jest.fn(() => Yargs.prototype);
 Yargs.prototype.middleware = jest.fn(() => Yargs.prototype);
 Yargs.prototype.help = jest.fn(() => Yargs.prototype);
 Yargs.prototype.alias = jest.fn(() => Yargs.prototype);
-Yargs.prototype.epilogue = jest.fn(() => Yargs.prototype);
+Yargs.prototype.epilog = jest.fn(() => Yargs.prototype);
 
 const yargs = jest.fn(() => new Yargs());
 

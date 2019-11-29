@@ -112,7 +112,7 @@ module.exports = class Service extends EventEmitter {
 
         if (plugins.length) {
             // 2. 真正加载
-            plugins = plugins.map(this._loadPlugin);
+            plugins = plugins.map(this._loadPlugin.bind(this));
             plugins = [...builtInPlugins, ...plugins];
         } else {
             plugins = builtInPlugins;
@@ -160,7 +160,10 @@ module.exports = class Service extends EventEmitter {
             }
         } else if (typeof p === 'object' && p.id && typeof p.apply === 'function') {
             // 处理 object
-            return [p, pluginOptions];
+            if (pluginOptions) {
+                return [p, pluginOptions];
+            }
+            return p;
         } else {
             logger.error('Service plugin is valid');
             if (p.toString() === '[object Object]') {
@@ -293,7 +296,7 @@ module.exports = class Service extends EventEmitter {
             configFile = isAbsolute(configFile) ? configFile : resolve(this.cwd, configFile);
             if (!fs.existsSync(configFile)) {
                 configFile = false;
-                this.logger.warn('config-file', `${originalConfigFile} is not exists!`);
+                // this.logger.warn('config-file', `${originalConfigFile} is not exists!`);
             }
         }
         // 首先试用 argv 的 config，然后寻找默认的，找到则读取，格式失败则报错
@@ -341,7 +344,7 @@ module.exports = class Service extends EventEmitter {
             // 加载默认的 config 配置
             config = defaultsDeep(result.config, config);
         } else {
-            this.logger.warn(`${textColor('san.config.js')} Cannot find! Use default configuration.`);
+            // this.logger.warn(`${textColor('san.config.js')} Cannot find! Use default configuration.`);
         }
         // normalize publicPath
         ensureSlash(config, 'publicPath');
