@@ -14,6 +14,11 @@ const builder = (exports.builder = {
         default: false,
         describe: 'watch mode'
     },
+    config: {
+        alias: 'config-file',
+        type: 'string',
+        describe: 'program specifications'
+    },
     analyze: {
         alias: 'analyzer',
         type: 'boolean',

@@ -24,6 +24,11 @@ const builder = (exports.builder = {
         choices: ['development', 'production'],
         describe: 'program specifications'
     },
+    config: {
+        alias: 'config-file',
+        type: 'string',
+        describe: 'program specifications'
+    },
     port: {
         alias: 'p',
         default: 8888,

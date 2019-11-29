@@ -20,7 +20,7 @@ const ask = require('../ask');
 const exists = fs.existsSync;
 const debug = logger.withTag('generate').debug;
 
-module.exports = (name, dest, options) => {
+module.exports = (name, dest, argv) => {
     return (ctx, task) => {
         return new rxjs.Observable(async observer => {
             const src = ctx.localTemplatePath;
@@ -29,7 +29,8 @@ module.exports = (name, dest, options) => {
             const {name: gitUser, email: gitEmail, author} = getGitUser();
             metaData.author = author;
             metaData.email = gitEmail;
-            metaData.username = gitUser;
+            // 优先使用用户传入的
+            metaData.username = argv.username !== '' ? argv.username : gitUser || 'git';
             // 路径地址
             metaData.name = path.basename(path.resolve(dest));
 
@@ -46,7 +47,7 @@ module.exports = (name, dest, options) => {
             debug(metaData);
             // 2. 请回答
             observer.next();
-            const answers = await ask(metaData.prompts || {}, metaData);
+            const answers = await ask(metaData.prompts || {}, metaData, argv);
             const data = Object.assign(
                 {
                     destDirName: dest,

@@ -36,7 +36,7 @@ function normalize(repo, opts) {
     const useHttps = opts.useHttps || false;
     const {name, isBaidu} = getGitUser();
     // 如果是 是百度，则强制使用百度账号
-    const user = isBaidu ? name : opts.user || 'git';
+    const user = isBaidu ? name : opts.username !== '' ? opts.username : 'git';
 
     const match = regex.exec(repo);
     if (!match) {

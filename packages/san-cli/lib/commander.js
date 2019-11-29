@@ -13,12 +13,8 @@ module.exports = () => {
         .usage('Usage: $0 <command> [options]')
         .option('verbose', {
             type: 'boolean',
+            hidden: true,
             describe: 'output verbose messages on internal operations'
-        })
-        .option('config-file', {
-            alias: 'config',
-            type: 'string',
-            describe: 'program specifications'
         })
         .option('no-progress', {
             type: 'boolean',
