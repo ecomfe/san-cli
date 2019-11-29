@@ -7,7 +7,7 @@ const rxjs = require('rxjs');
 const fs = require('fs-extra');
 const {getLocalTplPath} = require('san-cli-utils/path');
 const downloadRepo = require('../utils/downloadRepo');
-
+// TODO: 文案更新
 module.exports = (template, dest, options) => {
     return (ctx, task) => {
         return new rxjs.Observable(observer => {
@@ -27,7 +27,7 @@ module.exports = (template, dest, options) => {
             } else {
                 // 否则拉取远程仓库的模板
                 observer.next('拉取模板ing...');
-                downloadRepo(template, tmp)
+                downloadRepo(template, tmp, options)
                     .then(() => {
                         ctx.localTemplatePath = tmp;
                         observer.complete();

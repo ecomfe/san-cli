@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs-extra');
 const rxjs = require('rxjs');
 const through = require('through2');
 const Handlebars = require('../handlerbars');
@@ -12,12 +12,13 @@ const render = require('consolidate').handlebars.render;
 const concat = require('concat-stream');
 const filter = require('gulp-filter');
 const rename = require('gulp-rename');
-const debug = require('debug')('init:generate');
+const {logger} = require('san-cli-utils/ttyLogger');
 const evaluate = require('../utils/evaluate');
 const {getGitUser} = require('../utils/env');
 
 const ask = require('../ask');
 const exists = fs.existsSync;
+const debug = logger.withTag('generate').debug;
 
 module.exports = (name, dest, options) => {
     return (ctx, task) => {
@@ -97,47 +98,47 @@ async function startTask(src, dest, ctx, observer) {
     }
     return new Promise((resolve, reject) => {
         vfs.src(rootSrc, {cwd: templateDir, cwdbase: true, dot: true})
-        // 过滤
-        // .pipe(f)
-        // 4. 增加 handlerbar
-        .pipe(streamFile(template, data))
-        // 处理 _ 开头文件为 .开头
-        .pipe(dotFileFilter)
-        .pipe(
-            rename((path, file) => {
-                if (!file.isDirectory()) {
-                    path.extname = path.basename.replace(/^_/, '.');
-                    path.basename = '';
-                }
+            // 过滤
+            // .pipe(f)
+            // 4. 增加 handlerbar
+            .pipe(streamFile(template, data))
+            // 处理 _ 开头文件为 .开头
+            .pipe(dotFileFilter)
+            .pipe(
+                rename((path, file) => {
+                    if (!file.isDirectory()) {
+                        path.extname = path.basename.replace(/^_/, '.');
+                        path.basename = '';
+                    }
 
-                return path;
-            })
-        )
-        .pipe(dotFileFilter.restore)
-        // 处理文件命名中出现{{}}的情况
-        .pipe(braceFileFilter)
-        .pipe(
-            rename(path => {
-                let m = path.basename.match(/^{{(.+?)}}$/);
-                if (m && m[1] && typeof data[m[1]] === 'string') {
-                    path.basename = data[m[1]];
                     return path;
-                }
+                })
+            )
+            .pipe(dotFileFilter.restore)
+            // 处理文件命名中出现{{}}的情况
+            .pipe(braceFileFilter)
+            .pipe(
+                rename(path => {
+                    let m = path.basename.match(/^{{(.+?)}}$/);
+                    if (m && m[1] && typeof data[m[1]] === 'string') {
+                        path.basename = data[m[1]];
+                        return path;
+                    }
 
-                return path;
+                    return path;
+                })
+            )
+            .pipe(braceFileFilter.restore)
+            .pipe(vfs.dest(dest))
+            .on('end', () => {
+                observer.complete();
+                resolve();
             })
-        )
-        .pipe(braceFileFilter.restore)
-        .pipe(vfs.dest(dest))
-        .on('end', () => {
-            observer.complete();
-            resolve();
-        })
-        .on('error', err => {
-            observer.error(err);
-            reject();
-        })
-        .resume();
+            .on('error', err => {
+                observer.error(err);
+                reject();
+            })
+            .resume();
     });
 }
 
@@ -147,8 +148,7 @@ function getMetadata(dir) {
     let opts = {};
 
     if (exists(json)) {
-        const content = fs.readFileSync(json, 'utf-8');
-        opts = JSON.parse(content);
+        opts = fs.readJsonSync(json);
     } else if (exists(js)) {
         const req = require(path.resolve(js));
         if (req !== Object(req)) {
