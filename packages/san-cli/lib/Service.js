@@ -5,11 +5,12 @@
 
 const {resolve, isAbsolute, join} = require('path');
 const EventEmitter = require('events').EventEmitter;
-const {logger: consola, time, timeEnd} = require('san-cli-utils/ttyLogger');
-const importLazy = require('import-lazy');
+const {logger: consola, time, timeEnd, chalk} = require('san-cli-utils/ttyLogger');
+const importLazy = require('import-lazy')(require);
 const fs = require('fs-extra');
-const Config = importLazy(require)('webpack-chain');
-const webpackMerge = importLazy(require)('webpack-merge');
+const Config = importLazy('webpack-chain');
+const webpackMerge = importLazy('webpack-merge');
+const resolvePlugin = importLazy('./resolvePlugin');
 // const cosmiconfig = require('cosmiconfig');
 const defaultsDeep = require('lodash.defaultsdeep');
 const lMerge = require('lodash.merge');
@@ -111,7 +112,7 @@ module.exports = class Service extends EventEmitter {
 
         if (plugins.length) {
             // 2. 真正加载
-            plugins = plugins.map(this._resolvePlugin);
+            plugins = plugins.map(this._loadPlugin);
             plugins = [...builtInPlugins, ...plugins];
         } else {
             plugins = builtInPlugins;
@@ -119,7 +120,7 @@ module.exports = class Service extends EventEmitter {
 
         return plugins;
     }
-    _resolvePlugin(p) {
+    _loadPlugin(p) {
         let pluginOptions;
         if (Array.isArray(p) && p.length === 2) {
             // 带有参数的plugin 配置
@@ -131,11 +132,12 @@ module.exports = class Service extends EventEmitter {
             try {
                 // 是从工作目录开始的
                 // san cli 内部使用 require
-                let plugin = require(resolve(this.cwd, p));
+                let plugin = require(resolvePlugin(p, this.cwd));
                 if (plugin.__esModule) {
                     // 重新赋值 esmodule
                     plugin = plugin.default;
                 }
+                logger.debug('Plugin loaded: %s', chalk.magenta(p));
                 if (typeof plugin === 'object' && typeof plugin.apply === 'function') {
                     if (!plugin.id) {
                         // 默认 id 是配置的string，方便查找
@@ -150,21 +152,20 @@ module.exports = class Service extends EventEmitter {
                     }
                     return plugin;
                 } else {
-                    throw new SError('Plugin is valid : ' + p);
+                    logger.error(`Plugin is valid: ${p}, Serivce plugin must has id and apply!`);
                 }
             } catch (e) {
-                logger.debug(e);
-                throw new SError('Require plugin is valid : ' + p);
+                logger.error(`Plugin load failed: ${p}`);
+                logger.error(e);
             }
         } else if (typeof p === 'object' && p.id && typeof p.apply === 'function') {
             // 处理 object
             return [p, pluginOptions];
         } else {
+            logger.error('Service plugin is valid');
             if (p.toString() === '[object Object]') {
-                logger.log(p);
+                logger.error(p);
             }
-            // 写明白这里是需要 id 的
-            throw new SError('Plugin is valid : ' + p);
         }
     }
     init(mode) {
@@ -453,7 +454,7 @@ module.exports = class Service extends EventEmitter {
         if (Array.isArray(name)) {
             [name, options = {}] = name;
         }
-        const plugin = this._resolvePlugin([name, options]);
+        const plugin = this._loadPlugin([name, options]);
         this.plugins.push(plugin);
         return this;
     }

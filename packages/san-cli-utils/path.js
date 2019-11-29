@@ -7,6 +7,7 @@ const url = require('url');
 const path = require('path');
 const importLazy = require('import-lazy')(require);
 const address = importLazy('address');
+const home = require('user-home');
 
 const fse = importLazy('fs-extra');
 const {chalk} = require('./ttyLogger');
@@ -15,9 +16,6 @@ exports.isLocalPath = templatePath => {
     return /^[./]|(^[a-zA-Z]:)/.test(templatePath);
 };
 
-exports.resolveLocal = function resolveLocal(...args) {
-    return path.join(__dirname, '../', ...args);
-};
 exports.getAssetPath = (assetsDir, filePath) => (assetsDir ? path.posix.join(assetsDir, filePath) : filePath);
 
 exports.getTemplatePath = templatePath => {
@@ -90,6 +88,13 @@ exports.prepareUrls = (protocol, host, port, pathname = '/') => {
 
 // 获取本地模板路径
 exports.getLocalTplPath = template => {
-    const home = require('user-home');
-    return path.join(home, '.san-templates', template.replace(/[/:#]/g, '-').substring(template.lastIndexOf('/') + 1));
+    return path.join(
+        getUserHomeFolder(),
+        'templates',
+        template.replace(/[/:#]/g, '-').substring(template.lastIndexOf('/') + 1)
+    );
 };
+function getUserHomeFolder() {
+    return path.join(home, '.san');
+}
+exports.getUserHomeFolder = getUserHomeFolder;

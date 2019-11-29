@@ -2,51 +2,59 @@
  * @file 获取 rc 文件内容
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const path = require('path');
+// const path = require('path');
 const importLazy = require('import-lazy')(require);
-const cosmiconfig = importLazy('cosmiconfig');
 const fse = importLazy('fs-extra');
 const readPkg = require('./readPkg');
+const resolve = importLazy('./resolvePlugin');
+const lMerge = importLazy('lodash.merge');
 
-const {findExisting} = require('san-cli-utils/path');
-const {error, logger} = require('san-cli-utils/ttyLogger');
+const {findExisting, getUserHomeFolder} = require('san-cli-utils/path');
+// const {error, logger} = require('san-cli-utils/ttyLogger');
 
-module.exports = (rootSrc = process.cwd()) => {
-    const searchPlaces = ['.sanrc', '.sanrc.json', '.sanrc.js'];
-    // 1. 查找rootSrc 的文件
-    let rcpath = findExisting(searchPlaces, rootSrc);
-    if (rcpath) {
-        logger.debug('在 cwd 目录找到 rc 文件', rcpath);
-        // js require
-        if (path.extname(rcpath) === '.js') {
-            try {
-                return require(rcpath);
-            } catch (e) {
-                error(`Load sanrc file error at ${rcpath}`);
-                error(e);
-                return;
+module.exports = (baseDir = process.cwd()) => {
+    // 1. 查找 package.json 的文件
+    const pkg = readPkg(baseDir);
+    // 2. 读取 san, dependencies和 devDependencies
+    const {dependencies, devDependencies, san = {}} = pkg || {};
+    // 3. 合并 pkg.san 和 dependencies，处理相对路径
+    const deps = Object.keys(dependencies || {});
+    const devDeps = Object.keys(devDependencies || {});
+    let commands = (san.commands || [])
+        .concat(deps, devDeps)
+        .map(name => {
+            //  忽略非 san-cli 开头的
+            if (!/^san-cli-|^@[^/]+\/san-cli-/.test(name)) {
+                return false;
             }
-        }
-        // json
-        return fse.readJsonSync(rcpath);
+
+            // 忽略 @types 和 @babel
+            if (/^@(types|babel)\//.test(name)) {
+                return false;
+            }
+
+            // 保证插件存在
+            const path = resolve(name, baseDir);
+            return path;
+        })
+        .filter(p => p);
+    // 防止 merge
+    delete san.commands;
+    // 4. 查找 userhome 的 sanrc.json
+    // 5. merge全部，返回
+    const sanFolder = getUserHomeFolder();
+    const filepath = findExisting(['sanrc.json'], sanFolder);
+    let sanrc = {};
+    if (filepath) {
+        sanrc = fse.readJsonSync(filepath);
+        // concat
+        commands = commands.concat(sanrc.commands);
+        // 防止 merge
+        delete sanrc.commands;
     }
-    // 2. 查找 package.json 的文件
-    const pkg = readPkg(rootSrc);
-    if (pkg.san) {
-        logger.debug('在 cwd 目录找到 package.json 的 sanrc 配置', rcpath);
-        return pkg.san;
-    }
-    // 3. 使用 cosmiconfig 从上层开始查找，找到用户目录结束
-    // 使用 cosmiconfig 查找
-    const explorer = cosmiconfig('san', {
-        searchPlaces
+    // 目前只有 commands~
+    return lMerge(san, sanrc, {
+        // 去重下
+        commands: Array.from(new Set(commands))
     });
-
-    const rcResult = explorer.searchSync(path.dirname(rootSrc)) || {};
-    let rc = {};
-    if (rcResult) {
-        rc = rcResult.config || {};
-    }
-
-    return rc;
 };

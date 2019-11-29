@@ -44,7 +44,7 @@ buildinCmds.forEach(cmd => {
 // 2. 对于每个执行命令的 fe 应该清楚自己的环境，而不是稀里糊涂的用全局 rc
 // 3. 方便配置默认 preset 统一命令和配置
 time('loadRc');
-const {servicePlugins, configs: projectOptions, commands, useBuiltInPlugin} = require('./lib/loadRc')();
+const {commands} = require('./lib/loadRc')();
 timeEnd('loadRc');
 if (typeof commands === 'object') {
     // 扩展命令行
@@ -54,18 +54,18 @@ if (typeof commands === 'object') {
     });
 }
 
-cli.middleware(argv => {
-    // 将 rc 的内容加到 argv，直接传值，避免二次加载
-    return {
-        /* eslint-disable fecs-camelcase */
-        _rcServiceArgs: {
-            servicePlugins,
-            projectOptions,
-            useBuiltInPlugin
-        }
-        /* eslint-enable fecs-camelcase */
-    };
-});
+// cli.middleware(argv => {
+//     // 将 rc 的内容加到 argv，直接传值，避免二次加载
+//     return {
+//         /* eslint-disable fecs-camelcase */
+//         _rcServiceArgs: {
+//             servicePlugins,
+//             projectOptions,
+//             useBuiltInPlugin
+//         }
+//         /* eslint-enable fecs-camelcase */
+//     };
+// });
 
 // 6. 触发执行
 cli.parse(process.argv.slice(2));
