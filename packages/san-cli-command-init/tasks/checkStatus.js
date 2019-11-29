@@ -9,7 +9,7 @@ const fs = require('fs-extra');
 const {chalk} = require('san-cli-utils/ttyLogger');
 const {isLocalPath, getLocalTplPath} = require('san-cli-utils/path');
 const prompt = require('../utils/prompt');
-
+// TODO 文案更新
 module.exports = (template, dest, options) => {
     return (ctx, task) => {
         return new rxjs.Observable(async observer => {

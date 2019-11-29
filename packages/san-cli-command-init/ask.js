@@ -12,12 +12,18 @@ const promptMapping = {
     boolean: 'confirm'
 };
 
-module.exports = async (prompts, data) => {
+module.exports = async (prompts, data, argv) => {
     const answers = {};
     let keys = Object.keys(prompts);
     let key;
     while ((key = keys.shift())) {
-        await prompt(answers, key, prompts[key], data);
+        if (argv[key]) {
+            // 这里是通过 cli 的 flag 传入的 key 值
+            // 直接使用，不用再提问了
+            answers[key] = argv[key];
+        } else {
+            await prompt(answers, key, prompts[key], data);
+        }
     }
     return Promise.resolve(answers);
 };
@@ -67,10 +73,10 @@ async function prompt(data, key, prompt, tplData) {
         answers[key].forEach(multiChoiceAnswer => {
             data[key][multiChoiceAnswer] = true;
         });
-    // 如果答案是串型，转义一下双引号
+        // 如果答案是串型，转义一下双引号
     } else if (typeof answers[key] === 'string') {
         data[key] = answers[key].replace(/"/g, '\\"');
-    // 其他类型的直接赋值
+        // 其他类型的直接赋值
     } else {
         data[key] = answers[key];
     }

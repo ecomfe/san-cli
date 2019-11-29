@@ -12,7 +12,6 @@
         "gulp-filter": "^6.0.0",
         "gulp-rename": "^1.4.0",
         "handlebars": "^4.5.1",
-        "debug": "^4.1.1",
         "git-clone": "^0.1.0",
         "rxjs": "^6.5.3",
         "through2": "^3.0.1",

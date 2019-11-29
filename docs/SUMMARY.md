@@ -18,3 +18,4 @@
     -   [内部实现](./architecture.md)
     -   [编写一个插件](./plugin-dev.md)
     -   [如何创建一个脚手架项目](./create-scaffold.md)
+        -   [脚手架的 meta 文件](./create-scaffold.md)
