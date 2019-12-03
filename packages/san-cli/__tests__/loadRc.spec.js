@@ -3,10 +3,17 @@
  * @author yanyiting <yanyiting@baidu.com>
  */
 
+jest.mock('read-pkg');
+
 import loadRc from '../lib/loadRc';
 
 test('', () => {
-    expect(loadRc(process.cwd() + 'packages/san-cli')).toEqual({
-        commands: []
+    const commands = loadRc(process.cwd() + '/packages/san-cli').commands;
+    let flag = false;
+    commands.forEach(item => {
+        if (item.indexOf('san-cli-command-init') > -1) {
+            flag = true;
+        }
     });
+    expect(flag).toBeTruthy();
 });

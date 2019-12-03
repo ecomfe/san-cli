@@ -3,9 +3,14 @@
  * @author yanyiting <yanyiting@baidu.com>
  */
 
-import downloadrepo from '../utils/downloadrepo';
-
 jest.mock('git-clone');
+
+import downloadrepo from '../utils/downloadrepo';
+import {getGitUser} from 'san-cli-utils/env';
+
+const {name, isBaidu} = getGitUser();
+// 如果是 是百度，则强制使用百度账号
+const user = isBaidu ? name : 'git';
 
 test('只传入repoName（默认走github）', async () => {
     const res = await downloadrepo('yyt', 'aaa', {})
@@ -30,7 +35,7 @@ test('传入github地址，使用https方式，dev分支', async () => {
 test('传入icode地址', async () => {
     const res = await downloadrepo('icode:baidu/baiduappfeed/itemrep', 'aaa', {});
     expect(res).toEqual({
-        url: 'ssh://yanyiting@icode.baidu.com:8235/baidu/baiduappfeed/itemrep',
+        url: `ssh://${user}@icode.baidu.com:8235/baidu/baiduappfeed/itemrep`,
         dest: 'aaa',
         checkout: 'master'
     });
@@ -41,7 +46,7 @@ test('传入icode地址，使用https方式，dev分支', async () => {
         useHttps: true
     });
     expect(res).toEqual({
-        url: 'https://yanyiting@icode.baidu.com/baidu/baiduappfeed/itemrep',
+        url: `https://${user}@icode.baidu.com/baidu/baiduappfeed/itemrep`,
         dest: 'aaa',
         checkout: 'dev'
     });
