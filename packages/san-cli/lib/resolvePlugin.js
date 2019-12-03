@@ -16,7 +16,11 @@ module.exports = (name, basedir = process.cwd()) => {
                 require(p);
                 return p;
             } catch (e) {
-                throw new SError(e);
+                if (/Cannot find module/.test(e)) {
+                    throw new SError(`\`${name}\` not found!`);
+                } else {
+                    throw new SError(e);
+                }
             }
         }
         return resolve.sync(name, {basedir});

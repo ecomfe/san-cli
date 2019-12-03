@@ -7,17 +7,6 @@ const importLazy = require('import-lazy')(require);
 const resolveCwd = importLazy('resolve-cwd');
 const importCwd = importLazy('import-cwd');
 
-function validate(mod) {
-    if (mod && typeof mod === 'object') {
-        if (typeof mod.handler === 'function' && typeof mod.command === 'string') {
-            return true;
-        }
-    }
-    return false;
-}
-
-exports.validate = validate;
-
 exports.requireFromLocal = cmd => {
     let localModule = importCwd.silent(cmd);
     let filepath;
@@ -25,11 +14,18 @@ exports.requireFromLocal = cmd => {
         try {
             filepath = path.resolve(cmd);
             localModule = require(filepath);
+            return filepath;
         } catch (e) {
-            localModule = undefined;
+            if (/Cannot find module/.test(e)) {
+                // 没有找到
+                return null;
+            } else {
+                localModule = undefined;
+                filepath = undefined;
+            }
         }
     }
-    if (localModule && validate(localModule)) {
+    if (localModule) {
         // 优先使用本地的
         return filepath ? filepath : resolveCwd.silent(cmd);
     }

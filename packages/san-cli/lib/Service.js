@@ -364,7 +364,7 @@ module.exports = class Service extends EventEmitter {
         /* eslint-enable fecs-camelcase */
         if (!_command) {
             // 命令不存在哦~
-            logger.error('runCommand', `${this._cli.$0} ${cmd} is not exist!`);
+            logger.error('runCommand', `\`${this._cli.$0} ${cmd}\` is not exist!`);
             return this;
         }
         /* eslint-disable fecs-camelcase */

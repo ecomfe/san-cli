@@ -5,4 +5,4 @@
 
 const {removeFactory: factory} = require('../../../lib/pluginCommandFactory');
 
-module.exports = factory('commands', require('../validate'));
+module.exports = factory('servicePlugins', require('../validate'));
