@@ -17,7 +17,7 @@ module.exports = (template, dest, options) => {
                 observer.complete();
                 return;
             }
-            // 临时存放地址，存放在~/.hulk-templates 下面
+            // 临时存放地址，存放在~/.san/templates 下面
             let tmp = getLocalTplPath(template);
             if (options.useCache && fs.exists(tmp)) {
                 ctx.localTemplatePath = tmp;

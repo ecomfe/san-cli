@@ -1,12 +1,11 @@
 /**
  * @file 下载 github/icode repo
  */
-
 const gitclone = require('git-clone');
 const fse = require('fs-extra');
-const {logger} = require('san-cli-utils/ttyLogger');
+const {logger, error} = require('san-cli-utils/ttyLogger');
 const debug = logger.withTag('download-repo').debug;
-const {getGitUser} = require('./env');
+const {getGitUser} = require('san-cli-utils/env');
 
 module.exports = (repo, dest, options) => {
     repo = normalize(repo, options);
@@ -16,12 +15,13 @@ module.exports = (repo, dest, options) => {
     // 先删除
     rm(dest);
     return new Promise((resolve, reject) => {
+        debug(url, dest, checkout);
         gitclone(url, dest, {checkout, shallow: checkout === 'master'}, err => {
             if (!err) {
                 rm(`${dest}/.git`);
                 resolve();
             } else {
-                debug(err, url, dest, checkout);
+                error(err);
                 reject(err);
             }
         });

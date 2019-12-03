@@ -2,7 +2,7 @@
  * @file env test
  */
 
-import {hasYarn, getGitUser} from '../utils/env';
+import {hasYarn, getGitUser} from '../env';
 import {execSync} from 'child_process';
 
 jest.mock('child_process');

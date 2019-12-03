@@ -8,7 +8,7 @@
 const updateNotifier = require('update-notifier');
 const semver = require('semver');
 
-const {error, chalk, time, timeEnd} = require('san-cli-utils/ttyLogger');
+const {error, chalk, time, timeEnd, debug} = require('san-cli-utils/ttyLogger');
 const commander = require('./lib/commander');
 const {
     scriptName,
@@ -26,8 +26,8 @@ checkNodeVersion(requiredNodeVersion, pkgName);
 // 2. 检测最新版本
 upNotifier(pkgVersion, pkgName);
 // 3. 加载全部的命令
-const buildinCmds = ['build', 'init', 'serve', 'inspect', 'default'];
-
+const constant = require('./lib/const');
+const buildinCmds = constant.buildinCommands;
 // 4. 内置的命令
 const cli = commander();
 buildinCmds.forEach(cmd => {
@@ -44,28 +44,39 @@ buildinCmds.forEach(cmd => {
 // 2. 对于每个执行命令的 fe 应该清楚自己的环境，而不是稀里糊涂的用全局 rc
 // 3. 方便配置默认 preset 统一命令和配置
 time('loadRc');
-const {commands} = require('./lib/loadRc')();
+const {commands, servicePlugins, useBuiltInPlugin = true, remote} = require('./lib/loadRc')();
 timeEnd('loadRc');
 if (typeof commands === 'object') {
+    debug('load-diy-commands:', commands);
     // 扩展命令行
+    const unique = new Set();
     Object.keys(commands).forEach(cmd => {
+        if (unique.has(commands[cmd])) {
+            // 保证唯一性
+            return;
+        }
         const instance = typeof commands[cmd] === 'string' ? require(commands[cmd]) : commands[cmd];
-        cli.command(instance);
+        if (instance && instance.command) {
+            unique.add(commands[cmd]);
+            cli.command(instance);
+        } else {
+            error(`${cmd} is not a validate command instance!`);
+        }
     });
 }
 
-// cli.middleware(argv => {
-//     // 将 rc 的内容加到 argv，直接传值，避免二次加载
-//     return {
-//         /* eslint-disable fecs-camelcase */
-//         _rcServiceArgs: {
-//             servicePlugins,
-//             projectOptions,
-//             useBuiltInPlugin
-//         }
-//         /* eslint-enable fecs-camelcase */
-//     };
-// });
+cli.middleware(argv => {
+    // 将 rc 的内容加到 argv，直接传值，避免二次加载
+    return {
+        /* eslint-disable fecs-camelcase */
+        _rcServiceArgs: {
+            remote,
+            servicePlugins,
+            useBuiltInPlugin
+        }
+        /* eslint-enable fecs-camelcase */
+    };
+});
 
 // 6. 触发执行
 cli.parse(process.argv.slice(2));

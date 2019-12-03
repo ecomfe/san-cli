@@ -24,6 +24,9 @@ exports.getTemplatePath = templatePath => {
 };
 
 exports.findExisting = (files, context) => {
+    if (typeof files === 'string') {
+        files = [files];
+    }
     for (const file of files) {
         const filePath = context ? path.join(context, file) : file;
         if (fse.existsSync(filePath)) {
@@ -97,4 +100,8 @@ exports.getLocalTplPath = template => {
 function getUserHomeFolder() {
     return path.join(home, '.san');
 }
-exports.getUserHomeFolder = getUserHomeFolder;
+exports.getUserHƒomeFolder = getUserHomeFolder;
+function getGlobalSanRcFilePath() {
+    return path.join(home, '.san', 'sanrc.json');
+}
+exports.getGlobalSanRcFilePath = getGlobalSanRcFilePath;
