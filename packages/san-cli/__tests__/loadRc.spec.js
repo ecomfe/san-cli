@@ -1,15 +1,12 @@
 /**
- * @file downloadrepo test
+ * @file loadRc test
+ * @author yanyiting <yanyiting@baidu.com>
  */
 
 import loadRc from '../lib/loadRc';
 
-jest.mock('cosmiconfig');
-
 test('', () => {
-    expect(loadRc()).toEqual({
-        a: 1,
-        b: 2
+    expect(loadRc(process.cwd() + 'packages/san-cli')).toEqual({
+        commands: []
     });
-    expect(loadRc()).toEqual({});
 });

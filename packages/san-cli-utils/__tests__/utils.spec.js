@@ -1,5 +1,6 @@
 /**
  * @file utils test
+ * @author yanyiting <yanyiting@baidu.com>
  */
 
 import {

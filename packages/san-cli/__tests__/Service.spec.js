@@ -1,5 +1,6 @@
 /**
  * @file Service test
+ * @author yanyiting <yanyiting@baidu.com>
  */
 
 import Service from '../lib/Service';

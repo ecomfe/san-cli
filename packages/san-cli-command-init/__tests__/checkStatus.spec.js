@@ -1,9 +1,9 @@
 /**
  * @file checkStatus test
+ * @author yanyiting <yanyiting@baidu.com>
  */
 
-jest.unmock('chalk');
-jest.mock('rxjs')
+jest.mock('rxjs');
 jest.mock('inquirer');
 
 import inquirer from 'inquirer';
@@ -22,7 +22,7 @@ test('新目录，目录未存在', async () => {
 });
 
 test('目录已存在，--force强行删除', async () => {
-    await checkStatus('https://github.com/yyt/HelloWorld.git', './project', {
+    await checkStatus('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-template', {
         force: true
     })({}).then(data => {
         expect(data).toEqual({
@@ -62,7 +62,7 @@ test('在当前目录下 .', async () => {
 test('目录已存在，也没有任何指示如何操作已存在的目录', async () => {
     // 选择覆盖
     inquirer.prompt.mockResolvedValueOnce({action: 'overwrite'});
-    await checkStatus('https://github.com/yyt/HelloWorld.git', './project', {})({})
+    await checkStatus('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-template', {})({})
         .then(data => {
             expect(data.next[2]).toMatch('选择覆盖，首先删除');
             expect(data.complete).toBeTruthy();
@@ -70,7 +70,7 @@ test('目录已存在，也没有任何指示如何操作已存在的目录', as
 
     // 选择取消
     inquirer.prompt.mockResolvedValueOnce({action: false});
-    await checkStatus('https://github.com/yyt/HelloWorld.git', './project', {})({})
+    await checkStatus('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-template', {})({})
         .then(data => {
             expect(data.error).toMatch('取消覆盖');
             expect(data.complete).toBeFalsy();
@@ -78,7 +78,7 @@ test('目录已存在，也没有任何指示如何操作已存在的目录', as
 
     // 选择合并
     inquirer.prompt.mockResolvedValueOnce({action: 'merge'});
-    await checkStatus('https://github.com/yyt/HelloWorld.git', './project', {})({})
+    await checkStatus('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-template', {})({})
         .then(data => {
             expect(data).toEqual({
                 next: ['开始检测目标目录状态', undefined, '检测离线模板状态'],
@@ -90,9 +90,18 @@ test('目录已存在，也没有任何指示如何操作已存在的目录', as
 
 test('存在离线模板', async () => {
     let ctx = {};
+    await checkStatus('exist', 'none', {
+        offline: true
+    })(ctx).then(data => {
+        expect(ctx.localTemplatePath).toMatch('exist');
+    });
+});
+
+test('不存在离线模板', async () => {
+    let ctx = {};
     await checkStatus('https://github.com/yyt/HelloWorld.git', 'none', {
         offline: true
     })(ctx).then(data => {
-        expect(ctx.localTemplatePath).toMatch('HelloWorld');
+        expect(data.error).toMatch('离线脚手架模板路径不存在');
     });
 });

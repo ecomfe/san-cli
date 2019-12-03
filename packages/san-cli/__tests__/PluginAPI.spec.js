@@ -1,5 +1,6 @@
 /**
  * @file PluginAPI test
+ * @author yanyiting <yanyiting@baidu.com>
  */
 
 import PluginAPI from '../lib/PluginAPI';

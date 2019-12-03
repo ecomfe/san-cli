@@ -19,7 +19,7 @@ module.exports = (repo, dest, options) => {
         gitclone(url, dest, {checkout, shallow: checkout === 'master'}, err => {
             if (!err) {
                 rm(`${dest}/.git`);
-                resolve();
+                resolve({url, dest, checkout});
             } else {
                 error(err);
                 reject(err);
