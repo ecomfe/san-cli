@@ -5,7 +5,7 @@
 // const path = require('path');
 const importLazy = require('import-lazy')(require);
 const readPkg = require('./readPkg');
-const readRc = require('./readRcFile');
+const readRc = require('./readRc');
 const resolve = importLazy('./resolvePlugin');
 const lMerge = importLazy('lodash.merge');
 

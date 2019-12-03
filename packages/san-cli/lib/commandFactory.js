@@ -18,7 +18,7 @@ function addFactory(propName = 'commands', validate = () => true) {
         handler(argv) {
             const path = require('path');
             const fse = require('fs-extra');
-            const readRc = require('./readRcFile');
+            const readRc = require('./readRc');
             const readPkg = require('read-pkg');
             const writePkg = require('write-pkg');
             const {requireFromLocal} = require('./utils');
@@ -107,7 +107,7 @@ exports.removeFactory = (propName = 'commands', validate = () => true) => {
         },
         handler(argv) {
             const path = require('path');
-            const readRc = require('./readRcFile');
+            const readRc = require('./readRc');
             const fse = require('fs-extra');
             const readPkg = require('read-pkg');
 
@@ -200,7 +200,7 @@ exports.listFactory = (propName = 'commands') => {
             }
         },
         handler(argv) {
-            const readRc = require('./readRcFile');
+            const readRc = require('./readRc');
             const {log} = require('san-cli-utils/ttyLogger');
             if (argv.global || argv.all) {
                 const rc = readRc('rc');

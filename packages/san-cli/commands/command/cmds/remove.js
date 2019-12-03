@@ -3,6 +3,6 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-const {removeFactory: factory} = require('../../../lib/pluginCommandFactory');
+const {removeFactory: factory} = require('../../../lib/commandFactory');
 
 module.exports = factory('commands', require('../validate'));
