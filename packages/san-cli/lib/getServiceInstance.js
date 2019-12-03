@@ -3,12 +3,17 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-module.exports = (argv, plugins) => {
+module.exports = (argv, plugin) => {
     const Service = require('./Service');
+    const flatten = require('san-cli-utils/utils').flatten;
 
-    if (!Array.isArray(plugins)) {
-        plugins = [plugins];
+    // 处理 rc 文件传入的 Service Class arguments
+    let {servicePlugins: plugins, useBuiltInPlugin = true, projectOptions} = argv._rcServiceArgs || {};
+    if (Array.isArray(plugins)) {
+        plugins.push(plugin);
+    } else {
+        plugins = [plugin];
     }
 
-    return new Service(process.cwd(), {plugins});
+    return new Service(process.cwd(), {plugins: flatten(plugins), useBuiltInPlugin, projectOptions});
 };

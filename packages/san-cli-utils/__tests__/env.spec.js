@@ -1,16 +1,19 @@
 /**
  * @file env test
+ * @author yanyiting <yanyiting@baidu.com>
  */
 
-import {hasYarn, getGitUser} from '../utils/env';
+import {hasYarn, getGitUser} from '../env';
 import {execSync} from 'child_process';
 
 jest.mock('child_process');
 
+beforeEach(() => {
+    execSync.mockClear();
+});
+
 describe('测试hasYarn', () => {
     test('测试execSync调用次数是否正确', () => {
-        hasYarn();
-        expect(execSync.mock.calls.length).toBe(1);
         hasYarn();
         expect(execSync.mock.calls.length).toBe(1);
     });

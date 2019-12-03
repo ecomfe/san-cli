@@ -1,12 +1,12 @@
 /**
  * @file checkStatus test
+ * @author yanyiting <yanyiting@baidu.com>
  */
 
 jest.unmock('vinyl-fs');
 jest.unmock('fs-extra');
 jest.mock('rxjs')
 jest.mock('inquirer');
-jest.mock('child_process');
 
 import fs from 'fs';
 import fse from 'fs-extra';

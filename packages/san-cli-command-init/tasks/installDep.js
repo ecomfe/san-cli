@@ -9,7 +9,7 @@ const execa = require('execa');
 const registries = require('../registries');
 const path = require('path');
 const prompt = require('../utils/prompt');
-const {hasYarn} = require('../utils/env');
+const {hasYarn} = require('san-cli-utils/env');
 
 module.exports = (template, dest, options) => {
     return (ctx, task) => {

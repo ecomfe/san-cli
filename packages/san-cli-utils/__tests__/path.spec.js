@@ -1,5 +1,6 @@
 /**
  * @file path test
+ * @author yanyiting <yanyiting@baidu.com>
  */
 
 import {
@@ -26,18 +27,6 @@ describe('测试isLocalPath', () => {
     });
 });
 
-describe('测试resolveLocal', () => {
-    // jest.mock('path');
-    test('传入一个参数', () => {
-        expect(resolveLocal('node_modules'))
-            .toMatch('/san-cli/packages/node_modules');
-    });
-    test('传入两个参数', () => {
-        expect(resolveLocal('node_modules', 'yyt'))
-            .toMatch('/san-cli/packages/node_modules/yyt');
-    });
-});
-
 describe('测试getAssetPath', () => {
     test('传入静态目录和静态文件名', () => {
         expect(getAssetPath('static/estar', 'yyt.js')).toBe('static/estar/yyt.js');
@@ -58,8 +47,8 @@ describe('测试getTemplatePath', () => {
 
 describe('测试findExisting', () => {
     test('', () => {
-        expect(findExisting(['a/b', 'b'], 'User/yyt/wiki'))
-            .toBe('User/yyt/wiki/a/b');
+        expect(findExisting(['scripts', 'test.js'], process.cwd()))
+            .toMatch('san-cli/scripts');
     });
 });
 

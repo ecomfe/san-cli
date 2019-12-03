@@ -1,5 +1,6 @@
 /**
  * @file evaluate test
+ * @author yanyiting <yanyiting@baidu.com>
  */
 
 import evaluate from '../utils/evaluate';

@@ -1,5 +1,6 @@
 /**
  * @file Service test
+ * @author yanyiting <yanyiting@baidu.com>
  */
 
 import Service from '../lib/Service';
@@ -8,7 +9,7 @@ import fse from 'fs-extra';
 jest.unmock('fs-extra');
 jest.unmock('cosmiconfig');
 
-describe('constructor resolvePlugins _resolvePlugin', () => {
+describe('constructor resolvePlugins _loadPlugin', () => {
     test('plugins有值，useBuiltInPlugin为true', () => {
         const service = new Service(__dirname + '/mock', {
             plugins: [

@@ -58,7 +58,6 @@ module.exports = class ConsolaReporter extends FancyReporter {
         const [message, ...additional] = this.formatArgs(logObj.args).split('\n');
 
         const isBadge = typeof logObj.badge !== 'undefined' ? Boolean(logObj.badge) : logObj.level < 2;
-
         const secondaryColor = chalkColor(this.options.secondaryColor);
         const date = secondaryColor(
             logObj.date.toLocaleTimeString ? logObj.date.toLocaleTimeString() : this.formatDate(logObj.date)

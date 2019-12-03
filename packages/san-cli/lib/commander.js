@@ -6,6 +6,7 @@ const yargs = require('yargs/yargs');
 const {setLevel, logger, chalk} = require('san-cli-utils/ttyLogger');
 const {scriptName, version: pkgVersion} = require('../package.json');
 const {textColor} = require('san-cli-utils/randomColor');
+const buildinCmds = require('./const').buildinCommands;
 
 module.exports = () => {
     const cli = yargs();
@@ -41,7 +42,6 @@ module.exports = () => {
 let firstLog = true;
 function getCommonArgv(argv) {
     const cmd = process.argv[2];
-    const buildinCmds = ['build', 'init', 'serve', 'inspect', 'default'];
 
     if (firstLog && !process.env.SAN_CLI_MODERN_BUILD && buildinCmds.includes(cmd)) {
         firstLog = false;

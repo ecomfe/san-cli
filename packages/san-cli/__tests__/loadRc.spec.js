@@ -1,15 +1,19 @@
 /**
- * @file downloadrepo test
+ * @file loadRc test
+ * @author yanyiting <yanyiting@baidu.com>
  */
+
+jest.mock('read-pkg');
 
 import loadRc from '../lib/loadRc';
 
-jest.mock('cosmiconfig');
-
 test('', () => {
-    expect(loadRc()).toEqual({
-        a: 1,
-        b: 2
+    const commands = loadRc(process.cwd() + '/packages/san-cli').commands;
+    let flag = false;
+    commands.forEach(item => {
+        if (item.indexOf('san-cli-command-init') > -1) {
+            flag = true;
+        }
     });
-    expect(loadRc()).toEqual({});
+    expect(flag).toBeTruthy();
 });

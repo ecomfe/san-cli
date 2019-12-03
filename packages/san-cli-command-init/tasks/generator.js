@@ -14,7 +14,7 @@ const filter = require('gulp-filter');
 const rename = require('gulp-rename');
 const {logger} = require('san-cli-utils/ttyLogger');
 const evaluate = require('../utils/evaluate');
-const {getGitUser} = require('../utils/env');
+const {getGitUser} = require('san-cli-utils/env');
 
 const ask = require('../ask');
 const exists = fs.existsSync;
