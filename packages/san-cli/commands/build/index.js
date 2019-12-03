@@ -2,7 +2,7 @@
  * @file build command
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-// TODO: 整理文案
+
 const getHandler = require('./run');
 const command = (exports.command = 'build [entry]');
 const description = (exports.description = 'build description');
@@ -12,70 +12,70 @@ const builder = (exports.builder = {
         alias: 'w',
         type: 'boolean',
         default: false,
-        describe: 'watch mode'
+        describe: 'Watch mode'
     },
     config: {
         alias: 'config-file',
         type: 'string',
-        describe: 'program specifications'
+        describe: 'Project config file'
     },
     analyze: {
         alias: 'analyzer',
         type: 'boolean',
         default: false,
-        describe: 'webpack-analyze-bunlde 模式'
+        describe: 'Enable webpack-analyze-bunlde'
     },
     'no-clean': {
         type: 'boolean',
         default: false,
-        describe: '构建之前不删除 dist 目录'
+        describe: 'Do not delete the dist directory before building'
     },
     'no-colors': {
         alias: 'no-color',
         type: 'boolean',
         default: false,
-        describe: 'log 不显示颜色'
+        describe: 'Colorless log'
     },
     stats: {
         type: 'string',
         default: 'table',
         hidden: true,
         choices: ['none', 'table', 'errors-only', 'minimal', 'normal', 'detailed'],
-        describe: '显示webpack stats 参数'
+        describe: 'Show webpack stats params'
     },
     modern: {
         type: 'boolean',
         default: false,
-        describe: 'modern 模式打包'
+        describe: 'Modern mode'
     },
     'report-json': {
         alias: 'reportJson',
         type: 'boolean',
         hidden: true,
         default: false,
-        describe: '生成打包报告 report.json'
+        describe: 'Generate package report as report.json'
     },
     remote: {
         type: 'string',
         alias: 'r',
-        describe: '将产出发送到 remote 目标机器'
+        describe: 'Send compiled output to the remote target machine'
     },
     mode: {
         alias: 'm',
         type: 'string',
         default: 'production',
         choices: ['development', 'production'],
-        describe: 'program specifications'
+        describe: 'Operating environment'
     },
     report: {
         type: 'boolean',
         default: false,
-        describe: '生成打包报告 report.html'
+        describe: 'Generate package report as report.html'
     },
     dest: {
         alias: 'd',
         type: 'string',
-        describe: '输出文件路径'
+        describe: 'Output file path'
     }
 });
 const buildPlugin = {

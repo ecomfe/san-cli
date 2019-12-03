@@ -9,46 +9,46 @@ const builder = {
     'use-https': {
         type: 'boolean',
         default: false,
-        describe: 'program specifications'
+        describe: 'Enable https'
     },
     public: {
         type: 'string',
-        describe: 'specify the public network URL for the HMR client'
+        describe: 'Specify the public URL for the HMR client'
     },
     port: {
         alias: 'p',
         default: 8888,
         type: 'number',
-        describe: 'program specifications'
+        describe: 'Port number of the URL'
     },
     open: {
         alias: 'O',
         type: 'boolean',
         default: false,
-        describe: 'Open Bowser after build'
+        describe: 'Open Browser after the build is complete'
     },
     mode: {
         alias: 'm',
         type: 'string',
         default: 'development',
         choices: ['development', 'production'],
-        describe: 'program specifications'
+        describe: 'Operating environment'
     },
     host: {
         alias: 'H',
         type: 'string',
-        describe: 'program specifications'
+        describe: 'Hostname of the URL'
     },
     watch: {
         alias: 'w',
         type: 'boolean',
         default: false,
-        describe: 'watch mode'
+        describe: 'Watch mode'
     },
     qrcode: {
         type: 'boolean',
         default: true,
-        describe: 'program specifications'
+        describe: 'Print out the QR code of the URL'
     }
 };
 const describe = '';
