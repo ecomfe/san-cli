@@ -15,7 +15,6 @@ const builder = (exports.builder = {
         describe: 'watch mode'
     },
     config: {
-        alias: 'config-file',
         type: 'string',
         describe: 'program specifications'
     },

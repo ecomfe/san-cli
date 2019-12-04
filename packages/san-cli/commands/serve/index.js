@@ -25,7 +25,6 @@ const builder = (exports.builder = {
         describe: 'program specifications'
     },
     config: {
-        alias: 'config-file',
         type: 'string',
         describe: 'program specifications'
     },
