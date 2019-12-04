@@ -10,21 +10,21 @@ const installDep = require('./tasks/installDep');
 const path = require('path');
 const {error} = require('san-cli-utils/ttyLogger');
 
-module.exports = (template, appName, argv = {}) => {
+module.exports = (template, appName, options = {}) => {
     // template = alias(template);
     const inPlace = !appName || appName === '.';
     // inPlace：是否在当前目录
-    argv._inPlace = inPlace;
+    options._inPlace = inPlace;
     // dest：新建工程的目录
     const dest = path.resolve(appName || '.');
     // 记录一下开始新建工程时的起始时间
     const startTime = Date.now();
     // TODO: 整理文案
     const taskList = [
-        {title: '🔍 检测目录和离线包状态...', task: checkStatus(template, dest, argv)},
-        {title: '🚚 下载项目脚手架模板...', task: download(template, dest, argv)},
-        {title: '🔨 生成项目目录结构...', task: generator(template, dest, argv)},
-        {title: '🔗 安装项目依赖...', task: installDep(template, dest, argv)}
+        {title: '🔍 检测目录和离线包状态...', task: checkStatus(template, dest, options)},
+        {title: '🚚 下载项目脚手架模板...', task: download(template, dest, options)},
+        {title: '🔨 生成项目目录结构...', task: generator(template, dest, options)},
+        {title: '🔗 安装项目依赖...', task: installDep(template, dest, options)}
     ];
 
     // 离线脚手架目录处理
