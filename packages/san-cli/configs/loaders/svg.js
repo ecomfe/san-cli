@@ -3,9 +3,9 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const {getAssetPath} = require('san-cli-utils/path'); // eslint-disable-line
-const wrapper = require('./loaderWrapper');
+const factory = require('./loaderFactory');
 
-module.exports = wrapper((options, {filenameHashing, assetsDir, largeAssetSize = 1024}) => {
+module.exports = factory((options, {filenameHashing, assetsDir, largeAssetSize = 1024}) => {
     const dir = options.dir;
     delete options.dir;
     return {

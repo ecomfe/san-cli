@@ -2,9 +2,9 @@
  * @file style-loader options
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const wrapper = require('./loaderWrapper');
+const factory = require('./loaderFactory');
 
-module.exports = wrapper(options => {
+module.exports = factory(options => {
     return {
         name: 'style-loader',
         loader: require.resolve('style-loader'),
