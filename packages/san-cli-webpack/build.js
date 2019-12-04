@@ -8,12 +8,11 @@ const {logger} = require('san-cli-utils/ttyLogger');
 const {getWebpackErrorInfoFromStats} = require('./utils');
 const log = logger.withTag('webpack/serve');
 
-module.exports = function build({webpackConfig, success, fail}) {
+module.exports = function build({webpackConfig}) {
     return new Promise((resolve, reject) => {
         log.debug('build start', webpackConfig);
         webpack(webpackConfig, (err, stats) => {
             log.debug('build done');
-
             if (err || stats.hasErrors()) {
                 reject(getWebpackErrorInfoFromStats(err, stats));
                 const isWatch = webpackConfig.watch;
