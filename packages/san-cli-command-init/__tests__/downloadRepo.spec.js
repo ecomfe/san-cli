@@ -77,3 +77,30 @@ test('传入错误地址，传空', () => {
         expect(e.toString()).toMatch('true');
     });
 });
+
+test('传入完整地址git@xxxx', async () => {
+    const res = await downloadrepo('git@github.com:ksky521/nodeppt-template-default.git', 'aaa', {});
+    expect(res).toEqual({
+        url: 'git@github.com:ksky521/nodeppt-template-default.git',
+        dest: 'aaa',
+        checkout: 'master'
+    });
+});
+
+test('传入完整地址https://', async () => {
+    const res = await downloadrepo('https://git.coding.net/yyt/HelloWorld.git', 'aaa', {});
+    expect(res).toEqual({
+        url: 'https://git.coding.net/yyt/HelloWorld.git',
+        dest: 'aaa',
+        checkout: 'master'
+    });
+});
+
+test('传入完整地址ssh://', async () => {
+    const res = await downloadrepo('ssh://yanyiting@icode.baidu.com:8235/baidu/hulk/san-project-base', 'aaa', {});
+    expect(res).toEqual({
+        url: 'ssh://yanyiting@icode.baidu.com:8235/baidu/hulk/san-project-base',
+        dest: 'aaa',
+        checkout: 'master'
+    });
+});

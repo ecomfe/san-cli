@@ -31,6 +31,13 @@ function normalize(repo, opts) {
     // https://wangyongqing01@icode.baidu.com/baidu/ezcode/jssdk
     // ssh://wangyongqing01@icode.baidu.com:8235/baidu/ezcode/jssdk
     // ssh://git@icode.baidu.com:8235/baidu/ezcode/jssdk
+    // 如果是完整地址，直接返回，无需标准化
+    if (/^(ssh:\/\/|https:\/\/|git@)/.test(repo)) {
+        return {
+            url: repo,
+            checkout: 'master'
+        };
+    }
     // 公司名/目录名/repo#分支
     const regex = /^(?:(icode|github|gitlab|bitbucket|coding):)?(?:(baidu)\/)?(?:([^/]+)\/)?([^#]+)(?:#(.+))?$/;
     const useHttps = opts.useHttps || false;
