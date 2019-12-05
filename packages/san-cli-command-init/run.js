@@ -40,6 +40,8 @@ module.exports = (template, appName, options = {}) => {
             // const {metaData: argv, tplData: data} = ctx;
             const duration = (((Date.now() - startTime) / 10) | 0) / 100;
             console.log('✨  Done in ' + duration + 's.');
+            // 有些 meta 的信息之类会有问题，所以加个强制退出
+            process.exit(0);
         })
         .catch(e => {
             error(e);

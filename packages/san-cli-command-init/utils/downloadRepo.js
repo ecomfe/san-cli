@@ -29,6 +29,7 @@ module.exports = (repo, dest, options) => {
 };
 function normalize(repo, opts) {
     // aliasmap
+    // 这里的 templateAliasMap 是通过 sanrc → yargs argv 传入的
     if (opts.templateAliasMap && opts.templateAliasMap[repo]) {
         repo = opts.templateAliasMap[repo];
     }

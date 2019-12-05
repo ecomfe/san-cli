@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-exports.buildinCommands = ['build', 'init', 'serve', 'inspect', 'command', 'plugin', 'default'];
+exports.buildinCommands = ['build', 'init', 'serve', 'inspect', 'command', 'plugin', 'remote', 'default'];
 exports.browserslist = [
     '> 1.2% in cn',
     'last 2 versions',

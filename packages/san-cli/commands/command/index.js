@@ -14,7 +14,7 @@ exports.builder = yargs => {
         const scriptName = yargs.$0;
         console.log(
             textColor(
-                `Usage: ${scriptName[0].toUpperCase()}${scriptName.slice(1)} command [add|ls|rm|list|remove] [flags]`
+                `Usage: ${scriptName[0].toUpperCase()}${scriptName.slice(1)} command <add|ls|rm|list|remove> [flags]`
             )
         );
         console.log();

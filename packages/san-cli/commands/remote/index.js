@@ -4,9 +4,9 @@
  */
 const path = require('path');
 const {textColor} = require('san-cli-utils/randomColor');
-exports.command = 'service-plugin <subCommand>';
+exports.command = 'remote <subCommand>';
 exports.aliases = ['plugin'];
-const desc = '添加/管理 Service 插件';
+const desc = '添加/管理脚手架 alias';
 exports.desc = desc;
 exports.builder = yargs => {
     if (yargs.argv._.length === 1) {
@@ -15,10 +15,9 @@ exports.builder = yargs => {
             textColor(
                 `Usage: ${scriptName[0].toUpperCase()}${scriptName.slice(
                     1
-                )} service-plugin <add|ls|rm|list|remove> [flags]`
+                )} remote <add|ls|rm|list|remove>`
             )
         );
-        console.log(`Alias: ${scriptName[0].toUpperCase()}${scriptName.slice(1)} plugin`);
         console.log();
         console.log(desc);
         console.log();
