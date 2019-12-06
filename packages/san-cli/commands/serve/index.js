@@ -2,7 +2,6 @@
  * @file serve command
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-// TODO: 整理文案
 
 const getHandler = require('./run');
 const command = (exports.command = 'serve [entry]');
@@ -12,7 +11,7 @@ const builder = (exports.builder = {
     'use-https': {
         type: 'boolean',
         default: false,
-        describe: 'program specifications'
+        describe: 'Enable https'
     },
     public: {
         type: 'string',
@@ -23,39 +22,39 @@ const builder = (exports.builder = {
         type: 'string',
         default: 'development',
         choices: ['development', 'production'],
-        describe: 'program specifications'
+        describe: 'Operating environment'
     },
     config: {
         type: 'string',
-        describe: 'program specifications'
+        describe: 'Project config file'
     },
     port: {
         alias: 'p',
         default: 8888,
         type: 'number',
-        describe: 'program specifications'
+        describe: 'Port number of the URL'
     },
     open: {
         alias: 'O',
         type: 'boolean',
         default: false,
-        describe: 'Open Bowser after build'
+        describe: 'Open Browser after the build is complete'
     },
     host: {
         alias: 'H',
         type: 'string',
-        describe: 'program specifications'
+        describe: 'Hostname of the URL'
     },
     watch: {
         alias: 'w',
         type: 'boolean',
         default: false,
-        describe: 'watch mode'
+        describe: 'Watch mode'
     },
     qrcode: {
         type: 'boolean',
         default: true,
-        describe: 'program specifications'
+        describe: 'Print out the QRCode of the URL'
     }
 });
 const servePlugin = {

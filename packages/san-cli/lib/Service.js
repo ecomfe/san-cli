@@ -153,7 +153,7 @@ module.exports = class Service extends EventEmitter {
                     }
                     return plugin;
                 } else {
-                    logger.error(`Plugin is valid: ${p}, Serivce plugin must has id and apply!`);
+                    logger.error(`Plugin is invalid: ${p}, Service plugin must has id and apply function!`);
                 }
             } catch (e) {
                 logger.error(`Plugin load failed: ${p}`);
@@ -166,7 +166,7 @@ module.exports = class Service extends EventEmitter {
             }
             return p;
         } else {
-            logger.error('Service plugin is valid');
+            logger.error('Service plugin is invalid');
             if (p.toString() === '[object Object]') {
                 logger.error(p);
             }
@@ -328,13 +328,13 @@ module.exports = class Service extends EventEmitter {
             let configPath = result.filepath;
 
             if (!result.config || typeof result.config !== 'object') {
-                logger.error(`${textColor(configPath)}: 格式必须是对象.`);
+                logger.error(`${textColor(configPath)}: Expected object type.`);
             } else {
                 // 校验config.js schema 格式
                 try {
                     await validateOptions(result.config);
                 } catch (e) {
-                    logger.error(`${textColor(configPath)}: 格式不正确.`);
+                    logger.error(`${textColor(configPath)}: Invalid type.`);
                     throw new SError(e);
                 }
             }

@@ -62,7 +62,7 @@ if (Array.isArray(commands)) {
             unique.add(cmd);
             cli.command(instance);
         } else {
-            error(`${cmd} is not a validate command instance!`);
+            error(`${cmd} is not a validated command instance!`);
         }
         timeEnd(`load-${cmd}`);
     });
