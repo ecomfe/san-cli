@@ -6,7 +6,7 @@ const path = require('path');
 const {textColor} = require('san-cli-utils/randomColor');
 exports.command = 'plugin <add|ls|list|rm|remove>';
 // exports.aliases = ['plugin'];
-const desc = '添加/管理 Service 插件';
+const desc = 'Add/Manage Service Plugin';
 exports.desc = desc;
 exports.builder = yargs => {
     if (yargs.argv._.length === 1) {

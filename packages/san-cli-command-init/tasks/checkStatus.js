@@ -18,7 +18,7 @@ module.exports = (template, dest, options) => {
             if (fs.existsSync(dest)) {
                 // 如果强制带--force，那就删了这个目录，流程终止
                 if (options.force) {
-                    observer.next('--force delete directory');
+                    observer.next('--force delete target directory');
                     return fs.remove(dest);
                     // 如果是当前目录下建
                 } else if (options._inPlace) {

@@ -5,7 +5,7 @@
 
 module.exports = {
     command: 'list',
-    desc: '列出所有的脚手架 alias',
+    desc: 'List all scaffolding addresses',
     aliases: ['ls'],
     builder: {},
     handler(argv) {

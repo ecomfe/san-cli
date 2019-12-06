@@ -56,10 +56,10 @@ module.exports = (name, dest, options) => {
                 },
                 answers
             );
-            debug('merge 后的参数', data);
+            debug('Parameters after the merge is completed', data);
             ctx.tplData = data;
 
-            observer.next('生成目录结构ing...');
+            observer.next('Generating directory structure...');
             await startTask(src, dest, ctx, observer);
         });
     };

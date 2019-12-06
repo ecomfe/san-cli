@@ -17,7 +17,7 @@ const builder = {
     },
     config: {
         type: 'string',
-        describe: 'program specifications'
+        describe: 'Document config file'
     },
     port: {
         alias: 'p',

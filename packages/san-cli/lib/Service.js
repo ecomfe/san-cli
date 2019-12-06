@@ -153,7 +153,7 @@ module.exports = class Service extends EventEmitter {
                     }
                     return plugin;
                 } else {
-                    logger.error(`Plugin is invalid: ${p}, Service plugin must has id and apply function!`);
+                    logger.error(`Plugin is invalid: ${p}. Service plugin must has id and apply function!`);
                 }
             } catch (e) {
                 logger.error(`Plugin load failed: ${p}`);

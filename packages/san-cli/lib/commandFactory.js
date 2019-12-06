@@ -100,7 +100,7 @@ exports.removeFactory = (propName = 'commands', validate = () => true) => {
         builder: {
             global: {
                 alias: 'g',
-                describe: 'Remove globally command',
+                describe: 'Remove global command',
                 type: 'boolean',
                 default: false
             }
