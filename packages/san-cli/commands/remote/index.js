@@ -4,8 +4,7 @@
  */
 const path = require('path');
 const {textColor} = require('san-cli-utils/randomColor');
-exports.command = 'remote <subCommand>';
-exports.aliases = ['plugin'];
+exports.command = 'remote <add|ls|list|rm|remove>';
 const desc = '添加/管理脚手架 alias';
 exports.desc = desc;
 exports.builder = yargs => {

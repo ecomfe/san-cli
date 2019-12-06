@@ -6,6 +6,7 @@
 
 const getHandler = require('./run');
 const command = (exports.command = 'serve [entry]');
+exports.aliases = ['dev'];
 const description = (exports.description = 'serve description');
 const builder = (exports.builder = {
     'use-https': {

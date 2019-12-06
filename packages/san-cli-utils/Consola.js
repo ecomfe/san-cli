@@ -32,9 +32,12 @@ module.exports = class SanConsola extends Consola {
         };
 
         this.timeEnd = name => {
-            const start = map.get(name);
             // 只在 SAN_DEBUG 下面输出性能日志
-            if (start && process.env.SAN_DEBUG) {
+            if (process.env.SAN_DEBUG) {
+                const start = map.get(name);
+                if (!start) {
+                    return;
+                }
                 // debug 输出
                 let d = Date.now() - start;
                 if (d >= 1e3) {

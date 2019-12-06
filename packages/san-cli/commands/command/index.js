@@ -5,7 +5,7 @@
 
 const path = require('path');
 const {textColor} = require('san-cli-utils/randomColor');
-exports.command = 'command <subCommand>';
+exports.command = 'command <add|ls|list|rm|remove>';
 exports.aliases = ['cmd'];
 const desc = '扩展、管理 CLI 的命令';
 exports.desc = desc;
