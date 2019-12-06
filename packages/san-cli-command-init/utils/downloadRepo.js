@@ -28,9 +28,23 @@ module.exports = (repo, dest, options) => {
     });
 };
 function normalize(repo, opts) {
+    // aliasmap
+    // 这里的 templateAliasMap 是通过 sanrc → yargs argv 传入的
+    if (opts.templateAliasMap && opts.templateAliasMap[repo]) {
+        repo = opts.templateAliasMap[repo];
+    }
     // https://wangyongqing01@icode.baidu.com/baidu/ezcode/jssdk
     // ssh://wangyongqing01@icode.baidu.com:8235/baidu/ezcode/jssdk
     // ssh://git@icode.baidu.com:8235/baidu/ezcode/jssdk
+    // 如果是完整地址，直接返回，无需标准化
+    const tRegex = /^((?:ssh:\/\/|https:\/\/|git@).+?)(?:#(.+))?$/;
+    if (tRegex.test(repo)) {
+        const match = tRegex.exec(repo);
+        return {
+            url: match[1],
+            checkout: match[2] || 'master'
+        };
+    }
     // 公司名/目录名/repo#分支
     const regex = /^(?:(icode|github|gitlab|bitbucket|coding):)?(?:(baidu)\/)?(?:([^/]+)\/)?([^#]+)(?:#(.+))?$/;
     const useHttps = opts.useHttps || false;

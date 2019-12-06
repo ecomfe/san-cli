@@ -37,6 +37,7 @@ module.exports = () => {
         .help()
         .alias('help', 'h')
         .alias('version', 'v')
+        // TODO: 更改官网地址
         .epilog('for more information, find our manual at http://ecomfe.github.com/san-cli');
     return cli;
 };

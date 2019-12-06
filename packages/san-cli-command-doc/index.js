@@ -15,6 +15,10 @@ const builder = {
         type: 'string',
         describe: 'Specify the public URL for the HMR client'
     },
+    config: {
+        type: 'string',
+        describe: 'program specifications'
+    },
     port: {
         alias: 'p',
         default: 8888,

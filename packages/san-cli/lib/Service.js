@@ -21,6 +21,7 @@ const SError = require('san-cli-utils/SError');
 const PluginAPI = require('./PluginAPI');
 const {findExisting} = require('san-cli-utils/path');
 const {textColor} = require('san-cli-utils/randomColor');
+const argsert = require('san-cli-utils/argsert');
 const readPkg = require('./readPkg');
 
 const {defaults: defaultConfig, validateSync: validateOptions} = require('./options');
@@ -237,6 +238,8 @@ module.exports = class Service extends EventEmitter {
         return this;
     }
     registerCommandFlag(cmdName, flag, handler) {
+        argsert('<string> <object> <function>', [cmdName, flag, handler], arguments.length);
+
         cmdName = getCommandName(cmdName);
         const flagMap = this.registeredCommandFlags;
         let flags = flagMap.get(cmdName) || {};
@@ -249,6 +252,8 @@ module.exports = class Service extends EventEmitter {
         return this;
     }
     registerCommand(name, yargsModule) {
+        argsert('<string|object> [object]', [name, yargsModule], arguments.length);
+
         /* eslint-disable one-var */
         let command, description, builder, handler, aliases;
         /* eslint-enable one-var */
@@ -454,15 +459,20 @@ module.exports = class Service extends EventEmitter {
         return this;
     }
     addPlugin(name, options = {}) {
+        argsert('<string|array|object> [object|undefined]', [name, options], arguments.length);
+
         if (Array.isArray(name)) {
             [name, options = {}] = name;
+        } else if (typeof name === 'object') {
+            argsert('<string> <function>', [name.id, name.apply], 2);
         }
         const plugin = this._loadPlugin([name, options]);
         this.plugins.push(plugin);
         return this;
     }
-    addDevServerMiddleware(middlewares) {
-        this.devServerMiddlewares.push(middlewares);
+    addDevServerMiddleware(middlewareFactory) {
+        argsert('<function>', [middlewareFactory], arguments.length);
+        this.devServerMiddlewares.push(middlewareFactory);
         return this;
     }
 

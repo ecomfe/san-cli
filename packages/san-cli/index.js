@@ -44,24 +44,27 @@ buildinCmds.forEach(cmd => {
 // 2. 对于每个执行命令的 fe 应该清楚自己的环境，而不是稀里糊涂的用全局 rc
 // 3. 方便配置默认 preset 统一命令和配置
 time('loadRc');
-const {commands, servicePlugins, useBuiltInPlugin = true, remote} = require('./lib/loadRc')();
+const {commands, servicePlugins, useBuiltInPlugin = true, templateAlias} = require('./lib/loadRc')();
 timeEnd('loadRc');
-if (typeof commands === 'object') {
-    debug('load-diy-commands:', commands);
+if (Array.isArray(commands)) {
     // 扩展命令行
+    /* eslint-disable no-undef */
     const unique = new Set();
-    Object.keys(commands).forEach(cmd => {
-        if (unique.has(commands[cmd])) {
+    /* eslint-enable no-undef */
+    commands.forEach(cmd => {
+        if (!cmd || unique.has(commands[cmd])) {
             // 保证唯一性
             return;
         }
-        const instance = typeof commands[cmd] === 'string' ? require(commands[cmd]) : commands[cmd];
+        time(`load-${cmd}`);
+        const instance = typeof cmd === 'string' ? require(cmd) : cmd;
         if (instance && instance.command) {
-            unique.add(commands[cmd]);
+            unique.add(cmd);
             cli.command(instance);
         } else {
             error(`${cmd} is not a validated command instance!`);
         }
+        timeEnd(`load-${cmd}`);
     });
 }
 
@@ -69,8 +72,8 @@ cli.middleware(argv => {
     // 将 rc 的内容加到 argv，直接传值，避免二次加载
     return {
         /* eslint-disable fecs-camelcase */
-        _rcServiceArgs: {
-            remote,
+        _presets: {
+            templateAlias,
             servicePlugins,
             useBuiltInPlugin
         }

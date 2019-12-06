@@ -22,6 +22,7 @@ module.exports = (template, dest, options) => {
                     return fs.remove(dest);
                     // 如果是当前目录下建
                 } else if (options._inPlace) {
+                    observer.next();// 添加这一句下面才能显示 prompt
                     // 来一个疑问句，问是否确定在当前目录创建？
                     // eslint-disable-next-line
                     const {ok} = await prompt([

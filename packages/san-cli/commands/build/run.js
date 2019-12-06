@@ -36,7 +36,7 @@ module.exports = function apply(api, projectOptions) {
                     })
                 );
             } else {
-                error(err);
+                error(err ? err : 'Webpack config error, use `--verbose` flag to show debug log');
             }
             process.exit(1);
         }

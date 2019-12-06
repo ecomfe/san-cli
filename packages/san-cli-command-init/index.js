@@ -31,5 +31,8 @@ exports.builder = {
 };
 exports.handler = argv => {
     const {template, appName} = argv;
-    require('./run')(template, appName, argv);
+
+    let {templateAlias: templateAliasMap} = argv._presets || {};
+    const options = Object.assign({}, argv, {templateAliasMap});
+    require('./run')(template, appName, options);
 };

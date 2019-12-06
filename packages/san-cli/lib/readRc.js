@@ -21,6 +21,7 @@ module.exports = (rcFrom = 'rc', baseDir = process.cwd()) => {
                     sanrc = fse.readJsonSync(filepath);
                 } catch (e) {
                     // json 格式错误
+                    error(e);
                 }
             }
             return sanrc || null;

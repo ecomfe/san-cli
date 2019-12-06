@@ -1,3 +1,7 @@
+/**
+ * @file pluginAPI Class
+ * @author wangyongqing <wangyongqing01@baidu.com>
+ */
 // 1. 注册某个命令的 flag 激活
 // 2. 获取 webpackchain api
 // 3. 获取user config
@@ -5,8 +9,10 @@
 // 5. 添加 log
 const path = require('path');
 const {logger} = require('san-cli-utils/ttyLogger');
+const argsert = require('san-cli-utils/argsert');
 module.exports = class PluginAPI {
     constructor(id, service) {
+        argsert('<string> <object>', [id, service], arguments.length);
         this.id = id;
         this.service = service;
         // 添加个 scope
@@ -18,13 +24,17 @@ module.exports = class PluginAPI {
         return this.service.mode === 'production';
     }
     chainWebpack(fn) {
+        argsert('<function>', [fn], arguments.length);
+
         this.service.webpackChainFns.push(fn);
     }
     configWebpack(fn) {
+        argsert('<function>', [fn], arguments.length);
         this.service.webpackRawConfigFns.push(fn);
     }
     resolve(p) {
         if (p) {
+            argsert('<string>', [p], arguments.length);
             return path.resolve(this.service.cwd, p);
         } else {
             return this.service.cwd;

@@ -5,6 +5,7 @@
 
 const getHandler = require('./run');
 const command = (exports.command = 'serve [entry]');
+exports.aliases = ['dev'];
 const description = (exports.description = 'serve description');
 const builder = (exports.builder = {
     'use-https': {
@@ -24,7 +25,6 @@ const builder = (exports.builder = {
         describe: 'Operating environment'
     },
     config: {
-        alias: 'config-file',
         type: 'string',
         describe: 'Project config file'
     },

@@ -90,8 +90,6 @@ const schema = joi
         // 内置 loader 的 options
         loaderOptions: joi.object(),
         splitChunks: joi.object(),
-        // -> splitChunksCacheGroups是 splitChunks 的全称，其实 splitChunks 就是 cachegroup
-        splitChunksCacheGroups: joi.object(),
         // 纯自定义的函数
         chainWebpack: joi.func(),
         configWebpack: joi.alternatives().try(joi.object(), joi.func()),

@@ -2,9 +2,9 @@
  * @file ejs loader options
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const wrapper = require('./loaderWrapper');
+const factory = require('./loaderFactory');
 
-module.exports = wrapper((options, projectOptions) => {
+module.exports = factory((options, projectOptions) => {
     return {
         name: 'ejs-loader',
         loader: require.resolve('ejs-loader'),

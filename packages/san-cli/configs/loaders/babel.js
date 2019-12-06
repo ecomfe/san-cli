@@ -5,9 +5,9 @@
 /* eslint-disable fecs-camelcase */
 const path = require('path');
 const sanHmrPlugin = require('babel-plugin-san-hmr');
-const wrapper = require('./loaderWrapper');
+const factory = require('./loaderFactory');
 
-module.exports = wrapper((babelOptions = {}, projectOptions, api) => {
+module.exports = factory((babelOptions = {}, projectOptions, api) => {
     // TODO: 需要加强 polyfill 逻辑，目前完全是 usage+core-js 玩法
     const isProd = api.isProd();
     const plugins = babelOptions.plugins || [];

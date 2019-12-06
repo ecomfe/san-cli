@@ -3,9 +3,9 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-const wrapper = require('./loaderWrapper');
+const factory = require('./loaderFactory');
 
-module.exports = wrapper(
+module.exports = factory(
     options => {
         return {
             name: 'eslint',
