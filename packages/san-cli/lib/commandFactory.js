@@ -6,7 +6,7 @@
 function addFactory(propName = 'commands', validate = () => true) {
     return {
         command: 'add <name>',
-        desc: '给 San CLI 添加一个子命令',
+        desc: 'Add a subcommand to San CLI',
         builder: {
             global: {
                 alias: 'g',
@@ -194,7 +194,7 @@ exports.listFactory = (propName = 'commands') => {
             },
             all: {
                 alias: 'a',
-                describe: '列出所有的command 命令',
+                describe: 'List all commands',
                 type: 'boolean',
                 default: false
             }

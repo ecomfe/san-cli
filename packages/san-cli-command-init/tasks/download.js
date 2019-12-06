@@ -7,13 +7,13 @@ const rxjs = require('rxjs');
 const fs = require('fs-extra');
 const {getLocalTplPath} = require('san-cli-utils/path');
 const downloadRepo = require('../utils/downloadRepo');
-// TODO: 文案更新
+
 module.exports = (template, dest, options) => {
     return (ctx, task) => {
         return new rxjs.Observable(observer => {
             if (ctx.localTemplatePath) {
                 // 使用本地路径
-                task.skip('本次使用本地路径');
+                task.skip('Use local path');
                 observer.complete();
                 return;
             }
@@ -22,18 +22,18 @@ module.exports = (template, dest, options) => {
             if (options.useCache && fs.exists(tmp)) {
                 ctx.localTemplatePath = tmp;
                 // 优先使用缓存
-                task.skip('发现本地缓存，优先使用本地缓存模板');
+                task.skip('Discover local cache and use it');
                 observer.complete();
             } else {
                 // 否则拉取远程仓库的模板
-                observer.next('拉取模板ing...');
+                observer.next('Pulling template from the remote repository...');
                 downloadRepo(template, tmp, options)
                     .then(() => {
                         ctx.localTemplatePath = tmp;
                         observer.complete();
                     })
                     .catch(err => {
-                        observer.error('拉取代码失败，请检查路径和代码权限是否正确');
+                        observer.error('Failed to pull, please check the path and code permissions are correct');
                     });
             }
         });

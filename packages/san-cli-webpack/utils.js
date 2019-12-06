@@ -68,7 +68,7 @@ exports.resolveEntry = (resolveEntryPath, absoluteEntryPath, webpackConfig, defa
         /* eslint-enable operator-linebreak */
         (!Array.isArray(webpackConfig.entry) && Object.keys(webpackConfig.entry).length === 0)
     ) {
-        error('没有找到 Entry，请命令后面添加 entry 或者配置 san.config.js');
+        error('Entry not found, please add an entry or configure san.config.js.');
         process.exit(1);
     }
     return webpackConfig;
@@ -83,13 +83,13 @@ function resolveEntry(entry) {
             if (ext === '.js' || ext === '.san') {
                 isFile = true;
             } else {
-                error('Valid entry file should be one of: *.js or *.san.');
+                error('A valid entry file should be one of: *.js or *.san.');
                 process.exit(1);
             }
             isFile = true;
         }
     } catch (e) {
-        error('Valid entry is not a file or directory.');
+        error('A valid entry is not a file or directory.');
         process.exit(1);
     }
     return {

@@ -15,13 +15,14 @@ module.exports = () => {
         .option('verbose', {
             type: 'boolean',
             hidden: true,
-            describe: 'output verbose messages on internal operations'
+            describe: 'Output verbose messages on internal operations'
         })
+        // MARK:
         .option('no-progress', {
             type: 'boolean',
             default: false,
             hidden: true,
-            describe: 'program specifications'
+            describe: 'Do not show the progress bar'
         })
         .option('log-level', {
             alias: 'logLevel',
@@ -29,7 +30,7 @@ module.exports = () => {
             hidden: true,
             choices: ['info', 'debug', 'warn', 'error', 'silent'],
             type: 'string',
-            describe: 'set log level'
+            describe: 'Set log level'
         })
         .wrap(cli.terminalWidth() - 30)
         .middleware(getCommonArgv)

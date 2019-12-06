@@ -153,7 +153,7 @@ function getMetadata(dir) {
     } else if (exists(js)) {
         const req = require(path.resolve(js));
         if (req !== Object(req)) {
-            throw new Error('meta.js 格式有误');
+            throw new Error('Wrong type in meta.js');
         }
 
         opts = req;

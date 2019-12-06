@@ -60,7 +60,7 @@ if (typeof commands === 'object') {
             unique.add(commands[cmd]);
             cli.command(instance);
         } else {
-            error(`${cmd} is not a validate command instance!`);
+            error(`${cmd} is not a validated command instance!`);
         }
     });
 }

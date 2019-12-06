@@ -54,7 +54,7 @@ const builder = (exports.builder = {
     qrcode: {
         type: 'boolean',
         default: true,
-        describe: 'Print out the QR code of the URL'
+        describe: 'Print out the QRCode of the URL'
     }
 });
 const servePlugin = {

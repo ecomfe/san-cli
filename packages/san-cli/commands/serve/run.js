@@ -27,7 +27,7 @@ module.exports = function apply(api, projectOptions) {
                     const {textColor} = require('san-cli-utils/randomColor');
                     /* eslint-disable no-console */
                     console.log();
-                    console.log(`  Your application is running at: ${textColor(networkUrl)}`);
+                    console.log(`  Application is running at: ${textColor(networkUrl)}`);
                     console.log('  URL QRCode is: ');
                     /* eslint-enable no-console */
                     // 打开浏览器地址
@@ -51,7 +51,7 @@ module.exports = function apply(api, projectOptions) {
             })
             .catch(({type, stats, err}) => {
                 if (type === 'server') {
-                    error('Local server start fail！', err);
+                    error('Local server start failed！', err);
                 } else if (stats && stats.toJson) {
                     // // TODO: 这里删掉，调试用的
                     // process.stderr.write(

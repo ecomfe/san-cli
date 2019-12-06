@@ -9,16 +9,16 @@ const fs = require('fs-extra');
 const {chalk} = require('san-cli-utils/ttyLogger');
 const {isLocalPath, getLocalTplPath} = require('san-cli-utils/path');
 const prompt = require('../utils/prompt');
-// TODO 文案更新
+
 module.exports = (template, dest, options) => {
     return (ctx, task) => {
         return new rxjs.Observable(async observer => {
-            observer.next('开始检测目标目录状态');
+            observer.next('Start checking target directory status');
             // 处理目标目录存在的情况，显示 loading 啊~
             if (fs.existsSync(dest)) {
                 // 如果强制带--force，那就删了这个目录，流程终止
                 if (options.force) {
-                    observer.next('--force 删除目录');
+                    observer.next('--force delete directory');
                     return fs.remove(dest);
                     // 如果是当前目录下建
                 } else if (options._inPlace) {
@@ -28,7 +28,7 @@ module.exports = (template, dest, options) => {
                         {
                             name: 'ok',
                             type: 'confirm',
-                            message: '在当前目录创建项目？'
+                            message: 'Are you sure to create a project in the current directory?'
                         }
                     ]);
                     // 如果不愿意，那么此流程停止
@@ -40,31 +40,31 @@ module.exports = (template, dest, options) => {
                     // 取一个相对目录
                     const shortDest = path.relative(process.cwd(), dest);
                     // 处理对于已经存在的目录
-                    // eslint-disable-next-line
                     const {action} = await prompt([
                         {
                             name: 'action',
                             type: 'list',
-                            message: `目录 ${chalk.cyan(shortDest)} 已经存在。请选择操作：`,
+                            // eslint-disable-next-line
+                            message: `The directory ${chalk.cyan(shortDest)} already exists. Please select an operation：`,
                             choices: [
-                                {name: '覆盖', value: 'overwrite'},
-                                {name: '合并', value: 'merge'},
-                                {name: '取消', value: false}
+                                {name: 'overwrite', value: 'overwrite'},
+                                {name: 'merge', value: 'merge'},
+                                {name: 'cancel', value: false}
                             ]
                         }
                     ]);
                     // 选了取消
                     if (!action) {
-                        return observer.error(`取消覆盖 ${shortDest} 文件夹`);
+                        return observer.error(`Cancel overwrite ${shortDest} directory`);
                         // 选了覆盖
                     } else if (action === 'overwrite') {
-                        observer.next(`选择覆盖，首先删除 ${shortDest}...`);
+                        observer.next(`Overwrite selected, first delete ${shortDest}...`);
                         await fs.remove(dest);
                     }
                 }
             }
 
-            observer.next('检测离线模板状态');
+            observer.next('Check the status of the offline template');
             const isOffline = options.offline;
             if (isOffline || isLocalPath(template)) {
                 // 使用离线地址
@@ -74,7 +74,7 @@ module.exports = (template, dest, options) => {
                     // 添加 本地template 路径
                     ctx.localTemplatePath = templatePath;
                 } else {
-                    return observer.error('离线脚手架模板路径不存在');
+                    return observer.error('Offline scaffolding template path does not exist');
                 }
             }
             observer.complete();
