@@ -14,7 +14,7 @@ test('新目录，目录未存在', async () => {
     await checkStatus('https://github.com/yyt/HelloWorld.git', 'none', {})({})
         .then(data => {
             expect(data).toEqual({
-                next: ['开始检测目标目录状态', '检测离线模板状态'],
+                next: ['Start checking target directory status', 'Check the status of the offline template'],
                 error: '',
                 complete: true
             });
@@ -26,7 +26,7 @@ test('目录已存在，--force强行删除', async () => {
         force: true
     })({}).then(data => {
         expect(data).toEqual({
-            next: ['开始检测目标目录状态', '--force 删除目录'],
+            next: ['Start checking target directory status', '--force delete directory'],
             error: '',
             complete: false
         });
@@ -40,7 +40,7 @@ test('在当前目录下 .', async () => {
         _inPlace: true
     })({}).then(data => {
         expect(data).toEqual({
-            next: ['开始检测目标目录状态', '检测离线模板状态'],
+            next: ['Start checking target directory status', 'Check the status of the offline template'],
             error: '',
             complete: true
         });
@@ -52,7 +52,7 @@ test('在当前目录下 .', async () => {
         _inPlace: true
     })({}).then(data => {
         expect(data).toEqual({
-            next: ['开始检测目标目录状态'],
+            next: ['Start checking target directory status'],
             error: '',
             complete: false
         });
@@ -64,7 +64,7 @@ test('目录已存在，也没有任何指示如何操作已存在的目录', as
     inquirer.prompt.mockResolvedValueOnce({action: 'overwrite'});
     await checkStatus('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-template', {})({})
         .then(data => {
-            expect(data.next[2]).toMatch('选择覆盖，首先删除');
+            expect(data.next[2]).toMatch('Overwrite selected, first delete');
             expect(data.complete).toBeTruthy();
         });
 
@@ -72,7 +72,7 @@ test('目录已存在，也没有任何指示如何操作已存在的目录', as
     inquirer.prompt.mockResolvedValueOnce({action: false});
     await checkStatus('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-template', {})({})
         .then(data => {
-            expect(data.error).toMatch('取消覆盖');
+            expect(data.error).toMatch('Cancel overwrite');
             expect(data.complete).toBeFalsy();
         });
 
@@ -81,7 +81,7 @@ test('目录已存在，也没有任何指示如何操作已存在的目录', as
     await checkStatus('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-template', {})({})
         .then(data => {
             expect(data).toEqual({
-                next: ['开始检测目标目录状态', undefined, '检测离线模板状态'],
+                next: ['Start checking target directory status', undefined, 'Check the status of the offline template'],
                 error: '',
                 complete: true
             });
@@ -102,6 +102,6 @@ test('不存在离线模板', async () => {
     await checkStatus('https://github.com/yyt/HelloWorld.git', 'none', {
         offline: true
     })(ctx).then(data => {
-        expect(data.error).toMatch('离线脚手架模板路径不存在');
+        expect(data.error).toMatch('Offline scaffolding template path does not exist');
     });
 });
