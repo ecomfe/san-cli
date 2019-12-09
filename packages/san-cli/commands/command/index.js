@@ -1,5 +1,5 @@
 /**
- * @file add command
+ * @file Add/Manage subcommands
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
@@ -7,7 +7,7 @@ const path = require('path');
 const {textColor} = require('san-cli-utils/randomColor');
 exports.command = 'command <add|ls|list|rm|remove>';
 exports.aliases = ['cmd'];
-const desc = '扩展、管理 CLI 的命令';
+const desc = 'Add/Manage subcommands';
 exports.desc = desc;
 exports.builder = yargs => {
     if (yargs.argv._.length === 1) {

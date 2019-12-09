@@ -1,5 +1,5 @@
 /**
- * @file progress pugin
+ * @file progress plugin
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 module.exports = {

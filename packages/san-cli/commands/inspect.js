@@ -4,27 +4,27 @@
  */
 
 const command = (exports.command = 'inspect [paths...]');
-const description = (exports.description = '检查内置 webpack 配置');
+const description = (exports.description = 'Check the configuration of the built-in webpack');
 const builder = (exports.builder = {
     rule: {
         alias: 'ruleName',
         type: 'string',
-        describe: '根据 module 规则名称输出配置'
+        describe: 'Output configuration according to module rule name'
     },
     rules: {
         type: 'boolean',
         default: false,
-        describe: '显示所有 module 规则'
+        describe: 'List all module rules'
     },
     plugins: {
         type: 'boolean',
         default: false,
-        describe: '显示所有插件名称'
+        describe: 'List all plugin names'
     },
     plugin: {
         alias: 'pluginName',
         type: 'string',
-        describe: '根据插件名称输出配置'
+        describe: 'Output configuration based on the plugin name'
     }
 });
 

@@ -25,13 +25,13 @@ module.exports = (template, dest, options) => {
                     {
                         type: 'confirm',
                         name,
-                        message: '是否安装 npm 依赖'
+                        message: 'Would you like to install npm dependencies?'
                     }
                 ]);
                 if (answers[name]) {
                     install = true;
                 } else {
-                    task.skip('用户选择不安装依赖');
+                    task.skip('Not install dependencies');
                     observer.complete();
                     return;
                 }
@@ -40,7 +40,7 @@ module.exports = (template, dest, options) => {
             if (install) {
                 try {
                     // 清理 log，交给 npm
-                    observer.next('安装依赖ing...');
+                    observer.next('Installing dependencies...');
                     await installDeps(dest, options.verbose, options.registry);
                     observer.complete();
                 } catch (e) {

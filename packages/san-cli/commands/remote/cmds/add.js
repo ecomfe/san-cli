@@ -5,7 +5,7 @@
 
 module.exports = {
     command: 'add <name> <url>',
-    desc: '添加脚手架地址 alias',
+    desc: 'Add a scaffolding address',
     builder: {},
     async handler(argv) {
         const fse = require('fs-extra');
@@ -26,10 +26,11 @@ module.exports = {
                 {
                     name: 'action',
                     type: 'list',
-                    message: `\`${name}\` 已经存在，当前值为\`${templateAlias[name]}\`, 请选择操作：`,
+                    // eslint-disable-next-line
+                    message: `\`${name}\` already exists，and the current value is \`${templateAlias[name]}\`.Please select an operation：`,
                     choices: [
-                        {name: '覆盖', value: 'overwrite'},
-                        {name: '取消', value: false}
+                        {name: 'overwrite', value: 'overwrite'},
+                        {name: 'cancel', value: false}
                     ]
                 }
             ]);

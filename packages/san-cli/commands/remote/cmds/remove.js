@@ -1,11 +1,11 @@
 /**
- * @file add
+ * @file remove
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
 module.exports = {
     command: 'remove <name>',
-    desc: '删除一个脚手架地址 alias',
+    desc: 'Remove a scaffolding address',
     aliases: ['rm'],
     builder: {},
     async handler(argv) {
@@ -27,7 +27,7 @@ module.exports = {
                 {
                     name: 'action',
                     type: 'confirm',
-                    message: `确定要删除\`${name}\`?`
+                    message: `Are you sure to remove \`${name}\`?`
                 }
             ]);
             if (answers.action === false) {

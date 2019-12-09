@@ -5,7 +5,7 @@
 const path = require('path');
 const {textColor} = require('san-cli-utils/randomColor');
 exports.command = 'remote <add|ls|list|rm|remove>';
-const desc = '添加/管理脚手架 alias';
+const desc = 'Add/Manage scaffolding address';
 exports.desc = desc;
 exports.builder = yargs => {
     if (yargs.argv._.length === 1) {
