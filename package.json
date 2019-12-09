@@ -1,21 +1,24 @@
 {
     "name": "root",
     "private": true,
+    "workspaces": [
+        "packages/*"
+    ],
     "devDependencies": {
         "@babel/core": "^7.4.5",
         "@babel/preset-env": "^7.4.5",
+        "@commitlint/cli": "^8.2.0",
         "@commitlint/core": "^8.2.0",
         "@ksky521/cz-emoji": "^1.2.1",
         "commitizen": "^4.0.3",
-        "@commitlint/cli": "^8.2.0",
         "commitlint-config-gitmoji": "^1.0.1",
         "fecs": "^1.6.4",
         "husky": "^3.0.9",
         "jest": "^24.8.0",
-        "lerna": "^3.13.2",
+        "lerna": "^3.19.0",
         "lint-staged": "^9.2.5",
-        "memfs": "^2.16.1",
-        "stylelint": "^11.1.1"
+        "memfs": "^3.0.1",
+        "stylelint": "^12.0.0"
     },
     "husky": {
         "hooks": {
@@ -30,8 +33,12 @@
         "extends": [
             "gitmoji"
         ],
-        "rules":{
-            "header-max-length": [2, "always", 120]
+        "rules": {
+            "header-max-length": [
+                2,
+                "always",
+                120
+            ]
         }
     },
     "config": {

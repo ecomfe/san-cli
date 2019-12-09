@@ -10,7 +10,7 @@
         "execa": "^3.2.0",
         "fs-extra": "^8.1.0",
         "gulp-filter": "^6.0.0",
-        "gulp-rename": "^1.4.0",
+        "gulp-rename": "^2.0.0",
         "handlebars": "^4.5.1",
         "git-clone": "^0.1.0",
         "rxjs": "^6.5.3",
