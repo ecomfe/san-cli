@@ -7,7 +7,7 @@ import Service from '../lib/Service';
 import fse from 'fs-extra';
 
 jest.unmock('fs-extra');
-jest.unmock('cosmiconfig');
+// jest.unmock('cosmiconfig');
 
 describe('constructor resolvePlugins _loadPlugin', () => {
     test('plugins有值，useBuiltInPlugin为true', () => {

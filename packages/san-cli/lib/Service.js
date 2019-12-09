@@ -11,7 +11,6 @@ const fs = require('fs-extra');
 const Config = importLazy('webpack-chain');
 const webpackMerge = importLazy('webpack-merge');
 const resolvePlugin = importLazy('./resolvePlugin');
-// const cosmiconfig = require('cosmiconfig');
 const defaultsDeep = require('lodash.defaultsdeep');
 const lMerge = require('lodash.merge');
 const dotenv = require('dotenv');
@@ -312,11 +311,6 @@ module.exports = class Service extends EventEmitter {
         };
         if (!configFile) {
             // 主动查找 cwd 目录的.san
-            // // 使用 cosmiconfig 查找
-            // const explorer = cosmiconfig('san', {
-            //     // 寻找.san文件夹优先于 cwd
-            //     searchPlaces: ['.san.config.js', 'san.config.js']
-            // });
             result.filepath = findExisting(['san.config.js', '.san.config.js'], this.cwd);
 
             if (result.filepath) {
