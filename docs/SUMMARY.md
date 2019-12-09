@@ -1,5 +1,5 @@
 -   [介绍](./README.md)
--   [安装](./installation.md)
+-   [安装](./install.md)
 -   基础
     -   [使用方法](./usage.md)
         -   [init: 初始化项目](./create-project.md)

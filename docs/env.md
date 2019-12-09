@@ -2,3 +2,5 @@
 `.env.${mode}.local`
 `.env.${mode}`
 .env
+
+san_var_
