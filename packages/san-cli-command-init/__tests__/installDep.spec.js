@@ -27,7 +27,7 @@ test('不安装依赖', async () => {
 
     await installDep('https://github.com/yyt/HelloWorld.git', 'none', {})({}, task)
         .then(data => {
-            expect(task.str).toBe('用户选择不安装依赖');
+            expect(task.str).toBe('Not install dependencies');
             expect(data.complete).toBeTruthy();
         });
 });
@@ -38,7 +38,7 @@ test('用户选择安装依赖', async () => {
     await installDep('https://github.com/yyt/HelloWorld.git', 'none', {})({}, task)
         .then(data => {
             expect(data).toEqual({
-                next: [undefined, '安装依赖ing...'],
+                next: [undefined, 'Installing dependencies...'],
                 error: '',
                 complete: true
             });
