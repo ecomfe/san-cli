@@ -25,7 +25,7 @@ test('使用本地路径localTemplatePath', async () => {
             localTemplatePath: 'User/yyt'
         }, task)
         .then(data => {
-            expect(task.str).toBe('本次使用本地路径');
+            expect(task.str).toBe('Use local path');
             expect(data.complete).toBeTruthy();
         });
 });
@@ -35,7 +35,7 @@ test('使用本地缓存&&发现本地缓存', async () => {
         useCache: true
     })({}, task)
         .then(data => {
-            expect(task.str).toBe('发现本地缓存，优先使用本地缓存模板');
+            expect(task.str).toBe('Discover local cache and use it');
             expect(data.complete).toBeTruthy();
         });
 });
@@ -46,7 +46,7 @@ test('远程拉取成功', async () => {
         .then(data => {
             expect(ctx.localTemplatePath).toMatch('.san/templates/HelloWorld');
             expect(data).toEqual({
-                next: ['拉取模板ing...'],
+                next: ['Pulling template from the remote repository...'],
                 error: '',
                 complete: true
             });
@@ -57,6 +57,6 @@ test('远程拉取失败', async () => {
     let ctx = {};
     await download('', 'none', {})(ctx, task)
         .then(data => {
-            expect(data.error).toBe('拉取代码失败，请检查路径和代码权限是否正确');
+            expect(data.error).toBe('Failed to pull, please check the path and code permissions are correct');
         });
 });
