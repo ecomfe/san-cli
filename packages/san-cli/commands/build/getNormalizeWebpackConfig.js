@@ -60,7 +60,7 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     }
     // 添加远程部署
     if (remote) {
-        const DeployPlugin = require('deploy-files');
+        const DeployPlugin = require('deploy-files/webpack-plugin');
         // 从 env 文件中读取 remote 配置，这样可以将 env.local 加到 .gitignore 中防止提交
         // 详细配置：https://github.com/jinzhan/deploy-files
         // receiver: 'http://YOUR_HOST/receiver',
@@ -86,7 +86,7 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
                 remoteObj[key] = process.env[`SAN_REMOTE_${upperRemote}_${upperKey}`];
             }
         });
-        chainConfig.plugin('deploy-files').use(new DeployPlugin(), [remoteObj]);
+        chainConfig.plugin('deploy-files').use(DeployPlugin, [remoteObj]);
     }
 
     // resolve webpack config

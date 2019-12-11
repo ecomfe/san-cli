@@ -102,7 +102,7 @@ module.exports = {
                         template = `public/${name}.html`,
                         filename,
                         // 这里需要跟 mode 里面的 splitChunks 遥相呼应
-                        chunks
+                        chunks = [name]
                         // chunks = ['common', 'vendors', 'css-common', name]
                     } = pageConfig;
 
