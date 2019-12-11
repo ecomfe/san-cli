@@ -5,7 +5,7 @@
 
 const {resolve, isAbsolute, join} = require('path');
 const EventEmitter = require('events').EventEmitter;
-const {logger: consola, time, timeEnd, chalk} = require('san-cli-utils/ttyLogger');
+const {logger: consola, time, timeEnd, chalk} = require('@baidu/san-cli-utils/ttyLogger');
 const importLazy = require('import-lazy')(require);
 const fs = require('fs-extra');
 const Config = importLazy('webpack-chain');
@@ -16,11 +16,11 @@ const lMerge = require('lodash.merge');
 const dotenv = require('dotenv');
 
 const commander = require('./commander');
-const SError = require('san-cli-utils/SError');
+const SError = require('@baidu/san-cli-utils/SError');
 const PluginAPI = require('./PluginAPI');
-const {findExisting} = require('san-cli-utils/path');
-const {textColor} = require('san-cli-utils/randomColor');
-const argsert = require('san-cli-utils/argsert');
+const {findExisting} = require('@baidu/san-cli-utils/path');
+const {textColor} = require('@baidu/san-cli-utils/randomColor');
+const argsert = require('@baidu/san-cli-utils/argsert');
 const readPkg = require('./readPkg');
 
 const {defaults: defaultConfig, validateSync: validateOptions} = require('./options');

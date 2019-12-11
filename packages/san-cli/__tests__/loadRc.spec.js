@@ -11,7 +11,7 @@ test('', () => {
     const commands = loadRc(process.cwd() + '/packages/san-cli').commands;
     let flag = false;
     commands.forEach(item => {
-        if (item.indexOf('san-cli-command-init') > -1) {
+        if (item.indexOf('@baidu/san-cli-command-init') > -1) {
             flag = true;
         }
     });

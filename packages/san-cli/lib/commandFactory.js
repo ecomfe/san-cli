@@ -45,14 +45,14 @@ function addFactory(propName = 'commands', validate = () => true) {
                     }
                 }
             }
-            const {error, log, success} = require('san-cli-utils/ttyLogger');
+            const {error, log, success} = require('@baidu/san-cli-utils/ttyLogger');
             if (!result) {
                 // 这里报错吧
                 error(`Cannot find module \`${cmd}\``);
                 log('Please install it and try again');
                 process.exit(1);
             }
-            const {getGlobalSanRcFilePath} = require('san-cli-utils/path');
+            const {getGlobalSanRcFilePath} = require('@baidu/san-cli-utils/path');
 
             // 检测是否存在
             if (argv.global) {
@@ -113,7 +113,7 @@ exports.removeFactory = (propName = 'commands', validate = () => true) => {
 
             const writePkg = require('write-pkg');
 
-            const {success, error} = require('san-cli-utils/ttyLogger');
+            const {success, error} = require('@baidu/san-cli-utils/ttyLogger');
             const {requireFromLocal} = require('./utils');
             const cmd = argv.name;
 
@@ -137,7 +137,7 @@ exports.removeFactory = (propName = 'commands', validate = () => true) => {
                 error(`Cannot find module \`${cmd}\``);
                 process.exit(1);
             }
-            const {getGlobalSanRcFilePath} = require('san-cli-utils/path');
+            const {getGlobalSanRcFilePath} = require('@baidu/san-cli-utils/path');
 
             let from = 'local `package.json`';
             // 检测是否存在
@@ -201,7 +201,7 @@ exports.listFactory = (propName = 'commands') => {
         },
         handler(argv) {
             const readRc = require('./readRc');
-            const {log} = require('san-cli-utils/ttyLogger');
+            const {log} = require('@baidu/san-cli-utils/ttyLogger');
             if (argv.global || argv.all) {
                 const rc = readRc('rc');
                 if (!rc || !rc[propName] || rc[propName].length === 0) {

@@ -121,7 +121,7 @@ module.exports = {
             // 大小写敏感！！！！
             webpackConfig.plugin('case-sensitive-paths').use(require('case-sensitive-paths-webpack-plugin'));
             // 定义 env 中的变量
-            // TODO: 这里需要写到文档，以 SAN_VAR 开头的 env 变量
+            // 这里需要写到文档，以 SAN_VAR 开头的 env 变量
             webpackConfig.plugin('define').use(require('webpack/lib/DefinePlugin'), [defineVar()]);
             if (!isProd) {
                 // dev mode

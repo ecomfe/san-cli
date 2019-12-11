@@ -98,11 +98,11 @@ module.exports = {
             builder,
             describe,
             handler(argv) {
-                const {info, error} = require('san-cli-utils/ttyLogger');
+                const {info, error} = require('@baidu/san-cli-utils/ttyLogger');
                 const mode = argv.mode;
                 info(`Starting ${mode} server...`);
 
-                const devServer = require('san-cli-webpack/serve');
+                const devServer = require('@baidu/san-cli-webpack/serve');
 
                 const {publicPath} = projectOptions;
                 const webpackConfig = getNormalizeWebpackConfig(api, projectOptions, argv);
@@ -113,7 +113,7 @@ module.exports = {
                 })
                     .then(({isFirstCompile, networkUrl}) => {
                         if (isFirstCompile) {
-                            const {textColor} = require('san-cli-utils/randomColor');
+                            const {textColor} = require('@baidu/san-cli-utils/randomColor');
                             /* eslint-disable no-console */
                             console.log();
                             console.log(`  Your application is running at: ${textColor(networkUrl)}`);
@@ -166,7 +166,7 @@ module.exports = {
 };
 
 function getNormalizeWebpackConfig(api, projectOptions, argv) {
-    const {resolveEntry} = require('san-cli-webpack/utils');
+    const {resolveEntry} = require('@baidu/san-cli-webpack/utils');
     const isProd = api.isProd();
     // 开始正式的操作
     let webpackConfig = api.getWebpackConfig();

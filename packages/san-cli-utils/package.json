@@ -1,6 +1,6 @@
 {
-    "name": "san-cli-utils",
-    "version": "1.0.0",
+    "name": "@baidu/san-cli-utils",
+    "version": "0.0.1-alpha",
     "main": "index.js",
     "author": "ksky521",
     "license": "MIT",

@@ -9,12 +9,13 @@
     -   [配置文件](./config.md)
         -   [webpack 相关](./pages.md)
         -   [页面相关](./pages.md)
-        -   [Smarty 相关](./pages.md)
         -   [高级配置](./advanced.md)
-        -   [环境变量](./env.md)
         -   [CLI 预设](./presets.md)
 -   开发
+    -   [Smarty 相关](./pages.md)
+    -   [环境变量](./env.md)
     -   [部署](./deployment.md)
+-   二次开发
     -   [内部实现](./architecture.md)
     -   [编写一个插件](./plugin-dev.md)
     -   [如何创建一个脚手架项目](./create-scaffold.md)

@@ -3,9 +3,9 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const yargs = require('yargs/yargs');
-const {setLevel, logger, chalk} = require('san-cli-utils/ttyLogger');
+const {setLevel, logger, chalk} = require('@baidu/san-cli-utils/ttyLogger');
 const {scriptName, version: pkgVersion} = require('../package.json');
-const {textColor} = require('san-cli-utils/randomColor');
+const {textColor} = require('@baidu/san-cli-utils/randomColor');
 const buildinCmds = require('./const').buildinCommands;
 
 module.exports = () => {

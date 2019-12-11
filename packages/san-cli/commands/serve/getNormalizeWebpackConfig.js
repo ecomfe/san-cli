@@ -4,7 +4,7 @@
  */
 
 module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
-    const {resolveEntry} = require('san-cli-webpack/utils');
+    const {resolveEntry} = require('@baidu/san-cli-webpack/utils');
     const isProd = api.isProd();
     // 开始正式的操作
     let webpackConfig = api.getWebpackConfig();

@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
-const {textColor} = require('san-cli-utils/randomColor');
+const {textColor} = require('@baidu/san-cli-utils/randomColor');
 
 // 这里处理 loader 缺失的问题
 const rules = [

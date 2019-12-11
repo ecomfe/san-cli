@@ -8,7 +8,7 @@ const download = require('./tasks/download');
 const generator = require('./tasks/generator');
 const installDep = require('./tasks/installDep');
 const path = require('path');
-const {error} = require('san-cli-utils/ttyLogger');
+const {error} = require('@baidu/san-cli-utils/ttyLogger');
 
 module.exports = (template, appName, options = {}) => {
     // template = alias(template);

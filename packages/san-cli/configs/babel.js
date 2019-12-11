@@ -1,5 +1,5 @@
 /**
- * @file 修改自： @vue/cli-plugin-babel
+ * @file cli-plugin-babel
  */
 const path = require('path');
 // 根据 config.transpileDependencies 生成babel 处理的正则

@@ -12,9 +12,9 @@ const render = require('consolidate').handlebars.render;
 const concat = require('concat-stream');
 const filter = require('gulp-filter');
 const rename = require('gulp-rename');
-const {logger} = require('san-cli-utils/ttyLogger');
+const {logger} = require('@baidu/san-cli-utils/ttyLogger');
 const evaluate = require('../utils/evaluate');
-const {getGitUser} = require('san-cli-utils/env');
+const {getGitUser} = require('@baidu/san-cli-utils/env');
 
 const ask = require('../ask');
 const exists = fs.existsSync;

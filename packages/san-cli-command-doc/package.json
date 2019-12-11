@@ -1,6 +1,6 @@
 {
-    "name": "san-cli-command-doc",
-    "version": "1.0.0",
+    "name": "@baidu/san-cli-command-doc",
+    "version": "0.0.1-alpha",
     "main": "index.js",
     "license": "MIT",
     "engines": {
@@ -11,8 +11,8 @@
         "san": "^3.7.9"
     },
     "dependencies": {
-        "san-cli-utils": "^1.0.0",
-        "san-cli-webpack": "^1.0.0",
+        "@baidu/san-cli-utils": "0.0.1-alpha",
+        "@baidu/san-cli-webpack": "0.0.1-alpha",
         "marked": "^0.7.0",
         "opener": "^1.5.1",
         "qrcode-terminal": "^0.12.0",

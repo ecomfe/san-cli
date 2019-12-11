@@ -5,7 +5,7 @@
 
 module.exports = (argv, plugin) => {
     const Service = require('./Service');
-    const flatten = require('san-cli-utils/utils').flatten;
+    const flatten = require('@baidu/san-cli-utils/utils').flatten;
 
     // 处理 rc 文件传入的 Service Class arguments
     let {servicePlugins: plugins, useBuiltInPlugin = true, projectOptions} = argv._presets || {};
