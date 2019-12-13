@@ -1,18 +1,19 @@
 {
     "name": "@baidu/san-cli-webpack",
-    "version": "0.0.1-alpha",
+    "version": "0.0.1-alpha.2",
     "main": "index.js",
     "author": "ksky521",
     "dependencies": {
-        "@baidu/san-cli-utils": "0.0.1-alpha",
-        "tty-table": "^2.8.2",
-        "html-webpack-plugin": "^3.2.0",
+        "@baidu/san-cli-utils": "^0.0.1-alpha.2",
         "friendly-errors-webpack-plugin": "^1.7.0",
-        "webpack": "^4.41.2",
-        "portfinder": "^1.0.25",
-        "webpack-dev-server": "^3.9.0",
         "fs-extra": "^8.1.0",
+        "html-webpack-plugin": "^3.2.0",
+        "portfinder": "^1.0.25",
+        "tty-table": "^2.8.2",
+        "webpack": "^4.41.2",
+        "webpack-dev-server": "^3.9.0",
         "write-file-webpack-plugin": "^4.5.1"
     },
-    "license": "MIT"
+    "license": "MIT",
+    "gitHead": "1db19410d2b751e94c33778b9d6692780ccada61"
 }

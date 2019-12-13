@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-const {resolve, isAbsolute, join} = require('path');
+const {resolve, isAbsolute, join, dirname} = require('path');
 const EventEmitter = require('events').EventEmitter;
 const {logger: consola, time, timeEnd, chalk} = require('@baidu/san-cli-utils/ttyLogger');
 const importLazy = require('import-lazy')(require);
@@ -192,15 +192,10 @@ module.exports = class Service extends EventEmitter {
         }
         return this;
     }
-    initPlugin(plugin) {
-        let options = {};
-        if (Array.isArray(plugin)) {
-            options = plugin[1];
-            plugin = plugin[0];
-        }
-        const {id, apply} = plugin;
+    _getApiInstance(id) {
         const self = this;
-        const api = new Proxy(new PluginAPI(id, this), {
+
+        return new Proxy(new PluginAPI(id, self), {
             get(target, prop) {
                 // 传入配置的自定义 pluginAPI 方法
 
@@ -231,6 +226,15 @@ module.exports = class Service extends EventEmitter {
                 }
             }
         });
+    }
+    initPlugin(plugin) {
+        let options = {};
+        if (Array.isArray(plugin)) {
+            options = plugin[1];
+            plugin = plugin[0];
+        }
+        const {id, apply} = plugin;
+        const api = this._getApiInstance(id);
         // 传入配置的 options
         // 因为一般 plugin 不需要自定义 options，所以 projectOption 作为第二个参数
         apply(api, this.projectOptions, options);
@@ -254,7 +258,7 @@ module.exports = class Service extends EventEmitter {
         argsert('<string|object> [object]', [name, yargsModule], arguments.length);
 
         /* eslint-disable one-var */
-        let command, description, builder, handler, aliases;
+        let command, description, builder, handler, aliases, extend;
         /* eslint-enable one-var */
         if (typeof name === 'object') {
             command = name.command;
@@ -262,6 +266,8 @@ module.exports = class Service extends EventEmitter {
             builder = name.builder;
             handler = name.handler;
             aliases = name.aliases;
+            // 这里是扩展
+            extend = name.extend;
         } else {
             command = name;
             if (typeof yargsModule === 'function') {
@@ -271,6 +277,8 @@ module.exports = class Service extends EventEmitter {
                 builder = yargsModule.builder;
                 handler = yargsModule.handler;
                 aliases = yargsModule.aliases;
+                // 这里是扩展
+                extend = name.extend;
             }
         }
 
@@ -279,12 +287,14 @@ module.exports = class Service extends EventEmitter {
                 logger.warn('registerCommand', `${name} has an empty handler.`);
             };
         }
+
         // 绑定 run，实际是通过 run 之后执行的
         const cmdName = getCommandName(command);
         this.registeredCommands.set(cmdName, {
             command,
             handler,
             aliases,
+            extend,
             describe: description ? description : false,
             builder: builder ? builder : {}
         });
@@ -300,7 +310,7 @@ module.exports = class Service extends EventEmitter {
             configFile = isAbsolute(configFile) ? configFile : resolve(this.cwd, configFile);
             if (!fs.existsSync(configFile)) {
                 configFile = false;
-                // this.logger.warn('config-file', `${originalConfigFile} is not exists!`);
+                this.logger.warn(`config file \`${originalConfigFile}\` is not exists!`);
             }
         }
         // 首先试用 argv 的 config，然后寻找默认的，找到则读取，格式失败则报错
@@ -345,12 +355,27 @@ module.exports = class Service extends EventEmitter {
         } else {
             // this.logger.warn(`${textColor('san.config.js')} Cannot find! Use default configuration.`);
         }
+        return this.normalizeConfig(config, result.filepath);
+    }
+    normalizeConfig(config, filepath) {
         // normalize publicPath
         ensureSlash(config, 'publicPath');
         if (typeof config.publicPath === 'string') {
             config.publicPath = config.publicPath.replace(/^\.\//, '');
         }
         removeSlash(config, 'outputDir');
+
+        // normalize pages
+        const pages = config.pages;
+        if (filepath && pages) {
+            filepath = dirname(filepath);
+            Object.keys(pages).forEach(p => {
+                const page = pages[p];
+                if (page.entry) {
+                    page.entry = resolve(filepath, page.entry);
+                }
+            });
+        }
         return config;
     }
     runCommand(cmd, rawArgs) {
@@ -418,8 +443,8 @@ module.exports = class Service extends EventEmitter {
         let {_version: version} = argv;
         // 保证 Api.getxx 能够获取
         this.version = version;
-
         const mode = argv.mode || (cmd === 'build' && argv.watch ? 'development' : 'production');
+
         // 先加载 env 文件，保证 config 文件中可以用到
         time('loadEnv');
         this.loadEnv(mode);

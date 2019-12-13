@@ -24,6 +24,20 @@ module.exports = () => {
             hidden: true,
             describe: 'Do not show the progress bar'
         })
+        .option('config', {
+            alias: 'config-file',
+            type: 'string',
+            hidden: true,
+            describe: 'Project config file'
+        })
+        .option('mode', {
+            alias: 'm',
+            hidden: true,
+            type: 'string',
+            default: 'development',
+            choices: ['development', 'production'],
+            describe: 'Operating environment'
+        })
         .option('log-level', {
             alias: 'logLevel',
             default: 'error',
