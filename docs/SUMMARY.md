@@ -15,6 +15,7 @@
     -   [现代浏览器打包](./modern-mode.md)
     -   [打包分析](./modern-mode.md)
     -   [Svg 图片](./modern-mode.md)
+    -   [San Component](./pages.md)
     -   [Markdown 建站](./pages.md)
     -   [Smarty 相关](./pages.md)
     -   [环境变量](./env.md)
