@@ -5,6 +5,7 @@
 const path = require('path');
 const resolve = require('resolve');
 const defaultsDeep = require('lodash.defaultsdeep');
+const fs = require('fs');
 
 function resolveLocal(...args) {
     return path.join(__dirname, '../', ...args);
@@ -44,11 +45,13 @@ module.exports = {
                     .end()
                 // set alias
                 .alias
-                    // 加个@默认值
-                    .set('@', api.resolve('src'))
                     .set('core-js', path.dirname(require.resolve('core-js')))
                     .set('regenerator-runtime', path.dirname(require.resolve('regenerator-runtime')));
-
+            if (fs.existsSync(api.resolve('src'))) {
+                webpackConfig.resolve.alias
+                    // 加个@默认值
+                    .set('@', api.resolve('src'));
+            }
             // prettier-ignore
             // set resolveLoader
             webpackConfig

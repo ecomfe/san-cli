@@ -5,7 +5,7 @@
 exports.command = '$0';
 exports.handler = argv => {
     // 添加插件
-    const cmdDoc = require('@baidu/san-cli-command-doc');
+    const cmdDoc = require('@baidu/san-cli-command-md');
     const plugins = [cmdDoc];
     const getService = require('../lib/getServiceInstance');
     const service = getService(argv, plugins);

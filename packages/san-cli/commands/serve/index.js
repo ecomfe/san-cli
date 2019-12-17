@@ -25,6 +25,7 @@ const builder = (exports.builder = {
         describe: 'Operating environment'
     },
     config: {
+        alias: 'config-file',
         type: 'string',
         describe: 'Project config file'
     },
