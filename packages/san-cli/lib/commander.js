@@ -17,7 +17,6 @@ module.exports = () => {
             hidden: true,
             describe: 'Output verbose messages on internal operations'
         })
-        // MARK:
         .option('no-progress', {
             type: 'boolean',
             default: false,

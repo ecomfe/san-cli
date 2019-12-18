@@ -25,7 +25,7 @@ module.exports = function serve(argv, api, projectOptions) {
                 const {textColor} = require('@baidu/san-cli-utils/randomColor');
                 /* eslint-disable no-console */
                 console.log();
-                console.log(`  Your application is running at: ${textColor(networkUrl)}`);
+                console.log(`  Application is running at: ${textColor(networkUrl)}`);
                 console.log('  URL QRCode is: ');
                 /* eslint-enable no-console */
                 // 打开浏览器地址

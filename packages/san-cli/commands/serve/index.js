@@ -6,7 +6,7 @@
 const getHandler = require('./run');
 const command = (exports.command = 'serve [entry]');
 exports.aliases = ['dev'];
-const description = (exports.description = 'serve description');
+const description = (exports.description = 'Builds and serves your app, rebuilding on file changes');
 const builder = (exports.builder = {
     'use-https': {
         type: 'boolean',
