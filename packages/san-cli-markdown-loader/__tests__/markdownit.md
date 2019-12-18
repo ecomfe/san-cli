@@ -255,9 +255,24 @@ It converts "HTML", but keep intact partial entries like "xxxHTMLyyy" and so on.
 
 ### [Custom containers](https://github.com/markdown-it/markdown-it-container)
 
-::: warning
+
+
+::: warning 提示
 _here be dragons_
 :::
+
+::: danger 错误
+_here be dragons_
+:::
+
+::: info 提示
+_here be dragons_
+:::
+
+::: success 成功
+_here be dragons_
+:::
+
 
 <sanbox>
 :::

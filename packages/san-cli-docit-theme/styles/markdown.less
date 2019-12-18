@@ -179,84 +179,58 @@
         margin: 0 6px;
     }
 
-    blockquote {
+    blockquote,
+    div.warning,
+    div.error,
+    div.success,
+    div.info {
         font-size: 90%;
         background-color: #e8f7fe;
         color: @site-text-color-secondary;
         border-left: 4px solid #2196f3;
         padding: 0.8em;
         margin: 1em 0;
-    }
+        border-radius: @border-radius 0 0 @border-radius;
 
-    blockquote p {
-        margin: 0;
-    }
-
-    .anchor {
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        margin-left: 8px;
-    }
-
-    .waiting {
-        color: #ccc;
-        cursor: not-allowed;
-    }
-
-    a.edit-button {
-        line-height: 12px;
-        display: inline-block;
-        margin-left: 10px;
-        height: 12px;
-        text-decoration: none;
-        font-weight: 400;
-
-        i {
-            color: @site-text-color-secondary;
-
-            &:hover {
-                color: @primary-color;
-            }
+        p {
+            margin: 0;
         }
-
-        .anticon {
+    }
+    div.warning,
+    div.error,
+    div.success,
+    div.info {
+        p.info-title {
             display: block;
-            font-size: 16px;
+            margin-bottom: 4px;
+            font-size: 100%;
+            font-weight: bold;
+            color: @site-heading-color;
         }
     }
-
-    h1:hover .anchor,
-    h2:hover .anchor,
-    h3:hover .anchor,
-    h4:hover .anchor,
-    h5:hover .anchor,
-    h6:hover .anchor {
-        opacity: 1;
-        display: inline-block;
+    div.warning {
+        background-color: #fffbe6;
+        color: @site-text-color-secondary;
+        border-left: 4px solid #ffe58f;
+    }
+    div.error {
+        background-color: #fff1f0;
+        color: @site-text-color-secondary;
+        border-left: 4px solid #ffa39e;
+    }
+    div.info {
+        background-color: #e6f7ff;
+        color: @site-text-color-secondary;
+        border-left: 4px solid #2196f3;
+    }
+    div.success {
+        background-color: #f6ffed;
+        color: @site-text-color-secondary;
+        border-left: 4px solid #b7eb8f;
     }
 
     > br,
     > p > br {
         clear: both;
-    }
-
-    .api-container table {
-        font-size: @font-size-base;
-        line-height: @line-height-base;
-        td:first-child {
-            font-weight: 500;
-            width: 20%;
-            font-family: 'Lucida Console', Consolas, Menlo, Courier, monospace;
-        }
-        td:nth-child(3) {
-            width: 22%;
-            font-size: 12px;
-            font-family: 'Lucida Console', Consolas, Menlo, Courier, monospace;
-        }
-        td:last-child {
-            width: 13%;
-            font-size: 12px;
-            font-family: 'Lucida Console', Consolas, Menlo, Courier, monospace;
-        }
     }
 }
