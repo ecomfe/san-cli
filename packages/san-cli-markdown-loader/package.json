@@ -39,7 +39,6 @@
         "markdown-it-deflist": "^2.0.3",
         "markdown-it-emoji": "^1.4.0",
         "markdown-it-div": "^1.1.0",
-        "markdown-it-jsx": "1.1.0",
         "markdown-it-footnote": "^3.0.1",
         "markdown-it-ins": "^3.0.0",
         "markdown-it-attrs": "^3.0.1",

@@ -10,11 +10,14 @@ const globby = importLazy('globby');
 
 module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
     // 放到这里，是用了 argv.dtemplate
-    const mdOptions = (projectOptions.loaderOptions || {}).markdown || {};
+    const docitOptions = projectOptions.docit || {};
+    const mdOptions = (projectOptions.loaderOptions || docitOptions).markdown || {};
     const isProd = api.isProd();
     const context = api.getCwd();
 
-    let template = argv.template || mdOptions.template;
+    let template = argv.template || docitOptions.codebox;
+    let theme = argv.theme || docitOptions.theme;
+
     if (template) {
         if (fse.existsSync(api.resolve(template))) {
             template = api.resolve(template);
@@ -50,13 +53,12 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
                     .end();
             }
         } else if (isDirectory) {
-            // 这里遍历所有的 md，添加 html 配置
-            const files = globby.sync(['*.md', '*/*.md'], {
-                cwd: entry,
-                followSymbolicLinks: false,
-                ignore: ['_*.md', '.*.md']
-            });
-            
+            // TODO 这里遍历所有的 md，添加 html 配置
+            // const files = globby.sync(['*.md', '*/*.md'], {
+            //     cwd: entry,
+            //     followSymbolicLinks: false,
+            //     ignore: ['_*.md', '.*.md']
+            // });
         }
 
         const baseRule = webpackConfig.module.rule('markdown').test(/\.(md|markdown)$/);
@@ -64,7 +66,7 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
         baseRule
             .use('markdown-loader')
             .loader(require.resolve('@baidu/san-cli-markdown-loader'))
-            .options(Object.assign({}, mdOptions, {context, template}));
+            .options(Object.assign({}, mdOptions, {context, codebox: template, theme}));
 
         // 添加插件
         webpackConfig.plugin('san-cli-markdown-loader-plugin').use(require('@baidu/san-cli-markdown-loader/plugin'));

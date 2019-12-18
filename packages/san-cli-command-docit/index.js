@@ -46,7 +46,7 @@ const builder = {
     }
 };
 const describe = 'Convert Markdown to San component';
-const command = 'md [entry]';
+const command = 'docit [entry]';
 module.exports = {
     id: 'san-cli-command-component',
     apply(api, projectOptions) {

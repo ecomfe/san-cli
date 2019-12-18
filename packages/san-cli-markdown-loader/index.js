@@ -32,7 +32,7 @@ module.exports = function(content) {
     const inheritQuery = `&${rawQuery}`;
 
     // eslint-disable-next-line
-    let {template = '', context = process.cwd(), i18n = '', exportType, markdownIt} =
+    let {codebox: template = '', context = process.cwd(), i18n = '', exportType, markdownIt} =
         loaderUtils.getOptions(this) || {};
     // markdownIt 是 mdit 的配置项内容付下：
 
@@ -41,11 +41,6 @@ module.exports = function(content) {
     //     anchor
     //     toc
     //     lineNumbers
-    //     plugins
-    //         '@org/foo', // 等价于 @org/markdown-it-foo，如果对应的包存在
-    //         ['markdown-it-bar', {
-    //             // 提供你的选项
-    //         }]
     //   extend
     //   extractHeaders
     // }

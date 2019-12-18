@@ -24,7 +24,7 @@
         "@babel/preset-env": "^7.6.3",
         "@babel/runtime": "^7.6.3",
         "@babel/runtime-corejs3": "^7.6.3",
-        "@baidu/san-cli-command-md": "^0.0.1-alpha.2",
+        "@baidu/san-cli-command-docit": "^0.0.1-alpha.2",
         "@baidu/san-cli-command-init": "^0.0.1-alpha.0",
         "@baidu/san-cli-utils": "^0.0.1-alpha.0",
         "@baidu/san-cli-webpack": "^0.0.1-alpha.0",

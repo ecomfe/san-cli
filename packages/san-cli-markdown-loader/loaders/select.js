@@ -11,13 +11,19 @@ const {sanboxRegExp} = require('../const');
 const compiler = require('../lib/compiler').getCompiler();
 const defaultTemplate = path.join(__dirname, '../template.san');
 const filename = __filename;
+let defaultTemplateContent = '';
+function getDefaultTplContent() {
+    if (defaultTemplateContent === '') {
+        defaultTemplateContent = fs.readFileSync(defaultTemplate, 'utf8');
+    }
+    return defaultTemplateContent;
+}
 function loader(content) {
     sanboxRegExp.lastIndex = 0;
 
     let {template, context = process.cwd(), index, i18n = ''} = loaderUtils.getOptions(this);
 
     const loaders = this.loaders;
-
     const rawQuery = this.resourceQuery.slice(1);
     const query = qs.parse(rawQuery);
 
@@ -41,7 +47,7 @@ function loader(content) {
             // TODO 报错信息，健壮性
             templateContent = fs.readFileSync(template, 'utf8');
         } else {
-            templateContent = fs.readFileSync(defaultTemplate, 'utf8');
+            templateContent = getDefaultTplContent();
         }
 
         const html = compiler.render(content);

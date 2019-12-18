@@ -10,11 +10,6 @@ function getCompiler(opt) {
     //     anchor
     //     toc
     //     lineNumbers
-    //     plugins
-    //         '@org/foo', // 等价于 @org/markdown-it-foo，如果对应的包存在
-    //         ['markdown-it-bar', {
-    //             // 提供你的选项
-    //         }]
     //   extend
     //   extractHeaders
     // }
@@ -23,7 +18,6 @@ function getCompiler(opt) {
         lineNumbers = true,
         anchor = {permalink: true, permalinkBefore: true, permalinkSymbol: '#'},
         extend = () => {},
-        extractHeaders = ['h2', 'h3'],
         toc = {includeLevel: [2, 3]},
         options = {},
         table = {
