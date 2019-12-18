@@ -32,7 +32,7 @@ module.exports = function(content) {
     const inheritQuery = `&${rawQuery}`;
 
     // eslint-disable-next-line
-    let {codebox: template = '', context = process.cwd(), i18n = '', exportType, markdownIt} =
+    let {codebox: template = '', theme = '', context = process.cwd(), i18n = '', exportType, markdownIt} =
         loaderUtils.getOptions(this) || {};
     // markdownIt 是 mdit 的配置项内容付下：
 
@@ -116,7 +116,7 @@ module.exports = function(content) {
     } else {
         let components = {};
         sanboxArray = sanboxArray.map((box, idx) => {
-            const query = `?san-md&type=sanbox&index=${idx}${inheritQuery}&template=${template}&context=${context}&i18n=${i18n}`;
+            const query = `?san-md&type=sanbox&index=${idx}${inheritQuery}&theme=${theme}&codebox=${template}&context=${context}&i18n=${i18n}`;
             components[`san-box-${idx}`] = `Sanbox${idx}`;
             return `import Sanbox${idx} from ${stringifyRequest(resourcePath + query)};`;
         });

@@ -5,12 +5,10 @@
 const loaderUtils = require('loader-utils');
 const qs = require('querystring');
 const selectLoader = require.resolve('./select');
+const {isSanLoader, isNullLoader, isBabelLoader} = require('../const');
 
 module.exports = code => code;
 const isPitcher = l => l.path !== __filename;
-const isNullLoader = l => /(\/|\\|@)null-loader/.test(l.path);
-const isSanLoader = l => /(\/|\\|@)(san-loader|san-webpack-loader|(\w+)-san-loader)/.test(l.path);
-const isBabelLoader = l => /(\/|\\|@)babel-loader/.test(l.path);
 
 /* eslint-disable space-before-function-paren */
 module.exports.pitch = function(remainingRequest) {
@@ -60,8 +58,11 @@ module.exports.pitch = function(remainingRequest) {
     };
     switch (query.type) {
         case 'sanbox':
+            // 第一次
             return pickerSanbox(loaders, query.index, genRequest, options);
-        case 'code-component':
+        case 'san-component':
+        case 'js-component':
+            // 第二次 san component
             return pickerSanbox(loaders, query.index, genRequest, options);
     }
 

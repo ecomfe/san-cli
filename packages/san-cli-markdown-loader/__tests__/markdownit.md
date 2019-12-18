@@ -34,6 +34,37 @@ test.. test... test..... test?..... test!....
 
 "Smartypants, double quotes" and 'single quotes'
 
+## sanbox
+
+<sanbox>
+:::
+#### 我是 title
+这是是描述的内容
+:::
+
+```js
+import Hello1 from "./component.js";
+
+export default {
+    template: `
+    <div>
+        <hello />
+        <h2>{{text}}</h2>
+    </div>
+    `,
+    initData() {
+            return {
+                text: '这里是副标题'
+            };
+        },
+        components: {
+            hello: Hello1
+        }
+}
+```
+
+</sanbox>
+
 ## Emphasis
 
 **This is bold text**
@@ -107,8 +138,6 @@ console.log(foo(5));
 | engine | engine to be used for processing templates. Handlebars is the default.    |
 | ext    | extension to be used for dest files.                                      |
 
-
-
 Right aligned columns
 
 | Option |                                                               Description |
@@ -117,26 +146,24 @@ Right aligned columns
 | engine |    engine to be used for processing templates. Handlebars is the default. |
 |    ext |                                      extension to be used for dest files. |
 
-
-
 | Option | Description                                                               |
 | ------ | ------------------------------------------------------------------------- |
 | data   | path to data files to supply the data that will be passed into templates. |
 | engine | engine to be used for processing templates. Handlebars is the default.    |
 | ext    | extension to be used for dest files.                                      |
 
+|              Stage | Direct Products | ATP Yields |
+| -----------------: | --------------: | ---------: |
+|         Glycolysis |           2 ATP |            |
+|                 ^^ |          2 NADH |   3--5 ATP |
+| Pyruvaye oxidation |          2 NADH |      5 ATP |
+|  Citric acid cycle |           2 ATP |            |
+|                 ^^ |          6 NADH |     15 ATP |
+|                 ^^ |         2 FADH2 |      3 ATP |
+|     **30--32** ATP |                 |            |
 
-
-Stage | Direct Products | ATP Yields
-----: | --------------: | ---------:
-Glycolysis | 2 ATP ||
-^^ | 2 NADH | 3--5 ATP |
-Pyruvaye oxidation | 2 NADH | 5 ATP |
-Citric acid cycle | 2 ATP ||
-^^ | 6 NADH | 15 ATP |
-^^ | 2 FADH2 | 3 ATP |
-**30--32** ATP |||
 [Net ATP yields per hexose]
+
 ## Links
 
 [link text](http://dev.nodeca.com)
@@ -238,7 +265,7 @@ _here be dragons_
 这是是描述的内容
 :::
 
-```html {3,6-9}
+```html
 <template>
     <div id="hello-demo">
         <hello />
