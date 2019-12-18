@@ -371,7 +371,8 @@ module.exports = class Service extends EventEmitter {
             filepath = dirname(filepath);
             Object.keys(pages).forEach(p => {
                 const page = pages[p];
-                if (page.entry) {
+                // 相对于 san.config.js
+                if (page.entry && !isAbsolute(page.entry)) {
                     page.entry = resolve(filepath, page.entry);
                 }
             });

@@ -14,6 +14,8 @@ module.exports = function build({webpackConfig}) {
         webpack(webpackConfig, (err, stats) => {
             log.debug('build done');
             if (err || stats.hasErrors()) {
+                log.debug(err);
+                log.debug(stats);
                 reject(getWebpackErrorInfoFromStats(err, stats));
                 const isWatch = webpackConfig.watch;
                 if (!process.env.SAN_DEBUG && !isWatch) {
