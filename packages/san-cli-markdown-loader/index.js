@@ -104,10 +104,8 @@ module.exports = function(content) {
         return `<san-box-${idx}></san-box-${idx}>`;
     });
 
-    const stylePath = require.resolve('./styles/index.less');
     if (sanboxArray.length === 0) {
         return `
-            import "${stylePath}";
             export default {
             template:${getTemplate(compiler(content, markdownIt))},
             _meta:${JSON.stringify(meta)},
@@ -129,7 +127,6 @@ module.exports = function(content) {
         }`;
 
         return `
-            import "${stylePath}";
             ${sanboxArray.join('\n')}
             export default {
                 _meta:${JSON.stringify(meta)},
