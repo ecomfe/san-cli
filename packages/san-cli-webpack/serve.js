@@ -14,8 +14,8 @@ const NameModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 const SanFriendlyErrorsPlugin = require('./lib/SanFriendlyErrorsPlugin');
 const WriteFileWebpackPlugin = require('write-file-webpack-plugin');
 
-const {prepareUrls} = require('san-cli-utils/path');
-const {error, logger} = require('san-cli-utils/ttyLogger');
+const {prepareUrls} = require('@baidu/san-cli-utils/path');
+const {error, logger} = require('@baidu/san-cli-utils/ttyLogger');
 
 const {addDevClientToEntry, getWebpackErrorInfoFromStats} = require('./utils');
 

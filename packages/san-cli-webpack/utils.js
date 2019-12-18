@@ -41,7 +41,7 @@ exports.getWebpackErrorInfoFromStats = (err, stats) => {
  */
 const path = require('path');
 const fse = require('fs-extra');
-const {error} = require('san-cli-utils/ttyLogger');
+const {error} = require('@baidu/san-cli-utils/ttyLogger');
 exports.resolveEntry = (resolveEntryPath, absoluteEntryPath, webpackConfig, defaultEntry) => {
     // entry arg
     if (resolveEntryPath) {

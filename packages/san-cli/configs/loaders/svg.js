@@ -2,7 +2,7 @@
  * @file svg-url-loader options
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const {getAssetPath} = require('san-cli-utils/path'); // eslint-disable-line
+const {getAssetPath} = require('@baidu/san-cli-utils/path'); // eslint-disable-line
 const factory = require('./loaderFactory');
 
 module.exports = factory((options, {filenameHashing, assetsDir, largeAssetSize = 1024}) => {

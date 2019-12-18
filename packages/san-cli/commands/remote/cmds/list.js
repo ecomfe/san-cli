@@ -10,7 +10,7 @@ module.exports = {
     builder: {},
     handler(argv) {
         const readRc = require('../../../lib/readRc');
-        const {log} = require('san-cli-utils/ttyLogger');
+        const {log} = require('@baidu/san-cli-utils/ttyLogger');
         // 检测是否存在
         // 全局
         let sanrc = readRc('rc') || {};

@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const path = require('path');
-const {textColor} = require('san-cli-utils/randomColor');
+const {textColor} = require('@baidu/san-cli-utils/randomColor');
 exports.command = 'plugin <add|ls|list|rm|remove>';
 // exports.aliases = ['plugin'];
 const desc = 'Add/Manage Service Plugin';

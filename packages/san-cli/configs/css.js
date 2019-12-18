@@ -6,13 +6,13 @@ const semver = require('semver');
 const npmlog = require('npmlog');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const {cssnanoOptions: defaultCssnanoOptions} = require('../lib/const');
-const {findExisting} = require('san-cli-utils/path');
+const {findExisting} = require('@baidu/san-cli-utils/path');
 
 module.exports = {
     id: 'built-in:css',
     apply(api, rootOptions) {
         api.chainWebpack(webpackConfig => {
-            const {getAssetPath} = require('san-cli-utils/path');
+            const {getAssetPath} = require('@baidu/san-cli-utils/path');
 
             const isProd = api.isProd();
             const cssOptions = rootOptions.css || {};

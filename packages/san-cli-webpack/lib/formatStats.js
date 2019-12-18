@@ -8,10 +8,10 @@ const path = require('path');
 const zlib = require('zlib');
 const ConsoleTable = require('tty-table');
 
-const {textColor} = require('san-cli-utils/randomColor');
-const {chalk} = require('san-cli-utils/ttyLogger');
+const {textColor} = require('@baidu/san-cli-utils/randomColor');
+const {chalk} = require('@baidu/san-cli-utils/ttyLogger');
 
-const flatten = require('san-cli-utils/utils').flatten;
+const flatten = require('@baidu/san-cli-utils/utils').flatten;
 
 // const MAX_GZIPPED_SIZE = 150 * 1024;
 const MAX_SIZE = 500 * 1024;

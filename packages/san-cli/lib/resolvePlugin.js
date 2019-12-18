@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-const SError = require('san-cli-utils/SError');
+const SError = require('@baidu/san-cli-utils/SError');
 const resolve = require('resolve');
 const fs = require('fs');
 const path = require('path');

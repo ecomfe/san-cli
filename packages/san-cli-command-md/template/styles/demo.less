@@ -58,6 +58,25 @@
         border: 0;
     }
     &-meta {
+        & > h4,
+        & > h3 {
+            margin: 0;
+            position: absolute;
+            top: -14px;
+            width: auto;
+            margin-left: -8px;
+            padding: 1px 8px;
+            font-size: 14px;
+            color: #777;
+            border-radius: 2px 2px 0 0;
+            background: #fff;
+        }
+        &-copy {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            opacity: 1;
+        }
         &.markdown {
             position: relative;
             padding: 18px 32px;
@@ -68,7 +87,6 @@
         blockquote {
             margin: 0;
         }
-        h4,
         section& p {
             margin: 0;
             width: 98%;
@@ -127,6 +145,9 @@
         border-radius: 0 0 @border-radius-sm @border-radius-sm;
         &-expand {
             display: block;
+        }
+        pre[class*='language-'] {
+            margin: 0;
         }
     }
     .highlight {

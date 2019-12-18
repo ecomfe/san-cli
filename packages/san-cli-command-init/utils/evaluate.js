@@ -2,7 +2,7 @@
  * @file evaluate
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const {error} = require('san-cli-utils/ttyLogger');
+const {error} = require('@baidu/san-cli-utils/ttyLogger');
 module.exports = (exp, data) => {
     /* eslint-disable no-new-func */
     const fn = new Function('data', 'with (data) { return ' + exp + '}');

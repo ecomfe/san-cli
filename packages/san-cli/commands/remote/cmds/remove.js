@@ -12,8 +12,8 @@ module.exports = {
         const fse = require('fs-extra');
         const inquirer = require('inquirer');
         const readRc = require('../../../lib/readRc');
-        const {getGlobalSanRcFilePath} = require('san-cli-utils/path');
-        const {success} = require('san-cli-utils/ttyLogger');
+        const {getGlobalSanRcFilePath} = require('@baidu/san-cli-utils/path');
+        const {success} = require('@baidu/san-cli-utils/ttyLogger');
         const {name} = argv;
 
         // 检测是否存在

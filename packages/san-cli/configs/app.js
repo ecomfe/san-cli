@@ -61,7 +61,7 @@ module.exports = {
             // resolve HTML file(s)
             const multiPageConfig = options.pages;
             const HTMLPlugin = require('html-webpack-plugin');
-            const SanHtmlPlugin = require('san-cli-webpack/lib/HTMLPlugin');
+            const SanHtmlPlugin = require('@baidu/san-cli-webpack/lib/HTMLPlugin');
             const htmlPath = api.resolve('public/index.html');
             // 默认路径
             const defaultHtmlPath = path.resolve(__dirname, '../template/index.html');
@@ -102,7 +102,7 @@ module.exports = {
                         template = `public/${name}.html`,
                         filename,
                         // 这里需要跟 mode 里面的 splitChunks 遥相呼应
-                        chunks
+                        chunks = [name]
                         // chunks = ['common', 'vendors', 'css-common', name]
                     } = pageConfig;
 

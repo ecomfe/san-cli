@@ -38,7 +38,7 @@ const schema = joi
                 })
                 .unknown(true)
         ),
-        // 插件相关
+        // service 插件相关
         plugins: joi.array(),
         // 产出相关
         publicPath: joi.string().allow(''),

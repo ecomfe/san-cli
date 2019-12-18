@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const TerserPlugin = require('terser-webpack-plugin');
-const {getAssetPath} = require('san-cli-utils/path');
+const {getAssetPath} = require('@baidu/san-cli-utils/path');
 const {terserOptions: defaultTerserOptions} = require('../lib/const');
 
 module.exports = {

@@ -3,9 +3,9 @@
  */
 const gitclone = require('git-clone');
 const fse = require('fs-extra');
-const {logger, error} = require('san-cli-utils/ttyLogger');
+const {logger, error} = require('@baidu/san-cli-utils/ttyLogger');
 const debug = logger.withTag('download-repo').debug;
-const {getGitUser} = require('san-cli-utils/env');
+const {getGitUser} = require('@baidu/san-cli-utils/env');
 
 module.exports = (repo, dest, options) => {
     repo = normalize(repo, options);

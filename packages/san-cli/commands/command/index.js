@@ -4,7 +4,7 @@
  */
 
 const path = require('path');
-const {textColor} = require('san-cli-utils/randomColor');
+const {textColor} = require('@baidu/san-cli-utils/randomColor');
 exports.command = 'command <add|ls|list|rm|remove>';
 exports.aliases = ['cmd'];
 const desc = 'Add/Manage subcommands';

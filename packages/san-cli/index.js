@@ -8,7 +8,7 @@
 const updateNotifier = require('update-notifier');
 const semver = require('semver');
 
-const {error, chalk, time, timeEnd, debug} = require('san-cli-utils/ttyLogger');
+const {error, chalk, time, timeEnd, debug} = require('@baidu/san-cli-utils/ttyLogger');
 const commander = require('./lib/commander');
 const {
     scriptName,

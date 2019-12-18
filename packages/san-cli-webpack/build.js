@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const webpack = require('webpack');
-const {logger} = require('san-cli-utils/ttyLogger');
+const {logger} = require('@baidu/san-cli-utils/ttyLogger');
 
 const {getWebpackErrorInfoFromStats} = require('./utils');
 const log = logger.withTag('webpack/serve');
