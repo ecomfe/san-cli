@@ -91,7 +91,7 @@ Sample text here...
 
 Syntax highlighting
 
-```js
+```js {2}
 var foo = function(bar) {
     return bar++;
 };
@@ -238,7 +238,7 @@ _here be dragons_
 这是是描述的内容
 :::
 
-```html
+```html {3,6-9}
 <template>
     <div id="hello-demo">
         <hello />

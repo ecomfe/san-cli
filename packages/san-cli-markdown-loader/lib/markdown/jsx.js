@@ -1,84 +1,94 @@
-'use strict';
-// from https://github.com/osnr/markdown-it-jsx/
-var jsx_inline = require('markdown-it-jsx/lib/jsx_inline');
-var escape_code = require('markdown-it-jsx/lib/escape_code');
+// Modified from https://github.com/vuejs/vuepress/blob/fda5476aa1/packages/%40vuepress/markdown/lib/component.js
 
-module.exports = function jsx_plugin(md) {
-    md.set({xhtmlOut: true});
+// Replacing the default htmlBlock rule to allow using custom components at
+// root level
 
-    // JSX should entirely replace embedded HTML.
-    md.inline.ruler.before('html_inline', 'jsx_inline', jsx_inline);
-    md.disable('html_inline');
-    // We'll parse blocks as inline and then strip the surrounding paragraph at the end; it's easier.
-    md.disable('html_block');
+const blockNames = require('markdown-it/lib/common/html_blocks');
+const HTML_OPEN_CLOSE_TAG_RE = require('markdown-it/lib/common/html_re').HTML_OPEN_CLOSE_TAG_RE;
 
-    md.core.ruler.push('jsx_blockify', function(state) {
-        // Look for things like <p><Component> ... </Component></p> and strip the <p>, </p> there.
-        // FIXME Quadratic time in worst case, I think?
-        var paragraphTokensToRemove = [];
+// An array of opening and corresponding closing sequences for html tags,
+// last argument defines whether it can terminate a paragraph or not
+const HTML_SEQUENCES = [
+    [/^<(script|pre|style)(?=(\s|>|$))/i, /<\/(script|pre|style)>/i, true],
+    [/^<!--/, /-->/, true],
+    [/^<\?/, /\?>/, true],
+    [/^<![A-Z]/, />/, true],
+    [/^<!\[CDATA\[/, /\]\]>/, true],
+    // PascalCase Components
+    [/^<[A-Z]/, />/, true],
+    // custom elements with hyphens
+    [/^<\w+\-/, />/, true],
+    [new RegExp('^</?(' + blockNames.join('|') + ')(?=(\\s|/?>|$))', 'i'), /^$/, true],
+    [new RegExp(HTML_OPEN_CLOSE_TAG_RE.source + '\\s*$'), /^$/, false]
+];
 
-        var lastInlineTokenSeen;
-        for (var blkIdx = 0; blkIdx < state.tokens.length; blkIdx++) {
-            if (state.tokens[blkIdx].type !== 'paragraph_open') {
-                continue;
+module.exports = md => {
+    md.block.ruler.at('html_block', htmlBlock);
+};
+
+function htmlBlock(state, startLine, endLine, silent) {
+    let i, nextLine, lineText;
+    let pos = state.bMarks[startLine] + state.tShift[startLine];
+    let max = state.eMarks[startLine];
+
+    // if it's indented more than 3 spaces, it should be a code block
+    if (state.sCount[startLine] - state.blkIndent >= 4) {
+        return false;
+    }
+
+    if (!state.md.options.html) {
+        return false;
+    }
+
+    if (state.src.charCodeAt(pos) !== 0x3c /* < */) {
+        return false;
+    }
+
+    lineText = state.src.slice(pos, max);
+
+    for (i = 0; i < HTML_SEQUENCES.length; i++) {
+        if (HTML_SEQUENCES[i][0].test(lineText)) {
+            break;
+        }
+    }
+
+    if (i === HTML_SEQUENCES.length) {
+        return false;
+    }
+
+    if (silent) {
+        // true if this sequence can be a terminator, false otherwise
+        return HTML_SEQUENCES[i][2];
+    }
+
+    nextLine = startLine + 1;
+
+    // If we are here - we detected HTML block.
+    // Let's roll down till block end.
+    if (!HTML_SEQUENCES[i][1].test(lineText)) {
+        for (; nextLine < endLine; nextLine++) {
+            if (state.sCount[nextLine] < state.blkIndent) {
+                break;
             }
 
-            var nextBlkToken = state.tokens[blkIdx + 1];
-            if (nextBlkToken.type !== 'inline' || nextBlkToken.children[0].type !== 'jsx_inline') {
-                continue;
-            }
+            pos = state.bMarks[nextLine] + state.tShift[nextLine];
+            max = state.eMarks[nextLine];
+            lineText = state.src.slice(pos, max);
 
-            // FIXME Incorrect and a hack:
-            // <p><Component> ... </OtherComponent></p> will also get stripped.
-            var paragraphOpens = 0;
-            for (var i = blkIdx + 1; i < state.tokens.length; i++) {
-                if (state.tokens[i].type === 'paragraph_open') {
-                    paragraphOpens++;
-                    continue;
-                } else if (state.tokens[i].type !== 'paragraph_close') {
-                    continue;
+            if (HTML_SEQUENCES[i][1].test(lineText)) {
+                if (lineText.length !== 0) {
+                    nextLine++;
                 }
-
-                if (paragraphOpens > 0) {
-                    paragraphOpens--;
-                    continue;
-                }
-
-                // OK, this is the paragraph_close matching the open we started on.
-                // What came right before here?
-                var prevBlkToken = state.tokens[i - 1];
-                if (prevBlkToken.type !== 'inline') {
-                    break;
-                }
-                var prevInlineToken = prevBlkToken.children[prevBlkToken.children.length - 1];
-                if (prevInlineToken.type !== 'jsx_inline') {
-                    break;
-                }
-
-                // If we got this far, we're stripping the surrounding paragraph.
-
-                // FIXME Also a hack. The 'inline' JSX that's inside the paragraph should
-                // now get a linebreak after it in the generated HTML. Easier to test
-                // and looks better in the HTML.
-                prevInlineToken.content += '\n';
-                paragraphTokensToRemove.push(blkIdx, i);
                 break;
             }
         }
+    }
 
-        state.tokens = state.tokens.filter(function(blkToken, idx) {
-            return paragraphTokensToRemove.indexOf(idx) === -1;
-        });
-    });
+    state.line = nextLine;
 
-    // 去掉代码注释
-    // md.renderer.rules.fence = escape_code(md.renderer.rules.fence)
-    // md.renderer.rules.code_inline = escape_code(md.renderer.rules.code_inline)
-    // md.renderer.rules.code_block = escape_code(md.renderer.rules.code_block)
+    const token = state.push('html_block', '', 0);
+    token.map = [startLine, nextLine];
+    token.content = state.getLines(startLine, nextLine, state.blkIndent, true);
 
-    md.renderer.rules['jsx_inline'] = function(tokens, idx) {
-        // If the span is JSX, just pass the original source for the span
-        // through to output.
-        return tokens[idx].content;
-    };
-};
+    return true;
+}

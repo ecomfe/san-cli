@@ -23,13 +23,13 @@ function loader(content) {
 
     const matches = content.match(sanboxRegExp);
     content = matches[index].trim().replace(sanboxRegExp, '$2');
-    let sanCode = content.match(/```(?:html|san)\s+(.+?)\s+```/s);
+    let sanCode = content.match(/```(?:html|san)\s{0,}(?:(?:\{[^?]+?\})?)\s+(.+?)\s+```/s);
+    // console.log(sanCode[1]);
     if (sanCode) {
-        sanCode = sanCode[1];
+        sanCode = sanCode[1].trim();
     } else {
         sanCode = '';
     }
-
     if (query.type === 'sanbox') {
         // 获取 template 内容
         let templateContent = '';

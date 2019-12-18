@@ -5,6 +5,8 @@
 const path = require('path');
 const fse = require('fs-extra');
 const {error, debug} = require('@baidu/san-cli-utils/ttyLogger');
+const importLazy = require('import-lazy')(require);
+const globby = importLazy('globby');
 
 module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
     // 放到这里，是用了 argv.dtemplate
@@ -30,7 +32,7 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
     api.chainWebpack(webpackConfig => {
         // 设置统一的 md loader
 
-        const {isFile, type} = resolveEntry(entry);
+        const {isFile, type, isDirectory} = resolveEntry(entry);
 
         if (isFile) {
             if (type === 'js') {
@@ -47,6 +49,14 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
                     .add(require.resolve('./template/main.js'))
                     .end();
             }
+        } else if (isDirectory) {
+            // 这里遍历所有的 md，添加 html 配置
+            const files = globby.sync(['*.md', '*/*.md'], {
+                cwd: entry,
+                followSymbolicLinks: false,
+                ignore: ['_*.md', '.*.md']
+            });
+            
         }
 
         const baseRule = webpackConfig.module.rule('markdown').test(/\.(md|markdown)$/);
@@ -70,9 +80,11 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
 
 function resolveEntry(entry) {
     let isFile = false;
-    let ext;
+    let isDirectory = false;
+    let ext = '';
     try {
         const stats = fse.statSync(entry);
+        isDirectory = stats.isDirectory();
         if (stats.isFile()) {
             ext = path.extname(entry);
             if (ext === '.md' || ext === '.js' || ext === '.markdown') {
@@ -89,6 +101,7 @@ function resolveEntry(entry) {
     return {
         type: ext.replace(/^./, ''),
         entry,
-        isFile
+        isFile,
+        isDirectory
     };
 }

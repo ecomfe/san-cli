@@ -25,7 +25,9 @@ module.exports.pitch = function(remainingRequest) {
         return;
     }
     const genRequest = loaders => {
+        /* eslint-disable no-undef */
         const seen = new Map();
+        /* eslint-enable no-undef */
         const loaderStrings = [];
 
         loaders.forEach(loader => {
@@ -38,7 +40,10 @@ module.exports.pitch = function(remainingRequest) {
         });
 
         /* eslint-disable max-len */
-        return loaderUtils.stringifyRequest(this, '-!' + [...loaderStrings, this.resourcePath + this.resourceQuery].join('!'));
+        return loaderUtils.stringifyRequest(
+            this,
+            '-!' + [...loaderStrings, this.resourcePath + this.resourceQuery].join('!')
+        );
     };
     const pickerSanbox = (loaders, idx, genRequest, options) => {
         loaders = loaders.filter(l => isBabelLoader(l) || isSanLoader(l));

@@ -32,7 +32,23 @@ module.exports = function(content) {
     const inheritQuery = `&${rawQuery}`;
 
     // eslint-disable-next-line
-    let {template = '', context = process.cwd(), i18n = '', exportType} = loaderUtils.getOptions(this) || {};
+    let {template = '', context = process.cwd(), i18n = '', exportType, markdownIt} =
+        loaderUtils.getOptions(this) || {};
+    // markdownIt 是 mdit 的配置项内容付下：
+
+    // {
+    //     options: {},
+    //     anchor
+    //     toc
+    //     lineNumbers
+    //     plugins
+    //         '@org/foo', // 等价于 @org/markdown-it-foo，如果对应的包存在
+    //         ['markdown-it-bar', {
+    //             // 提供你的选项
+    //         }]
+    //   extend
+    //   extractHeaders
+    // }
 
     // 1. 获取content，正则匹配 sanbox 内容
     // 2. sanbox 按照位置替换成 Component
@@ -49,7 +65,7 @@ module.exports = function(content) {
     };
     if (query.exportType === 'html') {
         return `
-            export default ${getTemplate(compiler(content))}
+            export default ${getTemplate(compiler(content, markdownIt))}
         `;
     } else if (query.exportType === 'san-code' || query.exportType === 'sanCode') {
         sanboxRegExp.lastIndex = 0;
@@ -92,9 +108,13 @@ module.exports = function(content) {
         sanboxArray.push(match);
         return `<san-box-${idx}></san-box-${idx}>`;
     });
+
+    const stylePath = require.resolve('./styles/index.less');
     if (sanboxArray.length === 0) {
-        return `export default {
-            template:${getTemplate(compiler(content))},
+        return `
+            import "${stylePath}";
+            export default {
+            template:${getTemplate(compiler(content, markdownIt))},
             _meta:${JSON.stringify(meta)},
             _content: ${JSON.stringify(source)}
         }`;
@@ -114,11 +134,12 @@ module.exports = function(content) {
         }`;
 
         return `
+            import "${stylePath}";
             ${sanboxArray.join('\n')}
             export default {
                 _meta:${JSON.stringify(meta)},
                 _content: ${JSON.stringify(source)},
-                template: ${getTemplate(compiler(content))},
+                template: ${getTemplate(compiler(content, markdownIt))},
                 components: ${compString}
             }
         `;
