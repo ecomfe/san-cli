@@ -372,9 +372,11 @@ module.exports = class Service extends EventEmitter {
             Object.keys(pages).forEach(p => {
                 const page = pages[p];
                 // 相对于 san.config.js
-                if (page.entry && !isAbsolute(page.entry)) {
-                    page.entry = resolve(filepath, page.entry);
-                }
+                ['entry', 'template'].forEach(key => {
+                    if (page[key] && !isAbsolute(page[key])) {
+                        page[key] = resolve(filepath, page[key]);
+                    }
+                });
             });
         }
         return config;
