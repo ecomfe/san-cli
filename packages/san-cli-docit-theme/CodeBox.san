@@ -1,7 +1,7 @@
 <template>
     <section class="code-box {{isExpand?'expand':''}}">
         <section class="code-box-demo"><code-preview/></section>
-        <section class="code-box-meta">
+        <section class="code-box-meta markdown">
             <text-place-holder/>
             <span class="code-expand-icon" on-click="toggleExpand">
                 <img alt="expand code" src="https://gw.alipayobjects.com/zos/rmsportal/wSAkBuJFbdxsosKKpqyq.svg" class="{{isExpand?'code-expand-icon-hide':'code-expand-icon-show'}}">
@@ -14,9 +14,7 @@
     </section>
 </template>
 <script>
-    import CodeBox from '@docit/CodeBox';
-    import TextTag from '@docit/Text';
-    import HighlightCode from '@docit/HighlightCode';
+    import codePreview from '~code-preview';
     export default {
         initData() {
             return {
@@ -24,9 +22,7 @@
             }
         },
         components:{
-            'code-preview': CodeBox,
-            'text-place-holder': TextTag,
-            'code-place-holder': HighlightCode
+            'code-preview': codePreview
         },
         toggleExpand() {
             this.data.set('isExpand', !this.data.get('isExpand'));

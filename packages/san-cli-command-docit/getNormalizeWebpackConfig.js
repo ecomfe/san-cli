@@ -70,6 +70,14 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
 
         // 添加插件
         webpackConfig.plugin('san-cli-markdown-loader-plugin').use(require('@baidu/san-cli-markdown-loader/plugin'));
+        // 添加ResolverPlugin
+        webpackConfig.resolve
+            .plugin('san-cli-resolver-plugin')
+            .use(require('@baidu/san-cli-markdown-loader/ResolverPlugin'), [
+                'described-resolve',
+                'resolve',
+                {prefixer: '@docit', context}
+            ]);
     });
 
     // 开始正式的操作

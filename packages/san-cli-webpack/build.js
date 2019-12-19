@@ -8,10 +8,15 @@ const {logger} = require('@baidu/san-cli-utils/ttyLogger');
 const {getWebpackErrorInfoFromStats} = require('./utils');
 const log = logger.withTag('webpack/serve');
 
-module.exports = function build({webpackConfig}) {
+module.exports = function build({webpackConfig, compilerCallback}) {
     return new Promise((resolve, reject) => {
         log.debug('build start', webpackConfig);
-        webpack(webpackConfig, (err, stats) => {
+        const compiler = webpack(webpackConfig);
+
+        if (typeof compilerCallback === 'function') {
+            compilerCallback(compiler);
+        }
+        const callback = (err, stats) => {
             log.debug('build done');
             if (err || stats.hasErrors()) {
                 log.debug(err);
@@ -24,6 +29,11 @@ module.exports = function build({webpackConfig}) {
             }
 
             resolve({stats});
-        });
+        };
+        if (webpackConfig.watch === true) {
+            const watchOptions = webpackConfig.watchOptions || {};
+            return compiler.watch(watchOptions, callback);
+        }
+        compiler.run(callback);
     });
 };

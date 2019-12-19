@@ -58,6 +58,14 @@
         border: 0;
     }
     &-meta {
+        position: relative;
+        padding: 18px 32px;
+        border-radius: 0 0 @border-radius-sm @border-radius-sm;
+        transition: background-color 0.4s;
+        font-size: @font-size-base;
+
+        & section > h4,
+        & section > h3,
         & > h4,
         & > h3 {
             margin: 0;
@@ -70,6 +78,14 @@
             color: #777;
             border-radius: 2px 2px 0 0;
             background: #fff;
+            a.header-anchor {
+                opacity: 0;
+                display: none;
+            }
+            &:hover a.header-anchor {
+                opacity: 0;
+                display: none;
+            }
         }
         &-copy {
             position: absolute;
@@ -77,13 +93,7 @@
             right: 15px;
             opacity: 1;
         }
-        &.markdown {
-            position: relative;
-            padding: 18px 32px;
-            border-radius: 0 0 @border-radius-sm @border-radius-sm;
-            transition: background-color 0.4s;
-            font-size: @font-size-base;
-        }
+
         blockquote {
             margin: 0;
         }

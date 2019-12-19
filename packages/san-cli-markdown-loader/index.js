@@ -5,9 +5,9 @@
 /* eslint-disable fecs-max-calls-in-template */
 const qs = require('querystring');
 
-const yamlFront = require('yaml-front-matter');
+const grayMatter = require('gray-matter');
 const loaderUtils = require('loader-utils');
-const {NS, sanboxRegExp} = require('./const');
+const {NS, sanboxRegExp, sanboxTextTag, sanboxHighlightCode, sanboxSanComponent} = require('./const');
 const compiler = require('./lib/compiler');
 
 // eslint-disable-next-line
@@ -22,17 +22,16 @@ module.exports = function(content) {
             )
         );
     }
-    const source = content;
-
     const stringifyRequest = r => loaderUtils.stringifyRequest(loaderContext, r);
     const {resourcePath, resourceQuery} = loaderContext;
     const rawQuery = resourceQuery.slice(1);
     const query = qs.parse(rawQuery);
-    let index = query.index;
+    let index = parseInt(query.index, 10);
+
     const inheritQuery = `&${rawQuery}`;
 
     // eslint-disable-next-line
-    let {codebox: template = '', theme = '', context = process.cwd(), i18n = '', exportType, markdownIt} =
+    let {codebox: template = '', theme = '', context = process.cwd(), i18n = '', markdownIt} =
         loaderUtils.getOptions(this) || {};
     // markdownIt 是 mdit 的配置项内容付下：
 
@@ -48,54 +47,42 @@ module.exports = function(content) {
     // 1. 获取content，正则匹配 sanbox 内容
     // 2. sanbox 按照位置替换成 Component
     // 3. 组装 san defindComponent 内容
-    const frontMatter = yamlFront.loadFront(content);
-    const meta = frontMatter.meta || {};
-    content = frontMatter.__content;
+    const frontMatter = grayMatter(content);
+    const matter = frontMatter.data || {};
+    content = frontMatter.content;
 
     const getTemplate = content => {
-        const cls = typeof meta.classes === 'string' ? [meta.classes] : meta.classes || ['markdown'];
+        const cls = typeof matter.classes === 'string' ? [matter.classes] : matter.classes || ['markdown'];
         return `${JSON.stringify('<div class="' + cls.join(' ') + '">' + content + '</div>')
             .replace(/\u2028/g, '\\u2028')
             .replace(/\u2029/g, '\\u2029')}`;
     };
-    if (query.exportType === 'html') {
-        return `
-            export default ${getTemplate(compiler(content, markdownIt))}
-        `;
-    } else if (query.exportType === 'san-code' || query.exportType === 'sanCode') {
-        sanboxRegExp.lastIndex = 0;
-        let idx = 0;
-        const componentArr = [];
-        content = content.replace(sanboxRegExp, (input, match) => {
-            const query = `?san-md&type=code-component&index=${idx}&template=${template}&context=${context}&i18n=${i18n}`;
-            idx++;
-            componentArr.push(stringifyRequest(resourcePath + query));
-        });
-
-        index = parseInt(index, 10);
-
-        if (!isNaN(index) && index >= 0 && componentArr[index]) {
-            const request = componentArr[index];
+    // 存在 exportType 的情况
+    switch (query.exportType) {
+        // 这是返回 html，不处理 san box
+        case 'html':
             return `
-            import mod from ${request}; export default mod; export * from ${request}
-        `;
-        } else {
-            const arr = [];
-            const importCode = componentArr
-                .map((req, idx) => {
-                    const compName = `SanBox${idx}`;
-                    arr.push(compName);
-                    return `import ${compName} from ${req}`;
-                })
-                .join(';\n');
+                export default ${getTemplate(compiler(content, markdownIt))}
+            `;
+        case 'matter':
+            // 返回 matter 对象
             return `
-            ${importCode};
-            const components =  [${arr.join(',')}];
-            export default components;
-        `;
-        }
+                export default ${JSON.stringify(matter)};
+            `;
+        case sanboxTextTag:
+        case sanboxHighlightCode:
+        case sanboxSanComponent:
+            if (!isNaN(index) && index >= 0) {
+                let rq = `?san-md&type=${query.exportType}&index=${index}&template=${template}&context=${context}&i18n=${i18n}`;
+                rq = stringifyRequest(resourcePath + rq);
+                return `
+                    import mod from ${rq}; export default mod; export * from ${rq};
+                `;
+            }
+            return '';
     }
 
+    // 整个文件返回 san Component
     let sanboxArray = [];
     sanboxRegExp.lastIndex = 0;
     content = content.replace(sanboxRegExp, (input, match) => {
@@ -105,13 +92,13 @@ module.exports = function(content) {
     });
 
     if (sanboxArray.length === 0) {
+        // 如果没有san box 则直接返回 html template
         return `
             export default {
-            template:${getTemplate(compiler(content, markdownIt))},
-            _meta:${JSON.stringify(meta)},
-            _content: ${JSON.stringify(source)}
-        }`;
+                template: ${getTemplate(compiler(content, markdownIt))}
+            }`;
     } else {
+        // 返回 san box
         let components = {};
         sanboxArray = sanboxArray.map((box, idx) => {
             const query = `?san-md&type=sanbox&index=${idx}${inheritQuery}&theme=${theme}&codebox=${template}&context=${context}&i18n=${i18n}`;
@@ -129,8 +116,6 @@ module.exports = function(content) {
         return `
             ${sanboxArray.join('\n')}
             export default {
-                _meta:${JSON.stringify(meta)},
-                _content: ${JSON.stringify(source)},
                 template: ${getTemplate(compiler(content, markdownIt))},
                 components: ${compString}
             }

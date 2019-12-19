@@ -21,7 +21,7 @@ const {addDevClientToEntry, getWebpackErrorInfoFromStats} = require('./utils');
 
 const log = logger.withTag('webpack/serve');
 
-module.exports = function devServer({webpackConfig, devServerConfig, publicPath}) {
+module.exports = function devServer({webpackConfig, devServerConfig, publicPath, compilerCallback}) {
     return new Promise(async (resolve, reject) => {
         log.debug('serve start');
         const {https, host, port: basePort, public: rawPublicUrl, hotOnly} = devServerConfig;
@@ -77,6 +77,10 @@ module.exports = function devServer({webpackConfig, devServerConfig, publicPath}
             }
             throw e;
         }
+        if (typeof compilerCallback === 'function') {
+            compilerCallback(compiler);
+        }
+
         // create server
         const defaultDevServer = {
             // 这里注意，这个配置的是 outputDir
