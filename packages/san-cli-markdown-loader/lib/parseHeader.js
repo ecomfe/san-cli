@@ -9,7 +9,7 @@ const deeplyParseHeaders = compose(removeNonCodeWrappedHTML, parseHeaders);
 
 const cache = new LRU({max: 1000});
 
-module.exports = (content, include = ['H2', 'H3'], md) => {
+module.exports = (content, md, include = ['H2', 'H3']) => {
     include = include.map(i => i.toLowerCase());
     const key = content + include.join(',');
     const hit = cache.get(key);
