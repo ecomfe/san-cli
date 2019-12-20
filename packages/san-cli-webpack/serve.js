@@ -107,6 +107,7 @@ module.exports = function devServer({webpackConfig, devServerConfig, publicPath,
             if (stats.hasErrors()) {
                 const errObj = getWebpackErrorInfoFromStats(undefined, stats);
                 errObj.type = 'webpack';
+
                 return reject(errObj);
             }
 

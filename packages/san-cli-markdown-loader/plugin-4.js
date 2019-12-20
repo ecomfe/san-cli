@@ -50,7 +50,9 @@ class LoaderPlugin {
 
         if (sanRule.oneOf) {
             /* eslint-disable max-len */
-            throw new Error('[SanMarkdownLoaderPlugin Error] san-cli-markdown-loader currently does not support san rules with oneOf.');
+            throw new Error(
+                '[SanMarkdownLoaderPlugin Error] san-cli-markdown-loader currently does not support san rules with oneOf.'
+            );
         }
         const sanUse = sanRule.use;
         // 获取 loader 配置

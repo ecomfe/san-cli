@@ -37,7 +37,8 @@ module.exports = {
                 .test(/\.m?js?$/)
                 .exclude.add(filepath => {
                     // 排除 cli 的路径
-                    if (filepath.startsWith(cliServicePath)) {
+                    // 单独排除 san-cli 路径，san-cli-xxx 不排除
+                    if (filepath.startsWith(cliServicePath) && !filepath.startsWith(cliServicePath + '-')) {
                         return true;
                     }
                     // 使用排除
@@ -48,7 +49,6 @@ module.exports = {
                     return /node_modules/.test(filepath);
                 })
                 .end();
-
             const {name, loader, options: babelOptions} = require('./loaders/babel')(loaderOptions.babel, options, api);
             jsRule
                 .use(name)

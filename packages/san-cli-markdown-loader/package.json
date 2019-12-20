@@ -49,6 +49,7 @@
         "markdown-it-sup": "^1.0.0",
         "posthtml": "^0.11.4",
         "posthtml-render": "^1.1.5",
+        "lru-cache": "^5.1.1",
         "gray-matter": "^4.0.2"
     },
     "gitHead": "1db19410d2b751e94c33778b9d6692780ccada61"
