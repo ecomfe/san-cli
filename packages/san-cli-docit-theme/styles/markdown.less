@@ -4,6 +4,7 @@
     line-height: 1.75;
     max-width: 1400px;
     margin: 0 auto;
+    padding: 0 40px 40px;
 
     img[alt='avatar'] {
         width: 420px;
@@ -81,7 +82,23 @@
     h6 {
         font-size: 12px;
     }
-
+    a.header-anchor {
+        font-size: 0.85em;
+        float: left;
+        margin-left: -0.87em;
+        padding-right: 0.23em;
+        margin-top: 0.125em;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    h1:hover .header-anchor,
+    h2:hover .header-anchor,
+    h3:hover .header-anchor,
+    h4:hover .header-anchor,
+    h5:hover .header-anchor,
+    h6:hover .header-anchor {
+        opacity: 1;
+    }
     hr {
         height: 1px;
         border: 0;
