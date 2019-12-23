@@ -39,20 +39,23 @@ module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
         .map(file => {
             const filepath = typeof file === 'string' ? file : file.filepath;
             return Object.assign(typeof file === 'string' ? {} : file, {
-                shorFile: filepath,
+                filepath,
                 absoluteFile: path.resolve(context, filepath)
             });
         })
-        .forEach(({shortFile, absoluteFile, filename, chunkname}) => {
+        .map(({filepath, absoluteFile, filename, chunkname}) => {
             if (!filename) {
-                const parsed = path.parse(shortFile);
+                const parsed = path.parse(filepath);
                 parsed.ext = '.html';
                 parsed.base = parsed.base.replace(/\.(md|markdown)$/, '.html').replace('README', 'index');
                 filename = ensureRelative(output, path.format(parsed));
             }
             if (!chunkname) {
-                chunkname = getChunkNameFromFilePath(shortFile);
+                chunkname = getChunkNameFromFilePath(filepath);
             }
+            return {filepath, absoluteFile, filename, chunkname};
+        })
+        .forEach(({filepath, absoluteFile, filename, chunkname}) => {
             const content = fs.readFileSync(absoluteFile);
             const frontMatter = grayMatter(content);
             const matter = frontMatter.data || {};
@@ -60,22 +63,27 @@ module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
             if (matter.layout) {
                 if (layouts[matter.layout]) {
                     // 存在
-                    debug(`${shortFile} use layout: ${matter.layout}`);
+                    debug(`${filepath} use layout: ${matter.layout}`);
                     entry = layouts[matter.layout];
                 } else {
-                    error(`${shortFile} layout \`${matter.layout}\` not found!`);
+                    error(`${filepath} layout \`${matter.layout}\` not found!`);
                 }
             }
             // 读取下 matter 信息，传入进去，替换 title 等
-            const pageHtmlOptions = Object.assign({
-                title: 'San Docit'
-            }, siteData, matter, {
-                compile: false,
-                publicUrl: siteData.rootUrl,
-                chunks: [chunkname],
-                template: templatePath,
-                filename
-            });
+            const pageHtmlOptions = Object.assign(
+                {
+                    title: 'San Docit'
+                },
+                siteData,
+                matter,
+                {
+                    compile: false,
+                    publicUrl: siteData.rootUrl,
+                    chunks: [chunkname],
+                    template: templatePath,
+                    filename
+                }
+            );
             // 删除没用的
             delete pageHtmlOptions.layouts;
 
