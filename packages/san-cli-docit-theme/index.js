@@ -1,22 +1,24 @@
 import './styles/index.less';
 import {Component} from 'san';
+import Sidebar from './components/Sidebar';
+import Header from './components/Header';
+import Content from './components/Content';
 
 class Index extends Component {
     static template = /*html*/ `
         <div id="site">
+            <header/>
+            <sidebar/>
             <content/>
         </div>
     `;
 
     static components = {
-        content: $Page
+        header: Header,
+        sidebar: Sidebar,
+        content: Content
     };
 }
-console.log($Page.$headers, $Page.$matter);
-
-// import sidebar from '@sidebar';
-
-// console.log('sidebar',sidebar)
 
 const app = new Index();
 app.attach(document.getElementById('app'));

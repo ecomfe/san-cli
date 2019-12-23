@@ -7,7 +7,8 @@ const fs = require('fs');
 const defaultTheme = '@baidu/san-cli-docit-theme';
 const {error} = require('@baidu/san-cli-utils/ttyLogger');
 const defaultLayouts = {
-    template: require.resolve('../template/index.ejs')
+    template: require.resolve('../template/index.ejs'),
+    CodeBox: require.resolve('../template/CodeBox.san')
 };
 /* eslint-disable operator-linebreak */
 module.exports = (theme, context = process.cwd()) => {

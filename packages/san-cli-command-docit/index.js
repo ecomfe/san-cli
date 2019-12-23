@@ -22,6 +22,10 @@ const builder = {
         type: 'string',
         describe: 'Project config file'
     },
+    theme: {
+        type: 'string',
+        describe: 'Use theme'
+    },
     port: {
         alias: 'p',
         default: 8888,

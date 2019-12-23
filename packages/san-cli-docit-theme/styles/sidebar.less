@@ -1,0 +1,40 @@
+aside {
+    background-color: #fff;
+    width: 20%;
+    position: fixed;
+    z-index: 10;
+    margin: 0;
+    top: 88px;
+    left: 0;
+    bottom: 0;
+    box-sizing: border-box;
+    border-right: 1px solid #eaecef;
+    overflow-y: auto;
+
+    ul {
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+    }
+    li {
+        line-height: 38px;
+        padding: 0 16px 0 40px;
+        font-weight: 600;
+        text-overflow: ellipsis;
+        a {
+            color: #314659;
+
+            &:hover {
+                color: @primary-color;
+            }
+        }
+    }
+    li ul {
+        padding-left: 30px;
+
+        & > li {
+            font-weight: normal;
+            padding-left: 0;
+        }
+    }
+}

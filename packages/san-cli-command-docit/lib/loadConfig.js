@@ -2,10 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const parseConfig = require('./parseConfig');
 
-
-
 module.exports = function loadConfig(context, bustCache = true) {
-    const configPath = path.resolve(context, '.docit.js');
+    let configPath;
+    const configJsPath = path.resolve(context, '.docit.js');
     const configYmlPath = path.resolve(context, '.docit.yml');
     const configTomlPath = path.resolve(context, '.docit.toml');
 
@@ -17,11 +16,13 @@ module.exports = function loadConfig(context, bustCache = true) {
     let siteConfig = {};
     if (fs.existsSync(configYmlPath)) {
         siteConfig = parseConfig(configYmlPath);
+        configPath = configYmlPath;
     } else if (fs.existsSync(configTomlPath)) {
         siteConfig = parseConfig(configTomlPath);
-    } else if (fs.existsSync(configPath)) {
-        siteConfig = require(configPath);
+        configPath = configTomlPath;
+    } else if (fs.existsSync(configJsPath)) {
+        siteConfig = require(configJsPath);
+        configPath = configJsPath;
     }
-
-    return siteConfig;
+    return {data: siteConfig, config: configPath};
 };
