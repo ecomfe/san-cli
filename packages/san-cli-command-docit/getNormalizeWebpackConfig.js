@@ -75,13 +75,16 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
         }
 
         // 添加 config loader + alias
-        webpackConfig.resolve.alias
-            // 加个假的，防止找不到报错
-            .set('@sitedata', `-!${require.resolve('./lib/configLoader.js')}!${siteDataConfigPath}`);
-
-        let {sidebar = '_sidebar.md', navbar = '_navbar.md'} = docitOptions;
+        webpackConfig.resolve.alias.set('@sitedata', siteDataConfigPath);
+        webpackConfig.module
+            .rule('yaml')
+            .test(/\.ya?ml$/)
+            .use('yaml-loader')
+            .loader(require.resolve('./lib/configLoader.js'));
 
         // 判断存在_sidebar _navbar siteData 则添加 alias
+        let {sidebar = '_sidebar.md', navbar = '_navbar.md'} = docitOptions;
+
         [
             [sidebar, '@sidebar'],
             [navbar, '@navbar']
