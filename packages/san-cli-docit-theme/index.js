@@ -14,9 +14,9 @@ class Index extends Component {
 }
 console.log($Page.$headers, $Page.$matter);
 
-import sidebar from '@sidebar';
+// import sidebar from '@sidebar';
 
-console.log('sidebar',sidebar)
+// console.log('sidebar',sidebar)
 
 const app = new Index();
 app.attach(document.getElementById('app'));

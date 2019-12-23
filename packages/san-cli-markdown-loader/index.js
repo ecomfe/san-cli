@@ -4,7 +4,7 @@
  */
 /* eslint-disable fecs-max-calls-in-template */
 const qs = require('querystring');
-
+const hash = require('hash-sum');
 const grayMatter = require('gray-matter');
 const loaderUtils = require('loader-utils');
 const {NS, sanboxRegExp, sanboxTextTag, sanboxHighlightCode, sanboxSanComponent} = require('./const');
@@ -32,8 +32,15 @@ module.exports = function(content) {
     const inheritQuery = `&${rawQuery}`;
 
     // eslint-disable-next-line
-    let {codebox = '', context = process.cwd(), i18n = '', markdownIt, extractHeaders = ['H2', 'H3'], rootUrl} =
-        loaderUtils.getOptions(this) || {};
+    let {
+        codebox = '',
+        context = process.cwd(),
+        i18n = '',
+        markdownIt,
+        extractHeaders = ['H2', 'H3'],
+        rootUrl,
+        hotReload = false
+    } = loaderUtils.getOptions(this) || {};
     // markdownIt 是 mdit 的配置项内容付下：
     // {
     //     options: {},
@@ -72,13 +79,13 @@ module.exports = function(content) {
         // 这是返回 html，不处理 san box
         case 'html':
             return `
-                const html = ${getTemplate(compiler(content, markdownIt))};
+                var html = ${getTemplate(compiler(content, markdownIt))};
                 export default html;
             `;
         case 'matter':
             // 返回 matter 对象
             return `
-                export default ${JSON.stringify(matter)};
+            export default ${JSON.stringify(matter)};
             `;
         case sanboxTextTag:
         case sanboxHighlightCode:
@@ -101,21 +108,21 @@ module.exports = function(content) {
         sanboxArray.push(match);
         return `<san-box-${idx}></san-box-${idx}>`;
     });
-
+    let code;
     if (sanboxArray.length === 0) {
         // 如果没有san box 则直接返回 html template
-        return `
-            import {defineComponent} from 'san';
-            const Content = defineComponent({
-                template: ${getTemplate(compiler(content, markdownIt))}
-            })
-            Content.$matter = ${JSON.stringify(matter)};
-            Content.$headers = ${JSON.stringify(headers)};
-            export default Content;
-            if(window){
-                window.$Page = Content;
-            }
-            `;
+        code = `
+        import {defineComponent} from 'san';
+        const Content = defineComponent({
+            template: ${getTemplate(compiler(content, markdownIt))}
+        })
+        Content.$matter = ${JSON.stringify(matter)};
+        Content.$headers = ${JSON.stringify(headers)};
+        export default Content;
+        if(window){
+            window.$Page = Content;
+        }
+        `;
     } else {
         // 返回 san box
         let components = {};
@@ -132,7 +139,7 @@ module.exports = function(content) {
             ${compString.join(',\n')}
         }`;
 
-        return `
+        code = `
             import {defineComponent} from 'san';
 
             ${sanboxArray.join('\n')}
@@ -148,4 +155,26 @@ module.exports = function(content) {
             }
         `;
     }
+    if (hotReload) {
+        const hotId = hash(resourcePath + resourceQuery);
+        code += `
+        if(module.hot){
+            var hotApi = require('san-hot-reload-api')
+
+            hotApi.install(require('san'), false)
+            if(!hotApi.compatible){
+                throw new Error('san-hot-reload-api is not compatible with the version of Vue you are using.')
+            }
+            module.hot.accept()
+            var id = '${hotId}'
+            var moduleDefault = module.exports ? module.exports.default : module.__proto__.exports.default
+            if(!module.hot.data) {
+                hotApi.createRecord(id, moduleDefault)
+            }else{
+                hotApi.reload(id, moduleDefault)
+            }
+        }
+        `;
+    }
+    return code;
 };

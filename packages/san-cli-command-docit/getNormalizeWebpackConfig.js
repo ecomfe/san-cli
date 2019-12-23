@@ -54,7 +54,20 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
                     .add(entry)
                     .end();
             } else {
-                addPage(layouts, projectOptions.outputDir, [entry], context, webpackConfig, siteData);
+                addPage(
+                    layouts,
+                    projectOptions.outputDir,
+                    [
+                        {
+                            filepath: entry,
+                            filename: 'index.html',
+                            chunkname: 'main'
+                        }
+                    ],
+                    context,
+                    webpackConfig,
+                    siteData
+                );
             }
         } else if (isDirectory) {
             // TODO 这里遍历所有的 md，添加 html 配置
@@ -93,7 +106,9 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
                 Object.assign({}, mdOptions, {
                     context: isDirectory ? api.resolve(entry) : context,
                     rootUrl: publicUrl,
-                    codebox: template
+                    codebox: template,
+                    // 是否热更新
+                    hotReload: api.isProd() ? false : true
                 })
             );
         // 添加插件
@@ -102,7 +117,7 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
 
     // 开始正式的操作
     let webpackConfig = api.getWebpackConfig();
-    console.log(webpackConfig.plugins[6])
+    // console.log(webpackConfig.plugins[6])
     debug(webpackConfig);
 
     webpackConfig.devServer = Object.assign({hot: !isProd, compress: isProd}, webpackConfig.devServer);

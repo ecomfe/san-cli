@@ -1,7 +1,14 @@
+/**
+ * @file 加载 theme
+ * @author wangyongqing <wangyongqing01@baidu.com>
+ */
 const path = require('path');
 const fs = require('fs');
 const defaultTheme = '@baidu/san-cli-docit-theme';
 const {error} = require('@baidu/san-cli-utils/ttyLogger');
+const defaultLayouts = {
+    template: require.resolve('../template/index.ejs')
+};
 /* eslint-disable operator-linebreak */
 module.exports = (theme, context = process.cwd()) => {
     if (typeof theme !== 'string') {
@@ -20,15 +27,18 @@ module.exports = (theme, context = process.cwd()) => {
     let layouts = {
         Main: 'index.js',
         CodeBox: 'CodeBox.san',
-        template: 'index.html'
+        template: 'index.ejs'
     };
 
+    let contextPath = theme;
     try {
         const pkg = require(`${theme}/package.json`);
-
+        contextPath = path.dirname(require.resolve(`${theme}/package.json`));
         if (pkg.docit && pkg.docit.layouts) {
             layouts = pkg.docit.layouts;
-            if (!layouts.Main || typeof layouts.Main !== 'string' || fs.existsSync(path.resolve(theme, layouts.Main))) {
+            // prettier-ignore
+            /* eslint-disable max-len */
+            if (!layouts.Main || typeof layouts.Main !== 'string' || fs.existsSync(path.resolve(contextPath, layouts.Main))) {
                 error(`\`${oTheme}\` Main layout is not exist!`);
             }
         } else {
@@ -44,7 +54,8 @@ module.exports = (theme, context = process.cwd()) => {
     }
     Object.keys(layouts).forEach(key => {
         // TODO 判断下是否存在，不存在则设置默认值？
-        layouts[key] = path.resolve(theme, layouts[key]);
+        const p = path.resolve(contextPath, layouts[key]);
+        layouts[key] = fs.existsSync(p) ? p : defaultLayouts[key] ? defaultTheme[key] : p;
     });
     // 1. 默认
     // 2. 读取配置 package.json,docit.layouts

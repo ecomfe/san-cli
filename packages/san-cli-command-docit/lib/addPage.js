@@ -36,12 +36,23 @@ module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
     webpackConfig.plugins.delete('html-webpack-harddisk-plugin');
 
     files
-        .map(file => [file, path.resolve(context, file)])
-        .forEach(([shortFile, absoluteFile]) => {
-            const parsed = path.parse(shortFile);
-            parsed.ext = '.html';
-            parsed.base = parsed.base.replace(/\.(md|markdown)$/, '.html').replace('README', 'index');
-            const chunkname = getChunkNameFromFilePath(shortFile);
+        .map(file => {
+            const filepath = typeof file === 'string' ? file : file.filepath;
+            return Object.assign(typeof file === 'string' ? {} : file, {
+                shorFile: filepath,
+                absoluteFile: path.resolve(context, filepath)
+            });
+        })
+        .forEach(({shortFile, absoluteFile, filename, chunkname}) => {
+            if (!filename) {
+                const parsed = path.parse(shortFile);
+                parsed.ext = '.html';
+                parsed.base = parsed.base.replace(/\.(md|markdown)$/, '.html').replace('README', 'index');
+                filename = ensureRelative(output, path.format(parsed));
+            }
+            if (!chunkname) {
+                chunkname = getChunkNameFromFilePath(shortFile);
+            }
             const content = fs.readFileSync(absoluteFile);
             const frontMatter = grayMatter(content);
             const matter = frontMatter.data || {};
@@ -61,7 +72,7 @@ module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
                 publicUrl: siteData.rootUrl,
                 chunks: [chunkname],
                 template: templatePath,
-                filename: ensureRelative(output, path.format(parsed))
+                filename
             });
             // 删除没用的
             delete pageHtmlOptions.layouts;
