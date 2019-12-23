@@ -1,10 +1,10 @@
 
-## 这里是 sanbox
+## 这里是 sanbox2
 
 <sanbox>
 :::
 #### 我是 title
-这是是描述的内容222
+这是是描述的内容
 :::
 
 ```html
@@ -27,7 +27,7 @@
     export default {
         initData() {
             return {
-                text: '这里是副标题2'
+                text: '这里是副标题'
             };
         },
         components: {

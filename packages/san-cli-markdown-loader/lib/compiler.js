@@ -42,6 +42,7 @@ function getCompiler(opt) {
 
     parser.use(require('markdown-it-footnote'));
     parser.use(require('markdown-it-ins'));
+    parser.use(require('markdown-it-span'));
     parser.use(require('markdown-it-anchor'), anchor);
     parser.use(require('markdown-it-table-of-contents'), toc);
     parser.use(require('markdown-it-sub'));

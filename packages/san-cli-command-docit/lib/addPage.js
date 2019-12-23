@@ -67,7 +67,9 @@ module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
                 }
             }
             // 读取下 matter 信息，传入进去，替换 title 等
-            const pageHtmlOptions = Object.assign({}, siteData, matter, {
+            const pageHtmlOptions = Object.assign({
+                title: 'San Docit'
+            }, siteData, matter, {
                 compile: false,
                 publicUrl: siteData.rootUrl,
                 chunks: [chunkname],
