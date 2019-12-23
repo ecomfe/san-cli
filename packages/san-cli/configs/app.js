@@ -153,7 +153,9 @@ module.exports = {
             if (useHtmlPlugin) {
                 // 这里插件是依赖 html-webpack-plguin 的，所以不配置 hwp，会报错哦~
                 // html-webpack-harddisk-plugin
-                webpackConfig.plugin('html-webpack-harddisk-plugin').use(require('@baidu/san-cli-webpack/lib/HTMLHarddiskPlugin'));
+                webpackConfig
+                    .plugin('html-webpack-harddisk-plugin')
+                    .use(require('@baidu/san-cli-webpack/lib/HTMLHarddiskPlugin'));
             }
             const copyArgs = [];
             // copy static assets in public/

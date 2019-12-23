@@ -55,7 +55,7 @@ module.exports = class DocitPlugin {
                             throw new Error(`[markdown-loader] resolverPlugin: ${navbar} not found`);
                         }
                         break;
-                    case 'SiteData':
+                    case 'SiteData': {
                         // 这里直接用临时生成的 markdown 吧
                         // 页面数据
                         // 查找文件的路径
@@ -64,6 +64,7 @@ module.exports = class DocitPlugin {
                         // 方便 configfile 添加loader
                         newRequestStr = configpath;
                         break;
+                    }
                 }
 
                 //

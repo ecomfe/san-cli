@@ -61,12 +61,14 @@ module.exports = function(content) {
     };
     // 存在 exportType 的情况
     switch (query.exportType) {
-        case 'data':
+        case 'data': {
             // 这里是给 sidebar 和 navbar 这样的 list 用到的解析
             const list = compiler(content, markdownIt);
             return `
             export default ${JSON.stringify(list)};
             `;
+        }
+
         // 这是返回 html，不处理 san box
         case 'html':
             return `

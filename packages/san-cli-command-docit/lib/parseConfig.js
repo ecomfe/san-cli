@@ -7,7 +7,6 @@ const fs = require('fs');
 const yamlParser = require('js-yaml');
 const tomlParser = require('toml');
 
-
 function parseConfig(file, content) {
     content = content ? content : fs.readFileSync(file, 'utf-8');
     const [extension] = /.\w+$/.exec(file);
@@ -19,7 +18,7 @@ function parseConfig(file, content) {
             data = yamlParser.safeLoad(content);
             break;
 
-        case '.toml':
+        case '.toml': {
             data = tomlParser.parse(content);
             // reformat to match config since TOML does not allow different data type
             // https://github.com/toml-lang/toml#array
@@ -33,6 +32,7 @@ function parseConfig(file, content) {
             }
             data.head = format;
             break;
+        }
     }
 
     return data || {};
