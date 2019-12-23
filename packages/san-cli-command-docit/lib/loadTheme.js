@@ -19,7 +19,8 @@ module.exports = (theme, context = process.cwd()) => {
     }
     let layouts = {
         Main: 'index.js',
-        CodeBox: 'CodeBox.san'
+        CodeBox: 'CodeBox.san',
+        template: 'index.html'
     };
 
     try {
@@ -42,6 +43,7 @@ module.exports = (theme, context = process.cwd()) => {
         error(e);
     }
     Object.keys(layouts).forEach(key => {
+        // TODO 判断下是否存在，不存在则设置默认值？
         layouts[key] = path.resolve(theme, layouts[key]);
     });
     // 1. 默认

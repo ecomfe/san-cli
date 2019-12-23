@@ -64,7 +64,7 @@ module.exports = {
             const SanHtmlPlugin = require('@baidu/san-cli-webpack/lib/HTMLPlugin');
             const htmlPath = api.resolve('public/index.html');
             // 默认路径
-            const defaultHtmlPath = path.resolve(__dirname, '../template/index.html');
+            const defaultHtmlPath = require.resolve('../template/index.html');
             const publicCopyIgnore = ['index.html', '.DS_Store'];
             let useHtmlPlugin = false;
             if (!multiPageConfig) {
@@ -153,7 +153,7 @@ module.exports = {
             if (useHtmlPlugin) {
                 // 这里插件是依赖 html-webpack-plguin 的，所以不配置 hwp，会报错哦~
                 // html-webpack-harddisk-plugin
-                webpackConfig.plugin('html-webpack-harddisk-plugin').use(require('html-webpack-harddisk-plugin'));
+                webpackConfig.plugin('html-webpack-harddisk-plugin').use(require('@baidu/san-cli-webpack/lib/HTMLHarddiskPlugin'));
             }
             const copyArgs = [];
             // copy static assets in public/

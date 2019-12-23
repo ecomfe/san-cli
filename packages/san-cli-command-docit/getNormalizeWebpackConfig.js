@@ -102,6 +102,7 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
 
     // 开始正式的操作
     let webpackConfig = api.getWebpackConfig();
+    console.log(webpackConfig.plugins[6])
     debug(webpackConfig);
 
     webpackConfig.devServer = Object.assign({hot: !isProd, compress: isProd}, webpackConfig.devServer);

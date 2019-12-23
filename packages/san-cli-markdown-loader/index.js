@@ -10,7 +10,6 @@ const loaderUtils = require('loader-utils');
 const {NS, sanboxRegExp, sanboxTextTag, sanboxHighlightCode, sanboxSanComponent} = require('./const');
 const compiler = require('./lib/compiler');
 const parseHeader = require('./lib/parseHeader');
-const parserList = require('./lib/parseList');
 
 // eslint-disable-next-line
 module.exports = function(content) {
@@ -52,7 +51,7 @@ module.exports = function(content) {
     const matter = frontMatter.data || {};
     content = frontMatter.content;
 
-    const headers = parseHeader(content, extractHeaders, compiler.getCompiler());
+    const headers = parseHeader(content, compiler.getCompiler(), extractHeaders);
 
     const getTemplate = content => {
         const cls = typeof matter.classes === 'string' ? [matter.classes] : matter.classes || ['markdown'];
@@ -64,7 +63,7 @@ module.exports = function(content) {
     switch (query.exportType) {
         case 'data':
             // 这里是给 sidebar 和 navbar 这样的 list 用到的解析
-            const list = parserList(content, rootUrl);
+            const list = compiler(content, markdownIt);
             return `
             export default ${JSON.stringify(list)};
             `;
