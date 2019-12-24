@@ -138,7 +138,6 @@ module.exports = function(content) {
         compString = `{
             ${compString.join(',\n')}
         }`;
-
         code = `
             import {defineComponent} from 'san';
 

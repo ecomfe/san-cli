@@ -26,7 +26,7 @@ test('目录已存在，--force强行删除', async () => {
         force: true
     })({}).then(data => {
         expect(data).toEqual({
-            next: ['Start checking target directory status', '--force delete directory'],
+            next: ['Start checking target directory status', '--force delete target directory'],
             error: '',
             complete: false
         });

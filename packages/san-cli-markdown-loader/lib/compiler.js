@@ -4,7 +4,7 @@
  */
 const MdIt = require('markdown-it');
 
-function getCompiler(opt) {
+function getCompiler(opt = {}) {
     // {
     //     options: {},
     //     anchor
@@ -19,30 +19,29 @@ function getCompiler(opt) {
         anchor = {permalink: true, permalinkBefore: true, permalinkSymbol: '#'},
         extend = () => {},
         toc = {includeLevel: [2, 3]},
-        options = {},
         table = {
             multiline: false,
             rowspan: true,
             headerless: false
         }
-    } = typeof opt === 'object' ? opt : {};
+    } = opt;
+
+    const preset = opt.preset;
     // prettier-ignore
-    let parser = opt === 'default' || opt === 'commonmark' || opt === 'zero' ? new MdIt(opt) : new MdIt(
+    let parser = preset === 'default' || preset === 'commonmark' || preset === 'zero' ? new MdIt(opt) : new MdIt(
         Object.assign({
             xhtmlOut: true,
             html: true,
             highlight: require('./markdown/prismjs')({lineNumbers})
-        }, options)
+        }, preset)
     );
 
     parser.use(require('markdown-it-cjk-breaks'));
-    parser.use(require('markdown-it-abbr'));
     parser.use(require('markdown-it-emoji'));
     parser.use(require('markdown-it-deflist'));
 
     parser.use(require('markdown-it-footnote'));
     parser.use(require('markdown-it-ins'));
-    parser.use(require('markdown-it-span'));
     parser.use(require('markdown-it-anchor'), anchor);
     parser.use(require('markdown-it-table-of-contents'), toc);
     parser.use(require('markdown-it-sub'));
@@ -106,6 +105,7 @@ function getCompiler(opt) {
     });
 
     parser.use(require('./markdown/jsx'));
+    parser.use(require('./markdown/link'));
     parser.use(require('./markdown/snippet'));
 
     if (typeof extend === 'function') {

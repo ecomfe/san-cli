@@ -28,18 +28,8 @@ htmlWebpackPlugin.options.scripts = htmlWebpackPlugin.options.scripts || []
     for (item of htmlWebpackPlugin.options.links) { %><%
       if (typeof item === 'string' || item instanceof String) { item = { href: item, rel: 'stylesheet' } } %>
     <link<% for (key in item) { %> <%= key %>="<%= item[key] %>"<% } %> /><%
-    } %><%
-    for (key in htmlWebpackPlugin.files.css) { %><%
-      if (htmlWebpackPlugin.files.cssIntegrity) { %>
-    <link
-      href="<%= htmlWebpackPlugin.files.css[key] %>"
-      rel="stylesheet"
-      integrity="<%= htmlWebpackPlugin.files.cssIntegrity[key] %>"
-      crossorigin="<%= webpackConfig.output.crossOriginLoading %>" /><%
-      } else { %>
-    <link href="<%= htmlWebpackPlugin.files.css[key] %>" rel="stylesheet" /><%
-      } %><%
-    } %><%
+    } %>
+    <%
     if (htmlWebpackPlugin.options.headHtmlSnippet) { %>
     <%= htmlWebpackPlugin.options.headHtmlSnippet %><%
     } %>
