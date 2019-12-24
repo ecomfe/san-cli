@@ -4,12 +4,15 @@
  */
 /* eslint-disable fecs-max-calls-in-template */
 const qs = require('querystring');
+const path = require('path');
 const hash = require('hash-sum');
 const grayMatter = require('gray-matter');
 const loaderUtils = require('loader-utils');
 const {NS, sanboxRegExp, sanboxTextTag, sanboxHighlightCode, sanboxSanComponent} = require('./const');
 const compiler = require('./lib/compiler');
 const parseHeader = require('./lib/parseHeader');
+const {mdLink2Html} = require('./lib/utils');
+// const parseList = require('./lib/parseList');
 
 // eslint-disable-next-line
 module.exports = function(content) {
@@ -38,9 +41,10 @@ module.exports = function(content) {
         i18n = '',
         markdownIt,
         extractHeaders = ['H2', 'H3'],
-        rootUrl,
         hotReload = false
     } = loaderUtils.getOptions(this) || {};
+    const relativePath = path.relative(context, resourcePath);
+    const link = mdLink2Html(relativePath);
     // markdownIt 是 mdit 的配置项内容付下：
     // {
     //     options: {},
@@ -58,7 +62,7 @@ module.exports = function(content) {
     const matter = frontMatter.data || {};
     content = frontMatter.content;
 
-    const headers = parseHeader(content, compiler.getCompiler(), extractHeaders);
+    const toc = parseHeader(content, compiler.getCompiler(), extractHeaders);
 
     const getTemplate = content => {
         const cls = typeof matter.classes === 'string' ? [matter.classes] : matter.classes || ['markdown'];
@@ -68,6 +72,13 @@ module.exports = function(content) {
     };
     // 存在 exportType 的情况
     switch (query.exportType) {
+        // case 'list': {
+        //     // 这里是给 sidebar 和 navbar 这样的 list 用到的解析
+        //     const list = parseList(content, {relativePath, context});
+        //     return `
+        //     export default ${JSON.stringify(list)};
+        //     `;
+        // }
         case 'data': {
             // 这里是给 sidebar 和 navbar 这样的 list 用到的解析
             const list = compiler(content, markdownIt);
@@ -117,7 +128,8 @@ module.exports = function(content) {
             template: ${getTemplate(compiler(content, markdownIt))}
         })
         Content.$matter = ${JSON.stringify(matter)};
-        Content.$headers = ${JSON.stringify(headers)};
+        Content.$toc = ${JSON.stringify(toc)};
+        Content.$link = ${JSON.stringify(link)}
         export default Content;
         if(window){
             window.$Page = Content;
@@ -147,7 +159,9 @@ module.exports = function(content) {
                 components: ${compString}
             })
             Content.$matter = ${JSON.stringify(matter)};
-            Content.$headers = ${JSON.stringify(headers)};
+            Content.$toc = ${JSON.stringify(toc)};
+            Content.$link = ${JSON.stringify(link)}
+
             export default Content;
             if(window){
                 window.$Page = Content;

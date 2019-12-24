@@ -2,7 +2,7 @@
  * @file utils
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-
+exports.mdLink2Html = str => str.replace(/\.md$/, '.html').replace(/README\.html$/, 'index.html');
 const unescapeHtml = html =>
     String(html)
         .replace(/&quot;/g, '"')

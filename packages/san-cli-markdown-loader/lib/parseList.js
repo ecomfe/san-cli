@@ -3,21 +3,36 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-module.exports = (content, md) => {
-    const tokens = md.parse(content, {});
+const visit = require('unist-util-visit');
+const remark = require('remark');
+const toHast = require('mdast-util-to-hast');
+const toHtml = require('hast-util-to-html');
 
-    return res;
-};
+module.exports = (content, {relativePath, context, activeClassName = 'active'}) => {
+    const ast = remark.parse(content);
 
-function getListTree(tokens) {
-    const res = [];
-    const root = {
-        tag: 'sidebar',
-        children: []
-    };
-    tokens.forEach((t, i) => {
-        if (t.type === 'bullet_list_open') {
-        } else if (t.type === 'bullet_list_close') {
+    // 1. 去除多余的 paragraph
+    visit(ast, 'listItem', listItem => {
+        if (listItem.children.length === 1 && listItem.children[0].type === 'paragraph') {
+            listItem.children = listItem.children[0].children;
         }
+        return listItem;
     });
-}
+
+    // 2. 去除 link 的 text 节点，直接上移节点
+    visit(ast, 'link', (node, idx, parent) => {
+        let url = node.url;
+        if (url === relativePath || url === './' + relativePath || url === '/' + relativePath) {
+            const data = parent.data || {};
+            const attrs = data.hProperties || {};
+            attrs.class = attrs.class ? attrs.class + '' + activeClassName : activeClassName;
+            data.hProperties = attrs;
+            parent.data = data;
+        }
+
+        node.url = url.replace(/\.md$/, '.html').replace(/README\.html$/, 'index.html');
+        return node;
+    });
+    // console.log(JSON.stringify(ast))
+    return toHtml(toHast(ast));
+};

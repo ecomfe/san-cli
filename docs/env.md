@@ -55,10 +55,10 @@ SAN_VAR_HELLO=hello
 
 则在代码中直接使用`console.log(HELLO)`会经过编译后会变成`console.log('hello')`。
 
-> 说明：
->
-> 1. `SAN_VAR_*`的定义不仅仅是在`.env`文件中，还可以在其他在打包之前的地方定义，比如在`san.config.js`中；
-> 2. 在代码中可以继续使用类似`process.env.NODE_ENV`这类变量。
+::: warning 说明
+1. `SAN_VAR_*`的定义不仅仅是在`.env`文件中，还可以在其他在打包之前的地方定义，比如在`san.config.js`中；
+2. 在代码中可以继续使用类似`process.env.NODE_ENV`这类变量。
+:::
 
 ## 常见应用场景举例
 

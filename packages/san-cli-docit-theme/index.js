@@ -18,6 +18,13 @@ class Index extends Component {
         sidebar: Sidebar,
         content: Content
     };
+    attached() {
+        [].slice.call(document.querySelectorAll('#sidebar a'), 0).map(anode => {
+            if (anode.href === location.href) {
+                anode.parentNode.classList.add('active');
+            }
+        });
+    }
 }
 
 const app = new Index();
