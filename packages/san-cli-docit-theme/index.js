@@ -19,10 +19,12 @@ class Index extends Component {
         content: Content
     };
     attached() {
-        [].slice.call(document.querySelectorAll('#sidebar a'), 0).map(anode => {
+        [].slice.call(document.querySelectorAll('#sidebar a'), 0).find(anode => {
             if (anode.href === location.href) {
                 anode.parentNode.classList.add('active');
+                return true;
             }
+            return false;
         });
     }
 }
