@@ -3,7 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const LRU = require('lru-cache');
-const {compose, removeNonCodeWrappedHTML, parseHeaders} = require('./utils');
+const {compose, removeNonCodeWrappedHTML, parseHeaders, slugify} = require('./utils');
 
 const deeplyParseHeaders = compose(removeNonCodeWrappedHTML, parseHeaders);
 
@@ -27,7 +27,7 @@ module.exports = (content, md, include = ['H2', 'H3']) => {
             res.push({
                 level: parseInt(t.tag.slice(1), 10),
                 title: deeplyParseHeaders(title),
-                slug: slug || md.slugify(title)
+                slug: slug || slugify(title)
             });
         }
     });

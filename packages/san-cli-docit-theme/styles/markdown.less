@@ -11,7 +11,6 @@
     }
 
     table {
-        width: 100%;
         margin: 8px 0 16px;
         border: 1px solid @site-border-color-split;
         empty-cells: show;
@@ -24,16 +23,17 @@
         color: #5c6b77;
         background: rgba(0, 0, 0, 0.02);
     }
-    pre code {
-        overflow: auto;
-        padding: 12px 20px;
-    }
     table th,
     table td {
         padding: 16px 24px;
         border: 1px solid @site-border-color-split;
         text-align: left;
     }
+    pre code {
+        overflow: auto;
+        padding: 12px 20px;
+    }
+
     img {
         max-width: ~'calc(100% - 32px)';
     }
@@ -155,43 +155,11 @@
         font-family: @code-family;
     }
 
-    //  pre code {
-    //     border: none;
-    //     background: #f2f4f5;
-    //     margin: 0;
-    //     padding: 0;
-    //     font-size: @font-size-base - 1px;
-    //     color: @site-text-color;
-    //     overflow: auto;
-    // }
-
     strong,
     b {
         font-weight: 500;
     }
 
-    > table {
-        border-collapse: collapse;
-        border-spacing: 0;
-        empty-cells: show;
-        border: 1px solid @site-border-color-split;
-        width: 100%;
-        margin: 8px 0 16px;
-    }
-
-    > table th {
-        white-space: nowrap;
-        color: #5c6b77;
-        font-weight: 500;
-        background: rgba(0, 0, 0, 0.02);
-    }
-
-    > table th,
-    > table td {
-        border: 1px solid @site-border-color-split;
-        padding: 16px 24px;
-        text-align: left;
-    }
     a {
         margin: 0 6px;
     }
@@ -199,6 +167,8 @@
     blockquote,
     div.warning,
     div.error,
+    div.danger,
+    div.tip,
     div.success,
     div.info {
         font-size: 90%;
@@ -215,6 +185,8 @@
     }
     div.warning,
     div.error,
+    div.danger,
+    div.tip,
     div.success,
     div.info {
         p.info-title {
@@ -230,12 +202,12 @@
         color: @site-text-color-secondary;
         border-left: 4px solid #ffe58f;
     }
-    div.error {
+    div.error,div.danger {
         background-color: #fff1f0;
         color: @site-text-color-secondary;
         border-left: 4px solid #ffa39e;
     }
-    div.info {
+    div.info,div.tip {
         background-color: #e6f7ff;
         color: @site-text-color-secondary;
         border-left: 4px solid #2196f3;

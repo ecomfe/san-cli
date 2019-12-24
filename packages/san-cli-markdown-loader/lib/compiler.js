@@ -13,7 +13,6 @@ function getCompiler(opt = {}) {
     //   extend
     //   extractHeaders
     // }
-
     const {
         lineNumbers = true,
         anchor = {permalink: true, permalinkBefore: true, permalinkSymbol: '#'},
@@ -120,8 +119,7 @@ function getCompiler(opt = {}) {
 }
 module.exports = (text, options = {}) => {
     text = String(text);
-    const opt = options.markdownIt || {};
-    const parser = getCompiler(opt);
+    const parser = getCompiler(options);
 
     let html = parser.render(text);
     // 解决{{}}被 san 误当成变量解析的情况

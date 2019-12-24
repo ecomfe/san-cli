@@ -6,7 +6,6 @@
 npm i -g san-cli
 ```
 
-**PS: San-CLI node 版本需要>=8.16**
 
 ## 快速创建
 

@@ -62,6 +62,9 @@ module.exports = function(content) {
     const matter = frontMatter.data || {};
     content = frontMatter.content;
 
+    // 合并下 mardownIt 配置
+    markdownIt = Object.assign(markdownIt || {}, matter.markdownIt || {});
+
     const toc = parseHeader(content, compiler.getCompiler(), extractHeaders);
 
     const getTemplate = content => {
