@@ -1,4 +1,7 @@
 module.exports = {
+    devServer: {
+        contentBase: __dirname
+    },
     splitChunks: {
         cacheGroups: {
             default: false,
