@@ -6,7 +6,7 @@ title: 环境变量
 
 San CLI 会按照下面的优先级在**项目的根目录**中读取环境变量：
 
-```txt
+```
 .env.${mode}.local
 .env.${mode}
 .env.local
@@ -17,7 +17,7 @@ San CLI 会按照下面的优先级在**项目的根目录**中读取环境变�
 
 `.env`文件内的格式为每行一个键值对数据，举例如下：
 
-```txt
+```
 ONE=1
 SAN_VAR_TRUE=true
 ```

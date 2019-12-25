@@ -1,3 +1,8 @@
+---
+title: 初始化项目
+markdownIt:
+    lineNumbers: false
+---
 # 初始化项目
 
 ## 没有安装 San-CLI 需要安装
@@ -78,7 +83,7 @@ san remote remove <name>
 san remote remove hello
 ```
 
-3. 查看 alias 列表
+#### 3. 查看 alias 列表
 
 ```bash
 san remote list
