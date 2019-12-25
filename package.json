@@ -29,7 +29,7 @@
         "lint": "lint-staged",
         "test": "node scripts/test.js",
         "doc": "node packages/san-cli/index.js docit ./docs",
-        "build:doc": "node packages/san-cli/index.js docit ./docs --output --mode production"
+        "build:doc": "node packages/san-cli/index.js docit ./docs --output --mode production --config ./docs/san.config.js"
     },
     "commitlint": {
         "extends": [

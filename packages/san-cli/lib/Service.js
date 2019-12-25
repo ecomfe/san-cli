@@ -447,7 +447,8 @@ module.exports = class Service extends EventEmitter {
         // 保证 Api.getxx 能够获取
         this.version = version;
         const mode = argv.mode || (cmd === 'build' && argv.watch ? 'development' : 'production');
-
+        // 添加 global 配置，san config.js 使用
+        global.__isProduction = mode === 'production';
         // 先加载 env 文件，保证 config 文件中可以用到
         time('loadEnv');
         this.loadEnv(mode);
