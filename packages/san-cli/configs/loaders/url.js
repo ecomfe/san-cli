@@ -16,6 +16,7 @@ module.exports = factory((options, {filenameHashing, assetsDir, largeAssetSize =
             {
                 limit: largeAssetSize,
                 noquotes: true,
+                esModule: false,
                 name: getAssetPath(assetsDir, `${dir}/[name]${filenameHashing ? '.[hash:8]' : ''}.[ext]`)
             },
             options
