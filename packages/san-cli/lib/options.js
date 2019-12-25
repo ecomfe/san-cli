@@ -11,13 +11,11 @@ const schema = joi
         browserslist: joi.alternatives().try(joi.array(), joi.object()),
         jsonpFunction: joi.string(),
         transpileDependencies: joi.array(),
-        indexPath: joi.string(),
         // 产出相关
         // 下面这个将 public 内容 copy 到产出文件夹
         // 使用打包脚本自己处理吧，不再单独暴漏配置项
         // copyPublicDir: joi.boolean(),
         // 专门给 smarty 留的一个配置项
-        templateDir: joi.string().allow(''),
         copy: joi.alternatives().try(
             joi.array().items(
                 joi
@@ -80,7 +78,6 @@ const schema = joi
                 css: joi.object(),
                 sass: joi.object(),
                 less: joi.object(),
-                scss: joi.object(),
                 stylus: joi.object(),
                 postcss: joi.object()
             })

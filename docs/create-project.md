@@ -22,7 +22,7 @@ san init <template> <app-name>
 2. template 是工程项目脚手架地址，支持 github，icode，gitlab 等 repo 作为脚手架直接创建项目，并且可以指定 template 的 alias，详见下方**san remote**
 3. app-name 是要创建的工程项目目录，可以为`.`（即在当前目录下创建）
 
-**例如**
+###### ***例如***
 
 ```bash
 # 1. 支持传入完整repo地址:
@@ -45,10 +45,15 @@ san init template#branch .
 ## 参数说明
 
 `--useCache，--cache` 优先使用本地已经下载过的脚手架缓存
+
 `--install` 初始化成功后，进入目录安装依赖
+
 `--offline` 标示 template 是离线脚手架
+
 `--force` 跳过提醒，强制删除已存在的目录，默认会提醒
+
 `--username，--u` 指定 Git 用户名，默认：git
+
 `--registry` 设置 npm registry
 
 ## san remote
@@ -63,7 +68,7 @@ san remote add <name> <url>
 
 将你输入的映射的关系存入本地.sanrc 文件中
 
-**例如**
+###### ***例如***
 
 ```bash
 san remote add hello github:yyt/HelloWorld
@@ -77,7 +82,7 @@ san remote remove <name>
 
 从本地.sanrc 文件中将你输入的映射的关系移除
 
-**例如**
+###### ***例如***
 
 ```bash
 san remote remove hello
@@ -89,7 +94,7 @@ san remote remove hello
 san remote list
 ```
 
-**例如**
+###### ***例如***
 
 ```bash
 san remote remove hello

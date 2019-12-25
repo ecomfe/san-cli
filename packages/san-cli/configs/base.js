@@ -76,7 +76,7 @@ module.exports = {
                 let alias = projectOptions.alias;
                 Object.keys(alias).forEach(k => {
                     let p = path.isAbsolute(alias[k]) ? alias[k] : api.resolve(alias[k]);
-                    webpackConfig.alias.set(k, p);
+                    webpackConfig.resolve.alias.set(k, p);
                 });
             }
 
