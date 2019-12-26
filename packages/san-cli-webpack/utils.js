@@ -45,7 +45,7 @@ const {error} = require('@baidu/san-cli-utils/ttyLogger');
 exports.resolveEntry = (resolveEntryPath, absoluteEntryPath, webpackConfig, defaultEntry) => {
     // entry arg
     if (resolveEntryPath) {
-        // 1. 判断 entry 是文件还是目
+        // 1. 判断 entry 是文件还是目录
         // 2. 文件，直接启动 file server
         // 3. 目录，则直接启动 devServer
         const obj = resolveEntry(absoluteEntryPath);
@@ -89,7 +89,7 @@ function resolveEntry(entry) {
             isFile = true;
         }
     } catch (e) {
-        error('A valid entry is not a file or directory.');
+        error('A valid entry should be a file or a directory.');
         process.exit(1);
     }
     return {

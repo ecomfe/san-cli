@@ -5,7 +5,7 @@
 
 const getHandler = require('./run');
 const command = (exports.command = 'build [entry]');
-const description = (exports.description = 'build description');
+const description = (exports.description = 'Compiles an app into an output directory named dist');
 
 const builder = (exports.builder = {
     watch: {

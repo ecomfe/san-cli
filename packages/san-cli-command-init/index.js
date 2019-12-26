@@ -5,28 +5,33 @@
 
 exports.command = 'init <template> <app-name>';
 exports.desc = 'Create an empty repo';
-// TODO: 整理文案
 exports.builder = {
     useCache: {
         alias: 'cache',
-        default: false
+        default: false,
+        describe: 'Use local cache'
     },
     install: {
-        default: false
+        default: false,
+        describe: 'Install npm packages after initialization'
     },
     offline: {
-        default: false
+        default: false,
+        describe: 'Prefer to use local offline packages'
     },
     force: {
-        default: false
+        default: false,
+        describe: 'Forced coverage'
     },
     username: {
         alias: 'u',
-        default: ''
+        default: '',
+        describe: 'Specify the username used by git clone command'
     },
     registry: {
         alias: 'r',
-        default: ''
+        default: '',
+        describe: 'Specify npm package download registry'
     }
 };
 exports.handler = argv => {
