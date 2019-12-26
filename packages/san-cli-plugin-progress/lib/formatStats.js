@@ -92,7 +92,7 @@ module.exports = function formatStats(allStats) {
                     width: 16
                 },
                 {value: 'Time', align: 'center', width: 12},
-                {value: 'Time/Request', align: 'center', width: 12},
+                {value: 'Time/Request', align: 'center', width: 16},
                 {value: 'Description', align: 'center', width: 30}
             ],
             data,
