@@ -2,7 +2,13 @@
  * @file 从 md 中解析出来 H
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-
+// TODO 目前这个文件没有使用，如果使用的话，需要引入下面依赖
+/**
+"remark": "^11.0.2",
+"mdast-util-to-hast": "^7.0.0",
+"unist-util-visit": "^2.0.1",
+"hast-util-to-html": "^6.1.0",
+ */
 const visit = require('unist-util-visit');
 const remark = require('remark');
 const toHast = require('mdast-util-to-hast');

@@ -469,8 +469,17 @@ module.exports = class Service extends EventEmitter {
         // 开始添加依赖 argv 的内置 plugin
         // 添加progress plugin
         if (!argv.noProgress) {
-            this.addPlugin(require('../plugins/progress'), {name: cmd});
+            if (argv.profile) {
+                this.addPlugin(require('../plugins/progress'), {
+                    name: cmd,
+                    profile: true,
+                    reporters: ['profile', 'fancy']
+                });
+            } else {
+                this.addPlugin(require('../plugins/progress'), {name: cmd});
+            }
         }
+
         time('init');
         this.init(mode);
         timeEnd('init');

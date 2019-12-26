@@ -67,12 +67,23 @@ module.exports = function(content) {
 
     const toc = parseHeader(content, compiler.getCompiler(), extractHeaders);
 
-    const getTemplate = content => {
+    const getTemplate = (content, quote = true) => {
         const cls = typeof matter.classes === 'string' ? [matter.classes] : matter.classes || ['markdown'];
-        return `${JSON.stringify('<div class="' + cls.join(' ') + '">' + content + '</div>')
+        const encode = quote ? str => JSON.stringify(str) : str => str;
+        return `${encode('<div class="' + cls.join(' ') + '">' + content + '</div>')
             .replace(/\u2028/g, '\\u2028')
             .replace(/\u2029/g, '\\u2029')}`;
     };
+
+    // 整个文件返回 san Component
+    let sanboxArray = [];
+    sanboxRegExp.lastIndex = 0;
+    content = content.replace(sanboxRegExp, (input, match) => {
+        const idx = sanboxArray.length;
+        sanboxArray.push(match);
+        return `<san-box-${idx}></san-box-${idx}>`;
+    });
+
     // 存在 exportType 的情况
     switch (query.exportType) {
         // case 'list': {
@@ -92,10 +103,8 @@ module.exports = function(content) {
 
         // 这是返回 html，不处理 san box
         case 'html':
-            return `
-                var html = ${getTemplate(compiler(content, markdownIt))};
-                export default html;
-            `;
+            return getTemplate(compiler(content, markdownIt), false);
+
         case 'matter':
             // 返回 matter 对象
             return `
@@ -114,21 +123,23 @@ module.exports = function(content) {
             return '';
     }
 
-    // 整个文件返回 san Component
-    let sanboxArray = [];
-    sanboxRegExp.lastIndex = 0;
-    content = content.replace(sanboxRegExp, (input, match) => {
-        const idx = sanboxArray.length;
-        sanboxArray.push(match);
-        return `<san-box-${idx}></san-box-${idx}>`;
-    });
+    // 为了代码好阅读：
+    // 1. 默认 md 引入会进入到这里逻辑，然后替换掉 sanbox 中的内容为了对应的 tag
+    // 2. template 是直接引入的 html-loader!markdown-loaer!md?exportType=html
+    //    用 html-loader 处理后，link 和 image 就得到了保证
+    // 3. 转到 template 的处理去上面的 switch 分支
     let code;
+    let templateRequest = stringifyRequest(
+        [`-!${require.resolve('html-loader')}`, __filename, resourcePath + '?exportType=html'].join('!')
+    );
     if (sanboxArray.length === 0) {
         // 如果没有san box 则直接返回 html template
         code = `
         import {defineComponent} from 'san';
+        import template from ${templateRequest};
+
         const Content = defineComponent({
-            template: ${getTemplate(compiler(content, markdownIt))}
+            template
         })
         Content.$matter = ${JSON.stringify(matter)};
         Content.$toc = ${JSON.stringify(toc)};
@@ -155,10 +166,10 @@ module.exports = function(content) {
         }`;
         code = `
             import {defineComponent} from 'san';
-
+            import template from ${templateRequest};
             ${sanboxArray.join('\n')}
             const Content = defineComponent({
-                template: ${getTemplate(compiler(content, markdownIt))},
+                template,
                 components: ${compString}
             })
             Content.$matter = ${JSON.stringify(matter)};

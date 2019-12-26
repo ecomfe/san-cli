@@ -70,7 +70,7 @@ const schema = joi
         // css 相关
         css: joi.object({
             cssnanoOptions: joi.object(),
-            cssPreprocessor: joi.string().valid('less', 'sass', 'styl', 'stylus', 'scss'),
+            cssPreprocessor: joi.string().valid('less', 'sass', 'stylus'),
             extract: joi.boolean(),
             sourceMap: joi.boolean(),
             requireModuleExtension: joi.boolean(),
@@ -79,6 +79,7 @@ const schema = joi
                 sass: joi.object(),
                 less: joi.object(),
                 stylus: joi.object(),
+                // 推荐使用 postcss.config.js
                 postcss: joi.object()
             })
         }),
@@ -86,6 +87,7 @@ const schema = joi
         alias: joi.object(),
         // 内置 loader 的 options
         loaderOptions: joi.object(),
+        // 主要用 splitChunks.cacheGroups
         splitChunks: joi.object(),
         // 纯自定义的函数
         chainWebpack: joi.func(),
@@ -109,7 +111,6 @@ exports.validateSync = async (value, options) => {
 
 exports.defaults = {
     pages: undefined,
-    indexPath: 'index.html',
     outputDir: 'output',
     assetsDir: '',
     publicPath: '/',

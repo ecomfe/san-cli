@@ -14,6 +14,10 @@ const builder = (exports.builder = {
         default: false,
         describe: 'Watch mode'
     },
+    profile: {
+        type: 'boolean',
+        describe: 'Enable build profiler'
+    },
     config: {
         alias: 'config-file',
         type: 'string',

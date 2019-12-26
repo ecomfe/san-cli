@@ -133,7 +133,7 @@ module.exports = {
 
             createCSSRule('css', /\.css$/);
             createCSSRule('postcss', /\.p(ost)?css$/);
-            if (!cssPreprocessor || cssPreprocessor === 'scss' || cssPreprocessor === 'sass') {
+            if (!cssPreprocessor || cssPreprocessor === 'sass') {
                 let sassLoaderVersion;
                 try {
                     sassLoaderVersion = semver.major(require('sass-loader/package.json').version);
@@ -186,7 +186,7 @@ module.exports = {
                     )
                 );
             }
-            if (!cssPreprocessor || cssPreprocessor === 'stylus' || cssPreprocessor === 'styl') {
+            if (!cssPreprocessor || cssPreprocessor === 'stylus') {
                 createCSSRule(
                     'stylus',
                     /\.styl(us)?$/,

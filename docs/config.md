@@ -4,7 +4,6 @@
 ```bash
 module.exports = {
     pages: undefined,
-    indexPath: 'index.html',
     outputDir: 'output',
     assetsDir: '',
     publicPath: '/',
