@@ -56,7 +56,7 @@ module.exports = (name, dest, options) => {
                 },
                 answers
             );
-            debug('Parameters after the merge is completed', data);
+            debug('Parameters after the merge are completed', data);
             ctx.tplData = data;
 
             observer.next('Generating directory structure...');

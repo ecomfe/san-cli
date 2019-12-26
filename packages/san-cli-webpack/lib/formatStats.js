@@ -191,7 +191,7 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
             return textColor(formatSize(size));
         });
         /* eslint-disable fecs-max-calls-in-template */
-        return `  Entrypoints ${textColor(name)}${showReport ? chalk.yellowBright(' [big]') : ''}, initial Size ${
+        return `  Entry Points ${textColor(name)}${showReport ? chalk.yellowBright(' [big]') : ''}, Initial Size ${
             size[0]
         }, Gzipped ${textColor(formatSize(totalGzippedSize))}.${table.render()}`;
         /* eslint-enable fecs-max-calls-in-template */
