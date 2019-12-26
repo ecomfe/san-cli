@@ -3,6 +3,6 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-['ttyLogger', 'path', 'utils', 'randomColor', 'env'].forEach(m => {
+['ttyLogger', 'path', 'utils', 'randomColor', 'env', 'color'].forEach(m => {
     Object.assign(exports, require(`./${m}`));
 });
