@@ -71,11 +71,7 @@ module.exports = function devServer({webpackConfig, devServerConfig, publicPath,
             compiler = webpack(webpackConfig);
         } catch (e) {
             // 捕捉参数不正确的错误信息
-            error('webpack compile error!', e);
-            if (e instanceof webpack.WebpackOptionsValidationError) {
-                process.exit(1);
-            }
-            throw e;
+            reject({err: e, type: 'run'});
         }
         if (typeof compilerCallback === 'function') {
             compilerCallback(compiler);
