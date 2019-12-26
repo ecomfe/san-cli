@@ -16,5 +16,12 @@ module.exports = {
             }
         }
     },
+    loaderOptions: {
+        markdown: {
+            markdownIt: {
+                lineNumbers: false
+            }
+        }
+    },
     filenameHashing: __isProduction
 };

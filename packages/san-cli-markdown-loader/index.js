@@ -43,6 +43,7 @@ module.exports = function(content) {
         extractHeaders = ['H2', 'H3'],
         hotReload = false
     } = loaderUtils.getOptions(this) || {};
+
     const relativePath = path.relative(context, resourcePath);
     const link = mdLink2Html(relativePath);
     // markdownIt 是 mdit 的配置项内容付下：

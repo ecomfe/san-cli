@@ -105,7 +105,6 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
 
         // 设置统一的 md loader
         const baseRule = webpackConfig.module.rule('markdown').test(/\.md$/);
-
         baseRule
             .use('markdown-loader')
             .loader(require.resolve('@baidu/san-cli-markdown-loader'))

@@ -1,3 +1,6 @@
+---
+title: San-CLI-Markdown-Loader 相关配置
+---
 # Loader 相关
 
 San CLI 的 docit 命令最核心部分是使用[san-cli-markdown-loader](./packages/san-cli-markdown-loader)来实现的。
@@ -50,17 +53,18 @@ const options = {
 ```js
 const markdownIt = {
     // 代码高亮是否显示行号
-    lineNumbers = true,
+    lineNumbers: true,
     // markdown-it-anchor 相关配置
-    anchor = {permalink: true, permalinkBefore: true, permalinkSymbol: '#'},
+    anchor: {permalink: true, permalinkBefore: true, permalinkSymbol: '#'},
     // 扩展 markdown-it 示例
-    extend = () => {},
+    extend() => {},
     // markdown-it-toc 配置
-    toc = {includeLevel: [2, 3]},
+    toc:{includeLevel: [2, 3]},
     // markdown-it-multimd-table 配置
-    // 默认开启 rowspan
-    table = {
+    // 默认配置如下：
+    table:{
         multiline: false,
+        // 开启 rowspan
         rowspan: true,
         headerless: false
     },

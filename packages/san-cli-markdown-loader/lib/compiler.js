@@ -14,7 +14,7 @@ function getCompiler(opt = {}) {
     //   extractHeaders
     // }
     const {
-        lineNumbers = true,
+        lineNumbers = false,
         anchor = {permalink: true, permalinkBefore: true, permalinkSymbol: '#'},
         extend = () => {},
         toc = {includeLevel: [2, 3]},

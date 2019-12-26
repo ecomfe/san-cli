@@ -4,9 +4,8 @@
         -   [init: 初始化项目](/create-project.md)
         -   [serve: 开发打包](/serve.md)
         -   [build: 生产打包](/build.md)
-    -   [配置文件](/config.md)
-        -   [webpack 相关](/webpack.md)
-        -   [页面相关](/pages.md)
+    -   配置
+        -   [配置文件](/config.md)
         -   [高级配置](/advanced.md)
         -   [CLI 预设](/presets.md)
         -   [环境变量](/env.md)
@@ -20,8 +19,11 @@
     -   [部署](/deployment.md)
 -   二次开发
     -   [内部实现](/architecture.md)
-    -   [编写一个插件](/plugin-dev.md)
     -   [如何创建一个脚手架项目](/create-scaffold.md)
+    -   插件相关
+        -   [插件机制](/plugin.md)
+        -   [Command 插件](/cmd-plugin.md)
+        -   [Service 插件](/srv-plugin.md)
 -   [Markdown 建站](/docit/README.md)
     -   [Markdown 语法扩展](/docit/markdown.md)
     -   [Markdown 中执行 San 代码](/docit/sanbox.md)
