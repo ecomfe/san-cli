@@ -32,7 +32,6 @@
         "@hapi/joi": "^16.1.7",
         "babel-loader": "^8.0.6",
         "babel-plugin-dynamic-import-node": "^2.3.0",
-        "babel-plugin-module-resolver": "~4.0.0",
         "babel-plugin-san-hmr": "^1.0.2",
         "case-sensitive-paths-webpack-plugin": "^2.2.0",
         "copy-webpack-plugin": "~5.0.4",
