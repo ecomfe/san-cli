@@ -17,13 +17,12 @@ module.exports = {
 
             const {assetsDir, splitChunks, terserOptions = {}} = options;
             // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
-            const isLegacyBundle = process.env.SAN_CLI_LEGACY_BUILD;
+            const isLegacyBundle = parseInt(process.env.SAN_CLI_LEGACY_BUILD, 10) === 1;
             // sourcemap
             const filename = getAssetPath(
                 assetsDir,
                 `js/[name]${isLegacyBundle ? '-legacy' : ''}${options.filenameHashing ? '.[hash:8]' : ''}.js`
             );
-
             // 条件判断sourcemap是否开启，san.config.js传入
             let ifSourcemap = false;
             if (options.sourceMap) {

@@ -101,7 +101,7 @@ module.exports = function apply(api, projectOptions) {
             // 2.1 modern mode，会fork execa 执行一次打包
             // modern mode 必须要保证 legacy 先打包完成
             if (!process.env.SAN_CLI_MODERN_BUILD) {
-                process.env.SAN_CLI_LEGACY_BUILD = true;
+                process.env.SAN_CLI_LEGACY_BUILD = 1;
                 // 获取 webpack 配置
                 let config = getNormalizeWebpackConfig(
                     api,
@@ -126,7 +126,7 @@ module.exports = function apply(api, projectOptions) {
                             stdio: 'inherit',
                             env: {
                                 SAN_CLI_MODERN_BUILD: true,
-                                SAN_CLI_LEGACY_BUILD: false
+                                SAN_CLI_LEGACY_BUILD: 0
                             }
                         });
                     })

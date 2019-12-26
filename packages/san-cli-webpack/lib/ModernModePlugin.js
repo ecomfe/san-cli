@@ -45,11 +45,11 @@ class ModernModePlugin {
 
             if (HtmlWebpackPlugin.getHooks) {
                 // 我们支持v4
-                HtmlWebpackPlugin.getHooks(compilation).alterAssetTags.tapAsync(name, alterAssetTags);
-                HtmlWebpackPlugin.getHooks(compilation).afterTemplateExecution.tap(name, alterAssetTags);
+                HtmlWebpackPlugin.getHooks(compilation).alterAssetTags.tapAsync(ID, alterAssetTags);
+                HtmlWebpackPlugin.getHooks(compilation).afterTemplateExecution.tap(ID, alterAssetTags);
             } else {
-                compilation.hooks.htmlWebpackPluginAlterAssetTags.tapAsync(name, alterAssetTags);
-                compilation.hooks.htmlWebpackPluginAfterHtmlProcessing.tap(name, afterHTMLProcessing);
+                compilation.hooks.htmlWebpackPluginAlterAssetTags.tapAsync(ID, alterAssetTags);
+                compilation.hooks.htmlWebpackPluginAfterHtmlProcessing.tap(ID, afterHTMLProcessing);
             }
         });
     }

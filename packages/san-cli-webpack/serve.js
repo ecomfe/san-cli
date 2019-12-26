@@ -15,11 +15,11 @@ const SanFriendlyErrorsPlugin = require('./lib/SanFriendlyErrorsPlugin');
 const WriteFileWebpackPlugin = require('write-file-webpack-plugin');
 
 const {prepareUrls} = require('@baidu/san-cli-utils/path');
-const {error, logger} = require('@baidu/san-cli-utils/ttyLogger');
+const {error, getScopeLogger} = require('@baidu/san-cli-utils/ttyLogger');
 
 const {addDevClientToEntry, getWebpackErrorInfoFromStats} = require('./utils');
 
-const log = logger.withTag('webpack/serve');
+const log = getScopeLogger('webpack/serve');
 
 module.exports = function devServer({webpackConfig, devServerConfig, publicPath, compilerCallback}) {
     return new Promise(async (resolve, reject) => {

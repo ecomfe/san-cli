@@ -3,10 +3,10 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const webpack = require('webpack');
-const {logger} = require('@baidu/san-cli-utils/ttyLogger');
+const {getScopeLogger} = require('@baidu/san-cli-utils/ttyLogger');
 
 const {getWebpackErrorInfoFromStats} = require('./utils');
-const log = logger.withTag('webpack/serve');
+const log = getScopeLogger('webpack/serve');
 
 module.exports = function build({webpackConfig, compilerCallback}) {
     return new Promise((resolve, reject) => {
@@ -17,10 +17,13 @@ module.exports = function build({webpackConfig, compilerCallback}) {
             compilerCallback(compiler);
         }
         const callback = (err, stats) => {
-            log.debug('build done');
             if (err || stats.hasErrors()) {
                 log.debug(err);
-                log.debug(stats);
+                if (stats.hasErrors()) {
+                    const info = stats.toJson();
+                    log.debug(info.errors);
+                }
+
                 reject(getWebpackErrorInfoFromStats(err, stats));
                 const isWatch = webpackConfig.watch;
                 if (!process.env.SAN_DEBUG && !isWatch) {
@@ -34,6 +37,10 @@ module.exports = function build({webpackConfig, compilerCallback}) {
             const watchOptions = webpackConfig.watchOptions || {};
             return compiler.watch(watchOptions, callback);
         }
-        compiler.run(callback);
+        try {
+            compiler.run(callback);
+        } catch (e) {
+            reject(e);
+        }
     });
 };

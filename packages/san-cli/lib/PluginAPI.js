@@ -8,7 +8,7 @@
 // 4. 注册 hook 时机
 // 5. 添加 log
 const path = require('path');
-const {logger} = require('@baidu/san-cli-utils/ttyLogger');
+const {getScopeLogger} = require('@baidu/san-cli-utils/ttyLogger');
 const argsert = require('@baidu/san-cli-utils/argsert');
 module.exports = class PluginAPI {
     constructor(id, service) {
@@ -16,7 +16,7 @@ module.exports = class PluginAPI {
         this.id = id;
         this.service = service;
         // 添加个 scope
-        const l = logger.withTag(id || 'unknown-plugin');
+        const l = getScopeLogger(id || 'unknown-plugin');
         this.log = l;
         this.logger = l;
     }
