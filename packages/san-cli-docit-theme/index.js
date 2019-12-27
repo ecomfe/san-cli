@@ -12,7 +12,6 @@ class Index extends Component {
             <content/>
         </div>
     `;
-
     static components = {
         header: Header,
         sidebar: Sidebar,
