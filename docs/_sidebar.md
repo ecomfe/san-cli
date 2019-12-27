@@ -10,10 +10,9 @@
         -   [CLI 预设](/presets.md)
         -   [环境变量](/env.md)
 -   常见解决方案
-    -   [rem+vw 屏幕适配](/rem_vw.md)
+    -   [rem+vw 屏幕适配](/rem-vw.md)
     -   [现代浏览器打包](/modern-mode.md)
-    -   [打包分析](/bundle_analyze.md)
-    -   [Svg 图片](/svg.md)
+    -   [打包分析](/bundle-analyze.md)
     -   [San Component](/component.md)
     -   [Smarty 相关](/smarty.md)
     -   [部署](/deployment.md)

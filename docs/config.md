@@ -150,7 +150,7 @@ plugins: [
         }
     },
     {
-        id: 'xxxxxx',
+        id: '插件 id',
         apply(api, projectOptions, options = {}) {
             ...
         }

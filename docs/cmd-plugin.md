@@ -86,3 +86,5 @@ exports.handler = argv => {
 ```
 
 这时候执行`san hello --name demo`就可以看到对应结果。
+
+> 在 San CLI 的项目代码中，san-cli-command-init 是 Command 插件，可以查看源码实现。
