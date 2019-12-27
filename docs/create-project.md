@@ -95,7 +95,7 @@ san remote list
 
 查看目前的映射关系表
 
-###### **_例如_**
+###### **例如**
 
 ```bash
 san remote list
