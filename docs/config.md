@@ -1,6 +1,14 @@
-# san.config.js
+---
+title: San CLI 配置文件
+---
+
+# San CLI 配置文件
+
+San CLI 的配置文件为`san.config.js`，该文件放在项目的根目录下，当执行 San CLI 命令的时候，CLI 会自动读取 san.config.js 的内容，当然我们也是支持传入 Config 文件，当使用 CLI 的时候，使用`--config`传入自定义的 Config 文件路径即可。
 
 ## 默认配置如下
+
+`san.config.js`的内容是一个 Node.js 的 CommandJS 格式，默认配置是：
 
 ```js
 module.exports = {
@@ -34,7 +42,11 @@ module.exports = {
 
 ## 配置项
 
-### env 相关
+下面来详细说下配置项。
+
+### 打包环境相关
+
+在打包的过程中，可能会遇见`.browserslistrc`、`postcss.config.js`和`.babelrc`文件。
 
 `browserslist` 浏览器兼容情况，babel-loader 中 targets 的 browsers 设置值（如果没有此配置项就从 package.json 中取 browserslist 设置值）。 _Array_
 
@@ -55,7 +67,6 @@ browserslist: [
 
 `jsonpFunction` output 的 jsonpFunction 设置值，默认值为 HK3。 _String_
 
-`transpileDependencies` 需要编译的 es6 模块（默认是不编译 node*modules 模块的，所以如果模块是 es6 可以在此处配置使 babel 编译，此方式有利于 Tree-Shaking）。 \_Array 数组项为 String 或 RegExp*
 
 ###### **_例如_**
 
