@@ -64,7 +64,7 @@ san command add san-command.js -g
 
 1. `--global`,`-g`：默认写到项目的 package.json 的 san 字段，使用`-g`则写到 home 文件夹的`sanrc.json`文件。
 2. command 实际是操作的`sanrc.json`或者 package.json `san` 的 commands 字段
-   :::
+:::
 
 ### san plugin add/remove/list
 
@@ -87,7 +87,7 @@ san plugin add san-plugin.js -g
 
 1. `--global`,`-g`：默认写到项目的 package.json 的 san 字段，使用`-g`则写到 home 文件夹的`sanrc.json`文件。
 2. plugin 实际是操作的`sanrc.json`或者 package.json `san` 的 plugins 字段
-   :::
+:::
 
 ### san remote add/remove/list
 
@@ -110,4 +110,4 @@ san remote rm project
 
 1. `remote`的命令不支持`--global`，操作的实际是`sanrc.json`的 `templateAlias` 字段。
 2. 不建议在`package.json`中添加`templateAlias`。
-   :::
+:::

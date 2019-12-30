@@ -1,7 +1,9 @@
 # San CLI
+
 San CLI 是一个命令行工具，其次它是一个内置 Webpack 的前端工程化构建工具。
 
 San CLI 在兼顾 San 生态的同时，尽量做到通用化配置，在设计之初，我们希望不局限于 San 的应用范畴，做可定制化的前端开发工具集。
+
 ## 安装
 
 ::: danger 特别说明
@@ -25,3 +27,11 @@ san -h
 san build
 san serve
 ```
+
+## 特点
+
+-   支持 Command 和 Service 双插件机制，可以定制化自己/团队的 CLI
+-   内置打包、部署、包分析、性能分析等功能和最佳实践
+-   支持自定义项目脚手架
+-   支持 Markdown 建站
+-   支持 San Component 文档预览功能
