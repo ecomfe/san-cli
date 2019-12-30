@@ -22,7 +22,8 @@
         -   [插件机制](/plugin.md)
         -   [Command 插件](/cmd-plugin.md)
         -   [Service 插件](/srv-plugin.md)
--   [Markdown 建站](/docit/README.md)
+-  Docit
+    -   [Markdown 建站](/docit/README.md)
     -   [Markdown 语法扩展](/docit/markdown.md)
     -   [Markdown 中执行 San 代码](/docit/sanbox.md)
     -   [San CLI 的 markdown-loader](/docit/loader.md)

@@ -31,11 +31,11 @@ exports.getRelativeLink = (from, to, rootUrl = '/') => {
     if (path.isAbsolute(to)) {
         return to;
     }
-
-    if (to) {
-        return path.join(rootUrl, URL.resolve(from, to));
+    to = URL.resolve(from, to);
+    if (/^\./.test(to)) {
+        return to;
     }
-    return from;
+    return path.join(rootUrl, to);
 };
 const unescapeHtml = html =>
     String(html)

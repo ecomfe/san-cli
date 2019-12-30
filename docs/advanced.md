@@ -149,31 +149,6 @@ module.exports = {
 
 这样`nano`这个模块就会被 Webpack 编译了。
 
-## 修改内置 Loader 的配置
-
-在 San CLI 中内置很多 Loader，都有默认配置，如果修改默认配置可以使用`loaderOptions`，其中 css 中的 loader（例如 style-loader 、css-loader 等）则可以通过`css.loaderOptions`进行修改，例如：
-
-```js
-module.exports = {
-    //...
-    loaderOptions: {
-        babel: {
-            plugins: [
-                [
-                    // @baidu/nano的按需引入
-                    require.resolve('babel-plugin-import'),
-                    {
-                        libraryName: '@baidu/nano',
-                        libraryDirectory: 'es',
-                        style: true
-                    }
-                ]
-            ]
-        }
-    }
-};
-```
-
 ## 使用 chainWebpack 和 configWebpack 进行个性化配置
 
 如果要更加自主的进行个性化的配置，那么可以在 San CLI 配置文件中的 chainWebpack 和 configWebpack 进行修改，`chainWebpack` 接受的参数是 [webpack-chain](https://github.com/neutrinojs/webpack-chain) 语法的配置，`configWebpack`接受的参数是 Webpack 的配置对象。
@@ -213,8 +188,25 @@ module.exports = {
 };
 ```
 
-## 其他配置
+## 在配置文件中添加 Service 插件
 
-1. sourcemap：js 的 sourcemap 使用`sourceMap`，css 的使用`css.sourceMap`；
-2. filenameHashing：给文件路径添加 hash 值；
-3. largeAssetSize：小于这个配置的图片和文件会被编译成 base64 放到 css 中。
+`plugins` 增加自定义插件，例如：
+
+```js
+module.exports = {
+    plugins: [
+        {
+            id: 'built-in:plugin-progress',
+            apply(api, projectOptions, options = {}) {
+                api.chainWebpack(webpackConfig => {
+                    options.color = require('@baidu/san-cli-utils/randomColor').color;
+                    webpackConfig.plugin('progress').use(require('webpackbar'), [options]);
+                });
+            }
+        },
+        'san-plugin.js'
+    ]
+};
+```
+
+如果想了解更多 Service 插件相关内容，那么请浏览[这个文档](./srv-plugin.md)
