@@ -1,3 +1,7 @@
+---
+title: 内部实现
+---
+
 # 内部实现
 
 San CLI 是一个命令行工具，其次它是一个内置 Webpack 的前端工程化构建工具。San CLI 在架构设计上采取了微核心和插件化的设计思想，我们可以通过插件机制添加命令行命令，还可以通过插件机制定制 Webpack 构建工具，从而满足不同 San 环境的前端工程化需求。
@@ -218,4 +222,5 @@ api.addDevServerMiddleware(() =>
     })
 );
 ```
+
 > P.S：Service 是继承`EventEmitter`的，具有事件机制，不过目前还没有使用，sad~。

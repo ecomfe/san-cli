@@ -1,4 +1,10 @@
+---
+title: 如何创建一个脚手架项目
+---
+
 # 如何创建一个脚手架项目
+
+日常开发中，团队可以创建自己的项目脚手架，本文将介绍脚手架创建的方法。
 
 ## 脚手架项目必备的基础目录结构
 
@@ -8,7 +14,7 @@
 └── meta.js/meta.json   # 模板创建 prompt 交互问题
 ```
 
-cli 使用 gulp，handlerbars 渲染 template 目录，所以脚手架请使用 handlerbars 语法。
+San CLI 使用 handlerbars 渲染 template 目录，所以脚手架请使用 handlerbars 语法。
 
 ## meta.js/meta.json
 
