@@ -30,6 +30,7 @@ module.exports = function(content) {
     const {resourcePath, resourceQuery} = loaderContext;
     const rawQuery = resourceQuery.slice(1);
     const query = qs.parse(rawQuery);
+
     let index = parseInt(query.index, 10);
 
     const inheritQuery = `&${rawQuery}`;
@@ -37,12 +38,13 @@ module.exports = function(content) {
     // eslint-disable-next-line
     let {
         codebox = '',
-        context = process.cwd(),
+        context = query.context || process.cwd(),
         i18n = '',
         markdownIt,
+        rootUrl = '/',
         extractHeaders = ['H2', 'H3'],
         hotReload = false
-    } = loaderUtils.getOptions(this) || {};
+    } = loaderUtils.getOptions(loaderContext) || query;
 
     const relativePath = path.relative(context, resourcePath);
     const link = mdLink2Html(relativePath);
@@ -65,8 +67,12 @@ module.exports = function(content) {
 
     // 合并下 mardownIt 配置
     markdownIt = Object.assign(markdownIt || {}, matter.markdownIt || {});
-
-    const toc = parseHeader(content, compiler.getCompiler(), extractHeaders);
+    markdownIt.link = {
+        relativeLink: link,
+        context,
+        rootUrl
+    };
+    const toc = parseHeader(content, compiler.getCompiler(markdownIt), extractHeaders);
 
     const getTemplate = (content, quote = true) => {
         const cls = typeof matter.classes === 'string' ? [matter.classes] : matter.classes || ['markdown'];
@@ -131,7 +137,11 @@ module.exports = function(content) {
     // 3. 转到 template 的处理去上面的 switch 分支
     let code;
     let templateRequest = stringifyRequest(
-        [`-!${require.resolve('html-loader')}`, __filename, resourcePath + '?exportType=html'].join('!')
+        [
+            `-!${require.resolve('html-loader')}`,
+            __filename,
+            resourcePath + `?exportType=html&rootUrl=${rootUrl}&hotReload=${String(hotReload)}&context=${context}`
+        ].join('!')
     );
     if (sanboxArray.length === 0) {
         // 如果没有san box 则直接返回 html template

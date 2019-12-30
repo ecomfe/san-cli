@@ -74,6 +74,7 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
             addPage(layouts, projectOptions.outputDir, markdownFiles, api.resolve(entry), webpackConfig, siteData);
         }
 
+        let docContext = isDirectory ? api.resolve(entry) : context;
         // 添加 config loader + alias
         webpackConfig.resolve.alias.set('@sitedata', siteDataConfigPath);
         webpackConfig.module
@@ -93,7 +94,12 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
             if (aliasfile) {
                 webpackConfig.resolve.alias
                     // 加个🍗
-                    .set(aliasName, `${aliasfile}?exportType=data`);
+                    .set(
+                        aliasName,
+                        `${aliasfile}?exportType=data&context=${docContext}&hotReload=${
+                            api.isProd() ? 'false' : 'true'
+                        }&rootUrl=${publicUrl}`
+                    );
             } else {
                 webpackConfig.resolve.alias
                     // 加个假的，防止找不到报错
@@ -102,7 +108,6 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
         });
 
         // TODO 用 plugin 处理md 的链接 publicUrl？：支持 link 和 image 图片两种情况处理，相对路径添加 root
-
         // 设置统一的 md loader
         const baseRule = webpackConfig.module.rule('markdown').test(/\.md$/);
         baseRule
@@ -110,7 +115,7 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
             .loader(require.resolve('@baidu/san-cli-markdown-loader'))
             .options(
                 Object.assign({}, mdOptions, {
-                    context: isDirectory ? api.resolve(entry) : context,
+                    context: docContext,
                     rootUrl: publicUrl,
                     codebox: template,
                     // 是否热更新

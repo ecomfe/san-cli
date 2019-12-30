@@ -2,6 +2,8 @@
  * @file utils
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+const path = require('path');
+const URL = require('url');
 const {remove: removeDiacritics} = require('diacritics');
 
 // eslint-disable-next-line no-control-regex
@@ -22,7 +24,19 @@ exports.slugify = str =>
         // lowercase
         .toLowerCase();
 
-exports.mdLink2Html = str => str.replace(/\.md$/, '.html').replace(/README\.html$/, 'index.html');
+const mdLink2Html = str => str.replace(/\.md$/, '.html').replace(/README\.html$/, 'index.html');
+exports.mdLink2Html = mdLink2Html;
+exports.getRelativeLink = (from, to, rootUrl = '/') => {
+    to = mdLink2Html(to);
+    if (path.isAbsolute(to)) {
+        return to;
+    }
+
+    if (to) {
+        return path.join(rootUrl, URL.resolve(from, to));
+    }
+    return from;
+};
 const unescapeHtml = html =>
     String(html)
         .replace(/&quot;/g, '"')

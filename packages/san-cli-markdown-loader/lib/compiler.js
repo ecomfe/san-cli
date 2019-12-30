@@ -6,7 +6,6 @@ const MdIt = require('markdown-it');
 
 function getCompiler(opt = {}) {
     // {
-    //     options: {},
     //     anchor
     //     toc
     //     lineNumbers
@@ -14,6 +13,7 @@ function getCompiler(opt = {}) {
     //   extractHeaders
     // }
     const {
+        link,
         lineNumbers = false,
         anchor = {permalink: true, permalinkBefore: true, permalinkSymbol: '#'},
         extend = () => {},
@@ -104,7 +104,7 @@ function getCompiler(opt = {}) {
     });
 
     parser.use(require('./markdown/jsx'));
-    parser.use(require('./markdown/link'));
+    parser.use(require('./markdown/link'), link);
     parser.use(require('./markdown/snippet'));
 
     if (typeof extend === 'function') {

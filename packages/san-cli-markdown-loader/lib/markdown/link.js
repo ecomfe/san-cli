@@ -2,9 +2,13 @@
  * @file 将相对.md 换成 html，href 是外链添加 blank
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const {mdLink2Html} = require('../utils');
+const {getRelativeLink} = require('../utils');
 
-function markdownitLink(md, configs) {
+function markdownitLink(md, configs = {}) {
+    let pathRelative = getRelativeLink;
+    if (typeof configs.relativeLink === 'function') {
+        pathRelative = configs.relativeLink;
+    }
     /* eslint-disable fecs-camelcase*/
     md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
         const token = tokens[idx];
@@ -12,7 +16,7 @@ function markdownitLink(md, configs) {
         if (hrefIndex >= 0) {
             let href = token.attrs[hrefIndex][1];
             if (/^[\.\/]+.*?\.md$/.test(href)) {
-                href = mdLink2Html(href);
+                href = pathRelative(configs.relativeLink, href, configs.rootUrl || '/');
             }
             token.attrs[hrefIndex][1] = href;
 
