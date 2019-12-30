@@ -9,8 +9,17 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     // 开始正式的操作
     let webpackConfig = api.getWebpackConfig();
     const entry = argv.entry;
+    const devServerArgv = {};
+    ['https', 'host', 'port', 'publicUrl'].forEach(item => {
+        if (argv[item]) {
+            devServerArgv[item] = argv[item];
+        }
+    });
 
     webpackConfig = resolveEntry(entry, api.resolve(entry), webpackConfig, require.resolve('../../template/main.js'));
-    webpackConfig.devServer = Object.assign({hot: !isProd, compress: isProd}, webpackConfig.devServer);
+    webpackConfig.devServer = Object.assign({
+        hot: !isProd,
+        compress: isProd
+    }, webpackConfig.devServer, devServerArgv);
     return webpackConfig;
 };

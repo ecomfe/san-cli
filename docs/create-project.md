@@ -97,5 +97,5 @@ san remote list
 ###### ***例如***
 
 ```bash
-san remote remove hello
+san remote list
 ```

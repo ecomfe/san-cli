@@ -12,10 +12,6 @@ const schema = joi
         jsonpFunction: joi.string(),
         transpileDependencies: joi.array(),
         // 产出相关
-        // 下面这个将 public 内容 copy 到产出文件夹
-        // 使用打包脚本自己处理吧，不再单独暴漏配置项
-        // copyPublicDir: joi.boolean(),
-        // 专门给 smarty 留的一个配置项
         copy: joi.alternatives().try(
             joi.array().items(
                 joi

@@ -46,12 +46,6 @@ const builder = (exports.builder = {
         type: 'string',
         describe: 'Hostname of the URL'
     },
-    watch: {
-        alias: 'w',
-        type: 'boolean',
-        default: false,
-        describe: 'Watch mode'
-    },
     qrcode: {
         type: 'boolean',
         default: true,
