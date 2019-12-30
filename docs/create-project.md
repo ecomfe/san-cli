@@ -3,6 +3,7 @@ title: 初始化项目
 markdownIt:
     lineNumbers: false
 ---
+
 # 初始化项目
 
 ## 没有安装 San-CLI 需要安装
@@ -10,7 +11,6 @@ markdownIt:
 ```bash
 npm i -g san-cli
 ```
-
 
 ## 快速创建
 
@@ -22,7 +22,7 @@ san init <template> <app-name>
 2. template 是工程项目脚手架地址，支持 github，icode，gitlab 等 repo 作为脚手架直接创建项目，并且可以指定 template 的 alias，详见下方**san remote**
 3. app-name 是要创建的工程项目目录，可以为`.`（即在当前目录下创建）
 
-###### ***例如***
+###### **_例如_**
 
 ```bash
 # 1. 支持传入完整repo地址:
@@ -42,36 +42,35 @@ san init template#branch demo
 san init template#branch .
 ```
 
-## 参数说明
+## `init` 参数说明
 
-`--useCache，--cache` 优先使用本地已经下载过的脚手架缓存
+-   `--useCache，--cache` 优先使用本地已经下载过的脚手架缓存
+-   `--install` 初始化成功后，进入目录安装依赖
+-   `--offline` 标示 template 是离线脚手架
+-   `--force` 跳过提醒，强制删除已存在的目录，默认会提醒
+-   `--username，--u` 指定 Git 用户名，默认：git
+-   `--registry` 设置 npm registry
 
-`--install` 初始化成功后，进入目录安装依赖
+## 使用 remote 管理脚手架模板别名
 
-`--offline` 标示 template 是离线脚手架
+初始化的时候，项目脚手架路径较长，不容易记忆，可以使用 remote 命令来管理脚手架模板的别名。remote 方法包括三个：
 
-`--force` 跳过提醒，强制删除已存在的目录，默认会提醒
-
-`--username，--u` 指定 Git 用户名，默认：git
-
-`--registry` 设置 npm registry
-
-## san remote
-
-可以指定 template 的 alias
+-   add：添加
+-   remove/rm：删除，
+-   list/ls：列出脚手架模板 alias
 
 #### 1. 添加一组 alias
 
 ```bash
+# 基本语法
 san remote add <name> <url>
 ```
 
-将你输入的映射的关系存入本地.sanrc 文件中
-
-###### ***例如***
+###### **_例如_**
 
 ```bash
 san remote add hello github:yyt/HelloWorld
+san remote add project ssh://git@icode.baidu.com:8235/baidu/hulk/san-project-base
 ```
 
 #### 2. 移除一组 alias
@@ -80,12 +79,12 @@ san remote add hello github:yyt/HelloWorld
 san remote remove <name>
 ```
 
-从本地.sanrc 文件中将你输入的映射的关系移除
+从预设文件中将你输入的映射的关系移除
 
-###### ***例如***
+###### **_例如_**
 
 ```bash
-san remote remove hello
+san remote rm hello
 ```
 
 #### 3. 查看 alias 列表
@@ -94,8 +93,14 @@ san remote remove hello
 san remote list
 ```
 
-###### ***例如***
+查看目前的映射关系表
+
+###### **_例如_**
 
 ```bash
 san remote list
+# or
+san remote ls
 ```
+
+更多类似用法和配置方式查看[预设文件](/presets.md)。

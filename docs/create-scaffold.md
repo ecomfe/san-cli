@@ -37,12 +37,15 @@ module.exports = {
 **例如**
 
 ```js
-helpers: {
-    if_or: (v1, v2, options) => {
-        if (v1 || v2) {
-            return options.fn(this);
-        }
-        return options.inverse(this);
+// meta.js
+{
+    helpers: {
+        if_or: (v1, v2, options) => {
+            if (v1 || v2) {
+                return options.fn(this);
+            }
+            return options.inverse(this);
+        };
     }
 }
 ```
@@ -52,13 +55,16 @@ helpers: {
 **例如**
 
 ```js
-filters: {
-    'mock/**': 'tplEngine!=="smarty"',
-    'template/**': 'tplEngine!=="smarty"',
-    'template/demo-store/**': '!demo || (demo && demoType!=="store")',
-    'template/demo/**': '!demo || (demo && demoType!=="normal")',
-    'src/pages/demo-store/**': '!demo || (demo && demoType!=="store")',
-    'src/pages/demo/**': '!demo || (demo && demoType!=="normal")'
+// meta.js
+{
+    filters: {
+        'mock/**': 'tplEngine!=="smarty"',
+        'template/**': 'tplEngine!=="smarty"',
+        'template/demo-store/**': '!demo || (demo && demoType!=="store")',
+        'template/demo/**': '!demo || (demo && demoType!=="normal")',
+        'src/pages/demo-store/**': '!demo || (demo && demoType!=="store")',
+        'src/pages/demo/**': '!demo || (demo && demoType!=="normal")'
+    }
 }
 ```
 
@@ -67,56 +73,59 @@ filters: {
 **例如**
 
 ```js
-prompts: {
-    name: {
-        type: 'string',
-        required: true,
-        label: '项目名称',
-        default: '{{name}}'
-    },
-    tplEngine: {
-        type: 'list',
-        message: '选择模板引擎',
-        choices: [
-            {
-                name: '使用Smarty',
-                value: 'smarty',
-                short: 'Smarty'
-            },
-            {
-                name: '纯 HTML',
-                value: 'html',
-                short: 'HTML'
-            }
-        ]
-    },
-    demo: {
-        type: 'confirm',
-        message: '安装demo示例？'
-    },
-    demoType: {
-        when: 'demo',
-        type: 'list',
-        message: '选择示例代码类型：',
-        choices: [
-            {
-                name: 'san-store (推荐)',
-                value: 'store',
-                short: 'san-store'
-            },
-            {
-                name: 'normal',
-                value: 'normal',
-                short: 'normal'
-            }
-        ]
+// meta.js
+{
+    prompts: {
+        name: {
+            type: 'string',
+            required: true,
+            label: '项目名称',
+            default: '{{name}}'
+        },
+        tplEngine: {
+            type: 'list',
+            message: '选择模板引擎',
+            choices: [
+                {
+                    name: '使用Smarty',
+                    value: 'smarty',
+                    short: 'Smarty'
+                },
+                {
+                    name: '纯 HTML',
+                    value: 'html',
+                    short: 'HTML'
+                }
+            ]
+        },
+        demo: {
+            type: 'confirm',
+            message: '安装demo示例？'
+        },
+        demoType: {
+            when: 'demo',
+            type: 'list',
+            message: '选择示例代码类型：',
+            choices: [
+                {
+                    name: 'san-store (推荐)',
+                    value: 'store',
+                    short: 'san-store'
+                },
+                {
+                    name: 'normal',
+                    value: 'normal',
+                    short: 'normal'
+                }
+            ]
+        }
     }
 }
 ```
 
 ## san.config.js
 
-san.config.js 是 San-CLI 的配置文件，配置格式[参考](./config.md)
+san.config.js 是 San-CLI 的配置文件，配置格式[参考](/config.md)
 
 ## 相关 dot 文件
 
