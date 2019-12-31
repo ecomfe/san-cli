@@ -15,7 +15,7 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
     const mdOptions = (projectOptions.loaderOptions || docitOptions).markdown || {};
     const isProd = api.isProd();
     const context = api.getCwd();
-    const publicUrl = projectOptions.publicUrl;
+    const publicPath = projectOptions.publicPath;
 
     const loadConfig = require('./lib/loadConfig');
     const loadTheme = require('./lib/loadTheme');
@@ -29,7 +29,7 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
     const {isFile, type, isDirectory} = resolveEntry(entry);
     let {data: siteData, config: siteDataConfigPath} = loadConfig(isDirectory ? api.resolve(entry) : context) || {};
 
-    siteData.rootUrl = publicUrl;
+    siteData.rootUrl = publicPath;
     // 不存在 siteDataConfig，则使用默认的
     if (!siteDataConfigPath) {
         siteDataConfigPath = require.resolve('./template/site.yml');
@@ -98,7 +98,7 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
                         aliasName,
                         `${aliasfile}?exportType=data&context=${docContext}&hotReload=${
                             api.isProd() ? 'false' : 'true'
-                        }&rootUrl=${publicUrl}`
+                        }&rootUrl=${publicPath}`
                     );
             } else {
                 webpackConfig.resolve.alias
@@ -106,7 +106,6 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
                     .set(aliasName, `${require.resolve(`./template/${filepath}`)}?exportType=data`);
             }
         });
-
         // TODO 用 plugin 处理md 的链接 publicUrl？：支持 link 和 image 图片两种情况处理，相对路径添加 root
         // 设置统一的 md loader
         const baseRule = webpackConfig.module.rule('markdown').test(/\.md$/);
@@ -116,7 +115,7 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
             .options(
                 Object.assign({}, mdOptions, {
                     context: docContext,
-                    rootUrl: publicUrl,
+                    rootUrl: publicPath,
                     codebox: template,
                     // 是否热更新
                     hotReload: api.isProd() ? false : true

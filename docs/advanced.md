@@ -209,4 +209,43 @@ module.exports = {
 };
 ```
 
+## 添加 dev server 中间件
+
+添加 dev server 中间件，需要使用 Service 的插件的`addDevServerMiddleware`方法，例如：
+
+```js
+const plugins = [
+    {
+        id: 'middleware1',
+        apply(api) {
+            // 使用 api 配置dev server 中间件
+            api.addDevServerMiddleware(() =>
+                require('@baidu/hulk-mock-server')({
+                    // 配置contentBase
+                    contentBase: path.join(__dirname, './' + outputDir + '/'),
+                    // 配置 mock 路径
+                    rootDir: path.join(__dirname, './mock'),
+                    // 配置解析器相关内容
+                    processors: [
+                        `smarty?router=/template/*&baseDir=${path.join(
+                            __dirname,
+                            `./${outputDir}/template`
+                        )}&dataDir=${path.join(__dirname, './mock/_data_')}`
+                    ] // eslint-disable-line
+                })
+            );
+        }
+    }
+];
+module.exports = {
+    plugins
+};
+```
+
+::: danger 特殊说明
+这里特殊说明下，`addDevServerMiddleware`传入的是一个 function，并且**返回**一个中间件。
+:::
+
+## 更多
+
 如果想了解更多 Service 插件相关内容，那么请浏览[这个文档](./srv-plugin.md)

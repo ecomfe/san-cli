@@ -1,4 +1,5 @@
 module.exports = {
+    publicPath:__isProduction?'http://hulk.baidu-int.com/sancli/':"/",
     devServer: {
         contentBase: __dirname
     },

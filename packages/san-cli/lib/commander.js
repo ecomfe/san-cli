@@ -61,9 +61,14 @@ function getCommonArgv(argv) {
     if (firstLog && !process.env.SAN_CLI_MODERN_BUILD && buildinCmds.includes(cmd)) {
         firstLog = false;
         // modern 打包不要输出这个了
-        console.log(
-            chalk.bold(textColor(`${scriptName[0].toUpperCase()}${scriptName.slice(1)} ${cmd} v${pkgVersion}`))
-        );
+        // 打印名字
+        if (cmd === 'init') {
+            console.log(chalk.bold(`${scriptName[0].toUpperCase()}${scriptName.slice(1)} ${cmd} v${pkgVersion}`));
+        } else {
+            console.log(
+                chalk.bold(textColor(`${scriptName[0].toUpperCase()}${scriptName.slice(1)} ${cmd} v${pkgVersion}`))
+            );
+        }
     }
     // 利用中间件机制，增加公共参数处理和函数等
     if (argv.verbose) {

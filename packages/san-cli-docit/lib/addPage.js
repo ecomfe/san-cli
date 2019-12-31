@@ -78,7 +78,7 @@ module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
                 matter,
                 {
                     compile: false,
-                    publicUrl: siteData.rootUrl,
+                    rootUrl: siteData.rootUrl,
                     chunks: [chunkname],
                     template: templatePath,
                     filename

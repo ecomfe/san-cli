@@ -22,7 +22,7 @@ module.exports = (template, dest, options) => {
                     return fs.remove(dest);
                     // 如果是当前目录下建
                 } else if (options._inPlace) {
-                    observer.next();// 添加这一句下面才能显示 prompt
+                    observer.next(); // 添加这一句下面才能显示 prompt
                     // 来一个疑问句，问是否确定在当前目录创建？
                     // eslint-disable-next-line
                     const {ok} = await prompt([
@@ -46,7 +46,9 @@ module.exports = (template, dest, options) => {
                             name: 'action',
                             type: 'list',
                             // eslint-disable-next-line
-                            message: `The directory ${chalk.cyan(shortDest)} already exists. Please select an operation：`,
+                            message: `The directory ${chalk.cyan(
+                                shortDest
+                            )} already exists. Please select an operation：`,
                             choices: [
                                 {name: 'overwrite', value: 'overwrite'},
                                 {name: 'merge', value: 'merge'},
@@ -75,6 +77,14 @@ module.exports = (template, dest, options) => {
                     // 添加 本地template 路径
                     ctx.localTemplatePath = templatePath;
                 } else {
+                    // 直接使用本地的路径进行复制
+                    const localAbsolutePath = path.resolve(template);
+                    if (fs.existsSync(localAbsolutePath)) {
+                        // 使用本地路径直接复制
+                        ctx.localTemplatePath = localAbsolutePath;
+                        return observer.complete();
+                    }
+
                     return observer.error('Offline scaffolding template path does not exist');
                 }
             }

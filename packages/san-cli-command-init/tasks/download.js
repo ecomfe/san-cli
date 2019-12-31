@@ -2,7 +2,7 @@
  * @file 检查目录和离线包状态
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-
+const path = require('path');
 const rxjs = require('rxjs');
 const fs = require('fs-extra');
 const {getLocalTplPath} = require('@baidu/san-cli-utils/path');
@@ -13,7 +13,8 @@ module.exports = (template, dest, options) => {
         return new rxjs.Observable(observer => {
             if (ctx.localTemplatePath) {
                 // 使用本地路径
-                task.skip('Use local path');
+                const relativePath = path.relative(process.cwd(), ctx.localTemplatePath).replace(/^(\.+\/+)+/g, '');
+                task.skip('Use local path `' + relativePath + '`');
                 observer.complete();
                 return;
             }

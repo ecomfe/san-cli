@@ -79,3 +79,5 @@ exports.clearConsole = () => {
         readline.clearScreenDown(process.stdout);
     }
 };
+
+exports.boxen = require('boxen');

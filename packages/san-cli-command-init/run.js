@@ -2,13 +2,16 @@
  * @file init command
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+const path = require('path');
+const consolidate = require('consolidate');
 const TaskList = require('./TaskList');
 const checkStatus = require('./tasks/checkStatus');
 const download = require('./tasks/download');
 const generator = require('./tasks/generator');
 const installDep = require('./tasks/installDep');
-const path = require('path');
-const {error} = require('@baidu/san-cli-utils/ttyLogger');
+const Handlebars = require('./handlerbars');
+
+const {error, chalk, success, fatal, boxen} = require('@baidu/san-cli-utils/ttyLogger');
 
 module.exports = (template, appName, options = {}) => {
     // template = alias(template);
@@ -35,11 +38,26 @@ module.exports = (template, appName, options = {}) => {
     const tasks = new TaskList(taskList);
     tasks
         .run()
-        .then(ctx => {
+        .then(({metaData: opts, tplData: data}) => {
             // const {metaData: argv, tplData: data} = ctx;
             const duration = (((Date.now() - startTime) / 10) | 0) / 100;
             console.log('✨  Done in ' + duration + 's.');
             // 有些 meta 的信息之类会有问题，所以加个强制退出
+            if (typeof opts.complete === 'function') {
+                // 传入参数
+                opts.complete(data, {
+                    chalk,
+                    logger: {
+                        boxen,
+                        error,
+                        fatal,
+                        success
+                    },
+                    files: []
+                });
+            } else {
+                logMessage(opts.completeMessage, data);
+            }
             process.exit(0);
         })
         .catch(e => {
@@ -48,3 +66,17 @@ module.exports = (template, appName, options = {}) => {
             process.exit(1);
         });
 };
+
+function logMessage(message, data) {
+    if (Handlebars.isHandlebarTPL(message)) {
+        consolidate.handlebars
+            .render(message, data)
+            .then(res => {
+                // 显示
+                console.log(res);
+            })
+            .catch(error);
+    } else if (message) {
+        console.log(message);
+    }
+}

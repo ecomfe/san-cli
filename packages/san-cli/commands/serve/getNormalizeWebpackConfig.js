@@ -17,9 +17,14 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     });
 
     webpackConfig = resolveEntry(entry, api.resolve(entry), webpackConfig, require.resolve('../../template/main.js'));
-    webpackConfig.devServer = Object.assign({
-        hot: !isProd,
-        compress: isProd
-    }, webpackConfig.devServer, devServerArgv);
+    webpackConfig.devServer = Object.assign(
+        {
+            hot: !isProd,
+            compress: isProd,
+            contentBase: projectOptions.outputDir
+        },
+        webpackConfig.devServer,
+        devServerArgv
+    );
     return webpackConfig;
 };

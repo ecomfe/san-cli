@@ -3,10 +3,10 @@
  * 修改自：https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/config/css.js
  */
 const semver = require('semver');
-const npmlog = require('npmlog');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const {cssnanoOptions: defaultCssnanoOptions} = require('../lib/const');
 const {findExisting} = require('@baidu/san-cli-utils/path');
+const {warn} = require('@baidu/san-cli-utils/ttyLogger');
 
 module.exports = {
     id: 'built-in:css',
@@ -139,10 +139,7 @@ module.exports = {
                     sassLoaderVersion = semver.major(require('sass-loader/package.json').version);
                 } catch (e) {}
                 if (sassLoaderVersion < 8) {
-                    npmlog.warn(
-                        'webpackConfig.css',
-                        'A new version of sass-loader is available. Please upgrade for best experience.'
-                    );
+                    warn('A new version of sass-loader is available. Please upgrade for best experience.');
                 }
                 // 添加 sass 逻辑
                 createCSSRule('scss', /\.scss$/, 'sass-loader', Object.assign({}, loaderOptions.sass));

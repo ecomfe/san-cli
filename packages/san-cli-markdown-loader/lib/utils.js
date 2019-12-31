@@ -29,7 +29,7 @@ exports.mdLink2Html = mdLink2Html;
 exports.getRelativeLink = (from, to, rootUrl = '/') => {
     to = mdLink2Html(to);
     if (path.isAbsolute(to)) {
-        return to;
+        return path.join(rootUrl, to);
     }
     to = URL.resolve(from, to);
     if (/^\./.test(to)) {

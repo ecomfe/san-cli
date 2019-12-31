@@ -57,13 +57,15 @@ function installDeps(dest, verbose = false, registry) {
     // 优先使用yarn
     if (hasYarn()) {
         registry = registry || registries.yarn;
-        args = ['--registry=' + registry];
+        // args = ['--registry=' + registry];
+        args = [];
         command = 'yarn';
     }
     // 使用npm
     else {
         registry = registry || registries.taobao;
-        args = ['install', '--loglevel', 'error', '--registry=' + registry];
+        // args = ['install', '--loglevel', 'error', '--registry=' + registry];
+        args = ['install', '--loglevel', 'error'];
         command = 'npm';
     }
     return execa(command, args, {
