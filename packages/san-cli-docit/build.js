@@ -63,6 +63,7 @@ module.exports = function build(argv, api, projectOptions) {
 
     // 获取 webpack 配置
     // for build
+    // console.log(getNormalizeWebpackConfig(argv, api, projectOptions))
     build({webpackConfig: getNormalizeWebpackConfig(argv, api, projectOptions)})
         .then(success)
         .catch(fail);
