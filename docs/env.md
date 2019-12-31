@@ -30,17 +30,17 @@ SAN_VAR_TRUE=true
 
 ## `build`命令中使用远程部署 `--remote` 的配置项
 
-在`san build`命令中，我们可以使用`--remote <remote-name>`的方式来将构建结果通过[deploy-files](https://github.com/jinzhan/deploy-files)插件上传到对应的开发机，方便进行测试和部署。而这里传入的`remote-name`实际是一个对应的开发机名称，比如小明的开发机可以配置在在`.env.local`中配置一个`xiaoming`机器相关的上传数据：
+在`san build`命令中，我们可以使用`--remote <remote-name>`的方式来将构建结果通过[deploy-files](https://github.com/jinzhan/deploy-files)插件上传到对应的开发机，方便进行测试和部署。而这里传入的`remote-name`实际是一个对应的开发机名称，比如小明的开发机可以配置在在`.env.production`中配置一个`xiaoming`机器相关的上传数据：
 
 ```bash
-# .env.local
+# .env.production
 SAN_REMOTE_XIAOMING_RECEIVER=http://www.xiaoming.com:8080/receiver.php
 SAN_REMOTE_XIAOMING_TEMPLATE_PATH=/home/work/nginx_static/html/test/template
 SAN_REMOTE_XIAOMING_STATIC_PATH=/home/work/nginx_static/html/test/static
 SAN_REMOTE_XIAOMING_STATIC_DOMAIN=http://test.bdstatic.com:8888
 ```
 
-这样，当我们执行`san build --remote xiaoming`的时候会自动去寻找`.env.local`的 remote 配置，打包结束后会调用`deploy-files`上传数据到自己的开发机。
+这样，当我们执行`san build --remote xiaoming`的时候会自动去寻找`.env.production`的 remote 配置，打包结束后会调用`deploy-files`上传数据到自己的开发机。
 
 > 插件中使用环境变量，也可以按照这个思路来用，因为插件的调用也是在加载`.env`文件之后的。
 

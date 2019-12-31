@@ -123,7 +123,7 @@ module.exports = {
 
 #### `outputDir` 产出目录
 
-`outputDir` 产出目录地址。
+`outputDir` 是产出目录地址。
 
 **例如**
 
@@ -133,9 +133,9 @@ module.exports = {
 }
 ```
 
-`assetsDir` 静态文件 outputDir 中的产出目录地址。 _String_
-
 #### `assetsDir`静态资源路径
+
+`assetsDir` 是静态文件 outputDir 中的产出目录地址。
 
 **例如**
 
