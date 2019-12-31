@@ -52,6 +52,7 @@
         "import-global": "^0.1.0",
         "import-lazy": "^4.0.0",
         "inquirer": "~7.0.0",
+        "less": "^3.10.3",
         "less-loader": "~5.0.0",
         "lodash.defaultsdeep": "^4.6.1",
         "lodash.merge": "^4.6.2",

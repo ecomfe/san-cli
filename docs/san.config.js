@@ -1,5 +1,5 @@
 module.exports = {
-    publicPath:__isProduction?'http://hulk.baidu-int.com/sancli/':"/",
+    publicPath: __isProduction ? 'http://hulk.baidu-int.com/sancli/' : '/',
     devServer: {
         contentBase: __dirname
     },
@@ -16,6 +16,9 @@ module.exports = {
                 chunks: 'initial'
             }
         }
+    },
+    css: {
+        cssPreprocessor: 'less'
     },
     loaderOptions: {
         markdown: {

@@ -8,7 +8,8 @@ echo "npm: v$(npm -v)"
 
 yarn
 
+echo '------------build doc------------'
 yarn build:doc
 
-
+echo '---------------------------------'
 echo 'docs pack success'

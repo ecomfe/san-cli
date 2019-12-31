@@ -53,8 +53,8 @@ module.exports = function apply(api, projectOptions) {
                 if (type === 'server') {
                     error('Local server start failed！', err);
                 } else if (stats && stats.toJson) {
-                    // const info = stats.toJson();
-                    // error(info.errors);
+                    const info = stats.toJson();
+                    error(info.errors);
                     // // TODO: 这里删掉，调试用的
                     // process.stderr.write(
                     //     stats.toString({

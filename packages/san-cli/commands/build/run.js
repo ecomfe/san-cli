@@ -27,14 +27,8 @@ module.exports = function apply(api, projectOptions) {
         function fail({err, stats}) {
             info('Build failed with errors.');
             if (stats && stats.toJson) {
-                process.stderr.write(
-                    stats.toString({
-                        colors: true,
-                        children: false,
-                        modules: false,
-                        chunkModules: false
-                    })
-                );
+                const info = stats.toJson();
+                error(info.errors);
             } else {
                 error(err ? err : 'Webpack config error, use `--verbose` flag to show debug log');
             }
