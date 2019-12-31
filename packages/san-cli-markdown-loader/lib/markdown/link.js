@@ -15,12 +15,7 @@ function markdownitLink(md, configs = {}) {
         const hrefIndex = token.attrIndex('href');
         if (hrefIndex >= 0) {
             let href = token.attrs[hrefIndex][1];
-            if (/^[\.\/]+.*?\.md$/.test(href)) {
-                href = pathRelative(configs.relativeLink, href, configs.rootUrl || '/');
-            }
-            token.attrs[hrefIndex][1] = href;
-
-            if (/^https?:\/\//.test(href)) {
+            if (href && /^https?:\/\//.test(href)) {
                 // 添加 target
                 let aIndex = token.attrIndex('target');
 
@@ -30,6 +25,10 @@ function markdownitLink(md, configs = {}) {
                     token.attrs[aIndex][1] = '_blank';
                 }
             }
+            if (/^[\.\/]+.*?\.md$/.test(href)) {
+                href = pathRelative(configs.relativeLink, href, configs.rootUrl || '/');
+            }
+            token.attrs[hrefIndex][1] = href;
         }
 
         return self.renderToken(tokens, idx, options, env, self);
