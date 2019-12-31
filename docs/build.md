@@ -43,4 +43,4 @@ san build [entry]
 
 -   `--watch，--w` 是否监听代码变化
 -   `--no-clean` 是否在 building 之前不删除上一次的产出文件，值为 true 或 false，默认 false
--   `--remote` 将编译产出远程部署到目标机器地址，具体使用可[参考文档](/deployment.md)
+-   `--remote` 将编译产出远程部署到目标机器的名称，具体使用可[参考文档](/deployment.md)
