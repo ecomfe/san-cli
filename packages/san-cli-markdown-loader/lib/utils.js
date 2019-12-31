@@ -29,13 +29,13 @@ exports.mdLink2Html = mdLink2Html;
 exports.getRelativeLink = (from, to, rootUrl = '/') => {
     to = mdLink2Html(to);
     if (path.isAbsolute(to)) {
-        return path.join(rootUrl, to);
+        return rootUrl.replace(/\/+$/, '') + '/' + to.replace(/^\/+/, '');
     }
     to = URL.resolve(from, to);
     if (/^\./.test(to)) {
         return to;
     }
-    return path.join(rootUrl, to);
+    return rootUrl.replace(/\/+$/, '') + '/' + to.replace(/^\/+/, '');
 };
 const unescapeHtml = html =>
     String(html)
