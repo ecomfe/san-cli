@@ -5,7 +5,6 @@
 
 import {Component} from 'san';
 import html from '@sidebar';
-
 export default class Sidebar extends Component {
     static template = /* html */ `
         <aside id="sidebar">

@@ -18,6 +18,10 @@ npm install -g san-cli
 yarn global add san-cli
 ```
 
+:::danger 提示
+当前 San CLI 处于内测阶段，安装使用`@baidu/san-cli`！
+:::
+
 ## 使用
 
 安装之后，你可以通过下面命令查看帮助

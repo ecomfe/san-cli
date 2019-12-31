@@ -4,7 +4,6 @@
  */
 
 import {Component} from 'san';
-
 export default class Content extends Component {
     static template = /* html */ `
         <article id="content">

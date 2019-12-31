@@ -28,7 +28,7 @@ exports.findExisting = (files, context) => {
         files = [files];
     }
     for (const file of files) {
-        const filePath = context ? path.join(context, file) : file;
+        const filePath = context && !path.isAbsolute(file) ? path.join(context, file) : file;
         if (fse.existsSync(filePath)) {
             return filePath;
         }

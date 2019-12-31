@@ -196,15 +196,15 @@ module.exports = function(content) {
     if (hotReload) {
         const hotId = hash(resourcePath + resourceQuery);
         code += `
+        // 下面 san-hmr 代码来自 san-cli-markdown-loader
         if(module.hot){
             var hotApi = require('san-hot-reload-api')
-
             hotApi.install(require('san'), false)
             if(!hotApi.compatible){
                 throw new Error('san-hot-reload-api is not compatible with the version of Vue you are using.')
             }
             module.hot.accept()
-            var id = '${hotId}'
+            var id = '${hotId}';
             var moduleDefault = module.exports ? module.exports.default : module.__proto__.exports.default
             if(!module.hot.data) {
                 hotApi.createRecord(id, moduleDefault)

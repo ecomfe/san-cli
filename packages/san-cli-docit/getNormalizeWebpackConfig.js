@@ -90,7 +90,11 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
             [sidebar, '@sidebar'],
             [navbar, '@navbar']
         ].forEach(([filepath, aliasName]) => {
-            const aliasfile = findExisting([filepath], isDirectory ? api.resolve(entry) : context);
+            const aliasfile = findExisting(
+                [filepath, path.resolve(__dirname, './template', filepath)],
+                isDirectory ? api.resolve(entry) : context
+            );
+            // 这里为了避免不存在路径的时候报错，处理不是很合适
             if (aliasfile) {
                 webpackConfig.resolve.alias
                     // 加个🍗
@@ -127,7 +131,6 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
 
     // 开始正式的操作
     let webpackConfig = api.getWebpackConfig();
-    // console.log(webpackConfig.module.rules[4])
     debug(webpackConfig);
 
     webpackConfig.devServer = Object.assign({hot: !isProd, compress: isProd}, webpackConfig.devServer);

@@ -14,6 +14,11 @@ export default class Header extends Component {
         </header>
     `;
     initData() {
-        return {nav: navHtml, sitedata};
+        return {
+            nav: navHtml,
+            sitedata: sitedata || {
+                title: 'San Docit'
+            }
+        };
     }
 }
