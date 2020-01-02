@@ -42,6 +42,8 @@ san init template#branch demo
 san init template#branch .
 ```
 
+> 为了方便，我们创建了一个 San 的基础项目，可以使用 san init ksky521/san-project 来安装这个项目脚手架
+
 ## `init` 参数说明
 
 -   `--useCache，--cache` 优先使用本地已经下载过的脚手架缓存

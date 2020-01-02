@@ -79,7 +79,7 @@ module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
                 {
                     compile: false,
                     rootUrl: siteData.rootUrl,
-                    chunks: [chunkname],
+                    chunks: ['common', 'vendors', chunkname],
                     template: templatePath,
                     filename
                 }

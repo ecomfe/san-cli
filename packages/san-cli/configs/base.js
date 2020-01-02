@@ -26,7 +26,7 @@ module.exports = {
                 // 留个小彩蛋吧~
                 .jsonpFunction(projectOptions.jsonpFunction || 'HK3')
                 /* eslint-disable max-len */
-                .filename((isLegacyBundle ? '[name]-legacy' : '[name]') + `${projectOptions.filenameHashing ? '.[hash:8]' : ''}.js`)
+                .filename((isLegacyBundle ? '[name]-legacy' : '[name]') + `${projectOptions.filenameHashing ? '.[contenthash:8]' : ''}.js`)
                 /* eslint-enable max-len */
                 .publicPath(projectOptions.publicPath);
 
