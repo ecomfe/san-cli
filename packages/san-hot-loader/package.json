@@ -1,0 +1,30 @@
+{
+  "name": "@baidu/san-hot-loader",
+  "version": "0.0.1-alpha.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --config examples/component-hmr/webpack.config.js"
+  },
+  "author": "clark-t",
+  "license": "MIT",
+  "engines": {
+      "node": ">=8.16"
+  },
+  "dependencies": {
+    "@babel/core": "^7.7.7",
+    "hash-sum": "^2.0.0",
+    "loader-utils": "^1.2.3",
+    "san-hot-reload-api": "^1.0.1"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^24.9.0",
+    "san": "^3.7.9",
+    "san-store": "^1.1.3",
+    "san-update": "^2.1.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
+  }
+}
