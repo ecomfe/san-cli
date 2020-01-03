@@ -22,7 +22,10 @@ module.exports = class StoreHmrHandler {
         }
 
         for (let pattern of this.options.patterns) {
-            if (pattern === 'auto') {
+            if (pattern === 'auto'
+                || pattern.store === 'auto'
+                || pattern.action === 'auto'
+            ) {
                 let matchOptions = matchByAst(source);
                 if (matchOptions) {
                     return matchOptions;

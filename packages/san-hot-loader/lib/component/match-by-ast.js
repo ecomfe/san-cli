@@ -14,7 +14,6 @@ const {
 
 module.exports = function (source) {
     let ast;
-
     try {
         ast = parser.parse(source);
     }
@@ -42,6 +41,7 @@ module.exports = function (source) {
 
 function isSanComponent(ast, node) {
     let trackers = getTopLevelIdentifierTracker(ast, node);
+    /* istanbul ignore next */
     if (!trackers) {
         return false;
     }
@@ -93,45 +93,51 @@ function getSanStoreConnectComponent(ast, node) {
     }
 
     let trackers = getTopLevelIdentifierTracker(ast, node);
-    if (!trackers || trackers.length !== 1) {
-        return;
-    }
-
-    let connectNode = trackers[0];
-    if (connectNode.type !== 'CallExpression'
-        || connectNode.callee.type !== 'CallExpression'
-    ) {
-        return;
-    }
-
-    trackers = getTopLevelIdentifierTracker(ast, connectNode.callee.callee);
-    if (!trackers) {
-        return;
-    }
-    // 示例:
-    // import {connect} from 'san-store'
-    // connect.san({}, {})(component)
-    if (val(trackers[trackers.length - 1]) === 'san'
-        && isImportedAPI(ast, trackers.slice(0, -1), 'san-store', 'connect')
-    ) {
-        return connectNode.arguments[0];
-    }
-    // 示例:
-    // import {connect} from 'san-store'
-    // let connector = connect.createConnector(store)
-    // connector({})(component)
-    if (trackers.length !== 1
+    if (!trackers
+        || trackers.length !== 1
         || trackers[0].type !== 'CallExpression'
     ) {
         return;
     }
 
-    trackers = getTopLevelIdentifierTracker(ast, trackers[0].callee);
-    if (trackers
-        && val(trackers[trackers.length - 1]) === 'createConnector'
-        && isImportedAPI(ast, trackers.slice(0, -1), 'san-store', 'connect')
+    let connectTrackers = getTopLevelIdentifierTracker(ast, trackers[0].callee);
+
+    if (!connectTrackers
+        || connectTrackers.length !== 1
+        || connectTrackers[0].type !== 'CallExpression'
     ) {
-        return connectNode.arguments[0];
+        return;
+    }
+
+    let connectorTrackers = getTopLevelIdentifierTracker(ast, connectTrackers[0].callee);
+    if (!connectorTrackers) {
+        return;
+    }
+    // 示例:
+    // import {connect} from 'san-store'
+    // connect.san({}, {})(component)
+    if (val(connectorTrackers[connectorTrackers.length - 1]) === 'san'
+        && isImportedAPI(ast, connectorTrackers.slice(0, -1), 'san-store', 'connect')
+    ) {
+        return trackers[0].arguments[0];
+    }
+    // 示例:
+    // import {connect} from 'san-store'
+    // let connector = connect.createConnector(store)
+    // connector({})(component)
+    if (connectorTrackers.length !== 1
+        || connectorTrackers[0].type !== 'CallExpression'
+        || connectorTrackers[0].arguments.length !== 1
+    ) {
+        return;
+    }
+
+    let creatorTrackers = getTopLevelIdentifierTracker(ast, connectorTrackers[0].callee);
+    if (creatorTrackers
+        && val(creatorTrackers[creatorTrackers.length - 1]) === 'createConnector'
+        && isImportedAPI(ast, creatorTrackers.slice(0, -1), 'san-store', 'connect')
+    ) {
+        return trackers[0].arguments[0];
     }
 }
 

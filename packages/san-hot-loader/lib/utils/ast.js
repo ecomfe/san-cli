@@ -25,11 +25,15 @@ function isImportedAPI(ast, nodeOrTrackers, moduleName, api) {
         return false;
     }
 
-    if (api) {
-        return api === val(trackers[1]);
+    if (!api) {
+        return true;
     }
 
-    return true;
+    if (trackers.length < 2) {
+        return false;
+    }
+
+    return api === val(trackers[1]);
 }
 
 function getExportDefault(ast) {
@@ -39,14 +43,7 @@ function getExportDefault(ast) {
             return node.declaration;
         }
         // module.exports = xxx
-        if (node.type === 'ExpressionStatement'
-            && node.expression.type === 'AssignmentExpression'
-            && node.expression.left.type === 'MemberExpression'
-            && node.expression.left.object.type === 'Identifier'
-            && node.expression.left.object.name === 'module'
-            && node.expression.left.property.type === 'Identifier'
-            && node.expression.left.property.name === 'exports'
-        ) {
+        if (node.type === 'ExpressionStatement' && isModuleExports(node.expression)) {
             return node.expression.right;
         }
     }
@@ -114,7 +111,7 @@ function getTopLevelIdentifierTracker(ast, inputNode) {
                         }
                     }
                     else if (declarator.id.type === 'ObjectPattern') {
-                        // 先不考虑 var {a: {b: c}} = require('xxx') 这种深层的情况，因为目前在 san HMR 的模块判断上根本用不到
+                        // 先不考虑 var {a: {b: c}} = require('xxx') 这种深层的情况，因为目前在 san HMR 的模块判断上用不到
                         for (let property of declarator.id.properties) {
                             if (property.value.type !== 'Identifier') {
                                 continue;
@@ -131,7 +128,7 @@ function getTopLevelIdentifierTracker(ast, inputNode) {
 
         }
 
-        if (node.type === 'ExpresssionStatement'
+        if (node.type === 'ExpressionStatement'
             && node.expression.type === 'AssignmentExpression'
             && node.expression.left.type === 'Identifier'
             && val(identifier) === node.expression.left.name
@@ -153,7 +150,6 @@ function getTopLevelIdentifierTracker(ast, inputNode) {
                 identifier = list[0];
                 continue;
             }
-
             // 遇到了其他类型，将其返回到外部做进一步处理
             results[0] = node.expression.right;
             return results;
@@ -301,39 +297,56 @@ function isImport(node) {
 }
 
 function isRequire(node) {
-    if (node
+    return node
         && node.type === 'CallExpression'
         && node.callee.type === 'Identifier'
         && node.callee.name === 'require'
         && node.arguments
         && node.arguments.length === 1
-        && node.arguments[0].type === 'StringLiteral'
-    ) {
-        return true;
-    }
-    return false;
+        && node.arguments[0].type === 'StringLiteral';
 }
 
-function getImportModulePath(ast, regexp) {
-    for (let node of ast.program.body) {
-        if (isImport(node)) {
-            if (regexp.test(node.source.value)) {
-                return node.source.value;
-            }
-            continue;
-        }
+function isExports(node) {
+    return node.type === 'AssignmentExpression'
+        && node.left.type === 'MemberExpression'
+        && node.left.object.name === 'exports';
+}
 
-        if (node.type === 'VariableDeclaration') {
-            for (let declarator of node.declarations) {
-                if (isRequire(declarator.init)) {
-                    if (regexp.test(declarator.init.arguments[0].value)) {
-                        return declarator.init.arguments[0].value;
-                    }
-                    continue;
+function isModuleExports(node) {
+    return node.type === 'AssignmentExpression'
+        && node.left.type === 'MemberExpression'
+        && node.left.object.name === 'module'
+        && node.left.property.name === 'exports';
+}
+
+function hasExport(ast) {
+    if (getExportDefault(ast)) {
+        return true;
+    }
+
+    for (let node of ast.program.body) {
+        if (node.type === 'ExportNamedDeclaration') {
+            return true;
+        }
+        // commonjs
+        // exports.xxx = function () {}
+        if (node.type === 'ExpressionStatement' && isExports(node.expression)) {
+            return true;
+        }
+        // commonjs
+        // exports.a = 1, exports.b = 2
+        if (node.type === 'ExpressionStatement'
+            && node.expression.type === 'SequenceExpression'
+        ) {
+            for (let subNode of node.expression.expressions) {
+                if (isExports(subNode)) {
+                    return true;
                 }
             }
         }
     }
+
+    return false;
 }
 
 module.exports = {
@@ -344,6 +357,6 @@ module.exports = {
     getPropertyList,
     getObjectPatternList,
     isModuleImported,
-    getImportModulePath
+    hasExport
 };
 

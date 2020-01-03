@@ -4,6 +4,7 @@
  */
 
 const babel = require('@babel/core');
+const proposalClassProperties = require('@babel/plugin-proposal-class-properties');
 const hash = require('hash-sum');
 
 /* globals Map */
@@ -16,7 +17,11 @@ module.exports = {
         if (!cache.has(id)) {
             try {
                 let ast = babel.parse(source, {
-                    sourceType: 'module'
+                    sourceType: 'module',
+                    filename: 'anonymous',
+                    plugins: [
+                        proposalClassProperties
+                    ]
                 });
                 cache.set(id, ast);
             }

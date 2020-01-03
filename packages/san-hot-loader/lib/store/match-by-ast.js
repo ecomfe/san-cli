@@ -9,7 +9,8 @@ const {
     isImportedAPI,
     getExportDefault,
     getTopLevelIdentifierTracker,
-    isModuleImported
+    isModuleImported,
+    hasExport
 } = require('../utils/ast');
 
 module.exports = function (source) {
@@ -47,8 +48,7 @@ module.exports = function (source) {
 
 function isGlobalActions(ast) {
     // 判断条件 1：global actions 无需 export default store
-    let defaultModule = getExportDefault(ast);
-    if (defaultModule) {
+    if (hasExport(ast)) {
         return false;
     }
 

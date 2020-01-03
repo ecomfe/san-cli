@@ -9,10 +9,11 @@
   "author": "clark-t",
   "license": "MIT",
   "engines": {
-      "node": ">=8.16"
+    "node": ">=8.16"
   },
   "dependencies": {
     "@babel/core": "^7.7.7",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
     "hash-sum": "^2.0.0",
     "loader-utils": "^1.2.3",
     "san-hot-reload-api": "^1.0.1"
