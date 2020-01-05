@@ -25,7 +25,7 @@ test('使用本地路径localTemplatePath', async () => {
             localTemplatePath: 'User/yyt'
         }, task)
         .then(data => {
-            expect(task.str).toBe('Use local path');
+            expect(task.str).toBe('Use local path `User/yyt`');
             expect(data.complete).toBeTruthy();
         });
 });
