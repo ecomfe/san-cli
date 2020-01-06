@@ -13,14 +13,13 @@ module.exports = class StoreHmrHandler {
     constructor(options, loaderContext) {
         this.options = normalizeOptions(defaultOptions, options.store);
         this.loaderContext = loaderContext;
-        this.enable = this.options.hotreload === true;
+        this.enable = this.options.enable !== false;
     }
 
     match(source) {
         if (!this.enable) {
             return;
         }
-
         for (let pattern of this.options.patterns) {
             if (pattern === 'auto'
                 || pattern.store === 'auto'
@@ -40,11 +39,11 @@ module.exports = class StoreHmrHandler {
                 }
             }
             // 手动指定 store 和 action 的匹配方法
-            else if (pattern.store instanceof RegExp && pattern.getActionPath instanceof Function) {
+            else if (pattern.store instanceof RegExp && pattern.getAction instanceof Function) {
                 if (pattern.store.test(this.loaderContext.resourcePath)) {
                     return {
                         type: 'instantSotre',
-                        actionPath: pattern.getActionPath(this.loaderContext.resourcePath)
+                        actionPath: pattern.getAction(this.loaderContext.resourcePath, this.loaderContext.context)
                     };
                 }
             }

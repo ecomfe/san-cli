@@ -4,12 +4,8 @@
  */
 
 module.exports = {
-    hotreload: false,
+    enable: true,
     patterns: [
-        {
-            action: /\.action\.js$/,
-            store: /\.store\.js$/
-        },
         {
             action: 'auto',
             store: 'auto'

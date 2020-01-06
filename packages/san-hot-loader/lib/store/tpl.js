@@ -12,7 +12,6 @@ function globalStoreActionHmrTpl({
     context
 }) {
     const id = genId(filePath, context);
-
     return `
     if (module.hot) {
         var __SAN_STORE_CLIENT_API__ = require('${storeClientApiPath}');
@@ -33,7 +32,6 @@ function instantStoreActionHmrTpl({
 }) {
     actionPath = path.resolve(context, actionPath);
     const id = genId(actionPath, context);
-
     return `
     if (module.hot) {
         var __SAN_STORE_ID__ = '${id}';

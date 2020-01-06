@@ -1,5 +1,5 @@
 /**
- * @file loader.spec.js
+ * @file webpack.config.js
  * @author tanglei02 (tanglei02@baidu.com)
  */
 
@@ -21,35 +21,40 @@ module.exports = {
                 test: /\.js$/,
                 use: [
                     {
-                        loader: path.resolve(__dirname, '../../index.js'),
+                        loader: path.resolve(__dirname, '../../index'),
                         options: {
                             component: {
-                                hotreload: true,
                                 patterns: [
-                                    'auto'
-                                    // {
-                                    //     component: /\.san\.js$/
-                                    // }
-                                    // // {
-                                    //     component: /\.san\?type=js/,
-                                    //     template: /\.san\?type=template/
-                                    // },
-                                    // {
-                                    //     component: 'auto',
-                                    //     template: 'auto'
-                                    // }
+                                    {
+                                        component: /\.san\.js$/
+                                    },
+                                    {
+                                        component: 'auto'
+                                    }
                                 ]
                             },
                             store: {
-                                hotreload: true,
                                 patterns: [
-                                    'auto'
-                                    // {
-                                    //     store: /\.store\.js$/,
-                                    //     action: /\.action\.js$/
-                                    // }
+                                    {
+                                        store: /\.store\.js$/,
+                                        getAction: function (storePath) {
+                                            return path.resolve(storePath, '../custom-store-actions.js');
+                                        }
+                                    },
+                                    {
+                                        store: 'auto',
+                                        action: 'auto'
+                                    }
                                 ]
                             }
+                        }
+                    },
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            plugins: [
+                                require.resolve('@babel/plugin-proposal-class-properties')
+                            ]
                         }
                     }
                 ]

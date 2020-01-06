@@ -13,11 +13,11 @@ module.exports = class ComponentHmrHandler {
     constructor(options, loaderContext) {
         this.options = normalizeOptions(defaultOptions, options.component);
         this.loaderContext = loaderContext;
-        this.enable = this.options.hotreload === true;
+        this.enable = this.options.enable !== false;
     }
 
     match(source) {
-        if (!this.options.hotreload) {
+        if (!this.enable) {
             return;
         }
 

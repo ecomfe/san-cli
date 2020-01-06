@@ -4,7 +4,7 @@
  */
 
 module.exports = {
-    hotreload: true,
+    enable: true,
     patterns: [
         'auto'
     ]

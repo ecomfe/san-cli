@@ -16,12 +16,17 @@ const handlerConstructors = [
 module.exports = async function (source, inputSourceMap) {
     this.cachable = true;
     const callback = this.async();
+    const options = loaderUtils.getOptions(this) || {};
+
+    if (options.enable === false) {
+        callback(null, source, inputSourceMap);
+        return;
+    }
+
     const finish = (code, map) => {
         parser.delete(source);
         callback(null, code, map);
     };
-
-    const options = loaderUtils.getOptions(this) || {};
 
     try {
         for (const HandlerConstructor of handlerConstructors) {

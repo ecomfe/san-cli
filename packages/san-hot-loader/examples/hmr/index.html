@@ -7,16 +7,22 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="format-detection" content="telephone=no">
         <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+        <style>
+        button {
+            border: 1px solid #dcdcdc;
+            background: #fff;
+        }
+        </style>
     </head>
     <body>
         <div id="timer">0</div>
         <script>
-            var dom = document.getElementById('timer')
-            var i = 0;
-            setInterval(function () {
-                i++
-                dom.innerText = i
-            }, 1000);
+        var dom = document.getElementById('timer');
+        var i = 0;
+        setInterval(function () {
+            i++;
+            dom.innerText = i;
+        }, 1000);
         </script>
 
     </body>
