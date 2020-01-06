@@ -60,7 +60,7 @@ function loader(content) {
         case sanboxSanComponent:
             // 如果 sanCode
             return sanCode;
-        case 'sanbox':
+        case 'sanbox': {
             // 获取 template 内容
             let templateContent = '';
 
@@ -123,6 +123,8 @@ function loader(content) {
                 source = source.replace(new RegExp(`('|")@docit/${str}\\1`, 'g'), requests[i]);
             });
             return source;
+        }
+
         // 这俩是内部用的！
         case 'js-component':
         case 'san-component':
