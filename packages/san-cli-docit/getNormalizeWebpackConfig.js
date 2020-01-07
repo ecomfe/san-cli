@@ -112,6 +112,7 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
         });
         // TODO 用 plugin 处理md 的链接 publicUrl？：支持 link 和 image 图片两种情况处理，相对路径添加 root
         // 设置统一的 md loader
+        webpackConfig.resolveLoader.modules.prepend(path.join(__dirname, 'node_modules'));
         const baseRule = webpackConfig.module.rule('markdown').test(/\.md$/);
         baseRule
             .use('markdown-loader')
