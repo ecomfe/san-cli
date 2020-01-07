@@ -35,7 +35,7 @@ module.exports = factory((babelOptions = {}, projectOptions, api) => {
 
     return {
         name: 'babel-loader',
-        loader: require.resolve('babel-loader'),
+        loader: 'babel-loader',
         options: {
             cacheDirectory: !isProd,
             presets: [

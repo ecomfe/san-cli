@@ -28,10 +28,8 @@ module.exports = {
         // 如果需要 babel 转义node_module 中的模块，则使用这个配置
         // 类似 xbox 这些基础库都提供 esm 版本
         const transpileDepRegex = genTranspileDepRegex(transpileDependencies);
-
         api.chainWebpack(webpackConfig => {
             webpackConfig.resolveLoader.modules.prepend(path.join(cliServicePath, 'node_modules'));
-
             const jsRule = webpackConfig.module
                 .rule('js')
                 .test(/\.m?js?$/)
@@ -49,6 +47,11 @@ module.exports = {
                     return /node_modules/.test(filepath);
                 })
                 .end();
+
+            if (api.isProd()) {
+                // 默认添加
+                jsRule.use('thread-loader').loader('thread-loader');
+            }
             const {name, loader, options: babelOptions} = require('./loaders/babel')(loaderOptions.babel, options, api);
             jsRule
                 .use(name)

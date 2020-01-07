@@ -7,7 +7,7 @@ const factory = require('./loaderFactory');
 module.exports = factory(options => {
     return {
         name: 'style-loader',
-        loader: require.resolve('style-loader'),
+        loader: 'style-loader',
         options
     };
 });
