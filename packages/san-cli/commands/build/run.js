@@ -25,11 +25,11 @@ module.exports = function apply(api, projectOptions) {
 
         // 获取 webpack 配置
         function fail({err, stats}) {
-            info('Build failed with errors.');
             if (stats && stats.toJson) {
-                const info = stats.toJson();
-                error(info.errors);
+                // const info = stats.toJson();
+                // error(info.errors);
             } else {
+                info('Build failed with errors.');
                 error(err ? err : 'Webpack config error, use `--verbose` flag to show debug log');
             }
             process.exit(1);

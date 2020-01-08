@@ -116,7 +116,7 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
         const baseRule = webpackConfig.module.rule('markdown').test(/\.md$/);
         baseRule
             .use('markdown-loader')
-            .loader(require.resolve('@baidu/san-cli-markdown-loader'))
+            .loader('@baidu/san-cli-markdown-loader')
             .options(
                 Object.assign({}, mdOptions, {
                     context: docContext,
