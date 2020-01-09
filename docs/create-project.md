@@ -22,13 +22,15 @@ san init <template> <app-name>
 2. template 是工程项目脚手架地址，支持 github，icode，gitlab 等 repo 作为脚手架直接创建项目，并且可以指定 template 的 alias，详见下方**san remote**
 3. app-name 是要创建的工程项目目录，可以为`.`（即在当前目录下创建）
 
-###### **_例如_**
+###### **例如**
 
 ```bash
 # 1. 支持传入完整repo地址:
-san init https://git.coding.net/yyt/HelloWorld.git demo
-san init ssh://yanyiting@icode.baidu.com:8235/baidu/san/san-project-base demo
 san init ksky521/san-project demo
+# 下面的示例请换成自己的地址和 username
+san init https://git.coding.net/yyt/HelloWorld.git demo
+# 下面的示例请换成自己的地址和 username
+san init ssh://yanyiting@icode.baidu.com:8235/baidu/san/san-project-base demo
 # 2. 默认是从 github repo 安装
 # 所以 git@github.com:ksky521/simple.git 这个 repo到 demo 文件，可以使用：
 san init simple demo
