@@ -28,7 +28,7 @@ san init <template> <app-name>
 # 1. 支持传入完整repo地址:
 san init https://git.coding.net/yyt/HelloWorld.git demo
 san init ssh://yanyiting@icode.baidu.com:8235/baidu/san/san-project-base demo
-san init git@github.com:ksky521/nodeppt-template-default.git demo
+san init ksky521/san-project demo
 # 2. 默认是从 github repo 安装
 # 所以 git@github.com:ksky521/simple.git 这个 repo到 demo 文件，可以使用：
 san init simple demo
