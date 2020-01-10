@@ -8,12 +8,12 @@ jest.mock('read-pkg');
 import loadRc from '../lib/loadRc';
 
 test('', () => {
-    const commands = loadRc(process.cwd() + '/packages/san-cli').commands;
+    const commands = loadRc(process.cwd() + '/packages').commands;
     let flag = false;
     commands.forEach(item => {
         if (item.indexOf('@baidu/san-cli-command-init') > -1) {
             flag = true;
         }
     });
-    expect(flag).toBeTruthy();
+    expect(flag).toBeFalsy();
 });

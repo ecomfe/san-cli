@@ -60,8 +60,8 @@ module.exports = function serve(argv, api, projectOptions) {
                 //         chunkModules: false
                 //     })
                 // );
-                const info = stats.toJson();
-                error(info.errors);
+                // const info = stats.toJson();
+                // error(info.errors);
             } else {
                 error(err);
             }

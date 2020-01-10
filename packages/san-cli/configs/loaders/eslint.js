@@ -9,7 +9,7 @@ module.exports = factory(
     options => {
         return {
             name: 'eslint',
-            loader: require.resolve('eslint-loader'),
+            loader: 'eslint-loader',
             options
         };
     },

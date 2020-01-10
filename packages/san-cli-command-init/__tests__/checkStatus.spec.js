@@ -40,7 +40,11 @@ test('在当前目录下 .', async () => {
         _inPlace: true
     })({}).then(data => {
         expect(data).toEqual({
-            next: ['Start checking target directory status', 'Check the status of the offline template'],
+            next: [
+                'Start checking target directory status',
+                undefined,
+                'Check the status of the offline template'
+            ],
             error: '',
             complete: true
         });
@@ -52,7 +56,7 @@ test('在当前目录下 .', async () => {
         _inPlace: true
     })({}).then(data => {
         expect(data).toEqual({
-            next: ['Start checking target directory status'],
+            next: ['Start checking target directory status', undefined],
             error: '',
             complete: false
         });

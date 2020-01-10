@@ -7,7 +7,7 @@ module.exports = factory(
     (options, projectOptions) => {
         return {
             name: 'html-loader',
-            loader: require.resolve('html-loader'),
+            loader: 'html-loader',
             options
         };
     },

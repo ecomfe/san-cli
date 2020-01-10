@@ -120,7 +120,18 @@ module.exports = {
                     if (hasPostCSSConfig) {
                         rule.use('postcss-loader')
                             .loader('postcss-loader')
-                            .options(Object.assign({sourceMap}, postCSSOptions));
+                            .options(
+                                Object.assign(
+                                    {
+                                        sourceMap,
+                                        config: {
+                                            // 从项目根目录查找 postcss config
+                                            path: api.getCwd()
+                                        }
+                                    },
+                                    postCSSOptions
+                                )
+                            );
                     }
 
                     if (loader) {

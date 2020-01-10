@@ -4,11 +4,13 @@
  */
 const webpack = require('webpack');
 const {getScopeLogger} = require('@baidu/san-cli-utils/ttyLogger');
-
+const SanFriendlyErrorsPlugin = require('./lib/SanFriendlyErrorsPlugin');
 const {getWebpackErrorInfoFromStats} = require('./utils');
 const log = getScopeLogger('webpack/serve');
 
 module.exports = function build({webpackConfig, compilerCallback}) {
+    webpackConfig.plugins.push(new SanFriendlyErrorsPlugin({clearConsole: false}));
+
     return new Promise((resolve, reject) => {
         log.debug('build start', webpackConfig);
         const compiler = webpack(webpackConfig);
@@ -19,16 +21,19 @@ module.exports = function build({webpackConfig, compilerCallback}) {
         const callback = (err, stats) => {
             if (err || stats.hasErrors()) {
                 log.debug(err);
+                let errorInfo;
                 if (stats.hasErrors()) {
-                    const info = stats.toJson();
-                    log.debug(info.errors);
+                    errorInfo = stats.toJson();
+                    log.debug(errorInfo.errors);
                 }
 
                 reject(getWebpackErrorInfoFromStats(err, stats));
                 const isWatch = webpackConfig.watch;
-                if (!process.env.SAN_DEBUG && !isWatch) {
+                if (isWatch) {
+                    log.error(err || errorInfo.errorInfo);
                     process.exit(1);
                 }
+                return;
             }
 
             resolve({stats});
