@@ -22,24 +22,31 @@ function genTranspileDepRegex(transpileDependencies) {
 module.exports = {
     id: 'built-in:babel',
     apply(api, options) {
-        const cliServicePath = path.dirname(path.resolve(__dirname, '../package.json'));
+        const cliPath = path.dirname(path.resolve(__dirname, '../package.json'));
         const {loaderOptions = {}, transpileDependencies = []} = options || {};
 
         // 如果需要 babel 转义node_module 中的模块，则使用这个配置
         // 类似 xbox 这些基础库都提供 esm 版本
         const transpileDepRegex = genTranspileDepRegex(transpileDependencies);
         api.chainWebpack(webpackConfig => {
-            webpackConfig.resolveLoader.modules.prepend(path.join(cliServicePath, 'node_modules'));
+            webpackConfig.resolveLoader.modules.prepend(path.join(cliPath, 'node_modules'));
             const jsRule = webpackConfig.module
                 .rule('js')
                 .test(/\.m?js?$/)
                 .exclude.add(filepath => {
-                    // 排除 cli 的路径
-                    // 单独排除 san-cli 路径，san-cli-xxx 不排除
-                    if (filepath.startsWith(cliServicePath) && !filepath.startsWith(cliServicePath + '-')) {
+                    // 包含 .san 的路径
+                    if (/\.san$/.test(filepath)) {
+                        return false;
+                    }
+                    // 包含 docit-theme 目录
+                    if (/node_modules\/(@[^\/]+\/|)[^\/@]*?docit-theme/.test(filepath)) {
+                        return false;
+                    }
+                    // 单独排除 san-cli 路径
+                    if (filepath.startsWith(cliPath)) {
                         return true;
                     }
-                    // 使用排除
+                    // 不排除白名单
                     if (transpileDepRegex && transpileDepRegex.test(filepath)) {
                         return false;
                     }
