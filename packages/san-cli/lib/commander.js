@@ -51,7 +51,7 @@ module.exports = () => {
         .alias('help', 'h')
         .alias('version', 'v')
         // TODO: 更改官网地址
-        .epilog('for more information, find our manual at http://ecomfe.github.com/san-cli');
+        .epilog('for more information, find our manual at http://hulk.baidu-int.com/sancli');
     return cli;
 };
 let firstLog = true;
