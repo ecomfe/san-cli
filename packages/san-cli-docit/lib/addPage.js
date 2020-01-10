@@ -6,6 +6,8 @@ const path = require('path');
 const fs = require('fs');
 const grayMatter = require('gray-matter');
 const {debug, error} = require('@baidu/san-cli-utils/ttyLogger');
+const {findExisting} = require('@baidu/san-cli-utils/path');
+
 function getChunkNameFromFilePath(filepath) {
     let {dir, name} = path.parse(filepath);
     if (/^readme$/i.test(name.toLowerCase())) {
@@ -19,9 +21,17 @@ function getChunkNameFromFilePath(filepath) {
         .replace(/(\/|\\)+/g, '-');
     return (chunkname + '-' + name).replace(/^-+/, '');
 }
+const cachedMap = {};
 module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
     const HTMLPlugin = require('html-webpack-plugin');
-    const htmlPath = path.resolve(context, 'public/index.html');
+    let htmlPath;
+    if (cachedMap[context]) {
+        htmlPath = cachedMap[context];
+    } else {
+        // 默认是找 public 的 docit.html，防止 index.html 作为它用
+        htmlPath = findExisting(['public/docit.html', 'public/index.html'], context);
+    }
+
     // theme 包中的 html
     const themeHtml = layouts.template;
     // 默认路径
