@@ -30,6 +30,9 @@ module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
     } else {
         // 默认是找 public 的 docit.html，防止 index.html 作为它用
         htmlPath = findExisting(['public/docit.html', 'public/index.html'], context);
+        if (htmlPath) {
+            cachedMap[context] = htmlPath;
+        }
     }
 
     // theme 包中的 html
