@@ -73,7 +73,9 @@ async function append(source, suffix, {
     sourceRoot
 }) {
     if (inputSourceMap) {
-        return await appendWithSourceMap(source, suffix, inputSourceMap);
+        // no-return-await
+        const result = await appendWithSourceMap(source, suffix, inputSourceMap);
+        return result;
     }
 
     return appendWithoutSourceMap(source, suffix, filePath, sourceRoot);
