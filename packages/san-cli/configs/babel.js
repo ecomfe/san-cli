@@ -56,10 +56,10 @@ module.exports = {
                 })
                 .end();
 
-            if (api.isProd()) {
-                // 默认添加
-                jsRule.use('thread-loader').loader('thread-loader');
-            }
+            // if (api.isProd()) {
+            //     // 默认添加
+            //     jsRule.use('thread-loader').loader('thread-loader');
+            // }
             const {name, loader, options: babelOptions} = require('./loaders/babel')(loaderOptions.babel, options, api);
             jsRule
                 .use(name)

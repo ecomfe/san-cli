@@ -133,8 +133,12 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
     // 开始正式的操作
     let webpackConfig = api.getWebpackConfig();
     debug(webpackConfig);
-
-    webpackConfig.devServer = Object.assign({hot: !isProd, compress: isProd}, webpackConfig.devServer);
+    if (argv.output) {
+        // build 模式，删掉 webpack devServer；
+        delete webpackConfig.devServer;
+    } else {
+        webpackConfig.devServer = Object.assign({hot: !isProd, compress: isProd}, webpackConfig.devServer);
+    }
     return webpackConfig;
 };
 
