@@ -28,16 +28,16 @@ san init <template> <app-name>
 # 1. 支持传入完整repo地址:
 san init ksky521/san-project demo
 # 下面的示例请换成自己的地址和 username
-san init https://git.coding.net/yyt/HelloWorld.git demo
-# 下面的示例请换成自己的地址和 username
-san init ssh://yanyiting@icode.baidu.com:8235/baidu/san/san-project-base demo
+san init https://github.com/ksky521/san-project.git demo
+# 下面的示例请换成自己的地址和 username (百度内部建议使用如下模板地址)
+san init ssh://${username}@icode.baidu.com:8235/baidu/hulk/san-project-base demo
 # 2. 默认是从 github repo 安装
 # 所以 git@github.com:ksky521/simple.git 这个 repo到 demo 文件，可以使用：
 san init simple demo
 #  3. 支持 github，icode，gitlab 等简写方式
-san init github:yyt/HelloWorld demo
-san init icode:baidu/baiduappfeed/itemrep demo
-san init coding:yyt/HelloWorld demo
+san init github:ksky521/san-project demo
+san init icode:baidu/hulk/san-project-base demo
+san init coding:ksky521/san-project demo
 # 4. 分支写法
 san init template#branch demo
 # 5. 项目生成在当前目录
