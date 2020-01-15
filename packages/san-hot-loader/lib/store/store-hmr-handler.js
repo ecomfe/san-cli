@@ -67,12 +67,13 @@ module.exports = class StoreHmrHandler {
         if (!this.loaderContext.sourceMap) {
             return {code: source + hmrCode};
         }
-
-        return await append(source, hmrCode, {
+        // no-return-await
+        const result = await append(source, hmrCode, {
             inputSourceMap,
             filePath: this.loaderContext.resourcePath,
             sourceRoot: this.loaderContext.context
         });
+        return result;
     }
 };
 
