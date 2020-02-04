@@ -6,7 +6,7 @@ const path = require('path');
 const fs = require('fs');
 const minify = require('html-minifier-terser').minify;
 const lMerge = require('lodash.merge');
-const {terserOptions: defaultTerserOptions, htmlMinifyOptions} = require('../lib/const');
+const {terserOptions: defaultTerserOptions, htmlMinifyOptions} = require('../options');
 module.exports = {
     id: 'built-in:app',
     apply(api, options) {

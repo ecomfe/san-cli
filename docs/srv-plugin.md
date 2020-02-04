@@ -75,7 +75,7 @@ api.configWebpack(webpackConfig => {
 插件可以发布到 npm 上，命名规范建议使用`san-cli-plugin-*`来命名。不发布到 npm 中也可以本地使用。Service 插件的使用有两种配置方法：
 
 1. 在`san.config.js`的 plugins 字段添加对应的路径或者直接`require`进来；
-2. 在项目的`package.json`的`san.servicePlugins`中添加路径或者 npm 插件报名
+2. 在项目的`package.json`的`san.plugins`中添加路径或者 npm 插件报名
 
 san.config.js 中举例：
 

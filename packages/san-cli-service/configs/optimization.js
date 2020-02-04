@@ -4,7 +4,7 @@
  */
 const TerserPlugin = require('terser-webpack-plugin');
 const {getAssetPath} = require('@baidu/san-cli-utils/path');
-const {terserOptions: defaultTerserOptions} = require('../lib/const');
+const {terserOptions: defaultTerserOptions} = require('../options');
 
 module.exports = {
     id: 'built-in:optimization',

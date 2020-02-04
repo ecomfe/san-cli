@@ -3,11 +3,10 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-const getHandler = require('./run');
-const command = (exports.command = 'serve [entry]');
-exports.aliases = ['dev'];
-const description = (exports.description = 'Builds and serves your app, rebuilding on file changes');
-const builder = (exports.builder = {
+const run = require('./run');
+exports.command = 'serve [entry]';
+exports.description = 'Builds and serves your app, rebuilding on file changes';
+exports.builder = {
     'use-https': {
         type: 'boolean',
         default: false,
@@ -16,18 +15,6 @@ const builder = (exports.builder = {
     public: {
         type: 'string',
         describe: 'specify the public network URL for the HMR client'
-    },
-    mode: {
-        alias: 'm',
-        type: 'string',
-        default: 'development',
-        choices: ['development', 'production'],
-        describe: 'Operating environment'
-    },
-    config: {
-        alias: 'config-file',
-        type: 'string',
-        describe: 'Project config file'
     },
     port: {
         alias: 'p',
@@ -51,20 +38,10 @@ const builder = (exports.builder = {
         default: true,
         describe: 'Print out the QRCode of the URL'
     }
-});
-const servePlugin = {
-    id: 'san-cli-command-serve',
-    apply(api, projectOptions) {
-        // 注册命令
-        api.registerCommand(command, getHandler(api, projectOptions));
-    }
 };
 
 exports.handler = argv => {
-    const getService = require('../../lib/getServiceInstance');
-    const service = getService(argv, [servePlugin]);
+    const callback = run.bind(run, argv);
 
-    service.run('serve', argv);
+    require('../../lib/service')('serve', callback);
 };
-
-exports.servePlugin = servePlugin;

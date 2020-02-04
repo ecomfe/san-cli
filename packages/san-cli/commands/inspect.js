@@ -28,61 +28,43 @@ const builder = (exports.builder = {
     }
 });
 
-const inspectPlugin = {
-    id: 'san-cli-command-inspect',
-    apply(api, projectOptions) {
-        // 注册命令
-        api.registerCommand(command, {
-            builder,
-            description,
-            handler: () => {}
-        });
-    }
-};
-
-exports.handler = async argv => {
+exports.handler = argv => {
     const {toString} = require('webpack-chain');
-    const getService = require('../lib/getServiceInstance');
-    const service = getService(argv, inspectPlugin);
-    await service.run('inspect', argv);
+    const service = require('../lib/service')('inspect', argv);
 
-    const config = service.getWebpackConfig();
-    let res;
-    let hasUnnamedRule;
+    service.run((api, project) => {
+        const config = api.getWebpackConfig();
+        let res;
+        let hasUnnamedRule;
 
-    if (argv.rule) {
-        res = config.module.rules.find(r => r.__ruleNames[0] === argv.rule);
-    }
-    else if (argv.plugin) {
-        res = config.plugins.find(p => p.__pluginName === argv.plugin);
-    }
-    else if (argv.rules) {
-        res = config.module.rules.map(r => {
-            const name = r.__ruleNames ? r.__ruleNames[0] : 'Nameless Rule (*)';
+        if (argv.rule) {
+            res = config.module.rules.find(r => r.__ruleNames[0] === argv.rule);
+        } else if (argv.plugin) {
+            res = config.plugins.find(p => p.__pluginName === argv.plugin);
+        } else if (argv.rules) {
+            res = config.module.rules.map(r => {
+                const name = r.__ruleNames ? r.__ruleNames[0] : 'Nameless Rule (*)';
 
-            hasUnnamedRule = hasUnnamedRule || !r.__ruleNames;
+                hasUnnamedRule = hasUnnamedRule || !r.__ruleNames;
 
-            return name;
-        });
-    }
-    else if (argv.plugins) {
-        res = config.plugins.map(p => p.__pluginName || p.constructor.name);
-    }
-    else if (argv.paths.length > 1) {
-        res = {};
-        argv.paths.forEach(path => {
-            res[path] = get(config, path);
-        });
-    }
-    else if (argv.paths.length === 1) {
-        res = get(config, argv.paths[0]);
-    }
-    else {
-        res = config;
-    }
+                return name;
+            });
+        } else if (argv.plugins) {
+            res = config.plugins.map(p => p.__pluginName || p.constructor.name);
+        } else if (argv.paths.length > 1) {
+            res = {};
+            argv.paths.forEach(path => {
+                res[path] = get(config, path);
+            });
+        } else if (argv.paths.length === 1) {
+            res = get(config, argv.paths[0]);
+        } else {
+            res = config;
+        }
 
-    const output = toString(res);
-    console.log(output);
+        const output = toString(res);
+        console.log(output);
+    });
 };
 
 function get(target, path) {

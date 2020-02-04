@@ -2,7 +2,7 @@
  * @file command Component
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const builder = {
+exports.builder = {
     'use-https': {
         type: 'boolean',
         default: false,
@@ -49,18 +49,35 @@ const builder = {
         describe: 'Print out the QRCode of the URL'
     }
 };
-const describe = 'Convert Markdown to San component';
-const command = 'docit [entry]';
-module.exports = {
-    id: 'san-cli-command-component',
-    apply(api, projectOptions) {
-        // 给 service 注册命令
-        api.registerCommand(command, function handler(argv) {
-            if (argv.output) {
-                require('./build')(argv, api, projectOptions);
-            } else {
-                require('./serve')(argv, api, projectOptions);
-            }
-        });
+exports.description = 'Convert Markdown to San component';
+exports.command = 'docit [entry]';
+
+exports.handler = cliApi => {
+    const Service = require('@baidu/san-cli-service');
+    const flatten = require('@baidu/san-cli-utils/utils').flatten;
+
+    const cwd = cliApi.getCwd();
+    const {configFile, noProgress, profile, mode = process.env.NODE_ENV, watch} = cliApi;
+    // 处理 rc 文件传入的 Service Class arguments
+    let {servicePlugins: plugins, useBuiltInPlugin = true, projectOptions} = cliApi.getPresets() || {};
+
+    const service = new Service('docit', {
+        cwd,
+        configFile,
+        watch,
+        mode,
+        useBuiltInPlugin,
+        projectOptions,
+        plugins: flatten(plugins),
+        useProgress: !noProgress,
+        useProfiler: profile
+    });
+    let run;
+    if (cliApi.output) {
+        run = require('./build');
+    } else {
+        run = require('./serve');
     }
+    let callback = run.bind(run, cliApi);
+    service.run(callback);
 };

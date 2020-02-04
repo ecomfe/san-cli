@@ -23,6 +23,23 @@ module.exports = class PluginAPI {
     isProd() {
         return this.service.mode === 'production';
     }
+    getCwd() {
+        return this.service.cwd;
+    }
+    getPkg() {
+        return this.service.pkg;
+    }
+    getProjectOption() {
+        return this.service.projectOptions;
+    }
+    resolve(p) {
+        if (p) {
+            argsert('<string>', [p], arguments.length);
+            return path.resolve(this.service.cwd, p);
+        } else {
+            return this.service.cwd;
+        }
+    }
     chainWebpack(fn) {
         argsert('<function>', [fn], arguments.length);
 
@@ -32,12 +49,8 @@ module.exports = class PluginAPI {
         argsert('<function>', [fn], arguments.length);
         this.service.webpackRawConfigFns.push(fn);
     }
-    resolve(p) {
-        if (p) {
-            argsert('<string>', [p], arguments.length);
-            return path.resolve(this.service.cwd, p);
-        } else {
-            return this.service.cwd;
-        }
+    middleware(middlewareFactory) {
+        argsert('<function>', [middlewareFactory], arguments.length);
+        this.serivce.devServerMiddlewares.push(middlewareFactory);
     }
 };
