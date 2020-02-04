@@ -31,7 +31,7 @@ const logger = consola.withTag('Service');
 
 /* global Map, Proxy */
 module.exports = class Service extends EventEmitter {
-    constructor(cwd, {plugins = [], useBuiltInPlugin = true, projectOptions = {}, cli = commander()} = {}) {
+    constructor(cwd, {plugins = [], useBuiltInPlugin = true, projectOptions = {}} = {}) {
         super();
         this.cwd = cwd || process.cwd();
         this.logger = consola;
@@ -45,11 +45,7 @@ module.exports = class Service extends EventEmitter {
         // 相关的 Map
         // 下面是注册命令 map
         this.registeredCommands = new Map();
-        // 下面是注册 command flag map
-        this.registeredCommandFlags = new Map();
-        this.registeredCommandHandlers = new Map();
 
-        this._cli = cli;
         this.devServerMiddlewares = [];
         this.plugins = this.resolvePlugins(plugins, useBuiltInPlugin);
     }
@@ -205,7 +201,6 @@ module.exports = class Service extends EventEmitter {
                         'version',
                         'on',
                         'emit',
-                        'registerCommandFlag',
                         'addPlugin',
                         'getWebpackChainConfig',
                         'getWebpackConfig',
@@ -240,68 +235,16 @@ module.exports = class Service extends EventEmitter {
         apply(api, this.projectOptions, options);
         return this;
     }
-    registerCommandFlag(cmdName, flag, handler) {
-        argsert('<string> <object> <function>', [cmdName, flag, handler], arguments.length);
-
-        cmdName = getCommandName(cmdName);
-        const flagMap = this.registeredCommandFlags;
-        let flags = flagMap.get(cmdName) || {};
-        flags = Object.assign(flags, flag);
-        flagMap.set(cmdName, flags);
-        const handlerMap = this.registeredCommandHandlers;
-        const handlers = handlerMap.get(cmdName) || [];
-        handlers.push(handler);
-        handlerMap.set(cmdName, handlers);
-        return this;
-    }
-    registerCommand(name, yargsModule) {
-        argsert('<string|object> [object]', [name, yargsModule], arguments.length);
-
-        /* eslint-disable one-var */
-        let command, description, builder, handler, aliases, extend;
-        /* eslint-enable one-var */
-        if (typeof name === 'object') {
-            command = name.command;
-            description = name.describe || name.description || name.desc;
-            builder = name.builder;
-            handler = name.handler;
-            aliases = name.aliases;
-            // 这里是扩展
-            extend = name.extend;
-        } else {
-            command = name;
-            if (typeof yargsModule === 'function') {
-                handler = yargsModule;
-            } else {
-                description = yargsModule.describe || yargsModule.description || yargsModule.desc;
-                builder = yargsModule.builder;
-                handler = yargsModule.handler;
-                aliases = yargsModule.aliases;
-                // 这里是扩展
-                extend = name.extend;
-            }
-        }
-
+    registerCommand(name, handler) {
         if (typeof handler !== 'function') {
             handler = argv => {
                 logger.warn('registerCommand', `${name} has an empty handler.`);
             };
         }
+        argsert('<string> <function>', [name, handler], arguments.length);
 
         // 绑定 run，实际是通过 run 之后执行的
-        const cmdName = getCommandName(command);
-        this.registeredCommands.set(cmdName, {
-            command,
-            handler,
-            aliases,
-            extend,
-            describe: description ? description : false,
-            builder: builder ? builder : {}
-        });
-        return this;
-    }
-    _registerCommand(yargsModule) {
-        this._cli.command(yargsModule);
+        this.registeredCommands.set(name, handler);
         return this;
     }
     async loadProjectOptions(configFile) {
@@ -381,63 +324,17 @@ module.exports = class Service extends EventEmitter {
         }
         return config;
     }
-    runCommand(cmd, rawArgs) {
+    runCommand(cmd, argv, rawArgv) {
         // 组装 command，然后解析执行
-        // 0. registerCommand 和 registerCommandFlag 记录 command
-        let handlers = this.registeredCommandHandlers.get(cmd);
-        let flags = this.registeredCommandFlags.get(cmd) || {};
-        /* eslint-disable fecs-camelcase */
-        const _command = this.registeredCommands.get(cmd);
-        /* eslint-enable fecs-camelcase */
-        if (!_command) {
+        const handler = this.registeredCommands.get(cmd);
+        if (!handler) {
             // 命令不存在哦~
-            logger.error('runCommand', `\`${this._cli.$0} ${cmd}\` is not exist!`);
+            logger.error('runCommand', `\`${cmd}\` is not exist!`);
             return this;
         }
-        /* eslint-disable fecs-camelcase */
-        const {command, handler: oHandler, describe, builder: oFlags, aliases} = _command;
-        /* eslint-enable fecs-camelcase */
-        // 0.1 处理 flags
-        const builder = Object.assign(flags, oFlags || {});
-        // 0.2 处理 handler
-        const handler = argv => {
-            if (!Array.isArray(handlers) && typeof handlers === 'function') {
-                handlers = [handlers];
-            }
-            let doit = true;
-            if (Array.isArray(handlers)) {
-                for (let i = 0, len = handlers.length; i < len; i++) {
-                    const handler = handlers[i];
-                    if (typeof handler === 'function') {
-                        doit = handler(argv);
-                        // ！！！返回 false 则则停止后续操作！！！
-                        if (doit === false) {
-                            // 跳出循环
-                            break;
-                        }
-                    }
-                }
-            }
-            // waring：
-            // 如果任何注入的命令 flag handler 返回为 false，则会停止后续命令执行
-            // 所以这里不一定会执行，看 doit 的结果
-            // 最后执行，因为插入的 flags 都是前置的函数，
-            // 而注册 command 的 handler 才是主菜
-            doit !== false && oHandler(argv);
-        };
-        // 1. cli 添加命令
-        this._registerCommand({
-            command,
-            handler,
-            describe,
-            builder,
-            aliases
-        });
-        // 2. cli.parse 解析
-        if (rawArgs[0] !== cmd) {
-            rawArgs.unshift(cmd);
+        if (typeof handler === 'function') {
+            handler(argv, rawArgv);
         }
-        this._cli.help().parse(rawArgs || process.argv.slice(2));
         return this;
     }
 
@@ -483,7 +380,7 @@ module.exports = class Service extends EventEmitter {
         timeEnd('init');
 
         time('runCommand');
-        this.runCommand(cmd, rawArgv);
+        this.runCommand(cmd, argv, rawArgv);
         timeEnd('runCommand');
 
         return this;
@@ -584,11 +481,4 @@ function ensureSlash(config, key) {
         }
         config[key] = val.replace(/([^/])$/, '$1/');
     }
-}
-
-function getCommandName(command) {
-    return command
-        .replace(/\s{2,}/g, ' ')
-        .split(/\s+(?![^[]*]|[^<]*>)/)[0]
-        .trim();
 }

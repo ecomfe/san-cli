@@ -55,21 +55,12 @@ module.exports = {
     id: 'san-cli-command-component',
     apply(api, projectOptions) {
         // 给 service 注册命令
-        api.registerCommand(command, {
-            builder,
-            describe,
-            handler(argv) {
-                if (argv.output) {
-                    require('./build')(argv, api, projectOptions);
-                } else {
-                    require('./serve')(argv, api, projectOptions);
-                }
+        api.registerCommand(command, function handler(argv) {
+            if (argv.output) {
+                require('./build')(argv, api, projectOptions);
+            } else {
+                require('./serve')(argv, api, projectOptions);
             }
         });
-    },
-    command: {
-        name: command,
-        describe,
-        builder
     }
 };

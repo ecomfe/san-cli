@@ -31,15 +31,11 @@ module.exports = {
     id: 'san-cli-command-serve',
     apply(api, projectOptions) {
         // 注册命令
-        api.registerCommand(command, {
-            builder,
-            description,
-            handler(argv) {
+        api.registerCommand(command, (argv)=> {
                 const webpackConfig = api.getWebpackConfig();
                 //...
                 // 开始 webpack 的操作
-            }
-        });
+            });
     }
 };
 ```
@@ -140,7 +136,7 @@ module.exports = {
 常见方法包括：
 
 -   `.isProd()`：是不是生产环境打包，`process.NODD_ENV==='production'`；
--   `.registerCommand(name, yargsModule)/.registerCommand(yargsModule)`：注册 command 命令，实例化 Service 之后执行`service.run(command, argv)`触发；
+-   `.registerCommand(name, handler)`：注册 command 命令，实例化 Service 之后执行`service.run(command, argv)`触发；
 -   `.configWebpack(fn)`：将`fn` 压入 webpackConfig 回调栈，`fn`会在出栈执行时接收 webpackConfig，用于修改 webpack config；
 -   `.chainWebpack(fn)`：将`fn` 压入 webpackChain 回调栈，`fn`会在出栈执行时接收 chainableConfig，用于 webpack-chain 语法修改 webpack config；
 -   `.resolve(p)`：获取 CLI 执行目录的完整路径；

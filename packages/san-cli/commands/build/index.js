@@ -86,11 +86,7 @@ const buildPlugin = {
     id: 'san-cli-command-build',
     apply(api, projectOptions) {
         // 注册命令
-        api.registerCommand(command, {
-            builder,
-            description,
-            handler: getHandler(api, projectOptions)
-        });
+        api.registerCommand(command, getHandler(api, projectOptions));
     }
 };
 exports.handler = argv => {

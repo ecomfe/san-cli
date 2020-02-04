@@ -56,11 +56,7 @@ const servePlugin = {
     id: 'san-cli-command-serve',
     apply(api, projectOptions) {
         // 注册命令
-        api.registerCommand(command, {
-            builder,
-            description,
-            handler: getHandler(api, projectOptions)
-        });
+        api.registerCommand(command, getHandler(api, projectOptions));
     }
 };
 
