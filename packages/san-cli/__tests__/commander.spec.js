@@ -1,14 +1,14 @@
 /**
- * @file loadRc test
+ * @file commander test
  * @author yanyiting <yanyiting@baidu.com>
  */
 
 jest.mock('read-pkg');
 
-import loadRc from '../lib/loadRc';
+import Command from '../lib/commander';
 
-test('', () => {
-    const commands = loadRc(process.cwd() + '/packages').commands;
+test('loadRc', () => {
+    const commands = new Command().loadRc(process.cwd() + '/packages').commands;
     let flag = false;
     commands.forEach(item => {
         if (item.indexOf('@baidu/san-cli-command-init') > -1) {

@@ -223,7 +223,6 @@ module.exports = class Service extends EventEmitter {
 
                 if (
                     [
-                        'registerCommand',
                         'on',
                         'emit',
                         'addPlugin',
