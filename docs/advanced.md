@@ -219,7 +219,7 @@ const plugins = [
         id: 'middleware1',
         apply(api) {
             // 使用 api 配置dev server 中间件
-            api.addDevServerMiddleware(() =>
+            api.middleware(() =>
                 require('@baidu/hulk-mock-server')({
                     // 配置contentBase
                     contentBase: path.join(__dirname, './' + outputDir + '/'),
@@ -243,7 +243,7 @@ module.exports = {
 ```
 
 ::: danger 特殊说明
-这里特殊说明下，`addDevServerMiddleware`传入的是一个 function，并且**返回**一个中间件。
+这里特殊说明下，`middleware`传入的是一个 function，并且**返回**一个中间件。
 :::
 
 ## 更多

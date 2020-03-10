@@ -15,7 +15,7 @@ const {textColor} = require('@baidu/san-cli-utils/randomColor');
 const {scriptName, version: pkgVersion} = require('../package.json');
 const CommanderAPI = require('./CommanderAPI');
 const {getCommandName} = require('./utils');
-const buildinCmds = ['build', 'serve', 'init', 'docit', 'inspect' /*, 'command', 'plugin', 'remote',*/];
+const buildinCmds = ['build', 'serve', 'init', 'docit', 'inspect', 'command', 'plugin', 'remote'];
 
 module.exports = class Command {
     constructor(rawArgs, cwd = process.cwd()) {
@@ -37,6 +37,7 @@ module.exports = class Command {
         // * 1. rc 文件应该尽量「表现的显性」
         // * 2. 对于每个执行命令的 fe 应该清楚自己的环境，而不是稀里糊涂的用全局 rc
         // * 3. 方便配置默认 preset 统一命令和配置
+
         time('loadRc');
 
         // 1. 查找 package.json 的文件
@@ -61,7 +62,7 @@ module.exports = class Command {
             .concat(commands)
             .map(name => {
                 // 保证插件存在
-                const path = resolve(name, this.cwd);
+                const path = resolve(this.cwd, name);
                 return path;
             })
             .filter(p => p);
@@ -95,9 +96,9 @@ module.exports = class Command {
 
         timeEnd('loadRc');
     }
-    command({command, description, builder, handler, middlewares}) {
+    command({command, description, builder, handler, middlewares, desc}) {
         // 统一入栈，等待run执行
-        this._commands.push([command, description, builder, handler, middlewares]);
+        this._commands.push([command, description || desc || '', builder, handler, middlewares]);
         return this;
     }
     init() {

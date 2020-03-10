@@ -6,7 +6,7 @@
 function addFactory(propName = 'commands', validate = () => true) {
     return {
         command: 'add <name>',
-        desc: 'Add a subcommand to San CLI',
+        description: 'Add a subcommand to San CLI',
         builder: {
             global: {
                 alias: 'g',
@@ -96,7 +96,6 @@ exports.addFactory = addFactory;
 exports.removeFactory = (propName = 'commands', validate = () => true) => {
     return {
         command: 'remove <name>',
-        aliases: ['rm'],
         builder: {
             global: {
                 alias: 'g',
@@ -184,7 +183,6 @@ exports.removeFactory = (propName = 'commands', validate = () => true) => {
 exports.listFactory = (propName = 'commands') => {
     return {
         command: 'list',
-        aliases: ['ls'],
         builder: {
             global: {
                 alias: 'g',
@@ -200,6 +198,7 @@ exports.listFactory = (propName = 'commands') => {
             }
         },
         handler(argv) {
+
             const readRc = require('./readRc');
             const {log} = require('@baidu/san-cli-utils/ttyLogger');
             if (argv.global || argv.all) {

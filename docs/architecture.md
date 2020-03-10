@@ -203,12 +203,12 @@ module.exports = {
 -   `.getVersion()`：获取 CLI 版本；
 -   `.getPkg()`：获取当前项目`package.json`内容；
 -   `.addPlugin(plugin, options)`：添加插件；
--   `.addDevServerMiddleware()`：添加 dev-server 中间件，**这里注意：中间件需要使用 factory 函数返回**
+-   `.middleware()`：添加 dev-server 中间件，**这里注意：中间件需要使用 factory 函数返回**
 
-**`.addDevServerMiddleware()`示例：**
+**`.middleware()`示例：**
 
 ```js
-api.addDevServerMiddleware(() =>
+api.middleware(() =>
     // return 一个 Expressjs 中间件
     require('@baidu/hulk-mock-server')({
         contentBase: path.join(__dirname, './' + outputDir + '/'),

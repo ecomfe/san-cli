@@ -49,7 +49,7 @@ module.exports = {
         api.getWebpackChainConfig(); // 获取 webpack-chain 格式的 config；
         api.getWebpackConfig(); // 将传入的 webpack-chain 格式 config 处理成 webpackConfig 返回；
         // 添加 dev-server 中间件，**这里注意：中间件需要使用 factory 函数返回**
-        api.addDevServerMiddleware(() => {});
+        api.middleware(() => {});
         api.getVersion(); // 获取 CLI 版本；
         api.getPkg(); // 获取当前项目`package.json`内容；
         api.addPlugin(plugin, options); // 添加插件；
