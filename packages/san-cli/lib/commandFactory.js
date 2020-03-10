@@ -18,7 +18,7 @@ function addFactory(propName = 'commands', validate = () => true) {
         handler(argv) {
             const path = require('path');
             const fse = require('fs-extra');
-            const readRc = require('./readRc');
+            const readRc = require('@baidu/san-cli-utils/readRc');
             const readPkg = require('read-pkg');
             const writePkg = require('write-pkg');
             const {requireFromLocal} = require('./utils');
@@ -106,7 +106,7 @@ exports.removeFactory = (propName = 'commands', validate = () => true) => {
         },
         handler(argv) {
             const path = require('path');
-            const readRc = require('./readRc');
+            const readRc = require('@baidu/san-cli-utils/readRc');
             const fse = require('fs-extra');
             const readPkg = require('read-pkg');
 
@@ -198,8 +198,7 @@ exports.listFactory = (propName = 'commands') => {
             }
         },
         handler(argv) {
-
-            const readRc = require('./readRc');
+            const readRc = require('@baidu/san-cli-utils/readRc');
             const {log} = require('@baidu/san-cli-utils/ttyLogger');
             if (argv.global || argv.all) {
                 const rc = readRc('rc');
@@ -221,7 +220,7 @@ exports.listFactory = (propName = 'commands') => {
                 log(`Your local ${propName} list is empty!`);
                 console.log();
             } else {
-                log(`  Your local ${propName} in \`sanrc.json\` :`);
+                log(`Your local ${propName} in \`package.json\` :`);
                 pkgRc.commands.forEach(cmd => log(`  - ${cmd}`));
             }
 

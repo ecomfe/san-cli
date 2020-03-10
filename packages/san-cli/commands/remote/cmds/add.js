@@ -10,7 +10,7 @@ module.exports = {
     async handler(argv) {
         const fse = require('fs-extra');
         const inquirer = require('inquirer');
-        const readRc = require('../../../lib/readRc');
+        const readRc = require('@baidu/san-cli-utils/readRc');
         const {getGlobalSanRcFilePath} = require('@baidu/san-cli-utils/path');
         const {success} = require('@baidu/san-cli-utils/ttyLogger');
         const {name, url} = argv;

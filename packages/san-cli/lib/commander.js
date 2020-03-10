@@ -211,28 +211,56 @@ module.exports = class Command {
     _resolveCommand() {
         const self = this;
         const command = this.cli.command;
-        this._commands.forEach(([cmdName, description, builder, handler, middlewares]) => {
+        function handlerFactory(cmd, handler) {
+            const api = new CommanderAPI(getCommandName(cmd), self);
+            return argv => {
+                handler(
+                    new Proxy(api, {
+                        get(target, prop) {
+                            if (argv[prop]) {
+                                return argv[prop];
+                            } else {
+                                return target[prop];
+                            }
+                        }
+                    })
+                );
+            };
+        }
+        const iCommand = (cmdName, description, builder, handler, middlewares) => {
             command(
                 cmdName,
                 description,
-                builder,
-                argv => {
-                    const api = new CommanderAPI(getCommandName(cmdName), self);
-                    handler(
-                        new Proxy(api, {
-                            get(target, prop) {
-                                if (argv[prop]) {
-                                    return argv[prop];
-                                } else {
-                                    return target[prop];
-                                }
-                            }
-                        })
-                    );
-                },
+                typeof builder === 'object'
+                    ? builder
+                    : yargs => {
+                          /* eslint-disable fecs-indent */
+                          const cmd = yargs.getCommandInstance();
+                          const oAddHandler = cmd.addHandler;
+                          cmd.addHandler = (cmd, description, builder, handler, commandMiddleware) => {
+                              // 重写这个方法，是为了让 yargs.addCommandDir 支持commandAPI
+                              if (typeof cmd === 'object') {
+                                  cmd.handler = handlerFactory(cmd.command, cmd.handler);
+                                  oAddHandler(cmd, description, builder, handler, commandMiddleware);
+                              } else {
+                                  oAddHandler(
+                                      cmd,
+                                      description,
+                                      builder,
+                                      handlerFactory(cmd, handler),
+                                      commandMiddleware
+                                  );
+                              }
+                          };
+                          builder(yargs);
+                      },
+                handlerFactory(cmdName, handler),
                 middlewares
             );
-        });
+        };
+        this._commands.forEach(([cmdName, description, builder, handler, middlewares]) =>
+            iCommand(cmdName, description, builder, handler, middlewares)
+        );
     }
     _resolveCliHelp() {
         const cli = this.cli;
