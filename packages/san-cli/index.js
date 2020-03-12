@@ -7,8 +7,7 @@
 /* eslint-disable no-console */
 const updateNotifier = require('update-notifier');
 const semver = require('semver');
-
-const {error, chalk, time, timeEnd} = require('@baidu/san-cli-utils/ttyLogger');
+const {error, chalk} = require('@baidu/san-cli-utils/ttyLogger');
 const Commander = require('./lib/Commander');
 const {
     scriptName,

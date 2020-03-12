@@ -41,7 +41,7 @@ module.exports = (template, dest, options) => {
                 try {
                     // 清理 log，交给 npm
                     observer.next('Installing dependencies...');
-                    await installDeps(dest, options.verbose, options.registry);
+                    await installDeps(dest, options);
                     observer.complete();
                 } catch (e) {
                     observer.error(e);
@@ -51,11 +51,11 @@ module.exports = (template, dest, options) => {
     };
 };
 
-function installDeps(dest, verbose = false, registry) {
+function installDeps(dest, {verbose = false, registry, useYarn = true}) {
     let args = [];
     let command;
     // 优先使用yarn
-    if (hasYarn()) {
+    if (useYarn && hasYarn()) {
         registry = registry || registries.yarn;
         // args = ['--registry=' + registry];
         args = [];

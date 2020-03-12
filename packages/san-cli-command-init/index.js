@@ -11,6 +11,10 @@ exports.builder = {
         default: false,
         describe: 'Use local cache'
     },
+    useYarn: {
+        default: true,
+        describe: 'Use yarn'
+    },
     install: {
         default: false,
         describe: 'Install npm packages after initialization'

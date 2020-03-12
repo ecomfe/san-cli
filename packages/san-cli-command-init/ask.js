@@ -4,7 +4,6 @@
  */
 
 const inquirer = require('inquirer');
-// eslint-disable-next-line
 const evaluate = require('./utils/evaluate');
 
 const promptMapping = {
@@ -48,13 +47,13 @@ async function prompt(data, key, prompt, tplData) {
         return;
     }
 
-    let promptDefault = prompt.default;
-    if (typeof promptDefault === 'function') {
-        // eslint-disable-next-line
-        promptDefault = function() {
-            return prompt.default.bind(this)(data);
-        };
-    }
+    /* eslint-disable space-before-function-paren,fecs-indent,operator-linebreak */
+    let promptDefault =
+        typeof prompt.default === 'function'
+            ? function() {
+                  return prompt.default.bind(this)(data);
+              }
+            : prompt.default;
 
     const answers = await inquirer.prompt([
         {
@@ -76,8 +75,8 @@ async function prompt(data, key, prompt, tplData) {
         // 如果答案是串型，转义一下双引号
     } else if (typeof answers[key] === 'string') {
         data[key] = answers[key].replace(/"/g, '\\"');
-        // 其他类型的直接赋值
     } else {
+        // 其他类型的直接赋值
         data[key] = answers[key];
     }
 }

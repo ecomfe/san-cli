@@ -51,6 +51,6 @@ module.exports = class PluginAPI {
     }
     middleware(middlewareFactory) {
         argsert('<function>', [middlewareFactory], arguments.length);
-        this.serivce.devServerMiddlewares.push(middlewareFactory);
+        this.service.devServerMiddlewares.push(middlewareFactory);
     }
 };
