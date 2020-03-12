@@ -2,7 +2,8 @@
  * @file yargs instance
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const {resolve} = require('path');
+// const {resolve} = require('path');
+const resolveCwd = require('resolve-cwd');
 const yargs = require('yargs/yargs');
 const fse = require('fs-extra');
 const lMerge = require('lodash.merge');
@@ -61,8 +62,11 @@ module.exports = class Command {
         commands = (san.commands || [])
             .concat(commands)
             .map(name => {
-                // 保证插件存在
-                const path = resolve(this.cwd, name);
+                // 保证插件存在，从 cwd 目录引入
+                // 记录下时长
+                time(`load-${name}`);
+                const path = resolveCwd(name);
+                timeEnd(`load-${name}`);
                 return path;
             })
             .filter(p => p);
@@ -319,6 +323,9 @@ module.exports = class Command {
 
                 if (typeof cmd === 'string') {
                     // 如果是字符串，那么需要require它，并且记录加载时长
+                    // 这里需要注意了：
+                    // * cmd 可能找不到，现在是直接报错，后面加个更好的处理方式吧
+                    // * 如果路径是相对路径或者包名，是 cwd，还是san-cli，还是 global？
                     cmdName = cmd;
                     time(`load-${cmd}`);
                     instance = require(cmd);
@@ -328,7 +335,7 @@ module.exports = class Command {
                 if (instance && instance.command) {
                     if (!cmdName || unique.has(cmdName)) {
                         // 保证唯一性
-                        error(`${cmdName} 已经加载，请不要加载多次!`);
+                        error(`${cmdName} is loaded, donot load again!`);
                         return;
                     }
                     unique.add(cmdName);
