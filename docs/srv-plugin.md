@@ -31,15 +31,11 @@ module.exports = {
     id: 'san-cli-command-serve',
     apply(api, projectOptions) {
         // 注册命令
-        api.registerCommand(command, {
-            builder,
-            description,
-            handler(argv) {
+        api.registerCommand(command, (argv)=> {
                 const webpackConfig = api.getWebpackConfig();
                 //...
                 // 开始 webpack 的操作
-            }
-        });
+            });
     }
 };
 ```
@@ -79,7 +75,7 @@ api.configWebpack(webpackConfig => {
 插件可以发布到 npm 上，命名规范建议使用`san-cli-plugin-*`来命名。不发布到 npm 中也可以本地使用。Service 插件的使用有两种配置方法：
 
 1. 在`san.config.js`的 plugins 字段添加对应的路径或者直接`require`进来；
-2. 在项目的`package.json`的`san.servicePlugins`中添加路径或者 npm 插件报名
+2. 在项目的`package.json`的`san.plugins`中添加路径或者 npm 插件报名
 
 san.config.js 中举例：
 
@@ -91,7 +87,7 @@ const plugins = [
     {
         id: 'smarty-middleware',
         apply(api) {
-            api.addDevServerMiddleware(() =>
+            api.middleware(() =>
                 require('@baidu/hulk-mock-server')({
                     contentBase: path.join(__dirname, './' + outputDir + '/'),
                     rootDir: path.join(__dirname, './mock'),
@@ -140,7 +136,7 @@ module.exports = {
 常见方法包括：
 
 -   `.isProd()`：是不是生产环境打包，`process.NODD_ENV==='production'`；
--   `.registerCommand(name, yargsModule)/.registerCommand(yargsModule)`：注册 command 命令，实例化 Service 之后执行`service.run(command, argv)`触发；
+-   `.registerCommand(name, handler)`：注册 command 命令，实例化 Service 之后执行`service.run(command, argv)`触发；
 -   `.configWebpack(fn)`：将`fn` 压入 webpackConfig 回调栈，`fn`会在出栈执行时接收 webpackConfig，用于修改 webpack config；
 -   `.chainWebpack(fn)`：将`fn` 压入 webpackChain 回调栈，`fn`会在出栈执行时接收 chainableConfig，用于 webpack-chain 语法修改 webpack config；
 -   `.resolve(p)`：获取 CLI 执行目录的完整路径；
@@ -151,12 +147,12 @@ module.exports = {
 -   `.getVersion()`：获取 CLI 版本；
 -   `.getPkg()`：获取当前项目`package.json`内容；
 -   `.addPlugin(plugin, options)`：添加插件；
--   `.addDevServerMiddleware()`：添加 dev-server 中间件，**这里注意：中间件需要使用 factory 函数返回**
+-   `.middleware()`：添加 dev-server 中间件，**这里注意：中间件需要使用 factory 函数返回**
 
-**`.addDevServerMiddleware()`示例：**
+**`.middleware()`示例：**
 
 ```js
-api.addDevServerMiddleware(() =>
+api.middleware(() =>
     // return 一个 Expressjs 中间件
     require('@baidu/hulk-mock-server')({
         contentBase: path.join(__dirname, './' + outputDir + '/'),

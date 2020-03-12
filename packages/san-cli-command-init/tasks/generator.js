@@ -144,19 +144,18 @@ async function startTask(src, dest, ctx, observer) {
 }
 
 function getMetadata(dir) {
-    const json = path.join(dir, 'meta.json');
-    const js = path.join(dir, 'meta.js');
+    const meta = path.join(dir, 'meta');
     let opts = {};
-
-    if (exists(json)) {
-        opts = fs.readJsonSync(json);
-    } else if (exists(js)) {
-        const req = require(path.resolve(js));
-        if (req !== Object(req)) {
+    try {
+        opts = require(meta);
+        if (opts !== Object(opts)) {
             throw new Error('Wrong type in meta.js');
         }
-
-        opts = req;
+    } catch (e) {
+        // 不存在就算了
+        if (e.code !== 'MODULE_NOT_FOUND') {
+            throw new Error('Wrong type in meta.js');
+        }
     }
 
     return opts;

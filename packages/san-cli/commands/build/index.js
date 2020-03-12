@@ -3,11 +3,11 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-const getHandler = require('./run');
-const command = (exports.command = 'build [entry]');
-const description = (exports.description = 'Compiles an app into an output directory named dist');
+const run = require('./run');
+exports.command = 'build [entry]';
+exports.description = 'Compiles an app into an output directory named dist';
 
-const builder = (exports.builder = {
+exports.builder = {
     watch: {
         alias: 'w',
         type: 'boolean',
@@ -17,11 +17,6 @@ const builder = (exports.builder = {
     profile: {
         type: 'boolean',
         describe: 'Enable build profiler'
-    },
-    config: {
-        alias: 'config-file',
-        type: 'string',
-        describe: 'Project config file'
     },
     analyze: {
         alias: 'analyzer',
@@ -64,13 +59,6 @@ const builder = (exports.builder = {
         alias: 'r',
         describe: 'Send compiled output to the remote target machine'
     },
-    mode: {
-        alias: 'm',
-        type: 'string',
-        default: 'production',
-        choices: ['development', 'production'],
-        describe: 'Operating environment'
-    },
     report: {
         type: 'boolean',
         default: false,
@@ -81,22 +69,9 @@ const builder = (exports.builder = {
         type: 'string',
         describe: 'Output file path'
     }
-});
-const buildPlugin = {
-    id: 'san-cli-command-build',
-    apply(api, projectOptions) {
-        // 注册命令
-        api.registerCommand(command, {
-            builder,
-            description,
-            handler: getHandler(api, projectOptions)
-        });
-    }
-};
-exports.handler = argv => {
-    const getService = require('../../lib/getServiceInstance');
-    const service = getService(argv, buildPlugin);
-    service.run('build', argv);
 };
 
-exports.buildPlugin = buildPlugin;
+exports.handler = cliApi => {
+    const callback = run.bind(run, cliApi);
+    require('../../lib/service')('build', cliApi, callback);
+};

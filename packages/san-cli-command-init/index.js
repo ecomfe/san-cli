@@ -4,12 +4,16 @@
  */
 
 exports.command = 'init <template> <app-name>';
-exports.desc = 'Create an empty repo';
+exports.description = 'Create an empty repo';
 exports.builder = {
     useCache: {
         alias: 'cache',
         default: false,
         describe: 'Use local cache'
+    },
+    useYarn: {
+        default: true,
+        describe: 'Use yarn'
     },
     install: {
         default: false,
@@ -34,10 +38,10 @@ exports.builder = {
         describe: 'Specify npm package download registry'
     }
 };
-exports.handler = argv => {
-    const {template, appName} = argv;
+exports.handler = cliApi => {
+    const {template, appName} = cliApi;
 
-    let {templateAlias: templateAliasMap} = argv._presets || {};
-    const options = Object.assign({}, argv, {templateAliasMap});
+    let {templateAlias: templateAliasMap} = cliApi.getPresets || {};
+    const options = Object.assign({}, cliApi, {templateAliasMap});
     require('./run')(template, appName, options);
 };

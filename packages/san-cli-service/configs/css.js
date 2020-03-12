@@ -4,7 +4,7 @@
  */
 const semver = require('semver');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const {cssnanoOptions: defaultCssnanoOptions} = require('../lib/const');
+const {cssnanoOptions: defaultCssnanoOptions} = require('../options');
 const {findExisting} = require('@baidu/san-cli-utils/path');
 const {warn} = require('@baidu/san-cli-utils/ttyLogger');
 

@@ -9,7 +9,7 @@ module.exports = {
     aliases: ['ls'],
     builder: {},
     handler(argv) {
-        const readRc = require('../../../lib/readRc');
+        const readRc = require('@baidu/san-cli-utils/readRc');
         const {log} = require('@baidu/san-cli-utils/ttyLogger');
         // 检测是否存在
         // 全局

@@ -15,7 +15,7 @@ title: 预设文件
 `sanrc.json`的文件配置项如下：
 
 -   commands：**Array**，添加的 [Command 插件](/cmd-plugin.md)，数组内存储的是`String`类型，支持路径或者插件的 NPM 包名；
--   servicePlugins：**Array**，添加的 [Service 插件](/srv-plugin.md)，数组内存储的是`String`类型，支持路径或者插件的 NPM 包名；
+-   plugins：**Array**，添加的 [Service 插件](/srv-plugin.md)，数组内存储的是`String`类型，支持路径或者插件的 NPM 包名；
 -   useBuiltInPlugin：**Boolean**，表示初始化 Service 时，是否使用内置插件，默认是`true`；
 -   templateAlias：**Object**，脚手架模板的 alias Map，例如下面的配置，在使用`san init project target_path`时，会去对应的`icode`地址拉取脚手架模板。
 
@@ -34,7 +34,7 @@ title: 预设文件
     // san 字段
     "san": {
         "commands": ["san-command.js"],
-        "servicePlugins": ["san-plugin.js"]
+        "plugins": ["san-plugin.js"]
     }
 }
 ```

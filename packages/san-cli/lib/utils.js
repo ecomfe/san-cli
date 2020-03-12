@@ -31,3 +31,16 @@ exports.requireFromLocal = cmd => {
     }
     return null;
 };
+
+function getCommandName(command) {
+    if (!command) {
+        return '';
+    }
+    return command
+        .replace(/\s{2,}/g, ' ')
+        .split(/\s+(?![^[]*]|[^<]*>)/)[0]
+        .trim();
+}
+exports.getCommandName = getCommandName;
+
+

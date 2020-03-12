@@ -5,8 +5,8 @@
 const importLazy = require('import-lazy')(require);
 const fse = importLazy('fs-extra');
 const readPkg = require('./readPkg');
-const upath = importLazy('@baidu/san-cli-utils/path');
-const {error} = importLazy('@baidu/san-cli-utils/ttyLogger');
+const upath = importLazy('./path');
+const {error} = importLazy('./ttyLogger');
 
 module.exports = (rcFrom = 'rc', baseDir = process.cwd()) => {
     switch (rcFrom) {
