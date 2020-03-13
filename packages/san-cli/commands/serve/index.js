@@ -40,8 +40,8 @@ exports.builder = {
     }
 };
 
-exports.handler = argv => {
-    const callback = run.bind(run, argv);
+exports.handler = cliApi => {
+    const callback = run.bind(run, cliApi);
 
-    require('../../lib/service')('serve', callback);
+    require('../../lib/service')('serve', cliApi, callback);
 };

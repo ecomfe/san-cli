@@ -77,16 +77,6 @@ module.exports = class Service extends EventEmitter {
         this.plugins = this.resolvePlugins(plugins, useBuiltInPlugin);
     }
     loadEnv(mode) {
-        // this._configDir
-        // 后续为：local 内容
-        const modeEnvName = `.env${mode ? `.${mode}` : ''}`;
-        const envPath = findExisting([modeEnvName].map(k => join(this.cwd, k)));
-        if (!envPath) {
-            // 不存在默认的，则不往下执行了
-            return;
-        }
-        const localEnvPath = `${envPath}.local`;
-
         const load = envPath => {
             let env = {};
             try {
@@ -103,9 +93,34 @@ module.exports = class Service extends EventEmitter {
             }
             return env;
         };
+        const merge = obj => {
+            Object.keys(obj).forEach(key => {
+                if (!process.env.hasOwnProperty(key)) {
+                    process.env[key] = obj[key];
+                }
+            });
+        };
+
+        let defaultEnv = {};
+        const defaultEnvPath = join(this.cwd, '.env');
+        if (fs.existsSync(defaultEnvPath)) {
+            defaultEnv = Object.assign(defaultEnv, load(defaultEnvPath));
+        }
+
+        // this._configDir
+        // 后续为：local 内容
+        const modeEnvName = `.env${mode ? `.${mode}` : ''}`;
+        const envPath = findExisting([modeEnvName].map(k => join(this.cwd, k)));
+
+        if (!envPath) {
+            // 不存在默认的，则不往下执行了
+            merge(defaultEnv);
+            return;
+        }
+        const localEnvPath = `${envPath}.local`;
 
         const localEnv = load(localEnvPath);
-        const defaultEnv = load(envPath);
+        defaultEnv = Object.assign(defaultEnv, load(envPath));
 
         const envObj = Object.assign(defaultEnv, localEnv);
         Object.keys(envObj).forEach(key => {
@@ -113,6 +128,7 @@ module.exports = class Service extends EventEmitter {
                 process.env[key] = envObj[key];
             }
         });
+        merge(envObj);
         if (mode) {
             const defaultNodeEnv = mode === 'production' ? mode : 'development';
             // 下面属性如果为空，会根据 mode 设置的
@@ -162,6 +178,7 @@ module.exports = class Service extends EventEmitter {
                 logger.debug('Plugin loaded: %s', chalk.magenta(p));
                 if (typeof plugin === 'object' && typeof plugin.apply === 'function') {
                     if (!plugin.id) {
+                        logger.warn(`Plugin is invalid: ${p}. Service plugin must has id.`);
                         // 默认 id 是配置的string，方便查找
                         plugin.id = p;
                     }
@@ -221,15 +238,7 @@ module.exports = class Service extends EventEmitter {
             get(target, prop) {
                 // 传入配置的自定义 pluginAPI 方法
 
-                if (
-                    [
-                        'on',
-                        'emit',
-                        'addPlugin',
-                        'getWebpackChainConfig',
-                        'getWebpackConfig'
-                    ].includes(prop)
-                ) {
+                if (['on', 'emit', 'addPlugin', 'getWebpackChainConfig', 'getWebpackConfig'].includes(prop)) {
                     if (typeof self[prop] === 'function') {
                         return self[prop].bind(self);
                     } else {
@@ -249,6 +258,7 @@ module.exports = class Service extends EventEmitter {
         }
         const {id, apply} = plugin;
         const api = this._getApiInstance(id);
+
         // 传入配置的 options
         // 因为一般 plugin 不需要自定义 options，所以 projectOption 作为第二个参数
         apply(api, this.projectOptions, options);
