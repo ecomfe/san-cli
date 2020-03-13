@@ -3,7 +3,7 @@
  * @author yanyiting <yanyiting@baidu.com>
  */
 
-import Service from '../lib/Service';
+import Service from '../Service';
 import fse from 'fs-extra';
 
 jest.unmock('fs-extra');
@@ -11,7 +11,8 @@ jest.unmock('fs-extra');
 
 describe('constructor resolvePlugins _loadPlugin', () => {
     test('plugins有值，useBuiltInPlugin为true', () => {
-        const service = new Service(__dirname + '/mock', {
+        const service = new Service('name', {
+            cwd: __dirname + '/mock',
             plugins: [
                 // string格式
                 './yyt-plugin.js',
@@ -51,7 +52,8 @@ describe('constructor resolvePlugins _loadPlugin', () => {
         expect(service['_initProjectOptions']).toEqual({outputDir: 'output'});
     });
     test('plugins为空，useBuiltInPlugin为true', () => {
-        const service = new Service(__dirname + '/mock', {
+        const service = new Service('name', {
+            cwd: __dirname + '/mock',
             useBuiltInPlugin: true,
             projectOptions: {
                 outputDir: 'output'
@@ -73,7 +75,8 @@ describe('constructor resolvePlugins _loadPlugin', () => {
         ]);
     });
     test('useBuiltInPlugin为false', () => {
-        const service = new Service(__dirname + '/mock', {
+        const service = new Service('name', {
+            cwd: __dirname + '/mock',
             useBuiltInPlugin: false,
             projectOptions: {
                 outputDir: 'output'
@@ -88,7 +91,9 @@ describe('constructor resolvePlugins _loadPlugin', () => {
 describe('loadEnv', () => {
     let service = null;
     beforeEach(() => {
-        service = new Service(__dirname + '/mock');
+        service = new Service('name', {
+            cwd: __dirname + '/mock'
+        });
     });
     test('有mode值', () => {
         service.loadEnv('production');
@@ -104,7 +109,9 @@ describe('loadEnv', () => {
 describe('loadProjectOptions', () => {
     let service = null;
     beforeEach(() => {
-        service = new Service(__dirname + '/mock');
+        service = new Service('name', {
+            cwd: __dirname + '/mock'
+        });
     });
     test('可查到的文件路径', async () => {
         const config = await service.loadProjectOptions('./mock/san.config.js');
@@ -158,16 +165,17 @@ describe('loadProjectOptions', () => {
 describe('initPlugin', () => {
     let service = null;
     beforeEach(() => {
-        service = new Service(__dirname + '/mock');
+        service = new Service('name', {
+            cwd: __dirname + '/mock'
+        });
     });
     const expectfunc = (api) => {
-        expect(typeof api.registerCommand).toBe('function');
         expect(typeof api.addPlugin).toBe('function');
+        expect(typeof api.chainWebpack).toBe('function');
         expect(typeof api.getWebpackChainConfig).toBe('function');
         expect(typeof api.getWebpackConfig).toBe('function');
-        expect(typeof api.getProjectOptions).toBe('function');
+        expect(typeof api.getProjectOption).toBe('function');
         expect(typeof api.getCwd).toBe('function');
-        expect(typeof api.getVersion).toBe('function');
     };
     test('参数为两项数组[{id: xxx, apply: () => {}}, {}]', () => {
         service.initPlugin([{

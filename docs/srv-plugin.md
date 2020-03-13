@@ -4,7 +4,7 @@ tilte: 编写一个 Serivce 插件
 
 # Serivce 插件
 
-San CLI 在实现可扩展 Webpack 配置的设计上，借鉴了 Vue CLI 的 Service 机制。Service 主要是对 Webpack 的配置进行统一处理和封装，当 Service 实例化之时，会将依次将 Service 的插件进行注册执行，Service 插件不仅仅可以对 Webpack 的配置进行修改，可以通过`registerCommand`方法注册 Service 命令。
+San CLI 在实现可扩展 Webpack 配置的设计上，借鉴了 Vue CLI 的 Service 机制。Service 主要是对 Webpack 的配置进行统一处理和封装，当 Service 实例化之时，会将依次将 Service 的插件进行注册执行，对 Webpack 的配置进行修改。
 
 一个 Service 插件的定义结构如下：
 
@@ -21,22 +21,6 @@ module.exports = {
     },
     // gui 预留接口
     ui() {}
-};
-```
-
-如果是定义一个 Service 级别的 Command，那么可以采用下面的写法：
-
-```js
-module.exports = {
-    id: 'san-cli-command-serve',
-    apply(api, projectOptions) {
-        // 注册命令
-        api.registerCommand(command, (argv)=> {
-                const webpackConfig = api.getWebpackConfig();
-                //...
-                // 开始 webpack 的操作
-            });
-    }
 };
 ```
 
@@ -136,15 +120,13 @@ module.exports = {
 常见方法包括：
 
 -   `.isProd()`：是不是生产环境打包，`process.NODD_ENV==='production'`；
--   `.registerCommand(name, handler)`：注册 command 命令，实例化 Service 之后执行`service.run(command, argv)`触发；
 -   `.configWebpack(fn)`：将`fn` 压入 webpackConfig 回调栈，`fn`会在出栈执行时接收 webpackConfig，用于修改 webpack config；
 -   `.chainWebpack(fn)`：将`fn` 压入 webpackChain 回调栈，`fn`会在出栈执行时接收 chainableConfig，用于 webpack-chain 语法修改 webpack config；
 -   `.resolve(p)`：获取 CLI 执行目录的完整路径；
 -   `.getWebpackChainConfig()`：获取 webpack-chain 格式的 config；
 -   `.getWebpackConfig([chainableConfig])`：将传入的 webpack-chain 格式 config 处理成 webpackConfig 返回；
 -   `.getCwd()`：获取 CLI 的执行目录；
--   `.getProjectOptions()`：获取项目的配置内容；
--   `.getVersion()`：获取 CLI 版本；
+-   `.getProjectOption()`：获取项目的配置内容；
 -   `.getPkg()`：获取当前项目`package.json`内容；
 -   `.addPlugin(plugin, options)`：添加插件；
 -   `.middleware()`：添加 dev-server 中间件，**这里注意：中间件需要使用 factory 函数返回**
