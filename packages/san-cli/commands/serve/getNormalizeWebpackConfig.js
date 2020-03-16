@@ -16,7 +16,12 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
         }
     });
 
-    webpackConfig = resolveEntry(entry, api.resolve(entry), webpackConfig, require.resolve('@baidu/san-cli-service/template/main.js'));
+    webpackConfig = resolveEntry(
+        entry,
+        api.resolve(entry),
+        webpackConfig,
+        require.resolve('@baidu/san-cli-service/template/main.js')
+    );
     webpackConfig.devServer = Object.assign(
         {
             hot: !isProd,
