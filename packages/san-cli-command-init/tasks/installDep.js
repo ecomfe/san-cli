@@ -22,8 +22,9 @@ module.exports = (template, dest, options) => {
                 if (ctx.metaData.hasOwnProperty('useYarn')) {
                     options.useYarn = !!ctx.metaData.useYarn;
                 }
-                if (hasPackage && ctx.metaData.hasOwnProperty('install')) {
-                    askInstall = !!ctx.metaData.install;
+                if (hasPackage && ctx.metaData.hasOwnProperty('installDeps')) {
+                    askInstall = !!ctx.metaData.installDeps;
+                    install = askInstall !== false;
                 }
             }
             // 有package.json但是命令中没加--install
