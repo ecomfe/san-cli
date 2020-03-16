@@ -16,8 +16,19 @@ module.exports = (template, dest, options) => {
         return new rxjs.Observable(async observer => {
             const hasPackage = fs.exists(path.join(dest, 'package.json'));
             let install = hasPackage && options.install;
+            let askInstall = !install;
+            if (ctx.metaData && typeof ctx.metaData === 'object') {
+                // 这里使用 metaData 重写一下，根据 template 的 meta.json 来决定使用 yarn/npm，是否 install
+                if (ctx.metaData.hasOwnProperty('useYarn')) {
+                    options.useYarn = !!ctx.metaData.useYarn;
+                }
+                if (hasPackage && ctx.metaData.hasOwnProperty('installDeps')) {
+                    askInstall = !!ctx.metaData.installDeps;
+                    install = askInstall !== false;
+                }
+            }
             // 有package.json但是命令中没加--install
-            if (hasPackage && !install) {
+            if (hasPackage && askInstall) {
                 const name = 'install';
                 observer.next();
                 // 询问是否需要安装

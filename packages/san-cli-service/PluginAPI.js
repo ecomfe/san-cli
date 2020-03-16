@@ -2,11 +2,6 @@
  * @file pluginAPI Class
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-// 1. 注册某个命令的 flag 激活
-// 2. 获取 webpackchain api
-// 3. 获取user config
-// 4. 注册 hook 时机
-// 5. 添加 log
 const path = require('path');
 const {getScopeLogger} = require('@baidu/san-cli-utils/ttyLogger');
 const argsert = require('@baidu/san-cli-utils/argsert');
@@ -19,6 +14,9 @@ module.exports = class PluginAPI {
         const l = getScopeLogger(id || 'unknown-plugin');
         this.log = l;
         this.logger = l;
+    }
+    getServiceInstance() {
+        return this.service;
     }
     isProd() {
         return this.service.mode === 'production';

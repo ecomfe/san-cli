@@ -7,4 +7,3 @@ import {defineComponent} from 'san';
 import App from '~entry';
 const Component = defineComponent(App);
 const app = new Component();
-app.attach(document.getElementById('app'));
