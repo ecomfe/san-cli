@@ -38,6 +38,9 @@ module.exports = {
                     // 默认加上 less 吧，less 内部用的最多
                     .extensions.merge(['.js', '.css', '.less', '.san'])
                     .end()
+                .plugin('pnp')
+                    .use({...require('pnp-webpack-plugin')})
+                    .end()
                 .modules
                     .add('node_modules')
                     .add(api.resolve('node_modules'))
@@ -52,10 +55,15 @@ module.exports = {
                     // 加个@默认值
                     .set('@', api.resolve('src'));
             }
+
             // prettier-ignore
             // set resolveLoader
             webpackConfig
                 .resolveLoader
+                // 添加 pnp-loader
+                .plugin('pnp-loaders')
+                    .use({ ...require('pnp-webpack-plugin').topLevelLoader })
+                    .end()
                 .modules
                     .add('node_modules')
                     .add(api.resolve('node_modules'))

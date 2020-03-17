@@ -1,0 +1,27 @@
+{
+    "name": "@baidu/san-cli-plugin-babel",
+    "description": "San CLI babel plugin",
+    "version": "0.0.1-alpha.2",
+    "main": "index.js",
+    "author": "ksky521",
+    "license": "MIT",
+    "engines": {
+        "node": ">=8.16"
+    },
+    "dependencies": {
+        "@babel/core": "^7.6.4",
+        "@babel/helper-module-imports": "^7.0.0",
+        "@babel/plugin-proposal-class-properties": "^7.3.4",
+        "@babel/plugin-proposal-decorators": "^7.4.4",
+        "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+        "@babel/plugin-syntax-import-meta": "^7.2.0",
+        "@babel/plugin-transform-runtime": "^7.4.3",
+        "@babel/preset-env": "^7.6.3",
+        "@babel/runtime": "^7.6.3",
+        "@babel/runtime-corejs3": "^7.6.3",
+        "babel-loader": "^8.0.6",
+        "babel-plugin-dynamic-import-node": "^2.3.0",
+        "core-js": "~3.3.3",
+        "babel-plugin-san-hmr": "~1.0.5"
+    }
+}
