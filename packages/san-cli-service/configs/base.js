@@ -112,7 +112,7 @@ module.exports = {
             }
 
             // TODO: san file loader换成san-loader
-            // setLoader('san', /\.san$/, ['babel', 'san']);
+            setLoader('san', /\.san$/, ['babel', 'san']);
             setLoader('ejs', /\.ejs$/, 'ejs');
             setLoader('html', /\.html?$/, 'html');
             setLoader('svg', /\.svg(\?.*)?$/, 'svg', {

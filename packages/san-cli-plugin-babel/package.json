@@ -21,7 +21,6 @@
         "@babel/runtime-corejs3": "^7.6.3",
         "babel-loader": "^8.0.6",
         "babel-plugin-dynamic-import-node": "^2.3.0",
-        "core-js": "~3.3.3",
         "babel-plugin-san-hmr": "~1.0.5"
     }
 }
