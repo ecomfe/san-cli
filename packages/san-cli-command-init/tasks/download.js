@@ -33,9 +33,7 @@ module.exports = (template, dest, options) => {
                         ctx.localTemplatePath = tmp;
                         observer.complete();
                     })
-                    .catch(err => {
-                        observer.error('Failed to pull, please check the path and code permissions are correct');
-                    });
+                    .catch(errMessage => observer.error(errMessage));
             }
         });
     };
