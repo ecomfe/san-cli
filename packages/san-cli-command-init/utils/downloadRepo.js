@@ -54,7 +54,7 @@ san init <template> <app-name>, for example:
     san ${cmd} ${chalk.cyan(`coding:yourname/${templateName}`)} ${appName}
     san ${cmd} ${chalk.cyan(`${templateName}#branch`)} ${appName}
 
-default project template is ${chalk.cyan(`ksky521/san-project`)}.`;
+default project template is ${chalk.cyan('ksky521/san-project')}.`;
     }
     return 'Failed to pull, please check the path and code permissions are correct';
 }
