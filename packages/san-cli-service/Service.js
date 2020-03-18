@@ -444,6 +444,10 @@ module.exports = class Service extends EventEmitter {
             })(before, this.devServerMiddlewares);
         }
         config.devServer.before = before;
+        if (process.env.SAN_DEBUG) {
+            // 在debug模式输出
+            console.log(Config.toString(config));
+        }
         return config;
     }
 };

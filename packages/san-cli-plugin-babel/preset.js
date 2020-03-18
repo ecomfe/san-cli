@@ -19,6 +19,9 @@ module.exports = (context, options = {}) => {
         plugins = [],
         targets
     } = options;
+    if (process.env.SAN_DEBUG) {
+        debug = true;
+    }
 
     const isProd = process.env.NODE_ENV === 'production';
 
@@ -28,7 +31,6 @@ module.exports = (context, options = {}) => {
         // 这个是 modern 打包
         targets = {esmodules: true};
     }
-
     if (!isProd && !plugins.includes(sanHmrPlugin)) {
         // 添加 san-hmr 插件
         plugins.push(sanHmrPlugin);
