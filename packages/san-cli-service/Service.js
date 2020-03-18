@@ -24,7 +24,7 @@ const readPkg = require('@baidu/san-cli-utils/readPkg');
 
 const {defaults: defaultConfig, validateSync: validateOptions} = require('./options');
 
-const BUILDIN_PLUGINS = ['base', 'css', 'app', 'optimization', 'babel'];
+const BUILDIN_PLUGINS = ['base', 'css', 'app', 'optimization'];
 
 const logger = consola.withTag('Service');
 
@@ -145,6 +145,8 @@ module.exports = class Service extends EventEmitter {
         let builtInPlugins = [];
         if (useBuiltInPlugin) {
             builtInPlugins = BUILDIN_PLUGINS.map(id => require(`./configs/${id}`));
+            // * 添加上 babel 插件
+            builtInPlugins.push(require('@baidu/san-cli-plugin-babel'));
         }
         plugins = Array.isArray(plugins) ? plugins : [];
 

@@ -20,9 +20,9 @@ function genTranspileDepRegex(transpileDependencies) {
 }
 
 module.exports = {
-    id: 'built-in:babel',
+    id: 'san-cli-plugin-babel',
     apply(api, options) {
-        const cliPath = path.dirname(path.resolve(__dirname, '../package.json'));
+        const cliPath = path.dirname(path.resolve(__dirname, './package.json'));
         const {loaderOptions = {}, transpileDependencies = []} = options || {};
 
         // 如果需要 babel 转义node_module 中的模块，则使用这个配置
@@ -56,11 +56,12 @@ module.exports = {
                 })
                 .end();
 
-            const {name, loader, options: babelOptions} = require('./loaders/babel')(loaderOptions.babel, options, api);
             jsRule
-                .use(name)
-                .loader(loader)
-                .options(babelOptions);
+                .use('babel-loader')
+                .loader('babel-loader')
+                .options({
+                    presets: [[require.resolve('./preset'), loaderOptions]]
+                });
         });
     }
 };
