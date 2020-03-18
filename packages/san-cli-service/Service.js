@@ -146,7 +146,7 @@ module.exports = class Service extends EventEmitter {
         if (useBuiltInPlugin) {
             builtInPlugins = BUILDIN_PLUGINS.map(id => require(`./configs/${id}`));
             // * 添加上 babel 插件
-            builtInPlugins.push(require('@baidu/san-cli-babel-plugin'));
+            builtInPlugins.push(require('@baidu/san-cli-plugin-babel'));
         }
         plugins = Array.isArray(plugins) ? plugins : [];
 

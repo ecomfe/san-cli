@@ -220,6 +220,8 @@ module.exports = {
 };
 ```
 
+!> 但是，我们推荐使用`babel.config.js`或者`.babelrc`进行 Babel 配置。
+
 ### css 相关
 
 San CLI 中跟 CSS 相关的配置都统一放置在`css`中。例如：
