@@ -85,7 +85,7 @@ async function startTask(src, dest, ctx, observer) {
         }
     }
 
-    debug(rootSrc);
+    debug('rootSrc: %O', rootSrc);
     // 过滤 _ dotFile
     const dotFileFilter = filter(['**/_*'], {
         restore: true

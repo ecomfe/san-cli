@@ -49,7 +49,7 @@ logger.getScopeLogger = (scope, level = process.env.CONSOLA_LEVEL) => {
 exports.getScopeLogger = logger.getScopeLogger;
 
 exports.getDebugLogger = scope => {
-    return debug(`san-cli:${scope}`);
+    return scope ? debug(`san-cli:${scope}`) : debug;
 };
 
 function setLevel(level, l) {
