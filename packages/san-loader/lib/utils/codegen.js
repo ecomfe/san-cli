@@ -1,5 +1,5 @@
 /**
- * @file source-map.js
+ * @file codegen.js
  * @author tanglei02 (tanglei02@baidu.com)
  */
 

@@ -118,6 +118,28 @@ div {
 
 这样，对应的样式模块就可以当成 `.less` 文件进行处理，只需要配置上相应的 Loader 即可。
 
+```js
+// ...
+module.exports = {
+    // ...
+    module: {
+        rules: [
+            // ...
+            {
+                test: /\.less$/,
+                use: [
+                    'style-loader',
+                    'css-loader',
+                    'less-loader'
+                ]
+            }
+        ]
+    }
+}
+```
+
+更加完整的 webpack 配置，可以参考示例：[San-Loader Webpack 配置实例](./examples/webpack.config.js)。
+
 ## 单文件写法
 
 ### template
@@ -183,7 +205,16 @@ export default {
 </script>
 ```
 
-也可以通过 class 的方式：
+San-Loader 会自动为导出为普通对象的模块外部自动包上 `san.defineComponent` 使之成为真正的 San 组件。
+
+```js
+import script from './App.vue?san&type=script&lang=js';
+import san from 'san';
+// ...
+export default san.defineComponent(script);
+```
+
+我们也可以通过 class 的方式：
 
 ```html
 <script>
@@ -253,7 +284,7 @@ style 模块用来书写组件的样式，在用法上与 template、script 类�
 
 ```html
 <template><!-- 组件模板  --></template>
-<script><!-- 组件 script --></script>
+<script>/* 组件 script */</script>
 <style>
 /* 写普通 css */
 .parent .children {
