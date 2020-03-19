@@ -1,0 +1,276 @@
+# San-Loader
+
+San-Loader 是基于 webpack 的工具，允许开发者书写 San
+ 单文件的方式来进行组件开发。
+
+```html
+<template>
+    <div class="content">Hello {{name}}!</div>
+</template>
+
+<script>
+export default {
+    initData() {
+        return {
+            name: 'San'
+        };
+    }
+};
+</script>
+
+<style>
+.content {
+    color: blue;
+}
+</style>
+```
+
+San 单文件在写法上与 Vue 类似，San-Loader 会将 `template`、`script`、`style` 等标签块当中的内容和属性提取出来，并交给 webpack 分别进行处理。最终单文件对外返回的将是一个普通的 San 组件类，我们可以直接使用它进行 San 组件的各种操作：
+
+```js
+import App from './App.san';
+let app = new App();
+app.attach(document.body);
+```
+
+## 使用方法
+
+通过 npm 进行 San-Loader 的安装：
+
+```shell
+npm install --save-dev @baidu/san-loader
+```
+
+然后在 webpack 的配置文件上增加一条规则应用到 `.san` 文件上，并且增加一个 SanLoaderPlugin：
+
+
+```js
+const SanLoaderPlugin = require('@baidu/san-loader/lib/plugin');
+
+module.exports = {
+    // ...
+    module: {
+        rules: [
+            {
+                test: /\.san$/,
+                loader: '@baidu/san-loader'
+            },
+            // ...
+        ]
+    },
+    plugins: [
+        new SanLoaderPlugin()
+    ]
+};
+```
+
+如前面提到，San-Loader 会将单文件的各个部分拆分出来，并交给其他的 Loader 来进行资源处理，因此还需要配置各个模块的处理方法，比如：
+
+```js
+const SanLoaderPlugin = require('@baidu/san-loader/lib/plugin');
+
+module.exports = {
+    // ...
+    module: {
+        rules: [
+            {
+                test: /\.san$/,
+                loader: '@baidu/san-loader'
+            },
+            {
+                test: /\.js$/,
+                loader: 'babel-loader'
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader'
+                ]
+            },
+            {
+                test: /\.html$/,
+                loader: 'html-loader'
+            }
+            // ...
+        ]
+    },
+    plugins: [
+        new SanLoaderPlugin()
+    ]
+};
+
+```
+
+在默认情况下，`template`、`script`、`style` 会分别采用 `.html`、`.js`、`.css` 所对应的 Loader 配置进行处理，当然我们也可以在相应的标签上添加 `lang` 属性来指定不同的语言处理比如：
+
+```html
+<style lang="less">
+@grey: #999;
+
+div {
+    span {
+        color: @grey;
+    }
+}
+</style>
+```
+
+这样，对应的样式模块就可以当成 `.less` 文件进行处理，只需要配置上相应的 Loader 即可。
+
+## 单文件写法
+
+### template
+
+单文件中 `template` 模块的主要作用是提供一种更为便捷的方式来书写组件的 template 字符串。在配置 webpack 的时候，需要对 template 部分配置 raw-loader、html-loader 等等。其中如果 template 当中需要使用到图片、字体文件，建议采用 html-loader 配合 url-loader 的形式完成相关配置。例如：
+
+```html
+<template>
+    <div>
+        <img src="../assets/logo.png">
+    </div>
+</template>
+```
+则需要在 webpack 配置文件当中增加如下配置：
+
+```js
+module.exports = {
+    module: {
+        rules: [
+            // ...
+            {
+                test: /\.html$/,
+                loader: 'html-loader'
+            },
+            {
+                test: /\.png$/,
+                loader: 'url-loader'
+            }
+        ]
+    }
+}
+```
+
+template 部分可以省略不写，直接在 script 模块当中定义也是可以的：
+
+```html
+<script>
+export default {
+    template: '<div>{{name}}</div>'
+}
+</script>
+```
+
+template 模块也支持通过 src 标签引入 template 文件：
+
+```html
+<template src="./component-template.html"></template>
+```
+
+### script
+
+script 模块必须通过 `export default` 将组件的 JS 代码导出。在写法上，支持类似 Vue 的写法：
+
+```html
+<script>
+export default {
+    initData() {
+        return {
+            name: 'San'
+        };
+    }
+};
+</script>
+```
+
+也可以通过 class 的方式：
+
+```html
+<script>
+import san from 'san';
+export default class App extends san.Component {
+    initData() {
+        return {
+            name: 'San'
+        };
+    }
+}
+</script>
+```
+
+也可以配合 san-store 一起使用，比如：
+
+```html
+<script>
+import san from 'san';
+import {store, connect} from 'san-store';
+import {builder} from 'san-update';
+
+// ...
+export default connect.san({
+    name: 'user.name'
+})(san.defineComponent({
+    // ...
+}))
+</script>
+```
+
+总之在写法上与普通的 San 组件不存在太大区别，区别的地方只在于 template 和 style 的部分可以放到别的模块里进行书写。
+
+当组件不依赖数据和计算的时候，script 块可以省略不写。
+
+与 template 相似，script 模块也可以通过定义 src 属性导入相应的组件代码：
+
+```html
+<script src="./component-script.js"></script>
+```
+
+在默认情况下，script 模块的内容会被当成 `.js` 文件进行处理，如改成 TypeScript 的话，可以通过在 script 标签上添加属性 `lang="ts"` 将该模块标记为 `.ts` 文件，然后自行在 webpack 配置文件当中添加对 `.ts` 文件的处理 Loader 即可：
+
+```html
+<script lang="ts">
+// ...
+</script>
+```
+
+### style
+
+style 模块用来书写组件的样式，在用法上与 template、script 类似，例如：
+
+```html
+<style>
+.parent {
+    color: red;
+}
+
+.parent .children {
+    color: green;
+}
+</style>
+```
+
+在默认情况下，style 模块的内容会被当成 `.css` 文件处理，我们可以通过修改 `lang` 属性来指定文件类型。同时与 template、script 存在区别的地方在于，style 模块允许写多个，因此下面写的 style 模块都是有效的，全都会作用到当前的组件上：
+
+```html
+<template><!-- 组件模板  --></template>
+<script><!-- 组件 script --></script>
+<style>
+/* 写普通 css */
+.parent .children {
+    color: green;
+}
+</style>
+
+<style lang="less">
+/* 写 less */
+@grey: #999;
+.parent {
+    .children {
+        background: @grey;
+    }
+}
+</style>
+<!-- 引入外部 stylus 样式文件 -->
+<style src="./component-style.styl"></style>
+```
+

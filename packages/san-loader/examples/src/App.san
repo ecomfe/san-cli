@@ -1,0 +1,43 @@
+<template>
+    <div class="app-root">
+        <span class="app-span">{{name}}</span>
+        <sub-component />
+        <child-component name="Child"></child-component>
+    </div>
+</template>
+
+<script>
+import SubComponent from './SubComponent';
+import Child from './child/Child';
+
+export default {
+    components: {
+        'sub-component': SubComponent,
+        'child-component': Child
+    },
+    initData() {
+        return {
+            name: 'This is App!'
+        }
+    },
+    attached() {
+        console.log('hello san');
+    }
+}
+
+</script>
+
+<style lang="less">
+.app-root {
+    .app-span {
+        color: green;
+    }
+}
+</style>
+
+<style>
+.app-span {
+    border: 1px solid #dcdcdc;
+}
+</style>
+

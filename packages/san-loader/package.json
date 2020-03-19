@@ -1,0 +1,38 @@
+{
+  "name": "san-loader",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server --config examples/webpack.config.js",
+    "dev:build": "webpack --config examples/webpack.config.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "htmlparser2": "^4.1.0",
+    "magic-string": "^0.25.7"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.7.4",
+    "babel-loader": "^8.0.6",
+    "babel-preset-env": "^1.7.0",
+    "css-loader": "^3.4.2",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "less": "^3.11.1",
+    "less-loader": "^5.0.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "postcss-loader": "^3.0.0",
+    "san": "^3.8.1",
+    "style-loader": "^1.1.3",
+    "url-loader": "^3.0.0",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "peerDependencies": {
+    "webpack": "^3.0.0 || ^4.1.0 || ^5.0.0-0"
+  }
+}
