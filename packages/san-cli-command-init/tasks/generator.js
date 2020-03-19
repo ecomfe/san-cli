@@ -12,13 +12,13 @@ const render = require('consolidate').handlebars.render;
 const concat = require('concat-stream');
 const filter = require('gulp-filter');
 const rename = require('gulp-rename');
-const {getScopeLogger} = require('@baidu/san-cli-utils/ttyLogger');
+const {getDebugLogger} = require('@baidu/san-cli-utils/ttyLogger');
 const evaluate = require('../utils/evaluate');
 const {getGitUser} = require('@baidu/san-cli-utils/env');
 
 const ask = require('../ask');
 const exists = fs.existsSync;
-const debug = getScopeLogger('generate').debug;
+const debug = getDebugLogger('init:generate');
 
 module.exports = (name, dest, options) => {
     return (ctx, task) => {
@@ -26,7 +26,10 @@ module.exports = (name, dest, options) => {
             const src = ctx.localTemplatePath;
             // 0. 设置meta信息
             const metaData = getMetadata(src);
+            debug('read meta file from template project %O', metaData);
             const {name: gitUser, email: gitEmail, author} = getGitUser();
+            debug('author: %s, email: %s, git user: %s', author, gitEmail, gitUser);
+
             metaData.author = author;
             metaData.email = gitEmail;
             // 优先使用用户传入的
@@ -44,7 +47,6 @@ module.exports = (name, dest, options) => {
                     Handlebars.registerHelper(key, metaData.helpers[key]);
                 });
 
-            debug(metaData);
             // 2. 请回答
             observer.next();
             const answers = await ask(metaData.prompts || {}, metaData, options);
@@ -56,7 +58,9 @@ module.exports = (name, dest, options) => {
                 },
                 answers
             );
-            debug('Parameters after the merge are completed', data);
+
+            debug('Meta data after the merge are completed: %O', data);
+
             ctx.tplData = data;
 
             observer.next('Generating directory structure...');

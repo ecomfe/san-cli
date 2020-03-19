@@ -5,7 +5,8 @@
 
 const {resolve, isAbsolute, join, dirname} = require('path');
 const EventEmitter = require('events').EventEmitter;
-const {logger: consola, time, timeEnd, chalk} = require('@baidu/san-cli-utils/ttyLogger');
+const {logger: consola, time, timeEnd, chalk, getDebugLogger} = require('@baidu/san-cli-utils/ttyLogger');
+
 const importLazy = require('import-lazy')(require);
 const fs = require('fs-extra');
 const Config = importLazy('webpack-chain');
@@ -27,6 +28,8 @@ const {defaults: defaultConfig, validateSync: validateOptions} = require('./opti
 const BUILDIN_PLUGINS = ['base', 'css', 'app', 'optimization'];
 
 const logger = consola.withTag('Service');
+const debug = getDebugLogger('service');
+const showConfig = getDebugLogger('webpack:config');
 
 /* global Map, Proxy */
 module.exports = class Service extends EventEmitter {
@@ -82,7 +85,8 @@ module.exports = class Service extends EventEmitter {
             try {
                 const content = fs.readFileSync(envPath);
                 env = dotenv.parse(content) || {};
-                logger.debug('loadEnv', envPath, env);
+                debug('loadEnv envPath %s', envPath);
+                debug('loadEnv env object %O', env);
             } catch (err) {
                 // 文件不存在
                 if (err.toString().indexOf('ENOENT') < 0) {
@@ -177,7 +181,6 @@ module.exports = class Service extends EventEmitter {
                     // 重新赋值 esmodule
                     plugin = plugin.default;
                 }
-                logger.debug('Plugin loaded: %s', chalk.magenta(p));
                 if (typeof plugin === 'object' && typeof plugin.apply === 'function') {
                     if (!plugin.id) {
                         logger.warn(`Plugin is invalid: ${p}. Service plugin must has id.`);
@@ -189,7 +192,10 @@ module.exports = class Service extends EventEmitter {
                     // 2. plugin 是 array，则第二个 value 是 options
                     // 这样兼容同一个 plugin 多次调用 options 不同情况
                     if (pluginOptions) {
+                        debug('Plugin loaded: %s with options %O', chalk.magenta(plugin.id), pluginOptions);
                         return [plugin, pluginOptions];
+                    } else {
+                        debug('Plugin loaded: %s', chalk.magenta(plugin.id));
                     }
                     return plugin;
                 } else {
@@ -304,7 +310,7 @@ module.exports = class Service extends EventEmitter {
                     throw new SError(e);
                 }
             }
-            logger.debug('loadProjectOptions from ', configPath);
+            debug('loadProjectOptions from %s', configPath);
             // 这里特殊处理下 plugins 字段吧
             // if (result.config.plugins && result.config.plugins.length) {
             //     result.config.plugins = result.config.plugins.map(k =>
@@ -354,7 +360,7 @@ module.exports = class Service extends EventEmitter {
         // load user config
         time('loadProjectOptions');
         const projectOptions = await this.loadProjectOptions(this.configFile);
-        logger.debug('projectOptions', projectOptions);
+        debug('projectOptions: %O', projectOptions);
         timeEnd('loadProjectOptions');
 
         this.projectOptions = projectOptions;
@@ -444,9 +450,11 @@ module.exports = class Service extends EventEmitter {
             })(before, this.devServerMiddlewares);
         }
         config.devServer.before = before;
-        if (process.env.SAN_DEBUG) {
+        if (debug.enabled || showConfig.enabled) {
             // 在debug模式输出
-            console.log(Config.toString(config));
+            let wpConfig = Config.toString(config);
+            debug(wpConfig);
+            showConfig(wpConfig);
         }
         return config;
     }

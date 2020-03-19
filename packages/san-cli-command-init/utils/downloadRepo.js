@@ -3,10 +3,11 @@
  */
 const gitclone = require('git-clone');
 const fse = require('fs-extra');
-const {getScopeLogger, error} = require('@baidu/san-cli-utils/ttyLogger');
-const debug = getScopeLogger('download-repo').debug;
+const {getDebugLogger} = require('@baidu/san-cli-utils/ttyLogger');
 const {getGitUser} = require('@baidu/san-cli-utils/env');
 const {chalk} = require('@baidu/san-cli-utils/ttyLogger');
+
+const debug = getDebugLogger('init:download-repo');
 
 module.exports = (repo, dest, options) => {
     repo = normalize(repo, options);
@@ -16,7 +17,7 @@ module.exports = (repo, dest, options) => {
     // 先删除
     rm(dest);
     return new Promise((resolve, reject) => {
-        debug(url, dest, checkout);
+        debug('url: %s, dest: %s, branch: %s', url, dest, checkout);
         gitclone(url, dest, {checkout, shallow: checkout === 'master'}, err => {
             if (!err) {
                 rm(`${dest}/.git`);

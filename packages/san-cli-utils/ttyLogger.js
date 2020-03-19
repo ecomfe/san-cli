@@ -5,6 +5,7 @@
 
 const stripAnsi = require('strip-ansi');
 const Consola = require('./Consola');
+const debug = require('debug');
 /* eslint-disable fecs-camelcase,fecs-no-require */
 const {_types: consolaTypes} = require('consola');
 /* eslint-enable fecs-camelcase,fecs-no-require */
@@ -46,6 +47,10 @@ logger.getScopeLogger = (scope, level = process.env.CONSOLA_LEVEL) => {
     return l;
 };
 exports.getScopeLogger = logger.getScopeLogger;
+
+exports.getDebugLogger = scope => {
+    return debug(`san-cli:${scope}`);
+};
 
 function setLevel(level, l) {
     level = consolaTypes[level] ? consolaTypes[level].level : parseInt(level, 10);

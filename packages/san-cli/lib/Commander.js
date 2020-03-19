@@ -10,7 +10,7 @@ const lMerge = require('lodash.merge');
 
 const {getGlobalSanRcFilePath, findExisting} = require('@baidu/san-cli-utils/path');
 const readPkg = require('@baidu/san-cli-utils/readPkg');
-const {setLevel, chalk, time, timeEnd, error} = require('@baidu/san-cli-utils/ttyLogger');
+const {setLevel, chalk, time, timeEnd, error, getDebugLogger} = require('@baidu/san-cli-utils/ttyLogger');
 const {textColor} = require('@baidu/san-cli-utils/randomColor');
 
 const {scriptName, version: pkgVersion} = require('../package.json');
@@ -18,6 +18,7 @@ const CommanderAPI = require('./CommanderAPI');
 const {getCommandName} = require('./utils');
 const buildinCmds = ['build', 'serve', 'init', 'docit', 'inspect', 'command', 'plugin', 'remote'];
 
+const debug = getDebugLogger('command');
 module.exports = class Command {
     constructor(rawArgs, cwd = process.cwd()) {
         this.rawArgs = rawArgs || process.argv.slice(2);
@@ -335,9 +336,10 @@ module.exports = class Command {
                 if (instance && instance.command) {
                     if (!cmdName || unique.has(cmdName)) {
                         // 保证唯一性
-                        error(`${cmdName} is loaded, donot load again!`);
+                        error(`${cmdName} is loaded, don't load again!`);
                         return;
                     }
+                    debug('Command loaded %s', cmdName);
                     unique.add(cmdName);
                     this.command(instance);
                 } else {
