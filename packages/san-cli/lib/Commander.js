@@ -10,7 +10,7 @@ const lMerge = require('lodash.merge');
 
 const {getGlobalSanRcFilePath, findExisting} = require('@baidu/san-cli-utils/path');
 const readPkg = require('@baidu/san-cli-utils/readPkg');
-const {setLevel, chalk, time, timeEnd, error} = require('@baidu/san-cli-utils/ttyLogger');
+const {chalk, time, timeEnd, error, getDebugLogger} = require('@baidu/san-cli-utils/ttyLogger');
 const {textColor} = require('@baidu/san-cli-utils/randomColor');
 
 const {scriptName, version: pkgVersion} = require('../package.json');
@@ -18,6 +18,8 @@ const CommanderAPI = require('./CommanderAPI');
 const {getCommandName} = require('./utils');
 const buildinCmds = ['build', 'serve', 'init', 'docit', 'inspect', 'command', 'plugin', 'remote'];
 
+const globalDebug = getDebugLogger();
+const debug = getDebugLogger('command');
 module.exports = class Command {
     constructor(rawArgs, cwd = process.cwd()) {
         this.rawArgs = rawArgs || process.argv.slice(2);
@@ -131,10 +133,11 @@ module.exports = class Command {
             // 利用中间件机制，增加公共参数处理和函数等
             if (argv.verbose) {
                 // 增加 logger
-                setLevel(4);
-            } else {
-                setLevel(argv.logLevel);
+                globalDebug.enable('san-cli:*');
+            } else if (argv.logLevel) {
+                globalDebug.enable(`san-cli:${argv.logLevel}:*`);
             }
+
             if (argv.mode) {
                 process.env.NODE_ENV = argv.mode;
             }
@@ -185,11 +188,9 @@ module.exports = class Command {
             })
             .option('log-level', {
                 alias: 'logLevel',
-                default: 'error',
                 hidden: true,
-                choices: ['info', 'debug', 'warn', 'error', 'silent'],
                 type: 'string',
-                describe: 'Set log level'
+                describe: 'Set debug log scope'
             })
             .wrap(this.cli.terminalWidth() - 30)
             .middleware(getCommonArgv)
@@ -335,9 +336,10 @@ module.exports = class Command {
                 if (instance && instance.command) {
                     if (!cmdName || unique.has(cmdName)) {
                         // 保证唯一性
-                        error(`${cmdName} is loaded, donot load again!`);
+                        error(`${cmdName} is loaded, don't load again!`);
                         return;
                     }
+                    debug('Command loaded %s', cmdName);
                     unique.add(cmdName);
                     this.command(instance);
                 } else {

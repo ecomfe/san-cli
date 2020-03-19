@@ -15,15 +15,15 @@ const SanFriendlyErrorsPlugin = require('./lib/SanFriendlyErrorsPlugin');
 const WriteFileWebpackPlugin = require('write-file-webpack-plugin');
 
 const {prepareUrls} = require('@baidu/san-cli-utils/path');
-const {error, getScopeLogger} = require('@baidu/san-cli-utils/ttyLogger');
+const {getDebugLogger} = require('@baidu/san-cli-utils/ttyLogger');
 
 const {addDevClientToEntry, getWebpackErrorInfoFromStats} = require('./utils');
 
-const log = getScopeLogger('webpack/serve');
+const debug = getDebugLogger('webpack:serve');
+const closeDevtoolDebug = getDebugLogger('webpack:closeDevtool');
 
 module.exports = function devServer({webpackConfig, devServerConfig, publicPath, compilerCallback}) {
     return new Promise(async (resolve, reject) => {
-        log.debug('serve start');
         const {https, host, port: basePort, public: rawPublicUrl, hotOnly} = devServerConfig;
         const protocol = https ? 'https' : 'http';
         portfinder.basePort = basePort;
@@ -65,6 +65,16 @@ module.exports = function devServer({webpackConfig, devServerConfig, publicPath,
         // 处理 tpl 的情况，smarty copy 到 output
         webpackConfig.plugins.push(new WriteFileWebpackPlugin({test: /\.tpl$/}));
 
+        if (closeDevtoolDebug.enabled) {
+            // 这里使用closeDevTool debug 来开启
+            webpackConfig.devtool = 'none';
+            webpackConfig.optimization = {
+                minimize: false
+            };
+        }
+
+        debug('start server with options %O', devServerConfig);
+
         // create compiler
         let compiler;
         try {
@@ -99,7 +109,7 @@ module.exports = function devServer({webpackConfig, devServerConfig, publicPath,
         let isFirstCompile = true;
 
         compiler.hooks.done.tap('san-cli-serve', stats => {
-            log.debug('done');
+            debug('compiler done');
             if (stats.hasErrors()) {
                 const errObj = getWebpackErrorInfoFromStats(undefined, stats);
                 errObj.type = 'webpack';

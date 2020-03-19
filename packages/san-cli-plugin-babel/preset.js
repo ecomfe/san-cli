@@ -5,7 +5,8 @@
 /* eslint-disable fecs-camelcase */
 const path = require('path');
 const sanHmrPlugin = require('babel-plugin-san-hmr');
-
+const {getDebugLogger} = require('@baidu/san-cli-utils/ttyLogger');
+const debugLogger = getDebugLogger('babel');
 module.exports = (context, options = {}) => {
     // TODO: 需要加强 polyfill 逻辑，目前完全是 usage+core-js 玩法
     let {
@@ -19,6 +20,10 @@ module.exports = (context, options = {}) => {
         plugins = [],
         targets
     } = options;
+    if (debugLogger.enabled) {
+        // 使用DEBUG=san-cli:babel 开启
+        debug = true;
+    }
 
     const isProd = process.env.NODE_ENV === 'production';
 
@@ -28,7 +33,6 @@ module.exports = (context, options = {}) => {
         // 这个是 modern 打包
         targets = {esmodules: true};
     }
-
     if (!isProd && !plugins.includes(sanHmrPlugin)) {
         // 添加 san-hmr 插件
         plugins.push(sanHmrPlugin);

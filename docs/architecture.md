@@ -32,7 +32,7 @@ utils 中用的最多的是`ttyLogger.js`中跟 tty 输出相关的函数，常�
     -   warning/warn
     -   error
     -   fatal
-    -   time/timeEnd：用于检测时间段耗时，需要配合`SAN_DEBUG=1`环境变量使用
+    -   time/timeEnd：用于检测时间段耗时，需要配合`DEBUG=san-cli:pref`环境变量使用
 
 San CLI 中的 logger 是通过自定义的 Consola Reporter 实现的，在插件中也可以直接调用这些方法使用。
 

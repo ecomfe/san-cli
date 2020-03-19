@@ -5,6 +5,7 @@
     "author": "ksky521",
     "license": "MIT",
     "dependencies": {
+        "debug": "^4.1.1",
         "address": "^1.1.2",
         "chalk": "^3.0.0",
         "consola": "^2.11.0",

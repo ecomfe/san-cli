@@ -19,6 +19,8 @@
         "babel-plugin-san-hmr": "~1.0.5",
         "case-sensitive-paths-webpack-plugin": "^2.2.0",
         "copy-webpack-plugin": "~5.0.4",
+        "core-js": "^3.6.4",
+        "regenerator-runtime": "^0.13.3",
         "css-loader": "~3.2.0",
         "deploy-files": "^0.0.4",
         "dotenv": "~8.2.0",
