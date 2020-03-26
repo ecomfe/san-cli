@@ -15,6 +15,7 @@ module.exports = (context, options = {}) => {
         loose = false,
         modules = false,
         corejs = 3,
+        polyfill = true,
         ignoreBrowserslistConfig,
         // 这个是plugins数组
         plugins = [],
@@ -24,6 +25,7 @@ module.exports = (context, options = {}) => {
         // 使用DEBUG=san-cli:babel 开启
         debug = true;
     }
+    const usePolyfile = useBuiltIns === 'usage' && polyfill;
 
     const isProd = process.env.NODE_ENV === 'production';
 
@@ -46,8 +48,8 @@ module.exports = (context, options = {}) => {
                     debug,
                     loose,
                     ignoreBrowserslistConfig,
-                    useBuiltIns,
-                    corejs,
+                    useBuiltIns: usePolyfile ? 'usage' : useBuiltIns,
+                    corejs: usePolyfile ? corejs : undefined,
                     targets,
                     modules
                 }

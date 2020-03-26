@@ -268,7 +268,7 @@ module.exports = class Service extends EventEmitter {
         const api = this._getApiInstance(id);
 
         // 传入配置的 options
-        // 因为一般 plugin 不需要自定义 options，所以 projectOption 作为第二个参数
+        // * 因为一般 plugin 不需要自定义 options，所以 projectOption 作为第二个参数
         apply(api, this.projectOptions, options);
         return this;
     }

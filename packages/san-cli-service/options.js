@@ -59,6 +59,7 @@ const schema = joi
             )
         ),
         // 生产环境优化相关
+        polyfill: joi.boolean(),
         terserOptions: joi.object(),
         sourceMap: joi.boolean(),
         filenameHashing: joi.boolean(),

@@ -13,7 +13,7 @@ module.exports = {
     // 插件 id
     id: 'plugin-id',
     // 插件的入口函数
-    apply(api, projectOptions) {
+    apply(api, projectOptions, options) {
         api.chainWebpack(webpackConfig => {
             console.log(projectOptions);
             webpackConfig.entry(/*...*/);
@@ -26,10 +26,20 @@ module.exports = {
 
 ## 插件的`apply`函数
 
-插件的`apply`函数接受两个参数：
+插件的`apply`函数接受三个参数：
 
 1. `api`是 PluginAPI 实例，会提供一些 api（下面详细介绍）；
-2. `projectOptions`是 san.config.js 处理后的项目配置。
+2. `projectOptions`是 san.config.js 处理后的项目配置；
+3. `options` 是插件自己的参数，使用插件时：
+
+```js
+// san.config.js
+module.exports = {
+    plugins: [[requie('plugin'), {options}]]
+};
+// 或者使用 service addPlugin
+serviceInstance.addPlugin(require('plugin'), options);
+```
 
 > 在插件中，可以直接使用`__isProduction`变量，代表是否为`mode==='production'`，即生产环境打包。
 

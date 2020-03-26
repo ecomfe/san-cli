@@ -21,9 +21,9 @@ function genTranspileDepRegex(transpileDependencies) {
 
 module.exports = {
     id: 'san-cli-plugin-babel',
-    apply(api, options) {
+    apply(api, projectOptions = {}) {
         const cliPath = path.dirname(path.resolve(__dirname, './package.json'));
-        const {loaderOptions = {}, transpileDependencies = []} = options || {};
+        const {loaderOptions = {}, transpileDependencies = []} = projectOptions;
 
         // 如果需要 babel 转义node_module 中的模块，则使用这个配置
         // 类似 xbox 这些基础库都提供 esm 版本
