@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --config examples/hmr/webpack.config.js"
+    "dev": "webpack-dev-server --config examples/loader/webpack.config.js",
+    "dev:babel": "webpack-dev-server --config examples/babel/webpack.config.js"
   },
   "author": "clark-t",
   "license": "MIT",

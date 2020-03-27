@@ -3,21 +3,21 @@
  * @author tanglei02 (tanglei02@baidu.com)
  */
 
-const parser = require('../utils/ast-parser');
 const {
     val,
     isImportedAPI,
     getExportDefault,
     getTopLevelIdentifierTracker,
-    isModuleImported
+    isModuleImported,
+    hasModuleHot
 } = require('../utils/ast');
 
-module.exports = function (source) {
-    let ast;
-    try {
-        ast = parser.parse(source);
+module.exports = function (ast) {
+    if (!ast) {
+        return false;
     }
-    catch (e) {
+
+    if (hasModuleHot(ast)) {
         return false;
     }
 

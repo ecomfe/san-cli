@@ -44,5 +44,6 @@ export default connect.san({
     num: 'num'
 })(component);
 
+
 console.log('App Loaded');
 

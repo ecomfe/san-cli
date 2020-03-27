@@ -8,54 +8,86 @@ const normalizeOptions = require('../utils/normalize-options');
 const matchByAst = require('./match-by-ast');
 const tpl = require('./tpl');
 const {append} = require('../utils/source-map');
+const {hasModuleHot, hasComment} = require('../utils/ast');
 
 module.exports = class ComponentHmrHandler {
-    constructor(options, loaderContext) {
+    constructor({
+        ast,
+        source,
+        options,
+        resourcePath,
+        needMap,
+        inputSourceMap,
+        warning
+    }) {
+        this.ast = ast;
+        this.source = source;
+        this.resourcePath = resourcePath;
+        this.needMap = needMap;
+        this.inputSourceMap = inputSourceMap;
+        this.waring = warning;
         this.options = normalizeOptions(defaultOptions, options.component);
-        this.loaderContext = loaderContext;
         this.enable = this.options.enable !== false;
     }
 
-    match(source) {
+    match() {
         if (!this.enable) {
             return;
         }
 
+        const ast = this.ast;
+
+        if (hasComment(ast, 'san-hmr disable')) {
+            return false;
+        }
+
         for (let pattern of this.options.patterns) {
-            if (pattern === 'auto' || pattern.component === 'auto') {
-                if (matchByAst(source, pattern)) {
+            let tester = pattern && pattern.component || pattern;
+            if (tester === 'auto') {
+                if (matchByAst(ast)) {
                     return true;
                 }
             }
-            else if (pattern.component instanceof RegExp) {
-                if (pattern.component.test(this.loaderContext.resourcePath)) {
+            else if (tester instanceof RegExp) {
+                if (tester.test(this.resourcePath)) {
                     return true;
                 }
             }
+            else if (tester instanceof Function) {
+                if (tester(this.resourcePath)) {
+                    return true;
+                }
+            }
+
             else {
-                this.loaderContext.emitWarning(
-                    new Error(`暂不支持 typeof pattern.component === '${typeof pattern.component}' 的配置`)
+                this.warning(
+                    new Error(`暂不支持 typeof pattern === '${typeof tester}' 的配置`)
                 );
             }
         }
+
+        if (!hasModuleHot(ast) && hasComment(ast, 'san-hmr component')) {
+            return true;
+        }
     }
 
-    async generate(source, {inputSourceMap}) {
-        let hmrCode = tpl({
-            componentPath: this.loaderContext.resourcePath,
-            context: this.loaderContext.context
-        });
+    async genCode() {
+        const hmrCode = this.genHmrCode();
+        const source = this.source;
 
-        if (!this.loaderContext.sourceMap) {
+        if (!this.needMap) {
             return {code: source + hmrCode};
         }
         // no-return-await
         const result = await append(source, hmrCode, {
-            inputSourceMap,
-            filePath: this.loaderContext.resourcePath,
-            sourceRoot: this.loaderContext.context
+            inputSourceMap: this.inputSourceMap,
+            resourcePath: this.resourcePath
         });
         return result;
+    }
+
+    genHmrCode() {
+        return tpl({resourcePath: this.resourcePath});
     }
 };
 

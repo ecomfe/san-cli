@@ -19,7 +19,7 @@ const DEFAULT_TEMPLATE_ATTR = {
  */
 function generateTemplateImport(descriptor, options) {
     if (!descriptor.template || !descriptor.template.length) {
-        return '';
+        return 'var template;';
     }
 
     let template = descriptor.template[0];

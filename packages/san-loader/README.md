@@ -38,14 +38,14 @@ app.attach(document.body);
 通过 npm 进行 San-Loader 的安装：
 
 ```shell
-npm install --save-dev @baidu/san-loader
+npm install --save-dev san-loader
 ```
 
 然后在 webpack 的配置文件上增加一条规则应用到 `.san` 文件上，并且增加一个 SanLoaderPlugin：
 
 
 ```js
-const SanLoaderPlugin = require('@baidu/san-loader/lib/plugin');
+const SanLoaderPlugin = require('san-loader/lib/plugin');
 
 module.exports = {
     // ...
@@ -53,7 +53,7 @@ module.exports = {
         rules: [
             {
                 test: /\.san$/,
-                loader: '@baidu/san-loader'
+                loader: 'san-loader'
             },
             // ...
         ]
@@ -67,7 +67,7 @@ module.exports = {
 如前面提到，San-Loader 会将单文件的各个部分拆分出来，并交给其他的 Loader 来进行资源处理，因此还需要配置各个模块的处理方法，比如：
 
 ```js
-const SanLoaderPlugin = require('@baidu/san-loader/lib/plugin');
+const SanLoaderPlugin = require('san-loader/lib/plugin');
 
 module.exports = {
     // ...
@@ -75,7 +75,7 @@ module.exports = {
         rules: [
             {
                 test: /\.san$/,
-                loader: '@baidu/san-loader'
+                loader: 'san-loader'
             },
             {
                 test: /\.js$/,

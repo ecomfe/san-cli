@@ -89,6 +89,7 @@ module.exports = function (source) {
         ${templateCode}
         ${scriptCode}
         export default normalize(script, template);
+        /* san-hmr component */
     `;
 
     this.callback(null, codo);

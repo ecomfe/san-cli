@@ -36,14 +36,10 @@ module.exports = {
                             store: {
                                 patterns: [
                                     {
-                                        store: /\.store\.js$/,
-                                        getAction: function (storePath) {
-                                            return path.resolve(storePath, '../custom-store-actions.js');
-                                        }
+                                        store: /\.store\.js$/
                                     },
                                     {
-                                        store: 'auto',
-                                        action: 'auto'
+                                        store: 'auto'
                                     }
                                 ]
                             }

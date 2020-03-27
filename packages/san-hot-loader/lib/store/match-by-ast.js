@@ -3,46 +3,36 @@
  * @author tanglei02 (tanglei02@baidu.com)
  */
 
-const parser = require('../utils/ast-parser');
 const {
     val,
     isImportedAPI,
     getExportDefault,
     getTopLevelIdentifierTracker,
     isModuleImported,
-    hasExport
+    hasExport,
+    hasModuleHot,
+    getProgramBody
 } = require('../utils/ast');
 
-module.exports = function (source) {
-    let ast;
-
-    try {
-        ast = parser.parse(source);
+module.exports = function (ast) {
+    if (!ast) {
+        return false;
     }
-    catch (e) {
-        return;
+
+    if (hasModuleHot(ast)) {
+        return false;
     }
 
     if (!isModuleImported(ast, 'san-store')) {
-        return;
+        return false;
     }
 
     if (isGlobalActions(ast)) {
-        return {
-            type: 'globalAction'
-        };
+        return true;
     }
 
     if (isInstantStore(ast)) {
-        let instantActionsPath = getInstantActionsPath(ast);
-        if (!instantActionsPath) {
-            return;
-        }
-
-        return {
-            type: 'instantSotre',
-            actionPath: instantActionsPath
-        };
+        return true;
     }
 };
 
@@ -52,8 +42,10 @@ function isGlobalActions(ast) {
         return false;
     }
 
+    const body = getProgramBody(ast);
+
     let result = false;
-    for (let node of ast.program.body) {
+    for (let node of body) {
         // import {store} from 'san-store'
         // store.addAction(XX, XX)
         if (node.type === 'ExpressionStatement'
@@ -101,32 +93,5 @@ function isInstantStore(ast) {
     }
 
     return true;
-}
-
-function getInstantActionsPath(ast) {
-    // 获取条件
-    // import xx from 'path-to-action'
-    // export default new Store({actions: xxx})
-    let defaultModule = getExportDefault(ast);
-    let defaultTrackers = getTopLevelIdentifierTracker(ast, defaultModule);
-    let newStore = defaultTrackers[0];
-    let argTrackers = getTopLevelIdentifierTracker(ast, newStore.arguments[0]);
-    if (!argTrackers || argTrackers.length !== 1) {
-        return;
-    }
-    let storeOptions = argTrackers[0];
-    if (storeOptions.type !== 'ObjectExpression') {
-        return;
-    }
-    for (let property of storeOptions.properties) {
-        if (val(property.key) === 'actions'
-            && property.value.type === 'Identifier'
-        ) {
-            let trackers = getTopLevelIdentifierTracker(ast, property.value);
-            if (typeof trackers[0] === 'string') {
-                return trackers[0];
-            }
-        }
-    }
 }
 

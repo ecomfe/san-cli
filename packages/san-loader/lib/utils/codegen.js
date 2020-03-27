@@ -37,6 +37,8 @@ function stringManager(code, ast) {
  * @param {boolean=} needMap 是否需要生成 sourcemap，默认为 false
  * @param {Object=} ast 源文件对应的 HTML AST
  * @param {string=} resourcePath 源文件的文件路径
+ * @param {string=} prefix 截取后的代码块前缀，默认为空
+ * @param {string=} suffix 截取后的代码块后缀，默认为空
  * @return {Object} 内容 {code, map}
  */
 function getContent(
@@ -45,19 +47,31 @@ function getContent(
     {
         needMap = false,
         ast,
-        resourcePath
+        resourcePath,
+        prefix = '',
+        suffix = ''
     }
 ) {
-    let {startIndex, endIndex} = getContentRange(node);
+    let {startIndex, endIndex} = getContentRange(node, source);
     if (!needMap) {
         return {
-            code: source.slice(startIndex, endIndex + 1)
+            code: prefix
+                + source.slice(startIndex, endIndex + 1)
+                + suffix
         };
     }
 
     let s = stringManager(source, ast);
     s.remove(0, startIndex);
     s.remove(endIndex + 1, source.length);
+
+    if (prefix) {
+        s.prepend(prefix);
+    }
+
+    if (suffix) {
+        s.append(suffix);
+    }
 
     let map = s.generateMap({
         file: path.basename(resourcePath),

@@ -23,6 +23,9 @@ module.exports = {
                 test: /\.san$/,
                 use: [
                     {
+                        loader: require.resolve('@baidu/san-hot-loader')
+                    },
+                    {
                         loader: path.resolve(__dirname, '../index.js')
                     }
                 ]
@@ -31,22 +34,28 @@ module.exports = {
                 test: /\.js$/,
                 use: [
                     {
-                        loader: 'babel-loader'
+                        loader: 'babel-loader',
+                        options: {
+                            plugins: [
+                                require.resolve('@babel/plugin-proposal-class-properties'),
+                                require.resolve('@baidu/san-hot-loader/lib/babel-plugin')
+                            ]
+                        }
                     }
                 ]
             },
             {
                 test: /\.less$/,
                 use: [
-                    {
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            esModule: true
-                        }
-                    },
                     // {
-                    //     loader: 'style-loader'
+                    //     loader: MiniCssExtractPlugin.loader,
+                    //     options: {
+                    //         esModule: true
+                    //     }
                     // },
+                    {
+                        loader: 'style-loader'
+                    },
                     {
                         loader: 'css-loader',
                         options: {
@@ -64,15 +73,15 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    {
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            esModule: true
-                        }
-                    },
                     // {
-                    //     loader: 'style-loader'
+                    //     loader: MiniCssExtractPlugin.loader,
+                    //     options: {
+                    //         esModule: true
+                    //     }
                     // },
+                    {
+                        loader: 'style-loader'
+                    },
                     {
                         loader: 'css-loader',
                         options: {
@@ -121,10 +130,12 @@ module.exports = {
             template: path.resolve(__dirname, './index.html')
         }),
         new SanLoaderPlugin(),
-        new MiniCssExtractPlugin({
-            filename: '[name].css',
-            chunkFilename: '[id].css'
-        })
+        // new MiniCssExtractPlugin({
+        //     filename: '[name].css',
+        //     chunkFilename: '[id].css'
+        // }),
+        new webpack.NamedModulesPlugin(),
+        new webpack.HotModuleReplacementPlugin()
     ]
 };
 

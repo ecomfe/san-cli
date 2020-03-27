@@ -3,15 +3,10 @@
  * @author tanglei02 (tanglei02@baidu.com)
  */
 
-const parser = require('./utils/ast-parser');
+// const path = require('path');
+const getHandler = require('./get-handler');
 const loaderUtils = require('loader-utils');
-const ComponentHmrHandler = require('./component/component-hmr-handler');
-const StoreHmrHandler = require('./store/store-hmr-handler');
-
-const handlerConstructors = [
-    ComponentHmrHandler,
-    StoreHmrHandler
-];
+const parse = require('./utils/ast-parser');
 
 module.exports = async function (source, inputSourceMap) {
     this.cachable = true;
@@ -23,37 +18,35 @@ module.exports = async function (source, inputSourceMap) {
         return;
     }
 
-    const finish = (code, map) => {
-        parser.delete(source);
-        callback(null, code, map);
-    };
+    const resourcePath = this.resourcePath;
+    const needMap = this.sourceMap;
 
+    let ast;
     try {
-        for (const HandlerConstructor of handlerConstructors) {
-            const handler = new HandlerConstructor(options, this);
-
-            if (!handler.enable) {
-                continue;
-            }
-
-            const matchOptions = handler.match(source, handler.options);
-            if (!matchOptions) {
-                continue;
-            }
-
-            const {code, map} = await handler.generate(source, {
-                matchOptions,
-                inputSourceMap
-            });
-
-            finish(code, map);
-            return;
-        }
+        ast = parse(source, {resourcePath});
     }
     catch (e) {
-        this.emitWarning(e);
+        callback(null, source, inputSourceMap);
+        return;
     }
 
-    finish(source, inputSourceMap);
-};
+    const matchOptions = {
+        ast,
+        source,
+        options,
+        resourcePath,
+        needMap,
+        inputSourceMap,
+        warning: this.emitWarning.bind(this)
+    };
 
+    let handler = getHandler(matchOptions);
+    if (handler) {
+        const {code, map} = await handler.genCode();
+        callback(null, code, map);
+    }
+    else {
+        callback(null, source, inputSourceMap);
+    }
+
+};

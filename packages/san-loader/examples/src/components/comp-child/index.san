@@ -1,0 +1,53 @@
+<template>
+    <div class="comp-child">
+        <div>this is a <span>{{name}}</span>, the age is <span>{{age}}</span></div>
+        <div><button on-click="click">clicked {{clicked.time}} times</button></div>
+        <sub-component age="{{clicked.time + 1}}"></sub-component>
+    </div>
+</template>
+
+<script>
+import {Component} from 'san';
+import SubComponent from './SubComponent';
+
+const name = 'Comp Component';
+
+export default class CompChild extends Component {
+    static components = {
+        'sub-component': SubComponent
+    };
+
+    initData() {
+        return {
+            name: name,
+            clicked: {
+                time: 0
+            }
+        }
+    }
+
+    click() {
+        this.data.set('clicked.time', this.data.get('clicked.time') + 1);
+    }
+
+    attached() {
+        console.log(`--- ${name} attached ---`)
+    }
+
+    detached() {
+        console.log(`--- ${name} detached --`)
+    }
+}
+
+console.log(`---- ${name} File loaded ----`)
+
+</script>
+
+<style lang="less">
+.comp-component {
+    background: green;
+    padding: 10px;
+}
+</style>
+
+

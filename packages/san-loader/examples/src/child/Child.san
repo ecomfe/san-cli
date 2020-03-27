@@ -1,3 +1,0 @@
-<template src="./child-template.html"></template>
-<script src="./child-script.js"></script>
-<style src="./child-style.less"></style>

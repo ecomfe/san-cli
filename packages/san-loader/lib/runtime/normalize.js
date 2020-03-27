@@ -13,26 +13,23 @@ import {defineComponent} from 'san';
  * @return {Class} 组件类
  */
 export default function (script, template) {
-    /* eslint-disable no-var */
-    var component;
-    /* eslint-enable no-var */
-
-    if (typeof script === 'object') {
-        // script 中定义的 template 优先级最高
-        if (template && !script.template) {
-            script.template = template;
+    if (template) {
+        // 当 script 为 Function 时，等价于 class A { static template = 'xxx' }
+        // 可查看 static property 的 babel 编译产物
+        script.template = template;
+        // 对于联合 san-store 的情况，需要同时将 template 挂到原型链上
+        if (typeof script === 'function') {
+            script.prototype.template = template;
+            if (script.prototype.constructor) {
+                script.prototype.constructor.prototype.template = template;
+            }
         }
-        component = defineComponent(script);
-    }
-    else {
-        if (template && !script.template && !script.prototype.template) {
-            // 等价于 class A { static template = 'xxx' }
-            // 可查看 static property 的 babel 编译产物
-            script.template = template;
-        }
-        component = script;
     }
 
-    return component;
+    return (
+        typeof script === 'object'
+        ? defineComponent(script)
+        : script
+    );
 }
 

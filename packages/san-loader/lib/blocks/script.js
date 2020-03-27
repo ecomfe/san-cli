@@ -63,7 +63,8 @@ function getScriptCode(descriptor, {source, needMap, resourcePath, ast}) {
     return getContent(source, script, {
         needMap,
         resourcePath,
-        ast
+        ast,
+        suffix: '\n /* san-hmr disable */'
     });
 }
 

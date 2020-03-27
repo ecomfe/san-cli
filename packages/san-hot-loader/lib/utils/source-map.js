@@ -3,6 +3,8 @@
  * @author tanglei02 (tanglei02@baidu.com)
  */
 
+const path = require('path');
+
 const sourceMap = require('source-map');
 const splitRE = /\r?\n/g;
 const emptyRE = /^(?:\/\/)?\s*$/;
@@ -69,16 +71,15 @@ function appendWithoutSourceMap(source, suffix, filePath, sourceRoot) {
 
 async function append(source, suffix, {
     inputSourceMap,
-    filePath,
-    sourceRoot
+    resourcePath
 }) {
     if (inputSourceMap) {
         // no-return-await
         const result = await appendWithSourceMap(source, suffix, inputSourceMap);
         return result;
     }
-
-    return appendWithoutSourceMap(source, suffix, filePath, sourceRoot);
+    const sourceRoot = path.dirname(resourcePath);
+    return appendWithoutSourceMap(source, suffix, resourcePath, sourceRoot);
 }
 
 module.exports = {

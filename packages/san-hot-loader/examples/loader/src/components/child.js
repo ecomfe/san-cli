@@ -6,17 +6,15 @@
 let san = require('san');
 let sanStore = require('san-store');
 let store = require('../store/custom.store');
+let template = require('./child-template');
 
 store = store.__esModule ? store.default : store;
+template = template.__esModule ? template.default : template;
 
 let connect = sanStore.connect;
 
 class Child extends san.Component {
-    static template = `
-        <div>
-            <p>this is {{name}} and click {{num}} times</p>
-            <button on-click="clicked">click child</button>
-        </div>`;
+    static template = template;
     initData() {
         return {
             name: 'Child'
@@ -29,6 +27,10 @@ class Child extends san.Component {
 
 let connector = connect.createConnector(store);
 
-module.exports = connector({num: 'num'}, {inc: 'inc'})(Child);
+export default connector({num: 'num'}, {inc: 'inc'})(Child);
 
-console.log('Child Loaded');
+// console.log(Object.getPrototypeOf(module.exports) === san.Component)
+// console.log(Object.getPrototypeOf(Child) === san.Component)
+// console.log(store instanceof sanStore.Store)
+
+// console.log('Child Loaded');
