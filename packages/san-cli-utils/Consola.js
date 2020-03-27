@@ -2,12 +2,14 @@
  * @file Consola 订制版
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+const debug = require('debug');
 const ConsolaReporter = require('./ConsolaReporter');
 const Consola = require('consola').Consola;
 const chalk = require('chalk');
 const figures = require('figures');
 const {textColor, bgColor} = require('./randomColor');
 
+const perfDebug = debug('san-cli:pref');
 module.exports = class SanConsola extends Consola {
     constructor(options = {}) {
         options = Object.assign(
@@ -32,8 +34,8 @@ module.exports = class SanConsola extends Consola {
         };
 
         this.timeEnd = name => {
-            // 只在 SAN_DEBUG 下面输出性能日志
-            if (process.env.SAN_DEBUG) {
+            // 只在 DEBUG=san-cli:pref 下面输出性能日志
+            if (perfDebug.enabled) {
                 const start = map.get(name);
                 if (!start) {
                     return;

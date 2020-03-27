@@ -20,10 +20,10 @@ function genTranspileDepRegex(transpileDependencies) {
 }
 
 module.exports = {
-    id: 'built-in:babel',
-    apply(api, options) {
-        const cliPath = path.dirname(path.resolve(__dirname, '../package.json'));
-        const {loaderOptions = {}, transpileDependencies = []} = options || {};
+    id: 'san-cli-plugin-babel',
+    apply(api, projectOptions = {}) {
+        const cliPath = path.dirname(path.resolve(__dirname, './package.json'));
+        const {loaderOptions = {}, transpileDependencies = []} = projectOptions;
 
         // 如果需要 babel 转义node_module 中的模块，则使用这个配置
         // 类似 xbox 这些基础库都提供 esm 版本
@@ -56,11 +56,12 @@ module.exports = {
                 })
                 .end();
 
-            const {name, loader, options: babelOptions} = require('./loaders/babel')(loaderOptions.babel, options, api);
             jsRule
-                .use(name)
-                .loader(loader)
-                .options(babelOptions);
+                .use('babel-loader')
+                .loader('babel-loader')
+                .options({
+                    presets: [[require.resolve('./preset'), loaderOptions]]
+                });
         });
     }
 };

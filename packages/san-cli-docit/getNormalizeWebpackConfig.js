@@ -4,10 +4,11 @@
  */
 const path = require('path');
 const fse = require('fs-extra');
-const {error, debug} = require('@baidu/san-cli-utils/ttyLogger');
+const {error, getDebugLogger} = require('@baidu/san-cli-utils/ttyLogger');
 const {findExisting} = require('@baidu/san-cli-utils/path');
 const importLazy = require('import-lazy')(require);
 const globby = importLazy('globby');
+const debug = getDebugLogger('docit');
 
 module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
     // 放到这里，是用了 argv.dtemplate
@@ -132,7 +133,7 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
 
     // 开始正式的操作
     let webpackConfig = api.getWebpackConfig();
-    debug(webpackConfig);
+    debug('webpack config %O', webpackConfig);
     if (argv.output) {
         // build 模式，删掉 webpack devServer；
         delete webpackConfig.devServer;

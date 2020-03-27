@@ -3,16 +3,26 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const webpack = require('webpack');
-const {getScopeLogger} = require('@baidu/san-cli-utils/ttyLogger');
+const {getDebugLogger} = require('@baidu/san-cli-utils/ttyLogger');
 const SanFriendlyErrorsPlugin = require('./lib/SanFriendlyErrorsPlugin');
 const {getWebpackErrorInfoFromStats} = require('./utils');
-const log = getScopeLogger('webpack/serve');
+const debug = getDebugLogger('webpack:build');
+const closeDevtoolDebug = getDebugLogger('webpack:closeDevtool');
 
 module.exports = function build({webpackConfig, compilerCallback}) {
     webpackConfig.plugins.push(new SanFriendlyErrorsPlugin({clearConsole: false}));
 
     return new Promise((resolve, reject) => {
-        log.debug('build start', webpackConfig);
+        debug('start');
+
+        if (closeDevtoolDebug.enabled) {
+            // 使用DEBUG=san-cli:webpack:closeDevtool 开启
+            webpackConfig.devtool = 'none';
+            webpackConfig.optimization = {
+                minimize: false
+            };
+        }
+
         const compiler = webpack(webpackConfig);
 
         if (typeof compilerCallback === 'function') {
@@ -20,17 +30,17 @@ module.exports = function build({webpackConfig, compilerCallback}) {
         }
         const callback = (err, stats) => {
             if (err || stats.hasErrors()) {
-                log.debug(err);
+                debug(err);
                 let errorInfo;
                 if (stats.hasErrors()) {
                     errorInfo = stats.toJson();
-                    log.debug(errorInfo.errors);
+                    debug(errorInfo.errors);
                 }
 
                 reject(getWebpackErrorInfoFromStats(err, stats));
                 const isWatch = webpackConfig.watch;
                 if (isWatch) {
-                    log.error(err || errorInfo.errorInfo);
+                    debug(err || errorInfo.errorInfo);
                     process.exit(1);
                 }
                 return;

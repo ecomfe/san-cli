@@ -3,7 +3,7 @@
  * @author yanyiting <yanyiting@baidu.com>
  */
 
-import PluginAPI from '../lib/PluginAPI';
+import PluginAPI from '../PluginAPI';
 
 let pluginApi = null;
 beforeEach(() => {

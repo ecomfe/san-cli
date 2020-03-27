@@ -7,7 +7,7 @@ const {textColor} = require('@baidu/san-cli-utils/randomColor');
 exports.command = 'plugin <add|ls|list|rm|remove>';
 // exports.aliases = ['plugin'];
 const desc = 'Add/Manage Service Plugin';
-exports.desc = desc;
+exports.description = desc;
 exports.builder = yargs => {
     if (yargs.argv._.length === 1) {
         const scriptName = yargs.$0;

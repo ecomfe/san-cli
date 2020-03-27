@@ -3,9 +3,11 @@
  */
 const gitclone = require('git-clone');
 const fse = require('fs-extra');
-const {getScopeLogger, error} = require('@baidu/san-cli-utils/ttyLogger');
-const debug = getScopeLogger('download-repo').debug;
+const {getDebugLogger} = require('@baidu/san-cli-utils/ttyLogger');
 const {getGitUser} = require('@baidu/san-cli-utils/env');
+const {chalk} = require('@baidu/san-cli-utils/ttyLogger');
+
+const debug = getDebugLogger('init:download-repo');
 
 module.exports = (repo, dest, options) => {
     repo = normalize(repo, options);
@@ -15,18 +17,48 @@ module.exports = (repo, dest, options) => {
     // 先删除
     rm(dest);
     return new Promise((resolve, reject) => {
-        debug(url, dest, checkout);
+        debug('url: %s, dest: %s, branch: %s', url, dest, checkout);
         gitclone(url, dest, {checkout, shallow: checkout === 'master'}, err => {
             if (!err) {
                 rm(`${dest}/.git`);
                 resolve({url, dest, checkout});
             } else {
-                error(err);
-                reject(err);
+                reject(
+                    getErrorMessage(err, {
+                        repo,
+                        url,
+                        dest,
+                        checkout,
+                        rawArgs: options._command.rawArgs
+                    })
+                );
             }
         });
     });
 };
+function getErrorMessage(err, gitInfo) {
+    if (/failed with status 128/.test(err.message)) {
+        // 说明是ssh方式
+        const tRegex = /^((?:ssh:\/\/|git@).+?)(?:#(.+))?$/;
+        let {url, rawArgs} = gitInfo;
+        const [cmd, templateName, appName] = rawArgs;
+
+        return `Fail to pull \`${url}\`${
+            tRegex.test(url) ? ' with SSH' : ''
+        }, please check the path and code permissions are correct.
+
+san init <template> <app-name>, for example:
+    san ${cmd} ${chalk.cyan(`yourname/${templateName}`)} ${appName}
+    san ${cmd} ${chalk.cyan(`https://github.com/yourname/${templateName}.git`)} ${appName}
+    san ${cmd} ${chalk.cyan(`github:yourname/${templateName}`)} ${appName}
+    san ${cmd} ${chalk.cyan(`icode:baidu/目录名/${templateName}`)} ${appName}
+    san ${cmd} ${chalk.cyan(`coding:yourname/${templateName}`)} ${appName}
+    san ${cmd} ${chalk.cyan(`${templateName}#branch`)} ${appName}
+
+default project template is ${chalk.cyan('ksky521/san-project')}.`;
+    }
+    return 'Failed to pull, please check the path and code permissions are correct';
+}
 function normalize(repo, opts) {
     // aliasmap
     // 这里的 templateAliasMap 是通过 sanrc → yargs argv 传入的

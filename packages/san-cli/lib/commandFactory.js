@@ -6,7 +6,7 @@
 function addFactory(propName = 'commands', validate = () => true) {
     return {
         command: 'add <name>',
-        desc: 'Add a subcommand to San CLI',
+        description: 'Add a subcommand to San CLI',
         builder: {
             global: {
                 alias: 'g',
@@ -18,7 +18,7 @@ function addFactory(propName = 'commands', validate = () => true) {
         handler(argv) {
             const path = require('path');
             const fse = require('fs-extra');
-            const readRc = require('./readRc');
+            const readRc = require('@baidu/san-cli-utils/readRc');
             const readPkg = require('read-pkg');
             const writePkg = require('write-pkg');
             const {requireFromLocal} = require('./utils');
@@ -96,7 +96,6 @@ exports.addFactory = addFactory;
 exports.removeFactory = (propName = 'commands', validate = () => true) => {
     return {
         command: 'remove <name>',
-        aliases: ['rm'],
         builder: {
             global: {
                 alias: 'g',
@@ -107,7 +106,7 @@ exports.removeFactory = (propName = 'commands', validate = () => true) => {
         },
         handler(argv) {
             const path = require('path');
-            const readRc = require('./readRc');
+            const readRc = require('@baidu/san-cli-utils/readRc');
             const fse = require('fs-extra');
             const readPkg = require('read-pkg');
 
@@ -184,7 +183,6 @@ exports.removeFactory = (propName = 'commands', validate = () => true) => {
 exports.listFactory = (propName = 'commands') => {
     return {
         command: 'list',
-        aliases: ['ls'],
         builder: {
             global: {
                 alias: 'g',
@@ -200,7 +198,7 @@ exports.listFactory = (propName = 'commands') => {
             }
         },
         handler(argv) {
-            const readRc = require('./readRc');
+            const readRc = require('@baidu/san-cli-utils/readRc');
             const {log} = require('@baidu/san-cli-utils/ttyLogger');
             if (argv.global || argv.all) {
                 const rc = readRc('rc');
@@ -222,7 +220,7 @@ exports.listFactory = (propName = 'commands') => {
                 log(`Your local ${propName} list is empty!`);
                 console.log();
             } else {
-                log(`  Your local ${propName} in \`sanrc.json\` :`);
+                log(`Your local ${propName} in \`package.json\` :`);
                 pkgRc.commands.forEach(cmd => log(`  - ${cmd}`));
             }
 

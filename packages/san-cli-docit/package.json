@@ -11,7 +11,7 @@
         "@baidu/san-cli": "0.0.1-alpha.2"
     },
     "dependencies": {
-        "globby": "^10.0.1",
+        "globby": "^11.0.0",
         "import-lazy": "^4.0.0",
         "@baidu/san-cli-utils": "^0.0.1-alpha.0",
         "@baidu/san-cli-webpack": "^0.0.1-alpha.0",

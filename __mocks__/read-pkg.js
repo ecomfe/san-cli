@@ -23,7 +23,7 @@ const readPkg = {
             '@babel/core': '^7.6.4',
             '@hapi/joi': '^16.1.7',
             'san-cli-utils': '^1.0.0',
-            'san-cli-command-init': '^1.0.0',
+            // 'san-cli-command-init': '^1.0.0',
             'babel-loader': '^8.0.6',
             'babel-plugin-dynamic-import-node': '^2.3.0',
             'resolve': '^1.12.0',
@@ -37,7 +37,9 @@ const readPkg = {
             'sass': '^1.19.0'
         },
         'san': {
-            'commands': []
+            'commands': [
+                './packages/san-cli/__tests__/mock/san-command.js'
+            ]
         }
     }))
 };

@@ -4,4 +4,4 @@
  */
 const {listFactory: factory} = require('../../../lib/commandFactory');
 
-module.exports = factory('servicePlugins');
+module.exports = factory('plugins');

@@ -5,7 +5,8 @@
 
 const {resolve, isAbsolute, join, dirname} = require('path');
 const EventEmitter = require('events').EventEmitter;
-const {logger: consola, time, timeEnd, chalk} = require('@baidu/san-cli-utils/ttyLogger');
+const {logger: consola, time, timeEnd, chalk, getDebugLogger} = require('@baidu/san-cli-utils/ttyLogger');
+
 const importLazy = require('import-lazy')(require);
 const fs = require('fs-extra');
 const Config = importLazy('webpack-chain');
@@ -15,26 +16,58 @@ const defaultsDeep = require('lodash.defaultsdeep');
 const lMerge = require('lodash.merge');
 const dotenv = require('dotenv');
 
-const commander = require('./commander');
 const SError = require('@baidu/san-cli-utils/SError');
 const PluginAPI = require('./PluginAPI');
 const {findExisting} = require('@baidu/san-cli-utils/path');
 const {textColor} = require('@baidu/san-cli-utils/randomColor');
 const argsert = require('@baidu/san-cli-utils/argsert');
-const readPkg = require('./readPkg');
+const readPkg = require('@baidu/san-cli-utils/readPkg');
 
 const {defaults: defaultConfig, validateSync: validateOptions} = require('./options');
 
-const BUILDIN_PLUGINS = ['base', 'css', 'app', 'optimization', 'babel'];
+const BUILDIN_PLUGINS = ['base', 'css', 'app', 'optimization'];
 
 const logger = consola.withTag('Service');
+const debug = getDebugLogger('service');
+const showConfig = getDebugLogger('webpack:config');
 
 /* global Map, Proxy */
 module.exports = class Service extends EventEmitter {
-    constructor(cwd, {plugins = [], useBuiltInPlugin = true, projectOptions = {}, cli = commander()} = {}) {
+    constructor(
+        name,
+        {
+            cwd,
+            configFile,
+            watch = false,
+            mode = process.env.NODE_ENV,
+            plugins = [],
+            useBuiltInPlugin = true,
+            useProgress = true,
+            useProfiler = false,
+            projectOptions = {}
+        } = {}
+    ) {
         super();
+        // 不使用进度条
+        this.useProgress = useProgress;
+        // webpackbar 的 profiler 需要开启进度条才能使用
+        this.useProfiler = useProgress && useProfiler;
+        // watch模式
+        this.useWatchMode = watch;
+        // 配置文件
+        this.configFile = configFile;
+
+        // 添加 global 配置，san config.js 使用
+        global.__isProduction = mode === 'production';
+        // mode
+        this.mode = mode;
+        // 名字，目前用于进度条
+        this.name = name;
+        // 工作目录
         this.cwd = cwd || process.cwd();
+        // logger
         this.logger = consola;
+        // pkg
         this.pkg = readPkg(this.cwd);
 
         this.initialized = false;
@@ -42,35 +75,18 @@ module.exports = class Service extends EventEmitter {
         // webpack chain & merge array
         this.webpackChainFns = [];
         this.webpackRawConfigFns = [];
-        // 相关的 Map
-        // 下面是注册命令 map
-        this.registeredCommands = new Map();
-        // 下面是注册 command flag map
-        this.registeredCommandFlags = new Map();
-        this.registeredCommandHandlers = new Map();
-
-        this._cli = cli;
         this.devServerMiddlewares = [];
+        // 插件
         this.plugins = this.resolvePlugins(plugins, useBuiltInPlugin);
     }
-
     loadEnv(mode) {
-        // this._configDir
-        // 后续为：local 内容
-        const modeEnvName = `.env${mode ? `.${mode}` : ''}`;
-        const envPath = findExisting([modeEnvName].map(k => join(this.cwd, k)));
-        if (!envPath) {
-            // 不存在默认的，则不往下执行了
-            return;
-        }
-        const localEnvPath = `${envPath}.local`;
-
         const load = envPath => {
             let env = {};
             try {
                 const content = fs.readFileSync(envPath);
                 env = dotenv.parse(content) || {};
-                logger.debug('loadEnv', envPath, env);
+                debug('loadEnv envPath %s', envPath);
+                debug('loadEnv env object %O', env);
             } catch (err) {
                 // 文件不存在
                 if (err.toString().indexOf('ENOENT') < 0) {
@@ -81,9 +97,34 @@ module.exports = class Service extends EventEmitter {
             }
             return env;
         };
+        const merge = obj => {
+            Object.keys(obj).forEach(key => {
+                if (!process.env.hasOwnProperty(key)) {
+                    process.env[key] = obj[key];
+                }
+            });
+        };
+
+        let defaultEnv = {};
+        const defaultEnvPath = join(this.cwd, '.env');
+        if (fs.existsSync(defaultEnvPath)) {
+            defaultEnv = Object.assign(defaultEnv, load(defaultEnvPath));
+        }
+
+        // this._configDir
+        // 后续为：local 内容
+        const modeEnvName = `.env${mode ? `.${mode}` : ''}`;
+        const envPath = findExisting([modeEnvName].map(k => join(this.cwd, k)));
+
+        if (!envPath) {
+            // 不存在默认的，则不往下执行了
+            merge(defaultEnv);
+            return;
+        }
+        const localEnvPath = `${envPath}.local`;
 
         const localEnv = load(localEnvPath);
-        const defaultEnv = load(envPath);
+        defaultEnv = Object.assign(defaultEnv, load(envPath));
 
         const envObj = Object.assign(defaultEnv, localEnv);
         Object.keys(envObj).forEach(key => {
@@ -91,6 +132,7 @@ module.exports = class Service extends EventEmitter {
                 process.env[key] = envObj[key];
             }
         });
+        merge(envObj);
         if (mode) {
             const defaultNodeEnv = mode === 'production' ? mode : 'development';
             // 下面属性如果为空，会根据 mode 设置的
@@ -106,7 +148,9 @@ module.exports = class Service extends EventEmitter {
         // 0. 判断是否需要加载 builtin plugin
         let builtInPlugins = [];
         if (useBuiltInPlugin) {
-            builtInPlugins = BUILDIN_PLUGINS.map(id => require(`../configs/${id}`));
+            builtInPlugins = BUILDIN_PLUGINS.map(id => require(`./configs/${id}`));
+            // * 添加上 babel 插件
+            builtInPlugins.push(require('@baidu/san-cli-plugin-babel'));
         }
         plugins = Array.isArray(plugins) ? plugins : [];
 
@@ -137,9 +181,9 @@ module.exports = class Service extends EventEmitter {
                     // 重新赋值 esmodule
                     plugin = plugin.default;
                 }
-                logger.debug('Plugin loaded: %s', chalk.magenta(p));
                 if (typeof plugin === 'object' && typeof plugin.apply === 'function') {
                     if (!plugin.id) {
+                        logger.warn(`Plugin is invalid: ${p}. Service plugin must has id.`);
                         // 默认 id 是配置的string，方便查找
                         plugin.id = p;
                     }
@@ -148,7 +192,10 @@ module.exports = class Service extends EventEmitter {
                     // 2. plugin 是 array，则第二个 value 是 options
                     // 这样兼容同一个 plugin 多次调用 options 不同情况
                     if (pluginOptions) {
+                        debug('Plugin loaded: %s with options %O', chalk.magenta(plugin.id), pluginOptions);
                         return [plugin, pluginOptions];
+                    } else {
+                        debug('Plugin loaded: %s', chalk.magenta(plugin.id));
                     }
                     return plugin;
                 } else {
@@ -166,7 +213,7 @@ module.exports = class Service extends EventEmitter {
             return p;
         } else {
             logger.error('Service plugin is invalid');
-            if (p.toString() === '[object Object]') {
+            if (p && p.toString() === '[object Object]') {
                 logger.error(p);
             }
         }
@@ -199,28 +246,12 @@ module.exports = class Service extends EventEmitter {
             get(target, prop) {
                 // 传入配置的自定义 pluginAPI 方法
 
-                if (
-                    [
-                        'registerCommand',
-                        'version',
-                        'on',
-                        'emit',
-                        'registerCommandFlag',
-                        'addPlugin',
-                        'getWebpackChainConfig',
-                        'getWebpackConfig',
-                        'addDevServerMiddleware'
-                    ].includes(prop)
-                ) {
+                if (['on', 'emit', 'addPlugin', 'getWebpackChainConfig', 'getWebpackConfig'].includes(prop)) {
                     if (typeof self[prop] === 'function') {
                         return self[prop].bind(self);
                     } else {
                         return self[prop];
                     }
-                } else if (['getCwd', 'getProjectOptions', 'getVersion', 'getPkg'].includes(prop)) {
-                    // 将属性转换成 getXXX 模式
-                    prop = prop.replace(/^get([A-Z])/, (m, $1) => $1.toLowerCase());
-                    return () => self[prop];
                 } else {
                     return target[prop];
                 }
@@ -235,73 +266,10 @@ module.exports = class Service extends EventEmitter {
         }
         const {id, apply} = plugin;
         const api = this._getApiInstance(id);
+
         // 传入配置的 options
-        // 因为一般 plugin 不需要自定义 options，所以 projectOption 作为第二个参数
+        // * 因为一般 plugin 不需要自定义 options，所以 projectOption 作为第二个参数
         apply(api, this.projectOptions, options);
-        return this;
-    }
-    registerCommandFlag(cmdName, flag, handler) {
-        argsert('<string> <object> <function>', [cmdName, flag, handler], arguments.length);
-
-        cmdName = getCommandName(cmdName);
-        const flagMap = this.registeredCommandFlags;
-        let flags = flagMap.get(cmdName) || {};
-        flags = Object.assign(flags, flag);
-        flagMap.set(cmdName, flags);
-        const handlerMap = this.registeredCommandHandlers;
-        const handlers = handlerMap.get(cmdName) || [];
-        handlers.push(handler);
-        handlerMap.set(cmdName, handlers);
-        return this;
-    }
-    registerCommand(name, yargsModule) {
-        argsert('<string|object> [object]', [name, yargsModule], arguments.length);
-
-        /* eslint-disable one-var */
-        let command, description, builder, handler, aliases, extend;
-        /* eslint-enable one-var */
-        if (typeof name === 'object') {
-            command = name.command;
-            description = name.describe || name.description || name.desc;
-            builder = name.builder;
-            handler = name.handler;
-            aliases = name.aliases;
-            // 这里是扩展
-            extend = name.extend;
-        } else {
-            command = name;
-            if (typeof yargsModule === 'function') {
-                handler = yargsModule;
-            } else {
-                description = yargsModule.describe || yargsModule.description || yargsModule.desc;
-                builder = yargsModule.builder;
-                handler = yargsModule.handler;
-                aliases = yargsModule.aliases;
-                // 这里是扩展
-                extend = name.extend;
-            }
-        }
-
-        if (typeof handler !== 'function') {
-            handler = argv => {
-                logger.warn('registerCommand', `${name} has an empty handler.`);
-            };
-        }
-
-        // 绑定 run，实际是通过 run 之后执行的
-        const cmdName = getCommandName(command);
-        this.registeredCommands.set(cmdName, {
-            command,
-            handler,
-            aliases,
-            extend,
-            describe: description ? description : false,
-            builder: builder ? builder : {}
-        });
-        return this;
-    }
-    _registerCommand(yargsModule) {
-        this._cli.command(yargsModule);
         return this;
     }
     async loadProjectOptions(configFile) {
@@ -342,7 +310,7 @@ module.exports = class Service extends EventEmitter {
                     throw new SError(e);
                 }
             }
-            logger.debug('loadProjectOptions from ', configPath);
+            debug('loadProjectOptions from %s', configPath);
             // 这里特殊处理下 plugins 字段吧
             // if (result.config.plugins && result.config.plugins.length) {
             //     result.config.plugins = result.config.plugins.map(k =>
@@ -381,84 +349,18 @@ module.exports = class Service extends EventEmitter {
         }
         return config;
     }
-    runCommand(cmd, rawArgs) {
-        // 组装 command，然后解析执行
-        // 0. registerCommand 和 registerCommandFlag 记录 command
-        let handlers = this.registeredCommandHandlers.get(cmd);
-        let flags = this.registeredCommandFlags.get(cmd) || {};
-        /* eslint-disable fecs-camelcase */
-        const _command = this.registeredCommands.get(cmd);
-        /* eslint-enable fecs-camelcase */
-        if (!_command) {
-            // 命令不存在哦~
-            logger.error('runCommand', `\`${this._cli.$0} ${cmd}\` is not exist!`);
-            return this;
-        }
-        /* eslint-disable fecs-camelcase */
-        const {command, handler: oHandler, describe, builder: oFlags, aliases} = _command;
-        /* eslint-enable fecs-camelcase */
-        // 0.1 处理 flags
-        const builder = Object.assign(flags, oFlags || {});
-        // 0.2 处理 handler
-        const handler = argv => {
-            if (!Array.isArray(handlers) && typeof handlers === 'function') {
-                handlers = [handlers];
-            }
-            let doit = true;
-            if (Array.isArray(handlers)) {
-                for (let i = 0, len = handlers.length; i < len; i++) {
-                    const handler = handlers[i];
-                    if (typeof handler === 'function') {
-                        doit = handler(argv);
-                        // ！！！返回 false 则则停止后续操作！！！
-                        if (doit === false) {
-                            // 跳出循环
-                            break;
-                        }
-                    }
-                }
-            }
-            // waring：
-            // 如果任何注入的命令 flag handler 返回为 false，则会停止后续命令执行
-            // 所以这里不一定会执行，看 doit 的结果
-            // 最后执行，因为插入的 flags 都是前置的函数，
-            // 而注册 command 的 handler 才是主菜
-            doit !== false && oHandler(argv);
-        };
-        // 1. cli 添加命令
-        this._registerCommand({
-            command,
-            handler,
-            describe,
-            builder,
-            aliases
-        });
-        // 2. cli.parse 解析
-        if (rawArgs[0] !== cmd) {
-            rawArgs.unshift(cmd);
-        }
-        this._cli.help().parse(rawArgs || process.argv.slice(2));
-        return this;
-    }
 
-    async run(cmd, argv = {}, rawArgv = process.argv.slice(2)) {
-        // eslint-disable-next-line
-        let {_version: version} = argv;
-        // 保证 Api.getxx 能够获取
-        this.version = version;
-        const mode = argv.mode || (cmd === 'build' && argv.watch ? 'development' : 'production');
-        // 添加 global 配置，san config.js 使用
-        global.__isProduction = mode === 'production';
+    async run(callback) {
         // 先加载 env 文件，保证 config 文件中可以用到
         time('loadEnv');
-        this.loadEnv(mode);
+        this.loadEnv(this.mode);
         timeEnd('loadEnv');
 
         // set mode
         // load user config
         time('loadProjectOptions');
-        const projectOptions = await this.loadProjectOptions(argv.configFile);
-        logger.debug('projectOptions', projectOptions);
+        const projectOptions = await this.loadProjectOptions(this.configFile);
+        debug('projectOptions: %O', projectOptions);
         timeEnd('loadProjectOptions');
 
         this.projectOptions = projectOptions;
@@ -468,25 +370,25 @@ module.exports = class Service extends EventEmitter {
         }
         // 开始添加依赖 argv 的内置 plugin
         // 添加progress plugin
-        if (!argv.noProgress) {
+        if (this.useProgress) {
             const progressOptions = {
-                name: cmd
+                name: this.name
             };
-            if (argv.profile) {
+            if (this.useProfiler) {
                 progressOptions.profile = true;
             }
             this.addPlugin(require('@baidu/san-cli-plugin-progress'), progressOptions);
         }
 
         time('init');
-        this.init(mode);
+        this.init(this.mode);
         timeEnd('init');
 
-        time('runCommand');
-        this.runCommand(cmd, rawArgv);
-        timeEnd('runCommand');
-
-        return this;
+        if (typeof callback === 'function') {
+            time('callback');
+            callback(this._getApiInstance(`${this.name}:callback`), this.projectOptions);
+            timeEnd('callback');
+        }
     }
     addPlugin(name, options = {}) {
         argsert('<string|array|object> [object|undefined]', [name, options], arguments.length);
@@ -498,11 +400,6 @@ module.exports = class Service extends EventEmitter {
         }
         const plugin = this._loadPlugin([name, options]);
         this.plugins.push(plugin);
-        return this;
-    }
-    addDevServerMiddleware(middlewareFactory) {
-        argsert('<function>', [middlewareFactory], arguments.length);
-        this.devServerMiddlewares.push(middlewareFactory);
         return this;
     }
 
@@ -553,6 +450,12 @@ module.exports = class Service extends EventEmitter {
             })(before, this.devServerMiddlewares);
         }
         config.devServer.before = before;
+        if (debug.enabled || showConfig.enabled) {
+            // 在debug模式输出
+            let wpConfig = Config.toString(config);
+            debug(wpConfig);
+            showConfig(wpConfig);
+        }
         return config;
     }
 };
@@ -584,11 +487,4 @@ function ensureSlash(config, key) {
         }
         config[key] = val.replace(/([^/])$/, '$1/');
     }
-}
-
-function getCommandName(command) {
-    return command
-        .replace(/\s{2,}/g, ' ')
-        .split(/\s+(?![^[]*]|[^<]*>)/)[0]
-        .trim();
 }

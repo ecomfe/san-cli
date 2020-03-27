@@ -16,8 +16,19 @@ module.exports = (template, dest, options) => {
         return new rxjs.Observable(async observer => {
             const hasPackage = fs.exists(path.join(dest, 'package.json'));
             let install = hasPackage && options.install;
+            let askInstall = !install;
+            if (ctx.metaData && typeof ctx.metaData === 'object') {
+                // 这里使用 metaData 重写一下，根据 template 的 meta.json 来决定使用 yarn/npm，是否 install
+                if (ctx.metaData.hasOwnProperty('useYarn')) {
+                    options.useYarn = !!ctx.metaData.useYarn;
+                }
+                if (hasPackage && ctx.metaData.hasOwnProperty('installDeps')) {
+                    askInstall = !!ctx.metaData.installDeps;
+                    install = askInstall !== false;
+                }
+            }
             // 有package.json但是命令中没加--install
-            if (hasPackage && !install) {
+            if (hasPackage && askInstall) {
                 const name = 'install';
                 observer.next();
                 // 询问是否需要安装
@@ -41,7 +52,7 @@ module.exports = (template, dest, options) => {
                 try {
                     // 清理 log，交给 npm
                     observer.next('Installing dependencies...');
-                    await installDeps(dest, options.verbose, options.registry);
+                    await installDeps(dest, options);
                     observer.complete();
                 } catch (e) {
                     observer.error(e);
@@ -51,11 +62,11 @@ module.exports = (template, dest, options) => {
     };
 };
 
-function installDeps(dest, verbose = false, registry) {
+function installDeps(dest, {verbose = false, registry, useYarn = true}) {
     let args = [];
     let command;
     // 优先使用yarn
-    if (hasYarn()) {
+    if (useYarn && hasYarn()) {
         registry = registry || registries.yarn;
         // args = ['--registry=' + registry];
         args = [];

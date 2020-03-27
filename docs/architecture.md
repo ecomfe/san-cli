@@ -32,7 +32,7 @@ utils 中用的最多的是`ttyLogger.js`中跟 tty 输出相关的函数，常�
     -   warning/warn
     -   error
     -   fatal
-    -   time/timeEnd：用于检测时间段耗时，需要配合`SAN_DEBUG=1`环境变量使用
+    -   time/timeEnd：用于检测时间段耗时，需要配合`DEBUG=san-cli:pref`环境变量使用
 
 San CLI 中的 logger 是通过自定义的 Consola Reporter 实现的，在插件中也可以直接调用这些方法使用。
 
@@ -192,7 +192,7 @@ module.exports = {
 常见方法包括：
 
 -   `.isProd()`：是不是生产环境打包，`process.NODD_ENV==='production'`；
--   `.registerCommand(name, yargsModule)/.registerCommand(yargsModule)`：注册 command 命令，实例化 Service 之后执行`service.run(command, argv)`触发；
+-   `.registerCommand(name, handler)`：注册 command 命令，实例化 Service 之后执行`service.run(command, argv)`触发；
 -   `.configWebpack(fn)`：将`fn` 压入 webpackConfig 回调栈，`fn`会在出栈执行时接收 webpackConfig，用于修改 webpack config；
 -   `.chainWebpack(fn)`：将`fn` 压入 webpackChain 回调栈，`fn`会在出栈执行时接收 chainableConfig，用于 webpack-chain 语法修改 webpack config；
 -   `.resolve(p)`：获取 CLI 执行目录的完整路径；
@@ -203,12 +203,12 @@ module.exports = {
 -   `.getVersion()`：获取 CLI 版本；
 -   `.getPkg()`：获取当前项目`package.json`内容；
 -   `.addPlugin(plugin, options)`：添加插件；
--   `.addDevServerMiddleware()`：添加 dev-server 中间件，**这里注意：中间件需要使用 factory 函数返回**
+-   `.middleware()`：添加 dev-server 中间件，**这里注意：中间件需要使用 factory 函数返回**
 
-**`.addDevServerMiddleware()`示例：**
+**`.middleware()`示例：**
 
 ```js
-api.addDevServerMiddleware(() =>
+api.middleware(() =>
     // return 一个 Expressjs 中间件
     require('@baidu/hulk-mock-server')({
         contentBase: path.join(__dirname, './' + outputDir + '/'),
