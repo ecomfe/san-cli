@@ -14,7 +14,7 @@ export default class CompSrc extends Component {
             clicked: {
                 time: 0
             }
-        }
+        };
     }
 
     click() {
