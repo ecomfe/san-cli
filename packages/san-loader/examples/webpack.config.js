@@ -15,7 +15,8 @@ module.exports = {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist')
     },
-    devtool: 'inline-source-map',
+    // devtool: 'inline-source-map',
+    devtool: false,
     mode: 'development',
     module: {
         rules: [
@@ -39,6 +40,18 @@ module.exports = {
                             plugins: [
                                 require.resolve('@babel/plugin-proposal-class-properties'),
                                 require.resolve('@baidu/san-hot-loader/lib/babel-plugin')
+                            ],
+                            presets: [
+                                [
+                                    require.resolve('@babel/preset-env'),
+                                    {
+                                        targets: {
+                                            browsers: '> 1%, last 2 versions'
+                                        },
+                                        modules: false
+                                    }
+
+                                ]
                             ]
                         }
                     }

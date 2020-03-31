@@ -6,7 +6,6 @@
 
 const getHandler = require('./get-handler');
 
-let flag = 1;
 module.exports = function ({parse}) {
     return {
         visitor: {

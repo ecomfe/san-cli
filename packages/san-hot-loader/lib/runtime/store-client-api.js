@@ -104,12 +104,12 @@ function equal(obj1, obj2) {
         return false;
     }
 
-    for (var i = 0; i < keys1.length; i++) {
-        if (keys1[i] !== keys2[i]) {
+    for (var j = 0; j < keys1.length; j++) {
+        if (keys1[j] !== keys2[j]) {
             return false;
         }
 
-        var key = keys1[i];
+        var key = keys1[j];
         if (!equal(obj1[key], obj2[key])) {
             return false;
         }
@@ -135,8 +135,8 @@ function deepClone(obj) {
 
     var clone = {};
     var keys = Object.keys(obj);
-    for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
+    for (var j = 0; j < keys.length; j++) {
+        var key = keys[j];
         clone[key] = deepClone(obj[key]);
     }
     return clone;

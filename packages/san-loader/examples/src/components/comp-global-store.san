@@ -11,31 +11,31 @@
 </template>
 
 <script>
-import {Component} from 'san';
+import {defineComponent} from 'san';
 import {connect} from 'san-store';
 import '../store/global-action';
 
 const name = 'Comp Global Store';
 
-class CompGlobalStore extends Component {
+const CompGlobalStore = defineComponent({
     initData() {
         return {
-            name: ''
-        }
-    }
+            name: name
+        };
+    },
 
     click() {
         this.actions.inc(this.data.get('time') || 0);
-    }
+    },
 
     attached() {
         console.log(`--- ${name} attached ---`)
-    }
+    },
 
     detached() {
         console.log(`--- ${name} detached --`)
     }
-}
+})
 
 export default connect.san(
     {time: 'num'},

@@ -36,6 +36,6 @@ console.log(`---- ${name} File loaded ----`)
 
 <style lang="less">
 .comp-simple-obj {
-    background: blue;
+    background: yellow;
 }
 </style>

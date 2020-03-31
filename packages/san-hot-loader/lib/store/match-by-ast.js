@@ -4,7 +4,6 @@
  */
 
 const {
-    val,
     isImportedAPI,
     getExportDefault,
     getTopLevelIdentifierTracker,

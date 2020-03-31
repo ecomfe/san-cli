@@ -10,7 +10,7 @@ const name = 'Comp Src';
 export default class CompSrc extends Component {
     initData() {
         return {
-            name: '',
+            name: name,
             clicked: {
                 time: 0
             }

@@ -28,6 +28,7 @@ const normalizePath = require.resolve('./runtime/normalize');
 /**
  * San 单文件有效的标签块及其代码提取方法集合
  *
+ * @const
  * @type {Object}
  */
 const SAN_BLOCK_MAP = {
@@ -39,6 +40,7 @@ const SAN_BLOCK_MAP = {
 /**
  * San 有效的标签块列表
  *
+ * @const
  * @type {Array.<string>}
  */
 const SAN_TAGNAMES = Object.keys(SAN_BLOCK_MAP);

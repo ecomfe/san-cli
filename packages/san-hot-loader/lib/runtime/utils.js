@@ -8,7 +8,7 @@ function esm(obj) {
 }
 
 function getExports(mod) {
-    return esm(mod.exports || mod.constructor.prototype.exports);
+    return esm(mod.exports || Object.getPrototypeOf(mod).exports);
 }
 
 module.exports = {

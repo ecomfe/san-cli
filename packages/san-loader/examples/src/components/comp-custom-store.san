@@ -7,32 +7,32 @@
 
 <script>
 
-import {Component} from 'san';
+import {defineComponent} from 'san';
 import {connect} from 'san-store';
 import store from '../store/custom-store';
 // import '../store/custom-action';
 
 const name = 'Comp Custom Store';
 
-class CompCustomStore extends Component {
+const CompCustomStore = defineComponent({
     initData() {
         return {
-            name: ''
-        }
-    }
+            name: name
+        };
+    },
 
     click() {
         this.actions.inc(this.data.get('time'));
-    }
+    },
 
     attached() {
-        console.log(`--- ${name} attached ---`)
-    }
+        console.log(`--- ${name} attached ---`);
+    },
 
     detached() {
-        console.log(`--- ${name} detached --`)
+        console.log(`--- ${name} detached --`);
     }
-}
+})
 
 let connector = connect.createConnector(store);
 
@@ -41,7 +41,7 @@ export default connector(
     {inc: 'inc'}
 )(CompCustomStore);
 
-console.log(`---- ${name} File loaded ----`)
+console.log(`---- ${name} File loaded ----`);
 
 </script>
 
