@@ -110,9 +110,14 @@ module.exports = {
                         .end();
                 });
             }
-
             // TODO: san file loader换成san-loader
-            setLoader('san', /\.san$/, ['babel', 'san']);
+            if (!isProd) {
+                setLoader('san', /\.san$/, ['hmr', 'san']);
+                setLoader('js', /\.m?js?$/, ['hmr']);
+            }
+            else {
+                setLoader('san', /\.san$/, ['san']);
+            }
             setLoader('ejs', /\.ejs$/, 'ejs');
             setLoader('html', /\.html?$/, 'html');
             setLoader('svg', /\.svg(\?.*)?$/, 'svg', {
@@ -129,6 +134,7 @@ module.exports = {
                 dir: 'fonts'
             });
             // ----------------------pulgins---------------------
+            webpackConfig.plugin('san').use(require('@baidu/san-loader/lib/plugin'));
             // 大小写敏感！！！！
             webpackConfig.plugin('case-sensitive-paths').use(require('case-sensitive-paths-webpack-plugin'));
             // 定义 env 中的变量
@@ -137,7 +143,9 @@ module.exports = {
             if (!isProd) {
                 // dev mode
                 webpackConfig.devtool('cheap-module-eval-source-map');
-                webpackConfig.plugin('hmr').use(require('webpack/lib/HotModuleReplacementPlugin'));
+                webpackConfig.plugin('hmr')
+                    .use(require('webpack/lib/NamedModulesPlugin'))
+                    .use(require('webpack/lib/HotModuleReplacementPlugin'));
                 webpackConfig.plugin('no-emit-on-errors').use(require('webpack/lib/NoEmitOnErrorsPlugin'));
             }
             // 将 env 中的值进行赋值

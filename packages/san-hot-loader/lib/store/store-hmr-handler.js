@@ -8,72 +8,86 @@ const normalizeOptions = require('../utils/normalize-options');
 const matchByAst = require('./match-by-ast');
 const tpl = require('./tpl');
 const {append} = require('../utils/source-map');
+const {hasModuleHot, hasComment} = require('../utils/ast');
 
 module.exports = class StoreHmrHandler {
-    constructor(options, loaderContext) {
+    constructor({
+        ast,
+        source,
+        options,
+        resourcePath,
+        needMap,
+        inputSourceMap,
+        warning
+    }) {
+        this.ast = ast;
+        this.source = source;
+        this.needMap = needMap;
+        this.inputSourceMap = inputSourceMap;
+        this.resourcePath = resourcePath;
+        this.warning = warning;
         this.options = normalizeOptions(defaultOptions, options.store);
-        this.loaderContext = loaderContext;
         this.enable = this.options.enable !== false;
     }
 
-    match(source) {
+    match() {
         if (!this.enable) {
-            return;
+            return false;
         }
+
+        const ast = this.ast;
+
+        if (hasComment(ast, 'san-hmr disable')) {
+            return false;
+        }
+
         for (let pattern of this.options.patterns) {
-            if (pattern === 'auto'
-                || pattern.store === 'auto'
-                || pattern.action === 'auto'
-            ) {
-                let matchOptions = matchByAst(source);
-                if (matchOptions) {
-                    return matchOptions;
+            let tester = pattern && pattern.store || pattern;
+            if (tester === 'auto') {
+                if (matchByAst(ast)) {
+                    return true;
                 }
             }
-            // 手动指定 globalAction 的匹配方法
-            else if (pattern.action instanceof RegExp) {
-                if (pattern.action.test(this.loaderContext.resourcePath)) {
-                    return {
-                        type: 'globalAction'
-                    };
+            // 手动指定 store 的匹配方法
+            else if (tester instanceof RegExp) {
+                if (tester.test(this.resourcePath)) {
+                    return true;
                 }
             }
-            // 手动指定 store 和 action 的匹配方法
-            else if (pattern.store instanceof RegExp && pattern.getAction instanceof Function) {
-                if (pattern.store.test(this.loaderContext.resourcePath)) {
-                    return {
-                        type: 'instantSotre',
-                        actionPath: pattern.getAction(this.loaderContext.resourcePath, this.loaderContext.context)
-                    };
+            else if (tester instanceof Function) {
+                if (tester(this.resourcePath)) {
+                    return true;
                 }
             }
             else {
-                this.loaderContext.emitWarning(new Error(`暂不支持 ${JSON.stringify(pattern)} 形式的配置`));
+                this.warning(new Error(`暂不支持 ${JSON.stringify(pattern)} 形式的配置`));
             }
+        }
+
+        if (!hasModuleHot(ast) && hasComment(ast, 'san-hmr store')) {
+            return true;
         }
     }
 
-    async generate(source, {matchOptions, inputSourceMap}) {
-        let template = matchOptions.type === 'globalAction'
-            ? tpl.globalStoreActionHmrTpl
-            : tpl.instantStoreActionHmrTpl;
+    async genCode() {
+        const hmrCode = this.genHmrCode();
+        const source = this.source;
 
-        let hmrCode = template({
-            filePath: this.loaderContext.resourcePath,
-            actionPath: matchOptions.actionPath,
-            context: this.loaderContext.context
-        });
-
-        if (!this.loaderContext.sourceMap) {
+        if (!this.needMap) {
             return {code: source + hmrCode};
         }
         // no-return-await
         const result = await append(source, hmrCode, {
-            inputSourceMap,
-            filePath: this.loaderContext.resourcePath,
-            sourceRoot: this.loaderContext.context
+            inputSourceMap: this.inputSourceMap,
+            resourcePath: this.resourcePath
         });
         return result;
+    }
+
+    genHmrCode() {
+        return tpl({
+            resourcePath: this.resourcePath
+        });
     }
 };
 

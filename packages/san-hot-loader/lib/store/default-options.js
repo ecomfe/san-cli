@@ -6,10 +6,7 @@
 module.exports = {
     enable: true,
     patterns: [
-        {
-            action: 'auto',
-            store: 'auto'
-        }
+        'auto'
     ]
 };
 

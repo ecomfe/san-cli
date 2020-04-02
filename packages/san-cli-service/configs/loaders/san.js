@@ -6,11 +6,11 @@
 module.exports = ({isProd}) => {
     return {
         name: 'san-loader',
-        loader: 'hulk-san-loader',
+        loader: '@baidu/san-loader',
         options: {
-            hotReload: !isProd,
-            sourceMap: !isProd,
-            minimize: isProd
+            // hotReload: !isProd,
+            // sourceMap: !isProd,
+            // minimize: isProd
         }
     };
 };

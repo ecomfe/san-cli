@@ -5,58 +5,23 @@
 
 const path = require('path');
 const genId = require('../utils/gen-id');
-const storeClientApiPath = require.resolve('./store-client-api');
+const storeClientApiPath = require.resolve('../runtime/store-client-api');
+const runtimeUtilPath = require.resolve('../runtime/utils');
 
-function globalStoreActionHmrTpl({
-    filePath,
-    context
+module.exports = function ({
+    resourcePath
 }) {
-    const id = genId(filePath, context);
+    const context = path.dirname(resourcePath);
+    const id = genId(resourcePath, context);
     return `
     if (module.hot) {
+        var __SAN_STORE_ID__ = '${id}';
         var __SAN_STORE_CLIENT_API__ = require('${storeClientApiPath}');
+        var __UTILS__ = require('${runtimeUtilPath}');
         module.hot.accept();
-        var __SAN_STORE_ID__ = '${id}';
-        if (!module.hot.data) {
-            __SAN_STORE_CLIENT_API__.wrapAddAction(__SAN_STORE_ID__, require('san-store').store);
-        }
-        __SAN_STORE_CLIENT_API__.cleanCache(__SAN_STORE_ID__);
+        var __SAN_STORE_INSTANCE__ = __UTILS__.getExports(module) || require('san-store').store;
+        __SAN_STORE_CLIENT_API__.update(__SAN_STORE_ID__, __SAN_STORE_INSTANCE__);
     }
     `;
-}
-
-function instantStoreActionHmrTpl({
-    filePath,
-    actionPath,
-    context
-}) {
-    actionPath = path.resolve(context, actionPath);
-    const id = genId(actionPath, context);
-    return `
-    if (module.hot) {
-        var __SAN_STORE_ID__ = '${id}';
-        var __SAN_STORE_CLIENT_API__ = require('${storeClientApiPath}');
-        var __SAN_STORE_INSTANCE__ = module.exports || module.__proto__.exports;
-        __SAN_STORE_INSTANCE__ = __SAN_STORE_INSTANCE__.__esModule
-            ? __SAN_STORE_INSTANCE__.default
-            : __SAN_STORE_INSTANCE__;
-        if (!module.hot.data) {
-            __SAN_STORE_CLIENT_API__.wrapAddAction(__SAN_STORE_ID__, __SAN_STORE_INSTANCE__);
-        }
-        module.hot.accept('${actionPath}', function () {
-            __SAN_STORE_CLIENT_API__.cleanCache(__SAN_STORE_ID__);
-            var __SAN_STORE_ACTIONS__ = require('${actionPath}');
-            __SAN_STORE_ACTIONS__ = __SAN_STORE_ACTIONS__.__esModule
-                ? __SAN_STORE_ACTIONS__.default
-                : __SAN_STORE_ACTIONS__;
-            __SAN_STORE_CLIENT_API__.updateActions(__SAN_STORE_INSTANCE__, __SAN_STORE_ACTIONS__);
-        });
-    }
-    `;
-}
-
-module.exports = {
-    globalStoreActionHmrTpl,
-    instantStoreActionHmrTpl
 };
 

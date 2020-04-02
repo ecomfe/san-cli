@@ -6,7 +6,7 @@ San-Hot-Loader 为基于 Webpack 构建的 [San](https://github.com/baidu/san) �
 
 **代码1-1**
 ```shell
-$ npm install --save-dev @baidu/san-hot-loader
+$ npm install --save-dev san-hot-loader
 ```
 
 ## 配置
@@ -32,7 +32,7 @@ module.exports = {
 
 这样，在启动 webpack 进行代码调试的时候，就自动实现了 San 组件与 San-Store 的热更新功能。
 
-> **需要注意的是**，当项目代码使用了 ES7 即以上的语法时，需要首先将代码经过 babel-loader 进行转换之后，再使用 san-hot-loader 实现热更新：
+> **需要注意的是**，当项目代码使用了 ES7 即以上的语法时，通常需要 babel-loader 将代码进行转换成 ES5 语法，这个转换过程可能会带来额外的 Babel Helper、Polyfill 代码的注入，在这种情况下，san-hot-loader 同时也提供了 babel 插件来实现热更新代码注入：
 
 
 **代码2-2**
@@ -45,8 +45,16 @@ module.exports = {
             {
                 test: /\.js$/,
                 use: [
-                    'san-hot-loader',
-                    'babel-loader'
+                    // 'san-hot-loader',
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            plugins: [
+                                // 通过 babel plugin 的形式添加
+                                require.resolve('san-hot-loader/lib/babel-plugin')
+                            ]
+                        }
+                    }
                 ]
             }
             // ... 其他的 loader 信息
@@ -207,45 +215,215 @@ san-store 提供了自定义 store 的方法来满足开发者多 store 的状�
 ```js
 // store.js
 import {Store} from 'san-store';
-import actions from './actions';
+import {builder} from 'san-update';
 
 export default new Store({
     initData: {
         num: 0
     },
-    actions
+    actions: {
+        increase(num) {
+            return builder().set('num', num + 1);
+        },
+        decrease(num) {
+            return builder().set('num', num - 1);
+        }
+    }
 });
 ```
+通过类似前面代码3-5 的写法使用自定义 store，同样地，在修改自定义 store 文件时，同样也能够获得热更新效果。
 
-其中 `./actions` 为自定义 store 所注册的 actions：
-
-**代码3-8**
-```js
-// ./actions.js
-import {builder} from 'san-update';
-export default {
-    increase(num) {
-        return builder().set('num', num + 1);
-    },
-    decrease(num) {
-        return builder().set('num', num - 1);
-    }
-}
-```
-
-通过类似前面代码3-5 的写法使用自定义 store，同样地，在修改 `actions.js` 的文件文件时，同样也能够获得热更新效果。
+需要注意的是，在这种自定义 Store 的情况下，只有在修改 `actions` 部分的代码会实现热更新，当 initData 部分出现改动时，则会直接进行页面重载。
 
 自定义 store 的文件应具有以下特征：
 
 1. 文件引入 `san-store`；
 2. 使用 `san-store` 提供的 `Store` 方法实例化自定义 store；
-3. 实例化 Store 的参数为 Object，并且存在 actions 属性；
-4. actions 属性的值以默认模块方式引入（`import`、`require`）；
-5. 将自定义 store 以默认模块导出；
+3. 将自定义 store 以默认模块导出；
+
+### 特殊注释
+
+前面给出了符合 san-hot-loader 满足热更新自动检测的一些文件写法，在某些情况下可能会存在以下情况：
+
+1. 文件不希望被热更新；
+2. 文件希望被热更新，但是由于没有被自动检测到而热更新失效；
+
+针对这种情况，除了可以采用下文所提到的 san-hot-loader 配置指定之外，还可以直接在书写具体工程代码的时候，通过添加一些特殊的注释进行标记，san-hot-loader 会去检测这些特殊的注释去执行相应的操作。
+
+#### 禁止热更新
+
+在文件头部或尾部添加以下注释，即可达到禁止该文件被热更新的效果：
+
+```js
+/* san-hmr disable */
+
+import san from 'san';
+
+export default san.defineComponent({
+    template: '<div>hello world</div>'
+});
+```
+
+#### 开启热更新
+
+热更新包括组件热更新和 San-Store 热更新。
+
+组件热更新需要满足的条件是：当前文件默认导出的模块组件对象。在满足该前提下，可以使用以下注释指定热更新：
+
+```js
+// ./component.js
+import sanComponentWrapper from './wrapper'
+import componentDescriptor from './descriptor';
+
+export default sanComponentWrapper(componentDescriptor);
+
+/* san-hmr component */
+```
+
+其中：
+
+```js
+// ./wrapper.js
+
+import san from 'san';
+export default function (descriptor) {
+    return san.defineComponent(descriptor);
+}
+
+// ./descriptor.js
+
+export default {
+    template: '<div>hello world</div>'
+}
+```
+
+很明显在上述的示例代码当中 component.js 是无法被 san-hot-loader 自动检测判定为 San 组件文件，因此可以通过注释 `/* san-hmr component */` 主动告知对该文件执行热更新。
+
+同样，对于 San-Store 也可以使用 `/* san-hmr store */` 来实现对 Store 的热更新：
+
+```js
+import store from './custom-store.js';
+
+store.addAction('increase', )
+```
+
+```js
+// ./custom-action.js
+import store from './custom-store';
+import {builder} from 'san-update';
+store.addAction('increase', function (num) {
+    builder().set('num', num + 1);
+});
+
+store.addAction('decrease', function (num) {
+    builder().set('num', num - 1);
+});
+
+/* san-hmr store */
+ ```
+
+其中：
+
+```js
+// .custom-store.js
+import {Store} from 'san-store';
+export default new Store({
+    initData: {
+        num: 0
+    }
+});
+```
+
+在这种情况下，san-hot-loader 无法通过自动检测手段判定 ./custom-action.js 需要执行热更新，因此可以通过 `/* san-hmr store */` 进行标记。
 
 ## 配置
 
-san-hot-loader 提供一系列配置，通过 webpack loader 的 `options` 配置项传入：
+san-hot-loader 提供一系列配置，通过 webpack loader 的 `options` 配置项传入，如果使用的是 babel 插件时，在配置上也是一样的：
+
+
+```js
+// webpack loader 配置
+module.exports = {
+    // ...
+    module: {
+        rules: [
+            // ...
+            {
+                test: /\.js$/,
+                use: [
+                    {
+                        loader: 'san-hot-loader',
+                        options: {
+                            enable: process.env.NODE_ENV === 'development',
+                            component: {
+                                patterns: [
+                                    /\.san\.js$/,
+                                    'auto'
+                                ]
+                            },
+                            store: {
+                                patterns: [
+                                    function (resourcePath) {
+                                        return /\.store\.js$/.test(resourcePath);
+                                    },
+                                    'auto'
+                                ]
+                            }
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}
+```
+
+```js
+// Babel Plugin 配置
+module.exports = {
+    // ...
+    module: {
+        rules: [
+            // ...
+            {
+                test: /\.js$/,
+                use: [
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            plugins: [
+                                [
+                                    'san-hot-loader',
+                                    {
+                                        enable: process.env.NODE_ENV === 'development',
+                                        component: {
+                                            patterns: [
+                                                /\.san\.js$/,
+                                                'auto'
+                                            ]
+                                        },
+                                        store: {
+                                            patterns: [
+                                                function (resourcePath) {
+                                                    return /\.store\.js$/.test(resourcePath);
+                                                },
+                                                'auto'
+                                            ]
+                                        }
+                                    }
+                                ]
+                            ]
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}
+
+```
+
+接下来将详细介绍 san-hot-loader 配置项的使用方法。
 
 ### enable
 
@@ -256,7 +434,7 @@ san-hot-loader 提供一系列配置，通过 webpack loader 的 `options` 配�
 {
     loader: 'san-hot-loader',
     options: {
-        enable: process.env.NODE_ENV === 'production'
+        enable: process.env.NODE_ENV !== 'production'
     }
 }
 ```
@@ -280,7 +458,7 @@ san-hot-loader 提供一系列配置，通过 webpack loader 的 `options` 配�
 
 - component.patterns `{Array.<Object>}` 开启热更新的 San 组件的路径匹配模式，默认值为：`[{component: 'auto'}]`，即采取自动检测的模式。
 
-其中 `component` 的取值除了 `'auto'` 之外，还可以传入正则表达式来对进行文件路径匹配，比如：
+其中 `component` 的取值除了 `'auto'` 之外，还可以传入正则表达式和函数来对进行文件路径匹配，比如：
 
 ```js
 {
@@ -288,19 +466,20 @@ san-hot-loader 提供一系列配置，通过 webpack loader 的 `options` 配�
     options: {
         component: {
             patterns: [
-                {
-                    component: /\.san\.js$/
+                /\.san\.js$/,
+                function (resourcePath) {
+                    // resourcePath 为当前资源的绝对路径
+                    // return true 则表示匹配成功
+                    return /\.san\.js$/.test(resourcePath);
                 },
-                {
-                    component: 'auto'
-                }
+                'auto'
             ]
         }
     }
 }
 ```
 
-san-hot-loader 会优先匹配到后缀为 `.san.js` 的文件时，会直接向该文件注入热更新代码，匹配失败后，会继续执行 `component: 'auto'` 配置所指定的自动检测。
+san-hot-loader 会优先匹配到后缀为 `.san.js` 的文件时，会直接向该文件注入热更新代码，匹配失败后，再按顺序执行剩余的匹配规则。
 
 ### store.enable
 
@@ -319,13 +498,9 @@ san-hot-loader 会优先匹配到后缀为 `.san.js` 的文件时，会直接向
 
 ### store.patterns
 
-- store.patterns `{Array.<Object>}` 开启热更新的 San Store 模块路径匹配模式，默认值为：`[{store: 'auto', action: 'auto'}]`，即采取自动检测的模式。
+- store.patterns `{Array.<Object>}` 开启热更新的 San Store 模块路径匹配模式，默认值为：`['auto']`，即采取自动检测的模式。
 
-根据 san-store 的默认 store 和自定义 store 两种写法，store.patterns 的配置也分为两种。
-
-#### 默认 store 配置
-
-默认 store 写法，需要向定义 action 的文件注入热更新代码，因此可以通过 `action` 传入正则表达式来进行相关文件路径匹配，如：
+无论是使用 san-store 提供的全局 store 还是自定义 store，同样也可以通过正则表达式和函数的方式去指定文件，在规则上与 component 配置一致：
 
 ```js
 {
@@ -333,31 +508,11 @@ san-hot-loader 会优先匹配到后缀为 `.san.js` 的文件时，会直接向
     options: {
         store: {
             patterns: [
-                {
-                    action: /\.action\.js$/
-                }
-            ]
-        }
-    }
-}
-```
-
-自定义 store 写法，需要向 store 文件注入 action 文件的热更新代码，因此需要配置 `store` 字段传入正则表达式，以匹配出 store 文件的同时，还需要传入 `getAction` 的方法来获取 store 文件所对应的 action，如：
-
-```js
-{
-    loader: 'san-hot-loader',
-    options: {
-        store: {
-            patterns: [
-                {
-                    store: /\.store\.js$/,
-                    getAction: function (storePath) {
-                        // storePath 为当前匹配到的 store 模块文件路径
-                        // 通过 getAction 方法返回对应 store 模块对应注册的 action 文件路径
-                        return path.resolve(storePath, '../store.action.js');
-                    }
-                }
+                /\.store\.js$/,
+                function (resourcePath) {
+                    return /\.store\.js$/.test(resourcePath);
+                },
+                'auto'
             ]
         }
     }

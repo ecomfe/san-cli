@@ -1,0 +1,54 @@
+<template>
+    <div class="comp-global-store">
+        <div>
+            this is <span>{{name}}</span>,
+            the age is <span>{{age}}</span>
+        </div>
+        <div>
+            <button on-click="click">clicked {{time}} times</button>
+        </div>
+    </div>
+</template>
+
+<script>
+import {defineComponent} from 'san';
+import {connect} from 'san-store';
+import '../store/global-action';
+
+const name = 'Comp Global Store';
+
+const CompGlobalStore = defineComponent({
+    initData() {
+        return {
+            name: name
+        };
+    },
+
+    click() {
+        this.actions.inc(this.data.get('time') || 0);
+    },
+
+    attached() {
+        console.log(`--- ${name} attached ---`)
+    },
+
+    detached() {
+        console.log(`--- ${name} detached --`)
+    }
+})
+
+export default connect.san(
+    {time: 'num'},
+    {inc: 'inc'}
+)(CompGlobalStore);
+
+console.log(`---- ${name} File loaded ----`)
+
+</script>
+
+<style lang="less">
+.comp-global-store {
+    background: pink;
+}
+</style>
+

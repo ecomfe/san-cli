@@ -3,7 +3,6 @@
  * @author tanglei02 (tanglei02@baidu.com)
  */
 
-
 /**
  * 获取 property 的关键字，property 可能是 string 也可能是 字符串
  *
@@ -13,6 +12,16 @@
 function val(id) {
     return (id.type === 'Identifier' && id.name)
         || (id.type === 'StringLiteral' && id.value);
+}
+
+/**
+ * 获取 Program 下面的 body 节点
+ *
+ * @param {ASTNode} ast File || Program
+ * @return {Array.<ASTNode>|undefined} body
+ */
+function getProgramBody(ast) {
+    return (ast.program || ast).body;
 }
 
 function isImportedAPI(ast, nodeOrTrackers, moduleName, api) {
@@ -37,7 +46,8 @@ function isImportedAPI(ast, nodeOrTrackers, moduleName, api) {
 }
 
 function getExportDefault(ast) {
-    for (let node of ast.program.body) {
+    const body = getProgramBody(ast);
+    for (let node of body) {
         // export default xxx
         if (node.type === 'ExportDefaultDeclaration') {
             return node.declaration;
@@ -50,7 +60,7 @@ function getExportDefault(ast) {
 }
 
 function getTopLevelIdentifierTracker(ast, inputNode) {
-    const body = ast.program.body;
+    const body = getProgramBody(ast);
     let results;
 
     if (inputNode.type === 'Identifier') {
@@ -274,7 +284,7 @@ function getObjectPatternList(objectPattern, identifier) {
 }
 
 function isModuleImported(ast, moduleName) {
-    const body = ast.program.body;
+    const body = getProgramBody(ast);
     for (let node of body) {
         if (isImport(node) && node.source.value === moduleName) {
             return true;
@@ -323,8 +333,8 @@ function hasExport(ast) {
     if (getExportDefault(ast)) {
         return true;
     }
-
-    for (let node of ast.program.body) {
+    const body = getProgramBody(ast);
+    for (let node of body) {
         if (node.type === 'ExportNamedDeclaration') {
             return true;
         }
@@ -349,14 +359,54 @@ function hasExport(ast) {
     return false;
 }
 
+function hasModuleHot(ast) {
+    const body = getProgramBody(ast);
+    for (let node of body) {
+        if (node.type === 'IfStatement'
+            && node.test.type === 'MemberExpression'
+            && node.test.object.name === 'module'
+            && node.test.property.name === 'hot'
+        ) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function hasComment(ast, text) {
+    const body = getProgramBody(ast);
+
+    let comments = [];
+
+    for (let node of body) {
+        if (node.headingComments) {
+            comments = comments.concat(node.headingComments);
+        }
+        if (node.trailingComments) {
+            comments = comments.concat(node.trailingComments);
+        }
+    }
+
+    for (let comment of comments) {
+        if (comment.value.trim() === text) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 module.exports = {
     val,
+    getProgramBody,
     isImportedAPI,
     getExportDefault,
     getTopLevelIdentifierTracker,
     getPropertyList,
     getObjectPatternList,
     isModuleImported,
-    hasExport
+    hasExport,
+    hasModuleHot,
+    hasComment
 };
 

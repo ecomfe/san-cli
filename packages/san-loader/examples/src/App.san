@@ -1,0 +1,65 @@
+<template>
+    <div class="app-root">
+        <span class="app-span">Hello, {{name}}</span>
+        <div class="comp-wrapper">
+            <comp-child age="2"></comp-child>
+            <comp-component age="2"></comp-component>
+            <comp-component age="2.5"></comp-component>
+            <comp-custom-store age="3"></comp-custom-store>
+            <comp-global-store age="4"></comp-global-store>
+            <comp-src age="5"></comp-src>
+            <comp-globalstorejs age="6"></comp-globalstorejs>
+            <comp-simple-obj age="7"></comp-simple-obj>
+            <comp-simple-ts age="{{age}}"></comp-simple-ts>
+        </div>
+    </div>
+</template>
+
+<script>
+import CompChild from './components/comp-child/index';
+import CompComponent from './components/comp-component';
+import CompCustomStore from './components/comp-custom-store';
+import CompGlobalStore from './components/comp-global-store';
+import CompSimpleObj from './components/comp-simple-obj';
+import CompSrc from './components/comp-src';
+import CompGlobalStoreJs from './components/js/comp-global-store/index';
+import CompSimpleTs from './components/ts/comp-simple-ts/index';
+
+export default {
+    components: {
+        'comp-child': CompChild,
+        'comp-component': CompComponent,
+        'comp-custom-store': CompCustomStore,
+        'comp-global-store': CompGlobalStore,
+        'comp-simple-obj': CompSimpleObj,
+        'comp-src': CompSrc,
+        'comp-globalstorejs': CompGlobalStoreJs,
+        'comp-simple-ts': CompSimpleTs
+    },
+    initData() {
+        return {
+            name: 'This is a App!',
+            age: 8
+        }
+    },
+    attached() {
+        console.log('hello san');
+    }
+}
+
+</script>
+
+<style lang="less">
+.app-root {
+    .app-span {
+        color: #f2f3f5;
+    }
+}
+</style>
+
+<style>
+.app-span {
+    border: 1px solid black;
+}
+</style>
+

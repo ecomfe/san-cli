@@ -3,6 +3,8 @@
  * @author tanglei02 (tanglei02@baidu.com)
  */
 
+/* global describe, test */
+
 import matchByAst from '../../lib/store/match-by-ast';
 import parser from '../../lib/utils/ast-parser';
 import * as groups from './mock/store';
