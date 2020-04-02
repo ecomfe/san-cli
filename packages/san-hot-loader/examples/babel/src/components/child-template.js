@@ -5,7 +5,7 @@
 
 export default `
 <div>
-    <p>this is {{name}} and click {{num}} times</p>
-    <button on-click="clicked">click child</button>
+    <button on-click="clicked">child {{num}} {{clickee}}</button>
+    <slot></slot>
 </div>
 `;

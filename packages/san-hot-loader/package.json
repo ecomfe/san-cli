@@ -1,6 +1,6 @@
 {
   "name": "@baidu/san-hot-loader",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-alpha.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -16,8 +16,7 @@
     "@babel/core": "^7.7.7",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
     "hash-sum": "^2.0.0",
-    "loader-utils": "^1.2.3",
-    "san-hot-reload-api": "^1.0.1"
+    "loader-utils": "^1.2.3"
   },
   "devDependencies": {
     "babel-loader": "^8.0.6",

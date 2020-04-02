@@ -58,6 +58,33 @@ module.exports = {
                 ]
             },
             {
+                test: /\.ts$/,
+                use: [
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            plugins: [
+                                require.resolve('@babel/plugin-proposal-class-properties'),
+                                require.resolve('@baidu/san-hot-loader/lib/babel-plugin')
+                            ],
+                            presets: [
+                                [
+                                    require.resolve('@babel/preset-env'),
+                                    {
+                                        targets: {
+                                            browsers: '> 1%, last 2 versions'
+                                        },
+                                        modules: false
+                                    }
+
+                                ],
+                                require.resolve('@babel/preset-typescript')
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
                 test: /\.less$/,
                 use: [
                     // {
@@ -130,7 +157,7 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['.js', '.san', '.json']
+        extensions: ['.js', '.ts', '.san', '.json']
     },
     devServer: {
         contentBase: path.resolve(__dirname, 'dist'),

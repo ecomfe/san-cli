@@ -10,6 +10,7 @@
             <comp-src age="5"></comp-src>
             <comp-globalstorejs age="6"></comp-globalstorejs>
             <comp-simple-obj age="7"></comp-simple-obj>
+            <comp-simple-ts age="{{age}}"></comp-simple-ts>
         </div>
     </div>
 </template>
@@ -22,6 +23,7 @@ import CompGlobalStore from './components/comp-global-store';
 import CompSimpleObj from './components/comp-simple-obj';
 import CompSrc from './components/comp-src';
 import CompGlobalStoreJs from './components/js/comp-global-store/index';
+import CompSimpleTs from './components/ts/comp-simple-ts/index';
 
 export default {
     components: {
@@ -31,11 +33,13 @@ export default {
         'comp-global-store': CompGlobalStore,
         'comp-simple-obj': CompSimpleObj,
         'comp-src': CompSrc,
-        'comp-globalstorejs': CompGlobalStoreJs
+        'comp-globalstorejs': CompGlobalStoreJs,
+        'comp-simple-ts': CompSimpleTs
     },
     initData() {
         return {
-            name: 'This is a App!'
+            name: 'This is a App!',
+            age: 8
         }
     },
     attached() {

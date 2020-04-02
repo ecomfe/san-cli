@@ -93,6 +93,13 @@ function hotReload(id, ComponentClass) {
     var newANode;
     var newCmptReady;
 
+    // 热更新新旧组件构造函数相同的例子如下：
+    // import template from './template.html'；
+    // import ComponentClass from './app';
+    // ComponentClass.template = template;
+    // export default ComponentClass;
+    //
+    // 在单纯修改 template 的时候，热更新时新旧组件指向都是 ComponentClass 的地址，在这种情况下，需要采用特殊手段将 ComponentClass 的 template 和对应的 aNode 更新掉
     if (!isProtoChange(newDesc, recDesc)) {
         recANode = recDesc.proto.aNode;
         recCmptReady = recDesc.proto._cmptReady;
@@ -141,14 +148,17 @@ function hotReload(id, ComponentClass) {
             instance.dispose();
             newInstance = new newDesc.Ctor(options);
             newInstance.attach(parentEl, beforeEl);
+            // 将父节点当中缓存的子组件实例给手动替换掉
+            // 不然父组件往子组件里绑定的数据就不再变化了
+            if (instance.parent) {
+                instance.parentComponent.constructor.prototype.components[instance.subTag] = newDesc.Ctor;
+                var parent = instance.parent;
+                parent.children.splice(parent.children.indexOf(instance), 1, newInstance);
+            }
         }
 
     });
 }
-
-// function getTemplate(Ctor) {
-//     return Ctor.template || Ctor.prototype.template;
-// }
 
 function isProtoChange(newDesc, recDesc) {
     if (recDesc.Ctor === newDesc.Ctor) {

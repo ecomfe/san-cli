@@ -4,7 +4,7 @@
  */
 /* eslint-disable fecs-camelcase */
 const path = require('path');
-const sanHmrPlugin = require('babel-plugin-san-hmr');
+const sanHmrPlugin = require('@baidu/san-hot-loader/lib/babel-plugin');
 const {getDebugLogger} = require('@baidu/san-cli-utils/ttyLogger');
 const debugLogger = getDebugLogger('babel');
 module.exports = (context, options = {}) => {

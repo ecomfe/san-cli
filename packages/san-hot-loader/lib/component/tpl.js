@@ -19,7 +19,6 @@ module.exports = function ({
         var __HOT_UTILS__ = require('${utilsPath}');
 
         var __SAN_COMPONENT__ = __HOT_UTILS__.getExports(module);
-
         if (__SAN_COMPONENT__.template || __SAN_COMPONENT__.prototype.template) {
             module.hot.accept();
             __HOT_API__.install(require('san'));

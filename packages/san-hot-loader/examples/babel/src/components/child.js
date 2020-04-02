@@ -21,7 +21,9 @@ class Child extends san.Component {
         };
     }
     clicked() {
-        this.actions.inc(this.data.get('num'));
+        var num = this.data.get('num');
+        this.actions.inc(num);
+        this.fire('customclick', num + 42);
     }
 }
 
