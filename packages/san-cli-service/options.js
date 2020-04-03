@@ -8,7 +8,6 @@ const joi = require('@hapi/joi');
 const schema = joi
     .object({
         // env 相关
-        browserslist: joi.alternatives().try(joi.array(), joi.object()),
         jsonpFunction: joi.string(),
         transpileDependencies: joi.array(),
         // 产出相关
@@ -107,12 +106,16 @@ exports.validateSync = async (value, options) => {
 };
 
 exports.defaults = {
+    polyfill: true,
     pages: undefined,
     outputDir: 'output',
     assetsDir: '',
     publicPath: '/',
     filenameHashing: false,
     devServer: {
+        watchContentBase: false,
+        hot: true,
+        hotOnly: false,
         logLevel: 'silent',
         clientLogLevel: 'silent',
         overlay: {warnings: false, errors: true},
@@ -133,17 +136,6 @@ exports.defaults = {
     },
     sourceMap: false
 };
-
-exports.browserslist = [
-    '> 1.2% in cn',
-    'last 2 versions',
-    'iOS >=8', // 这里有待商榷
-    'android>4.4',
-    'not bb>0',
-    'not ff>0',
-    'not ie>0',
-    'not ie_mob>0'
-];
 
 exports.cssnanoOptions = {
     mergeLonghand: false,
