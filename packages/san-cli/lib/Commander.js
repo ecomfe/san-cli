@@ -175,7 +175,6 @@ module.exports = class Command {
                 alias: 'm',
                 hidden: true,
                 type: 'string',
-                default: 'development',
                 choices: ['development', 'production'],
                 describe: 'Operating environment'
             })
