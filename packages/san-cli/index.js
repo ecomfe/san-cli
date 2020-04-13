@@ -1,9 +1,15 @@
 #!/usr/bin/env node
 
 /**
+ * Copyright (c) Baidu Inc. All rights reserved.
+ *
+ * This source code is licensed under the MIT license.
+ * See LICENSE file in the project root for license information.
+ *
  * @file hulk bin 文件入口
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+
 /* eslint-disable no-console */
 const updateNotifier = require('update-notifier');
 const semver = require('semver');

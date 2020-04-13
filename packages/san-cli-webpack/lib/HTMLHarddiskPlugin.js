@@ -1,4 +1,12 @@
-// from html harddisk plugin ，修改兼容 v4 版本，增强健壮性
+/**
+ * Copyright (c) Baidu Inc. All rights reserved.
+ *
+ * This source code is licensed under the MIT license.
+ * See LICENSE file in the project root for license information.
+ *
+ * @file from html harddisk plugin ，修改兼容 v4 版本，增强健壮性
+ */
+
 var mkdirp = require('mkdirp');
 var fs = require('fs');
 var path = require('path');

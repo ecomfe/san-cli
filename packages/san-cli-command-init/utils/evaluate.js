@@ -1,7 +1,13 @@
 /**
+ * Copyright (c) Baidu Inc. All rights reserved.
+ *
+ * This source code is licensed under the MIT license.
+ * See LICENSE file in the project root for license information.
+ *
  * @file evaluate
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+
 const {error} = require('@baidu/san-cli-utils/ttyLogger');
 module.exports = (exp, data) => {
     /* eslint-disable no-new-func */

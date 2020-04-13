@@ -1,8 +1,14 @@
 /**
+ * Copyright (c) Baidu Inc. All rights reserved.
+ *
+ * This source code is licensed under the MIT license.
+ * See LICENSE file in the project root for license information.
+ *
  * @file 美化版本 Profiler
  * modified from https://github.com/nuxt/webpackbar/blob/master/src/profiler/index.js
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+
 const path = require('path');
 const formatStats = require('./formatStats');
 module.exports = class Profiler {

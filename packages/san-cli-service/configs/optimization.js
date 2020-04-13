@@ -1,7 +1,13 @@
 /**
+ * Copyright (c) Baidu Inc. All rights reserved.
+ *
+ * This source code is licensed under the MIT license.
+ * See LICENSE file in the project root for license information.
+ *
  * @file 优化相关
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+
 const TerserPlugin = require('terser-webpack-plugin');
 const {getAssetPath} = require('@baidu/san-cli-utils/path');
 const {terserOptions: defaultTerserOptions} = require('../options');

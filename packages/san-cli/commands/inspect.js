@@ -7,6 +7,7 @@
  * @file inspect command
  * inspired by https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/commands/inspect.js
  */
+
 exports.command = 'inspect [paths...]';
 exports.description = 'Check the configuration of the built-in webpack';
 exports.builder = {

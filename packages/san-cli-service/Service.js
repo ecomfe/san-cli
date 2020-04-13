@@ -7,6 +7,7 @@
  * @file Service Class
  * inspired by https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/Service.js
  */
+
 const {resolve, isAbsolute, join, dirname} = require('path');
 const EventEmitter = require('events').EventEmitter;
 const {logger: consola, time, timeEnd, chalk, getDebugLogger} = require('@baidu/san-cli-utils/ttyLogger');
