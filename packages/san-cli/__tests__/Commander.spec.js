@@ -25,7 +25,6 @@ test('command init', () => {
         'build',
         'serve',
         'init',
-        'docit',
         'inspect',
         'command',
         'plugin',

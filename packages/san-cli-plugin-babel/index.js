@@ -39,10 +39,10 @@ module.exports = {
                         return false;
                     }
 
-                    // 包含 docit-theme 目录
-                    if (/(node_modules|packages)\/(@[^\/]+\/|)[^\/@]*?docit-theme/.test(filepath)) {
-                        return false;
-                    }
+                    // // 包含 docit-theme 目录
+                    // if (/(node_modules|packages)\/(@[^\/]+\/|)[^\/@]*?docit-theme/.test(filepath)) {
+                    //     return false;
+                    // }
                     // 单独排除 san-cli 路径
                     if (filepath.startsWith(cliPath)) {
                         return true;

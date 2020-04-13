@@ -159,4 +159,4 @@ api.middleware(() =>
 );
 ```
 
-> 详细的使用方法可以查看`san-cli-docit`或者`san-cli-plugin-progress`的代码。
+> 详细的使用方法可以查看`san-cli-plugin-progress`的代码。

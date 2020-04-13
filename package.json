@@ -27,9 +27,7 @@
     },
     "scripts": {
         "lint": "lint-staged",
-        "test": "node scripts/test.js",
-        "doc": "node packages/san-cli/index.js docit ./docs --config ./docs/san.config.js",
-        "build:doc": "node packages/san-cli/index.js docit ./docs --output --mode production --config ./docs/san.config.js"
+        "test": "node scripts/test.js"
     },
     "commitlint": {
         "extends": [

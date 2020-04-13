@@ -39,30 +39,3 @@ hulk init component-scaffold <folder-name>
     └── index.less
 ```
 
-## 调试
-
-`docs`中的 index.js 是调试 demo 的入口，index.js 可以引入`markdown`文件，`markdown`文件中的代码会被执行，然后使用`san docit docs/index.js`内容就会被展现出来。
-例如：
-
-```js
-// index.js
-import san from 'san';
-import Readme from '../README.md';
-import Basic from './basic.md';
-
-export default san.defineComponent({
-    components: {
-        readme: Readme,
-        demo: Basic
-    },
-    template: `
-        <div>
-            <readme/>
-            <demo/>
-        </div>
-    `
-});
-```
-
-然后按照[docit 的 sanbox 写法](./docit/sanbox.md)来编写文档，编写的文档可以直接使用`san docit`直接使用。
-

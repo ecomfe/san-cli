@@ -1,6 +1,6 @@
 {
     "name": "@baidu/san-cli",
-    "description": "定制化的前端工程构建工具",
+    "description": "San.js 定制化的前端工程构建工具",
     "version": "0.0.1-alpha.2",
     "scriptName": "san",
     "main": "index.js",
@@ -14,7 +14,6 @@
     },
     "dependencies": {
         "@baidu/san-cli-service": "^0.0.1-alpha.2",
-        "@baidu/san-cli-docit": "^0.0.1-alpha.2",
         "@baidu/san-cli-command-init": "^0.0.1-alpha.0",
         "@baidu/san-cli-utils": "^0.0.1-alpha.0",
         "fs-extra": "^8.1.0",

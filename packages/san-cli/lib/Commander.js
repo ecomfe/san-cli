@@ -16,7 +16,7 @@ const {textColor} = require('@baidu/san-cli-utils/randomColor');
 const {scriptName, version: pkgVersion} = require('../package.json');
 const CommanderAPI = require('./CommanderAPI');
 const {getCommandName} = require('./utils');
-const buildinCmds = ['build', 'serve', 'init', 'docit', 'inspect', 'command', 'plugin', 'remote'];
+const buildinCmds = ['build', 'serve', 'init', 'inspect', 'command', 'plugin', 'remote'];
 
 const globalDebug = getDebugLogger();
 const debug = getDebugLogger('command');
