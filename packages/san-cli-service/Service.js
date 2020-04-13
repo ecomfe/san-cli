@@ -1,8 +1,12 @@
-/**
+ /**
+ * Copyright (c) Baidu Inc. All rights reserved.
+ *
+ * This source code is licensed under the MIT license.
+ * See LICENSE file in the project root for license information.
+ *
  * @file Service Class
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * inspired by https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/Service.js
  */
-
 const {resolve, isAbsolute, join, dirname} = require('path');
 const EventEmitter = require('events').EventEmitter;
 const {logger: consola, time, timeEnd, chalk, getDebugLogger} = require('@baidu/san-cli-utils/ttyLogger');

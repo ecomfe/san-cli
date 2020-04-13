@@ -1,6 +1,11 @@
 /**
+ * Copyright (c) Baidu Inc. All rights reserved.
+ *
+ * This source code is licensed under the MIT license.
+ * See LICENSE file in the project root for license information.
+ *
  * @file pluginAPI Class
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * inspired by https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/PluginAPI.js
  */
 const path = require('path');
 const {getScopeLogger} = require('@baidu/san-cli-utils/ttyLogger');

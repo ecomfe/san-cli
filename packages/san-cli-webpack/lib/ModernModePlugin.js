@@ -1,6 +1,11 @@
 /**
+ * Copyright (c) Baidu Inc. All rights reserved.
+ *
+ * This source code is licensed under the MIT license.
+ * See LICENSE file in the project root for license information.
+ *
  * @file modern mode 插件，参考 Vue-cli 实现，增加 hwp 4.x 支持
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * inspired by https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/webpack/ModernModePlugin.js
  */
 const fs = require('fs-extra');
 const path = require('path');

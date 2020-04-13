@@ -1,4 +1,9 @@
 /**
+ * Copyright (c) Baidu Inc. All rights reserved.
+ *
+ * This source code is licensed under the MIT license.
+ * See LICENSE file in the project root for license information.
+ *
  * @file cli-plugin-babel
  */
 const path = require('path');
@@ -39,7 +44,7 @@ module.exports = {
                         return false;
                     }
 
-                    // // 包含 docit-theme 目录
+                    // TODO： 这里注掉，包含 docit-theme 目录
                     // if (/(node_modules|packages)\/(@[^\/]+\/|)[^\/@]*?docit-theme/.test(filepath)) {
                     //     return false;
                     // }

@@ -1,11 +1,15 @@
 /**
- * @file inspect
- * @author yanyiting <yanyiting@baidu.com>
+ * Copyright (c) Baidu Inc. All rights reserved.
+ *
+ * This source code is licensed under the MIT license.
+ * See LICENSE file in the project root for license information.
+ *
+ * @file inspect command
+ * inspired by https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/commands/inspect.js
  */
-
-const command = (exports.command = 'inspect [paths...]');
-const description = (exports.description = 'Check the configuration of the built-in webpack');
-const builder = (exports.builder = {
+exports.command = 'inspect [paths...]';
+exports.description = 'Check the configuration of the built-in webpack';
+exports.builder = {
     rule: {
         alias: 'ruleName',
         type: 'string',
@@ -26,7 +30,7 @@ const builder = (exports.builder = {
         type: 'string',
         describe: 'Output configuration based on the plugin name'
     }
-});
+};
 
 exports.handler = argv => {
     const {toString} = require('webpack-chain');
