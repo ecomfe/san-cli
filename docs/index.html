@@ -13,7 +13,25 @@
     window.$docsify = {
         name: 'San CLI',
         loadSidebar: true,
-        loadNavbar: true
+        loadNavbar: true,
+        formatUpdated: '{YYYY}-{MM}-{DD} {HH}:{mm}',
+        repo: 'https://github.com/ecomfe/san-cli',
+        auto2top: true,
+        // routerMode: 'history',
+        plugins: [
+            function (hook, vm) {
+                hook.beforeEach(function (html) {
+                    var url = 'https://github.com/ecomfe/san-cli/blob/master/docs/' + vm.route.file;
+                    var editHtml = '[📝 EDIT DOCUMENT](' + url + ')\n';
+
+                    return editHtml
+                      + html
+                      + '\n----\n'
+                      + 'Last modified {docsify-updated} '
+                      + editHtml;
+                });
+            }
+        ]
     }
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
