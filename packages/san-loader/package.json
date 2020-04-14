@@ -1,6 +1,6 @@
 {
   "name": "san-loader",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,6 @@
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-typescript": "^7.9.0",
-    "san-hot-loader": "^0.0.1-alpha.2",
     "autoprefixer": "^9.7.4",
     "babel-loader": "^8.0.6",
     "babel-preset-env": "^1.7.0",
@@ -30,6 +29,7 @@
     "mini-css-extract-plugin": "^0.9.0",
     "postcss-loader": "^3.0.0",
     "san": "^3.8.1",
+    "san-hot-loader": "^0.0.1",
     "san-store": "^2.0.0",
     "san-update": "^2.1.0",
     "style-loader": "^1.1.3",

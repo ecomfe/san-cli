@@ -1,7 +1,7 @@
 {
     "name": "san-cli",
     "description": "San.js 定制化的前端工程构建工具",
-    "version": "0.0.1-alpha.2",
+    "version": "0.0.1",
     "scriptName": "san",
     "main": "index.js",
     "bin": {
@@ -13,9 +13,6 @@
         "node": ">=8.16"
     },
     "dependencies": {
-        "san-cli-service": "^0.0.1-alpha.2",
-        "san-cli-command-init": "^0.0.1-alpha.0",
-        "san-cli-utils": "^0.0.1-alpha.0",
         "fs-extra": "^8.1.0",
         "import-cwd": "^3.0.0",
         "import-global": "^0.1.0",
@@ -23,6 +20,9 @@
         "inquirer": "~7.0.0",
         "lodash.merge": "^4.6.2",
         "resolve-cwd": "^3.0.0",
+        "san-cli-command-init": "^0.0.1",
+        "san-cli-service": "^0.0.1",
+        "san-cli-utils": "^0.0.1",
         "semver": "^7.1.1",
         "update-notifier": "^4.0.0",
         "yargs": "~15.0.2"

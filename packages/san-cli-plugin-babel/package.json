@@ -1,7 +1,7 @@
 {
     "name": "san-cli-plugin-babel",
     "description": "San CLI babel plugin",
-    "version": "0.0.1-alpha.2",
+    "version": "0.0.1",
     "main": "index.js",
     "author": "ksky521",
     "license": "MIT",
@@ -19,9 +19,9 @@
         "@babel/preset-env": "^7.6.3",
         "@babel/runtime": "^7.6.3",
         "@babel/runtime-corejs3": "^7.6.3",
-        "san-cli-utils": "^0.0.1-alpha.0",
-        "san-hot-loader": "^0.0.1-alpha.2",
         "babel-loader": "^8.0.6",
-        "babel-plugin-dynamic-import-node": "^2.3.0"
+        "babel-plugin-dynamic-import-node": "^2.3.0",
+        "san-cli-utils": "^0.0.1",
+        "san-hot-loader": "^0.0.1"
     }
 }

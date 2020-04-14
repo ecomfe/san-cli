@@ -1,11 +1,10 @@
 {
     "name": "san-cli-command-init",
-    "version": "0.0.1-alpha.2",
+    "version": "0.0.1",
     "main": "index.js",
     "author": "ksky521",
     "license": "MIT",
     "dependencies": {
-        "san-cli-utils": "^0.0.1-alpha.2",
         "concat-stream": "^2.0.0",
         "consolidate": "^0.15.1",
         "execa": "^4.0.0",
@@ -16,6 +15,7 @@
         "handlebars": "^4.5.1",
         "inquirer": "^7.0.0",
         "rxjs": "^6.5.3",
+        "san-cli-utils": "^0.0.1",
         "through2": "^3.0.1",
         "vinyl-fs": "^3.0.3"
     },
