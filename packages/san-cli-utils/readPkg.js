@@ -1,7 +1,13 @@
 /**
+ * Copyright (c) Baidu Inc. All rights reserved.
+ *
+ * This source code is licensed under the MIT license.
+ * See LICENSE file in the project root for license information.
+ *
  * @file cache read package
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+
 const path = require('path');
 const importLazy = require('import-lazy')(require);
 const readPkg = importLazy('read-pkg');

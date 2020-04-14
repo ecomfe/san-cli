@@ -1,7 +1,13 @@
-// 1. name; 2. loader + config; 3. 获取 user config；4. 获取环境变量
 /**
- * 修改自：https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/config/css.js
+ * Copyright (c) Baidu Inc. All rights reserved.
+ *
+ * This source code is licensed under the MIT license.
+ * See LICENSE file in the project root for license information.
+ *
+ * @file css webpack
+ * inspired by https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/config/css.js
  */
+
 const semver = require('semver');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const {cssnanoOptions: defaultCssnanoOptions} = require('../options');

@@ -7,7 +7,7 @@ san-cli 是 [San](https://github.com/baidu/san) CLI 工具的命令注册部分�
 -   remote：[管理脚手架模板别名](http://hulk.baidu-int.com/sancli/create-project.html)
 -   build：[生产打包](http://hulk.baidu-int.com/sancli/build.html)
 -   serve：[开发打包](http://hulk.baidu-int.com/sancli/serve.html)
--   inpect：[查看webpack内置信息]()
+-   inpect：[查看webpack内置信息](http://hulk.baidu-int.com/sancli/inspect.html)
 
 扩展命令：
 -   command：[扩展CLI命令](http://hulk.baidu-int.com/sancli/cmd-plugin.html)

@@ -1,8 +1,14 @@
 /**
+ * Copyright (c) Baidu Inc. All rights reserved.
+ *
+ * This source code is licensed under the MIT license.
+ * See LICENSE file in the project root for license information.
+ *
  * @file formatStats
  * modified from https://github.com/nuxt/webpackbar/blob/master/src/profiler/format.js
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+
 const prettyTime = require('pretty-time');
 const ConsoleTable = require('tty-table');
 

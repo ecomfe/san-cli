@@ -1,7 +1,13 @@
 /**
+ * Copyright (c) Baidu Inc. All rights reserved.
+ *
+ * This source code is licensed under the MIT license.
+ * See LICENSE file in the project root for license information.
+ *
  * @file friendly errors plugin
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const {textColor} = require('@baidu/san-cli-utils/randomColor');
 

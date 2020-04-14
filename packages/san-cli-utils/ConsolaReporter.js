@@ -1,7 +1,13 @@
 /**
+ * Copyright (c) Baidu Inc. All rights reserved.
+ *
+ * This source code is licensed under the MIT license.
+ * See LICENSE file in the project root for license information.
+ *
  * @file consola reporter
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+
 const figures = require('figures');
 const chalk = require('chalk');
 const stringWidth = require('string-width');

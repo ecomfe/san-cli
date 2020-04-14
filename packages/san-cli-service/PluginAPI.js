@@ -7,6 +7,7 @@
  * @file pluginAPI Class
  * inspired by https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/PluginAPI.js
  */
+
 const path = require('path');
 const {getScopeLogger} = require('@baidu/san-cli-utils/ttyLogger');
 const argsert = require('@baidu/san-cli-utils/argsert');

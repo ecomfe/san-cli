@@ -1,7 +1,13 @@
 /**
+ * Copyright (c) Baidu Inc. All rights reserved.
+ *
+ * This source code is licensed under the MIT license.
+ * See LICENSE file in the project root for license information.
+ *
  * @file yargs instance
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+
 // const {resolve} = require('path');
 const resolveCwd = require('resolve-cwd');
 const yargs = require('yargs/yargs');

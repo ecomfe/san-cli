@@ -1,7 +1,13 @@
 /**
+ * Copyright (c) Baidu Inc. All rights reserved.
+ *
+ * This source code is licensed under the MIT license.
+ * See LICENSE file in the project root for license information.
+ *
  * @file progress plugin
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+
 module.exports = {
     id: 'built-in:plugin-progress',
     apply(api, projectOptions, options = {}) {

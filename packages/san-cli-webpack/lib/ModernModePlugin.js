@@ -7,6 +7,7 @@
  * @file modern mode 插件，参考 Vue-cli 实现，增加 hwp 4.x 支持
  * inspired by https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-service/lib/webpack/ModernModePlugin.js
  */
+
 const fs = require('fs-extra');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');

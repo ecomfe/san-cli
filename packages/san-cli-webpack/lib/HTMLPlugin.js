@@ -1,7 +1,13 @@
 /**
+ * Copyright (c) Baidu Inc. All rights reserved.
+ *
+ * This source code is licensed under the MIT license.
+ * See LICENSE file in the project root for license information.
+ *
  * @file 作为html-webpack-plugin的一个插件，用于将页面静态资源插入到smarty 中
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {isCSS, isJS} = require('../utils');
 const SMARTY_BLOCK = /{%block name=(["'])__(body|head)_asset[s]?\1%}(.+?){%\/block%}/g;
