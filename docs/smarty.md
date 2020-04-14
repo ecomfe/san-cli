@@ -1,6 +1,4 @@
----
-title: smarty 相关
----
+
 
 # Smarty 相关
 

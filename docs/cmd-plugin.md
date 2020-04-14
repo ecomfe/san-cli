@@ -1,6 +1,3 @@
----
-tilte: 编写一个 Command 插件
----
 
 # Command 插件
 

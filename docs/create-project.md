@@ -1,8 +1,4 @@
----
-title: 初始化项目
-markdownIt:
-    lineNumbers: false
----
+
 
 # 初始化项目
 

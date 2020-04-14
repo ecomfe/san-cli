@@ -6,10 +6,12 @@ export PATH=$NODEJS_BIN_LATEST:$YARN_BIN_LATEST:$PATH
 echo "node: $(node -v)"
 echo "npm: v$(npm -v)"
 
-yarn
+# yarn
 
 echo '------------build doc------------'
-yarn build:doc
+# yarn build:doc
+mkdir -p output
+cp -r docs/* output/
 
 echo '---------------------------------'
 echo 'docs pack success'
