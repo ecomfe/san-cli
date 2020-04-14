@@ -23,5 +23,6 @@
         "babel-plugin-dynamic-import-node": "^2.3.0",
         "san-cli-utils": "^0.0.1",
         "san-hot-loader": "^0.0.1"
-    }
+    },
+    "gitHead": "391e7ba518f1eee8a289d33c44242e7bee76e5e1"
 }

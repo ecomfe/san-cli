@@ -19,5 +19,6 @@
         "san-cli-utils": "^0.0.1",
         "tty-table": "^2.8.2",
         "webpackbar": "^4.0.0"
-    }
+    },
+    "gitHead": "391e7ba518f1eee8a289d33c44242e7bee76e5e1"
 }
