@@ -20,13 +20,21 @@
         "memfs": "^3.0.1",
         "stylelint": "^12.0.0"
     },
+    "lint-staged": {
+        "!(example|dist|output|__mocks__)/**/*.js": [
+            "fecs --reporter=baidu --rule"
+        ]
+    },
     "husky": {
         "hooks": {
+            "pre-commit": "lint-staged",
             "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
         }
     },
     "scripts": {
-        "lint": "lint-staged",
+        "publish": "lerna publish --registry https://registry.npmjs.org",
+        "commit": "git-cz",
+        "lint": "fecs --reporter=baidu --rule",
         "test": "node scripts/test.js"
     },
     "commitlint": {
