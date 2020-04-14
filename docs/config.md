@@ -248,9 +248,7 @@ module.exports = {
 };
 ```
 
-:::warning 提示
-推荐根据项目实际情况进行配置，这样只会添加对应的 loader。
-:::
+!> 推荐根据项目实际情况进行配置，这样只会添加对应的 loader。
 
 #### `extract`
 
@@ -274,6 +272,4 @@ css 相关的 loader 配置项，支持：
 -   `stylus` 需要新增的 stylus-loader 配置项；
 -   `postcss` 需要新增的 postcss-loader 配置项，默认支持 postcss.config.js 的配置。
 
-::: danger 更多配置
-这里介绍的是一般配置，更多高级的配置以及优化相关的配置可以继续阅读[高级配置](./advanced.md)内容。
-:::
+!> 这里介绍的是一般配置，更多高级的配置以及优化相关的配置可以继续阅读[高级配置](./advanced.md)内容。
