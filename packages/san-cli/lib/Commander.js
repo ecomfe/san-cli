@@ -313,8 +313,7 @@ module.exports = class Command {
             });
 
             log();
-            // TODO: 更改官网地址
-            log('For more information, visit `http://hulk.baidu-int.com/sancli`');
+            log('For more information, visit `https://ecomfe.github.com/san-cli`');
         };
     }
     addCommands(commands) {

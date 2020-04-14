@@ -10,12 +10,16 @@ San CLI 的配置文件为`san.config.js`，该文件放在项目的根目录下
 
 ```js
 module.exports = {
+    polyfill: true,
     pages: undefined,
     outputDir: 'output',
     assetsDir: '',
     publicPath: '/',
     filenameHashing: false,
     devServer: {
+        watchContentBase: false,
+        hot: true,
+        hotOnly: false,
         logLevel: 'silent',
         clientLogLevel: 'silent',
         overlay: {warnings: false, errors: true},
@@ -43,6 +47,10 @@ module.exports = {
 下面来详细说下配置项。
 
 ### 页面和产出相关配置
+
+#### `polyfill`
+
+设置为`true`，则会自动使用Babel的`useBuiltIns='usage'`，使用core-js自动添加polyfill，默认是`true`。
 
 #### `pages`
 

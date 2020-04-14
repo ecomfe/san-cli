@@ -1,5 +1,5 @@
 module.exports = {
-    publicPath: __isProduction ? 'http://hulk.baidu-int.com/sancli/' : '/',
+    publicPath: __isProduction ? 'https://ecomfe.github.com/san-cli/' : '/',
     devServer: {
         contentBase: __dirname
     },
