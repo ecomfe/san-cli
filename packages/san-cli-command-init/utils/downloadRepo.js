@@ -9,9 +9,9 @@
 
 const gitclone = require('git-clone');
 const fse = require('fs-extra');
-const {getDebugLogger} = require('@baidu/san-cli-utils/ttyLogger');
-const {getGitUser} = require('@baidu/san-cli-utils/env');
-const {chalk} = require('@baidu/san-cli-utils/ttyLogger');
+const {getDebugLogger} = require('san-cli-utils/ttyLogger');
+const {getGitUser} = require('san-cli-utils/env');
+const {chalk} = require('san-cli-utils/ttyLogger');
 
 const debug = getDebugLogger('init:download-repo');
 

@@ -11,8 +11,8 @@
 const rxjs = require('rxjs');
 const path = require('path');
 const fs = require('fs-extra');
-const {chalk} = require('@baidu/san-cli-utils/ttyLogger');
-const {isLocalPath, getLocalTplPath} = require('@baidu/san-cli-utils/path');
+const {chalk} = require('san-cli-utils/ttyLogger');
+const {isLocalPath, getLocalTplPath} = require('san-cli-utils/path');
 const prompt = require('../utils/prompt');
 
 module.exports = (template, dest, options) => {

@@ -11,14 +11,14 @@
 const semver = require('semver');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const {cssnanoOptions: defaultCssnanoOptions} = require('../options');
-const {findExisting} = require('@baidu/san-cli-utils/path');
-const {warn} = require('@baidu/san-cli-utils/ttyLogger');
+const {findExisting} = require('san-cli-utils/path');
+const {warn} = require('san-cli-utils/ttyLogger');
 
 module.exports = {
     id: 'built-in:css',
     apply(api, rootOptions) {
         api.chainWebpack(webpackConfig => {
-            const {getAssetPath} = require('@baidu/san-cli-utils/path');
+            const {getAssetPath} = require('san-cli-utils/path');
 
             const isProd = api.isProd();
             const cssOptions = rootOptions.css || {};

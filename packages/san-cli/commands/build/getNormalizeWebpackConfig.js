@@ -9,8 +9,8 @@
  */
 
 const fse = require('fs-extra');
-const {resolveEntry} = require('@baidu/san-cli-webpack/utils');
-const {error, chalk} = require('@baidu/san-cli-utils/ttyLogger');
+const {resolveEntry} = require('san-cli-webpack/utils');
+const {error, chalk} = require('san-cli-utils/ttyLogger');
 
 module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     // 读取 cli 传入的 argv
@@ -25,7 +25,7 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     const chainConfig = api.getWebpackChainConfig();
     // modern mode
     if (modern && !analyze) {
-        const ModernModePlugin = require('@baidu/san-cli-webpack/lib/ModernModePlugin');
+        const ModernModePlugin = require('san-cli-webpack/lib/ModernModePlugin');
         if (!modernBuild) {
             // Inject plugin to extract build stats and write to disk
             chainConfig.plugin('modern-mode-legacy').use(ModernModePlugin, [

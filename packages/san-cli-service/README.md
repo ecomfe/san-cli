@@ -5,12 +5,12 @@ San CLI 中 webpack 编译核心内容，以及扩展 service 插件功能。
 ## 安装
 
 ```shell
-$ npm install --save-dev @baidu/san-cli-service
+$ npm install --save-dev san-cli-service
 ```
 
 ## 使用
 ```js
-const Service = require('@baidu/san-cli-service');
+const Service = require('san-cli-service');
 
 // 参数一 插件名称，String类型；
 // 参数二 插件配置项，Object类型：

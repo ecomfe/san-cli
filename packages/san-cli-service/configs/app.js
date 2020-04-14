@@ -67,7 +67,7 @@ module.exports = {
             // resolve HTML file(s)
             const multiPageConfig = options.pages;
             const HTMLPlugin = require('html-webpack-plugin');
-            const SanHtmlPlugin = require('@baidu/san-cli-webpack/lib/HTMLPlugin');
+            const SanHtmlPlugin = require('san-cli-webpack/lib/HTMLPlugin');
             const htmlPath = api.resolve('public/index.html');
             // 默认路径
             const defaultHtmlPath = require.resolve('../template/index.html');
@@ -161,7 +161,7 @@ module.exports = {
                 // html-webpack-harddisk-plugin
                 webpackConfig
                     .plugin('html-webpack-harddisk-plugin')
-                    .use(require('@baidu/san-cli-webpack/lib/HTMLHarddiskPlugin'));
+                    .use(require('san-cli-webpack/lib/HTMLHarddiskPlugin'));
             }
             const copyArgs = [];
             // copy static assets in public/

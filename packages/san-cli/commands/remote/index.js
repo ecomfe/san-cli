@@ -9,7 +9,7 @@
  */
 
 const path = require('path');
-const {textColor} = require('@baidu/san-cli-utils/randomColor');
+const {textColor} = require('san-cli-utils/randomColor');
 exports.command = 'remote <add|ls|list|rm|remove>';
 const desc = 'Add/Manage scaffolding address';
 exports.description = desc;

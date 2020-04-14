@@ -39,7 +39,11 @@
                 "always",
                 120
             ],
-            "subject-case": [0, "always", "sentence-case"]
+            "subject-case": [
+                0,
+                "always",
+                "sentence-case"
+            ]
         }
     },
     "config": {

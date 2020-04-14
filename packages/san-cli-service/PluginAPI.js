@@ -9,8 +9,8 @@
  */
 
 const path = require('path');
-const {getScopeLogger} = require('@baidu/san-cli-utils/ttyLogger');
-const argsert = require('@baidu/san-cli-utils/argsert');
+const {getScopeLogger} = require('san-cli-utils/ttyLogger');
+const argsert = require('san-cli-utils/argsert');
 module.exports = class PluginAPI {
     constructor(id, service) {
         argsert('<string> <object>', [id, service], arguments.length);

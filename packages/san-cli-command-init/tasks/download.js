@@ -11,7 +11,7 @@
 const path = require('path');
 const rxjs = require('rxjs');
 const fs = require('fs-extra');
-const {getLocalTplPath} = require('@baidu/san-cli-utils/path');
+const {getLocalTplPath} = require('san-cli-utils/path');
 const downloadRepo = require('../utils/downloadRepo');
 
 module.exports = (template, dest, options) => {

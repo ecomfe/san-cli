@@ -13,7 +13,7 @@ const factory = require('./loaderFactory');
 module.exports = factory((options, projectOptions) => {
     return {
         name: 'san-hot-loader',
-        loader: '@baidu/san-hot-loader',
+        loader: 'san-hot-loader',
         options
     };
 });

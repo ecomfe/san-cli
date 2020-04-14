@@ -9,8 +9,8 @@
  */
 
 const Profiler = require('./lib/Profiler');
-const {chalkColor} = require('@baidu/san-cli-utils/color');
-const {chalk} = require('@baidu/san-cli-utils/ttyLogger');
+const {chalkColor} = require('san-cli-utils/color');
+const {chalk} = require('san-cli-utils/ttyLogger');
 const figures = require('figures');
 module.exports = {
     progress(context) {

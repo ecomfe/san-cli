@@ -29,7 +29,7 @@ module.exports = {
                 test: /\.san$/,
                 use: [
                     {
-                        loader: require.resolve('@baidu/san-hot-loader')
+                        loader: require.resolve('san-hot-loader')
                     },
                     {
                         loader: path.resolve(__dirname, '../index.js')
@@ -44,7 +44,7 @@ module.exports = {
                         options: {
                             plugins: [
                                 require.resolve('@babel/plugin-proposal-class-properties'),
-                                require.resolve('@baidu/san-hot-loader/lib/babel-plugin')
+                                require.resolve('san-hot-loader/lib/babel-plugin')
                             ],
                             presets: [
                                 [
@@ -70,7 +70,7 @@ module.exports = {
                         options: {
                             plugins: [
                                 require.resolve('@babel/plugin-proposal-class-properties'),
-                                require.resolve('@baidu/san-hot-loader/lib/babel-plugin')
+                                require.resolve('san-hot-loader/lib/babel-plugin')
                             ],
                             presets: [
                                 [

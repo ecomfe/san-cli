@@ -12,8 +12,8 @@
 const prettyTime = require('pretty-time');
 const ConsoleTable = require('tty-table');
 
-const {chalk} = require('@baidu/san-cli-utils/ttyLogger');
-const {textBold} = require('@baidu/san-cli-utils/randomColor');
+const {chalk} = require('san-cli-utils/ttyLogger');
+const {textBold} = require('san-cli-utils/randomColor');
 
 const MAX_ITEM_TIME = 300;
 const MAX_TOTAL_TIME = 30 * 1e3;

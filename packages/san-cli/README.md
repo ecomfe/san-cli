@@ -16,7 +16,7 @@ san-cli 是 [San](https://github.com/baidu/san) CLI 工具的命令注册部分�
 ## 安装
 
 ```shell
-$ npm install --save-dev @baidu/san-cli
+$ npm install --save-dev san-cli
 ```
 
 ## 测试

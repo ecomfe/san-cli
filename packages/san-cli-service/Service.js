@@ -10,7 +10,7 @@
 
 const {resolve, isAbsolute, join, dirname} = require('path');
 const EventEmitter = require('events').EventEmitter;
-const {logger: consola, time, timeEnd, chalk, getDebugLogger} = require('@baidu/san-cli-utils/ttyLogger');
+const {logger: consola, time, timeEnd, chalk, getDebugLogger} = require('san-cli-utils/ttyLogger');
 
 const importLazy = require('import-lazy')(require);
 const fs = require('fs-extra');
@@ -21,12 +21,12 @@ const defaultsDeep = require('lodash.defaultsdeep');
 const lMerge = require('lodash.merge');
 const dotenv = require('dotenv');
 
-const SError = require('@baidu/san-cli-utils/SError');
+const SError = require('san-cli-utils/SError');
 const PluginAPI = require('./PluginAPI');
-const {findExisting} = require('@baidu/san-cli-utils/path');
-const {textColor} = require('@baidu/san-cli-utils/randomColor');
-const argsert = require('@baidu/san-cli-utils/argsert');
-const readPkg = require('@baidu/san-cli-utils/readPkg');
+const {findExisting} = require('san-cli-utils/path');
+const {textColor} = require('san-cli-utils/randomColor');
+const argsert = require('san-cli-utils/argsert');
+const readPkg = require('san-cli-utils/readPkg');
 
 const {defaults: defaultConfig, validateSync: validateOptions} = require('./options');
 
@@ -155,7 +155,7 @@ module.exports = class Service extends EventEmitter {
         if (useBuiltInPlugin) {
             builtInPlugins = BUILDIN_PLUGINS.map(id => require(`./configs/${id}`));
             // * 添加上 babel 插件
-            builtInPlugins.push(require('@baidu/san-cli-plugin-babel'));
+            builtInPlugins.push(require('san-cli-plugin-babel'));
         }
         plugins = Array.isArray(plugins) ? plugins : [];
 
@@ -382,7 +382,7 @@ module.exports = class Service extends EventEmitter {
             if (this.useProfiler) {
                 progressOptions.profile = true;
             }
-            this.addPlugin(require('@baidu/san-cli-plugin-progress'), progressOptions);
+            this.addPlugin(require('san-cli-plugin-progress'), progressOptions);
         }
 
         time('init');

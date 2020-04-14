@@ -11,7 +11,7 @@ San CLI 中所用到的 webpack 相关的自定义插件以及 生产、开发�
 ## 安装
 
 ```shell
-$ npm install --save-dev @baidu/san-cli-webpack
+$ npm install --save-dev san-cli-webpack
 ```
 
 ## 测试

@@ -17,7 +17,7 @@ San CLI 中所用到的工具类函数：
 ## 安装
 
 ```shell
-$ npm install --save-dev @baidu/san-cli-utils
+$ npm install --save-dev san-cli-utils
 ```
 
 ## 测试

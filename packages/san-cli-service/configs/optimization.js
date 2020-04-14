@@ -9,7 +9,7 @@
  */
 
 const TerserPlugin = require('terser-webpack-plugin');
-const {getAssetPath} = require('@baidu/san-cli-utils/path');
+const {getAssetPath} = require('san-cli-utils/path');
 const {terserOptions: defaultTerserOptions} = require('../options');
 
 module.exports = {

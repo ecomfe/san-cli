@@ -11,7 +11,7 @@
 module.exports = ({isProd}) => {
     return {
         name: 'san-loader',
-        loader: '@baidu/san-loader',
+        loader: 'san-loader',
         options: {
             // hotReload: !isProd,
             // sourceMap: !isProd,

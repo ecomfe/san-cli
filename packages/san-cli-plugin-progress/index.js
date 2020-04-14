@@ -18,7 +18,7 @@ module.exports = {
                 options.reporter = require('./profile');
             }
             // 这里留个小功能：bar 颜色随机
-            options.color = require('@baidu/san-cli-utils/randomColor').color;
+            options.color = require('san-cli-utils/randomColor').color;
             webpackConfig.plugin('progress').use(require('webpackbar'), [options]);
         });
     }

@@ -17,7 +17,6 @@ npm install -g san-cli
 yarn global add san-cli
 ```
 
-!> 当前 San CLI 处于内测阶段，安装使用`@baidu/san-cli`！
 
 ## 使用
 

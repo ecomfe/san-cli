@@ -14,6 +14,6 @@ module.exports = factory(() => ({
     name: 'babel-loader',
     loader: require.resolve('babel-loader'),
     options: {
-        presets: require.resolve('@baidu/san-cli-plugin-babel/preset')
+        presets: require.resolve('san-cli-plugin-babel/preset')
     }
 }));

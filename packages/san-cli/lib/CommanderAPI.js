@@ -7,7 +7,7 @@
  * @file command中的api
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-const {logger} = require('@baidu/san-cli-utils/ttyLogger');
+const {logger} = require('san-cli-utils/ttyLogger');
 
 // 用于 build 和 serve 的通用逻辑处理
 module.exports = class CommanderApi {

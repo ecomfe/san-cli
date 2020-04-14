@@ -8,8 +8,8 @@
  */
 /* eslint-disable fecs-camelcase */
 const path = require('path');
-const sanHmrPlugin = require('@baidu/san-hot-loader/lib/babel-plugin');
-const {getDebugLogger} = require('@baidu/san-cli-utils/ttyLogger');
+const sanHmrPlugin = require('san-hot-loader/lib/babel-plugin');
+const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const debugLogger = getDebugLogger('babel');
 module.exports = (context, options = {}) => {
     // TODO: 需要加强 polyfill 逻辑，目前完全是 usage+core-js 玩法

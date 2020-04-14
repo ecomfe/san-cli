@@ -14,8 +14,8 @@ module.exports = {
     aliases: ['ls'],
     builder: {},
     handler(argv) {
-        const readRc = require('@baidu/san-cli-utils/readRc');
-        const {log} = require('@baidu/san-cli-utils/ttyLogger');
+        const readRc = require('san-cli-utils/readRc');
+        const {log} = require('san-cli-utils/ttyLogger');
         // 检测是否存在
         // 全局
         let sanrc = readRc('rc') || {};

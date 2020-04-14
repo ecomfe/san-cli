@@ -9,7 +9,7 @@
  */
 /* eslint-disable no-console */
 
-const {error: eLog} = require('@baidu/san-cli-utils/ttyLogger');
+const {error: eLog} = require('san-cli-utils/ttyLogger');
 
 process.on('uncaughtException', error => {
     eLog(error);

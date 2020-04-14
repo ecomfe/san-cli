@@ -9,7 +9,7 @@
  */
 
 const webpack = require('webpack');
-const {getDebugLogger} = require('@baidu/san-cli-utils/ttyLogger');
+const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const SanFriendlyErrorsPlugin = require('./lib/SanFriendlyErrorsPlugin');
 const {getWebpackErrorInfoFromStats} = require('./utils');
 const debug = getDebugLogger('webpack:build');

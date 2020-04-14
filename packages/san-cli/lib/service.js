@@ -9,8 +9,8 @@
  */
 
 module.exports = (name, api, callback) => {
-    const Service = require('@baidu/san-cli-service');
-    const flatten = require('@baidu/san-cli-utils/utils').flatten;
+    const Service = require('san-cli-service');
+    const flatten = require('san-cli-utils/utils').flatten;
     const cwd = api.getCwd();
 
     const {configFile, noProgress, profile, mode = process.env.NODE_ENV, watch} = api;

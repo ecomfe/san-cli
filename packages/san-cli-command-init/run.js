@@ -17,7 +17,7 @@ const generator = require('./tasks/generator');
 const installDep = require('./tasks/installDep');
 const Handlebars = require('./handlerbars');
 
-const {error, chalk, success, fatal, boxen} = require('@baidu/san-cli-utils/ttyLogger');
+const {error, chalk, success, fatal, boxen} = require('san-cli-utils/ttyLogger');
 
 module.exports = (template, appName, options = {}) => {
     // template = alias(template);

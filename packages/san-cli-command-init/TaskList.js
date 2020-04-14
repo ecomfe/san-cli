@@ -8,8 +8,8 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-const {ora, figures, chalk} = require('@baidu/san-cli-utils/ttyLogger');
-const SError = require('@baidu/san-cli-utils/SError');
+const {ora, figures, chalk} = require('san-cli-utils/ttyLogger');
+const SError = require('san-cli-utils/SError');
 
 module.exports = class TaskList {
     constructor(tasks, options = {}) {

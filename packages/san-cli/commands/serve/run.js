@@ -12,11 +12,11 @@
 // 方便 command 插件直接调用 run，得到 hanlder
 // 为了扩展，需要增加webpack 和 dev-server 的配置回调
 module.exports = function apply(argv, api, projectOptions) {
-    const {info, error} = require('@baidu/san-cli-utils/ttyLogger');
+    const {info, error} = require('san-cli-utils/ttyLogger');
     const mode = argv.mode;
     info(`Starting ${mode} server...`);
 
-    const devServer = require('@baidu/san-cli-webpack/serve');
+    const devServer = require('san-cli-webpack/serve');
     const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
 
     const {publicPath} = projectOptions;
@@ -28,7 +28,7 @@ module.exports = function apply(argv, api, projectOptions) {
     })
         .then(({isFirstCompile, networkUrl}) => {
             if (isFirstCompile) {
-                const {textColor} = require('@baidu/san-cli-utils/randomColor');
+                const {textColor} = require('san-cli-utils/randomColor');
                 /* eslint-disable no-console */
                 console.log();
                 console.log(`  Application is running at: ${textColor(networkUrl)}`);

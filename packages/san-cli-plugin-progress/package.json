@@ -1,5 +1,5 @@
 {
-    "name": "@baidu/san-cli-plugin-progress",
+    "name": "san-cli-plugin-progress",
     "description": "san-cli进度条插件",
     "version": "0.0.1-alpha.2",
     "scriptName": "san",
@@ -18,6 +18,6 @@
         "tty-table": "^2.8.2",
         "webpackbar": "^4.0.0",
         "pretty-time": "^1.1.0",
-        "@baidu/san-cli-utils": "^0.0.1-alpha.0"
+        "san-cli-utils": "^0.0.1-alpha.0"
     }
 }

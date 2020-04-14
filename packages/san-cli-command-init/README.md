@@ -12,7 +12,7 @@ san-cli-command-init 是 [San](https://github.com/baidu/san) CLI 工具中创建
 ## 安装
 
 ```shell
-$ npm install --save-dev @baidu/san-cli-command-init
+$ npm install --save-dev san-cli-command-init
 ```
 
 ## 测试

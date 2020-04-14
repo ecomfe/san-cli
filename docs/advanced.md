@@ -196,7 +196,7 @@ module.exports = {
             id: 'built-in:plugin-progress',
             apply(api, projectOptions, options = {}) {
                 api.chainWebpack(webpackConfig => {
-                    options.color = require('@baidu/san-cli-utils/randomColor').color;
+                    options.color = require('san-cli-utils/randomColor').color;
                     webpackConfig.plugin('progress').use(require('webpackbar'), [options]);
                 });
             }

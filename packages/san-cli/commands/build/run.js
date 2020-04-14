@@ -10,8 +10,8 @@
 
 module.exports = function apply(argv, api, projectOptions) {
     const path = require('path');
-    const {info, success: successLog, error} = require('@baidu/san-cli-utils/ttyLogger');
-    const {textColor} = require('@baidu/san-cli-utils/randomColor');
+    const {info, success: successLog, error} = require('san-cli-utils/ttyLogger');
+    const {textColor} = require('san-cli-utils/randomColor');
     const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
     // 开始时间
     const startTime = Date.now();
@@ -59,7 +59,7 @@ module.exports = function apply(argv, api, projectOptions) {
             }
             if (argv.stats === 'table') {
                 console.log(
-                    require('@baidu/san-cli-webpack/lib/formatStats')(stats, targetDirShort, {
+                    require('san-cli-webpack/lib/formatStats')(stats, targetDirShort, {
                         resolve: p => api.resolve(p)
                     })
                 );
@@ -94,7 +94,7 @@ module.exports = function apply(argv, api, projectOptions) {
     }
 
     // 放到这里 require 是让命令行更快加载，而不是等 webpack 这大坨东西。。
-    const build = require('@baidu/san-cli-webpack/build');
+    const build = require('san-cli-webpack/build');
     if (modern) {
         // 2.1 modern mode，会fork execa 执行一次打包
         // modern mode 必须要保证 legacy 先打包完成

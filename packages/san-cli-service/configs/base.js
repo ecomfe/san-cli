@@ -140,7 +140,7 @@ module.exports = {
                 dir: 'fonts'
             });
             // ----------------------pulgins---------------------
-            webpackConfig.plugin('san').use(require('@baidu/san-loader/lib/plugin'));
+            webpackConfig.plugin('san').use(require('san-loader/lib/plugin'));
             // 大小写敏感！！！！
             webpackConfig.plugin('case-sensitive-paths').use(require('case-sensitive-paths-webpack-plugin'));
             // 定义 env 中的变量

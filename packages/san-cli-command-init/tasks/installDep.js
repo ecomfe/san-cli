@@ -14,7 +14,7 @@ const execa = require('execa');
 const registries = require('../registries');
 const path = require('path');
 const prompt = require('../utils/prompt');
-const {hasYarn} = require('@baidu/san-cli-utils/env');
+const {hasYarn} = require('san-cli-utils/env');
 
 module.exports = (template, dest, options) => {
     return (ctx, task) => {

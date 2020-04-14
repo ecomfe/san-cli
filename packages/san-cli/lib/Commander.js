@@ -14,10 +14,10 @@ const yargs = require('yargs/yargs');
 const fse = require('fs-extra');
 const lMerge = require('lodash.merge');
 
-const {getGlobalSanRcFilePath, findExisting} = require('@baidu/san-cli-utils/path');
-const readPkg = require('@baidu/san-cli-utils/readPkg');
-const {chalk, time, timeEnd, error, getDebugLogger} = require('@baidu/san-cli-utils/ttyLogger');
-const {textColor} = require('@baidu/san-cli-utils/randomColor');
+const {getGlobalSanRcFilePath, findExisting} = require('san-cli-utils/path');
+const readPkg = require('san-cli-utils/readPkg');
+const {chalk, time, timeEnd, error, getDebugLogger} = require('san-cli-utils/ttyLogger');
+const {textColor} = require('san-cli-utils/randomColor');
 
 const {scriptName, version: pkgVersion} = require('../package.json');
 const CommanderAPI = require('./CommanderAPI');
