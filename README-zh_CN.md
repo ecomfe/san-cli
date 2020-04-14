@@ -7,8 +7,8 @@ San CLI 是基于 [San.js](https://github.com/baidu/san) 进行快速开发的 C
 ## 特性
 
 - 完备的项目脚手架。
-- 基于 Webpack 的零配置构建工具。
-- 可扩展命令行和 Webpack 打包插件。
+- 基于 webpack 的零配置构建工具。
+- 可扩展命令行和 webpack 打包插件。
 
 San CLI 在兼顾 San 生态的同时，尽量做到通用化配置，在设计之初，我们希望不局限于 San 的应用范畴，做可定制化的前端开发工具集。
 
@@ -35,7 +35,7 @@ san -h
 
 ## 如何贡献
 
-San-cli 使用 [Yarn Workspaces](https://classic.yarnpkg.com/en/docs/workspaces/) 来做本地开发。
+San CLI 使用 [Yarn Workspaces](https://classic.yarnpkg.com/en/docs/workspaces/) 来做本地开发。
 
 首先 clone 项目到你的电脑，然后安装依赖：
 
@@ -59,16 +59,16 @@ yarn test san-cli
 
 ## Debug 日志
 
-在 San CLI 中使用了[debug](https://npmjs.org/package/debug) 模块，如果需要 debug 或者查看一些信息可以使用`DEBUG`变量。在 San CLI 中，debug 的 scope 是`san-cli:`，常用的变量包括：
+在 San CLI 中使用了 [debug](https://npmjs.org/package/debug) 模块，如果需要 debug 或者查看一些信息可以使用 `DEBUG` 变量。在 San CLI 中，debug 的 scope 是`san-cli:`，常用的变量包括：
 
-- `pref`：输出 San CLI 本身的性能打点数据；
-- `babel`：会输出 babel 相关的配置；
+- `perf`：输出 San CLI 本身的性能打点数据；
+- `babel`：会输出 Babel 相关的配置；
 - `service`：输出 service 层的日志；
-- `webpack:closeDevtool`：会关闭 devtool，不再输出`eval`类型代码。直接输出打包后的代码，方便排查代码问题；
-- `webpack:build`：Webpack build 命令相关的配置；
-- `webpack:serve`：Webpack serve 命令相关的配置；
-- `webpack:config`：输出 Webpack 最终的 config 内容。
+- `webpack:closeDevtool`：会关闭 devtool，不再输出 `eval` 类型代码。直接输出打包后的代码，方便排查代码问题；
+- `webpack:build`：webpack build 命令相关的配置；
+- `webpack:serve`：webpack serve 命令相关的配置；
+- `webpack:config`：输出 webpack 最终的 config 内容。
 
 ## 文档
 
-请移步[San-CLI 文档](./docs/README.md)
+请移步 [San CLI 文档](./docs/README.md)
