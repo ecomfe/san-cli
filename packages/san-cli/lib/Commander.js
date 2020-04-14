@@ -313,7 +313,7 @@ module.exports = class Command {
             });
 
             log();
-            log('For more information, visit `https://ecomfe.github.com/san-cli`');
+            log('For more information, visit `https://ecomfe.github.io/san-cli`');
         };
     }
     addCommands(commands) {

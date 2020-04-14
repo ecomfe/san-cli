@@ -1,7 +1,7 @@
 # san-cli-command-init
 
 san-cli-command-init 是 [San](https://github.com/baidu/san) CLI 工具中创建项目的核心功能部分。
-是一个 [command 插件](https://ecomfe.github.com/san-cli/#/cmd-plugin)。
+是一个 [command 插件](https://ecomfe.github.io/san-cli/#/cmd-plugin)。
 
 主要步骤如下：
 -   tasks/checkStatus.js 检查目录状态
