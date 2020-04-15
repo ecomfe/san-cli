@@ -2,7 +2,7 @@
 
 # Smarty 相关
 
-使用 Smarty 的 PHP 模板，可以配置[Hulk Mock Server](http://icode.baidu.com/repos/baidu/hulk/mock-server/tree/master) ，这个是百度内部实现方案。
+使用 Smarty 的 PHP 模板，可以配置[Hulk Mock Server](http://icode.baidu.com/repos/baidu/hulk/mock-server/tree/master) ，**这个是百度内部实现方案**。
 
 ## Hulk Mock Server
 
