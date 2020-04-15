@@ -15,7 +15,7 @@ const chalk = require('chalk');
 const figures = require('figures');
 const {textColor, bgColor} = require('./randomColor');
 
-const perfDebug = debug('san-cli:pref');
+const perfDebug = debug('san-cli:perf');
 module.exports = class SanConsola extends Consola {
     constructor(options = {}) {
         options = Object.assign(
@@ -40,7 +40,7 @@ module.exports = class SanConsola extends Consola {
         };
 
         this.timeEnd = name => {
-            // 只在 DEBUG=san-cli:pref 下面输出性能日志
+            // 只在 DEBUG=san-cli:perf 下面输出性能日志
             if (perfDebug.enabled) {
                 const start = map.get(name);
                 if (!start) {
