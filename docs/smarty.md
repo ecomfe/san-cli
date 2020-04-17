@@ -2,7 +2,7 @@
 
 # Smarty 相关
 
-使用 Smarty 的 PHP 模板，可以配置[Hulk Mock Server](http://icode.baidu.com/repos/baidu/hulk/mock-server/tree/master) ，**这个是百度内部实现方案**。
+使用 Smarty 的 PHP 模板，可以配置[Hulk Mock Server](https://www.npmjs.com/package/hulk-mock-server) 。
 
 ## Hulk Mock Server
 
@@ -35,7 +35,7 @@ const plugins = [
         apply(api) {
             // 使用 api 配置dev server 中间件
             api.middleware(() =>
-                require('@baidu/hulk-mock-server')({
+                require('hulk-mock-server')({
                     // 配置contentBase
                     contentBase: path.join(__dirname, './' + outputDir + '/'),
                     // 配置 mock 路径

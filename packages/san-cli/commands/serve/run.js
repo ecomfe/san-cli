@@ -13,7 +13,7 @@
 // 为了扩展，需要增加webpack 和 dev-server 的配置回调
 module.exports = function apply(argv, api, projectOptions) {
     const {info, error} = require('san-cli-utils/ttyLogger');
-    const mode = argv.mode;
+    const mode = argv.mode || process.env.NODE_ENV || 'development';
     info(`Starting ${mode} server...`);
 
     const devServer = require('san-cli-webpack/serve');

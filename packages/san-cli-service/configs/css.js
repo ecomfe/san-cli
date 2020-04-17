@@ -178,7 +178,7 @@ module.exports = {
                         'sass',
                         /\.sass$/,
                         'sass-loader',
-                        Object.assign({}, loaderOptions.sass, {
+                        Object.assign(loaderOptions.sass || {}, {
                             sassOptions: Object.assign({}, loaderOptions.sass && loaderOptions.sass.sassOptions, {
                                 indentedSyntax: true
                             })

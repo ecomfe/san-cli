@@ -104,7 +104,7 @@ module.exports = function apply(argv, api, projectOptions) {
             let config = getNormalizeWebpackConfig(
                 api,
                 projectOptions,
-                Object.assign({}, argv, {
+                Object.assign(argv, {
                     modernBuild: false
                 })
             );
@@ -136,7 +136,7 @@ module.exports = function apply(argv, api, projectOptions) {
             let config = getNormalizeWebpackConfig(
                 api,
                 projectOptions,
-                Object.assign({}, argv, {
+                Object.assign(argv, {
                     modernBuild: true,
                     clean: false
                 })

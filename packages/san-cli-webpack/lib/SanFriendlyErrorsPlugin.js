@@ -35,14 +35,14 @@ const defaultTransformers = [
             for (const {re, msg, type} of rules) {
                 const match = message.match(re);
                 if (match) {
-                    return Object.assign({}, error, {
+                    return Object.assign(error || {}, {
                         type,
                         shortMessage: msg(error, match)
                     });
                 }
             }
             if (!error.message) {
-                return Object.assign({}, error, {
+                return Object.assign(error || {}, {
                     type: 'unknown-webpack-error',
                     shortMessage: message
                 });
