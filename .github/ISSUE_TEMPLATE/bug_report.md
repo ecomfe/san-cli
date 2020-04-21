@@ -6,6 +6,8 @@ labels: ''
 assignees: ''
 
 ---
+**Version**
+The version of San CLI.
 
 **Describe the bug**
 A clear and concise description of what the bug is.
