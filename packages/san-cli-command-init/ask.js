@@ -56,8 +56,8 @@ async function prompt(data, key, prompt, tplData) {
     let promptDefault =
         typeof prompt.default === 'function'
             ? function() {
-                  return prompt.default.bind(this)(data);
-              }
+                return prompt.default.bind(this)(data);
+            }
             : prompt.default;
 
     const answers = await inquirer.prompt([

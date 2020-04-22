@@ -33,8 +33,8 @@ export default function (script, template) {
 
     return (
         typeof script === 'object'
-        ? defineComponent(script)
-        : script
+            ? defineComponent(script)
+            : script
     );
 }
 

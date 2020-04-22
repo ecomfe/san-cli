@@ -132,8 +132,8 @@ module.exports = {
                     const templatePath = hasDedicatedTemplate
                         ? template
                         : fs.existsSync(htmlPath)
-                        ? htmlPath
-                        : defaultHtmlPath;
+                            ? htmlPath
+                            : defaultHtmlPath;
 
                     // inject html plugin for the page
                     const pageHtmlOptions = Object.assign(
@@ -182,18 +182,18 @@ module.exports = {
                     // 默认开启压缩 tpl 和 html 文件，smarty 的专属
                     const defaultTransformOptions = compress
                         ? {
-                              transform: (content, path) => {
-                                  if (/\.(tpl|html|htm)$/.test(path)) {
-                                      return minify(content.toString(), {
-                                          minifyCSS: true,
-                                          minifyJS: terserOptions,
-                                          ignoreCustomFragments: [/{%[\s\S]*?%}/, /<%[\s\S]*?%>/, /<\?[\s\S]*?\?>/]
-                                      });
-                                  } else {
-                                      return content;
-                                  }
-                              }
-                          }
+                            transform: (content, path) => {
+                                if (/\.(tpl|html|htm)$/.test(path)) {
+                                    return minify(content.toString(), {
+                                        minifyCSS: true,
+                                        minifyJS: terserOptions,
+                                        ignoreCustomFragments: [/{%[\s\S]*?%}/, /<%[\s\S]*?%>/, /<\?[\s\S]*?\?>/]
+                                    });
+                                } else {
+                                    return content;
+                                }
+                            }
+                        }
                         : {};
                     /* eslint-enable fecs-indent */
 

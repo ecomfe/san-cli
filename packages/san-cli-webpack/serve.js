@@ -134,11 +134,11 @@ module.exports = function devServer({webpackConfig, devServerConfig, publicPath,
                 networkUrl: publicUrl
                     ? publicUrl.replace(/([^/])$/, '$1/')
                     : url.format({
-                          /* eslint-disable fecs-indent */
-                          protocol,
-                          port,
-                          hostname: urls.lanUrlForConfig || 'localhost'
-                      }),
+                        /* eslint-disable fecs-indent */
+                        protocol,
+                        port,
+                        hostname: urls.lanUrlForConfig || 'localhost'
+                    }),
                 /* eslint-enable fecs-indent */
                 urls
             });

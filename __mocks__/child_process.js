@@ -5,7 +5,7 @@
 
 const cp = {
     execSync: jest.fn(opt => {
-        switch(opt) {
+        switch (opt) {
             case 'git config --get user.name':
                 return 'yyt';
             case 'git config --get user.email':
