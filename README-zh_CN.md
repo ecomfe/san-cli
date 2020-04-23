@@ -6,8 +6,8 @@ San CLI 是基于 [San.js](https://github.com/baidu/san) 进行快速开发的 C
 
 ## 特性
 
-- 完备的项目脚手架。
-- 基于 webpack 的零配置构建工具。
+- 完备的项目脚手架；
+- 基于 webpack 的零配置构建工具；
 - 可扩展命令行和 webpack 打包插件。
 
 San CLI 在兼顾 San 生态的同时，尽量做到通用化配置，在设计之初，我们希望不局限于 San 的应用范畴，做可定制化的前端开发工具集。
