@@ -47,7 +47,7 @@
         "san-cli-utils": "^0.0.1",
         "san-cli-webpack": "^0.0.1",
         "san-hot-loader": "^0.0.1",
-        "san-loader": "^0.0.1",
+        "san-loader": "^0.0.7",
         "semver": "^7.1.1",
         "style-loader": "~1.0.0",
         "svg-url-loader": "~3.0.2",
