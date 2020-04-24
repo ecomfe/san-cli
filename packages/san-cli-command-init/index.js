@@ -45,8 +45,7 @@ exports.builder = {
 };
 exports.handler = cliApi => {
     const {template, appName} = cliApi;
-
     let {templateAlias: templateAliasMap} = cliApi.getPresets || {};
-    const options = Object.assign({}, cliApi, {templateAliasMap});
+    const options = Object.assign(cliApi, {templateAliasMap});
     require('./run')(template, appName, options);
 };

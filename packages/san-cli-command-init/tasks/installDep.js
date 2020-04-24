@@ -86,6 +86,6 @@ function installDeps(dest, {verbose = false, registry, useYarn = true}) {
     }
     return execa(command, args, {
         cwd: dest,
-        stdio: verbose ? ['inherit', 'inherit', 'inherit'] : ['ignore', 'ignore', 'ignore']
+        stdio: verbose ? ['inherit', 'inherit', 'inherit'] : ['ignore', 'ignore', 'inherit']
     });
 }

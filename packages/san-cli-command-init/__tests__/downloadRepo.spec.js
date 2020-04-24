@@ -79,7 +79,7 @@ test('传入coding地址，使用https方式，dev分支', async () => {
 
 test('传入错误地址，传空', () => {
     return downloadrepo('', 'aaa', {}).catch(e => {
-        expect(e.toString()).toMatch('true');
+        expect(e.toString()).toMatch('Failed to pull, please check the path and code permissions are correct');
     });
 });
 

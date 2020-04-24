@@ -36,7 +36,7 @@ module.exports = (repo, dest, options) => {
                         url,
                         dest,
                         checkout,
-                        rawArgs: options._command.rawArgs
+                        rawArgs: (options._command || {}).rawArgs
                     })
                 );
             }
