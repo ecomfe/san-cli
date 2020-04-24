@@ -1,10 +1,15 @@
-# San-CLI
+<h1 align="center">San-CLI</h1>
+
+<div align="center">
+San CLI 是基于 [San.js](https://github.com/baidu/san) 进行快速开发的 CLI 工具
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+</div>
+
 
 [English](./README.md) | 简体中文
 
-San CLI 是基于 [San.js](https://github.com/baidu/san) 进行快速开发的 CLI 工具。
-
-## 特性
+## 🎉 特性
 
 - 完备的项目脚手架。
 - 基于 webpack 的零配置构建工具。
@@ -12,9 +17,9 @@ San CLI 是基于 [San.js](https://github.com/baidu/san) 进行快速开发的 C
 
 San CLI 在兼顾 San 生态的同时，尽量做到通用化配置，在设计之初，我们希望不局限于 San 的应用范畴，做可定制化的前端开发工具集。
 
-## 快速开始
+## 🔨 快速开始
 
-### 安装
+### 📦 安装
 
 > San CLI 的 Node.js 版本要求 >= 8.16.0。
 
@@ -33,7 +38,7 @@ yarn global add san-cli
 san -h
 ```
 
-## 如何贡献
+## 🤝 如何贡献
 
 San CLI 使用 [Yarn Workspaces](https://classic.yarnpkg.com/en/docs/workspaces/) 来做本地开发。
 
@@ -46,7 +51,7 @@ yarn
 
 详细的设计，请阅读《[内部实现](./docs/architecture.md)》。
 
-## 测试
+### ✅ 测试
 
 ```bash
 # 测试全部
@@ -57,7 +62,7 @@ yarn test [packageName]
 yarn test san-cli
 ```
 
-## Debug 日志
+### 🐛 Debug 日志
 
 在 San CLI 中使用了 [debug](https://npmjs.org/package/debug) 模块，如果需要 debug 或者查看一些信息可以使用 `DEBUG` 变量。在 San CLI 中，debug 的 scope 是`san-cli:`，常用的变量包括：
 
@@ -69,6 +74,11 @@ yarn test san-cli
 - `webpack:serve`：webpack serve 命令相关的配置；
 - `webpack:config`：输出 webpack 最终的 config 内容。
 
-## 文档
+## 📝 文档
 
 请移步 [San CLI 文档](./docs/README.md)
+
+
+## ☀️ License
+
+MIT

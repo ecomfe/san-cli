@@ -1,10 +1,16 @@
-# San-CLI
+<h1 align="center">San-CLI</h1>
+
+<div align="center">
+A CLI Tooling based on <a href="https://baidu.github.io/san/">San.js</a> for rapid development
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+</div>
+
 
 English | [简体中文](./README-zh_CN.md)
 
-San CLI is the CLI tooling for rapid development on [San.js](https://github.com/baidu/san).
 
-## Features
+## 🎉 Features
 
 - Complete project scaffolding.
 - webpack-based with zero configuration.
@@ -12,9 +18,9 @@ San CLI is the CLI tooling for rapid development on [San.js](https://github.com/
 
 San CLI takes into account the San ecosystem while trying to achieve universal configuration. At the beginning of the design phase, we aimed to be not limited to the San application scope, but to make a general and customizable front-end development tooling.
 
-## Getting Started
+## 🔨 Getting Started
 
-### Installation
+### 📦 Installation
 
 > San CLI requires Node.js version 8.16.0 or above (8.16.0+ recommended).
 
@@ -33,7 +39,7 @@ After installation, you can view the help information with the following command
 san -h
 ```
 
-## Contributing
+## 🤝 Contributing
 
 San CLI uses [Yarn Workspaces](https://classic.yarnpkg.com/en/docs/workspaces/) for local development.
 
@@ -46,7 +52,7 @@ yarn
 
 For design details, please read *[architecture](./docs/architecture.md)*.
 
-## Testing
+### ✅ Testing
 
 ```bash
 # test all
@@ -57,7 +63,7 @@ yarn test [packageName]
 yarn test san-cli
 ```
 
-## Debug Log
+### 🐛 Debug Log
 
 The [debug](https://npmjs.org/package/debug) module is used in the San CLI, so if you need to debug or see some information you can use the `DEBUG` variable. In San CLI, the scope of debug is `san-cli:`, and common variables include:
 
@@ -69,6 +75,10 @@ The [debug](https://npmjs.org/package/debug) module is used in the San CLI, so i
 - `webpack:serve`: Output webpack serve related configuration.
 - `webpack:config`: Output the final config object of webpack.
 
-## Documentation
+## 📝 Documentation
 
 For detailed documentation, please check the [San CLI docs](./docs/README.md).
+
+## ☀️ License
+
+MIT
