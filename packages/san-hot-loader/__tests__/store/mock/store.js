@@ -38,7 +38,7 @@ export const noGlobalActions = [
     import {builder} from 'san-update';
     store.addAction('count', function (num) {
         return builder().set('num', num);
-    })}
+    })
     `,
     `
     import {store} from 'san-store';
@@ -134,32 +134,12 @@ export const instantStores = [
 ];
 
 export const noInstantStores = [
-    `
-    import {Store} from 'san-store';
-    const something = a['b' + c];
-    export default new Store(something);
-    `,
-    `
-    import {Store} from 'san-store';
-    const something = a().b.c.d;
-    export default new Store(something);
-    `,
-    `
-    import {Store} from 'san-store';
-    let something;
-    export default new Store(something);
-    `,
-
 
     `
     import {Store} from 'san-store';
     export default new Store();
     `,
-    `
-    import {Store} from 'san-store';
-    const something = a;
-    export default new Store(something);
-    `,
+
     `
     import {Store} from 'san-store';
     import actions from './actions';
@@ -167,19 +147,6 @@ export const noInstantStores = [
         actions
     })
     `,
-    `
-    import {Store} from 'san-store';
-    export default new Store({
-        actions: {}
-    })
-    `,
-    `
-    import {Store} from 'san-store';
-    export default new Store({
-        actions: actions
-    })
-    `,
-
     `
     import {Store} from 'san-store';
     import actions from './actions';

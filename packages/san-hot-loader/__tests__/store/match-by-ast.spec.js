@@ -30,14 +30,14 @@ describe('测试 Store Match By AST', () => {
     test('测试 new Store({})', () => {
         for (let code of groups.instantStores) {
             code = parser.parse(code);
-            expect(matchByAst(code)).not.toBe(undefined);
+            expect(matchByAst(code)).toBe(true);
             parser.delete(code);
         }
     });
     test('测试非 new Store({})', () => {
         for (let code of groups.noInstantStores) {
             code = parser.parse(code);
-            expect(matchByAst(code)).toBe(undefined);
+            expect(matchByAst(code)).toBe(false);
             parser.delete(code);
         }
     });
