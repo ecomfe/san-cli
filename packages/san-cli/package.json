@@ -17,7 +17,7 @@
         "import-cwd": "^3.0.0",
         "import-global": "^0.1.0",
         "import-lazy": "^4.0.0",
-        "inquirer": "~7.0.0",
+        "inquirer": "~7.1.0",
         "lodash.merge": "^4.6.2",
         "resolve-cwd": "^3.0.0",
         "san-cli-command-init": "^0.0.1",
