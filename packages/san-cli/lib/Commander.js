@@ -200,6 +200,8 @@ module.exports = class Command {
             .wrap(this.cli.terminalWidth() - 30)
             .middleware(getCommonArgv)
             .help()
+            .recommendCommands()
+            .strict()
             .alias('help', 'h')
             .alias('version', 'v');
     }
@@ -211,7 +213,6 @@ module.exports = class Command {
         this._resolveCliHelp();
         // 3. 检验参数
         if (!this.rawArgs[0]) {
-            // TODO 添加默认的文案
             cli.help();
             return;
         }
