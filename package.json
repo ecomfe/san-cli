@@ -26,8 +26,7 @@
     },
     "lint-staged": {
         "!(example|dist|output|__mocks__)/**/*.js": [
-            "eslint --fix",
-            "git add"
+            "eslint"
         ]
     },
     "husky": {
