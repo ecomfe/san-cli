@@ -1,14 +1,9 @@
 /**
- * Copyright (c) Baidu Inc. All rights reserved.
- *
- * This source code is licensed under the MIT license.
- * See LICENSE file in the project root for license information.
- *
  * @file mock store code
  * @author tanglei02 (tanglei@baidu.com)
  */
 
-exports.globalActions = [
+export const globalActions = [
     `
     import {store} from 'san-store';
     import {builder} from 'san-update';
@@ -31,7 +26,7 @@ exports.globalActions = [
     `
 ];
 
-exports.noGlobalActions = [
+export const noGlobalActions = [
     `
     import san from 'san';
     export default san.defineComponent({
@@ -119,7 +114,7 @@ exports.noGlobalActions = [
     `
 ];
 
-exports.instantStores = [
+export const instantStores = [
     `
     import {Store} from 'san-store';
     import actions from './actions';
@@ -138,7 +133,7 @@ exports.instantStores = [
     `
 ];
 
-exports.noInstantStores = [
+export const noInstantStores = [
     `
     import {Store} from 'san-store';
     const something = a['b' + c];

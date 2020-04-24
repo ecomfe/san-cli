@@ -43,7 +43,7 @@ module.exports = function devServer({webpackConfig, devServerConfig, publicPath,
         const urls = prepareUrls(protocol, host, port, publicPath);
         // mode 不是 production 则添加 hmr 功能
         if (webpackConfig.mode !== 'production') {
-            /* eslint-disable*/
+            /* eslint-disable */
             const sockjsUrl = publicUrl
                 ? `?${publicUrl}/sockjs-node`
                 : `?${url.format({
@@ -52,7 +52,7 @@ module.exports = function devServer({webpackConfig, devServerConfig, publicPath,
                       hostname: urls.lanUrlForConfig || 'localhost',
                       pathname: '/sockjs-node'
                   })}`;
-            /* eslint-enable*/
+            /* eslint-enable */
 
             const devClients = [
                 // dev server client
@@ -85,7 +85,8 @@ module.exports = function devServer({webpackConfig, devServerConfig, publicPath,
         let compiler;
         try {
             compiler = webpack(webpackConfig);
-        } catch (e) {
+        }
+        catch (e) {
             // 捕捉参数不正确的错误信息
             reject({err: e, type: 'run'});
         }
@@ -134,12 +135,10 @@ module.exports = function devServer({webpackConfig, devServerConfig, publicPath,
                 networkUrl: publicUrl
                     ? publicUrl.replace(/([^/])$/, '$1/')
                     : url.format({
-                          /* eslint-disable fecs-indent */
-                          protocol,
-                          port,
-                          hostname: urls.lanUrlForConfig || 'localhost'
-                      }),
-                /* eslint-enable fecs-indent */
+                        protocol,
+                        port,
+                        hostname: urls.lanUrlForConfig || 'localhost'
+                    }),
                 urls
             });
             if (isFirstCompile) {

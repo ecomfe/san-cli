@@ -27,7 +27,8 @@ module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
     let htmlPath;
     if (cachedMap[context]) {
         htmlPath = cachedMap[context];
-    } else {
+    }
+    else {
         // 默认是找 public 的 docit.html，防止 index.html 作为它用
         htmlPath = findExisting(['public/docit.html', 'public/index.html'], context);
         if (htmlPath) {
@@ -41,8 +42,8 @@ module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
     const templatePath = fs.existsSync(themeHtml)
         ? themeHtml
         : fs.existsSync(htmlPath)
-        ? htmlPath
-        : require.resolve('../template/index.ejs');
+            ? htmlPath
+            : require.resolve('../template/index.ejs');
     // 删除默认的配置
     webpackConfig.entryPoints.clear();
     webpackConfig.plugins.delete('html');
@@ -78,7 +79,8 @@ module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
                     // 存在
                     debug(`${filepath} use layout: ${matter.layout}`);
                     entry = layouts[matter.layout];
-                } else {
+                }
+                else {
                     error(`${filepath} layout \`${matter.layout}\` not found!`);
                 }
             }
@@ -109,9 +111,5 @@ module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
         });
 };
 function ensureRelative(outputDir, p) {
-    if (path.isAbsolute(p)) {
-        return path.relative(outputDir, p);
-    } else {
-        return p;
-    }
+    return path.isAbsolute(p) ? path.relative(outputDir, p) : p;
 }

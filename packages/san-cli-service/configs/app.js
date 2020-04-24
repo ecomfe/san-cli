@@ -33,7 +33,8 @@ module.exports = {
                     if (args.length === 4) {
                         // v4 版本
                         [compilation, assets, assetTags, pluginOptions] = args;
-                    } else {
+                    }
+                    else {
                         // v3 版本
                         [compilation, assets, pluginOptions] = args;
                     }
@@ -80,7 +81,8 @@ module.exports = {
                 htmlOptions.template = fs.existsSync(htmlPath) ? htmlPath : defaultHtmlPath;
                 webpackConfig.plugin('html').use(HTMLPlugin, [htmlOptions]);
                 useHtmlPlugin = true;
-            } else {
+            }
+            else {
                 // multi-page setup
                 /** simple
                  * pages: {
@@ -119,7 +121,8 @@ module.exports = {
                         // 处理 smarty 情况
                         if (path.extname(template) === '.tpl') {
                             filename = path.basename(template);
-                        } else {
+                        }
+                        else {
                             filename = `${name}.html`;
                         }
                     }
@@ -132,8 +135,8 @@ module.exports = {
                     const templatePath = hasDedicatedTemplate
                         ? template
                         : fs.existsSync(htmlPath)
-                        ? htmlPath
-                        : defaultHtmlPath;
+                            ? htmlPath
+                            : defaultHtmlPath;
 
                     // inject html plugin for the page
                     const pageHtmlOptions = Object.assign(
@@ -178,24 +181,22 @@ module.exports = {
             if (options.copy) {
                 const addCopyOptions = options => {
                     let {from, to = './', ignore = [], compress = true} = options;
-                    /* eslint-disable fecs-indent */
                     // 默认开启压缩 tpl 和 html 文件，smarty 的专属
                     const defaultTransformOptions = compress
                         ? {
-                              transform: (content, path) => {
-                                  if (/\.(tpl|html|htm)$/.test(path)) {
-                                      return minify(content.toString(), {
-                                          minifyCSS: true,
-                                          minifyJS: terserOptions,
-                                          ignoreCustomFragments: [/{%[\s\S]*?%}/, /<%[\s\S]*?%>/, /<\?[\s\S]*?\?>/]
-                                      });
-                                  } else {
-                                      return content;
-                                  }
-                              }
-                          }
+                            transform: (content, path) => {
+                                if (/\.(tpl|html|htm)$/.test(path)) {
+                                    return minify(content.toString(), {
+                                        minifyCSS: true,
+                                        minifyJS: terserOptions,
+                                        ignoreCustomFragments: [/{%[\s\S]*?%}/, /<%[\s\S]*?%>/, /<\?[\s\S]*?\?>/]
+                                    });
+                                }
+                                return content;
+
+                            }
+                        }
                         : {};
-                    /* eslint-enable fecs-indent */
 
                     // 排除 templte 的情况
                     ignore = publicCopyIgnore.concat(typeof ignore === 'string' ? [ignore] : ignore);
@@ -210,7 +211,8 @@ module.exports = {
                                 ignore
                             })
                         );
-                    } else {
+                    }
+                    else {
                         // 正则的，不处理
                         copyArgs.push(
                             Object.assign(defaultTransformOptions, options, {
@@ -224,7 +226,8 @@ module.exports = {
                 if (Array.isArray(options.copy)) {
                     // 数组就循环吧
                     options.copy.forEach(addCopyOptions);
-                } else {
+                }
+                else {
                     addCopyOptions(options.copy);
                 }
             }
@@ -237,7 +240,7 @@ module.exports = {
 function ensureRelative(outputDir, p) {
     if (path.isAbsolute(p)) {
         return path.relative(outputDir, p);
-    } else {
-        return p;
     }
+    return p;
+
 }

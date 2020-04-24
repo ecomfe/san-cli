@@ -1,18 +1,13 @@
 /**
- * Copyright (c) Baidu Inc. All rights reserved.
- *
- * This source code is licensed under the MIT license.
- * See LICENSE file in the project root for license information.
- *
  * @file store match by ast test
  * @author tanglei02 (tanglei02@baidu.com)
  */
 
 /* global describe, test */
 
-const matchByAst = require('../../lib/store/match-by-ast');
-const parser = require('../../lib/utils/ast-parser');
-const groups = require('./mock/store');
+import matchByAst from '../../lib/store/match-by-ast';
+import parser from '../../lib/utils/ast-parser';
+import * as groups from './mock/store';
 
 describe('测试 Store Match By AST', () => {
     test('测试 store.addAction', () => {

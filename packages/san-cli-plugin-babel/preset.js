@@ -6,7 +6,6 @@
  *
  * @file bable loader config
  */
-/* eslint-disable fecs-camelcase */
 const path = require('path');
 const sanHmrPlugin = require('san-hot-loader/lib/babel-plugin');
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');

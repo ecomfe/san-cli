@@ -25,7 +25,8 @@ module.exports = async (prompts, data, argv) => {
             // 这里是通过 cli 的 flag 传入的 key 值
             // 直接使用，不用再提问了
             answers[key] = argv[key];
-        } else {
+        }
+        else {
             await prompt(answers, key, prompts[key], data);
         }
     }
@@ -52,12 +53,12 @@ async function prompt(data, key, prompt, tplData) {
         return;
     }
 
-    /* eslint-disable space-before-function-paren,fecs-indent,operator-linebreak */
+    /* eslint-disable space-before-function-paren,operator-linebreak */
     let promptDefault =
         typeof prompt.default === 'function'
             ? function() {
-                  return prompt.default.bind(this)(data);
-              }
+                return prompt.default.bind(this)(data);
+            }
             : prompt.default;
 
     const answers = await inquirer.prompt([
@@ -78,9 +79,11 @@ async function prompt(data, key, prompt, tplData) {
             data[key][multiChoiceAnswer] = true;
         });
         // 如果答案是串型，转义一下双引号
-    } else if (typeof answers[key] === 'string') {
+    }
+    else if (typeof answers[key] === 'string') {
         data[key] = answers[key].replace(/"/g, '\\"');
-    } else {
+    }
+    else {
         // 其他类型的直接赋值
         data[key] = answers[key];
     }

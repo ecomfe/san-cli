@@ -55,7 +55,7 @@ describe('constructor resolvePlugins _loadPlugin', () => {
         // 检测对于加options的插件是否已加入进去
         expect(service.plugins.filter(item => Array.isArray(item))[1][1]).toEqual({a: 1});
         // 检测新增的projectOptions是否已加入进去
-        expect(service['_initProjectOptions']).toEqual({outputDir: 'output'});
+        expect(service._initProjectOptions).toEqual({outputDir: 'output'});
     });
     test('plugins为空，useBuiltInPlugin为true', () => {
         const service = new Service('name', {
@@ -147,24 +147,7 @@ describe('loadProjectOptions', () => {
         // 会去自动查找项目中的san.config.js，查验一下是否找到了并返回正确的配置项
         expect(config.templateDir).toBe('template');
     });
-    // test('不可查到的文件路径，并且工程中也没有san.config.js文件', async () => {
-    //     fse.moveSync(__dirname + '/mock/san.config.js', __dirname + '/mock/yyt.config.js');
-    //     const config = await service.loadProjectOptions('./mock/san.config.js');
-    //     // 为默认选项
-    //     expect(config.build).toEqual({});
-    //     // 检测是否加了browserslist配置项
-    //     expect(config.browserslist).toEqual([
-    //         '> 1.2% in cn',
-    //         'last 2 versions',
-    //         'iOS >=8',
-    //         'android>4.4',
-    //         'not bb>0',
-    //         'not ff>0',
-    //         'not ie>0',
-    //         'not ie_mob>0'
-    //     ]);
-    //     fse.moveSync(__dirname + '/mock/yyt.config.js', __dirname + '/mock/san.config.js');
-    // });
+
 });
 
 describe('initPlugin', () => {

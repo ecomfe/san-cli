@@ -2,7 +2,6 @@
  * @file markdown loader
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-/* eslint-disable fecs-max-calls-in-template */
 const qs = require('querystring');
 const path = require('path');
 const grayMatter = require('gray-matter');
@@ -154,7 +153,8 @@ module.exports = function(content) {
                 window.$Page = Content;
             }
         `;
-    } else {
+    }
+    else {
         // 返回 san box
         let components = {};
         sanboxArray = sanboxArray.map((box, idx) => {

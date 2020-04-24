@@ -4,7 +4,7 @@
 
 const path = require('path');
 const outputDir = 'output';
-
+const resolve = r => path.resolve(r);
 module.exports = {
     outputDir,
     // baseUrl: '/',
@@ -21,15 +21,6 @@ module.exports = {
             filename: 'index/index.html'
         }
     },
-    // enableMatrix: false,
-    /**
-     * 支持的全部标识，可以按需添加
-     * main：百度App主版
-     * lite：百度App lite版
-     * kdd：看多多
-     * other：非以上
-     * **/
-    // matrixEnvList: ['main', 'lite', 'kdd', 'other'],
     // dev-server 配置
     devServer: {
         contentBase: outputDir,
@@ -46,7 +37,7 @@ module.exports = {
     chainWebpack: config => {
         // 这里可以用来扩展 webpack 的配置，使用的是 webpack-chain 语法
         config.resolve.alias
-            .set('@', resolve('src'))
+            .set('@', resolve('src'));
     },
     // 是否生成 sourcemap，目前不需要
     sourceMap: false

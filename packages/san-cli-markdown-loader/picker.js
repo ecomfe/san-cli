@@ -51,7 +51,8 @@ module.exports = function loader(content) {
     if (typeof context === 'string') {
         try {
             context = JSON.parse(context);
-        } catch (e) {
+        }
+        catch (e) {
             context = {};
         }
     }
@@ -76,7 +77,8 @@ module.exports = function loader(content) {
     if (sanCode) {
         codeType = sanCode[1];
         sanCode = sanCode[2].trim();
-    } else {
+    }
+    else {
         sanCode = '';
     }
 
@@ -86,7 +88,7 @@ module.exports = function loader(content) {
             // 更改san-loader的type和lang
             codo = `
                 <template>
-                    ${getTagFromContent(content, {i18n})['code']}
+                    ${getTagFromContent(content, {i18n}).code}
                 </template>
                 <script>
                 export default {}
@@ -96,7 +98,7 @@ module.exports = function loader(content) {
         case sanboxTextTag:
             codo = `
                 <template>
-                    <section>${getTagFromContent(content, {i18n})['text']}</section>
+                    <section>${getTagFromContent(content, {i18n}).text}</section>
                 </template>
                 <script>
                 export default {}
@@ -123,7 +125,8 @@ module.exports = function loader(content) {
                 }
                 // TODO 报错信息，健壮性
                 templateContent = fs.readFileSync(codebox, 'utf8');
-            } else {
+            }
+            else {
                 templateContent = getDefaultTplContent();
             }
             let codeboxRequest;
@@ -131,7 +134,8 @@ module.exports = function loader(content) {
                 query.get = sanboxJS;
                 // codebox query string
                 codeboxRequest = queryGenerator(query);
-            } else {
+            }
+            else {
                 query.get = sanboxComponent;
                 // san component query string
                 codeboxRequest = queryGenerator(query);

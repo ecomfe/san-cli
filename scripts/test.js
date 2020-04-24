@@ -25,7 +25,7 @@ const jestArgs = [
 ];
 
 console.log(`running jest with args: ${jestArgs.join(' ')}`);
-
+/* eslint-disable jest/no-jest-import */
 require('jest').run(jestArgs);
 
 

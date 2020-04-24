@@ -24,19 +24,13 @@ beforeEach(() => {
 });
 
 test('使用本地路径localTemplatePath', async () => {
-    await download(
-        'https://github.com/yyt/HelloWorld.git',
-        'none',
-        {}
-    )(
-        {
-            localTemplatePath: 'User/yyt'
-        },
-        task
-    ).then(data => {
-        expect(task.str).toBe('Use local path `User/yyt`');
-        expect(data.complete).toBeTruthy();
-    });
+    await download('https://github.com/yyt/HelloWorld.git', 'none', {})({
+        localTemplatePath: 'User/yyt'
+    }, task)
+        .then(data => {
+            expect(task.str).toBe('Use local path `User/yyt`');
+            expect(data.complete).toBeTruthy();
+        });
 });
 
 test('使用本地缓存&&发现本地缓存', async () => {

@@ -1,6 +1,0 @@
-node_modules/**/*
-__mocks__/**/*
-test/**/*
-example/**/*
-output/**/*
-dist/**/*

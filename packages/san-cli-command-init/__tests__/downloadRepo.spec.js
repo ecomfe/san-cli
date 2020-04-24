@@ -18,7 +18,7 @@ const {name, isBaidu} = getGitUser();
 const user = isBaidu ? name : 'git';
 
 test('只传入repoName（默认走github）', async () => {
-    const res = await downloadrepo('yyt', 'aaa', {})
+    const res = await downloadrepo('yyt', 'aaa', {});
     expect(res).toEqual({
         url: 'git@github.com:ksky521/yyt.git',
         dest: 'aaa',

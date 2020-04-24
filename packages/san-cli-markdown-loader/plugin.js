@@ -17,7 +17,8 @@ class LoaderPlugin {
                 if (Object.isFrozen(compilation.hooks)) {
                     // webpack 5
                     normalModuleLoader = require('webpack/lib/NormalModule').getCompilationHooks(compilation).loader;
-                } else {
+                }
+                else {
                     normalModuleLoader = compilation.hooks.normalModuleLoader;
                 }
                 normalModuleLoader.tap(id, loaderContext => {
@@ -25,7 +26,8 @@ class LoaderPlugin {
                     loaderContext[NS] = true;
                 });
             });
-        } else {
+        }
+        else {
             // webpack < 4
             compiler.plugin('compilation', compilation => {
                 compilation.plugin('normal-module-loader', loaderContext => {
@@ -115,7 +117,6 @@ function cloneRule(rule) {
     );
 }
 
-/* eslint-disable fecs-camelcase */
 function _cloneRule(rule, test, resourceQuery) {
     const res = Object.assign({}, rule, {
         resource: {

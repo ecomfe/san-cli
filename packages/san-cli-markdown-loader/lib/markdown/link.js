@@ -9,7 +9,6 @@ function markdownitLink(md, configs = {}) {
     if (typeof configs.relativeLink === 'function') {
         pathRelative = configs.relativeLink;
     }
-    /* eslint-disable fecs-camelcase*/
     md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
         const token = tokens[idx];
         const hrefIndex = token.attrIndex('href');
@@ -21,7 +20,8 @@ function markdownitLink(md, configs = {}) {
 
                 if (aIndex < 0) {
                     token.attrPush(['target', '_blank']);
-                } else {
+                }
+                else {
                     token.attrs[aIndex][1] = '_blank';
                 }
             }

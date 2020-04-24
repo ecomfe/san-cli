@@ -10,7 +10,7 @@
 
 jest.unmock('vinyl-fs');
 jest.unmock('fs-extra');
-jest.mock('rxjs')
+jest.mock('rxjs');
 jest.mock('inquirer');
 
 const fs = require('fs');

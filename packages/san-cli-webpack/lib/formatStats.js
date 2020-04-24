@@ -21,7 +21,6 @@ const flatten = require('san-cli-utils/utils').flatten;
 // const MAX_GZIPPED_SIZE = 150 * 1024;
 const MAX_SIZE = 500 * 1024;
 // const RECOMMEND_SIZE = 244;
-// eslint-disable-next-line fecs-valid-jsdoc
 module.exports = function formatStats(stats, destDir, {resolve}) {
     const isJS = val => /\.js$/.test(val);
     const isCSS = val => /\.css$/.test(val);
@@ -34,9 +33,9 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
     function getChunksById(id) {
         if (typeof id === 'number' && chunks[id]) {
             return chunks[id];
-        } else {
-            return chunks.find(chunk => chunk.id === id);
         }
+        return chunks.find(chunk => chunk.id === id);
+
     }
 
     // 记录唯一 chunkid
@@ -49,7 +48,8 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
             // 存在，那么就是公共模块 id，添加进公共模块 ids
             if (uniChunksMap.has(chunkId)) {
                 commonChunksIds.add(chunkId);
-            } else {
+            }
+            else {
                 uniChunksMap.add(chunkId);
             }
         });
@@ -115,7 +115,8 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
             // 标识下 common 的模块类型
             if (a.chunks.length === 1 && commonChunksIds.has(a.chunks[0])) {
                 a.type = ['common'];
-            } else {
+            }
+            else {
                 a.type = [];
             }
             assetsMap.set(name, {
@@ -195,11 +196,9 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
             }
             return textColor(formatSize(size));
         });
-        /* eslint-disable fecs-max-calls-in-template */
         return `  Entry Points ${textColor(name)}${showReport ? chalk.yellowBright(' [big]') : ''}, Initial Size ${
             size[0]
         }, Gzipped ${textColor(formatSize(totalGzippedSize))}.${table.render()}`;
-        /* eslint-enable fecs-max-calls-in-template */
     }
 
     function getGzippedSize(asset) {

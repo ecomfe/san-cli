@@ -1,8 +1,6 @@
 module.exports = {
     helpers: {
-        /* eslint-disable fecs-camelcase */
         if_or: (v1, v2, options) => {
-            /* eslint-enable fecs-camelcase */
             if (v1 || v2) {
                 return options.fn(this);
             }

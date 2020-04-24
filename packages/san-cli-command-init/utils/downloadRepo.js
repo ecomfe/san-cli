@@ -28,7 +28,8 @@ module.exports = (repo, dest, options) => {
             if (!err) {
                 rm(`${dest}/.git`);
                 resolve({url, dest, checkout});
-            } else {
+            }
+            else {
                 reject(
                     getErrorMessage(err, {
                         repo,
@@ -88,7 +89,7 @@ function normalize(repo, opts) {
     const useHttps = opts.useHttps || false;
     const {name, isBaidu} = getGitUser();
     // 如果是 是百度，则强制使用百度账号
-    const user = isBaidu ? name : opts.username !== '' ? opts.username : 'git';
+    const user = isBaidu ? name : opts.username !== '' && opts.username ? opts.username : 'git';
 
     const match = regex.exec(repo);
     if (!match) {
@@ -105,7 +106,8 @@ function normalize(repo, opts) {
             if (useHttps) {
                 // https://wangyongqing01@icode.baidu.com/baidu/baiduappfeed/itemrep
                 url = `https://${user}@icode.baidu.com/${baidu}/${product}/${repoName}`;
-            } else {
+            }
+            else {
                 url = `ssh://${user}@icode.baidu.com:8235/${baidu}/${product}/${repoName}`;
             }
             break;
@@ -115,7 +117,8 @@ function normalize(repo, opts) {
             if (useHttps) {
                 // https://github.com/ksky521/san-webpack.git
                 url = `https://${source}.com/${product}/${repoName}.git`;
-            } else {
+            }
+            else {
                 // git@github.com:ksky521/san-webpack.git
                 url = `git@${source}.com:${product}/${repoName}.git`;
             }
@@ -123,7 +126,8 @@ function normalize(repo, opts) {
         case 'coding':
             if (useHttps) {
                 url = `https://git.coding.net/${product}/${repoName}.git`;
-            } else {
+            }
+            else {
                 url = `git@git.coding.net:${product}/${repoName}.git`;
             }
             break;

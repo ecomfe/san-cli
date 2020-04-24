@@ -107,9 +107,7 @@ module.exports = function formatStats(allStats) {
             }
         );
 
-        /* eslint-disable fecs-max-calls-in-template */
         lines.push(`\n  Stats by ${textBold(startCase(category))}` + table.render());
-        /* eslint-enable fecs-max-calls-in-template */
     });
 
     return `${lines.join('\n')}\n`;

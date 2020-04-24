@@ -1,4 +1,4 @@
- /**
+/**
  * Copyright (c) Baidu Inc. All rights reserved.
  *
  * This source code is licensed under the MIT license.
@@ -92,11 +92,13 @@ module.exports = class Service extends EventEmitter {
                 env = dotenv.parse(content) || {};
                 debug('loadEnv envPath %s', envPath);
                 debug('loadEnv env object %O', env);
-            } catch (err) {
+            }
+            catch (err) {
                 // 文件不存在
                 if (err.toString().indexOf('ENOENT') < 0) {
                     logger.error(err);
-                } else {
+                }
+                else {
                     return {};
                 }
             }
@@ -163,7 +165,8 @@ module.exports = class Service extends EventEmitter {
             // 2. 真正加载
             plugins = plugins.map(this._loadPlugin.bind(this));
             plugins = [...builtInPlugins, ...plugins];
-        } else {
+        }
+        else {
             plugins = builtInPlugins;
         }
 
@@ -199,24 +202,27 @@ module.exports = class Service extends EventEmitter {
                     if (pluginOptions) {
                         debug('Plugin loaded: %s with options %O', chalk.magenta(plugin.id), pluginOptions);
                         return [plugin, pluginOptions];
-                    } else {
-                        debug('Plugin loaded: %s', chalk.magenta(plugin.id));
                     }
+                    debug('Plugin loaded: %s', chalk.magenta(plugin.id));
+
                     return plugin;
-                } else {
-                    logger.error(`Plugin is invalid: ${p}. Service plugin must has id and apply function!`);
                 }
-            } catch (e) {
+                logger.error(`Plugin is invalid: ${p}. Service plugin must has id and apply function!`);
+
+            }
+            catch (e) {
                 logger.error(`Plugin load failed: ${p}`);
                 logger.error(e);
             }
-        } else if (typeof p === 'object' && p.id && typeof p.apply === 'function') {
+        }
+        else if (typeof p === 'object' && p.id && typeof p.apply === 'function') {
             // 处理 object
             if (pluginOptions) {
                 return [p, pluginOptions];
             }
             return p;
-        } else {
+        }
+        else {
             logger.error('Service plugin is invalid');
             if (p && p.toString() === '[object Object]') {
                 logger.error(p);
@@ -254,12 +260,12 @@ module.exports = class Service extends EventEmitter {
                 if (['on', 'emit', 'addPlugin', 'getWebpackChainConfig', 'getWebpackConfig'].includes(prop)) {
                     if (typeof self[prop] === 'function') {
                         return self[prop].bind(self);
-                    } else {
-                        return self[prop];
                     }
-                } else {
-                    return target[prop];
+                    return self[prop];
+
                 }
+                return target[prop];
+
             }
         });
     }
@@ -306,11 +312,13 @@ module.exports = class Service extends EventEmitter {
 
             if (!result.config || typeof result.config !== 'object') {
                 logger.error(`${textColor(configPath)}: Expected object type.`);
-            } else {
+            }
+            else {
                 // 校验config.js schema 格式
                 try {
                     await validateOptions(result.config);
-                } catch (e) {
+                }
+                catch (e) {
                     logger.error(`${textColor(configPath)}: Invalid type.`);
                     throw new SError(e);
                 }
@@ -325,7 +333,8 @@ module.exports = class Service extends EventEmitter {
 
             // 加载默认的 config 配置
             config = defaultsDeep(result.config, config);
-        } else {
+        }
+        else {
             // this.logger.warn(`${textColor('san.config.js')} Cannot find! Use default configuration.`);
         }
         return this.normalizeConfig(config, result.filepath);
@@ -400,7 +409,8 @@ module.exports = class Service extends EventEmitter {
 
         if (Array.isArray(name)) {
             [name, options = {}] = name;
-        } else if (typeof name === 'object') {
+        }
+        else if (typeof name === 'object') {
             argsert('<string> <function>', [name.id, name.apply], 2);
         }
         const plugin = this._loadPlugin([name, options]);
@@ -430,7 +440,8 @@ module.exports = class Service extends EventEmitter {
                 if (res) {
                     config = webpackMerge(config, res);
                 }
-            } else if (fn) {
+            }
+            else if (fn) {
                 // merge literal values
                 config = webpackMerge(config, fn);
             }

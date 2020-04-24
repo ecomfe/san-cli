@@ -2,7 +2,7 @@
 
 // Replacing the default htmlBlock rule to allow using custom components at
 // root level
-
+/* eslint-disable */
 const blockNames = require('markdown-it/lib/common/html_blocks');
 const HTML_OPEN_CLOSE_TAG_RE = require('markdown-it/lib/common/html_re').HTML_OPEN_CLOSE_TAG_RE;
 

@@ -1,14 +1,9 @@
 /**
- * Copyright (c) Baidu Inc. All rights reserved.
- *
- * This source code is licensed under the MIT license.
- * See LICENSE file in the project root for license information.
- *
  * @file component source code text
  * @author tanglei02 (tanglei02@baidu.com)
  */
 
-exports.defineComponents = [
+export const defineComponents = [
     `
     import san from 'san';
     export default san.defineComponent({
@@ -87,7 +82,7 @@ exports.defineComponents = [
     `
 ];
 
-exports.defineComponentWithGlobalSanStoreConnect = [
+export const defineComponentWithGlobalSanStoreConnect = [
     `
     import san from 'san';
     import {connect} from 'san-store';
@@ -159,7 +154,7 @@ exports.defineComponentWithGlobalSanStoreConnect = [
 
 ];
 
-exports.defineComponentWithInstantSanStoreConnect = [
+export const defineComponentWithInstantSanStoreConnect = [
     `
     import san from 'san';
     import {connect} from 'san-store';
@@ -244,7 +239,7 @@ exports.defineComponentWithInstantSanStoreConnect = [
 ];
 
 
-exports.classComponents = [
+export const classComponents = [
     `
     import san from 'san';
     export default class Comp extends san.Component {
@@ -284,7 +279,7 @@ exports.classComponents = [
     `
 ];
 
-exports.classComponentWithGlobalSanStoreConnect = [
+export const classComponentWithGlobalSanStoreConnect = [
     `
     import san from 'san';
     import {connect} from 'san-store';
@@ -346,7 +341,7 @@ exports.classComponentWithGlobalSanStoreConnect = [
     `
 ];
 
-exports.classComponentWithInstantSanStoreConnect = [
+export const classComponentWithInstantSanStoreConnect = [
     `
     import san from 'san';
     import {connect} from 'san-store';
@@ -404,7 +399,7 @@ exports.classComponentWithInstantSanStoreConnect = [
     `
 ];
 
-exports.functionComponents = [
+export const functionComponents = [
     `
     import san from 'san';
     function Comp(options) {
@@ -418,7 +413,7 @@ exports.functionComponents = [
     `
 ];
 
-exports.noComponent = [
+export const noComponent = [
     `
     export default san.defineComponent({});
     `,

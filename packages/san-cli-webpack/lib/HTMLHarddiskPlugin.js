@@ -7,23 +7,23 @@
  * @file from html harddisk plugin ，修改兼容 v4 版本，增强健壮性
  */
 
-var mkdirp = require('mkdirp');
-var fs = require('fs');
-var path = require('path');
+let mkdirp = require('mkdirp');
+let fs = require('fs');
+let path = require('path');
 
 function HtmlWebpackHarddiskPlugin(options) {
     options = options || {};
     this.outputPath = options.outputPath;
 }
 
-HtmlWebpackHarddiskPlugin.prototype.apply = function(compiler) {
-    var self = this;
+HtmlWebpackHarddiskPlugin.prototype.apply = function (compiler) {
+    let self = this;
 
     if (compiler.hooks) {
         // webpack 4 support
-        compiler.hooks.compilation.tap('HtmlWebpackHarddisk', function(compilation) {
+        compiler.hooks.compilation.tap('HtmlWebpackHarddisk', function (compilation) {
             if (compilation.hooks.htmlWebpackPluginBeforeHtmlGeneration) {
-                compilation.hooks.htmlWebpackPluginAfterEmit.tapAsync('HtmlWebpackHarddisk', function(
+                compilation.hooks.htmlWebpackPluginAfterEmit.tapAsync('HtmlWebpackHarddisk', function (
                     htmlPluginData,
                     callback
                 ) {
@@ -34,14 +34,15 @@ HtmlWebpackHarddiskPlugin.prototype.apply = function(compiler) {
                         callback
                     );
                 });
-            } else {
+            }
+            else {
                 // HtmlWebPackPlugin 4.x
-                var HtmlWebpackPlugin = require('html-webpack-plugin');
+                let HtmlWebpackPlugin = require('html-webpack-plugin');
                 // 这里修改了
                 if (HtmlWebpackPlugin.getHooks) {
-                    var hooks = HtmlWebpackPlugin.getHooks(compilation);
+                    let hooks = HtmlWebpackPlugin.getHooks(compilation);
 
-                    hooks.afterEmit.tapAsync('HtmlWebpackHarddisk', function(htmlPluginData, callback) {
+                    hooks.afterEmit.tapAsync('HtmlWebpackHarddisk', function (htmlPluginData, callback) {
                         self.writeAssetToDisk(
                             compilation,
                             htmlPluginData.plugin.options,
@@ -52,10 +53,11 @@ HtmlWebpackHarddiskPlugin.prototype.apply = function(compiler) {
                 }
             }
         });
-    } else {
+    }
+    else {
         // webpack 3 support
-        compiler.plugin('compilation', function(compilation) {
-            compilation.plugin('html-webpack-plugin-after-emit', function(htmlPluginData, callback) {
+        compiler.plugin('compilation', function (compilation) {
+            compilation.plugin('html-webpack-plugin-after-emit', function (htmlPluginData, callback) {
                 self.writeAssetToDisk(compilation, htmlPluginData.plugin.options, htmlPluginData.outputName, callback);
             });
         });
@@ -65,7 +67,7 @@ HtmlWebpackHarddiskPlugin.prototype.apply = function(compiler) {
 /**
  * Writes an asset to disk
  */
-HtmlWebpackHarddiskPlugin.prototype.writeAssetToDisk = function(
+HtmlWebpackHarddiskPlugin.prototype.writeAssetToDisk = function (
     compilation,
     htmlWebpackPluginOptions,
     webpackHtmlFilename,
@@ -76,14 +78,14 @@ HtmlWebpackHarddiskPlugin.prototype.writeAssetToDisk = function(
         return callback(null);
     }
     // Prepare the folder
-    var fullPath = path.resolve(this.outputPath || compilation.compiler.outputPath, webpackHtmlFilename);
-    var directory = path.dirname(fullPath);
-    mkdirp(directory, function(err) {
+    let fullPath = path.resolve(this.outputPath || compilation.compiler.outputPath, webpackHtmlFilename);
+    let directory = path.dirname(fullPath);
+    mkdirp(directory, function (err) {
         if (err) {
             return callback(err);
         }
         // Write to disk
-        fs.writeFile(fullPath, compilation.assets[webpackHtmlFilename].source(), function(err) {
+        fs.writeFile(fullPath, compilation.assets[webpackHtmlFilename].source(), function (err) {
             if (err) {
                 return callback(err);
             }

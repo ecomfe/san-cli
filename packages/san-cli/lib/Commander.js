@@ -87,7 +87,8 @@ module.exports = class Command {
         if (filepath) {
             try {
                 sanrc = fse.readJsonSync(filepath);
-            } catch (e) {
+            }
+            catch (e) {
                 // json 格式错误
                 error(e);
             }
@@ -131,7 +132,8 @@ module.exports = class Command {
                 // 打印名字
                 if (cmd === 'init') {
                     console.log(chalk.bold(getCmdLogInfo(cmd)));
-                } else {
+                }
+                else {
                     console.log(chalk.bold(textColor(getCmdLogInfo(cmd))));
                 }
             }
@@ -139,7 +141,8 @@ module.exports = class Command {
             if (argv.verbose) {
                 // 增加 logger
                 globalDebug.enable('san-cli:*');
-            } else if (argv.logLevel) {
+            }
+            else if (argv.logLevel) {
                 globalDebug.enable(`san-cli:${argv.logLevel}:*`);
             }
 
@@ -148,10 +151,8 @@ module.exports = class Command {
             }
             // 这里添加他的API
             return {
-                /* eslint-disable fecs-camelcase */
                 _version: pkgVersion,
                 _scriptName: scriptName
-                /* eslint-enable fecs-camelcase */
             };
         }
         // 3. 初始化
@@ -227,11 +228,7 @@ module.exports = class Command {
                     // eslint-disable-line no-undef
                     new Proxy(api, {
                         get(target, prop) {
-                            if (argv[prop]) {
-                                return argv[prop];
-                            } else {
-                                return target[prop];
-                            }
+                            return argv[prop] ? argv[prop] : target[prop];
                         }
                     })
                 );
@@ -244,26 +241,26 @@ module.exports = class Command {
                 typeof builder === 'object'
                     ? builder
                     : yargs => {
-                          /* eslint-disable fecs-indent */
-                          const cmd = yargs.getCommandInstance();
-                          const oAddHandler = cmd.addHandler;
-                          cmd.addHandler = (cmd, description, builder, handler, commandMiddleware) => {
-                              // 重写这个方法，是为了让 yargs.addCommandDir 支持commandAPI
-                              if (typeof cmd === 'object') {
-                                  cmd.handler = handlerFactory(cmd.command, cmd.handler);
-                                  oAddHandler(cmd, description, builder, handler, commandMiddleware);
-                              } else {
-                                  oAddHandler(
-                                      cmd,
-                                      description,
-                                      builder,
-                                      handlerFactory(cmd, handler),
-                                      commandMiddleware
-                                  );
-                              }
-                          };
-                          builder(yargs);
-                      },
+                        const cmd = yargs.getCommandInstance();
+                        const oAddHandler = cmd.addHandler;
+                        cmd.addHandler = (cmd, description, builder, handler, commandMiddleware) => {
+                            // 重写这个方法，是为了让 yargs.addCommandDir 支持commandAPI
+                            if (typeof cmd === 'object') {
+                                cmd.handler = handlerFactory(cmd.command, cmd.handler);
+                                oAddHandler(cmd, description, builder, handler, commandMiddleware);
+                            }
+                            else {
+                                oAddHandler(
+                                    cmd,
+                                    description,
+                                    builder,
+                                    handlerFactory(cmd, handler),
+                                    commandMiddleware
+                                );
+                            }
+                        };
+                        builder(yargs);
+                    },
                 handlerFactory(cmdName, handler),
                 middlewares
             );
@@ -346,7 +343,8 @@ module.exports = class Command {
                     debug('Command loaded %s', cmdName);
                     unique.add(cmdName);
                     this.command(instance);
-                } else {
+                }
+                else {
                     error(`${cmd} is not a validated command instance!`);
                 }
             });

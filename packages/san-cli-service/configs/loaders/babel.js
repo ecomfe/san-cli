@@ -8,7 +8,6 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
-/* eslint-disable fecs-camelcase */
 const factory = require('./loaderFactory');
 module.exports = factory(() => ({
     name: 'babel-loader',
