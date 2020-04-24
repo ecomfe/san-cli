@@ -244,26 +244,26 @@ module.exports = class Command {
                 typeof builder === 'object'
                     ? builder
                     : yargs => {
-                          /* eslint-disable fecs-indent */
-                          const cmd = yargs.getCommandInstance();
-                          const oAddHandler = cmd.addHandler;
-                          cmd.addHandler = (cmd, description, builder, handler, commandMiddleware) => {
-                              // 重写这个方法，是为了让 yargs.addCommandDir 支持commandAPI
-                              if (typeof cmd === 'object') {
-                                  cmd.handler = handlerFactory(cmd.command, cmd.handler);
-                                  oAddHandler(cmd, description, builder, handler, commandMiddleware);
-                              } else {
-                                  oAddHandler(
-                                      cmd,
-                                      description,
-                                      builder,
-                                      handlerFactory(cmd, handler),
-                                      commandMiddleware
-                                  );
-                              }
-                          };
-                          builder(yargs);
-                      },
+                        /* eslint-disable fecs-indent */
+                        const cmd = yargs.getCommandInstance();
+                        const oAddHandler = cmd.addHandler;
+                        cmd.addHandler = (cmd, description, builder, handler, commandMiddleware) => {
+                            // 重写这个方法，是为了让 yargs.addCommandDir 支持commandAPI
+                            if (typeof cmd === 'object') {
+                                cmd.handler = handlerFactory(cmd.command, cmd.handler);
+                                oAddHandler(cmd, description, builder, handler, commandMiddleware);
+                            } else {
+                                oAddHandler(
+                                    cmd,
+                                    description,
+                                    builder,
+                                    handlerFactory(cmd, handler),
+                                    commandMiddleware
+                                );
+                            }
+                        };
+                        builder(yargs);
+                    },
                 handlerFactory(cmdName, handler),
                 middlewares
             );

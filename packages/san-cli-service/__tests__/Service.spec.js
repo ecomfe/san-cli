@@ -54,7 +54,7 @@ describe('constructor resolvePlugins _loadPlugin', () => {
         // 检测对于加options的插件是否已加入进去
         expect(service.plugins.filter(item => Array.isArray(item))[1][1]).toEqual({a: 1});
         // 检测新增的projectOptions是否已加入进去
-        expect(service['_initProjectOptions']).toEqual({outputDir: 'output'});
+        expect(service._initProjectOptions).toEqual({outputDir: 'output'});
     });
     test('plugins为空，useBuiltInPlugin为true', () => {
         const service = new Service('name', {
@@ -174,7 +174,7 @@ describe('initPlugin', () => {
             cwd: __dirname + '/mock'
         });
     });
-    const expectfunc = (api) => {
+    const expectfunc = api => {
         expect(typeof api.addPlugin).toBe('function');
         expect(typeof api.chainWebpack).toBe('function');
         expect(typeof api.getWebpackChainConfig).toBe('function');

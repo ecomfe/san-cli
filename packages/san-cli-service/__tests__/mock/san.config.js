@@ -46,7 +46,7 @@ module.exports = {
     chainWebpack: config => {
         // 这里可以用来扩展 webpack 的配置，使用的是 webpack-chain 语法
         config.resolve.alias
-            .set('@', resolve('src'))
+            .set('@', resolve('src'));
     },
     // 是否生成 sourcemap，目前不需要
     sourceMap: false

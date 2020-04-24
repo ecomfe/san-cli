@@ -3,6 +3,6 @@
  * @author yanyiting <yanyiting@baidu.com>
  */
 
-const {fs} = require('memfs')
+const {fs} = require('memfs');
 
-module.exports = fs
+module.exports = fs;

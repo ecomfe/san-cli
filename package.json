@@ -9,10 +9,13 @@
         "@babel/preset-env": "^7.4.5",
         "@commitlint/cli": "^8.3.4",
         "@commitlint/core": "^8.3.4",
+        "@ecomfe/eslint-config": "^3.2.0",
         "@ksky521/cz-emoji": "^1.2.1",
+        "babel-eslint": "^11.0.0-beta.2",
         "commitizen": "^4.0.3",
         "commitlint-config-gitmoji": "^1.0.1",
-        "fecs": "^1.6.4",
+        "eslint": "^6.8.0",
+        "eslint-plugin-babel": "^5.3.0",
         "husky": "^4.0.0",
         "jest": "^24.8.0",
         "lerna": "^3.19.0",
@@ -22,7 +25,7 @@
     },
     "lint-staged": {
         "!(example|dist|output|__mocks__)/**/*.js": [
-            "fecs --reporter=baidu --rule"
+            "./node_modules/.bin/eslint --ignore-path .eslintignore"
         ]
     },
     "husky": {
@@ -34,7 +37,7 @@
     "scripts": {
         "publish": "lerna publish --registry https://registry.npmjs.org",
         "commit": "git-cz",
-        "lint": "fecs --reporter=baidu --rule",
+        "lint": "./node_modules/.bin/eslint --ignore-path .eslintignore",
         "test": "node scripts/test.js"
     },
     "commitlint": {
