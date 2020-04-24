@@ -428,11 +428,6 @@ export const noComponent = [
     `,
     `
     import san from 'san';
-    cont Com = san.defineComponent({});
-    export default Com
-    `,
-    `
-    import san from 'san';
     const a = san['defi' + 'neComponent'].hahaha;
     export default a;
     `,
@@ -464,7 +459,9 @@ export const noComponent = [
     class Comp extends san.Component {
         static template = '<p>Hello {{name}}</p>';
         initData() {
-            return name: 'San'
+            return {
+                name: 'San'
+            }
         }
     }
 

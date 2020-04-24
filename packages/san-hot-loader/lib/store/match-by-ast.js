@@ -26,6 +26,10 @@ module.exports = function (ast) {
     if (hasModuleHot(ast)) {
         return false;
     }
+    let defaultModule = getExportDefault(ast);
+    if (!defaultModule) {
+        return false;
+    }
 
     if (!isModuleImported(ast, 'san-store')) {
         return false;
@@ -38,6 +42,7 @@ module.exports = function (ast) {
     if (isInstantStore(ast)) {
         return true;
     }
+    return false;
 };
 
 function isGlobalActions(ast) {
