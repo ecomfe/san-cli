@@ -8,11 +8,7 @@
  * @author yanyiting <yanyiting@baidu.com>
  */
 
-import {
-    isJS,
-    isCSS,
-    addDevClientToEntry
-} from '../utils';
+const {isJS, isCSS, addDevClientToEntry} = require('../utils');
 
 describe('测试isJS', () => {
     test('.js文件', () => {
@@ -48,17 +44,10 @@ describe('测试addDevClientToEntry', () => {
     });
     test('entry为Array', () => {
         let config = {
-            entry: [
-                'yyt/index.js',
-                'haha/index.js'
-            ]
+            entry: ['yyt/index.js', 'haha/index.js']
         };
         addDevClientToEntry(config, ['webpack-dev-server/client']);
-        expect(config.entry).toEqual([
-            'webpack-dev-server/client',
-            'yyt/index.js',
-            'haha/index.js'
-        ]);
+        expect(config.entry).toEqual(['webpack-dev-server/client', 'yyt/index.js', 'haha/index.js']);
     });
     test('entry为function', () => {
         let config = {

@@ -8,8 +8,8 @@
  * @author yanyiting <yanyiting@baidu.com>
  */
 
-import {hasYarn, getGitUser} from '../env';
-import {execSync} from 'child_process';
+const {hasYarn, getGitUser} = require('../env');
+const {execSync} = require('child_process');
 
 jest.mock('child_process');
 

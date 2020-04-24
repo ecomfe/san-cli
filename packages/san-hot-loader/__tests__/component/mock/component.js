@@ -8,7 +8,7 @@
  * @author tanglei02 (tanglei02@baidu.com)
  */
 
-export const defineComponents = [
+exports.defineComponents = [
     `
     import san from 'san';
     export default san.defineComponent({
@@ -87,7 +87,7 @@ export const defineComponents = [
     `
 ];
 
-export const defineComponentWithGlobalSanStoreConnect = [
+exports.defineComponentWithGlobalSanStoreConnect = [
     `
     import san from 'san';
     import {connect} from 'san-store';
@@ -159,7 +159,7 @@ export const defineComponentWithGlobalSanStoreConnect = [
 
 ];
 
-export const defineComponentWithInstantSanStoreConnect = [
+exports.defineComponentWithInstantSanStoreConnect = [
     `
     import san from 'san';
     import {connect} from 'san-store';
@@ -244,7 +244,7 @@ export const defineComponentWithInstantSanStoreConnect = [
 ];
 
 
-export const classComponents = [
+exports.classComponents = [
     `
     import san from 'san';
     export default class Comp extends san.Component {
@@ -284,7 +284,7 @@ export const classComponents = [
     `
 ];
 
-export const classComponentWithGlobalSanStoreConnect = [
+exports.classComponentWithGlobalSanStoreConnect = [
     `
     import san from 'san';
     import {connect} from 'san-store';
@@ -346,7 +346,7 @@ export const classComponentWithGlobalSanStoreConnect = [
     `
 ];
 
-export const classComponentWithInstantSanStoreConnect = [
+exports.classComponentWithInstantSanStoreConnect = [
     `
     import san from 'san';
     import {connect} from 'san-store';
@@ -404,7 +404,7 @@ export const classComponentWithInstantSanStoreConnect = [
     `
 ];
 
-export const functionComponents = [
+exports.functionComponents = [
     `
     import san from 'san';
     function Comp(options) {
@@ -418,7 +418,7 @@ export const functionComponents = [
     `
 ];
 
-export const noComponent = [
+exports.noComponent = [
     `
     export default san.defineComponent({});
     `,

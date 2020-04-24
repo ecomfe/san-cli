@@ -13,11 +13,10 @@ jest.unmock('fs-extra');
 jest.mock('rxjs')
 jest.mock('inquirer');
 
-import fs from 'fs';
-import fse from 'fs-extra';
-import inquirer from 'inquirer';
-import rxjs from 'rxjs';
-import generator from '../tasks/generator';
+const fs = require('fs');
+const fse = require('fs-extra');
+const inquirer = require('inquirer');
+const generator = require('../tasks/generator');
 
 test('meta.js', async () => {
     // 选择smarty、false

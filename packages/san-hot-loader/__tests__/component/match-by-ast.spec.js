@@ -10,66 +10,65 @@
 
 /* global describe, test */
 
-import matchByAst from '../../lib/component/match-by-ast';
-import parser from '../../lib/utils/ast-parser';
-import * as groups from './mock/component';
+const matchByAst = require('../../lib/component/match-by-ast');
+const parser = require('../../lib/utils/ast-parser');
+const groups = require('./mock/component');
 
 describe('测试 Component Match By AST', () => {
     test('测试 defineComponent', () => {
-        for (let code of groups.defineComponents) {
+        groups.defineComponents.forEach(code => {
             expect(matchByAst(code)).toBe(true);
             parser.delete(code);
-        }
+        });
     });
 
     test('测试 defineComponent 与 connect.san', () => {
-        for (let code of groups.defineComponentWithGlobalSanStoreConnect) {
+        groups.defineComponentWithGlobalSanStoreConnect.forEach(code => {
             expect(matchByAst(code)).toBe(true);
             parser.delete(code);
-        }
+        });
     });
 
     test('测试 defineComponent 与 connect.createConnector', () => {
-        for (let code of groups.defineComponentWithInstantSanStoreConnect) {
+        groups.defineComponentWithInstantSanStoreConnect.forEach(code => {
             let result = matchByAst(code);
             expect(result).toBe(true);
             parser.delete(code);
-        }
+        });
     });
 
     test('测试 class Component', () => {
-        for (let code of groups.classComponents) {
+        groups.classComponents.forEach(code => {
             expect(matchByAst(code)).toBe(true);
             parser.delete(code);
-        }
+        });
     });
 
     test('测试 class Component 与 connect.san', () => {
-        for (let code of groups.classComponentWithGlobalSanStoreConnect) {
+        groups.classComponentWithGlobalSanStoreConnect.forEach(code => {
             expect(matchByAst(code)).toBe(true);
             parser.delete(code);
-        }
+        });
     });
 
     test('测试 class Component 与 connect.createConnector', () => {
-        for (let code of groups.classComponentWithInstantSanStoreConnect) {
+        groups.classComponentWithInstantSanStoreConnect.forEach(code => {
             expect(matchByAst(code)).toBe(true);
             parser.delete(code);
-        }
+        });
     });
 
     test('测试 function Component', () => {
-        for (let code of groups.functionComponents) {
+        groups.functionComponents.forEach(code => {
             expect(matchByAst(code)).toBe(true);
             parser.delete(code);
-        }
+        });
     });
 
     test('测试非 Component', () => {
-        for (let code of groups.noComponent) {
+        groups.noComponent.forEach(code => {
             expect(matchByAst(code)).toBe(false);
             parser.delete(code);
-        }
+        });
     });
 });
-

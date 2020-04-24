@@ -8,7 +8,7 @@
  * @author yanyiting <yanyiting@baidu.com>
  */
 
-import PluginAPI from '../PluginAPI';
+const PluginAPI = require('../PluginAPI');
 
 let pluginApi = null;
 beforeEach(() => {

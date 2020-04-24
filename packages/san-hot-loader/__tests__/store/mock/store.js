@@ -8,7 +8,7 @@
  * @author tanglei02 (tanglei@baidu.com)
  */
 
-export const globalActions = [
+exports.globalActions = [
     `
     import {store} from 'san-store';
     import {builder} from 'san-update';
@@ -31,7 +31,7 @@ export const globalActions = [
     `
 ];
 
-export const noGlobalActions = [
+exports.noGlobalActions = [
     `
     import san from 'san';
     export default san.defineComponent({
@@ -119,7 +119,7 @@ export const noGlobalActions = [
     `
 ];
 
-export const instantStores = [
+exports.instantStores = [
     `
     import {Store} from 'san-store';
     import actions from './actions';
@@ -138,7 +138,7 @@ export const instantStores = [
     `
 ];
 
-export const noInstantStores = [
+exports.noInstantStores = [
     `
     import {Store} from 'san-store';
     const something = a['b' + c];

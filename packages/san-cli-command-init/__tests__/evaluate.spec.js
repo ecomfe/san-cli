@@ -8,7 +8,7 @@
  * @author yanyiting <yanyiting@baidu.com>
  */
 
-import evaluate from '../utils/evaluate';
+const evaluate = require('../utils/evaluate');
 
 describe('测试evaluate', () => {
     const obj = {

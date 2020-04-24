@@ -8,13 +8,11 @@
  * @author yanyiting <yanyiting@baidu.com>
  */
 
-import {
-    flatten
-} from '../utils';
+const {flatten} = require('../utils');
 
 describe('测试flatten', () => {
     test('空数组', () => {
-         expect(flatten([])).toEqual([]);
+        expect(flatten([])).toEqual([]);
     });
     test('一维数组', () => {
         expect(flatten([1, 2, 3])).toEqual([1, 2, 3]);

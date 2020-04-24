@@ -9,9 +9,7 @@
  */
 
 jest.mock('rxjs');
-
-import rxjs from 'rxjs';
-import download from '../tasks/download';
+const download = require('../tasks/download');
 
 function Task() {
     this.str = '';
@@ -26,42 +24,53 @@ beforeEach(() => {
 });
 
 test('使用本地路径localTemplatePath', async () => {
-    await download('https://github.com/yyt/HelloWorld.git', 'none', {})({
+    await download(
+        'https://github.com/yyt/HelloWorld.git',
+        'none',
+        {}
+    )(
+        {
             localTemplatePath: 'User/yyt'
-        }, task)
-        .then(data => {
-            expect(task.str).toBe('Use local path `User/yyt`');
-            expect(data.complete).toBeTruthy();
-        });
+        },
+        task
+    ).then(data => {
+        expect(task.str).toBe('Use local path `User/yyt`');
+        expect(data.complete).toBeTruthy();
+    });
 });
 
 test('使用本地缓存&&发现本地缓存', async () => {
     await download('exist', 'none', {
         useCache: true
-    })({}, task)
-        .then(data => {
-            expect(task.str).toBe('Discover local cache and use it');
-            expect(data.complete).toBeTruthy();
-        });
+    })({}, task).then(data => {
+        expect(task.str).toBe('Discover local cache and use it');
+        expect(data.complete).toBeTruthy();
+    });
 });
 
 test('远程拉取成功', async () => {
     let ctx = {};
-    await download('github:yyt/HelloWorld', 'none', {})(ctx, task)
-        .then(data => {
-            expect(ctx.localTemplatePath).toMatch('.san/templates/HelloWorld');
-            expect(data).toEqual({
-                next: ['Pulling template from the remote repository...'],
-                error: '',
-                complete: true
-            });
+    await download(
+        'github:yyt/HelloWorld',
+        'none',
+        {}
+    )(ctx, task).then(data => {
+        expect(ctx.localTemplatePath).toMatch('.san/templates/HelloWorld');
+        expect(data).toEqual({
+            next: ['Pulling template from the remote repository...'],
+            error: '',
+            complete: true
         });
+    });
 });
 
 test('远程拉取失败', async () => {
     let ctx = {};
-    await download('', 'none', {})(ctx, task)
-        .then(data => {
-            expect(data.error).toBe('Failed to pull, please check the path and code permissions are correct');
-        });
+    await download(
+        '',
+        'none',
+        {}
+    )(ctx, task).then(data => {
+        expect(data.error).toBe('Failed to pull, please check the path and code permissions are correct');
+    });
 });

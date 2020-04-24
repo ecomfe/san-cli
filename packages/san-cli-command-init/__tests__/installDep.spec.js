@@ -11,9 +11,8 @@
 jest.mock('rxjs');
 jest.mock('inquirer');
 
-import rxjs from 'rxjs';
-import inquirer from 'inquirer';
-import installDep from '../tasks/installDep';
+const inquirer = require('inquirer');
+const installDep = require('../tasks/installDep');
 
 function Task() {
     this.str = '';

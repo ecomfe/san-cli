@@ -10,9 +10,9 @@
 
 jest.mock('read-pkg');
 
-import Command from '../lib/Commander';
+const Commander = require('../lib/Commander');
 
-const cli = new Command();
+const cli = new Commander();
 
 test('command init', () => {
     const {presets, _commands} = cli;
@@ -34,6 +34,7 @@ test('command init', () => {
         'command',
         'plugin',
         'remote',
+        'docit',
         'hello'
     ]);
 });

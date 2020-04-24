@@ -8,14 +8,13 @@
  * @author yanyiting <yanyiting@baidu.com>
  */
 
-import {
+const {
     isLocalPath,
-    resolveLocal,
     getAssetPath,
     getTemplatePath,
     findExisting,
     prepareUrls
-} from '../path';
+} = require('../path');
 
 describe('测试isLocalPath', () => {
     test('本地绝对路径', () => {

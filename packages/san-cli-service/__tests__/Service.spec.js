@@ -8,8 +8,7 @@
  * @author yanyiting <yanyiting@baidu.com>
  */
 
-import Service from '../Service';
-import fse from 'fs-extra';
+const Service = require('../Service');
 
 jest.unmock('fs-extra');
 // jest.unmock('cosmiconfig');
@@ -35,17 +34,19 @@ describe('constructor resolvePlugins _loadPlugin', () => {
             cli: () => {}
         });
         // 检测plugins新增的插件是否已加入进去
-        expect(service.plugins.map(item => {
-            if (Array.isArray(item)) {
-                return item[0].id;
-            }
-            return item.id;
-        })).toEqual([
+        expect(
+            service.plugins.map(item => {
+                if (Array.isArray(item)) {
+                    return item[0].id;
+                }
+                return item.id;
+            })
+        ).toEqual([
             'built-in:base',
             'built-in:css',
             'built-in:app',
             'built-in:optimization',
-            'built-in:babel',
+            'san-cli-plugin-babel',
             'yyt-plugin',
             'yyt1-plugin',
             'yyt3-plugin',
@@ -66,18 +67,14 @@ describe('constructor resolvePlugins _loadPlugin', () => {
             cli: () => {}
         });
         // 检测plugins插件值是否正常
-        expect(service.plugins.map(item => {
-            if (Array.isArray(item)) {
-                return item[0].id;
-            }
-            return item.id;
-        })).toEqual([
-            'built-in:base',
-            'built-in:css',
-            'built-in:app',
-            'built-in:optimization',
-            'built-in:babel'
-        ]);
+        expect(
+            service.plugins.map(item => {
+                if (Array.isArray(item)) {
+                    return item[0].id;
+                }
+                return item.id;
+            })
+        ).toEqual(['built-in:base', 'built-in:css', 'built-in:app', 'built-in:optimization', 'san-cli-plugin-babel']);
     });
     test('useBuiltInPlugin为false', () => {
         const service = new Service('name', {
@@ -137,6 +134,9 @@ describe('loadProjectOptions', () => {
             disableHostCheck: true,
             compress: false,
             host: '0.0.0.0',
+            watchContentBase: false,
+            hot: true,
+            hotOnly: false,
             https: false
         });
         // 检测是否加了css配置项
@@ -174,7 +174,7 @@ describe('initPlugin', () => {
             cwd: __dirname + '/mock'
         });
     });
-    const expectfunc = (api) => {
+    const expectfunc = api => {
         expect(typeof api.addPlugin).toBe('function');
         expect(typeof api.chainWebpack).toBe('function');
         expect(typeof api.getWebpackChainConfig).toBe('function');
@@ -183,32 +183,39 @@ describe('initPlugin', () => {
         expect(typeof api.getCwd).toBe('function');
     };
     test('参数为两项数组[{id: xxx, apply: () => {}}, {}]', () => {
-        service.initPlugin([{
-            id: 'yyt-plugin',
-            apply: (api, projectOptions, options) => {
-                expectfunc(api);
-                expect(options).toEqual({a: 1, b: 2});
+        service.initPlugin([
+            {
+                id: 'yyt-plugin',
+                apply: (api, projectOptions, options) => {
+                    expectfunc(api);
+                    expect(options).toEqual({a: 1, b: 2});
+                }
+            },
+            {
+                a: 1,
+                b: 2
             }
-        }, {
-            a: 1,
-            b: 2
-        }]);
+        ]);
     });
     test('参数为一项数组[{id: xxx, apply: () => {}}]', () => {
-        service.initPlugin([{
-            id: 'yyt-plugin',
-            apply: (api, projectOptions, options) => {
-                expectfunc(api);
+        service.initPlugin([
+            {
+                id: 'yyt-plugin',
+                apply: (api, projectOptions, options) => {
+                    expectfunc(api);
+                }
             }
-        }]);
+        ]);
     });
     test('参数对象{id: xxx, apply: () => {}}', () => {
-        service.initPlugin([{
-            id: 'yyt-plugin',
-            apply: (api, projectOptions, options) => {
-                expectfunc(api);
+        service.initPlugin([
+            {
+                id: 'yyt-plugin',
+                apply: (api, projectOptions, options) => {
+                    expectfunc(api);
+                }
             }
-        }]);
+        ]);
     });
 });
 
@@ -241,4 +248,3 @@ describe('initPlugin', () => {
 //         expect(service.registeredCommands.get('yyt').describe).toBe('yyt only name description');
 //     });
 // });
-

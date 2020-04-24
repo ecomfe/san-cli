@@ -8,7 +8,7 @@
  * @author yanyiting <yanyiting@baidu.com>
  */
 
-import preset from '../preset';
+const preset = require('../preset');
 
 test('默认值', () => {
     const presets = preset().presets;

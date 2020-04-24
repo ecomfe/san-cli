@@ -10,8 +10,8 @@
 
 jest.mock('git-clone');
 
-import downloadrepo from '../utils/downloadrepo';
-import {getGitUser} from 'san-cli-utils/env';
+const downloadrepo = require('../utils/downloadrepo');
+const {getGitUser} = require('san-cli-utils/env');
 
 const {name, isBaidu} = getGitUser();
 // 如果是 是百度，则强制使用百度账号

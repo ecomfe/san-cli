@@ -10,10 +10,8 @@
 
 jest.mock('rxjs');
 jest.mock('inquirer');
-
-import inquirer from 'inquirer';
-import rxjs from 'rxjs';
-import checkStatus from '../tasks/checkStatus';
+const inquirer = require('inquirer');
+const checkStatus = require('../tasks/checkStatus');
 
 test('新目录，目录未存在', async () => {
     await checkStatus('https://github.com/yyt/HelloWorld.git', 'none', {})({})
