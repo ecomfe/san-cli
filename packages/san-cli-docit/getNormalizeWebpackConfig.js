@@ -73,6 +73,9 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
             });
 
             addPage(layouts, projectOptions.outputDir, markdownFiles, api.resolve(entry), webpackConfig, siteData);
+        } else {
+            error(`\`${argv.entry}\` is not exist!`);
+            process.exit(1);
         }
 
         let docContext = isDirectory ? api.resolve(entry) : context;
