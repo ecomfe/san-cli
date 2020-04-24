@@ -27,7 +27,7 @@
     "san-update": "^2.1.0",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0"
+    "webpack-dev-server": "^3.10.3"
   },
   "gitHead": "391e7ba518f1eee8a289d33c44242e7bee76e5e1"
 }

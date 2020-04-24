@@ -7,7 +7,6 @@
  * @file yargs instance
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
-
 // const {resolve} = require('path');
 const resolveCwd = require('resolve-cwd');
 const yargs = require('yargs/yargs');
@@ -22,7 +21,7 @@ const {textColor} = require('san-cli-utils/randomColor');
 const {scriptName, version: pkgVersion} = require('../package.json');
 const CommanderAPI = require('./CommanderAPI');
 const {getCommandName} = require('./utils');
-const buildinCmds = ['build', 'serve', 'init', 'inspect', 'command', 'plugin', 'remote'];
+const buildinCmds = ['build', 'serve', 'init', 'inspect', 'command', 'plugin', 'remote', 'docit'];
 
 const globalDebug = getDebugLogger();
 const debug = getDebugLogger('command');
@@ -225,6 +224,7 @@ module.exports = class Command {
             const api = new CommanderAPI(getCommandName(cmd), self);
             return argv => {
                 handler(
+                    // eslint-disable-line no-undef
                     new Proxy(api, {
                         get(target, prop) {
                             if (argv[prop]) {

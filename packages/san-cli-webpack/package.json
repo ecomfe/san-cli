@@ -11,7 +11,7 @@
         "san-cli-utils": "^0.0.1",
         "tty-table": "^2.8.2",
         "webpack": "^4.41.2",
-        "webpack-dev-server": "^3.9.0",
+        "webpack-dev-server": "^3.10.3",
         "write-file-webpack-plugin": "^4.5.1"
     },
     "license": "MIT",

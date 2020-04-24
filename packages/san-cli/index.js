@@ -6,7 +6,7 @@
  * This source code is licensed under the MIT license.
  * See LICENSE file in the project root for license information.
  *
- * @file hulk bin 文件入口
+ * @file bin 文件入口
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 
