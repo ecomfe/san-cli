@@ -16,8 +16,7 @@
     },
     "site": "https://ecomfe.github.io/san-cli",
     "peerDependencies": {
-        "san": "^3.7.9",
-        "san-cli": "0.0.1-alpha.2"
+        "san": "^3.7.9"
     },
     "keywords": [
         "san",

@@ -20,6 +20,7 @@ if (packagename) {
 
 const jestArgs = [
     '--runInBand',
+    '--detectOpenHandles',
     ...(regx ? [regx] : [])
 ];
 

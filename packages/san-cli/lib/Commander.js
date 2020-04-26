@@ -221,7 +221,6 @@ module.exports = class Command {
                     return textColor(`Unknown command ${textBold(cmdName)}.`);
                 }
                 return '';
-
             })
             .alias('help', 'h')
             .alias('version', 'v');

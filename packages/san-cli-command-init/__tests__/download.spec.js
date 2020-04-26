@@ -65,6 +65,7 @@ test('远程拉取失败', async () => {
         'none',
         {}
     )(ctx, task).then(data => {
-        expect(data.error).toBe('Failed to pull, please check the path and code permissions are correct');
+    }).catch(e => {
+        expect(e.toString()).toEqual(expect.stringMatching(/please check the path and code permissions are correct/));
     });
 });

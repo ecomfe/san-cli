@@ -17,54 +17,77 @@ const debug = getDebugLogger('init:download-repo');
 
 module.exports = (repo, dest, options) => {
     repo = normalize(repo, options);
-    const {url, checkout = 'master'} = repo;
-
+    const {url, checkout = 'master', timeout = 60e3} = repo;
+    const {template, appName} = options;
     const rm = fse.removeSync;
     // 先删除
     rm(dest);
     return new Promise((resolve, reject) => {
         debug('url: %s, dest: %s, branch: %s', url, dest, checkout);
+        let tid;
+        if (timeout && timeout > 10e3) {
+            tid = setTimeout(() => {
+                clearTimeout(tid);
+                reject(
+                    getErrorMessage('Download template timeout, please check the network', {
+                        repo,
+                        url,
+                        dest,
+                        checkout,
+                        template,
+                        appName
+                    })
+                );
+            }, timeout);
+        }
         gitclone(url, dest, {checkout, shallow: checkout === 'master'}, err => {
+            tid && clearTimeout(tid);
+
             if (!err) {
                 rm(`${dest}/.git`);
                 resolve({url, dest, checkout});
             }
             else {
                 reject(
-                    getErrorMessage(err, {
+                    getErrorMessage(err.message, {
                         repo,
                         url,
                         dest,
                         checkout,
-                        rawArgs: (options._command || {}).rawArgs
+                        template,
+                        appName
                     })
                 );
             }
         });
     });
 };
-function getErrorMessage(err, gitInfo) {
-    if (/failed with status 128/.test(err.message)) {
-        // 说明是ssh方式
-        const tRegex = /^((?:ssh:\/\/|git@).+?)(?:#(.+))?$/;
-        let {url, rawArgs} = gitInfo;
-        const [cmd, templateName, appName] = rawArgs;
+function getErrorMessage(reason, gitInfo) {
+    // 说明是ssh方式
+    const tRegex = /^((?:ssh:\/\/|git@).+?)(?:#(.+))?$/;
+    let {url, appName} = gitInfo;
+    const cmd = 'init';
+    const info = `Fail to pull \`${url}\`${
+        tRegex.test(url) ? ' with SSH' : ''
+    }, please check the path and code permissions are correct.
 
-        return `Fail to pull \`${url}\`${
-            tRegex.test(url) ? ' with SSH' : ''
-        }, please check the path and code permissions are correct.
+Fail message: ${chalk.cyan(reason)}.
 
 san init <template> <app-name>, for example:
-    san ${cmd} ${chalk.cyan(`yourname/${templateName}`)} ${appName}
-    san ${cmd} ${chalk.cyan(`https://github.com/yourname/${templateName}.git`)} ${appName}
-    san ${cmd} ${chalk.cyan(`github:yourname/${templateName}`)} ${appName}
-    san ${cmd} ${chalk.cyan(`icode:baidu/目录名/${templateName}`)} ${appName}
-    san ${cmd} ${chalk.cyan(`coding:yourname/${templateName}`)} ${appName}
-    san ${cmd} ${chalk.cyan(`${templateName}#branch`)} ${appName}
+    san ${cmd} ${chalk.cyan('yourname/template')} ${appName}
+    san ${cmd} ${chalk.cyan('https://github.com/yourname/template.git')} ${appName}
+    san ${cmd} ${chalk.cyan('github:yourname/template')} ${appName}
+    san ${cmd} ${chalk.cyan('icode:baidu/path/template')} ${appName}
+    san ${cmd} ${chalk.cyan('coding:yourname/template')} ${appName}
+    san ${cmd} ${chalk.cyan('template#branch1')} ${appName}
 
-default project template is ${chalk.cyan('ksky521/san-project')}.`;
-    }
-    return 'Failed to pull, please check the path and code permissions are correct';
+Default template is ${chalk.cyan('ksky521/san-project')}.
+Use ${chalk.cyan('san init -h')} for more information.`;
+
+    return info;
+    // if (/failed with status 128/.test(reason)) {
+    //     return info;
+    // }
 }
 function normalize(repo, opts) {
     // aliasmap
