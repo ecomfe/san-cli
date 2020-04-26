@@ -36,13 +36,6 @@ export const noGlobalActions = [
     `
     import {store} from 'san-store';
     import {builder} from 'san-update';
-    store.addAction('count', function (num) {
-        return builder().set('num', num);
-    })
-    `,
-    `
-    import {store} from 'san-store';
-    import {builder} from 'san-update';
     `,
 
     `
