@@ -3,24 +3,19 @@
 <div align="center">
 A CLI Tooling based on <a href="https://baidu.github.io/san/">San.js</a> for rapid development
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 </div>
-
 
 English | [简体中文](./README-zh_CN.md)
 
-
 ## 🎉 Features
 
-- Complete project scaffolding.
-- webpack-based with zero configuration.
-- Extensible command line and webpack packaging plugins.
+-   Complete project scaffolding.
+-   webpack-based with zero configuration.
+-   Extensible command line and webpack packaging plugins.
 
 San CLI takes into account the San ecosystem while trying to achieve universal configuration. At the beginning of the design phase, we aimed to be not limited to the San application scope, but to make a general and customizable front-end development tooling.
 
-## 🔨 Getting Started
-
-### 📦 Installation
+## 📦 Installation
 
 > San CLI requires Node.js version 8.16.0 or above (8.16.0+ recommended).
 
@@ -31,7 +26,7 @@ npm install -g san-cli
 yarn global add san-cli
 ```
 
->If you want to use San CLI only in the project, you can add it to the devDependencies of the project package.json and then use [npm-scripts](https://docs.npmjs.com/misc/scripts).
+> If you want to use San CLI only in the project, you can add it to the devDependencies of the project package.json and then use [npm-scripts](https://docs.npmjs.com/misc/scripts).
 
 After installation, you can view the help information with the following command:
 
@@ -50,9 +45,9 @@ First clone the project to your computer, then install dependencies：
 yarn
 ```
 
-For design details, please read *[architecture](./docs/architecture.md)*.
+For design details, please read _[architecture](./docs/architecture.md)_.
 
-### ✅ Testing
+### 🔨 Testing
 
 ```bash
 # test all
@@ -67,13 +62,13 @@ yarn test san-cli
 
 The [debug](https://npmjs.org/package/debug) module is used in the San CLI, so if you need to debug or see some information you can use the `DEBUG` variable. In San CLI, the scope of debug is `san-cli:`, and common variables include:
 
-- `perf`: Output performance log of San CLI itself.
-- `babel`: Output Babel related configuration.
-- `service`: Output service layer log.
-- `webpack:closeDevtool`: Close Devtools and no longer output `eval` type code. Directly output the packaged code for debugging.
-- `webpack:build`: Output webpack build related configuration.
-- `webpack:serve`: Output webpack serve related configuration.
-- `webpack:config`: Output the final config object of webpack.
+-   `perf`: Output performance log of San CLI itself.
+-   `babel`: Output Babel related configuration.
+-   `service`: Output service layer log.
+-   `webpack:closeDevtool`: Close Devtools and no longer output `eval` type code. Directly output the packaged code for debugging.
+-   `webpack:build`: Output webpack build related configuration.
+-   `webpack:serve`: Output webpack serve related configuration.
+-   `webpack:config`: Output the final config object of webpack.
 
 ## 📝 Documentation
 
