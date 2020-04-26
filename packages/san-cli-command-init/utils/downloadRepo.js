@@ -29,7 +29,7 @@ module.exports = (repo, dest, options) => {
             tid = setTimeout(() => {
                 clearTimeout(tid);
                 reject(
-                    getErrorMessage('Download template timeout, please check the network', {
+                    getErrorMessage('Download timeout, please check the network', {
                         repo,
                         url,
                         dest,
@@ -81,8 +81,7 @@ san init <template> <app-name>, for example:
     san ${cmd} ${chalk.cyan('coding:yourname/template')} ${appName}
     san ${cmd} ${chalk.cyan('template#branch1')} ${appName}
 
-Default template is ${chalk.cyan('ksky521/san-project')}.
-Use ${chalk.cyan('san init -h')} for more information.`;
+Default template is ${chalk.cyan('ksky521/san-project')}, Use ${chalk.cyan('san init -h')} for more information.`;
 
     return info;
     // if (/failed with status 128/.test(reason)) {
