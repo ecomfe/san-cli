@@ -94,7 +94,7 @@ module.exports = class Command {
             }
         }
         // 5. merge全部，返回
-        if (sanrc) {
+        if (sanrc && sanrc.commands) {
             // concat
             commands = commands.concat(sanrc.commands);
             // 防止 merge
