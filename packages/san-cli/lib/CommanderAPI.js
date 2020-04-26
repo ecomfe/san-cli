@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file command中的api
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 const {logger} = require('san-cli-utils/ttyLogger');
 
@@ -35,6 +35,9 @@ module.exports = class CommanderApi {
     getParsedArgv() {
         return this._command.parsedArgv;
     }
+    getRawArgs() {
+        return this._command.rawArgs;
+    }
     help() {
         this._command.help();
         return this;
@@ -47,5 +50,8 @@ module.exports = class CommanderApi {
     }
     getCommands() {
         return this._command._commands;
+    }
+    getCommandMap() {
+        return this._command.commandMap;
     }
 };

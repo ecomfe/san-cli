@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file 读取 rc 内容
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const importLazy = require('import-lazy')(require);

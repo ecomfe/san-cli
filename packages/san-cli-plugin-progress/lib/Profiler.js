@@ -6,7 +6,7 @@
  *
  * @file 美化版本 Profiler
  * modified from https://github.com/nuxt/webpackbar/blob/master/src/profiler/index.js
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const path = require('path');

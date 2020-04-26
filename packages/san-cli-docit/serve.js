@@ -1,6 +1,6 @@
 /**
  * @file serve
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 const {info, error} = require('san-cli-utils/ttyLogger');
 

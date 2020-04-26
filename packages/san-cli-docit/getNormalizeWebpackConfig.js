@@ -1,6 +1,6 @@
 /**
  * @file getNormalizeWebpackConfig
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 const path = require('path');
 const fse = require('fs-extra');

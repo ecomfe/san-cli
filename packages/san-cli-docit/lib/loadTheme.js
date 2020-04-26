@@ -1,6 +1,6 @@
 /**
  * @file 加载 theme
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 const path = require('path');
 const fs = require('fs');

@@ -19,15 +19,16 @@
         "san",
         "webpack"
     ],
-    "author": {
-        "name": "ksky521",
-        "email": "ksky521@gmail.com"
-    },
+    "author": "ksky521",
     "repository": {
         "type": "git",
-        "url": "git://github.com/ecomfe/san-cli"
+        "url": "git+https://github.com/ecomfe/san-cli.git",
+        "directory": "packages/san-cli-plugin-progress"
     },
-    "site": "https://ecomfe.github.io/san-cli",
+    "bugs": {
+        "url": "https://github.com/ecomfe/san-cli/issues"
+    },
+    "homepage": "https://ecomfe.github.io/san-cli",
     "dependencies": {
         "figures": "^3.1.0",
         "pretty-time": "^1.1.0",

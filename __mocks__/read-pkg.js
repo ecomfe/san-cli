@@ -1,6 +1,6 @@
 /**
  * @file read-pkg单测mock
- * @author yanyiting <yanyiting@baidu.com>
+ * @author yanyiting
  */
 
 const readPkg = {

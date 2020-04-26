@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file checkStatus test
- * @author yanyiting <yanyiting@baidu.com>
+ * @author yanyiting
  */
 
 jest.mock('rxjs');

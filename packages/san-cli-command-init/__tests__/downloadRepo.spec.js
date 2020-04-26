@@ -5,12 +5,12 @@
  * See LICENSE file in the project root for license information.
  *
  * @file downloadRepo test
- * @author yanyiting <yanyiting@baidu.com>
+ * @author yanyiting
  */
 
 jest.mock('git-clone');
 
-const downloadrepo = require('../utils/downloadrepo');
+const downloadrepo = require('../utils/downloadRepo');
 const {getGitUser} = require('san-cli-utils/env');
 
 const {name, isBaidu} = getGitUser();
@@ -38,20 +38,20 @@ test('传入github地址，使用https方式，dev分支', async () => {
 });
 
 test('传入icode地址', async () => {
-    const res = await downloadrepo('icode:baidu/baiduappfeed/itemrep', 'aaa', {});
+    const res = await downloadrepo('icode:baidu/foo/bar', 'aaa', {});
     expect(res).toEqual({
-        url: `ssh://${user}@icode.baidu.com:8235/baidu/baiduappfeed/itemrep`,
+        url: `ssh://${user}@icode.baidu.com:8235/baidu/foo/bar`,
         dest: 'aaa',
         checkout: 'master'
     });
 });
 
 test('传入icode地址，使用https方式，dev分支', async () => {
-    const res = await downloadrepo('icode:baidu/baiduappfeed/itemrep#dev', 'aaa', {
+    const res = await downloadrepo('icode:baidu/foo/bar#dev', 'aaa', {
         useHttps: true
     });
     expect(res).toEqual({
-        url: `https://${user}@icode.baidu.com/baidu/baiduappfeed/itemrep`,
+        url: `https://${user}@icode.baidu.com/baidu/foo/bar`,
         dest: 'aaa',
         checkout: 'dev'
     });
@@ -104,9 +104,9 @@ test('传入完整地址https://', async () => {
 });
 
 test('传入完整地址ssh://', async () => {
-    const res = await downloadrepo('ssh://yanyiting@icode.baidu.com:8235/baidu/hulk/san-project-base', 'aaa', {});
+    const res = await downloadrepo('ssh://yanyiting@icode.baidu.com:8235/baidu/foo/bar', 'aaa', {});
     expect(res).toEqual({
-        url: 'ssh://yanyiting@icode.baidu.com:8235/baidu/hulk/san-project-base',
+        url: 'ssh://yanyiting@icode.baidu.com:8235/baidu/foo/bar',
         dest: 'aaa',
         checkout: 'master'
     });

@@ -1,6 +1,6 @@
 /**
  * @file build
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 const path = require('path');
 const {info, success: successLog, error} = require('san-cli-utils/ttyLogger');

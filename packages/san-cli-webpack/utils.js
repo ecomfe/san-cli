@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file webpack 相关函数
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 exports.isJS = val => /\.js$/.test(val);
@@ -42,7 +42,7 @@ exports.getWebpackErrorInfoFromStats = (err, stats) => {
 
 /**
  * @file 将处理 entry 的情况单独拿出来，供复用和单测
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 const path = require('path');
 const fse = require('fs-extra');

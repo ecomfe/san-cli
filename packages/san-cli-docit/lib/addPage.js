@@ -1,6 +1,6 @@
 /**
  * @file 添加 page 配置
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 const path = require('path');
 const fs = require('fs');

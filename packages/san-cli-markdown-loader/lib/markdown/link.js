@@ -1,6 +1,6 @@
 /**
  * @file 将相对.md 换成 html，href 是外链添加 blank
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 const {getRelativeLink} = require('../utils');
 

@@ -1,6 +1,6 @@
 /**
  * @file chalk单测mock
- * @author yanyiting <yanyiting@baidu.com>
+ * @author yanyiting
  */
 
 const chalk = require('chalk');

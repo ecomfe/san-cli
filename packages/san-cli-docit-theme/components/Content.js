@@ -1,6 +1,6 @@
 /**
  * @file content
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 import {Component} from 'san';

@@ -1,6 +1,6 @@
 /**
  * @file mock store code
- * @author tanglei02 (tanglei@baidu.com)
+ * @author clark-t
  */
 
 export const globalActions = [

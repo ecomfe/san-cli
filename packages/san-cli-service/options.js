@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file san.config 格式
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const joi = require('@hapi/joi');

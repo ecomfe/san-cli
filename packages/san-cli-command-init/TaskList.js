@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file taskList 类
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const {ora, figures, chalk} = require('san-cli-utils/ttyLogger');

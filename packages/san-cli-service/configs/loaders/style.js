@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file style-loader options
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const factory = require('./loaderFactory');

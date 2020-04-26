@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file Service test
- * @author yanyiting <yanyiting@baidu.com>
+ * @author yanyiting
  */
 
 const Service = require('../Service');

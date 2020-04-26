@@ -3,6 +3,15 @@
     "version": "0.1.0-alpha.4",
     "main": "index.js",
     "author": "ksky521",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ecomfe/san-cli.git",
+        "directory": "packages/san-cli-command-init"
+    },
+    "bugs": {
+        "url": "https://github.com/ecomfe/san-cli/issues"
+    },
+    "homepage": "https://ecomfe.github.io/san-cli",
     "license": "MIT",
     "dependencies": {
         "concat-stream": "^2.0.0",

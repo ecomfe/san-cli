@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file 将 build 的 webpackConfig 处理拆出来
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const fse = require('fs-extra');

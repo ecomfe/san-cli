@@ -94,9 +94,9 @@ function normalize(repo, opts) {
     if (opts.templateAliasMap && opts.templateAliasMap[repo]) {
         repo = opts.templateAliasMap[repo];
     }
-    // https://wangyongqing01@icode.baidu.com/baidu/ezcode/jssdk
-    // ssh://wangyongqing01@icode.baidu.com:8235/baidu/ezcode/jssdk
-    // ssh://git@icode.baidu.com:8235/baidu/ezcode/jssdk
+    // https://username@icode.baidu.com/baidu/foo/bar
+    // ssh://username@icode.baidu.com:8235/baidu/foo/bar
+    // ssh://git@icode.baidu.com:8235/baidu/foo/bar
     // 如果是完整地址，直接返回，无需标准化
     const tRegex = /^((?:ssh:\/\/|https:\/\/|git@).+?)(?:#(.+))?$/;
     if (tRegex.test(repo)) {
@@ -126,7 +126,7 @@ function normalize(repo, opts) {
     switch (source) {
         case 'icode':
             if (useHttps) {
-                // https://wangyongqing01@icode.baidu.com/baidu/baiduappfeed/itemrep
+                // https://username@icode.baidu.com/baidu/foo/bar
                 url = `https://${user}@icode.baidu.com/${baidu}/${product}/${repoName}`;
             }
             else {

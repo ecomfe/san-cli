@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file base webpack config
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const path = require('path');

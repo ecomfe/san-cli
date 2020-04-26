@@ -1,6 +1,6 @@
 /**
  * @file 从 md 中解析出来 H
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 const LRU = require('lru-cache');
 const {compose, removeNonCodeWrappedHTML, parseHeaders, slugify} = require('./utils');

@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file yargs instance
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 // const {resolve} = require('path');
 const resolveCwd = require('resolve-cwd');

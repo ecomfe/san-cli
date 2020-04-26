@@ -1,6 +1,6 @@
 /**
  * @file component source code text
- * @author tanglei02 (tanglei02@baidu.com)
+ * @author clark-t
  */
 
 export const defineComponents = [

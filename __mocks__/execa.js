@@ -1,6 +1,6 @@
 /**
  * @file execa单测mock
- * @author yanyiting <yanyiting@baidu.com>
+ * @author yanyiting
  */
 
 module.exports = jest.fn();

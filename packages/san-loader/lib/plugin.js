@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file plugin.js
- * @author tanglei02 (tanglei02@baidu.com)
+ * @author clark-t
  * @descripton inspired by https://github.com/vuejs/vue-loader/blob/master/lib/plugin.js
  */
 
