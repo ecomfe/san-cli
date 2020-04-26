@@ -32,7 +32,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lint-staged",
+            "pre-commit": "lint-staged && node scripts/test.js",
             "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
         }
     },
