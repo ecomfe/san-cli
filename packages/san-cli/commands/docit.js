@@ -6,4 +6,4 @@
  *
  * @file 添加docit command
  */
-Object.assign(exports, require('san-cli-docit'));
+module.exports = require('san-cli-docit');

@@ -14,30 +14,37 @@ exports.builder = {
     useCache: {
         alias: 'cache',
         default: false,
+        type: 'boolean',
         describe: 'Use local cache'
     },
     useYarn: {
+        type: 'boolean',
         default: true,
-        describe: 'Use yarn'
+        describe: 'Use yarn, if it exists.'
     },
     install: {
+        type: 'boolean',
         default: false,
         describe: 'Install npm packages after initialization'
     },
     offline: {
+        type: 'boolean',
         default: false,
         describe: 'Prefer to use local offline packages'
     },
     force: {
+        type: 'boolean',
         default: false,
         describe: 'Forced coverage'
     },
     username: {
+        type: 'string',
         alias: 'u',
         default: '',
         describe: 'Specify the username used by git clone command'
     },
     registry: {
+        type: 'string',
         alias: 'r',
         default: '',
         describe: 'Specify npm package download registry'
@@ -47,12 +54,11 @@ exports.builder = {
 // 默认项目脚手架地址
 
 const defaultTemplate = 'ksky521/san-project';
-exports.handler = async cliApi => {
+exports.handler = cliApi => {
     const {warn} = require('san-cli-utils/ttyLogger');
 
     let {template, appName} = cliApi;
-
-    let {templateAlias: templateAliasMap} = cliApi.getPresets || {};
+    let {templateAlias: templateAliasMap} = cliApi.getPresets() || {};
 
     if (appName === undefined && template) {
         // 只有一个参数，这个默认是使用当前文件夹，把 appName 当成是脚手架地址
@@ -68,6 +74,5 @@ exports.handler = async cliApi => {
     }
 
     const options = Object.assign(cliApi, {templateAliasMap, template, appName});
-
     require('./run')(template, appName, options);
 };

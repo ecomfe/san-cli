@@ -161,7 +161,8 @@ function getMetadata(dir) {
         if (opts !== Object(opts)) {
             throw new Error('Wrong type in meta.js');
         }
-    } catch (e) {
+    }
+    catch (e) {
         // 不存在就算了
         if (e.code !== 'MODULE_NOT_FOUND') {
             throw new Error('Wrong type in meta.js');
@@ -194,17 +195,20 @@ function streamFile(fn, ...args) {
             // console.log(file.path, enc);
             const str = file.contents.toString();
             fn(str, file, cb, ...args);
-        } else if (file.isStream()) {
+        }
+        else if (file.isStream()) {
             file.contents.pipe(
                 concat(str => {
                     try {
                         fn(str, file, cb, ...args);
-                    } catch (e) {
+                    }
+                    catch (e) {
                         cb(e);
                     }
                 })
             );
-        } else {
+        }
+        else {
             cb(null, file);
         }
     });

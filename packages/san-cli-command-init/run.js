@@ -23,8 +23,7 @@ module.exports = (template, appName, options = {}) => {
     // template = alias(template);
     const inPlace = !appName || appName === '.';
     // inPlace：是否在当前目录
-    // inPlace上一步已经处理过一次，所以存在的话，那么就直接用
-    options._inPlace = options._inPlace ? options._inPlace : inPlace;
+    options._inPlace = inPlace;
     // dest：新建工程的目录
     const dest = path.resolve(appName || '.');
     // 记录一下开始新建工程时的起始时间
