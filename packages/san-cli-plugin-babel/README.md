@@ -11,3 +11,7 @@ module.exports = {
 ```
 
 babel-loader 配置在`san-cli-plugin-babel/preset`中，可以直接使用。
+
+## 使用文档
+
+请移步[San-CLI 文档](https://ecomfe.github.io/san-cli)

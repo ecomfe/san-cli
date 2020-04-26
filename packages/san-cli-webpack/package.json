@@ -1,19 +1,36 @@
 {
     "name": "san-cli-webpack",
-    "version": "0.0.1",
+    "version": "0.1.0-alpha.4",
     "main": "index.js",
-    "author": "ksky521",
     "dependencies": {
         "friendly-errors-webpack-plugin": "^1.7.0",
         "fs-extra": "^8.1.0",
         "html-webpack-plugin": "^3.2.0",
         "portfinder": "^1.0.25",
-        "san-cli-utils": "^0.0.1",
+        "san-cli-utils": "^0.1.0-alpha.4",
         "tty-table": "^2.8.2",
         "webpack": "^4.41.2",
         "webpack-dev-server": "^3.10.3",
         "write-file-webpack-plugin": "^4.5.1"
     },
+    "author": {
+        "name": "ksky521",
+        "email": "ksky521@gmail.com"
+    },
+    "keywords": [
+        "san.js",
+        "san-cli",
+        "cli",
+        "san",
+        "hmr",
+        "loader",
+        "webpack"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/ecomfe/san-cli"
+    },
+    "site": "https://ecomfe.github.io/san-cli",
     "license": "MIT",
-    "gitHead": "391e7ba518f1eee8a289d33c44242e7bee76e5e1"
+    "gitHead": "6ea2638fb6a2838f42e32db040f9fd7a25954a24"
 }

@@ -1,6 +1,6 @@
 {
     "name": "san-cli-command-init",
-    "version": "0.0.1",
+    "version": "0.1.0-alpha.4",
     "main": "index.js",
     "author": "ksky521",
     "license": "MIT",
@@ -15,9 +15,15 @@
         "handlebars": "^4.5.1",
         "inquirer": "^7.0.0",
         "rxjs": "^6.5.3",
-        "san-cli-utils": "^0.0.1",
+        "san-cli-utils": "^0.1.0-alpha.4",
         "through2": "^3.0.1",
         "vinyl-fs": "^3.0.3"
     },
-    "gitHead": "391e7ba518f1eee8a289d33c44242e7bee76e5e1"
+    "keywords": [
+        "san",
+        "loader",
+        "san.js",
+        "san-cli"
+    ],
+    "gitHead": "6ea2638fb6a2838f42e32db040f9fd7a25954a24"
 }

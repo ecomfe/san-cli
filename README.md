@@ -34,7 +34,9 @@ After installation, you can view the help information with the following command
 san -h
 ```
 
-## 🤝 Contributing
+For more information, visit [https://ecomfe.github.io/san-cli](https://ecomfe.github.io/san-cli).
+
+## 🤝 Contributing [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/ecomfe/san-cli/pulls)
 
 San CLI uses [Yarn Workspaces](https://classic.yarnpkg.com/en/docs/workspaces/) for local development.
 

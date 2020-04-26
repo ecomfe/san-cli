@@ -1,28 +1,45 @@
 {
     "name": "san-cli-docit",
-    "version": "0.0.1-alpha.2",
+    "version": "0.1.0-alpha.4",
     "main": "index.js",
     "license": "MIT",
     "engines": {
         "node": ">=8"
     },
+    "author": {
+        "name": "ksky521",
+        "email": "ksky521@gmail.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/ecomfe/san-cli"
+    },
+    "site": "https://ecomfe.github.io/san-cli",
     "peerDependencies": {
         "san": "^3.7.9",
         "san-cli": "0.0.1-alpha.2"
     },
+    "keywords": [
+        "san",
+        "loader",
+        "webpack",
+        "markdown",
+        "san-docit",
+        "san-loader"
+    ],
     "dependencies": {
-        "globby": "^11.0.0",
-        "import-lazy": "^4.0.0",
-        "san-cli-utils": "^0.0.1-alpha.0",
-        "san-cli-webpack": "^0.0.1-alpha.0",
-        "san-cli-docit-theme": "^0.0.1-alpha.0",
         "fs-extra": "^8.1.0",
-        "js-yaml": "^3.13.1",
-        "toml": "^3.0.0",
+        "globby": "^11.0.0",
         "html-webpack-plugin": "^3.2.0",
+        "import-lazy": "^4.0.0",
+        "js-yaml": "^3.13.1",
         "opener": "^1.5.1",
         "qrcode-terminal": "^0.12.0",
-        "san-cli-markdown-loader": "^0.0.1-alpha.2"
+        "san-cli-docit-theme": "^0.1.0-alpha.4",
+        "san-cli-markdown-loader": "^0.1.0-alpha.4",
+        "san-cli-utils": "^0.1.0-alpha.4",
+        "san-cli-webpack": "^0.1.0-alpha.4",
+        "toml": "^3.0.0"
     },
-    "gitHead": "1db19410d2b751e94c33778b9d6692780ccada61"
+    "gitHead": "6ea2638fb6a2838f42e32db040f9fd7a25954a24"
 }
