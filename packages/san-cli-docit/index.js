@@ -3,7 +3,7 @@
  * @author ksky521
  */
 exports.builder = {
-    'use-https': {
+    https: {
         type: 'boolean',
         default: false,
         describe: 'Enable https'
@@ -67,7 +67,8 @@ exports.handler = cliApi => {
     if (output) {
         run = require('./build');
         cliApi.mode = mode = cliApi.mode || process.env.NODE_ENV || 'production';
-    } else {
+    }
+    else {
         run = require('./serve');
         cliApi.mode = mode = cliApi.mode || process.env.NODE_ENV || 'development';
     }

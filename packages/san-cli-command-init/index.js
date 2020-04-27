@@ -11,15 +11,14 @@
 exports.command = 'init [template] [app-name]';
 exports.description = 'Create an empty repo';
 exports.builder = {
-    useCache: {
-        alias: 'cache',
-        default: false,
+    'no-cache': {
+        default: true,
         type: 'boolean',
         describe: 'Use local cache'
     },
-    useYarn: {
+    'no-yarn': {
         type: 'boolean',
-        default: true,
+        default: false,
         describe: 'Use yarn, if it exists.'
     },
     install: {
