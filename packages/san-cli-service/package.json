@@ -1,13 +1,29 @@
 {
     "name": "san-cli-service",
     "description": "定制化的前端工程构建工具",
-    "version": "0.0.1",
+    "version": "0.1.0-alpha.4",
     "main": "Service.js",
-    "author": "ksky521",
     "license": "MIT",
     "engines": {
         "node": ">=8.16"
     },
+    "author": "ksky521",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ecomfe/san-cli.git",
+        "directory": "packages/san-cli-service"
+    },
+    "bugs": {
+        "url": "https://github.com/ecomfe/san-cli/issues"
+    },
+    "homepage": "https://ecomfe.github.io/san-cli",
+    "keywords": [
+        "san.js",
+        "san-cli",
+        "cli",
+        "san",
+        "webpack"
+    ],
     "dependencies": {
         "@hapi/joi": "^16.1.7",
         "babel-loader": "^8.0.6",
@@ -28,7 +44,7 @@
         "import-cwd": "^3.0.0",
         "import-global": "^0.1.0",
         "import-lazy": "^4.0.0",
-        "less": "^3.10.3",
+        "less": "^3.11.1",
         "less-loader": "~5.0.0",
         "lodash.defaultsdeep": "^4.6.1",
         "lodash.merge": "^4.6.2",
@@ -42,12 +58,12 @@
         "resolve": "^1.12.0",
         "resolve-cwd": "^3.0.0",
         "san": "^3.7.9",
-        "san-cli-plugin-babel": "^0.0.1",
-        "san-cli-plugin-progress": "^0.0.1",
-        "san-cli-utils": "^0.0.1",
-        "san-cli-webpack": "^0.0.1",
-        "san-hot-loader": "^0.0.1",
-        "san-loader": "^0.0.1",
+        "san-cli-plugin-babel": "^0.1.0-alpha.4",
+        "san-cli-plugin-progress": "^0.1.0-alpha.4",
+        "san-cli-utils": "^0.1.0-alpha.4",
+        "san-cli-webpack": "^0.1.0-alpha.4",
+        "san-hot-loader": "^0.1.0-alpha.4",
+        "san-loader": "^0.1.0-alpha.4",
         "semver": "^7.1.1",
         "style-loader": "~1.0.0",
         "svg-url-loader": "~3.0.2",
@@ -62,5 +78,5 @@
         "sass": "^1.19.0",
         "sass-loader": "^8.0.0"
     },
-    "gitHead": "391e7ba518f1eee8a289d33c44242e7bee76e5e1"
+    "gitHead": "6ea2638fb6a2838f42e32db040f9fd7a25954a24"
 }

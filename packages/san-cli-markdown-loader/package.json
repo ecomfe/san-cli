@@ -1,15 +1,19 @@
 {
     "name": "san-cli-markdown-loader",
-    "version": "0.0.1-alpha.2",
+    "version": "0.1.0-alpha.4",
     "description": "san markdown loader",
-    "author": "wangyongqing01 <wangyongqing01@baidu.com>",
-    "homepage": "https://github.com/ecomfe/san-cli",
-    "license": "MIT",
-    "main": "loader.js",
+    "author": "ksky521",
     "repository": {
         "type": "git",
-        "url": "ssh://git@github.com:ecomfe/san-cli.git"
+        "url": "git+https://github.com/ecomfe/san-cli.git",
+        "directory": "packages/san-cli-markdown-loader"
     },
+    "bugs": {
+        "url": "https://github.com/ecomfe/san-cli/issues"
+    },
+    "homepage": "https://ecomfe.github.io/san-cli",
+    "license": "MIT",
+    "main": "loader.js",
     "scripts": {
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
@@ -25,33 +29,33 @@
         "san-loader"
     ],
     "dependencies": {
-        "debug": "^4.1.1",
         "@babel/core": "^7.3.4",
         "@babel/generator": "^7.3.4",
         "@babel/traverse": "^7.3.4",
-        "loader-utils": "^1.2.3",
-        "prismjs": "^1.18.0",
+        "debug": "^4.1.1",
+        "diacritics": "^1.3.0",
         "escape-html": "^1.0.3",
+        "gray-matter": "^4.0.2",
+        "loader-utils": "^1.2.3",
+        "lru-cache": "^5.1.1",
         "markdown-it": "^10.0.0",
-        "markdown-it-table-of-contents": "^0.4.4",
         "markdown-it-anchor": "^5.2.5",
+        "markdown-it-attrs": "^3.0.1",
         "markdown-it-cjk-breaks": "^1.1.2",
         "markdown-it-deflist": "^2.0.3",
-        "markdown-it-emoji": "^1.4.0",
         "markdown-it-div": "^1.1.0",
+        "markdown-it-emoji": "^1.4.0",
         "markdown-it-footnote": "^3.0.1",
-        "markdown-it-ins": "^3.0.0",
-        "markdown-it-attrs": "^3.0.1",
         "markdown-it-imsize": "^2.0.1",
-        "markdown-it-task-lists": "^2.1.1",
-        "markdown-it-sub": "^1.0.0",
+        "markdown-it-ins": "^3.0.0",
         "markdown-it-multimd-table": "^4.0.0",
+        "markdown-it-sub": "^1.0.0",
         "markdown-it-sup": "^1.0.0",
+        "markdown-it-table-of-contents": "^0.4.4",
+        "markdown-it-task-lists": "^2.1.1",
         "posthtml": "^0.12.0",
         "posthtml-render": "^1.1.5",
-        "lru-cache": "^5.1.1",
-        "diacritics": "^1.3.0",
-        "gray-matter": "^4.0.2"
+        "prismjs": "^1.18.0"
     },
-    "gitHead": "1db19410d2b751e94c33778b9d6692780ccada61"
+    "gitHead": "6ea2638fb6a2838f42e32db040f9fd7a25954a24"
 }

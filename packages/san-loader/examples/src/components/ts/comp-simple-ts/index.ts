@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file index.ts
- * @author tanglei02(tanglei02@baidu.com)
+ * @author clark-t
  */
 
 import {Component} from 'san';

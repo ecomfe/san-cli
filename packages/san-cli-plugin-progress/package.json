@@ -1,24 +1,40 @@
 {
     "name": "san-cli-plugin-progress",
     "description": "san-cli进度条插件",
-    "version": "0.0.1",
+    "version": "0.1.0-alpha.4",
     "scriptName": "san",
     "main": "index.js",
     "bin": {
         "3": "index.js",
         "san": "index.js"
     },
-    "author": "ksky521",
     "license": "MIT",
     "engines": {
         "node": ">=8.16"
     },
+    "keywords": [
+        "san.js",
+        "san-cli",
+        "cli",
+        "san",
+        "webpack"
+    ],
+    "author": "ksky521",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ecomfe/san-cli.git",
+        "directory": "packages/san-cli-plugin-progress"
+    },
+    "bugs": {
+        "url": "https://github.com/ecomfe/san-cli/issues"
+    },
+    "homepage": "https://ecomfe.github.io/san-cli",
     "dependencies": {
         "figures": "^3.1.0",
         "pretty-time": "^1.1.0",
-        "san-cli-utils": "^0.0.1",
+        "san-cli-utils": "^0.1.0-alpha.4",
         "tty-table": "^2.8.2",
         "webpackbar": "^4.0.0"
     },
-    "gitHead": "391e7ba518f1eee8a289d33c44242e7bee76e5e1"
+    "gitHead": "6ea2638fb6a2838f42e32db040f9fd7a25954a24"
 }

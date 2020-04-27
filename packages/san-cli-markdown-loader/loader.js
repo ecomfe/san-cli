@@ -1,6 +1,6 @@
 /**
  * @file markdown loader
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 const qs = require('querystring');
 const path = require('path');

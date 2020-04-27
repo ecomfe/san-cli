@@ -1,6 +1,6 @@
 /**
  * @file utils
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 const path = require('path');
 const URL = require('url');

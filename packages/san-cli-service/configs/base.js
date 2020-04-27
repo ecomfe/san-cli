@@ -5,14 +5,14 @@
  * See LICENSE file in the project root for license information.
  *
  * @file base webpack config
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const path = require('path');
 const resolve = require('resolve');
 const defaultsDeep = require('lodash.defaultsdeep');
 const fs = require('fs');
-
+// 相对 service module 的路径
 function resolveLocal(...args) {
     return path.join(__dirname, '../', ...args);
 }
@@ -64,7 +64,7 @@ module.exports = {
 
             // prettier-ignore
             // set resolveLoader
-            webpackConfig
+            const resolveLoader = webpackConfig
                 .resolveLoader
                 // 添加 pnp-loader
                 .plugin('pnp-loaders')
@@ -74,6 +74,10 @@ module.exports = {
                     .add('node_modules')
                     .add(api.resolve('node_modules'))
                     .add(resolveLocal('node_modules'));
+            if(process.env.SAN_CLI_TEST){
+                // 解决源码测试 san-loader san-hot-loader 找不到
+                resolveLoader.add(resolveLocal('../../node_modules'));
+            }
             /* eslint-enable */
 
             // set san alias
@@ -116,7 +120,6 @@ module.exports = {
                         .end();
                 });
             }
-            // TODO: san file loader换成san-loader
             if (!isProd) {
                 setLoader('san', /\.san$/, ['hmr', 'san']);
                 setLoader('js', /\.m?js?$/, ['hmr']);

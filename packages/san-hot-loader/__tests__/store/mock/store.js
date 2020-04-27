@@ -1,6 +1,6 @@
 /**
  * @file mock store code
- * @author tanglei02 (tanglei@baidu.com)
+ * @author clark-t
  */
 
 export const globalActions = [
@@ -31,13 +31,6 @@ export const noGlobalActions = [
     import san from 'san';
     export default san.defineComponent({
         template: 'Hello World'
-    })
-    `,
-    `
-    import {store} from 'san-store';
-    import {builder} from 'san-update';
-    store.addAction('count', function (num) {
-        return builder().set('num', num);
     })
     `,
     `

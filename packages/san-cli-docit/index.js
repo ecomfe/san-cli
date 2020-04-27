@@ -1,6 +1,6 @@
 /**
  * @file command Component
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 exports.builder = {
     'use-https': {

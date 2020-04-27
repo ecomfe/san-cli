@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file random color 给点 color see see
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const {chalkColor, chalkBgColor} = require('./color');

@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file match-by-ast.js
- * @author tanglei02 (tanglei02@baidu.com)
+ * @author clark-t
  */
 
 const {
@@ -24,10 +24,6 @@ module.exports = function (ast) {
     }
 
     if (hasModuleHot(ast)) {
-        return false;
-    }
-    let defaultModule = getExportDefault(ast);
-    if (!defaultModule) {
         return false;
     }
 

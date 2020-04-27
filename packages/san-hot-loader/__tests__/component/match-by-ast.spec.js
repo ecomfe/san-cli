@@ -1,6 +1,6 @@
 /**
  * @file match by ast test
- * @author tanglei02 (tanglei02@baidu.com)
+ * @author clark-t
  */
 
 /* global describe, test */

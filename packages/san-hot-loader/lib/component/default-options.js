@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file component default options
- * @author tanglei02 (tanglei02@baidu.com)
+ * @author clark-t
  */
 
 module.exports = {

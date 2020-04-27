@@ -1,6 +1,6 @@
 /**
  * @file address单测mock
- * @author yanyiting <yanyiting@baidu.com>
+ * @author yanyiting
  */
 
 const address = {

@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file 作为html-webpack-plugin的一个插件，用于将页面静态资源插入到smarty 中
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');

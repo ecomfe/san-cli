@@ -2,11 +2,11 @@
 
 San CLI 中 webpack 编译核心内容，以及扩展 service 插件功能。
 
-## 安装
+## 完整文档
 
-```shell
-$ npm install --save-dev san-cli-service
-```
+请移步[San-CLI 文档](https://ecomfe.github.io/san-cli)
+
+````
 
 ## 使用
 ```js
@@ -38,7 +38,7 @@ const service = new Service('docit', {
 
 // 传入 service 编译完成后要执行的回调函数
 service.run(callback);
-```
+````
 
 ## 测试
 

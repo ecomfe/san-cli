@@ -1,6 +1,6 @@
 {
     "name": "san-cli-docit-theme",
-    "version": "0.0.1-alpha.2",
+    "version": "0.1.0-alpha.4",
     "main": "index.js",
     "license": "MIT",
     "engines": {
@@ -10,6 +10,26 @@
         "san": "^3.7.9",
         "san-cli": "0.0.1-alpha.2"
     },
-    "dependencies": {},
-    "gitHead": "1db19410d2b751e94c33778b9d6692780ccada61"
+    "author": "ksky521",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ecomfe/san-cli.git",
+        "directory": "packages/san-cli-docit-theme"
+    },
+    "bugs": {
+        "url": "https://github.com/ecomfe/san-cli/issues"
+    },
+    "homepage": "https://ecomfe.github.io/san-cli",
+    "keywords": [
+        "san",
+        "loader",
+        "webpack",
+        "san-docit",
+        "markdown",
+        "docit",
+        "docit-theme",
+        "san-loader"
+    ],
+    "site": "https://ecomfe.github.io/san-cli",
+    "gitHead": "6ea2638fb6a2838f42e32db040f9fd7a25954a24"
 }

@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file 全局错误捕获
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 /* eslint-disable no-console */
 

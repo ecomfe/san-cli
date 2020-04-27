@@ -1,6 +1,6 @@
 /**
  * @file fs单测mock
- * @author yanyiting <yanyiting@baidu.com>
+ * @author yanyiting
  */
 
 const {fs} = require('memfs');

@@ -1,6 +1,6 @@
 /**
  * @file 解析器
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 const MdIt = require('markdown-it');
 

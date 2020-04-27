@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file script.js
- * @author tanglei02 (tanglei02@baidu.com)
+ * @author clark-t
  */
 
 const qs = require('querystring');

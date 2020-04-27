@@ -24,3 +24,7 @@ yarn test san-cli-webpack
 #只执行某单个文件 例如：utils.spec.js
 yarn test san-cli-webpack utils
 ```
+
+## 完整文档
+
+请移步[San-CLI 文档](https://ecomfe.github.io/san-cli)

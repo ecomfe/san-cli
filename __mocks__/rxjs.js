@@ -1,6 +1,6 @@
 /**
  * @file rxjs单测mock
- * @author yanyiting <yanyiting@baidu.com>
+ * @author yanyiting
  */
 
 const rxjs = {

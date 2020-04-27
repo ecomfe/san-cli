@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file customize command
- * @author yanyiting <yanyiting@baidu.com>
+ * @author yanyiting
  */
 
 exports.command = 'hello';

@@ -7,7 +7,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file bin 文件入口
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 /* eslint-disable no-console */

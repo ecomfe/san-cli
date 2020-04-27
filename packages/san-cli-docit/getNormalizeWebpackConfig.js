@@ -1,6 +1,6 @@
 /**
  * @file getNormalizeWebpackConfig
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 const path = require('path');
 const fse = require('fs-extra');
@@ -27,7 +27,7 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
         entry = api.resolve(argv.entry);
     }
 
-    const {isFile, type, isDirectory} = resolveEntry(entry);
+    const {isFile, type, isDirectory} = resolveEntry(entry || context);
     let {data: siteData, config: siteDataConfigPath} = loadConfig(isDirectory ? api.resolve(entry) : context) || {};
 
     siteData.rootUrl = publicPath;

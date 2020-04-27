@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file 跟路径相关函数
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const url = require('url');

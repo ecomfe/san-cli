@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file commander test
- * @author yanyiting <yanyiting@baidu.com>
+ * @author yanyiting
  */
 
 jest.mock('read-pkg');
@@ -15,7 +15,7 @@ const Commander = require('../lib/Commander');
 const cli = new Commander();
 
 test('command init', () => {
-    const {presets, _commands} = cli;
+    const {presets, _commands: commands} = cli;
     // 确认 loadRc 执行成功
     let flag = false;
     presets.commands.forEach(item => {
@@ -26,7 +26,7 @@ test('command init', () => {
     expect(flag).toBeTruthy();
 
     // 确认新增命令添加成功
-    expect(_commands.map(item => item[0].match(/\w+/g)[0])).toEqual([
+    expect(commands.map(item => item[0].match(/\w+/g)[0])).toEqual([
         'build',
         'serve',
         'init',

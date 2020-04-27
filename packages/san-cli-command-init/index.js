@@ -5,10 +5,10 @@
  * See LICENSE file in the project root for license information.
  *
  * @file init command
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
-exports.command = 'init <template> <app-name>';
+exports.command = 'init [template] [app-name]';
 exports.description = 'Create an empty repo';
 exports.builder = {
     useCache: {
@@ -43,9 +43,31 @@ exports.builder = {
         describe: 'Specify npm package download registry'
     }
 };
-exports.handler = cliApi => {
-    const {template, appName} = cliApi;
+
+// 默认项目脚手架地址
+
+const defaultTemplate = 'ksky521/san-project';
+exports.handler = async cliApi => {
+    const {warn} = require('san-cli-utils/ttyLogger');
+
+    let {template, appName} = cliApi;
+
     let {templateAlias: templateAliasMap} = cliApi.getPresets || {};
-    const options = Object.assign(cliApi, {templateAliasMap});
+
+    if (appName === undefined && template) {
+        // 只有一个参数，这个默认是使用当前文件夹，把 appName 当成是脚手架地址
+        appName = template;
+        template = defaultTemplate;
+        warn(`Use ${defaultTemplate} as scaffold template.`);
+    }
+    else if (template === undefined) {
+        // 两个参数都没有
+        template = defaultTemplate;
+        appName = './';
+        warn(`Use ${defaultTemplate} as scaffold template.`);
+    }
+
+    const options = Object.assign(cliApi, {templateAliasMap, template, appName});
+
     require('./run')(template, appName, options);
 };

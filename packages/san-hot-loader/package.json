@@ -1,33 +1,52 @@
 {
-  "name": "san-hot-loader",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "webpack-dev-server --config examples/loader/webpack.config.js",
-    "dev:babel": "webpack-dev-server --config examples/babel/webpack.config.js"
-  },
-  "author": "clark-t",
-  "license": "MIT",
-  "engines": {
-    "node": ">=8.16"
-  },
-  "dependencies": {
-    "@babel/core": "^7.7.7",
-    "@babel/plugin-proposal-class-properties": "^7.7.4",
-    "hash-sum": "^2.0.0",
-    "loader-utils": "^1.2.3"
-  },
-  "devDependencies": {
-    "babel-loader": "^8.0.6",
-    "html-webpack-plugin": "^3.2.0",
-    "jest": "^24.9.0",
-    "san": "^3.7.9",
-    "san-store": "^1.1.3",
-    "san-update": "^2.1.0",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.10.3"
-  },
-  "gitHead": "391e7ba518f1eee8a289d33c44242e7bee76e5e1"
+    "name": "san-hot-loader",
+    "version": "0.1.0-alpha.4",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "webpack-dev-server --config examples/loader/webpack.config.js",
+        "dev:babel": "webpack-dev-server --config examples/babel/webpack.config.js"
+    },
+    "author": "clark-t",
+    "license": "MIT",
+    "engines": {
+        "node": ">=8.16"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ecomfe/san-cli.git",
+        "directory": "packages/san-hot-loader"
+    },
+    "bugs": {
+        "url": "https://github.com/ecomfe/san-cli/issues"
+    },
+    "homepage": "https://ecomfe.github.io/san-cli",
+    "dependencies": {
+        "@babel/core": "^7.7.7",
+        "@babel/plugin-proposal-class-properties": "^7.7.4",
+        "hash-sum": "^2.0.0",
+        "loader-utils": "^1.2.3"
+    },
+    "keywords": [
+        "san.js",
+        "san-cli",
+        "cli",
+        "san",
+        "hmr",
+        "san-loader",
+        "loader",
+        "webpack-loader"
+    ],
+    "devDependencies": {
+        "babel-loader": "^8.0.6",
+        "html-webpack-plugin": "^3.2.0",
+        "jest": "^24.9.0",
+        "san": "^3.7.9",
+        "san-store": "^1.1.3",
+        "san-update": "^2.1.0",
+        "webpack": "^4.41.2",
+        "webpack-cli": "^3.3.10",
+        "webpack-dev-server": "^3.10.3"
+    },
+    "gitHead": "6ea2638fb6a2838f42e32db040f9fd7a25954a24"
 }

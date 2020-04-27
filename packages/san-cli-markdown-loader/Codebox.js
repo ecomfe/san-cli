@@ -1,6 +1,6 @@
 /**
  * @file codeBox
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 export default {
     template: /* html */ `

@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file init command
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const path = require('path');
@@ -23,7 +23,8 @@ module.exports = (template, appName, options = {}) => {
     // template = alias(template);
     const inPlace = !appName || appName === '.';
     // inPlace：是否在当前目录
-    options._inPlace = inPlace;
+    // inPlace上一步已经处理过一次，所以存在的话，那么就直接用
+    options._inPlace = options._inPlace ? options._inPlace : inPlace;
     // dest：新建工程的目录
     const dest = path.resolve(appName || '.');
     // 记录一下开始新建工程时的起始时间
@@ -61,7 +62,8 @@ module.exports = (template, appName, options = {}) => {
                     },
                     files: []
                 });
-            } else {
+            }
+            else {
                 logMessage(opts.completeMessage, data);
             }
             process.exit(0);
@@ -82,7 +84,8 @@ function logMessage(message, data) {
                 console.log(res);
             })
             .catch(error);
-    } else if (message) {
+    }
+    else if (message) {
         console.log(message);
     }
 }

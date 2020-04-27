@@ -4,6 +4,15 @@
     "workspaces": [
         "packages/*"
     ],
+    "license": "MIT",
+    "engines": {
+        "node": ">=8.16"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/ecomfe/san-cli"
+    },
+    "site": "https://ecomfe.github.io/san-cli",
     "devDependencies": {
         "@babel/core": "^7.4.5",
         "@babel/plugin-proposal-class-properties": "^7.8.3",
@@ -38,7 +47,9 @@
         }
     },
     "scripts": {
-        "publish": "lerna publish --registry https://registry.npmjs.org",
+        "publish": "lerna publish --registry https://registry.npmjs.org --no-git-tag-version",
+        "publish:beta": "lerna publish --registry https://registry.npmjs.org --no-git-tag-version --no-push --dist-tag beta",
+        "publish:alpha": "lerna publish --registry https://registry.npmjs.org --no-git-tag-version --no-push --dist-tag alpha",
         "commit": "git-cz",
         "doc": "cd docs && node ../packages/san-cli/index.js docit .",
         "build:doc": "cd docs && node ../packages/san-cli/index.js docit . --output",

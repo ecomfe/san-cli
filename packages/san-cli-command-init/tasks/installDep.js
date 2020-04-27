@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file 安装依赖
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const rxjs = require('rxjs');

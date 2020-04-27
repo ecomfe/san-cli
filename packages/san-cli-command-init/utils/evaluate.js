@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file evaluate
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const {error} = require('san-cli-utils/ttyLogger');

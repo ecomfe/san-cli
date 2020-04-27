@@ -1,6 +1,6 @@
 /**
  * @file config loader
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 const parseConfig = require('./parseConfig');
 /* eslint-disable space-before-function-paren */

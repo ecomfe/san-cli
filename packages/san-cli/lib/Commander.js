@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file yargs instance
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 // const {resolve} = require('path');
 const resolveCwd = require('resolve-cwd');
@@ -15,13 +15,14 @@ const lMerge = require('lodash.merge');
 
 const {getGlobalSanRcFilePath, findExisting} = require('san-cli-utils/path');
 const readPkg = require('san-cli-utils/readPkg');
-const {chalk, time, timeEnd, error, getDebugLogger} = require('san-cli-utils/ttyLogger');
-const {textColor} = require('san-cli-utils/randomColor');
+const {chalk, time, timeEnd, error, getDebugLogger, warn} = require('san-cli-utils/ttyLogger');
+const {textColor, textBold} = require('san-cli-utils/randomColor');
 
 const {scriptName, version: pkgVersion} = require('../package.json');
 const CommanderAPI = require('./CommanderAPI');
 const {getCommandName} = require('./utils');
 const buildinCmds = ['build', 'serve', 'init', 'inspect', 'command', 'plugin', 'remote', 'docit'];
+const linkText = `For more information, visit ${textColor('https://ecomfe.github.io/san-cli')}`;
 
 const globalDebug = getDebugLogger();
 const debug = getDebugLogger('command');
@@ -36,6 +37,7 @@ module.exports = class Command {
         this._commandSet = new Set();
         /* eslint-enable no-undef */
         this._commands = [];
+        this.commandMap = new Map();
         this.loadRc();
         this.init();
     }
@@ -72,7 +74,10 @@ module.exports = class Command {
                 // 保证插件存在，从 cwd 目录引入
                 // 记录下时长
                 time(`load-${name}`);
-                const path = resolveCwd(name);
+                const path = resolveCwd.silent(name);
+                if (!path) {
+                    warn(`Load CLI subcommand fail: Cannot found ${name} from package.json 'san' config.`);
+                }
                 timeEnd(`load-${name}`);
                 return path;
             })
@@ -94,7 +99,7 @@ module.exports = class Command {
             }
         }
         // 5. merge全部，返回
-        if (sanrc) {
+        if (sanrc && sanrc.commands) {
             // concat
             commands = commands.concat(sanrc.commands);
             // 防止 merge
@@ -109,8 +114,13 @@ module.exports = class Command {
         timeEnd('loadRc');
     }
     command({command, description, builder, handler, middlewares, desc}) {
+        const cmd = [command, description || desc || '', builder, handler];
+        if (middlewares) {
+            cmd.push(middlewares);
+        }
+        this.commandMap.set(getCommandName(command), cmd);
         // 统一入栈，等待run执行
-        this._commands.push([command, description || desc || '', builder, handler, middlewares]);
+        this._commands.push(cmd);
         return this;
     }
     init() {
@@ -201,7 +211,17 @@ module.exports = class Command {
             .middleware(getCommonArgv)
             .help()
             .recommendCommands()
-            .strict()
+            .check(a => {
+                // 检测没有的 command
+                const cmdName = a._[0];
+                if (cmdName && this.commandMap.get(cmdName)) {
+                    return true;
+                }
+                else if (cmdName) {
+                    return textColor(`Unknown command ${textBold(cmdName)}.`);
+                }
+                return '';
+            })
             .alias('help', 'h')
             .alias('version', 'v');
     }
@@ -311,7 +331,7 @@ module.exports = class Command {
             });
 
             log();
-            log('For more information, visit `https://ecomfe.github.io/san-cli`');
+            log(linkText);
         };
     }
     addCommands(commands) {
