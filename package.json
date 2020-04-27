@@ -22,7 +22,7 @@
         "@commitlint/travis-cli": "^8.3.5",
         "@ecomfe/eslint-config": "^3.2.0",
         "@ksky521/cz-emoji": "^1.2.1",
-        "babel-eslint": "^11.0.0-beta.2",
+        "babel-eslint": "^10.1.0",
         "commitizen": "^4.0.3",
         "commitlint-config-gitmoji": "^1.0.1",
         "eslint": "^6.8.0",
