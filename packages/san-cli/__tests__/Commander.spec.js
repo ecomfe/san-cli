@@ -35,6 +35,7 @@ test('command init', () => {
         'plugin',
         'remote',
         'docit',
+        'ui',
         'hello'
     ]);
 });
