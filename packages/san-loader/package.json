@@ -15,9 +15,13 @@
     },
     "repository": {
         "type": "git",
-        "url": "git://github.com/ecomfe/san-cli"
+        "url": "git+https://github.com/ecomfe/san-cli.git",
+        "directory": "packages/san-loader"
     },
-    "site": "https://ecomfe.github.io/san-cli",
+    "bugs": {
+        "url": "https://github.com/ecomfe/san-cli/issues"
+    },
+    "homepage": "https://ecomfe.github.io/san-cli",
     "keywords": [
         "san.js",
         "san-cli",

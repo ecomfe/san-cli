@@ -1,6 +1,6 @@
 /**
  * @file fs-extra单测mock
- * @author yanyiting <yanyiting@baidu.com>
+ * @author yanyiting
  */
 
 const fse = require('fs-extra');

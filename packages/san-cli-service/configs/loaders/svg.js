@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file svg-url-loader options
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const {getAssetPath} = require('san-cli-utils/path'); // eslint-disable-line

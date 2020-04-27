@@ -13,10 +13,7 @@
         "webpack-dev-server": "^3.10.3",
         "write-file-webpack-plugin": "^4.5.1"
     },
-    "author": {
-        "name": "ksky521",
-        "email": "ksky521@gmail.com"
-    },
+    "author": "ksky521",
     "keywords": [
         "san.js",
         "san-cli",
@@ -28,9 +25,13 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git://github.com/ecomfe/san-cli"
+        "url": "git+https://github.com/ecomfe/san-cli.git",
+        "directory": "packages/san-cli-webpack"
     },
-    "site": "https://ecomfe.github.io/san-cli",
+    "bugs": {
+        "url": "https://github.com/ecomfe/san-cli/issues"
+    },
+    "homepage": "https://ecomfe.github.io/san-cli",
     "license": "MIT",
     "gitHead": "6ea2638fb6a2838f42e32db040f9fd7a25954a24"
 }

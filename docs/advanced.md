@@ -215,7 +215,7 @@ const plugins = [
         apply(api) {
             // 使用 api 配置dev server 中间件
             api.middleware(() =>
-                require('@baidu/hulk-mock-server')({
+                require('hulk-mock-server')({
                     // 配置contentBase
                     contentBase: path.join(__dirname, './' + outputDir + '/'),
                     // 配置 mock 路径

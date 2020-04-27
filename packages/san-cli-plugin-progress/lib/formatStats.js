@@ -6,7 +6,7 @@
  *
  * @file formatStats
  * modified from https://github.com/nuxt/webpackbar/blob/master/src/profiler/format.js
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const prettyTime = require('pretty-time');

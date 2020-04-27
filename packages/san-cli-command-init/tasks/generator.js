@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file 根据模板生成项目目录结构
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const path = require('path');

@@ -7,10 +7,16 @@
     "engines": {
         "node": ">=8.16"
     },
-    "author": {
-        "name": "ksky521",
-        "email": "ksky521@gmail.com"
+    "author": "ksky521",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ecomfe/san-cli.git",
+        "directory": "packages/san-cli-plugin-babel"
     },
+    "bugs": {
+        "url": "https://github.com/ecomfe/san-cli/issues"
+    },
+    "homepage": "https://ecomfe.github.io/san-cli",
     "keywords": [
         "san.js",
         "san-cli",
@@ -20,11 +26,6 @@
         "loader",
         "webpack"
     ],
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/ecomfe/san-cli"
-    },
-    "site": "https://ecomfe.github.io/san-cli",
     "dependencies": {
         "@babel/core": "^7.6.4",
         "@babel/helper-module-imports": "^7.0.0",

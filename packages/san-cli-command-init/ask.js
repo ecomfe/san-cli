@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file 修改自 vue-cli,prompt 收集答案
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const inquirer = require('inquirer');

@@ -10,14 +10,16 @@
         "san": "^3.7.9",
         "san-cli": "0.0.1-alpha.2"
     },
-    "author": {
-        "name": "ksky521",
-        "email": "ksky521@gmail.com"
-    },
+    "author": "ksky521",
     "repository": {
         "type": "git",
-        "url": "git://github.com/ecomfe/san-cli"
+        "url": "git+https://github.com/ecomfe/san-cli.git",
+        "directory": "packages/san-cli-docit-theme"
     },
+    "bugs": {
+        "url": "https://github.com/ecomfe/san-cli/issues"
+    },
+    "homepage": "https://ecomfe.github.io/san-cli",
     "keywords": [
         "san",
         "loader",

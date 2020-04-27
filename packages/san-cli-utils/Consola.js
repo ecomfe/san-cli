@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file Consola 订制版
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const debug = require('debug');

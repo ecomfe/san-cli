@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file 跟 tty 输出相关的log
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const stripAnsi = require('strip-ansi');

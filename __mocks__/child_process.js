@@ -1,6 +1,6 @@
 /**
  * @file child_process单测mock
- * @author yanyiting <yanyiting@baidu.com>
+ * @author yanyiting
  */
 
 const cp = {

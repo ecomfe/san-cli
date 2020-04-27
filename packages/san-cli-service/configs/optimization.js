@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file 优化相关
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const TerserPlugin = require('terser-webpack-plugin');

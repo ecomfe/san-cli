@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file utils
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 const path = require('path');
 const importLazy = require('import-lazy')(require);

@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file init wrapper
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 module.exports = require('san-cli-command-init');
 

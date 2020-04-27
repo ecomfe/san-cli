@@ -18,7 +18,7 @@
 
 ```json
 // sanrc.json 举例
-{"templateAlias": {"project": "ssh://git@icode.baidu.com:8235/baidu/hulk/san-project-base"}}
+{"templateAlias": {"project": "ssh://git@icode.baidu.com:8235/baidu/foo/bar"}}
 ```
 
 配置在`package.json`的`san`字段举例：
@@ -91,7 +91,7 @@ san plugin add san-plugin.js -g
 
 ```bash
 # san remote add <name> <url>
-san remote add project ssh://git@icode.baidu.com:8235/baidu/hulk/san-project-base
+san remote add project ssh://git@icode.baidu.com:8235/baidu/foo/bar
 san remote ls
 san remote rm project
 ```

@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file init command
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 exports.command = 'init [template] [app-name]';

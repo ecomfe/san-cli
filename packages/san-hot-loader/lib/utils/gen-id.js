@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file gen-id.js
- * @author tanglei02 (tanglei02@baidu.com)
+ * @author clark-t
  */
 
 const path = require('path');

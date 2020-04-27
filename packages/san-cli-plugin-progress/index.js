@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file progress plugin
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 module.exports = {

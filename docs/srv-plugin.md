@@ -80,7 +80,7 @@ const plugins = [
         id: 'smarty-middleware',
         apply(api) {
             api.middleware(() =>
-                require('@baidu/hulk-mock-server')({
+                require('hulk-mock-server')({
                     contentBase: path.join(__dirname, './' + outputDir + '/'),
                     rootDir: path.join(__dirname, './mock'),
                     processors: [
@@ -144,7 +144,7 @@ module.exports = {
 ```js
 api.middleware(() =>
     // return 一个 Expressjs 中间件
-    require('@baidu/hulk-mock-server')({
+    require('hulk-mock-server')({
         contentBase: path.join(__dirname, './' + outputDir + '/'),
         rootDir: path.join(__dirname, './mock'),
         processors: [

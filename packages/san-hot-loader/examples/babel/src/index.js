@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file index.js
- * @author tanglei02 (tanglei02@baidu.com)
+ * @author clark-t
  */
 
 // 引入 san 但完全不使用其 api 定义组件时，不会被识别为 san 组件

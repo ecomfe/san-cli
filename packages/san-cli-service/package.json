@@ -7,15 +7,16 @@
     "engines": {
         "node": ">=8.16"
     },
-    "author": {
-        "name": "ksky521",
-        "email": "ksky521@gmail.com"
-    },
+    "author": "ksky521",
     "repository": {
         "type": "git",
-        "url": "git://github.com/ecomfe/san-cli"
+        "url": "git+https://github.com/ecomfe/san-cli.git",
+        "directory": "packages/san-cli-service"
     },
-    "site": "https://ecomfe.github.io/san-cli",
+    "bugs": {
+        "url": "https://github.com/ecomfe/san-cli/issues"
+    },
+    "homepage": "https://ecomfe.github.io/san-cli",
     "keywords": [
         "san.js",
         "san-cli",

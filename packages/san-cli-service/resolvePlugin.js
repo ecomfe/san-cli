@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file 通过 basedir 获取 plugin require 路径
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const SError = require('san-cli-utils/SError');

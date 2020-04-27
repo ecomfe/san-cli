@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file get-handler.js
- * @author tanglei02 (tanglei02@baidu.com)
+ * @author clark-t
  */
 
 const ComponentHandler = require('./component/component-hmr-handler');

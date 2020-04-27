@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file 跟环境相关的函数
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const {execSync} = require('child_process');

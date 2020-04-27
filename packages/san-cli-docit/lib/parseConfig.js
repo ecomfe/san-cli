@@ -1,6 +1,6 @@
 /**
  * @file load config file
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 const fs = require('fs');

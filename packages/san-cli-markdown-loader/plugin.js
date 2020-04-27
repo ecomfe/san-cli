@@ -1,6 +1,6 @@
 /**
  * @file webpack 4 版本 plguin，添加 san-md 拦截
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 const qs = require('querystring');
 

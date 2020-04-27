@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file example entry
- * @author tanglei02 (tanglei02@baidu.com)
+ * @author clark-t
  */
 
 // import App from './components/js/comp-global-store/index';

@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file build run
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author ksky521
  */
 
 module.exports = function apply(argv, api, projectOptions) {

@@ -6,15 +6,16 @@
     "engines": {
         "node": ">=8"
     },
-    "author": {
-        "name": "ksky521",
-        "email": "ksky521@gmail.com"
-    },
+    "author": "ksky521",
     "repository": {
         "type": "git",
-        "url": "git://github.com/ecomfe/san-cli"
+        "url": "git+https://github.com/ecomfe/san-cli.git",
+        "directory": "packages/san-cli-docit"
     },
-    "site": "https://ecomfe.github.io/san-cli",
+    "bugs": {
+        "url": "https://github.com/ecomfe/san-cli/issues"
+    },
+    "homepage": "https://ecomfe.github.io/san-cli",
     "peerDependencies": {
         "san": "^3.7.9"
     },

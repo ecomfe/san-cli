@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file child-template.js
- * @author tanglei02(tanglei02@baidu.com)
+ * @author clark-t
  */
 
 export default `
