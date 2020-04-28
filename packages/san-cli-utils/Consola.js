@@ -51,10 +51,12 @@ module.exports = class SanConsola extends Consola {
                 if (d >= 1e3) {
                     // red
                     d = chalk.redBright.bold(`${d}ms`);
-                } else if (d >= 3e2) {
+                }
+                else if (d >= 3e2) {
                     // warn
                     d = chalk.yellowBright.bold(`${d}ms`);
-                } else {
+                }
+                else {
                     // green
                     d = chalk.greenBright(`${d}ms`);
                 }

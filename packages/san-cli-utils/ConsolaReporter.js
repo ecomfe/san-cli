@@ -85,7 +85,6 @@ module.exports = class ConsolaReporter extends FancyReporter {
         const date = secondaryColor(
             logObj.date.toLocaleTimeString ? logObj.date.toLocaleTimeString() : this.formatDate(logObj.date)
         );
-
         const type = this.formatType(logObj, isBadge);
 
         const tag = logObj.tag ? secondaryColor(logObj.tag) : '';

@@ -14,36 +14,6 @@ const {textColor} = require('san-cli-utils/randomColor');
 // 这里处理 loader 缺失的问题
 const rules = [
     {
-        type: 'Cant-find-node-sass',
-        re: /Cannot find module.+node-sass/,
-        msg: (e, match) => ` To import Sass files, you first need to install node-sass.
- Run \`npm install node-sass\` or \`yarn add node-sass\` inside your workspace.`
-    },
-    {
-        type: 'Parse-error',
-        re: /Line (\d+):(?:(\d+):)?\s*Parsing error: (.+)$/,
-        msg: (e, [, errorLine, errorColumn, errorMessage]) =>
-            ` Syntax error: ${errorMessage} (${errorLine}:${errorColumn})`
-    },
-    {
-        type: 'Export-error',
-        re: /^.*export '(.+?)' was not found in '(.+?)'.*$/gm,
-        msg: (e, match) =>
-            ` Attempted import error: \'${match[1]}\' is not exported from \'${match[2]}\'.`
-    },
-    {
-        type: 'Export-error',
-        re: /^.*export 'default' \(imported as '(.+?)'\) was not found in '(.+?)'.*$/gm,
-        msg: (e, [, $1, $2]) =>
-            ` Attempted import error: \'${$1}\' does not contain a default export (imported as \'${$2}\').`
-    },
-    {
-        type: 'Export-error',
-        re: /^.*export '(.+?)' \(imported as '(.+?)'\) was not found in '(.+?)'.*$/gm,
-        msg: (e, [, $1, $2, $3]) =>
-            ` Attempted import error: \'${$1}\' is not exported from \'${$3}\' (imported as \'${$2}\').`
-    },
-    {
         type: 'cant-resolve-loader',
         re: /Can't resolve '(.*loader)'/,
         msg: (e, match) => `  Failed to resolve loader: ${textColor(match[1])}\n` + '  You may need to install it.\n'
@@ -61,6 +31,7 @@ const defaultTransformers = [
             /* eslint-disable operator-linebreak */
             const message =
                 typeof error.webpackError === 'string' ? error.webpackError : error.webpackError.message || '';
+
             for (const {re, msg, type} of rules) {
                 const match = message.match(re);
                 if (match) {

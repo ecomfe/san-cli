@@ -15,7 +15,7 @@ const sanboxComponent = 'sanbox:san-component';
 const sanboxJS = 'sanbox:js-component';
 const {sanboxRegExp} = require('./const');
 const compiler = require('./lib/compiler').getCompiler();
-const defaultTemplate = path.join(__dirname, '../template.san');
+const defaultTemplate = path.join(__dirname, './template.san');
 
 const cacheMap = new Map();
 
@@ -65,6 +65,9 @@ module.exports = function loader(content) {
     const matches = content.match(sanboxRegExp);
     if (!matches) {
         return content;
+    }
+    if (!matches[index]) {
+        throw new Error(`md-picker: Get ${get}-${index} from ${resourcePath} fail!`);
     }
     content = matches[index].trim().replace(sanboxRegExp, '$2');
 
