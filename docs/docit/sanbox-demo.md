@@ -60,13 +60,13 @@ san docit 命令是放在`packages/san-cli-docit`中实现的，它是一个 Com
         <h1>↓ 来自`?san-md-picker&get=sanbox&eq=0`</h1>
         <sanbox />
         <hr />
-        <h1>↓ 来自`?san-md-picker&get=sanbox:text-tag&eq=0`</h1>
+        <h1>↓ 来自`?san-md-picker&get=text-tag&eq=0`</h1>
         <text-tag />
         <hr />
-        <h1>↓ 来自`?san-md-picker&get=sanbox:highlight-code&eq=0`</h1>
+        <h1>↓ 来自`?san-md-picker&get=highlight-code&eq=0`</h1>
         <highlight-code />
         <hr />
-        <h1>↓ 来自`?san-md-picker&get=sanbox:sancode&eq=0`</h1>
+        <h1>↓ 来自`?san-md-picker&get=san-component&eq=0`</h1>
         <san-code />
     </div>
 </template>

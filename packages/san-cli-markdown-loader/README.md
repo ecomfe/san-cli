@@ -122,11 +122,11 @@
 ```js
 import {Component} from 'san';
 // 获取fence中的语法高亮代码
-import HighlightCode from './demo.md?san-md-picker&get=sanbox:highlight-code&eq=0';
+import HighlightCode from './demo.md?san-md-picker&get=highlight-code&eq=0';
 // 获取sanbox中的md转html后的代码
-import TextTag from './demo.md?san-md-picker&get=sanbox:text-tag&eq=0';
+import TextTag from './demo.md?san-md-picker&get=text-tag&eq=0';
 // 获取sanbox中代码部分转成的san component
-import Component from './demo.md?san-md-picker&get=sanbox:san-component&eq=0';
+import Component from './demo.md?san-md-picker&get=san-component&eq=0';
 // 获取sanbox完整部分
 import Sanbox from './demo.md?san-md-picker&get=sanbox&eq=0';
 
@@ -145,4 +145,3 @@ export default class Index extends Component {
 通过这种方式可以直接预览 Markdown 文档中的代码部分效果。
 
 比如想创建一个移动页面嵌入到 iframe，这个移动页面只需要 Markdown 文件中 San Component 部分预览功能，可以创建个`preview.js`，然后引入`import Component from './demo.md?san-md-picker&get=sanbox:san-component&eq=0';`
-

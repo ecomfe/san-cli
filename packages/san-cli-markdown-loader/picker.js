@@ -8,11 +8,10 @@ const loaderUtils = require('loader-utils');
 const posthtml = require('posthtml');
 const render = require('posthtml-render');
 const debug = require('debug')('san-cli-markdown-loader:picker');
-const sanboxTextTag = 'sanbox:text-tag';
-const sanboxHighlightCode = 'sanbox:highlight-code';
-const sanboxSanComponent = 'sanbox:sancode';
-const sanboxComponent = 'sanbox:san-component';
-const sanboxJS = 'sanbox:js-component';
+const sanboxTextTag = 'text-tag';
+const sanboxHighlightCode = 'highlight-code';
+const sanboxComponent = 'san-component';
+const sanboxJS = 'js-component';
 const {sanboxRegExp} = require('./const');
 const compiler = require('./lib/compiler').getCompiler();
 const defaultTemplate = path.join(__dirname, './template.san');
@@ -114,7 +113,6 @@ module.exports = function loader(content) {
             codo = `<script>${sanCode}</script>`;
             break;
         case sanboxComponent:
-        case sanboxSanComponent:
             // 如果 sanCode
             codo = sanCode;
             break;
