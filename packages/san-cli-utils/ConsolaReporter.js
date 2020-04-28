@@ -17,34 +17,6 @@ const randomColor = require('./randomColor').color;
 
 const RULES = [
     {
-        type: 'Cant-find-node-sass',
-        re: /Cannot find module.+node-sass/,
-        msg: match => `To import Sass files, you first need to install node-sass.
-Run \`npm install node-sass\` or \`yarn add node-sass\` inside your workspace.`
-    },
-    {
-        type: 'Parse-error',
-        re: /Line (\d+):(?:(\d+):)?\s*Parsing error: (.+)$/,
-        msg: ([, errorLine, errorColumn, errorMessage]) => `Syntax error: ${errorMessage} (${errorLine}:${errorColumn})`
-    },
-    {
-        type: 'Export-not-found',
-        re: /^.*export '(.+?)' was not found in '(.+?)'.*$/gm,
-        msg: match => `Attempted import error: \'${match[1]}\' is not exported from \'${match[2]}\'.`
-    },
-    {
-        type: 'Export-export-error',
-        re: /^.*export 'default' \(imported as '(.+?)'\) was not found in '(.+?)'.*$/gm,
-        // eslint-disable-next-line max-len
-        msg: ([, $1, $2]) => `Attempted import error: \'${$1}\' does not contain a default export (imported as \'${$2}\').`
-    },
-    {
-        type: 'Export-error',
-        re: /^.*export '(.+?)' \(imported as '(.+?)'\) was not found in '(.+?)'.*$/gm,
-        // eslint-disable-next-line max-len
-        msg: ([, $1, $2, $3]) => `Attempted import error: \'${$1}\' is not exported from \'${$3}\' (imported as \'${$2}\').`
-    },
-    {
         type: 'Cant-find-module',
         re: /Cannot find module '(.+?)'/,
         msg: match => `Cannot find module: \`${match[1]}\``

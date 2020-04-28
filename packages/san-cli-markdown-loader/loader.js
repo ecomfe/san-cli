@@ -148,6 +148,9 @@ module.exports = function(content) {
             Content.$matter = ${JSON.stringify(matter)};
             Content.$toc = ${JSON.stringify(toc)};
             Content.$link = ${JSON.stringify(link)}
+            export const matter = ${JSON.stringify(matter)};
+            export const link = ${JSON.stringify(link)};
+            export const toc = ${JSON.stringify(toc)};
             export default Content;
             if(window){
                 window.$Page = Content;
@@ -185,6 +188,9 @@ module.exports = function(content) {
             Content.$matter = ${JSON.stringify(matter)};
             Content.$toc = ${JSON.stringify(toc)};
             Content.$link = ${JSON.stringify(link)}
+            export const matter = ${JSON.stringify(matter)};
+            export const link = ${JSON.stringify(link)};
+            export const toc = ${JSON.stringify(toc)};
             export default Content;
             if(window){
                 window.$Page = Content;
