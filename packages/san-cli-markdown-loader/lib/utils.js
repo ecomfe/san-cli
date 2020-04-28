@@ -55,9 +55,10 @@ exports.escapeHtml = escapeHtml;
 // e.g.
 // Input: "<a> b",   Output: "b"
 // Input: "`<a>` b", Output: "`<a>` b"
-exports.removeNonCodeWrappedHTML = function removeNonCodeWrappedHTML(str) {
+function removeNonCodeWrappedHTML(str) {
     return String(str).replace(/(^|[^><`])<.*>([^><`]|$)/g, '$1$2');
-};
+}
+exports.removeNonCodeWrappedHTML = removeNonCodeWrappedHTML;
 
 const emojiData = require('markdown-it-emoji/lib/data/full.json');
 function parseEmojis(str) {
@@ -85,4 +86,6 @@ function compose(...processors) {
 exports.compose = compose;
 
 // Unescape html, parse emojis and remove some md tokens.
-exports.parseHeaders = v => compose(unescapeHtml, parseEmojis, removeMarkdownTokens, str => str.trim());
+// eslint-disable-next-line
+const parseHeaders = (exports.parseHeaders = v => compose(unescapeHtml, parseEmojis, removeMarkdownTokens, str => str.trim()));
+exports.deeplyParseHeaders = compose(removeNonCodeWrappedHTML, parseHeaders)();

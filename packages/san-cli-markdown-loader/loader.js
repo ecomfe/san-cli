@@ -152,9 +152,6 @@ module.exports = function(content) {
             export const link = ${JSON.stringify(link)};
             export const toc = ${JSON.stringify(toc)};
             export default Content;
-            if(window){
-                window.$Page = Content;
-            }
         `;
     }
     else {
@@ -192,9 +189,6 @@ module.exports = function(content) {
             export const link = ${JSON.stringify(link)};
             export const toc = ${JSON.stringify(toc)};
             export default Content;
-            if(window){
-                window.$Page = Content;
-            }
         `;
     }
     return code;

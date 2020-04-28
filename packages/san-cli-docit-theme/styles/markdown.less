@@ -1,11 +1,6 @@
-.markdown {
-    color: @site-text-color;
-    font-size: @font-size-base;
-    line-height: 1.75;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 40px 40px;
+@import './prism.less';
 
+.markdown {
     img[alt='avatar'] {
         width: 420px;
     }
@@ -202,12 +197,14 @@
         color: @site-text-color-secondary;
         border-left: 4px solid #ffe58f;
     }
-    div.error,div.danger {
+    div.error,
+    div.danger {
         background-color: #fff1f0;
         color: @site-text-color-secondary;
         border-left: 4px solid #ffa39e;
     }
-    div.info,div.tip {
+    div.info,
+    div.tip {
         background-color: #e6f7ff;
         color: @site-text-color-secondary;
         border-left: 4px solid #2196f3;

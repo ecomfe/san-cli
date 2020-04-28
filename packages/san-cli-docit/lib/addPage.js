@@ -105,9 +105,14 @@ module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
             // 添加个 query，然后在 resolve plugin 获取它
             webpackConfig
                 .entry(chunkname)
-                .add(absoluteFile)
-                .add(`${entry}`);
+                .add(`${entry}?md=${absoluteFile}`);
             webpackConfig.plugin(`html-${chunkname}`).use(HTMLPlugin, [pageHtmlOptions]);
+            const baseRule = webpackConfig.module.rule('entry-loader').test(a => {
+                return new RegExp(entry).test(a);
+            });
+            baseRule
+                .use('entry-loader')
+                .loader(require.resolve('./entryLoader'));
         });
 };
 function ensureRelative(outputDir, p) {

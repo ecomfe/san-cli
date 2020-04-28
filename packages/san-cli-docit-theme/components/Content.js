@@ -8,9 +8,12 @@ export default class Content extends Component {
     static template = /* html */ `
         <article id="content">
             <content/>
+            <aside class="toc">{{toc.html|raw}}</aside>
         </article>
     `;
-    static components = {
-        content: $Page
-    };
+    getComponentType(aNode) {
+        if (aNode.tagName === 'content') {
+            return this.data.get('content');
+        }
+    }
 }

@@ -1,4 +1,4 @@
-aside {
+aside#sidebar {
     background-color: #fff;
     width: 300px;
     position: fixed;
@@ -42,7 +42,7 @@ aside {
     }
     li ul {
         margin-left: -@li_right;
-        @li_right_secondary: @li_right+30px;
+        @li_right_secondary: @li_right+20px;
         & > li {
             padding-left: @li_right_secondary;
             font-weight: normal;
@@ -51,7 +51,7 @@ aside {
                 margin-left: -@li_right_secondary;
 
                 & > li {
-                    padding-left: @li_right_secondary+30px;
+                    padding-left: @li_right_secondary+20px;
                 }
             }
         }

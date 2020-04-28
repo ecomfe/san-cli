@@ -49,7 +49,8 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
                     .entry('app')
                     .add(entry)
                     .end();
-            } else {
+            }
+            else {
                 addPage(
                     layouts,
                     projectOptions.outputDir,
@@ -65,15 +66,17 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
                     siteData
                 );
             }
-        } else if (isDirectory) {
-            const markdownFiles = globby.sync(['*.md', '*/*.md', '*.san', '*/*.san'], {
+        }
+        else if (isDirectory) {
+            const markdownFiles = globby.sync(['*.md', '*/*.md'], {
                 cwd: entry,
                 followSymbolicLinks: false,
                 ignore: ['_*.md', '.*.md', 'node_modules']
             });
 
             addPage(layouts, projectOptions.outputDir, markdownFiles, api.resolve(entry), webpackConfig, siteData);
-        } else {
+        }
+        else {
             error(`\`${argv.entry}\` is not exist!`);
             process.exit(1);
         }
@@ -103,7 +106,8 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
                 webpackConfig.resolve.alias
                     // 加个🍗
                     .set(aliasName, `${aliasfile}?exportType=data&context=${docContext}&rootUrl=${publicPath}`);
-            } else {
+            }
+            else {
                 webpackConfig.resolve.alias
                     // 加个假的，防止找不到报错
                     .set(aliasName, `${require.resolve(`./template/${filepath}`)}?exportType=data`);
@@ -133,7 +137,8 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
     if (argv.output) {
         // build 模式，删掉 webpack devServer；
         delete webpackConfig.devServer;
-    } else {
+    }
+    else {
         webpackConfig.devServer = Object.assign({hot: !isProd, compress: isProd}, webpackConfig.devServer);
     }
     return webpackConfig;
@@ -150,13 +155,15 @@ function resolveEntry(entry) {
             ext = path.extname(entry);
             if (ext === '.md' || ext === '.js' || ext === '.markdown') {
                 isFile = true;
-            } else {
+            }
+            else {
                 error('A valid entry file should be one of: *.js or *.san.');
                 process.exit(1);
             }
             isFile = true;
         }
-    } catch (e) {
+    }
+    catch (e) {
         return {isFile: false};
     }
     return {

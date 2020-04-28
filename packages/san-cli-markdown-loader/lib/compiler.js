@@ -70,36 +70,39 @@ function getCompiler(opt = {}) {
                         rs += `<p class="info-title">${parser.utils.escapeHtml(title)}</p>\n`;
                     }
                     return rs;
-                } else {
-                    // add a class to the opening tag
-                    const params = info.split(/\s+/);
-                    let id = null;
-                    let classes = [];
-                    for (let i = 0; i < params.length; i++) {
-                        let cls = params[i];
-                        if (cls.includes('=')) {
-                            let [set0, set1] = cls.split('=', 2);
-                            tokens[idx].attrJoin(set0, set1);
-                        } else if (cls[0] === '#') {
-                            id = cls.slice(1);
-                        } else if (cls[0] === '.') {
-                            classes.push(cls.slice(1));
-                        } else {
-                            classes.push(cls);
-                        }
+                }
+                // add a class to the opening tag
+                const params = info.split(/\s+/);
+                let id = null;
+                let classes = [];
+                for (let i = 0; i < params.length; i++) {
+                    let cls = params[i];
+                    if (cls.includes('=')) {
+                        let [set0, set1] = cls.split('=', 2);
+                        tokens[idx].attrJoin(set0, set1);
                     }
-                    if (id) {
-                        tokens[idx].attrJoin('id', id);
+                    else if (cls[0] === '#') {
+                        id = cls.slice(1);
                     }
-                    if (classes.length > 0) {
-                        tokens[idx].attrJoin('class', classes.join(' '));
+                    else if (cls[0] === '.') {
+                        classes.push(cls.slice(1));
+                    }
+                    else {
+                        classes.push(cls);
                     }
                 }
+                if (id) {
+                    tokens[idx].attrJoin('id', id);
+                }
+                if (classes.length > 0) {
+                    tokens[idx].attrJoin('class', classes.join(' '));
+                }
+
                 return slf.renderToken(tokens, idx, options, env, slf);
-            } else {
-                // closing tag
-                return '</div>\n';
             }
+            // closing tag
+            return '</div>\n';
+
         }
     });
 
