@@ -9,6 +9,7 @@ const loaderUtils = require('loader-utils');
 const {NS, sanboxRegExp} = require('./const');
 const compiler = require('./lib/compiler');
 const parseHeader = require('./lib/parseHeader');
+const parseList = require('./lib/parseList');
 const {mdLink2Html} = require('./lib/utils');
 
 // eslint-disable-next-line
@@ -67,7 +68,6 @@ module.exports = function(content) {
         context: cwd,
         rootUrl
     };
-    const toc = parseHeader(content, compiler.getCompiler(markdownIt), extractHeaders);
 
     const getTemplate = (content, quote = true) => {
         const cls = typeof matter.classes === 'string' ? [matter.classes] : matter.classes || ['markdown'];
@@ -86,25 +86,24 @@ module.exports = function(content) {
         return `<san-box-${idx}></san-box-${idx}>`;
     });
 
-    const contextQuery = `context=${JSON.stringify({
-        codebox,
-        cwd,
-        i18n,
-        rootUrl
-    })}`;
-
     // 存在 exportType 的情况
     switch (query.exportType) {
-        case 'data': {
+        case 'list': {
             // 这里是给 sidebar 和 navbar 这样的 list 用到的解析
-            const list = compiler(content, markdownIt);
+            const listHtml = parseList(content, {
+                resourcePath,
+                relativeTo: query.relativeTo,
+                relativeLink: link,
+                context: cwd,
+                rootUrl
+            });
             return `
                 /**
-                 * markdown with exportType=data
+                 * markdown with exportType=list
                  * @file ${resourcePath}
                  * @query ${rawQuery}
                  */
-                export default ${JSON.stringify(list)};
+                export default ${JSON.stringify(listHtml)};
             `;
         }
         // 这是返回 html，不处理 san box
@@ -123,6 +122,13 @@ module.exports = function(content) {
             `;
     }
 
+    const toc = parseHeader(content, compiler.getCompiler(markdownIt), extractHeaders);
+    const contextQuery = `context=${JSON.stringify({
+        codebox,
+        cwd,
+        i18n,
+        rootUrl
+    })}`;
     // 为了代码好阅读：
     // 1. 默认 md 引入会进入到这里逻辑，然后替换掉 sanbox 中的内容为了对应的 tag
     // 2. template 是直接引入的 html-loader!markdown-loaer!md?exportType=html

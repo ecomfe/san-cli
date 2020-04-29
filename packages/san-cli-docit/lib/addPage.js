@@ -3,6 +3,7 @@
  * @author ksky521
  */
 const path = require('path');
+const qs = require('querystring');
 const fs = require('fs');
 const grayMatter = require('gray-matter');
 const {debug, error} = require('san-cli-utils/ttyLogger');
@@ -85,12 +86,15 @@ module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
                 }
             }
             // 读取下 matter 信息，传入进去，替换 title 等
-            const pageHtmlOptions = Object.assign(
+            siteData = Object.assign(
                 {
                     title: 'San Docit'
                 },
                 siteData,
-                matter,
+                matter
+            );
+            const pageHtmlOptions = Object.assign(
+                siteData,
                 {
                     compile: false,
                     rootUrl: siteData.rootUrl,
@@ -102,17 +106,20 @@ module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
             // 删除没用的
             delete pageHtmlOptions.layouts;
 
+            const query = qs.stringify({
+                md: absoluteFile
+            });
             // 添加个 query，然后在 resolve plugin 获取它
             webpackConfig
                 .entry(chunkname)
-                .add(`${entry}?md=${absoluteFile}`);
+                .add(`${entry}?${query}`);
             webpackConfig.plugin(`html-${chunkname}`).use(HTMLPlugin, [pageHtmlOptions]);
             const baseRule = webpackConfig.module.rule('entry-loader').test(a => {
                 return new RegExp(entry).test(a);
             });
             baseRule
                 .use('entry-loader')
-                .loader(require.resolve('./entryLoader'));
+                .loader(require.resolve('./entryLoader')).options(siteData);
         });
 };
 function ensureRelative(outputDir, p) {

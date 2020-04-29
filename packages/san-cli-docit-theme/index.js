@@ -1,36 +1,31 @@
 import './styles/index.less';
 import {Component} from 'san';
-import Sidebar from './components/Sidebar';
-import Header from './components/Header';
 import Content from './components/Content';
-
+/* global $content, $toc, $navbar, $link, $sidebar, $config, $matter */
 class Index extends Component {
     static template = /*html*/ `
         <div id="site">
-            <header/>
-            <sidebar/>
+            <header id="header">
+                <a href="{{config.rootUrl}}" class="logo">{{config.siteName}}</a>
+                {{navbarHtml | raw}}
+            </header>
+            <aside id="sidebar">
+                {{sidebarHtml | raw}}
+            </aside>
             <content content="{{content}}" toc="{{toc}}"/>
         </div>
     `;
     static components = {
-        header: Header,
-        sidebar: Sidebar,
         content: Content
     };
     initData() {
         return {
+            config: $config,
             content: $content,
-            toc: $toc
-        }
-    }
-    attached() {
-        [].slice.call(document.querySelectorAll('#sidebar a'), 0).find(anode => {
-            if (anode.href === location.href) {
-                anode.parentNode.classList.add('active');
-                return true;
-            }
-            return false;
-        });
+            toc: $toc,
+            sidebarHtml: $sidebar,
+            navbarHtml: $navbar
+        };
     }
 }
 

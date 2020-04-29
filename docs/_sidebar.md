@@ -21,4 +21,3 @@
     -   [插件机制](/plugin.md)
         -   [Command 插件](/cmd-plugin.md)
         -   [Service 插件](/srv-plugin.md)
-
