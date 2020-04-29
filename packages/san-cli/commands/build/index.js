@@ -40,13 +40,6 @@ exports.builder = {
         default: false,
         describe: 'Colorless log'
     },
-    stats: {
-        type: 'string',
-        default: 'table',
-        hidden: true,
-        choices: ['none', 'table', 'errors-only', 'minimal', 'normal', 'detailed'],
-        describe: 'Show webpack stats params'
-    },
     modern: {
         type: 'boolean',
         default: false,

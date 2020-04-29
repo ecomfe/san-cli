@@ -32,7 +32,8 @@ module.exports = function apply(argv, api, projectOptions) {
         if (stats && stats.toJson) {
             // const info = stats.toJson();
             // error(info.errors);
-        } else {
+        }
+        else {
             info('Build failed with errors.');
             error(err ? err : 'Webpack config error, use `--verbose` flag to show debug log');
         }
@@ -53,28 +54,18 @@ module.exports = function apply(argv, api, projectOptions) {
                 timings: true,
                 performance: true
             });
-
-            if (verbose) {
-                argv.stats = 'verbose';
-            }
-            if (argv.stats === 'table') {
-                console.log(
-                    require('san-cli-webpack/lib/formatStats')(stats, targetDirShort, {
-                        resolve: p => api.resolve(p)
-                    })
-                );
-            } else {
-                const Stats = require('webpack/lib/Stats');
-                const statsOptions = Stats.presetToOptions(argv.stats);
-                statsOptions.colors = !!argv.colors || !!argv.color;
-                console.log(webpackStats.toString(statsOptions));
-            }
+            console.log(
+                require('san-cli-webpack/lib/formatStats')(stats, targetDirShort, {
+                    resolve: p => api.resolve(p)
+                })
+            );
             if (!watch) {
                 const duration = (Date.now() - startTime) / 1e3;
                 if (isModern) {
                     if (isModernBuild) {
                         successLog('Build modern bundle success');
-                    } else {
+                    }
+                    else {
                         successLog('Build legacy bundle success');
                         console.log();
                     }
@@ -129,7 +120,8 @@ module.exports = function apply(argv, api, projectOptions) {
                     });
                 })
                 .catch(fail);
-        } else {
+        }
+        else {
             // 这里是 modern mode 的打包
             // 注意要用 clean = false 哦！！！不然会删掉 legacy-${filename}.json，legacy 打包就白费了！
             // 获取 webpack 配置
@@ -150,7 +142,8 @@ module.exports = function apply(argv, api, projectOptions) {
                 })
                 .catch(fail);
         }
-    } else {
+    }
+    else {
         // 获取 webpack 配置
         // for build
         build({webpackConfig: getNormalizeWebpackConfig(api, projectOptions, argv)})

@@ -16,7 +16,7 @@ const debug = getDebugLogger('webpack:build');
 const closeDevtoolDebug = getDebugLogger('webpack:closeDevtool');
 
 module.exports = function build({webpackConfig, compilerCallback}) {
-    webpackConfig.plugins.push(new SanFriendlyErrorsPlugin({clearConsole: false}));
+    webpackConfig.plugins.push(new SanFriendlyErrorsPlugin());
 
     return new Promise((resolve, reject) => {
         debug('start');
@@ -60,7 +60,8 @@ module.exports = function build({webpackConfig, compilerCallback}) {
         }
         try {
             compiler.run(callback);
-        } catch (e) {
+        }
+        catch (e) {
             reject(e);
         }
     });
