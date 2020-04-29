@@ -1,6 +1,6 @@
 {
     "name": "san-cli-command-init",
-    "version": "0.1.0-alpha.4",
+    "version": "0.1.0-alpha.5",
     "main": "index.js",
     "author": "ksky521",
     "repository": {
@@ -24,7 +24,7 @@
         "handlebars": "^4.5.1",
         "inquirer": "^7.0.0",
         "rxjs": "^6.5.3",
-        "san-cli-utils": "^0.1.0-alpha.4",
+        "san-cli-utils": "^0.1.0-alpha.5",
         "through2": "^3.0.1",
         "vinyl-fs": "^3.0.3"
     },
@@ -34,5 +34,5 @@
         "san.js",
         "san-cli"
     ],
-    "gitHead": "6ea2638fb6a2838f42e32db040f9fd7a25954a24"
+    "gitHead": "b394f61d55b7b257e14b8a9fece7edc7ae61cc50"
 }

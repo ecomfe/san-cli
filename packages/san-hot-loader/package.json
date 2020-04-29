@@ -1,6 +1,6 @@
 {
     "name": "san-hot-loader",
-    "version": "0.1.0-alpha.4",
+    "version": "0.1.0",
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -48,5 +48,5 @@
         "webpack-cli": "^3.3.10",
         "webpack-dev-server": "^3.10.3"
     },
-    "gitHead": "6ea2638fb6a2838f42e32db040f9fd7a25954a24"
+    "gitHead": "b394f61d55b7b257e14b8a9fece7edc7ae61cc50"
 }
