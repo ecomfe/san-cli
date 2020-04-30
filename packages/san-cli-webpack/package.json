@@ -1,36 +1,42 @@
 {
-    "name": "san-cli-webpack",
-    "version": "0.1.0-alpha.5",
-    "main": "index.js",
-    "dependencies": {
-        "fs-extra": "^8.1.0",
-        "html-webpack-plugin": "^3.2.0",
-        "portfinder": "^1.0.25",
-        "san-cli-utils": "^0.1.0-alpha.5",
-        "tty-table": "^2.8.2",
-        "webpack": "^4.41.2",
-        "webpack-dev-server": "^3.10.3",
-        "write-file-webpack-plugin": "^4.5.1"
-    },
-    "author": "ksky521",
-    "keywords": [
-        "san.js",
-        "san-cli",
-        "cli",
-        "san",
-        "hmr",
-        "loader",
-        "webpack"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/ecomfe/san-cli.git",
-        "directory": "packages/san-cli-webpack"
-    },
-    "bugs": {
-        "url": "https://github.com/ecomfe/san-cli/issues"
-    },
-    "homepage": "https://ecomfe.github.io/san-cli",
-    "license": "MIT",
-    "gitHead": "b394f61d55b7b257e14b8a9fece7edc7ae61cc50"
+  "name": "san-cli-webpack",
+  "version": "0.1.0-alpha.5",
+  "main": "index.js",
+  "dependencies": {
+    "fs-extra": "^8.1.0",
+    "html-webpack-plugin": "^3.2.0",
+    "portfinder": "^1.0.25",
+    "san-cli-utils": "^0.1.0-alpha.5",
+    "tty-table": "^2.8.2",
+    "webpack": "^4.41.2",
+    "webpack-dev-server": "^3.10.3",
+    "write-file-webpack-plugin": "^4.5.1",
+    "snyk": "^1.316.1"
+  },
+  "author": "ksky521",
+  "keywords": [
+    "san.js",
+    "san-cli",
+    "cli",
+    "san",
+    "hmr",
+    "loader",
+    "webpack"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ecomfe/san-cli.git",
+    "directory": "packages/san-cli-webpack"
+  },
+  "bugs": {
+    "url": "https://github.com/ecomfe/san-cli/issues"
+  },
+  "homepage": "https://ecomfe.github.io/san-cli",
+  "license": "MIT",
+  "gitHead": "b394f61d55b7b257e14b8a9fece7edc7ae61cc50",
+  "scripts": {
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "snyk": true
 }
