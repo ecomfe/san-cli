@@ -1,38 +1,44 @@
 {
-    "name": "san-cli-command-init",
-    "version": "0.1.0-alpha.5",
-    "main": "index.js",
-    "author": "ksky521",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/ecomfe/san-cli.git",
-        "directory": "packages/san-cli-command-init"
-    },
-    "bugs": {
-        "url": "https://github.com/ecomfe/san-cli/issues"
-    },
-    "homepage": "https://ecomfe.github.io/san-cli",
-    "license": "MIT",
-    "dependencies": {
-        "concat-stream": "^2.0.0",
-        "consolidate": "^0.15.1",
-        "execa": "^4.0.0",
-        "fs-extra": "^8.1.0",
-        "git-clone": "^0.1.0",
-        "gulp-filter": "^6.0.0",
-        "gulp-rename": "^2.0.0",
-        "handlebars": "^4.5.1",
-        "inquirer": "^7.0.0",
-        "rxjs": "^6.5.3",
-        "san-cli-utils": "^0.1.0-alpha.5",
-        "through2": "^3.0.1",
-        "vinyl-fs": "^3.0.3"
-    },
-    "keywords": [
-        "san",
-        "loader",
-        "san.js",
-        "san-cli"
-    ],
-    "gitHead": "b394f61d55b7b257e14b8a9fece7edc7ae61cc50"
+  "name": "san-cli-command-init",
+  "version": "0.1.0-alpha.5",
+  "main": "index.js",
+  "author": "ksky521",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ecomfe/san-cli.git",
+    "directory": "packages/san-cli-command-init"
+  },
+  "bugs": {
+    "url": "https://github.com/ecomfe/san-cli/issues"
+  },
+  "homepage": "https://ecomfe.github.io/san-cli",
+  "license": "MIT",
+  "dependencies": {
+    "concat-stream": "^2.0.0",
+    "consolidate": "^0.15.1",
+    "execa": "^4.0.0",
+    "fs-extra": "^8.1.0",
+    "git-clone": "^0.1.0",
+    "gulp-filter": "^6.0.0",
+    "gulp-rename": "^2.0.0",
+    "handlebars": "^4.5.1",
+    "inquirer": "^7.0.0",
+    "rxjs": "^6.5.3",
+    "san-cli-utils": "^0.1.0-alpha.5",
+    "through2": "^3.0.1",
+    "vinyl-fs": "^3.0.3",
+    "snyk": "^1.316.1"
+  },
+  "keywords": [
+    "san",
+    "loader",
+    "san.js",
+    "san-cli"
+  ],
+  "gitHead": "b394f61d55b7b257e14b8a9fece7edc7ae61cc50",
+  "scripts": {
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "snyk": true
 }
