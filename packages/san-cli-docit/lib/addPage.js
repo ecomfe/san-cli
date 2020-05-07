@@ -23,7 +23,7 @@ function getChunkNameFromFilePath(filepath) {
     return (chunkname + '-' + name).replace(/^-+/, '');
 }
 const cachedMap = {};
-module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
+module.exports = (files, {layouts, output, context, webpackConfig, siteData}) => {
     const HTMLPlugin = require('html-webpack-plugin');
     let htmlPath;
     if (cachedMap[context]) {
@@ -58,7 +58,7 @@ module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
                 absoluteFile: path.resolve(context, filepath)
             });
         })
-        .map(({filepath, absoluteFile, filename, chunkname}) => {
+        .map(({filepath, absoluteFile, filename, chunkname, layout}) => {
             if (!filename) {
                 const parsed = path.parse(filepath);
                 parsed.ext = '.html';
@@ -68,13 +68,13 @@ module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
             if (!chunkname) {
                 chunkname = getChunkNameFromFilePath(filepath);
             }
-            return {filepath, absoluteFile, filename, chunkname};
+            return {filepath, absoluteFile, filename, chunkname, layout};
         })
-        .forEach(({filepath, absoluteFile, filename, chunkname}) => {
+        .forEach(({filepath, absoluteFile, filename, chunkname, layout = 'Main'}) => {
             const content = fs.readFileSync(absoluteFile);
             const frontMatter = grayMatter(content);
             const matter = frontMatter.data || {};
-            let entry = layouts.Main;
+            let entry = layouts[layout] ? layouts[layout] : layouts.Main;
             if (matter.layout) {
                 if (layouts[matter.layout]) {
                     // 存在
@@ -93,16 +93,13 @@ module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
                 siteData,
                 matter
             );
-            const pageHtmlOptions = Object.assign(
-                siteData,
-                {
-                    compile: false,
-                    rootUrl: siteData.rootUrl,
-                    chunks: ['common', 'vendors', chunkname],
-                    template: templatePath,
-                    filename
-                }
-            );
+            const pageHtmlOptions = Object.assign(siteData, {
+                compile: false,
+                rootUrl: siteData.rootUrl,
+                chunks: ['common', 'vendors', chunkname],
+                template: templatePath,
+                filename
+            });
             // 删除没用的
             delete pageHtmlOptions.layouts;
 
@@ -110,16 +107,15 @@ module.exports = (layouts, output, files, context, webpackConfig, siteData) => {
                 md: absoluteFile
             });
             // 添加个 query，然后在 resolve plugin 获取它
-            webpackConfig
-                .entry(chunkname)
-                .add(`${entry}?${query}`);
+            webpackConfig.entry(chunkname).add(`${entry}?${query}`);
             webpackConfig.plugin(`html-${chunkname}`).use(HTMLPlugin, [pageHtmlOptions]);
             const baseRule = webpackConfig.module.rule('entry-loader').test(a => {
                 return new RegExp(entry).test(a);
             });
             baseRule
                 .use('entry-loader')
-                .loader(require.resolve('./entryLoader')).options(siteData);
+                .loader(require.resolve('../loaders/entryLoader'))
+                .options(siteData);
         });
 };
 function ensureRelative(outputDir, p) {

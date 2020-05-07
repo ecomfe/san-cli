@@ -6,9 +6,8 @@
     "engines": {
         "node": ">=8"
     },
-    "peerDependencies": {
-        "san": "^3.7.9",
-        "san-cli": "0.0.1-alpha.2"
+    "dependencies": {
+        "san": "^3.7.9"
     },
     "author": "ksky521",
     "repository": {

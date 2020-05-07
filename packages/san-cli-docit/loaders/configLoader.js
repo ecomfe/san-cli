@@ -2,7 +2,7 @@
  * @file config loader
  * @author ksky521
  */
-const parseConfig = require('./parseConfig');
+const parseConfig = require('../lib/parseConfig');
 /* eslint-disable space-before-function-paren */
 module.exports = function(content) {
     content = parseConfig(this.resourcePath, content);

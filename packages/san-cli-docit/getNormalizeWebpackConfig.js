@@ -35,7 +35,8 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
     // 这个是解析的 codebox
     let theme = argv.theme || siteData.theme || docitOptions.theme;
     const layouts = (siteData.layouts = loadTheme(theme));
-    let template = layouts.CodeBox || require.resolve('./template/CodeBox.san');
+    // codebox template
+    let template = layouts.CodeBox;
     // 判断存在_sidebar _navbar siteData 则添加 alias
     let sidebar = siteData.sidebar || docitOptions.sidebar || '_sidebar.md';
     let navbar = siteData.navbar || docitOptions.navbar || '_navbar.md';
@@ -64,29 +65,39 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
             }
             else {
                 addPage(
-                    layouts,
-                    projectOptions.outputDir,
                     [
                         {
                             filepath: entry,
                             filename: 'index.html',
-                            chunkname: 'main'
+                            chunkname: 'main',
+                            // 专门个 markdown 单页添加的
+                            layout: 'Markdown'
                         }
-                    ],
-                    context,
-                    webpackConfig,
-                    siteData
+                    ], {
+                        layouts,
+                        output: projectOptions.outputDir,
+                        context,
+                        webpackConfig,
+                        siteData
+                    }
                 );
             }
         }
         else if (isDirectory) {
+            let context = api.resolve(entry);
             const markdownFiles = globby.sync(['*.md', '*/*.md'], {
-                cwd: entry,
+                cwd: context,
                 followSymbolicLinks: false,
                 ignore: ['_*.md', '.*.md', 'node_modules']
             });
 
-            addPage(layouts, projectOptions.outputDir, markdownFiles, api.resolve(entry), webpackConfig, siteData);
+            addPage(markdownFiles, {
+                layouts,
+                output: projectOptions.outputDir,
+                context,
+                webpackConfig,
+                siteData
+            });
         }
         else {
             error(`\`${argv.entry}\` is not exist!`);
