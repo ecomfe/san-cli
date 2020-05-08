@@ -21,7 +21,7 @@ const {textColor, textBold} = require('san-cli-utils/randomColor');
 const {scriptName, version: pkgVersion} = require('../package.json');
 const CommanderAPI = require('./CommanderAPI');
 const {getCommandName} = require('./utils');
-const buildinCmds = ['build', 'serve', 'init', 'inspect', 'command', 'plugin', 'remote', 'docit'];
+const buildinCmds = ['build', 'serve', 'init', 'inspect', 'command', 'plugin', 'remote', 'docit', 'ui'];
 const linkText = `For more information, visit ${textColor('https://ecomfe.github.io/san-cli')}`;
 
 const globalDebug = getDebugLogger();

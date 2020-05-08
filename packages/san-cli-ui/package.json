@@ -1,0 +1,36 @@
+{
+    "name": "san-cli-ui",
+    "version": "0.0.1",
+    "main": "commander.js",
+    "license": "MIT",
+    "engines": {
+        "node": ">=8"
+    },
+    "scripts": {
+        "build": "node ../san-cli/index.js build --config san.config.js",
+        "serve": "node ../san-cli/index.js serve --config san.config.js",
+        "start": "node ../san-cli/index.js ui"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/ecomfe/san-cli"
+    },
+    "site": "https://ecomfe.github.io/san-cli",
+    "keywords": [
+        "san",
+        "san.js",
+        "webpack",
+        "san-ui",
+        "san-cli"
+    ],
+    "dependencies": {
+        "san-cli-utils": "^0.1.0-alpha.4",
+        "express": "^4.17.1",
+        "express-history-api-fallback": "^2.2.1",
+        "lowdb": "^1.0.0",
+        "node-ipc": "^9.1.1",
+        "portfinder": "^1.0.25",
+        "santd": "^0.2.3"
+    },
+    "devDependencies": {}
+}
