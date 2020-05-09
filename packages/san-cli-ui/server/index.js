@@ -12,6 +12,8 @@ const fallback = require('express-history-api-fallback');
 const {warn} = require('san-cli-utils/ttyLogger');
 const {textBold} = require('san-cli-utils/randomColor');
 
+const apolloServer = require('./apollo-server');
+
 const app = express();
 
 function createServer(options) {
@@ -26,6 +28,9 @@ function createServer(options) {
         app.use(express.static(distPath));
         app.use('/public', express.static(publicPath));
         app.use(fallback(path.join(distPath, 'index.html')));
+
+        // 集成Apollo GraphQL中间件
+        apolloServer.applyMiddleware({app});
 
         // 查找空闲的 port
         const origPort = (portfinder.basePort = parseInt(port, 10));

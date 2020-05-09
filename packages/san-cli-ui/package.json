@@ -9,7 +9,14 @@
     "scripts": {
         "build": "node ../san-cli/index.js build --config san.config.js",
         "serve": "node ../san-cli/index.js serve --config san.config.js",
-        "start": "node ../san-cli/index.js ui"
+        "start": "nodemon ../san-cli/index.js ui"
+    },
+    "nodemonConfig": {
+        "ignore": [
+            "client/*",
+            "public/*"
+        ],
+        "delay": "2000"
     },
     "repository": {
         "type": "git",
@@ -24,13 +31,32 @@
         "san-cli"
     ],
     "dependencies": {
-        "san-cli-utils": "^0.1.0-alpha.4",
+        "@akryum/winattr": "^3.0.0",
+        "apollo-server-express": "^2.13.0",
+        "chalk": "^4.0.0",
+        "execa": "^4.0.1",
         "express": "^4.17.1",
         "express-history-api-fallback": "^2.2.1",
+        "globby": "^11.0.0",
+        "graphql-type-json": "^0.3.1",
+        "launch-editor": "^2.2.1",
         "lowdb": "^1.0.0",
         "node-ipc": "^9.1.1",
         "portfinder": "^1.0.25",
-        "santd": "^0.2.3"
+        "san-cli-utils": "^0.1.0-alpha.4"
     },
-    "devDependencies": {}
+    "devDependencies": {
+        "apollo-boost": "^0.4.7",
+        "apollo-cache-inmemory": "^1.6.5",
+        "apollo-client": "^2.6.8",
+        "apollo-link-ws": "^1.0.20",
+        "flyio": "^0.6.2",
+        "nodemon": "^2.0.2",
+        "san": "^3.8.3",
+        "san-router": "^1.2.2",
+        "san-store": "1.1.0",
+        "san-update": "^2.1.0",
+        "santd": "^0.2.5",
+        "subscriptions-transport-ws": "^0.9.16"
+    }
 }
