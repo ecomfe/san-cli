@@ -8,7 +8,7 @@
     },
     "scripts": {
         "build": "node ../san-cli/index.js build --config san.config.js",
-        "serve": "node ../san-cli/index.js serve --config san.config.js",
+        "server": "node ../san-cli/index.js serve --config san.config.js",
         "start": "nodemon ../san-cli/index.js ui"
     },
     "nodemonConfig": {
@@ -46,16 +46,14 @@
         "san-cli-utils": "^0.1.0-alpha.4"
     },
     "devDependencies": {
-        "apollo-boost": "^0.4.7",
         "apollo-cache-inmemory": "^1.6.5",
         "apollo-client": "^2.6.8",
         "apollo-link-ws": "^1.0.20",
-        "flyio": "^0.6.2",
+        "babel-plugin-import": "^1.13.0",
+        "graphql-tag": "^2.10.3",
         "nodemon": "^2.0.2",
         "san": "^3.8.3",
         "san-router": "^1.2.2",
-        "san-store": "1.1.0",
-        "san-update": "^2.1.0",
         "santd": "^0.2.5",
         "subscriptions-transport-ws": "^0.9.16"
     }
