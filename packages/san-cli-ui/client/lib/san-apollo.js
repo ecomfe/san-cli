@@ -42,10 +42,6 @@ export const register = (san, apolloClient) => {
 };
 
 export const createApolloComponent = () => class ApolloComponent extends global.san.Component {
-    constructor(props) {
-        super(props);
-    }
-
     initData() {
         return {
             loading: false
@@ -66,7 +62,7 @@ export const createApolloComponent = () => class ApolloComponent extends global.
                     schema = schema[t];
                 }
             });
-            this.$handle(key, schema, variables); 
+            this.$handle(key, schema, variables);
         });
     }
 
@@ -76,10 +72,10 @@ export const createApolloComponent = () => class ApolloComponent extends global.
             throw new Error('Operation in Schema is not supported.');
         }
         apolloClient(this.$apollo)[operation](schema, variables)
-        .then(data => {
-            this.data.set(key, data.data);
-        }).finally(() => {
-            this.data.set('loading', false);
-        });
+            .then(data => {
+                this.data.set(key, data.data);
+            }).finally(() => {
+                this.data.set('loading', false);
+            });
     }
 };
