@@ -2,6 +2,7 @@
  * @file san apollo
  * @author jinzhan
  */
+
 const global = {};
 
 const handleTypes = ['query', 'mutate', 'subscribe'];
@@ -51,29 +52,6 @@ export const createApolloComponent = () => class ApolloComponent extends global.
         };
     }
 
-    /**
-     * 
-     * To append data to data of ApolloComponent
-     * 
-     * Demo 1: 
-     * apollo: {
-     *   cwd: gql`query {
-     *      hello
-     *   }`
-     * }
-     * 
-     * 
-     * Demo 2: 
-     * apollo: {
-     *   cwd: {
-     *      query: gql`query {
-     *          hello
-     *      }`
-     *   variables: {}
-     *  }
-     * }
-     * 
-    */
     created() {
         if (!this.apollo) {
             return;
