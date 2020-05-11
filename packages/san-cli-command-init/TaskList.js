@@ -10,6 +10,7 @@
 
 const {ora, figures, chalk} = require('san-cli-utils/ttyLogger');
 const SError = require('san-cli-utils/SError');
+const EventEmitter = require('events').EventEmitter; ;
 
 module.exports = class TaskList {
     constructor(tasks, options = {}) {
@@ -84,32 +85,32 @@ module.exports = class TaskList {
             this._spinner = ora('In processing...', {spinner: 'point'}).start();
         }
         task.status = 'running';
-
-        this._taskWrapper(task).subscribe({
-            next: data => {
-                if (data) {
-                    if (this._spinner.isSpinning) {
-                        this._spinner.text = data;
-                    } else {
-                        this._spinner.start(data);
-                    }
+        const event = new EventEmitter();
+        event.on('next', data => {
+            if (data) {
+                if (this._spinner.isSpinning) {
+                    this._spinner.text = data;
                 } else {
-                    this._spinner.stop();
+                    this._spinner.start(data);
                 }
-            },
-            error: err => {
-                if (task.status === 'running') {
-                    task.status = 'failed';
-                    this._fail(err);
-                }
-            },
-            complete: () => {
-                if (task.status === 'running') {
-                    task.status = 'done';
-                    this.next();
-                }
+            } else {
+                this._spinner.stop();
             }
         });
+        event.on('error', err => {
+            if (task.status === 'running') {
+                task.status = 'failed';
+                this._fail(err);
+            }
+        });
+        event.on('complete', () => {
+            if (task.status === 'running') {
+                task.status = 'done';
+                this.next();
+            }
+        });
+        this._context.event = event;
+        this._taskWrapper(task);
     }
     _done() {
         this._spinner.stop();

@@ -10,7 +10,6 @@
 
 const path = require('path');
 const fs = require('fs-extra');
-const rxjs = require('rxjs');
 const through = require('through2');
 const Handlebars = require('../handlerbars');
 const vfs = require('vinyl-fs');
@@ -27,54 +26,52 @@ const exists = fs.existsSync;
 const debug = getDebugLogger('init:generate');
 
 module.exports = (name, dest, options) => {
-    return (ctx, task) => {
-        return new rxjs.Observable(async observer => {
-            const src = ctx.localTemplatePath;
-            // 0. 设置meta信息
-            const metaData = getMetadata(src);
-            debug('read meta file from template project %O', metaData);
-            const {name: gitUser, email: gitEmail, author} = getGitUser();
-            debug('author: %s, email: %s, git user: %s', author, gitEmail, gitUser);
+    return async (ctx, task) => {
+        const {localTemplatePath: src, event} = ctx;
+        // 0. 设置meta信息
+        const metaData = getMetadata(src);
+        debug('read meta file from template project %O', metaData);
+        const {name: gitUser, email: gitEmail, author} = getGitUser();
+        debug('author: %s, email: %s, git user: %s', author, gitEmail, gitUser);
 
-            metaData.author = author;
-            metaData.email = gitEmail;
-            // 优先使用用户传入的
-            metaData.username = options.username !== '' ? options.username : gitUser || 'git';
-            // 路径地址
-            metaData.name = path.basename(path.resolve(dest));
+        metaData.author = author;
+        metaData.email = gitEmail;
+        // 优先使用用户传入的
+        metaData.username = options.username !== '' ? options.username : gitUser || 'git';
+        // 路径地址
+        metaData.name = path.basename(path.resolve(dest));
 
-            // 添加到 context 传入下一个流程
-            ctx.metaData = metaData;
+        // 添加到 context 传入下一个流程
+        ctx.metaData = metaData;
 
-            // 1. 添加 handlebar helper
-            // eslint-disable-next-line
-            metaData.helpers &&
-                Object.keys(metaData.helpers).forEach(key => {
-                    Handlebars.registerHelper(key, metaData.helpers[key]);
-                });
+        // 1. 添加 handlebar helper
+        // eslint-disable-next-line
+        metaData.helpers &&
+            Object.keys(metaData.helpers).forEach(key => {
+                Handlebars.registerHelper(key, metaData.helpers[key]);
+            });
 
-            // 2. 请回答
-            observer.next();
-            const answers = await ask(metaData.prompts || {}, metaData, options);
-            const data = Object.assign(
-                {
-                    destDirName: dest,
-                    inPlace: dest === process.cwd(),
-                    noEscape: true
-                },
-                answers
-            );
+        // 2. 请回答
+        event.emit('next');
+        const answers = await ask(metaData.prompts || {}, metaData, options);
+        const data = Object.assign(
+            {
+                destDirName: dest,
+                inPlace: dest === process.cwd(),
+                noEscape: true
+            },
+            answers
+        );
 
-            debug('Meta data after the merge are completed: %O', data);
+        debug('Meta data after the merge are completed: %O', data);
 
-            ctx.tplData = data;
+        ctx.tplData = data;
 
-            observer.next('Generating directory structure...');
-            await startTask(src, dest, ctx, observer);
-        });
+        event.emit('next', 'Generating directory structure...');
+        await startTask(src, dest, ctx, event);
     };
 };
-async function startTask(src, dest, ctx, observer) {
+async function startTask(src, dest, ctx, event) {
     const {metaData: opts, tplData: data} = ctx;
     // 处理过滤
     const rootSrc = ['**/*', '!node_modules/**'];
@@ -142,11 +139,11 @@ async function startTask(src, dest, ctx, observer) {
             .pipe(braceFileFilter.restore)
             .pipe(vfs.dest(dest))
             .on('end', () => {
-                observer.complete();
+                event.emit('complete');
                 resolve();
             })
             .on('error', err => {
-                observer.error(err);
+                event.emit('error', err);
                 reject();
             })
             .resume();
