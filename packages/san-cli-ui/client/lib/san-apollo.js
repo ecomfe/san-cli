@@ -5,7 +5,15 @@
 
 const global = {};
 
-const handleTypes = ['query', 'mutate', 'subscribe'];
+const DATA_NAME = 'apollo';
+
+const HANDLER_TYPES = ['query', 'mutation', 'subscription'];
+
+const HANDLER_ACTIONS = {
+    query: 'query',
+    mutation: 'mutate',
+    subscription: 'subscribe'
+};
 
 const apolloClient = client => ({
     query: (query, variables) => client.query({
@@ -41,6 +49,56 @@ export const register = (san, apolloClient) => {
     });
 };
 
+
+
+export const createApolloDataComponent = () => class Query extends global.san.Component {
+    static template = '<template><slot></slot></template>';
+
+    initData() {
+        return {
+
+        };
+    }
+
+    attached() {
+        HANDLER_TYPES.forEach(type => {
+            this.watch(type, value => {
+                this.handler(type);
+            });
+        });
+
+        this.watch('variables', value => {
+            this.handler();
+        });
+
+    }
+
+    handler(operation = '') {
+        if (!operation) {
+            HANDLER_TYPES.forEach(o => {
+                if (this.data.get(o)) {
+                    operation = o;
+                }
+            });
+            if (!operation) {
+                return;
+            }
+        }
+        const schema = this.data.get(operation);
+        const variables = this.data.get('variables');
+        const varName = this.data.get('var') || DATA_NAME;
+        apolloClient(this.$apollo)[HANDLER_ACTIONS[operation]](schema, variables)
+            .then(data => {
+                this.owner.data.set(varName, data.data);
+            }).catch(err => {
+                // eslint-disable-next-line no-console
+                console.log({
+                    err
+                });
+            });
+    }
+};
+
 export const createApolloComponent = () => class ApolloComponent extends global.san.Component {
     initData() {
         return {
@@ -57,6 +115,7 @@ export const createApolloComponent = () => class ApolloComponent extends global.
             let schema = this.apollo[key];
             // To support variables
             const variables = schema.variables;
+            const handleTypes = Object.values(HANDLER_ACTIONS);
             handleTypes.forEach(t => {
                 if (schema[t]) {
                     schema = schema[t];
@@ -68,6 +127,7 @@ export const createApolloComponent = () => class ApolloComponent extends global.
 
     $handle(key, schema, variables) {
         const operation = schema.definitions[0].operation;
+        const handleTypes = Object.values(HANDLER_ACTIONS);
         if (handleTypes.indexOf(operation) === -1) {
             throw new Error('Operation in Schema is not supported.');
         }
