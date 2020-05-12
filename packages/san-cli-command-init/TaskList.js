@@ -10,7 +10,6 @@
 
 const {ora, figures, chalk} = require('san-cli-utils/ttyLogger');
 const SError = require('san-cli-utils/SError');
-const EventEmitter = require('events').EventEmitter; ;
 
 module.exports = class TaskList {
     constructor(tasks, options = {}) {
@@ -68,6 +67,29 @@ module.exports = class TaskList {
             task.status = 'skiped'; // running failed
             this.next({reason, type: 'skip'});
         };
+        task.info = data => {
+            if (data) {
+                if (this._spinner.isSpinning) {
+                    this._spinner.text = data;
+                } else {
+                    this._spinner.start(data);
+                }
+            } else {
+                this._spinner.stop();
+            }
+        };
+        task.error = err => {
+            if (task.status === 'running') {
+                task.status = 'failed';
+                this._fail(err);
+            }
+        };
+        task.complete = () => {
+            if (task.status === 'running') {
+                task.status = 'done';
+                this.next();
+            }
+        };
         return task(this._context, task);
     }
     _startTask(idx, {reason, type = ''} = {}) {
@@ -85,31 +107,6 @@ module.exports = class TaskList {
             this._spinner = ora('In processing...', {spinner: 'point'}).start();
         }
         task.status = 'running';
-        const event = new EventEmitter();
-        event.on('next', data => {
-            if (data) {
-                if (this._spinner.isSpinning) {
-                    this._spinner.text = data;
-                } else {
-                    this._spinner.start(data);
-                }
-            } else {
-                this._spinner.stop();
-            }
-        });
-        event.on('error', err => {
-            if (task.status === 'running') {
-                task.status = 'failed';
-                this._fail(err);
-            }
-        });
-        event.on('complete', () => {
-            if (task.status === 'running') {
-                task.status = 'done';
-                this.next();
-            }
-        });
-        this._context.event = event;
         this._taskWrapper(task);
     }
     _done() {

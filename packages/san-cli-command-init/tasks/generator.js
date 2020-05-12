@@ -27,7 +27,7 @@ const debug = getDebugLogger('init:generate');
 
 module.exports = (name, dest, options) => {
     return async (ctx, task) => {
-        const {localTemplatePath: src, event} = ctx;
+        const src = ctx.localTemplatePath;
         // 0. 设置meta信息
         const metaData = getMetadata(src);
         debug('read meta file from template project %O', metaData);
@@ -52,7 +52,7 @@ module.exports = (name, dest, options) => {
             });
 
         // 2. 请回答
-        event.emit('next');
+        task.info();
         const answers = await ask(metaData.prompts || {}, metaData, options);
         const data = Object.assign(
             {
@@ -67,11 +67,11 @@ module.exports = (name, dest, options) => {
 
         ctx.tplData = data;
 
-        event.emit('next', 'Generating directory structure...');
-        await startTask(src, dest, ctx, event);
+        task.info('Generating directory structure...');
+        await startTask(src, dest, ctx, task);
     };
 };
-async function startTask(src, dest, ctx, event) {
+async function startTask(src, dest, ctx, task) {
     const {metaData: opts, tplData: data} = ctx;
     // 处理过滤
     const rootSrc = ['**/*', '!node_modules/**'];
@@ -139,11 +139,11 @@ async function startTask(src, dest, ctx, event) {
             .pipe(braceFileFilter.restore)
             .pipe(vfs.dest(dest))
             .on('end', () => {
-                event.emit('complete');
+                task.complete();
                 resolve();
             })
             .on('error', err => {
-                event.emit('error', err);
+                task.error(err);
                 reject();
             })
             .resume();

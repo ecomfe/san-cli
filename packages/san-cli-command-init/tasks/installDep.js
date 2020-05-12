@@ -17,7 +17,6 @@ const {hasYarn} = require('san-cli-utils/env');
 
 module.exports = (template, dest, options) => {
     return async (ctx, task) => {
-        const event = ctx.event;
         const hasPackage = fs.exists(path.join(dest, 'package.json'));
         let install = hasPackage && options.install;
         let askInstall = !install;
@@ -34,7 +33,7 @@ module.exports = (template, dest, options) => {
         // 有package.json但是命令中没加--install
         if (hasPackage && askInstall) {
             const name = 'install';
-            event.emit('next');
+            task.info();
             // 询问是否需要安装
             const answers = await prompt([
                 {
@@ -47,7 +46,7 @@ module.exports = (template, dest, options) => {
                 install = true;
             } else {
                 task.skip('Not install dependencies');
-                event.emit('complete');
+                task.complete();
                 return;
             }
         }
@@ -55,11 +54,11 @@ module.exports = (template, dest, options) => {
         if (install) {
             try {
                 // 清理 log，交给 npm
-                event.emit('next', 'Installing dependencies...');
+                task.info('Installing dependencies...');
                 await installDeps(dest, options);
-                event.emit('complete');
+                task.complete();
             } catch (e) {
-                event.emit('error', e);
+                task.error(e);
             }
         }
     };

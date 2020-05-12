@@ -16,17 +16,16 @@ const prompt = require('../utils/prompt');
 
 module.exports = (template, dest, options) => {
     return async (ctx, task) => {
-        const event = ctx.event;
-        event.emit('next', 'Start checking target directory status');
+        task.info('Start checking target directory status');
         // 处理目标目录存在的情况，显示 loading 啊~
         if (fs.existsSync(dest)) {
             // 如果强制带--force，那就删了这个目录，流程终止
             if (options.force) {
-                event.emit('next', '--force delete target directory');
+                task.info('--force delete target directory');
                 return fs.remove(dest);
                 // 如果是当前目录下建
             } else if (options._inPlace) {
-                event.emit('next'); // 添加这一句下面才能显示 prompt
+                task.info(); // 添加这一句下面才能显示 prompt
                 // 来一个疑问句，问是否确定在当前目录创建？
                 // eslint-disable-next-line
                 const {ok} = await prompt([
@@ -41,7 +40,7 @@ module.exports = (template, dest, options) => {
                     return;
                 }
             } else {
-                event.emit('next');
+                task.info();
                 // 取一个相对目录
                 const shortDest = path.relative(process.cwd(), dest);
                 // 处理对于已经存在的目录
@@ -62,16 +61,16 @@ module.exports = (template, dest, options) => {
                 ]);
                 // 选了取消
                 if (!action) {
-                    return event.emit('error', `Cancel overwrite ${shortDest} directory`);
+                    return task.error(`Cancel overwrite ${shortDest} directory`);
                     // 选了覆盖
                 } else if (action === 'overwrite') {
-                    event.emit('next', `Overwrite selected, first delete ${shortDest}...`);
+                    task.info(`Overwrite selected, first delete ${shortDest}...`);
                     await fs.remove(dest);
                 }
             }
         }
 
-        event.emit('next', 'Check the status of the offline template');
+        task.info('Check the status of the offline template');
         const isOffline = options.offline;
         if (isOffline || isLocalPath(template)) {
             // 使用离线地址
@@ -86,12 +85,12 @@ module.exports = (template, dest, options) => {
                 if (fs.existsSync(localAbsolutePath)) {
                     // 使用本地路径直接复制
                     ctx.localTemplatePath = localAbsolutePath;
-                    return event.emit('complete');
+                    return task.complete();
                 }
 
-                return event.emit('error', 'Offline scaffolding template path does not exist');
+                return task.error('Offline scaffolding template path does not exist');
             }
         }
-        event.emit('complete');
+        task.complete();
     };
 };
