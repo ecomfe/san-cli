@@ -70,6 +70,8 @@ export const createApolloDataComponent = (Component = global.san && global.san.C
         }
 
         attached() {
+            this.$$handle();
+
             HANDLER_TYPES.forEach(type => {
                 this.watch(type, value => {
                     this.$$handle(type);
@@ -79,7 +81,6 @@ export const createApolloDataComponent = (Component = global.san && global.san.C
             this.watch('variables', value => {
                 this.$$handle();
             });
-
         }
 
         $$handle(operation = '') {

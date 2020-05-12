@@ -4,6 +4,7 @@
  */
 
 import {Component} from 'san';
+import {createApolloComponent, createApolloDataComponent} from '@lib/san-apollo';
 import {
     logo,
     CWD,
@@ -26,8 +27,7 @@ import 'santd/es/tabs/style';
 import 'santd/es/button/style';
 import './index.less';
 
-export default class Select extends Component {
-
+export default class Select extends createApolloComponent(Component) {
     static template = /* html */`
         <div class="project-select">
             <s-layout>
@@ -102,7 +102,8 @@ export default class Select extends Component {
         'r-link': Link,
         's-button': Button,
         'c-list': ProjectList,
-        'c-folder-explorer': FolderExplorer
+        'c-folder-explorer': FolderExplorer,
+        'com-apollo': createApolloDataComponent(Component)
     };
     static computed = {
 
@@ -110,8 +111,8 @@ export default class Select extends Component {
 
     initData() {
         return {
+            CWD,
             title: 'San CLI',
-            cwd: '~',
             initLoading: true,
             list: [],
             defaultData: [
@@ -141,6 +142,7 @@ export default class Select extends Component {
 
     async attached() {
         // simple query demo
+
         let res = this.sendQuery(CWD);
         if (res.data) {
             this.data.set('cwd', res.data.cwd);
@@ -168,8 +170,7 @@ export default class Select extends Component {
 
     }
     async sendQuery(gqlstring) {
-        let res = await this.$apollo.query(gqlstring);
+        let res = await this.$apollo.query({query: gqlstring});
         return res;
     }
-
 }
