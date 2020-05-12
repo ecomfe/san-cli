@@ -24,13 +24,14 @@ module.exports = function build(argv, api, projectOptions) {
         if (stats && stats.toJson) {
             // const info = stats.toJson();
             // error(info.errors);
-        } else {
+        }
+        else {
             error(err ? err : 'Webpack config error, use `--verbose` flag to show debug log');
         }
         process.exit(1);
     }
     // 编译成功处理逻辑
-    function success({stats: webpackStats}, {isModern, isModernBuild} = {}) {
+    function success({stats: webpackStats}) {
         // 只有在非 analyze 模式下才会输出 log
         const targetDir = api.resolve(dest || projectOptions.outputDir);
         const targetDirShort = path.relative(api.getCwd(), targetDir);
