@@ -15,7 +15,7 @@ import FOLDER_SET_FAVORITE from '@graphql/folder/folderSetFavorite.gql';
 import FOLDER_CREATE from '@graphql/folder/folderCreate.gql';
 
 
-export default {
+export {
     logo,
     CWD,
     CWD_CHANGE,
