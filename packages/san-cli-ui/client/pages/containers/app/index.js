@@ -7,11 +7,11 @@ import {Component} from 'san';
 import {logo, CWD} from '../../const';
 import {Link} from 'san-router';
 import {Button} from 'santd';
+import {createApolloComponent} from '@lib/san-apollo';
 import 'santd/es/button/style';
 import './index.less';
 
-export default class App extends Component {
-
+export default class App extends createApolloComponent(Component) {
     static template = /* html */`
         <div class="app" style="height: {{height}}px">
             <img class="logo" src="{{logo}}"/>
@@ -30,25 +30,25 @@ export default class App extends Component {
         'r-link': Link,
         's-button': Button
     };
-    apollo = {
-        apolloData: 'a'
-    }
+
     initData() {
         return {
             logo,
+            cwd: '',
             title: 'San CLI',
-            cwd: '~',
             height: window.screen.availHeight
         };
     }
 
     attached() {
         // simple query demo
-        this.$apollo.query(CWD)
+        this.$apollo.query({query: CWD})
             .then(data => {
                 this.data.set('cwd', data.data.cwd);
             })
-            .catch(error => console.error(error));
+            .catch(error => {
+                // eslint-disable-next-line no-console
+                console.error(error);
+            });
     }
 }
-

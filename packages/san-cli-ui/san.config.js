@@ -6,10 +6,10 @@ const path = require('path');
 const resolve = pathname => path.resolve(__dirname, pathname);
 
 // 静态文件域名
-const CDN = '';
+const CDN = '/';
 
 // 生产环境下的静态目录
-const STATIC_PRO = '';
+const STATIC_PRO = 'static';
 
 const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
@@ -43,11 +43,11 @@ module.exports = {
         }
     },
     alias: {
+        '@': resolve('client'),
         '@assets': resolve('client/assets'),
         '@components': resolve('client/components'),
-        '@lib': resolve('client/lib'),
-        '@': resolve('client'),
-        '@graphql': resolve('client/graphql')
+        '@graphql': resolve('client/graphql'),
+        '@lib': resolve('client/lib')
     },
     chainWebpack: config => {
         // 这里可以用来扩展 webpack 的配置，使用的是 webpack-chain 语法

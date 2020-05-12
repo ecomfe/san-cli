@@ -51,91 +51,111 @@ export const register = (san, apolloClient) => {
 
 
 
-export const createApolloDataComponent = () => class Query extends global.san.Component {
-    static template = '<template><slot></slot></template>';
-
-    initData() {
-        return {
-
-        };
+export const createApolloDataComponent = (Component = global.san && global.san.Component) => {
+    if (!Component) {
+        throw new Error('global.san has not been registered.');
     }
 
-    attached() {
-        HANDLER_TYPES.forEach(type => {
-            this.watch(type, value => {
-                this.handler(type);
-            });
-        });
-
-        this.watch('variables', value => {
-            this.handler();
-        });
-
+    if (global.ApolloDataComponent) {
+        return global.ApolloDataComponent;
     }
 
-    handler(operation = '') {
-        if (!operation) {
-            HANDLER_TYPES.forEach(o => {
-                if (this.data.get(o)) {
-                    operation = o;
-                }
-            });
-            if (!operation) {
-                return;
-            }
+    return global.ApolloDataComponent = class ApolloDataComponent extends Component {
+        static template = '<template><slot></slot></template>';
+
+        initData() {
+            return {
+
+            };
         }
-        const schema = this.data.get(operation);
-        const variables = this.data.get('variables');
-        const varName = this.data.get('var') || DATA_NAME;
-        apolloClient(this.$apollo)[HANDLER_ACTIONS[operation]](schema, variables)
-            .then(data => {
-                this.owner.data.set(varName, data.data);
-            }).catch(err => {
-                // eslint-disable-next-line no-console
-                console.log({
-                    err
+
+        attached() {
+            HANDLER_TYPES.forEach(type => {
+                this.watch(type, value => {
+                    this.$$handle(type);
                 });
             });
-    }
+
+            this.watch('variables', value => {
+                this.$$handle();
+            });
+
+        }
+
+        $$handle(operation = '') {
+            if (!operation) {
+                HANDLER_TYPES.forEach(o => {
+                    if (this.data.get(o)) {
+                        operation = o;
+                    }
+                });
+                if (!operation) {
+                    return;
+                }
+            }
+            const schema = this.data.get(operation);
+            const variables = this.data.get('variables');
+            const varName = this.data.get('var') || DATA_NAME;
+            apolloClient(this.$apollo)[HANDLER_ACTIONS[operation]](schema, variables)
+                .then(data => {
+                    this.owner.data.set(varName, data.data);
+                }).catch(err => {
+                    // eslint-disable-next-line no-console
+                    console.log({
+                        err
+                    });
+                });
+        }
+    };
 };
 
-export const createApolloComponent = () => class ApolloComponent extends global.san.Component {
-    initData() {
-        return {
-            loading: false
-        };
+export const createApolloComponent = (Component = global.san && global.san.Component) => {
+    if (!Component) {
+        throw new Error('global.san has not been registered.');
     }
 
-    created() {
-        if (!this.apollo) {
-            return;
+    if (global.ApolloComponent) {
+        return global.ApolloComponent;
+    }
+
+    return global.ApolloComponent = class ApolloComponent extends Component {
+        initData() {
+            return {
+                loading: false
+            };
         }
-        this.data.set('loading', true);
-        Object.keys(this.apollo).forEach(key => {
-            let schema = this.apollo[key];
-            // To support variables
-            const variables = schema.variables;
+
+        created() {
+            if (!this.apollo) {
+                return;
+            }
+            this.data.set('loading', true);
+            Object.keys(this.apollo).forEach(key => {
+                let schema = this.apollo[key];
+                // To support variables
+                const variables = schema.variables;
+                const handleTypes = Object.values(HANDLER_ACTIONS);
+                handleTypes.forEach(t => {
+                    if (schema[t]) {
+                        schema = schema[t];
+                    }
+                });
+                this.$$handle(key, schema, variables);
+            });
+        }
+
+        $$handle(key, schema, variables) {
+            const operation = schema.definitions[0].operation;
             const handleTypes = Object.values(HANDLER_ACTIONS);
-            handleTypes.forEach(t => {
-                if (schema[t]) {
-                    schema = schema[t];
-                }
-            });
-            this.$handle(key, schema, variables);
-        });
-    }
-
-    $handle(key, schema, variables) {
-        const operation = schema.definitions[0].operation;
-        const handleTypes = Object.values(HANDLER_ACTIONS);
-        if (handleTypes.indexOf(operation) === -1) {
-            throw new Error('Operation in Schema is not supported.');
+            if (handleTypes.indexOf(operation) === -1) {
+                throw new Error('Operation in Schema is not supported.');
+            }
+            apolloClient(this.$apollo)[operation](schema, variables)
+                .then(data => {
+                    this.data.set(key, data.data);
+                }).finally(() => {
+                    this.data.set('loading', false);
+                });
         }
-        apolloClient(this.$apollo)[operation](schema, variables)
-            .then(data => {
-                this.data.set(key, data.data);
-            }).finally(() => {
-                this.data.set('loading', false);
-            });
-    }
+    };
 };

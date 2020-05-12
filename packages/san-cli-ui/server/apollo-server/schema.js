@@ -10,6 +10,12 @@ enum PackageManager {
   pnpm
 }
 
+interface DescribedEntity {
+  name: String
+  description: String
+  link: String
+}
+
 type Locale {
   lang: String!
   strings: JSON!
@@ -19,16 +25,23 @@ type Query {
   cwd: String!
 }
 
-# type Mutation {
+input OpenInEditorInput {
+  file: String!
+  line: Int
+  column: Int
+  gitPath: Boolean
+}
 
-# }
+type Mutation {
+  fileOpenInEditor (input: OpenInEditorInput!): Boolean
+}
 
 type Subscription {
   cwdChanged: String!
 }
 `];
 
-// Load types in lib
+// Load all types
 const paths = globby.sync(['../schema/*.js'], {cwd: __dirname, absolute: true});
 
 paths.forEach(file => {
