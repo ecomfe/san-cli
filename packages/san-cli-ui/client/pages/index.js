@@ -3,12 +3,18 @@
  * @author zhangtingting12 <zhangtingting12@baidu.com>
  */
 
+import san from 'san';
 import {router} from 'san-router';
+import {register} from '@lib/san-apollo';
+import createApolloServer from '@lib/createApolloServer';
 import App from './containers/app';
 import ProjectSelect from './containers/select';
 import ProjectCreate from './containers/create';
 import About from './components/about';
 import NotFound from './components/not-found';
+
+const GRAPHQL_ENDPOINT = 'ws://localhost:8000/graphql';
+register(san, createApolloServer(GRAPHQL_ENDPOINT));
 
 const routes = [
     {rule: '/', Component: App, target: '#app'},
@@ -22,6 +28,8 @@ const routes = [
 routes.forEach(option => router.add(option));
 
 router.listen((e, config) => {
+    // eslint-disable-next-line no-console
     console.log(e);
 });
+
 router.start();
