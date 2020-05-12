@@ -1,6 +1,6 @@
 {
     "name": "san-cli-docit",
-    "version": "0.1.0-alpha.5",
+    "version": "0.1.0-alpha.6",
     "main": "index.js",
     "license": "MIT",
     "engines": {
@@ -36,8 +36,8 @@
         "loader-utils": "^1.2.3",
         "opener": "^1.5.1",
         "qrcode-terminal": "^0.12.0",
-        "san-cli-docit-theme": "^0.1.0-alpha.5",
-        "san-cli-markdown-loader": "^0.1.0-alpha.5",
+        "san-cli-docit-theme": "^0.1.0-alpha.6",
+        "san-cli-markdown-loader": "^0.1.0-alpha.6",
         "san-cli-utils": "^0.1.0-alpha.5",
         "san-cli-webpack": "^0.1.0-alpha.5",
         "toml": "^3.0.0"

@@ -116,7 +116,7 @@ function getCompiler(opt = {}) {
 
     const render = parser.render.bind(parser);
     parser.render = content => {
-        return render(content).replace('{{', '&#123;&#123;');
+        return render(content).replace(/{{/g, '&#123;&#123;');
     };
     return parser;
 }

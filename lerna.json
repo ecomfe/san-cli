@@ -1,5 +1,14 @@
 {
-    "packages": ["packages/*"],
+    "packages": [
+        "packages/san-cli",
+        "packages/san-cli-service",
+        "packages/san-cli-webpack",
+        "packages/san-cli-command-init",
+        "packages/san-cli-utils",
+        "packages/san-cli-docit",
+        "packages/san-cli-markdown-loader",
+        "packages/san-cli-docit-theme"
+    ],
     "version": "independent",
     "npmClient": "yarn",
     "useWorkspaces": true
