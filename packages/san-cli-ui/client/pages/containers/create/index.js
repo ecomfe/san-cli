@@ -4,12 +4,14 @@
  */
 
 import {Component} from 'san';
+import {createApolloComponent, createApolloDataComponent} from '@lib/san-apollo';
 
 export default class Create extends Component {
 
     static template = /* html */`
         <div class="project-create">
             创建新项目
+            <button type="button" on-click="createProject" class="create">创建</button>
         </div>
     `;
 
@@ -21,7 +23,11 @@ export default class Create extends Component {
     }
 
     attached() {
+        
+    }
 
+    createProject() {
+        console.log('createProject...');
     }
 }
 
