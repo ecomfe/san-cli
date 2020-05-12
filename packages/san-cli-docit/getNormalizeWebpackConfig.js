@@ -10,16 +10,28 @@ const importLazy = require('import-lazy')(require);
 const globby = importLazy('globby');
 const debug = getDebugLogger('docit');
 
-module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
-    // 放到这里，是用了 argv.dtemplate
-    const docitOptions = projectOptions.docit || {};
-    let mdOptions = docitOptions.markdown || {};
+module.exports = function getNormalizeWebpackConfig(
+    argv,
+    api,
+    {docit = {}, loaderOptions = {}, outputDir: output, publicPath}
+) {
+    docit = Object.assign(
+        {
+            navbar: '_navbar.md',
+            sidebar: '_sidebar.md',
+            theme: 'san-cli-docit-theme',
+            siteName: '',
+            layouts: {},
+            // 添加 rooturl
+            rootUrl: publicPath
+        },
+        docit
+    );
+    let mdOptions = loaderOptions.markdown || {};
 
     const isProd = api.isProd();
     const context = api.getCwd();
-    const publicPath = projectOptions.publicPath;
 
-    const loadConfig = require('./lib/loadConfig');
     const loadTheme = require('./lib/loadTheme');
     const addPage = require('./lib/addPage');
 
@@ -29,17 +41,14 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
     }
 
     const {isFile, type, isDirectory} = resolveEntry(entry || context);
-    let {data: siteData} = loadConfig(isDirectory ? api.resolve(entry) : context) || {};
-
-    siteData.rootUrl = publicPath;
+    // 加载 theme
+    let theme = argv.theme || docit.theme;
+    const layouts = (docit.layouts = loadTheme(theme));
     // 这个是解析的 codebox
-    let theme = argv.theme || siteData.theme || docitOptions.theme;
-    const layouts = (siteData.layouts = loadTheme(theme));
     // codebox template
-    let template = layouts.CodeBox;
+    let codebox = layouts.CodeBox;
     // 判断存在_sidebar _navbar siteData 则添加 alias
-    let sidebar = siteData.sidebar || docitOptions.sidebar || '_sidebar.md';
-    let navbar = siteData.navbar || docitOptions.navbar || '_navbar.md';
+    let {sidebar, navbar} = docit;
 
     [
         [sidebar, 'sidebar'],
@@ -50,7 +59,7 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
             isDirectory ? api.resolve(entry) : context
         );
         // 这里为了避免不存在路径的时候报错，处理不是很合适
-        siteData[name] = aliasfile;
+        docit[name] = aliasfile;
     });
 
     // 增加 md loader
@@ -73,12 +82,13 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
                             // 专门个 markdown 单页添加的
                             layout: 'Markdown'
                         }
-                    ], {
+                    ],
+                    {
                         layouts,
-                        output: projectOptions.outputDir,
+                        output,
                         context,
                         webpackConfig,
-                        siteData
+                        siteData: docit
                     }
                 );
             }
@@ -93,10 +103,10 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
 
             addPage(markdownFiles, {
                 layouts,
-                output: projectOptions.outputDir,
+                output,
                 context,
                 webpackConfig,
-                siteData
+                siteData: docit
             });
         }
         else {
@@ -108,10 +118,9 @@ module.exports = function getNormalizeWebpackConfig(argv, api, projectOptions) {
         mdOptions = Object.assign(mdOptions, {
             cwd: docContext,
             rootUrl: publicPath,
-            codebox: template
+            codebox
         });
 
-        // TODO 用 plugin 处理md 的链接 publicUrl？：支持 link 和 image 图片两种情况处理，相对路径添加 root
         // 设置统一的 md loader
         webpackConfig.resolveLoader.modules.prepend(path.join(__dirname, 'node_modules'));
         const baseRule = webpackConfig.module.rule('markdown').test(/\.md$/);
