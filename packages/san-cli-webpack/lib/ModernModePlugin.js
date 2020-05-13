@@ -23,7 +23,8 @@ class ModernModePlugin {
     apply(compiler) {
         if (!this.isModernBuild) {
             this.applyLegacy(compiler);
-        } else {
+        }
+        else {
             this.applyModern(compiler);
         }
     }
@@ -53,7 +54,8 @@ class ModernModePlugin {
                 // 我们支持v4
                 HtmlWebpackPlugin.getHooks(compilation).alterAssetTags.tapAsync(ID, alterAssetTags);
                 HtmlWebpackPlugin.getHooks(compilation).afterTemplateExecution.tap(ID, alterAssetTags);
-            } else {
+            }
+            else {
                 compilation.hooks.htmlWebpackPluginAlterAssetTags.tapAsync(ID, alterAssetTags);
                 compilation.hooks.htmlWebpackPluginAfterHtmlProcessing.tap(ID, afterHTMLProcessing);
             }
@@ -95,7 +97,7 @@ class ModernModePlugin {
         cb();
     }
     afterHTMLProcessing(data) {
-        data.html = data.html.replace(/\snomodule="">/g, ' nomodule>');
+        data.html = data.html.replace(/\snomodule=(["'])\1>/g, ' nomodule>');
         return data;
     }
 }
