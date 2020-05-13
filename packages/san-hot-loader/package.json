@@ -1,7 +1,7 @@
 {
     "name": "san-hot-loader",
     "version": "0.1.0",
-    "description": "",
+    "description": "San hmr loader",
     "main": "index.js",
     "scripts": {
         "dev": "webpack-dev-server --config examples/loader/webpack.config.js",

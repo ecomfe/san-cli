@@ -1,7 +1,7 @@
 {
     "name": "san-loader",
     "version": "0.1.0",
-    "description": "",
+    "description": "San single-file loader for Webpack",
     "main": "index.js",
     "scripts": {
         "dev": "webpack-dev-server --config examples/webpack.config.js",
