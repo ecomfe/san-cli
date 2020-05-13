@@ -8,15 +8,36 @@
  * @author yanyiting
  */
 
-jest.unmock('vinyl-fs');
 jest.unmock('fs-extra');
-jest.mock('rxjs');
 jest.mock('inquirer');
 
 const fs = require('fs');
 const fse = require('fs-extra');
 const inquirer = require('inquirer');
 const generator = require('../tasks/generator');
+
+function Task() {
+    this.skipInfo = [];
+    this.nextInfo = [];
+    this.res = '';
+    this.skip = data => {
+        this.skipInfo.push(data);
+    };
+    this.info = data => {
+        this.nextInfo.push(data);
+    };
+    this.error = err => {
+        this.res = err;
+    };
+    this.complete = () => {
+        this.res = 'done';
+    };
+}
+
+let task;
+beforeEach(() => {
+    task = new Task();
+});
 
 test('meta.js', async () => {
     // 选择smarty、false
@@ -26,7 +47,7 @@ test('meta.js', async () => {
     let ctx = {
         localTemplatePath: __dirname + '/mock-template'
     };
-    await generator('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-dest', {})(ctx).then(data => {
+    await generator('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-dest', {})(ctx, task).then(() => {
         // 将_下划线文件转为.文件
         expect(fs.existsSync(__dirname + '/mock-dest/.env')).toBeTruthy();
         // 检验filters是否生效
