@@ -22,7 +22,7 @@ module.exports = (template, dest, options) => {
             // 如果强制带--force，那就删了这个目录，流程终止
             if (options.force) {
                 task.info('--force delete target directory');
-                return fs.remove(dest);
+                fs.remove(dest);
                 // 如果是当前目录下建
             } else if (options._inPlace) {
                 task.info(); // 添加这一句下面才能显示 prompt

@@ -52,9 +52,10 @@ test('目录已存在，--force强行删除', async () => {
     })({}, task).then(() => {
         expect(task.nextInfo).toEqual([
             'Start checking target directory status',
-            '--force delete target directory'
+            '--force delete target directory',
+            'Check the status of the offline template'
         ]);
-        expect(task.res).toBe('');
+        expect(task.res).toBe('done');
     });
 });
 
