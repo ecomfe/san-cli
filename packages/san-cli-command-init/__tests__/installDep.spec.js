@@ -8,16 +8,26 @@
  * @author yanyiting
  */
 
-jest.mock('rxjs');
 jest.mock('inquirer');
 
 const inquirer = require('inquirer');
 const installDep = require('../tasks/installDep');
 
 function Task() {
-    this.str = '';
+    this.skipInfo = [];
+    this.nextInfo = [];
+    this.res = '';
     this.skip = data => {
-        this.str = data;
+        this.skipInfo.push(data);
+    };
+    this.info = data => {
+        this.nextInfo.push(data);
+    };
+    this.error = err => {
+        this.res = err;
+    };
+    this.complete = () => {
+        this.res = 'done';
     };
 }
 
@@ -30,9 +40,9 @@ test('不安装依赖', async () => {
     inquirer.prompt.mockResolvedValueOnce({install: false});
 
     await installDep('https://github.com/yyt/HelloWorld.git', 'none', {})({}, task)
-        .then(data => {
-            expect(task.str).toBe('Not install dependencies');
-            expect(data.complete).toBeTruthy();
+        .then(() => {
+            expect(task.skipInfo).toEqual(['Not install dependencies']);
+            expect(task.res).toBe('done');
         });
 });
 
@@ -40,11 +50,8 @@ test('用户选择安装依赖', async () => {
     inquirer.prompt.mockResolvedValueOnce({install: true});
 
     await installDep('https://github.com/yyt/HelloWorld.git', 'none', {})({}, task)
-        .then(data => {
-            expect(data).toEqual({
-                next: [undefined, 'Installing dependencies...'],
-                error: '',
-                complete: true
-            });
+        .then(() => {
+            expect(task.nextInfo).toEqual([undefined, 'Installing dependencies...']);
+            expect(task.res).toBe('done');
         });
 });
