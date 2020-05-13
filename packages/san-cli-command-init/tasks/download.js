@@ -14,7 +14,7 @@ const {getLocalTplPath} = require('san-cli-utils/path');
 const downloadRepo = require('../utils/downloadRepo');
 
 module.exports = (template, dest, options) => {
-    return (ctx, task) => {
+    return async (ctx, task) => {
         if (ctx.localTemplatePath) {
             // 使用本地路径
             const relativePath = path.relative(process.cwd(), ctx.localTemplatePath).replace(/^(\.+\/+)+/g, '');

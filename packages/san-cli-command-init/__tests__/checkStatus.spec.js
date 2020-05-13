@@ -8,90 +8,107 @@
  * @author yanyiting
  */
 
-jest.mock('rxjs');
 jest.mock('inquirer');
 const inquirer = require('inquirer');
 const checkStatus = require('../tasks/checkStatus');
 
+function Task() {
+    this.skipInfo = [];
+    this.nextInfo = [];
+    this.res = '';
+    this.skip = data => {
+        this.skipInfo.push(data);
+    };
+    this.info = data => {
+        this.nextInfo.push(data);
+    };
+    this.error = err => {
+        this.res = err;
+    };
+    this.complete = () => {
+        this.res = 'done';
+    };
+}
+
+let task;
+beforeEach(() => {
+    task = new Task();
+});
+
 test('新目录，目录未存在', async () => {
-    await checkStatus('https://github.com/yyt/HelloWorld.git', 'none', {})({})
-        .then(data => {
-            expect(data).toEqual({
-                next: ['Start checking target directory status', 'Check the status of the offline template'],
-                error: '',
-                complete: true
-            });
+    await checkStatus('https://github.com/yyt/HelloWorld.git', 'none', {})({}, task)
+        .then(() => {
+            expect(task.nextInfo).toEqual([
+                'Start checking target directory status',
+                'Check the status of the offline template'
+            ]);
+            expect(task.res).toBe('done');
         });
 });
 
 test('目录已存在，--force强行删除', async () => {
     await checkStatus('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-template', {
         force: true
-    })({}).then(data => {
-        expect(data).toEqual({
-            next: ['Start checking target directory status', '--force delete target directory'],
-            error: '',
-            complete: false
-        });
+    })({}, task).then(() => {
+        expect(task.nextInfo).toEqual([
+            'Start checking target directory status',
+            '--force delete target directory'
+        ]);
+        expect(task.res).toBe('');
     });
 });
 
-test('在当前目录下 .', async () => {
-    // 回答在当前目录创建
+test('在当前目录下执行命令后，回答在当前目录创建', async () => {
     inquirer.prompt.mockResolvedValueOnce({ok: true});
     await checkStatus('https://github.com/yyt/HelloWorld.git', '.', {
         _inPlace: true
-    })({}).then(data => {
-        expect(data).toEqual({
-            next: [
-                'Start checking target directory status',
-                undefined,
-                'Check the status of the offline template'
-            ],
-            error: '',
-            complete: true
-        });
-    });
-
-    // 回答不在当亲目录创建
-    inquirer.prompt.mockResolvedValueOnce({ok: false});
-    await checkStatus('https://github.com/yyt/HelloWorld.git', '.', {
-        _inPlace: true
-    })({}).then(data => {
-        expect(data).toEqual({
-            next: ['Start checking target directory status', undefined],
-            error: '',
-            complete: false
-        });
+    })({}, task).then(() => {
+        expect(task.nextInfo).toEqual([
+            'Start checking target directory status',
+            undefined,
+            'Check the status of the offline template'
+        ]);
+        expect(task.res).toBe('done');
     });
 });
 
-test('目录已存在，也没有任何指示如何操作已存在的目录', async () => {
-    // 选择覆盖
+test('在当前目录下执行命令后，回答不在当前目录创建', async () => {
+    inquirer.prompt.mockResolvedValueOnce({ok: false});
+    await checkStatus('https://github.com/yyt/HelloWorld.git', '.', {
+        _inPlace: true
+    })({}, task).then(() => {
+        expect(task.nextInfo).toEqual(['Start checking target directory status', undefined]);
+        expect(task.res).toBe('');
+    });
+});
+
+test('目录已存在，回答覆盖', async () => {
     inquirer.prompt.mockResolvedValueOnce({action: 'overwrite'});
-    await checkStatus('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-template', {})({})
-        .then(data => {
-            expect(data.next[2]).toMatch('Overwrite selected, first delete');
-            expect(data.complete).toBeTruthy();
+    await checkStatus('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-template', {})({}, task)
+        .then(() => {
+            expect(task.nextInfo[2]).toMatch('Overwrite selected, first delete');
+            expect(task.res).toBe('done');
         });
+});
 
-    // 选择取消
+test('目录已存在，回答取消', async () => {
     inquirer.prompt.mockResolvedValueOnce({action: false});
-    await checkStatus('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-template', {})({})
-        .then(data => {
-            expect(data.error).toMatch('Cancel overwrite');
-            expect(data.complete).toBeFalsy();
+    await checkStatus('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-template', {})({}, task)
+        .then(() => {
+            expect(task.res).toMatch('Cancel overwrite');
         });
+});
 
-    // 选择合并
+test('目录已存在，回答合并', async () => {
     inquirer.prompt.mockResolvedValueOnce({action: 'merge'});
-    await checkStatus('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-template', {})({})
-        .then(data => {
-            expect(data).toEqual({
-                next: ['Start checking target directory status', undefined, 'Check the status of the offline template'],
-                error: '',
-                complete: true
-            });
+    await checkStatus('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-template', {})({}, task)
+        .then(() => {
+            expect(task.nextInfo).toEqual([
+                'Start checking target directory status',
+                undefined,
+                'Check the status of the offline template'
+            ]);
+            expect(task.res).toBe('done');
         });
 });
 
@@ -99,7 +116,7 @@ test('存在离线模板', async () => {
     let ctx = {};
     await checkStatus('exist', 'none', {
         offline: true
-    })(ctx).then(data => {
+    })(ctx, task).then(() => {
         expect(ctx.localTemplatePath).toMatch('exist');
     });
 });
@@ -108,7 +125,7 @@ test('不存在离线模板', async () => {
     let ctx = {};
     await checkStatus('https://github.com/yyt/HelloWorld.git', 'none', {
         offline: true
-    })(ctx).then(data => {
-        expect(data.error).toMatch('Offline scaffolding template path does not exist');
+    })(ctx, task).then(() => {
+        expect(task.res).toMatch('Offline scaffolding template path does not exist');
     });
 });
