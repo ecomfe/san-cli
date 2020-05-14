@@ -29,9 +29,13 @@ test('目录已存在，--force强行删除', async () => {
         force: true
     })({}).then(data => {
         expect(data).toEqual({
-            next: ['Start checking target directory status', '--force delete target directory'],
+            next: [
+                'Start checking target directory status',
+                '--force delete target directory',
+                'Check the status of the offline template'
+            ],
             error: '',
-            complete: false
+            complete: true
         });
     });
 });
