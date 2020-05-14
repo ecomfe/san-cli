@@ -13,7 +13,7 @@ import ProjectCreate from './containers/create';
 import About from './components/about';
 import NotFound from './components/not-found';
 
-const GRAPHQL_ENDPOINT = 'ws://localhost:8000/graphql';
+const GRAPHQL_ENDPOINT = 'ws://localhost:8333/graphql';
 register(san, createApolloServer(GRAPHQL_ENDPOINT));
 
 const routes = [

@@ -12,13 +12,21 @@ const fallback = require('express-history-api-fallback');
 const {warn} = require('san-cli-utils/ttyLogger');
 const {textBold} = require('san-cli-utils/randomColor');
 
-const apolloServer = require('./apollo-server');
+const server = require('./apollo-server');
 
 const app = express();
 
 function createServer(options) {
-    const {host = '0.0.0.0', port = 8333, distPath, publicPath} = options;
-
+    const {
+        host = '0.0.0.0',
+        port = 8333,
+        distPath,
+        publicPath,
+        graphqlPath,
+        subscriptionsPath,
+        cors
+    } = options;
+    const apolloServer = server(subscriptionsPath);
     return new Promise(async (resolve, reject) => {
         app.get('/', (req, res) => {
             res.send('Hello World');
@@ -30,7 +38,11 @@ function createServer(options) {
         app.use(fallback(path.join(distPath, 'index.html')));
 
         // 集成Apollo GraphQL中间件
-        apolloServer.applyMiddleware({app});
+        apolloServer.applyMiddleware({
+            app,
+            path: graphqlPath,
+            cors
+        });
 
         // 查找空闲的 port
         const origPort = (portfinder.basePort = parseInt(port, 10));
@@ -41,12 +53,15 @@ function createServer(options) {
 
         // Start server
         const httpServer = http.createServer(app);
+        apolloServer.installSubscriptionHandlers(httpServer);
         httpServer.listen(
             {
                 host,
                 port: serverPort
             },
             () => {
+                console.log(`🚀 Server ready at http://localhost:${port}${graphqlPath}`);
+                console.log(`🚀 Subscriptions ready at ws://localhost:${port}${subscriptionsPath}`);
                 resolve({
                     host,
                     port: serverPort

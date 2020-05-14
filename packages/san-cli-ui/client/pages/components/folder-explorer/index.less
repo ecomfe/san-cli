@@ -1,8 +1,57 @@
 .folder-explorer {
-    .content {
-        margin: 0 auto;
-        width: 800px;
-        min-height: 800px;
+    .contents {
+        width: 100%;
+        margin: 0 16px;
+        .santd-btn {
+            border-width: 0;
+        }
+        .path-guide {
+            margin: 16px;
+            background-color: #1890ff;
+            display: inline-block;
+            width: 720px;
+            white-space: nowrap;
+            .santd-btn {
+                border-radius: 0;
+                border-left: 2px solid #fff;
+            }
+        }
+    }
+    .folders {
+        padding: 10px;
+        .folder-item {
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            user-select: none;
+            cursor: pointer;
+            position: relative;
+            .santd-icon {
+                font-size: 18px;
+                color: #1890ff;
+                margin: 0 8px;
+            }
+            &:hover {
+                background-color: rgba(24, 144,255, .2);
+            }
+            &.hidden {
+                opacity: .5;
+            }
+            .folder-name {
+                flex: 100% 1 1;
+                margin-left: 16px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+        }
+        .san-project-icon {
+            width: 14px;
+            height: 14px;
+            vertical-align: top;
+            position: relative;
+            top: 5px;
+        }
     }
     .actions-bar {
         position: fixed;
@@ -11,5 +60,11 @@
         .santd-btn {
             margin: 10px auto;
         }
+    }
+}
+.contents-menu {
+    .santd-menu-item:hover {
+        color: #fff;
+        background-color: rgba(24, 144,255, .6);
     }
 }

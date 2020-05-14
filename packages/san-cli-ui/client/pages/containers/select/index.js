@@ -7,15 +7,7 @@ import {Component} from 'san';
 import {createApolloComponent, createApolloDataComponent} from '@lib/san-apollo';
 import {
     logo,
-    CWD,
-    CWD_CHANGE,
-    FOLDER_CURRENT,
-    FOLDERS_FAVORITE,
-    FOLDER_OPEN,
-    FOLDER_OPEN_PARENT,
-    FOLDER_SET_FAVORITE,
-    PROJECT_CWD_RESET,
-    FOLDER_CREATE
+    CWD
 } from '../../const';
 import ProjectList from '../../components/project-list';
 import FolderExplorer from '../../components/folder-explorer';
@@ -71,7 +63,7 @@ export default class Select extends createApolloComponent(Component) {
                             </r-link>
                         </div>
                     </s-header>
-                    <s-content class="content">
+                    <s-content class="main">
                         <c-list
                             s-if="nav === '1'"
                             loading="{{initLoading}}"
@@ -80,7 +72,6 @@ export default class Select extends createApolloComponent(Component) {
                         />
                         <c-folder-explorer
                             s-if="nav === '2'"
-                            cwd="{{cwd}}"
                             on-change="handleCwdChange"
                         />
                     </s-content>
@@ -140,10 +131,10 @@ export default class Select extends createApolloComponent(Component) {
         };
     }
 
+
     async attached() {
         // simple query demo
-
-        let res = this.sendQuery(CWD);
+        let res = await this.$apollo.query({query: CWD});
         if (res.data) {
             this.data.set('cwd', res.data.cwd);
         }
@@ -166,11 +157,7 @@ export default class Select extends createApolloComponent(Component) {
     }
     handleListChange(e) {
     }
-    handleCwdChange(e) {
-
-    }
-    async sendQuery(gqlstring) {
-        let res = await this.$apollo.query({query: gqlstring});
-        return res;
+    handleCwdChange(path) {
+        console.log('change', path);
     }
 }

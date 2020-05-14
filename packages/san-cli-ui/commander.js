@@ -31,7 +31,17 @@ exports.handler = cliApi => {
     const publicPath = path.join(__filename, './public');
 
     const createServer = require('./server/');
-    createServer({host, port, distPath, publicPath})
+    createServer({
+        host,
+        port,
+        distPath,
+        publicPath,
+        graphqlPath: '/graphql',
+        subscriptionsPath: '/graphql',
+        cors: {
+            origin: host
+        }
+    })
         .then(({host, port}) => {
             const networkUrl = `http://${host}:${port}`;
             const {textColor} = require('san-cli-utils/randomColor');

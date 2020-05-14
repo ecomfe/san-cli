@@ -8,7 +8,7 @@
     },
     "scripts": {
         "build": "node ../san-cli/index.js build --config san.config.js",
-        "server": "node ../san-cli/index.js serve --config san.config.js",
+        "serve": "node ../san-cli/index.js serve --config san.config.js",
         "start": "nodemon ../san-cli/index.js ui"
     },
     "nodemonConfig": {
