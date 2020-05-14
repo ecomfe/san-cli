@@ -21,10 +21,10 @@ module.exports = (template, dest, options) => {
             observer.next('Start checking target directory status');
             // 处理目标目录存在的情况，显示 loading 啊~
             if (fs.existsSync(dest)) {
-                // 如果强制带--force，那就删了这个目录，流程终止
+                // 如果强制带--force，那就删了这个目录
                 if (options.force) {
                     observer.next('--force delete target directory');
-                    return fs.remove(dest);
+                    fs.remove(dest);
                     // 如果是当前目录下建
                 } else if (options._inPlace) {
                     observer.next(); // 添加这一句下面才能显示 prompt

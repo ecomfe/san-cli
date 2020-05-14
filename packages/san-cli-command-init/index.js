@@ -47,6 +47,11 @@ exports.builder = {
         alias: 'r',
         default: '',
         describe: 'Specify npm package download registry'
+    },
+    'project-preset': {
+        type: 'string',
+        default: '',
+        describe: 'The JSON string of project preset according to PROMPTS in meta\.js within template'
     }
 };
 
