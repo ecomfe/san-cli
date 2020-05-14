@@ -67,7 +67,7 @@ module.exports = function devServer({webpackConfig, devServerConfig, publicPath,
         // 添加插件
         // 在 serve 情况下添加
         webpackConfig.plugins.push(new NameModulesPlugin());
-        webpackConfig.plugins.push(new SanFriendlyErrorsPlugin({clearConsole: false}));
+        webpackConfig.plugins.push(new SanFriendlyErrorsPlugin());
         // 处理 tpl 的情况，smarty copy 到 output
         webpackConfig.plugins.push(new WriteFileWebpackPlugin({test: /\.tpl$/}));
 
