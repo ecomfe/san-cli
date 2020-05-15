@@ -93,12 +93,6 @@ function open(file, context) {
     return generateFolder(cwd.get(), context);
 }
 
-function openParent(file, context) {
-    const newFile = path.dirname(file);
-    cwd.set(newFile, context);
-    return generateFolder(cwd.get(), context);
-}
-
 function isPackage(file, context) {
     try {
         return fs.existsSync(path.join(file, 'package.json'));
@@ -198,7 +192,6 @@ module.exports = {
     getCurrent,
     list,
     open,
-    openParent,
     isPackage,
     readPackage,
     writePackage,

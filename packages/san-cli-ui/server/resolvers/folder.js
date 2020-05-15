@@ -17,7 +17,6 @@ module.exports = {
 
     Mutation: {
         folderOpen: (root, {path}, context) => folders.open(path, context),
-        folderOpenParent: (root, args, context) => folders.openParent(cwd.get(), context),
         folderSetFavorite: (root, args, context) => folders.setFavorite({
             file: args.path,
             favorite: args.favorite

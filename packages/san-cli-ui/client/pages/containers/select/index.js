@@ -70,11 +70,15 @@ export default class Select extends createApolloComponent(Component) {
                             list="{=list=}"
                             on-change="handleListChange"
                         />
-                        <c-folder-explorer
-                            s-if="nav === '2'"
-                            current-path="{{cwd}}"
-                            on-change="handleCwdChange"
-                        />
+                        <div class="nav-folder" s-if="nav === '2'">
+                            <c-folder-explorer
+                                current-path="{{cwd}}"
+                                on-change="handleCwdChange"
+                            />
+                            <div class="actions-bar">
+                                <s-button type="primary" icon="add" on-click="createProject">在此创建新目录</s-button>
+                            </div>
+                        </div>
                     </s-content>
                 </s-layout>
             </s-layout>
@@ -139,7 +143,7 @@ export default class Select extends createApolloComponent(Component) {
         if (res.data) {
             this.data.set('cwd', res.data.cwd);
         }
-
+        console.log(res);
         this.data.set('initLoading', false);
         const mockdir = this.data.get('cwd');
         const defaultData = this.data.get('defaultData');
@@ -159,6 +163,13 @@ export default class Select extends createApolloComponent(Component) {
     handleListChange(e) {
     }
     handleCwdChange(path) {
+        /* eslint-disable no-console */
         console.log('change', path);
+        path && this.data.set('cwd', path);
+    }
+    createProject() {
+        let cwd = this.data.get('cwd');
+        console.log('project create', cwd);
+        /* eslint-enable no-console */
     }
 }

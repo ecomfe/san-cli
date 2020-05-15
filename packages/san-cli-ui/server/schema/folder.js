@@ -9,7 +9,6 @@ extend type Query {
 
 extend type Mutation {
   folderOpen (path: String!): Folder
-  folderOpenParent: Folder
   folderSetFavorite (path: String!, favorite: Boolean!): Folder
   folderCreate(name: String!): Folder
 }
@@ -23,4 +22,5 @@ type Folder {
   children: [Folder]
   hidden: Boolean
 }
+
 `;
