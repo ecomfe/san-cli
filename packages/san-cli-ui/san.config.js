@@ -12,6 +12,9 @@ const CDN = '/';
 const STATIC_PRO = 'static';
 
 const isProduction = process.env.NODE_ENV === 'production';
+
+process.env.SAN_VAR_APP_GRAPHQL_ENDPOINT = process.env.SAN_VAR_APP_GRAPHQL_ENDPOINT || '';
+
 module.exports = {
     assetsDir: isProduction ? STATIC_PRO : 'static',
     publicPath: isProduction ? CDN : '/',

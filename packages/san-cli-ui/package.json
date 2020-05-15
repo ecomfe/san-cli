@@ -8,7 +8,7 @@
     },
     "scripts": {
         "build": "node ../san-cli/index.js build --config san.config.js",
-        "serve": "node ../san-cli/index.js serve --config san.config.js",
+        "serve": "cross-env SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql node ../san-cli/index.js serve --config san.config.js",
         "start": "nodemon ../san-cli/index.js ui"
     },
     "nodemonConfig": {
@@ -50,8 +50,9 @@
         "apollo-client": "^2.6.8",
         "apollo-link-ws": "^1.0.20",
         "babel-plugin-import": "^1.13.0",
+        "cross-env": "^7.0.2",
         "graphql-tag": "^2.10.3",
-        "nodemon": "^2.0.2",
+        "nodemon": "^2.0.4",
         "san": "^3.8.3",
         "san-router": "^1.2.2",
         "santd": "^0.2.5",

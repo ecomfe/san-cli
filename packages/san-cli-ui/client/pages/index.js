@@ -13,8 +13,9 @@ import ProjectCreate from './containers/create';
 import About from './components/about';
 import NotFound from './components/not-found';
 
-const GRAPHQL_ENDPOINT = 'ws://localhost:8333/graphql';
-register(san, createApolloServer(GRAPHQL_ENDPOINT));
+// eslint-disable-next-line no-undef
+const graphqlEndpoint = APP_GRAPHQL_ENDPOINT || `ws://${location.host}/graphql`;
+register(san, createApolloServer(graphqlEndpoint));
 
 const routes = [
     {rule: '/', Component: App, target: '#app'},
