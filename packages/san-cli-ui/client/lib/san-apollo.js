@@ -24,6 +24,7 @@ const apolloClient = client => ({
         mutation,
         variables
     }),
+    // TODO: to be fixed
     subscribe: (subscription, variables) => client.subscribe({
         subscription,
         variables
