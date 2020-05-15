@@ -72,6 +72,7 @@ export default class Select extends createApolloComponent(Component) {
                         />
                         <c-folder-explorer
                             s-if="nav === '2'"
+                            current-path="{{cwd}}"
                             on-change="handleCwdChange"
                         />
                     </s-content>

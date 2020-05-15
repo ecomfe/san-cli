@@ -156,13 +156,32 @@ export default class FolderExplorer extends Component {
 
     attached() {
         this.folderApollo();
+        const observer = this.$apollo.subscribe({query: CWD_CHANGE});
+        observer.subscribe({
+            next: result => {
+                const {data, loading, error, errors} = result;
+                /* eslint-disable no-console */
+                if (error || errors) {
+                    console.log('err');
+                }
+
+                if (loading) {
+                    console.log('loading');
+                }
+
+                if (data && data.cwd) {
+                    this.data.set('currentPath', data.cwd);
+                    this.folderApollo();
+                }
+            },
+            error: err => {
+                console.log('error', err);
+                /* eslint-enable no-console */
+            }
+        });
     }
     async folderApollo() {
         this.data.set('loading', false);
-        let path = await this.$apollo.query({query: CWD});
-        if (path.data) {
-            this.data.set('currentPath', path.data.cwd);
-        }
         let folder = await this.$apollo.query({query: FOLDER_CURRENT});
         if (folder.data) {
             this.data.set('folderCurrent', folder.data.folderCurrent);
@@ -213,7 +232,6 @@ export default class FolderExplorer extends Component {
                     cache.writeQuery({query: FOLDER_CURRENT, data: {folderCurrent: folderOpen}});
                 }
             });
-            this.folderApollo();
         } catch (e) {
             this.data.set('error', e);
         }
