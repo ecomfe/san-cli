@@ -6,107 +6,83 @@
 import {Component} from 'san';
 import {createApolloComponent, createApolloDataComponent} from '@lib/san-apollo';
 import {
-    logo,
-    CWD
+    CWD,
+    PROJECT_INIT_CREATION
 } from '../../const';
 import ProjectList from '../../components/project-list';
 import FolderExplorer from '../../components/folder-explorer';
+import ProjectCreate from '../../components/project-create';
+import Layout from '../../components/layout';
 import {Link} from 'san-router';
-import {Layout, Tabs, Icon, Button, Menu} from 'santd';
-import 'santd/es/layout/style';
-import 'santd/es/menu/style';
-import 'santd/es/tabs/style';
+import {Icon, Button, Spin} from 'santd';
+import 'santd/es/icon/style';
 import 'santd/es/button/style';
+import 'santd/es/spin/style';
 import './index.less';
 
 export default class Select extends createApolloComponent(Component) {
     static template = /* html */`
         <div class="project-select">
-            <s-layout>
-                <s-sider
-                    theme="light"
-                    collapsed="{{collapsed}}"
-                    collapsible="{{true}}"
-                    trigger="{{noTrigger}}"
-                >
-                    <div class="title"><img class="logo" src="{{logo}}"/> san项目管理</div>
-                    <s-menu
-                        mode="inline"
-                        inlineCollapsed="{{collapsed}}"
-                        defaultSelectedKeys="{{['1']}}"
-                        on-click="handleMenu"
-                    >
-                        <s-menuitem key="1">
-                            <s-icon type="unordered-list" />
-                            <span>项目</span>
-                        </s-menuitem>
-                        <s-menuitem key="2">
-                            <s-icon type="plus-circle" />
-                            <span>创建</span>
-                        </s-menuitem>
-                    </s-menu>
-                </s-sider>
-                <s-layout>
-                    <s-header style="background: #fff; padding: 0">
-                        <s-icon
-                            class="trigger"
-                            type="{{collapsed ? 'menu-unfold' : 'menu-fold'}}"
-                            on-click="toggleCollapsed"
+            <s-spin class="loading" spinning="{{pageLoading}}" size="large"/>
+            <c-layout menu="{{menuData}}" nav="{=nav=}" on-menuclick="handleMenu">
+                <template slot="right">
+                    <r-link to="/">
+                        首页
+                    </r-link>
+                    |
+                    <r-link to="/about">
+                        关于
+                    </r-link>
+                </template>
+                <template slot="content">
+                    <c-list
+                        s-if="route.query.nav === 'select'"
+                        loading="{{initLoading}}"
+                        list="{=list=}"
+                        on-change="handleListChange"
+                    />
+                    <div class="nav-folder" s-if="route.query.nav === 'path'">
+                        <c-folder-explorer
+                            current-path="{{cwd}}"
+                            on-change="handleCwdChange"
                         />
-                        <div class="head-right">
-                            <r-link to="/">
-                                首页
-                            </r-link>
-                            |
-                            <r-link to="/about">
-                                关于
-                            </r-link>
+                        <div class="actions-bar">
+                            <s-button type="primary" icon="add" on-click="createProject">在此创建新目录</s-button>
                         </div>
-                    </s-header>
-                    <s-content class="main">
-                        <c-list
-                            s-if="nav === '1'"
-                            loading="{{initLoading}}"
-                            list="{=list=}"
-                            on-change="handleListChange"
-                        />
-                        <div class="nav-folder" s-if="nav === '2'">
-                            <c-folder-explorer
-                                current-path="{{cwd}}"
-                                on-change="handleCwdChange"
-                            />
-                            <div class="actions-bar">
-                                <s-button type="primary" icon="add" on-click="createProject">在此创建新目录</s-button>
-                            </div>
-                        </div>
-                    </s-content>
-                </s-layout>
-            </s-layout>
+                    </div>
+                    <div class="nav-folder" s-if="route.query.nav === 'create'">
+                        创建
+                        <c-create />
+                    </div>
+                </template>
+            </c-layout>
         </div>
     `;
     static components = {
-        's-layout': Layout,
-        's-header': Layout.Header,
-        's-content': Layout.Content,
-        's-sider': Layout.Sider,
-        's-menu': Menu,
-        's-submenu': Menu.Sub,
-        's-menuitem': Menu.Item,
-        's-tabs': Tabs,
-        's-tabpane': Tabs.TabPane,
         's-icon': Icon,
         'r-link': Link,
         's-button': Button,
+        's-spin': Spin,
         'c-list': ProjectList,
         'c-folder-explorer': FolderExplorer,
+        'c-create': ProjectCreate,
+        'c-layout': Layout,
         'com-apollo': createApolloDataComponent(Component)
     };
     static computed = {
-
-    }
-
+        nav() {
+            let queryNav = this.data.get('route.query.nav');
+            let menuNav = this.data.get('menuData')[0].key;
+            return [queryNav || menuNav];
+        }
+    };
     initData() {
         return {
+            menuData: [
+                {text: '项目管理', icon: 'unordered-list', key: 'select', link: '/project/select'},
+                {text: '目录切换', icon: 'swap', key: 'path', link: '/project/path'},
+                {text: '创建项目', icon: 'plus', key: 'create', link: '/project/create'}
+            ],
             CWD,
             title: 'San CLI',
             initLoading: true,
@@ -129,10 +105,9 @@ export default class Select extends createApolloComponent(Component) {
                     dir: ''
                 }
             ],
-            logo,
             noTrigger: null,
             collapsed: false,
-            nav: '1'
+            pageLoading: false
         };
     }
 
@@ -143,7 +118,6 @@ export default class Select extends createApolloComponent(Component) {
         if (res.data) {
             this.data.set('cwd', res.data.cwd);
         }
-        console.log(res);
         this.data.set('initLoading', false);
         const mockdir = this.data.get('cwd');
         const defaultData = this.data.get('defaultData');
@@ -167,9 +141,15 @@ export default class Select extends createApolloComponent(Component) {
         console.log('change', path);
         path && this.data.set('cwd', path);
     }
-    createProject() {
+    async createProject() {
         let cwd = this.data.get('cwd');
         console.log('project create', cwd);
+        // 开启loading 防止误点
+        this.data.set('pageLoading', true);
         /* eslint-enable no-console */
+        await this.$apollo.mutate({
+            mutation: PROJECT_INIT_CREATION
+        });
+        this.data.set('pageLoading', true);
     }
 }

@@ -56,8 +56,7 @@ export default class FolderExplorer extends Component {
                 </s-tooltip>
                 <s-tooltip title="{{tooltipStar}}" s-if="folderCurrent">
                     <s-button type="primary" on-click="onFavorite">
-                        <s-icon s-if="folderCurrent.favorite" type="star" theme="filled"></s-icon>
-                        <s-icon s-else type="star"></s-icon>
+                        <s-icon type="star" theme="{{folderCurrent.favorite ? 'filled' : 'outlined'}}"></s-icon>
                     </s-button>
                 </s-tooltip>
                 <s-tooltip title="{{tooltipRefresh}}">
@@ -92,8 +91,7 @@ export default class FolderExplorer extends Component {
                         class="folder-item {{folder.hidden ? 'hidden' : ''}}"
                         on-click="openFolder(folder.path)"
                     >
-                        <s-icon s-if="folder" type="folder" theme="filled"></s-icon>
-                        <s-icon s-else type="folder-open" theme="filled"></s-icon>
+                        <s-icon type="{{folder.isPackage ? 'folder' : 'folder-open'}}" theme="filled"></s-icon>
                         <div class="folder-name">
                             {{folder.name}}
                             <img s-if="folder.isSanProject"

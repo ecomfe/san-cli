@@ -12,7 +12,7 @@ import FOLDERS_FAVORITE from '@graphql/folder/foldersFavorite.gql';
 import FOLDER_OPEN from '@graphql/folder/folderOpen.gql';
 import FOLDER_SET_FAVORITE from '@graphql/folder/folderSetFavorite.gql';
 import FOLDER_CREATE from '@graphql/folder/folderCreate.gql';
-
+import PROJECT_INIT_CREATION from '@graphql/project/projectInitCreation.gql';
 
 export {
     logo,
@@ -22,5 +22,6 @@ export {
     FOLDERS_FAVORITE,
     FOLDER_OPEN,
     FOLDER_SET_FAVORITE,
-    FOLDER_CREATE
+    FOLDER_CREATE,
+    PROJECT_INIT_CREATION
 };

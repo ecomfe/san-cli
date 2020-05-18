@@ -18,10 +18,11 @@ const graphqlEndpoint = APP_GRAPHQL_ENDPOINT || `ws://${location.host}/graphql`;
 register(san, createApolloServer(graphqlEndpoint));
 
 const routes = [
-    {rule: '/', Component: App, target: '#app'},
+    {rule: '/', Component: ProjectSelect, target: '#app'},
     {rule: '/home', Component: App, target: '#app'},
     {rule: '/about', Component: About, target: '#app'},
-    {rule: '/project/select', Component: ProjectSelect, target: '#app'},
+    {rule: '/project', Component: ProjectSelect, target: '#app'},
+    {rule: '/project/:nav', Component: ProjectSelect, target: '#app'},
     {rule: '/project/create', Component: ProjectCreate, target: '#app'},
     {rule: '/notfound', Component: NotFound, target: '#app'}
 ];
