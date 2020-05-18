@@ -11,6 +11,10 @@
 const path = require('path');
 const fs = require('fs-extra');
 const execa = require('execa');
+const {getDebugLogger} = require('san-cli-utils/ttyLogger');
+const debug = getDebugLogger('ui:create');
+const {getGitUser} = require('san-cli-utils/env');
+const {tmpl} = require('san-cli-utils/utils');
 
 const TEMPLATE_PATH = '.san/templates/san-project';
 const initCreator = async (useCache = true) => {
@@ -18,10 +22,11 @@ const initCreator = async (useCache = true) => {
         '--download-repo-only'
     ];
 
-    // 判断本地目录是否存在
+    const localTemplatePath = path.join(require('os').homedir(), TEMPLATE_PATH);
+
+    // 1. 判断本地目录是否存在，如果存在则不去github远程拉取
     if (useCache) {
-        const templatePath = path.join(require('os').homedir(), TEMPLATE_PATH);
-        if (fs.existsSync(templatePath)) {
+        if (fs.existsSync(localTemplatePath)) {
             args.push('--offline');
         }
     }
@@ -37,16 +42,38 @@ const initCreator = async (useCache = true) => {
         stdio: ['inherit', 'pipe', 'inherit']
     });
 
-    // const child = require('child_process').exec('yarn dev:san init test-dir --download-repo-only --offline');
-
     const onData = buffer => {
         const text = buffer.toString().trim();
-        console.log({text});
+        debug(text);
     };
 
     child.stdout.on('data', onData);
 
     await child;
+
+    // 2. 获取项目脚手架的预设，传给前端
+    const metaPrompts = require(`${localTemplatePath}/meta.js`).prompts;
+    const prompts = Object.keys(metaPrompts).map(name => ({
+        name,
+        ...metaPrompts[name]
+    }));
+
+    // 3. 替换占位符，通常是default字段
+    const templateData = {
+        name: path.basename(process.cwd()),
+        author: getGitUser().name
+    };
+
+    prompts.forEach(item => {
+        if (typeof item.default === 'string') {
+            item.default = tmpl(item.default, templateData);
+        }
+    });
+
+    return {
+        success: true,
+        prompts
+    };
 };
 
 module.exports = {

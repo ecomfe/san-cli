@@ -1,5 +1,19 @@
 mutation projectInitCreation {
   projectInitCreation {
     success
+    prompts {
+      name
+      type
+      label
+      message
+      required
+      default
+      when
+      choices {
+        name
+        value
+        short
+      }
+    }
   }
 }

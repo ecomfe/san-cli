@@ -10,6 +10,7 @@
         "build": "node ../san-cli/index.js build --config san.config.js",
         "serve": "cross-env SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql node ../san-cli/index.js serve --config san.config.js",
         "start": "nodemon ../san-cli/index.js ui",
+        "start:debug": "cross-env DEBUG=san-cli:*  nodemon ../san-cli/index.js ui",
         "dev:san": "node ../san-cli/index.js",
         "dev:init": "node ../san-cli/index.js init"
     },

@@ -7,11 +7,29 @@ extend type Query {
 }
 
 extend type Mutation {
-  projectInitCreation: projectInitCreation
+  projectInitCreation: ProjectInitCreation
 }
 
-type projectInitCreation {
+type ProjectInitCreation {
   success: Boolean
+  prompts: [Prompt]
+}
+
+type Prompt {
+  name: String
+  type: String
+  label: String
+  message: String
+  required: Boolean
+  default: String
+  when: String
+  choices: [Choice]
+}
+
+type Choice {
+  name: String
+  value: String
+  short: String
 }
 
 type Project {

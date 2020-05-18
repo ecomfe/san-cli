@@ -54,7 +54,7 @@ module.exports = (name, dest, options) => {
                 });
 
             // 2. 请回答
-            // 如果模板中的预设，已经通过 --project-preset 参数传过来了，就不再询问
+            // 在cli ui中，模板中的预设已经通过 --project-preset 参数传过来了，就不再询问
             observer.next();
             const answers = options.projectPreset ? JSON.parse(options.projectPreset)
                 : await ask(metaData.prompts || {}, metaData, options);
