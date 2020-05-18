@@ -1,3 +1,7 @@
+/**
+ * @file create ApolloClient
+ * @author jinzhan
+ */
 import {SubscriptionClient} from 'subscriptions-transport-ws';
 import ApolloClient from 'apollo-client';
 import {InMemoryCache} from 'apollo-cache-inmemory';

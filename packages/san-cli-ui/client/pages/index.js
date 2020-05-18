@@ -7,11 +7,10 @@ import san from 'san';
 import {router} from 'san-router';
 import {register} from '@lib/san-apollo';
 import createApolloServer from '@lib/createApolloServer';
-import App from './containers/app';
-import ProjectSelect from './containers/select';
-import ProjectCreate from './containers/create';
-import About from './components/about';
-import NotFound from './components/not-found';
+import App from './app';
+import ProjectSelect from './select';
+import About from '@components/about';
+import NotFound from '@components/not-found';
 
 // eslint-disable-next-line no-undef
 const graphqlEndpoint = APP_GRAPHQL_ENDPOINT || `ws://${location.host}/graphql`;
@@ -23,7 +22,6 @@ const routes = [
     {rule: '/about', Component: About, target: '#app'},
     {rule: '/project', Component: ProjectSelect, target: '#app'},
     {rule: '/project/:nav', Component: ProjectSelect, target: '#app'},
-    {rule: '/project/create', Component: ProjectCreate, target: '#app'},
     {rule: '/notfound', Component: NotFound, target: '#app'}
 ];
 

@@ -9,10 +9,10 @@ import {
     CWD,
     PROJECT_INIT_CREATION
 } from '../../const';
-import ProjectList from '../../components/project-list';
-import FolderExplorer from '../../components/folder-explorer';
-import ProjectCreate from '../../components/project-create';
-import Layout from '../../components/layout';
+import ProjectList from '@components/project-list';
+import FolderExplorer from '@components/folder-explorer';
+import ProjectCreate from '@components/project-create';
+import Layout from '@components/layout';
 import {Link} from 'san-router';
 import {Icon, Button, Spin} from 'santd';
 import 'santd/es/icon/style';
