@@ -10,7 +10,6 @@
 
 const path = require('path');
 const fs = require('fs-extra');
-const rxjs = require('rxjs');
 const through = require('through2');
 const Handlebars = require('../handlerbars');
 const vfs = require('vinyl-fs');
@@ -27,57 +26,54 @@ const exists = fs.existsSync;
 const debug = getDebugLogger('init:generate');
 
 module.exports = (name, dest, options) => {
-    return (ctx, task) => {
-        return new rxjs.Observable(async observer => {
-            const src = ctx.localTemplatePath;
-            // 0. 设置meta信息
-            const metaData = getMetadata(src);
-            debug('read meta file from template project %O', metaData);
-            const {name: gitUser, email: gitEmail, author} = getGitUser();
-            debug('author: %s, email: %s, git user: %s', author, gitEmail, gitUser);
+    return async (ctx, task) => {
+        const src = ctx.localTemplatePath;
+        // 0. 设置meta信息
+        const metaData = getMetadata(src);
+        debug('read meta file from template project %O', metaData);
+        const {name: gitUser, email: gitEmail, author} = getGitUser();
+        debug('author: %s, email: %s, git user: %s', author, gitEmail, gitUser);
 
-            metaData.author = author;
-            metaData.email = gitEmail;
-            // 优先使用用户传入的
-            metaData.username = options.username !== '' ? options.username : gitUser || 'git';
-            // 路径地址
-            metaData.name = path.basename(path.resolve(dest));
+        metaData.author = author;
+        metaData.email = gitEmail;
+        // 优先使用用户传入的
+        metaData.username = options.username !== '' ? options.username : gitUser || 'git';
+        // 路径地址
+        metaData.name = path.basename(path.resolve(dest));
 
-            // 添加到 context 传入下一个流程
-            ctx.metaData = metaData;
+        // 添加到 context 传入下一个流程
+        ctx.metaData = metaData;
 
-            // 1. 添加 handlebar helper
-            // eslint-disable-next-line
-            metaData.helpers &&
-                Object.keys(metaData.helpers).forEach(key => {
-                    Handlebars.registerHelper(key, metaData.helpers[key]);
-                });
+        // 1. 添加 handlebar helper
+        // eslint-disable-next-line
+        metaData.helpers &&
+            Object.keys(metaData.helpers).forEach(key => {
+                Handlebars.registerHelper(key, metaData.helpers[key]);
+            });
 
-            // 2. 请回答
-            // 在cli ui中，模板中的预设已经通过 --project-preset 参数传过来了，就不再询问
-            observer.next();
-            const answers = options.projectPreset ? JSON.parse(options.projectPreset)
-                : await ask(metaData.prompts || {}, metaData, options);
+        // 2. 请回答
+        task.info();
+        // 在cli ui中，模板中的预设已经通过 --project-preset 参数传过来了，就不再询问
+        const answers = options.projectPreset ? JSON.parse(options.projectPreset)
+            : await ask(metaData.prompts || {}, metaData, options);
+        const data = Object.assign(
+            {
+                destDirName: dest,
+                inPlace: dest === process.cwd(),
+                noEscape: true
+            },
+            answers
+        );
 
-            const data = Object.assign(
-                {
-                    destDirName: dest,
-                    inPlace: dest === process.cwd(),
-                    noEscape: true
-                },
-                answers
-            );
+        debug('Meta data after the merge are completed: %O', data);
 
-            debug('Meta data after the merge are completed: %O', data);
+        ctx.tplData = data;
 
-            ctx.tplData = data;
-
-            observer.next('Generating directory structure...');
-            await startTask(src, dest, ctx, observer);
-        });
+        task.info('Generating directory structure...');
+        await startTask(src, dest, ctx, task);
     };
 };
-async function startTask(src, dest, ctx, observer) {
+async function startTask(src, dest, ctx, task) {
     const {metaData: opts, tplData: data} = ctx;
     // 处理过滤
     const rootSrc = ['**/*', '!node_modules/**'];
@@ -145,11 +141,11 @@ async function startTask(src, dest, ctx, observer) {
             .pipe(braceFileFilter.restore)
             .pipe(vfs.dest(dest))
             .on('end', () => {
-                observer.complete();
+                task.complete();
                 resolve();
             })
             .on('error', err => {
-                observer.error(err);
+                task.error(err);
                 reject();
             })
             .resume();

@@ -57,7 +57,7 @@
         "resolve-cwd": "^3.0.0",
         "san": "^3.7.9",
         "san-cli-plugin-babel": "^0.1.0-alpha.5",
-        "san-cli-plugin-progress": "^0.1.0-alpha.5",
+        "san-cli-plugin-progress": "^0.1.0-alpha.6",
         "san-cli-utils": "^0.1.0-alpha.5",
         "san-cli-webpack": "^0.1.0-alpha.5",
         "san-hot-loader": "^0.1.0",

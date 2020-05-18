@@ -1,9 +1,13 @@
 {
     "name": "san-cli-plugin-progress",
     "description": "san-cli进度条插件",
-    "version": "0.1.0-alpha.5",
+    "version": "0.1.0-alpha.6",
     "scriptName": "san",
     "main": "index.js",
+    "bin": {
+        "3": "index.js",
+        "san": "index.js"
+    },
     "license": "MIT",
     "engines": {
         "node": ">=8.16"

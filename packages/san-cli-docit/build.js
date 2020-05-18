@@ -24,8 +24,7 @@ module.exports = function build(argv, api, projectOptions) {
         if (stats && stats.toJson) {
             // const info = stats.toJson();
             // error(info.errors);
-        }
-        else {
+        } else {
             error(err ? err : 'Webpack config error, use `--verbose` flag to show debug log');
         }
         process.exit(1);
