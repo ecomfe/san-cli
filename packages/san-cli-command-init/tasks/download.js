@@ -24,6 +24,7 @@ module.exports = (template, dest, options) => {
                 observer.complete();
                 return;
             }
+
             // 临时存放地址，存放在~/.san/templates 下面
             let tmp = getLocalTplPath(template);
             if (options.useCache && fs.existsSync(tmp)) {
@@ -31,17 +32,17 @@ module.exports = (template, dest, options) => {
                 // 优先使用缓存
                 task.skip('Discover local cache and use it');
                 observer.complete();
+                return;
             }
-            else {
-                // 否则拉取远程仓库的模板
-                observer.next('Pulling template from the remote repository...');
-                downloadRepo(template, tmp, options)
-                    .then(() => {
-                        ctx.localTemplatePath = tmp;
-                        observer.complete();
-                    })
-                    .catch(errMessage => observer.error(errMessage));
-            }
+
+            // 拉取远程仓库的模板
+            observer.next('Pulling template from the remote repository...');
+            downloadRepo(template, tmp, options)
+                .then(() => {
+                    ctx.localTemplatePath = tmp;
+                    observer.complete();
+                })
+                .catch(errMessage => observer.error(errMessage));
         });
     };
 };

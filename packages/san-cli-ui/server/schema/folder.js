@@ -22,5 +22,4 @@ type Folder {
   children: [Folder]
   hidden: Boolean
 }
-
 `;

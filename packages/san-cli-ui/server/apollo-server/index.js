@@ -5,7 +5,7 @@ const {
 const typeDefs = require('./schema');
 const resolvers = require('./resolves');
 const pubsub = require('./pubsub');
-const {db} = require('../utils/lib/db');
+const {db} = require('../utils/db');
 
 const server = subscribtionpPath => new ApolloServer({
     typeDefs,

@@ -35,6 +35,12 @@ module.exports = (template, appName, options = {}) => {
         {title: '🔗 Installing dependencies...', task: installDep(template, dest, options)}
     ];
 
+    // cli ui需要获取模板中的meta配置，然后再执行安装
+    // 使用cli ui在初始化安装的时候，执行到第2步即可，所以在这里加了个--download-repo-only参数
+    if (options.downloadRepoOnly) {
+        taskList.splice(2);
+    }
+
     // 离线脚手架目录处理
     // 1. 下载安装包 download
     // 2. 解包 unpack
@@ -48,6 +54,7 @@ module.exports = (template, appName, options = {}) => {
             // const {metaData: argv, tplData: data} = ctx;
             const duration = (((Date.now() - startTime) / 10) | 0) / 100;
             console.log('✨  Done in ' + duration + 's.');
+            opts = opts || {};
             // 有些 meta 的信息之类会有问题，所以加个强制退出
             if (typeof opts.complete === 'function') {
                 // 传入参数

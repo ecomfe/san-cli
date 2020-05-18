@@ -9,7 +9,6 @@ const os = require('os');
 
 const rFolder = path.join(os.homedir(), '.san-cli-ui');
 fs.ensureDirSync(path.resolve(rFolder));
-console.log(rFolder);
 const db = new Lowdb(new FileSync(path.resolve(rFolder, 'db.json')));
 
 // Seed an empty DB
