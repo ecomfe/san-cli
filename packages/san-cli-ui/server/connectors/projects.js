@@ -71,7 +71,6 @@ const initCreator = async (useCache = true) => {
     });
 
     return {
-        success: true,
         prompts
     };
 };

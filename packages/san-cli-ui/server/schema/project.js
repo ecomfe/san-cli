@@ -11,7 +11,6 @@ extend type Mutation {
 }
 
 type ProjectInitCreation {
-  success: Boolean
   prompts: [Prompt]
 }
 
