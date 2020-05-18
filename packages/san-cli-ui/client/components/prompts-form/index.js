@@ -146,10 +146,4 @@ export default class App extends Component {
         e.preventDefault();
         this.fire('submit', this.data.get('prompts'));
     }
-
-    condition(when) {
-        const prompts = this.data.get('prompts');
-        const target = prompts.find(prompt => prompt.name === when);
-        return target && target.value;
-    }
 };
