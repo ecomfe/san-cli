@@ -36,7 +36,7 @@ export default class App extends Component {
                         </s-menuitem>
                     </s-menu>
                 </s-sider>
-                <s-layout>
+                <s-layout style="min-height: {{height}}px">
                     <s-header style="background: #fff; padding: 0">
                         <s-icon
                             class="trigger"

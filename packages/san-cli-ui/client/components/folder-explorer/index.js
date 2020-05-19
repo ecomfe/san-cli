@@ -15,6 +15,7 @@ import {
     FOLDER_SET_FAVORITE,
     FOLDER_CREATE
 } from '../../const';
+import view from '../../const/view';
 import 'santd/es/button/style';
 import 'santd/es/input/style';
 import 'santd/es/dropdown/style';
@@ -24,18 +25,19 @@ import 'santd/es/icon/style';
 import 'santd/es/modal/style';
 import './index.less';
 
+const folderExplorerView = view.project.select.folderExplorer;
+
 export default class FolderExplorer extends Component {
 
     static template = /* html */`
         <div class="folder-explorer">
-            目录浏览
             <div class="contents">
-                <s-tooltip title="{{tooltipPre}}">
+                <s-tooltip title="{{tooltip.pre}}">
                     <s-button type="primary" icon="up" on-click="onPathChange(-2)"></s-button>
                 </s-tooltip>
                 <div class="path-guide">
                     <s-input s-if="editing"
-                        placeholder="{{placeholderEdit}}"
+                        placeholder="{{placeholder.edit}}"
                         value="{{inputValue}}"
                         on-blur="openFolder"
                     ></s-input>
@@ -51,18 +53,18 @@ export default class FolderExplorer extends Component {
                         >{{p}}</s-button>
                     </template>
                 </div>
-                <s-tooltip title="{{tooltipEdit}}">
+                <s-tooltip title="{{tooltip.edit}}">
                     <s-button type="primary" icon="form" on-click="onEdit"></s-button>
                 </s-tooltip>
-                <s-tooltip title="{{tooltipStar}}" s-if="folderCurrent">
+                <s-tooltip title="{{tooltip.star}}" s-if="folderCurrent">
                     <s-button type="primary" on-click="onFavorite">
                         <s-icon type="star" theme="{{folderCurrent.favorite ? 'filled' : 'outlined'}}"></s-icon>
                     </s-button>
                 </s-tooltip>
-                <s-tooltip title="{{tooltipRefresh}}">
+                <s-tooltip title="{{tooltip.refresh}}">
                     <s-button type="primary" icon="redo" on-click="openFolder(folderCurrent.path)"></s-button>
                 </s-tooltip>
-                <s-tooltip s-if="foldersFavorite" title="{{tooltipStarDirs}}">
+                <s-tooltip s-if="foldersFavorite" title="{{tooltip.starDirs}}">
                     <s-dropdown trigger="click">
                         <s-menu slot="overlay"
                             selectable="{{false}}"
@@ -76,9 +78,9 @@ export default class FolderExplorer extends Component {
                 </s-tooltip>
                 <s-dropdown trigger="click">
                     <s-menu slot="overlay" selectable="{{false}}" class="contents-menu" on-click="onMoreMenuClick">
-                        <s-menuitem key="1">新建文件夹</s-menuitem>
+                        <s-menuitem key="1">{{menu.createFolder}}</s-menuitem>
                         <s-menuitem key="2">
-                            {{showHiddenFolder ? menuHiddenFolder : menuHiddenFolderShow}}
+                            {{showHiddenFolder ? menu.hiddenFolder : menu.hiddenFolderShow}}
                         </s-menuitem>
                     </s-menu>
                     <s-button type="primary" icon="more"></s-button>
@@ -103,12 +105,12 @@ export default class FolderExplorer extends Component {
                     </div>
                 </template>
             </div>
-            <s-modal title="{{modalCreateTitle}}"
+            <s-modal title="{{modal.createTitle}}"
                 visible="{=modalVisible=}"
                 on-ok="handleModalOk"
                 on-cancel="handleModalCancel"
             >
-                <s-input placeholder="{{placeholderCreate}}" value="{=newFolderName=}"></s-input>
+                <s-input placeholder="{{placeholder.create}}" value="{=newFolderName=}"></s-input>
             </s-modal>
         </div>
     `;
@@ -155,18 +157,11 @@ export default class FolderExplorer extends Component {
             showHiddenFolder: false,
             newFolderName: '',
             modalVisible: false,
-            // todo：以下文案字段后续收敛在一起
-            placeholderEdit: '请输入合法路径',
-            tooltipPre: '上一页面',
-            tooltipEdit: '编辑',
-            tooltipRefresh: '刷新',
-            tooltipStar: '添加/取消收藏',
-            tooltipStarDirs: '收藏的文件夹',
-            menuCreateFolder: '新建文件夹',
-            menuHiddenFolderShow: '显示隐藏文件夹',
-            menuHiddenFolder: '不显示隐藏文件夹',
-            modalCreateTitle: '输入文件夹名称',
-            placeholderCreate: '请输入合法文件夹名称'
+            // 文案字段合集
+            placeholder: folderExplorerView.placeholder,
+            tooltip: folderExplorerView.tooltip,
+            menu: folderExplorerView.menu,
+            modalCreateTitle: folderExplorerView.modalCreateTitle
         };
     }
 
