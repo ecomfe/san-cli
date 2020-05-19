@@ -12,6 +12,7 @@
         "start": "nodemon ../san-cli/index.js ui",
         "start:debug": "cross-env DEBUG=san-cli:*  nodemon ../san-cli/index.js ui",
         "dev:san": "node ../san-cli/index.js",
+        "dev:ui": "cross-env DEBUG=san-cli:* node ../san-cli/index.js ui",
         "dev:init": "node ../san-cli/index.js init"
     },
     "nodemonConfig": {

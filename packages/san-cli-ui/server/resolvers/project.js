@@ -15,6 +15,6 @@ module.exports = {
     },
     Mutation: {
         projectInitTemplate: (root, args, context) => projects.initTemplate(),
-        projectInitCreation: (root, args, context) => projects.initCreator()
+        projectInitCreation: (root, args, context) => projects.initCreator(args, context)
     }
 };

@@ -11,8 +11,8 @@ extend type Query {
 }
 
 extend type Mutation {
-  projectInitCreation: ProjectInitCreation
   projectInitTemplate: ProjectInitTemplate
+  projectInitCreation (name: String, presets: JSON): ProjectInitCreation
 }
 
 type ProjectInitCreation {
