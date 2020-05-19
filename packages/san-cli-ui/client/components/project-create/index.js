@@ -7,7 +7,6 @@ import {Component} from 'san';
 import {Form, Input} from 'santd';
 import PromptsForm from '@components/prompts-form';
 import {createApolloComponent} from '@lib/san-apollo';
-import PROJECT_INIT_TEMPLATE from '@graphql/project/projectInitTemplate.gql';
 import PROJECT_INIT_CREATION from '@graphql/project/projectInitCreation.gql';
 import 'santd/es/input/style';
 
@@ -54,36 +53,11 @@ export default class App extends createApolloComponent(Component) {
                         span: 16
                     }
                 }
-            },
-            prompts: []
+            }
         };
     }
 
-    attached() {
-        this.fetchTemplate();
-    }
-
-    fetchTemplate() {
-        this.$apollo.mutate({
-            mutation: PROJECT_INIT_TEMPLATE,
-        }).then(({data}) => {
-            if (data.projectInitTemplate && data.projectInitTemplate.prompts) {
-                this.data.set('prompts', this.formatPrompts(data.projectInitTemplate.prompts));
-            }
-        });
-    }
-
-    formatPrompts(data) {
-        data.forEach(item => {
-            // 把default赋值给value
-            item.default && (item.value = item.default);
-
-            // 给select赋初始值
-            item.choices && (item.value = item.choices[0].value);
-        });
-        // 增加文件夹的选项
-        return data;
-    }
+    attached() {}
 
     onPromptsFormSubmit(presets) {
         this.$apollo.mutate({

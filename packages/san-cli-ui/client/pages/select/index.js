@@ -5,10 +5,8 @@
 
 import {Component} from 'san';
 import {createApolloComponent, createApolloDataComponent} from '@lib/san-apollo';
-import {
-    CWD,
-    PROJECT_INIT_CREATION
-} from '../../const';
+import CWD from '@graphql/cwd/cwd.gql';
+import PROJECT_INIT_TEMPLATE from '@graphql/project/projectInitTemplate.gql';
 import view from '../../const/view';
 import ProjectList from '@components/project-list';
 import FolderExplorer from '@components/folder-explorer';
@@ -54,7 +52,7 @@ export default class Select extends createApolloComponent(Component) {
                                 current-path="{{cwd}}"
                                 on-change="handleCwdChange"
                             />
-                            <c-create s-elif="current === 1"/>
+                            <c-create prompts="{{projectPrompts}}" s-elif="current === 1"/>
                         </div>
                         <div class="steps-action">
                             <s-button
@@ -105,6 +103,7 @@ export default class Select extends createApolloComponent(Component) {
             CWD,
             initLoading: true,
             list: [],
+            projectPrompts: [],
             defaultData: [
                 {
                     title: 'test1',
@@ -164,16 +163,29 @@ export default class Select extends createApolloComponent(Component) {
         // console.log('change', path);
         path && this.data.set('cwd', path);
     }
-    async initProject() { // 在指定文件夹初始化工程
-        // console.log('project init', cwd);
-        // 开启loading 防止误点
-        this.data.set('pageLoading', true);
-        await this.$apollo.mutate({
-            mutation: PROJECT_INIT_CREATION
+
+    formatPrompts(data) {
+        data.forEach(item => {
+            // 把default赋值给value
+            item.default && (item.value = item.default);
+
+            // 给select赋初始值
+            item.choices && (item.value = item.choices[0].value);
         });
+        return data;
+    }
+
+    async initProject() {
         this.data.set('pageLoading', true);
-        const cur = +this.data.get('current');
-        this.data.set('current', cur + 1);
+        this.$apollo.mutate({
+            mutation: PROJECT_INIT_TEMPLATE,
+        }).then(({data}) => {
+            this.data.set('pageLoading', false);
+            if (data.projectInitTemplate && data.projectInitTemplate.prompts) {
+                this.data.set('projectPrompts', this.formatPrompts(data.projectInitTemplate.prompts));
+                this.data.set('current', this.data.get('current') + 1);
+            }
+        });
     }
     async createProject() { // 配置确认后开始创建工程
     }
