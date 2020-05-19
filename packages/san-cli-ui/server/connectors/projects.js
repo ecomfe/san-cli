@@ -76,17 +76,23 @@ const initTemplate = async (useCache = true) => {
     };
 };
 
-const initCreator = async (name, presets) => {
-    console.log('initCreator:', {name, presets});
+const initCreator = async (params, context) => {
     const args = [
-        '--download-repo-only',
-        '--offline'
+        `--project-presets='${JSON.stringify(params.presets)}'`,
+        '--offline',
+        '--install'
     ];
 
-    // TODO: 正式版改成san
+    debug(`
+        --project-presets='${JSON.stringify(params.presets)}'
+    `);
+
+    // TODO: 正式版改成san命令
     const child = execa('yarn', [
         'dev:san',
         'init',
+        // template name
+        params.name,
         ...args
     ], {
         cwd: process.cwd(),
@@ -103,7 +109,7 @@ const initCreator = async (name, presets) => {
     await child;
 
     return {
-        success: true
+        errno: 0
     };
 };
 

@@ -158,14 +158,17 @@ export default class App extends Component {
             if (item.when) {
                 const el = prompts.find(el => el.name === item.when);
                 if (!el || !el.value) {
-                    return;
+                    return false;
                 }
             }
+            const value = item.value;
             if (item.type === 'string') {
-                data[item.name] = item.value || item.default || '';
+                data[item.name] = value || item.default || '';
             }
             else if (item.type === 'list') {
-                data[item.name] = (item.value && item.value[0] || item.choices[0]).value;
+                data[item.name] = value && typeof value === 'string' ? value
+                    : (Array.isArray(value) && value.length ? item.value[0]
+                        : item.choices[0].value);
             }
             else if (item.type === 'confirm') {
                 data[item.name] = !!item.value;

@@ -53,8 +53,8 @@ module.exports = (name, dest, options) => {
 
         // 2. 请回答
         task.info();
-        // 在cli ui中，模板中的预设已经通过 --project-preset 参数传过来了，就不再询问
-        const answers = options.projectPreset ? JSON.parse(options.projectPreset)
+        // 在cli ui中，模板中的预设已经通过 --project-presets 参数传过来了，就不再询问
+        const answers = options.projectPresets ? JSON.parse(options.projectPresets)
             : await ask(metaData.prompts || {}, metaData, options);
         const data = Object.assign(
             {

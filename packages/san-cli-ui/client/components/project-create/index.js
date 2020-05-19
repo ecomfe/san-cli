@@ -20,6 +20,7 @@ export default class App extends createApolloComponent(Component) {
                     <s-input value="{=app.name=}"></s-input>
                 </s-formitem>
             </s-form>
+
             <s-prompts-form prompts="{{prompts}}" on-submit="onPromptsFormSubmit"></s-prompts-form>
         </div>
     `;
@@ -84,15 +85,15 @@ export default class App extends createApolloComponent(Component) {
         return data;
     }
 
-    onPromptsFormSubmit(preset) {
+    onPromptsFormSubmit(presets) {
         this.$apollo.mutate({
             mutation: PROJECT_INIT_CREATION,
             variables: {
                 name: this.data.get('app').name || '',
-                preset: preset
+                presets
             }
         }).then(({data}) => {
-            console.log('Yes, you did it');
+            console.log('Yes, you did it', {data});
         });
     }
 }

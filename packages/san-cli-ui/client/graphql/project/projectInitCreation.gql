@@ -1,5 +1,5 @@
-mutation projectInitCreation {
-  projectInitCreation {
+mutation projectInitCreation ($name: String, $presets: JSON) {
+  projectInitCreation (name: $name, presets: $presets) {
     prompts {
       name
       type
