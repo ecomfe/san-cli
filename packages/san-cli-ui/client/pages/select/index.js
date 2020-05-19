@@ -26,7 +26,7 @@ export default class Select extends createApolloComponent(Component) {
     static template = /* html */`
         <div class="project-select">
             <s-spin class="loading" spinning="{{pageLoading}}" size="large"/>
-            <c-layout menu="{{menuData}}" nav="{=nav=}" on-menuclick="handleMenu">
+            <c-layout menu="{{menuData}}" nav="{=nav=}">
                 <template slot="right">
                     <r-link to="/">
                         {{headRight.home}}
@@ -39,8 +39,6 @@ export default class Select extends createApolloComponent(Component) {
                 <template slot="content">
                     <c-list
                         s-if="route.query.nav === 'select'"
-                        loading="{{initLoading}}"
-                        list="{=list=}"
                         on-change="handleListChange"
                     />
                     <div class="nav-create" s-if="route.query.nav === 'create'">
@@ -101,29 +99,7 @@ export default class Select extends createApolloComponent(Component) {
     initData() {
         return {
             CWD,
-            initLoading: true,
-            list: [],
             projectPrompts: [],
-            defaultData: [
-                {
-                    title: 'test1',
-                    dir: ''
-                },
-                {
-                    title: 'test2',
-                    dir: ''
-                },
-                {
-                    title: 'test3',
-                    dir: ''
-                },
-                {
-                    title: 'test4',
-                    dir: ''
-                }
-            ],
-            noTrigger: null,
-            collapsed: false,
             pageLoading: false,
             current: 0,
             // 文案合集
@@ -141,21 +117,6 @@ export default class Select extends createApolloComponent(Component) {
         if (res.data) {
             this.data.set('cwd', res.data.cwd);
         }
-        this.data.set('initLoading', false);
-        const mockdir = this.data.get('cwd');
-        const defaultData = this.data.get('defaultData');
-        let list = defaultData.map(item => {
-            item.loading = false;
-            item.dir = mockdir;
-            return item;
-        });
-        this.data.set('list', list);
-    }
-    toggleCollapsed() {
-        this.data.set('collapsed', !this.data.get('collapsed'));
-    }
-    handleMenu(e) {
-        this.data.set('nav', e.key);
     }
     handleListChange(e) {
     }
@@ -178,7 +139,7 @@ export default class Select extends createApolloComponent(Component) {
     async initProject() {
         this.data.set('pageLoading', true);
         this.$apollo.mutate({
-            mutation: PROJECT_INIT_TEMPLATE,
+            mutation: PROJECT_INIT_TEMPLATE
         }).then(({data}) => {
             this.data.set('pageLoading', false);
             if (data.projectInitTemplate && data.projectInitTemplate.prompts) {

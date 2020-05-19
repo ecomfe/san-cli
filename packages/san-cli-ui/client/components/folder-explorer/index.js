@@ -6,15 +6,13 @@
 import {Component} from 'san';
 import {Button, Input, Dropdown, Menu, Tooltip, Icon, Modal} from 'santd';
 import {isValidMultiName} from '@lib/utils/folders';
-import {
-    logo,
-    CWD_CHANGE,
-    FOLDER_CURRENT,
-    FOLDERS_FAVORITE,
-    FOLDER_OPEN,
-    FOLDER_SET_FAVORITE,
-    FOLDER_CREATE
-} from '../../const';
+import {logo} from '../../const';
+import CWD_CHANGE from '@graphql/cwd/cwdChanged.gql';
+import FOLDER_CURRENT from '@graphql/folder/folderCurrent.gql';
+import FOLDERS_FAVORITE from '@graphql/folder/foldersFavorite.gql';
+import FOLDER_OPEN from '@graphql/folder/folderOpen.gql';
+import FOLDER_SET_FAVORITE from '@graphql/folder/folderSetFavorite.gql';
+import FOLDER_CREATE from '@graphql/folder/folderCreate.gql';
 import view from '../../const/view';
 import 'santd/es/button/style';
 import 'santd/es/input/style';

@@ -1,5 +1,8 @@
+/**
+ * @file folder
+ * @author
+*/
 const folders = require('../connectors/folders');
-const cwd = require('../connectors/cwd');
 
 module.exports = {
     Folder: {

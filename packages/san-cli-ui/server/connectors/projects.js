@@ -120,7 +120,25 @@ const initCreator = async (params, context) => {
     };
 };
 
+function list(context) {
+    // 得到项目列表，同时清理路径不存在的项目
+    let projects = context.db.get('projects').value();
+    let newProjects = [];
+    for (let project of projects) {
+        if (fs.existsSync(project.path)) {
+            newProjects.push(project);
+        }
+    }
+    if (newProjects.length !== newProjects) {
+        console.log(`Auto cleaned ${projects.length - newProjects.length} projects (folder not found).`);
+        context.db.set('projects', newProjects).write();
+        projects = newProjects;
+    }
+    return projects;
+}
+
 module.exports = {
     initTemplate,
-    initCreator
+    initCreator,
+    list
 };

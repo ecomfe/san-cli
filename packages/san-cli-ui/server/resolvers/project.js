@@ -6,9 +6,7 @@ const projects = require('../connectors/projects');
 
 module.exports = {
     Query: {
-        projects: () => {
-            return [];
-        },
+        projects: (root, args, context) => projects.list(context),
         projectCurrent: () => {
             return {};
         }
