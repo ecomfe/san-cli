@@ -15,8 +15,11 @@ const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const debug = getDebugLogger('ui:create');
 const {getGitUser} = require('san-cli-utils/env');
 const {tmpl} = require('san-cli-utils/utils');
-
 const TEMPLATE_PATH = '.san/templates/san-project';
+
+const isDev = process.env.SAN_CLI_UI_DEV;
+const SAN_COMMAND_NAME =  isDev ? 'yarn' : 'san';
+const SAN_COMMAND_ARGS =  isDev ? ['dev:san'] : [];
 
 const initTemplate = async (useCache = true) => {
     const args = [
@@ -32,13 +35,11 @@ const initTemplate = async (useCache = true) => {
         }
     }
 
-    // TODO: 正式版改成san
-    const child = execa('yarn', [
-        'dev:san',
+    const child = execa(SAN_COMMAND_NAME, SAN_COMMAND_ARGS.concat([
         'init',
         'JUST-A-PLACEHOLDER',
         ...args
-    ], {
+    ]), {
         cwd: process.cwd(),
         stdio: ['inherit', 'pipe', 'inherit']
     });
@@ -71,6 +72,7 @@ const initTemplate = async (useCache = true) => {
         }
     });
 
+    // 4. 返回prompt数据，由前端生成form表单
     return {
         prompts
     };
@@ -84,17 +86,22 @@ const initCreator = async (params, context) => {
     ];
 
     debug(`
+    ${SAN_COMMAND_NAME}
         --project-presets='${JSON.stringify(params.presets)}'
-    `);
-
-    // TODO: 正式版改成san命令
-    const child = execa('yarn', [
-        'dev:san',
+    ${SAN_COMMAND_ARGS.concat([
         'init',
         // template name
         params.name,
         ...args
-    ], {
+    ]).join(' ')}
+    `);
+
+    const child = execa(SAN_COMMAND_NAME, SAN_COMMAND_ARGS.concat([
+        'init',
+        // template name
+        params.name,
+        ...args
+    ]), {
         cwd: process.cwd(),
         stdio: ['inherit', 'pipe', 'inherit']
     });
