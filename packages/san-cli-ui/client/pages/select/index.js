@@ -9,16 +9,20 @@ import {
     CWD,
     PROJECT_INIT_CREATION
 } from '../../const';
+import view from '../../const/view';
 import ProjectList from '@components/project-list';
 import FolderExplorer from '@components/folder-explorer';
 import ProjectCreate from '@components/project-create';
 import Layout from '@components/layout';
 import {Link} from 'san-router';
-import {Icon, Button, Spin} from 'santd';
+import {Icon, Button, Spin, Steps} from 'santd';
 import 'santd/es/icon/style';
 import 'santd/es/button/style';
 import 'santd/es/spin/style';
+import 'santd/es/steps/style';
 import './index.less';
+
+const selectView = view.project.select;
 
 export default class Select extends createApolloComponent(Component) {
     static template = /* html */`
@@ -27,11 +31,11 @@ export default class Select extends createApolloComponent(Component) {
             <c-layout menu="{{menuData}}" nav="{=nav=}" on-menuclick="handleMenu">
                 <template slot="right">
                     <r-link to="/">
-                        首页
+                        {{headRight.home}}
                     </r-link>
                     |
                     <r-link to="/about">
-                        关于
+                        {{headRight.about}}
                     </r-link>
                 </template>
                 <template slot="content">
@@ -41,18 +45,36 @@ export default class Select extends createApolloComponent(Component) {
                         list="{=list=}"
                         on-change="handleListChange"
                     />
-                    <div class="nav-folder" s-if="route.query.nav === 'path'">
-                        <c-folder-explorer
-                            current-path="{{cwd}}"
-                            on-change="handleCwdChange"
-                        />
-                        <div class="actions-bar">
-                            <s-button type="primary" icon="add" on-click="createProject">在此创建新目录</s-button>
+                    <div class="nav-create" s-if="route.query.nav === 'create'">
+                         <s-steps current="{{current}}">
+                            <s-step s-for="step in steps" title="{{step}}" />
+                        </s-steps>
+                        <div  class="steps-content">
+                            <c-folder-explorer s-if="current === 0"
+                                current-path="{{cwd}}"
+                                on-change="handleCwdChange"
+                            />
+                            <c-create s-elif="current === 1"/>
                         </div>
-                    </div>
-                    <div class="nav-folder" s-if="route.query.nav === 'create'">
-                        创建
-                        <c-create />
+                        <div class="steps-action">
+                            <s-button
+                                s-if="current === 0"
+                                type="primary"
+                                icon="plus"
+                                on-click="initProject"
+                            >{{stepsAction.initProject}}</s-button>
+                            <s-button
+                                s-if="current > 0"
+                                icon="left"
+                                on-click="prev"
+                            >{{stepsAction.prev}}</s-button>
+                            <s-button
+                                s-if="current === 1"
+                                type="primary"
+                                icon="check"
+                                on-click="createProject"
+                            >{{stepsAction.createProject}}</s-button>
+                        </div>
                     </div>
                 </template>
             </c-layout>
@@ -63,6 +85,8 @@ export default class Select extends createApolloComponent(Component) {
         'r-link': Link,
         's-button': Button,
         's-spin': Spin,
+        's-steps': Steps,
+        's-step': Steps.Step,
         'c-list': ProjectList,
         'c-folder-explorer': FolderExplorer,
         'c-create': ProjectCreate,
@@ -78,13 +102,7 @@ export default class Select extends createApolloComponent(Component) {
     };
     initData() {
         return {
-            menuData: [
-                {text: '项目管理', icon: 'unordered-list', key: 'select', link: '/project/select'},
-                {text: '目录切换', icon: 'swap', key: 'path', link: '/project/path'},
-                {text: '创建项目', icon: 'plus', key: 'create', link: '/project/create'}
-            ],
             CWD,
-            title: 'San CLI',
             initLoading: true,
             list: [],
             defaultData: [
@@ -107,7 +125,13 @@ export default class Select extends createApolloComponent(Component) {
             ],
             noTrigger: null,
             collapsed: false,
-            pageLoading: false
+            pageLoading: false,
+            current: 0,
+            // 文案合集
+            menuData: selectView.menu,
+            headRight: selectView.headRight,
+            steps: selectView.create.steps,
+            stepsAction: selectView.create.stepsAction
         };
     }
 
@@ -137,19 +161,24 @@ export default class Select extends createApolloComponent(Component) {
     handleListChange(e) {
     }
     handleCwdChange(path) {
-        /* eslint-disable no-console */
-        console.log('change', path);
+        // console.log('change', path);
         path && this.data.set('cwd', path);
     }
-    async createProject() {
-        let cwd = this.data.get('cwd');
-        console.log('project create', cwd);
+    async initProject() { // 在指定文件夹初始化工程
+        // console.log('project init', cwd);
         // 开启loading 防止误点
         this.data.set('pageLoading', true);
-        /* eslint-enable no-console */
         await this.$apollo.mutate({
             mutation: PROJECT_INIT_CREATION
         });
         this.data.set('pageLoading', true);
+        const cur = +this.data.get('current');
+        this.data.set('current', cur + 1);
+    }
+    async createProject() { // 配置确认后开始创建工程
+    }
+    prev() {
+        const cur = +this.data.get('current');
+        this.data.set('current', cur - 1);
     }
 }
