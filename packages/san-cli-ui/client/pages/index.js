@@ -6,6 +6,7 @@
 import san from 'san';
 import {router} from 'san-router';
 import {register} from '@lib/san-apollo';
+import localization from '@lib/san-localization';
 import createApolloServer from '@lib/createApolloServer';
 import App from './app';
 import ProjectSelect from './select';
@@ -15,6 +16,9 @@ import NotFound from '@components/not-found';
 // eslint-disable-next-line no-undef
 const graphqlEndpoint = APP_GRAPHQL_ENDPOINT || `ws://${location.host}/graphql`;
 register(san, createApolloServer(graphqlEndpoint));
+
+// add localization
+localization(san);
 
 const routes = [
     {rule: '/', Component: ProjectSelect, target: '#app'},

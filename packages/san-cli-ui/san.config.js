@@ -47,10 +47,11 @@ module.exports = {
     },
     alias: {
         '@': resolve('client'),
+        '@lib': resolve('client/lib'),
         '@assets': resolve('client/assets'),
-        '@components': resolve('client/components'),
+        '@locales': resolve('client/locales'),
         '@graphql': resolve('client/graphql'),
-        '@lib': resolve('client/lib')
+        '@components': resolve('client/components')
     },
     chainWebpack: config => {
         // 这里可以用来扩展 webpack 的配置，使用的是 webpack-chain 语法
