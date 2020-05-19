@@ -39,10 +39,10 @@ export default class Select extends createApolloComponent(Component) {
                         on-change="handleListChange"
                     />
                     <div class="nav-create" s-if="route.query.nav === 'create'">
-                         <s-steps current="{{current}}">
-                            <s-step s-for="step in steps" title="{{step}}" />
+                         <s-steps current="{{current}}" s-if="stepsData.length">
+                            <s-step s-for="step in stepsData" title="{{step}}" />
                         </s-steps>
-                        <div  class="steps-content">
+                        <div class="steps-content">
                             <c-folder-explorer s-if="current === 0"
                                 current-path="{{cwd}}"
                                 on-change="handleCwdChange"
@@ -99,14 +99,14 @@ export default class Select extends createApolloComponent(Component) {
             projectPrompts: [],
             pageLoading: false,
             current: 0,
-            steps: [],
+            stepsData: [],
             menuData: []
         };
     }
 
 
     async attached() {
-        this.data.set('steps', this.$t('project.select.create.steps'));
+        this.data.set('stepsData', this.$t('project.select.create.steps'));
         this.data.set('menuData', this.$t('project.select.menu'));
         // simple query demo
         let res = await this.$apollo.query({query: CWD});
