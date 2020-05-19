@@ -7,7 +7,6 @@ import {Component} from 'san';
 import {createApolloComponent, createApolloDataComponent} from '@lib/san-apollo';
 import CWD from '@graphql/cwd/cwd.gql';
 import PROJECT_INIT_TEMPLATE from '@graphql/project/projectInitTemplate.gql';
-import view from '../../const/view';
 import ProjectList from '@components/project-list';
 import FolderExplorer from '@components/folder-explorer';
 import ProjectCreate from '@components/project-create';
@@ -20,20 +19,18 @@ import 'santd/es/spin/style';
 import 'santd/es/steps/style';
 import './index.less';
 
-const selectView = view.project.select;
-
 export default class Select extends createApolloComponent(Component) {
     static template = /* html */`
         <div class="project-select">
             <s-spin class="loading" spinning="{{pageLoading}}" size="large"/>
-            <c-layout menu="{{menuData}}" nav="{=nav=}">
+            <c-layout menu="{{$t('project.select.menu')}}" nav="{=nav=}" on-menuclick="handleMenu">
                 <template slot="right">
                     <r-link to="/">
-                        {{headRight.home}}
+                        {{$t('project.select.headRight.home')}}
                     </r-link>
                     |
                     <r-link to="/about">
-                        {{headRight.about}}
+                        {{$t('project.select.headRight.about')}}
                     </r-link>
                 </template>
                 <template slot="content">
@@ -58,7 +55,7 @@ export default class Select extends createApolloComponent(Component) {
                                 type="primary"
                                 icon="plus"
                                 on-click="initProject"
-                            >{{stepsAction.initProject}}</s-button>
+                            >{{$t('project.select.create.stepsAction.initProject')}}</s-button>
                             <s-button
                                 s-if="current > 0"
                                 icon="left"
@@ -69,7 +66,7 @@ export default class Select extends createApolloComponent(Component) {
                                 type="primary"
                                 icon="check"
                                 on-click="createProject"
-                            >{{stepsAction.createProject}}</s-button>
+                            >{{$t('project.select.create.stepsAction.createProject')}}</s-button>
                         </div>
                     </div>
                 </template>
@@ -92,7 +89,7 @@ export default class Select extends createApolloComponent(Component) {
     static computed = {
         nav() {
             let queryNav = this.data.get('route.query.nav');
-            let menuNav = this.data.get('menuData')[0].key;
+            let menuNav = (this.data.get('menuData')[0] || {}).key;
             return [queryNav || menuNav];
         }
     };
@@ -102,16 +99,15 @@ export default class Select extends createApolloComponent(Component) {
             projectPrompts: [],
             pageLoading: false,
             current: 0,
-            // 文案合集
-            menuData: selectView.menu,
-            headRight: selectView.headRight,
-            steps: selectView.create.steps,
-            stepsAction: selectView.create.stepsAction
+            steps: [],
+            menuData: []
         };
     }
 
 
     async attached() {
+        this.data.set('steps', this.$t('project.select.create.steps'));
+        this.data.set('menuData', this.$t('project.select.menu'));
         // simple query demo
         let res = await this.$apollo.query({query: CWD});
         if (res.data) {
