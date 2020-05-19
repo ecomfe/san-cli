@@ -1,3 +1,7 @@
+/**
+ * @file 项目相关的resolver
+ * @author jinzhan
+*/
 const projects = require('../connectors/projects');
 
 module.exports = {
@@ -10,6 +14,7 @@ module.exports = {
         }
     },
     Mutation: {
+        projectInitTemplate: (root, args, context) => projects.initTemplate(),
         projectInitCreation: (root, args, context) => projects.initCreator()
     }
 };

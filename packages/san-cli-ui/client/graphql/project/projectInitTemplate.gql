@@ -1,0 +1,18 @@
+mutation projectInitTemplate {
+  projectInitTemplate {
+    prompts {
+      name
+      type
+      label
+      message
+      required
+      default
+      when
+      choices {
+        name
+        value
+        short
+      }
+    }
+  }
+}

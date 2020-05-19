@@ -2,8 +2,16 @@
  * @file 基于json动态创建一个form表单
  * @author jinzhan
  */
-import {Component} from 'san';
-import {Form, Input, Select, Switch, Button} from 'santd';
+import {
+    Component
+} from 'san';
+import {
+    Form,
+    Input,
+    Select,
+    Switch,
+    Button
+} from 'santd';
 import 'santd/es/form/style';
 import 'santd/es/input/style';
 import 'santd/es/select/style';
@@ -16,7 +24,7 @@ import 'santd/es/button/style';
  * 组件props
  *
  * @param {Object} prompts inquirer的prompts配置
- * @param {Function} onSubmit onSubmit的回调函数
+ * @param {Function} on-submit fire('submit')的回调
  */
 
 export default class App extends Component {
@@ -24,7 +32,7 @@ export default class App extends Component {
         super(opts);
     }
 
-    static template = /* html */`
+    static template = /* html */ `
       <div>
         <s-form labelCol="{{formItemLayout.labelCol}}" 
             wrapperCol="{{formItemLayout.wrapperCol}}"
@@ -38,7 +46,7 @@ export default class App extends Component {
                             <s-selectoption s-for="choice in prompt.choices" 
                                 value="{{choice.value}}">{{choice.name}">{{choice}}</s-selectoption>
                         </s-select>
-                        </template>
+                    </template>
 
                     <template s-elif="prompt.type === 'input' || prompt.type === 'string'">
                         <s-input value="{=prompt.value=}"></s-input>
@@ -100,10 +108,10 @@ export default class App extends Component {
             formItemLayout: {
                 labelCol: {
                     xs: {
-                        span: 24
+                        span: 12
                     },
                     sm: {
-                        span: 8
+                        span: 4
                     }
                 },
                 wrapperCol: {
@@ -116,12 +124,12 @@ export default class App extends Component {
                 },
                 tailWrapperCol: {
                     xs: {
-                        span: 24,
+                        span: 12,
                         offset: 0
                     },
                     sm: {
                         span: 16,
-                        offset: 8
+                        offset: 4
                     }
                 }
             }
@@ -144,6 +152,25 @@ export default class App extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        this.fire('submit', this.data.get('prompts'));
+        const prompts = this.data.get('prompts');
+        const data = {};
+        prompts.forEach(item => {
+            if (item.when) {
+                const el = prompts.find(el => el.name === item.when);
+                if (!el || !el.value) {
+                    return;
+                }
+            }
+            if (item.type === 'string') {
+                data[item.name] = item.value || item.default || '';
+            }
+            else if (item.type === 'list') {
+                data[item.name] = (item.value && item.value[0] || item.choices[0]).value;
+            }
+            else if (item.type === 'confirm') {
+                data[item.name] = !!item.value;
+            }
+        });
+        this.fire('submit', data);
     }
 };

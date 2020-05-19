@@ -1,3 +1,7 @@
+/**
+ * @file 项目相关的schema
+ * @author jinzhan
+*/
 const gql = require('graphql-tag');
 
 module.exports = gql`
@@ -8,9 +12,14 @@ extend type Query {
 
 extend type Mutation {
   projectInitCreation: ProjectInitCreation
+  projectInitTemplate: ProjectInitTemplate
 }
 
 type ProjectInitCreation {
+  prompts: [Prompt]
+}
+
+type ProjectInitTemplate {
   prompts: [Prompt]
 }
 

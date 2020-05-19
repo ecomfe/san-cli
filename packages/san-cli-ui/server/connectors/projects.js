@@ -17,7 +17,8 @@ const {getGitUser} = require('san-cli-utils/env');
 const {tmpl} = require('san-cli-utils/utils');
 
 const TEMPLATE_PATH = '.san/templates/san-project';
-const initCreator = async (useCache = true) => {
+
+const initTemplate = async (useCache = true) => {
     const args = [
         '--download-repo-only'
     ];
@@ -75,6 +76,38 @@ const initCreator = async (useCache = true) => {
     };
 };
 
+const initCreator = async (name, presets) => {
+    console.log('initCreator:', {name, presets});
+    const args = [
+        '--download-repo-only',
+        '--offline'
+    ];
+
+    // TODO: 正式版改成san
+    const child = execa('yarn', [
+        'dev:san',
+        'init',
+        ...args
+    ], {
+        cwd: process.cwd(),
+        stdio: ['inherit', 'pipe', 'inherit']
+    });
+
+    const onData = buffer => {
+        const text = buffer.toString().trim();
+        debug(text);
+    };
+
+    child.stdout.on('data', onData);
+
+    await child;
+
+    return {
+        success: true
+    };
+};
+
 module.exports = {
+    initTemplate,
     initCreator
 };

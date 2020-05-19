@@ -1,56 +1,98 @@
 /**
- * @file 项目创建容器组件
- * @author zhangtingting12 <zhangtingting12@baidu.com>
+ * @file san项目创建
+ * @author jinzhan
  */
 
 import {Component} from 'san';
+import {Form, Input} from 'santd';
 import PromptsForm from '@components/prompts-form';
-import {createApolloComponent, createApolloDataComponent} from '@lib/san-apollo';
+import {createApolloComponent} from '@lib/san-apollo';
+import PROJECT_INIT_TEMPLATE from '@graphql/project/projectInitTemplate.gql';
 import PROJECT_INIT_CREATION from '@graphql/project/projectInitCreation.gql';
+import 'santd/es/input/style';
 
-export default class Create extends createApolloComponent(Component) {
-
+export default class App extends createApolloComponent(Component) {
     static template = /* html */`
         <div class="project-create">
-            <button on-click="fetchTemplate">初始化</button>
+            <s-form labelCol="{{formItemLayout.labelCol}}"
+                wrapperCol="{{formItemLayout.wrapperCol}}">
+                <s-formitem label="项目文件夹">
+                    <s-input value="{=app.name=}"></s-input>
+                </s-formitem>
+            </s-form>
             <s-prompts-form prompts="{{prompts}}" on-submit="onPromptsFormSubmit"></s-prompts-form>
         </div>
     `;
 
     static components = {
+        's-form': Form,
+        's-formitem': Form.FormItem,
+        's-input': Input,
         's-prompts-form': PromptsForm
     };
 
     initData() {
         return {
+            app: {
+                name: ''
+            },
+            formItemLayout: {
+                labelCol: {
+                    xs: {
+                        span: 12
+                    },
+                    sm: {
+                        span: 4
+                    }
+                },
+                wrapperCol: {
+                    xs: {
+                        span: 24
+                    },
+                    sm: {
+                        span: 16
+                    }
+                }
+            },
             prompts: []
         };
     }
 
-    attached() {}
+    attached() {
+        this.fetchTemplate();
+    }
 
     fetchTemplate() {
         this.$apollo.mutate({
-            mutation: PROJECT_INIT_CREATION
+            mutation: PROJECT_INIT_TEMPLATE,
         }).then(({data}) => {
-            if (data.projectInitCreation && data.projectInitCreation.prompts) {
-                this.data.set('prompts', this.formatPrompts(data.projectInitCreation.prompts));
+            if (data.projectInitTemplate && data.projectInitTemplate.prompts) {
+                this.data.set('prompts', this.formatPrompts(data.projectInitTemplate.prompts));
             }
         });
     }
 
     formatPrompts(data) {
-        // 把default赋值给value
-        data.forEach(item => item.default && (item.value = item.default));
-        // TODO: 增加文件夹的选项
+        data.forEach(item => {
+            // 把default赋值给value
+            item.default && (item.value = item.default);
+
+            // 给select赋初始值
+            item.choices && (item.value = item.choices[0].value);
+        });
+        // 增加文件夹的选项
         return data;
     }
 
-    createProject() {
-        console.log('createProject...');
-    }
-
-    onPromptsFormSubmit(data) {
-        console.log('onPromptsFormSubmit:', data);
+    onPromptsFormSubmit(preset) {
+        this.$apollo.mutate({
+            mutation: PROJECT_INIT_CREATION,
+            variables: {
+                name: this.data.get('app').name || '',
+                preset: preset
+            }
+        }).then(({data}) => {
+            console.log('Yes, you did it');
+        });
     }
 }
