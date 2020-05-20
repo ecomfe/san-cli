@@ -25,6 +25,7 @@ import 'santd/es/button/style';
  *
  * @param {Object} prompts inquirer的prompts配置
  * @param {Function} on-submit fire('submit')的回调
+ * @param {string} submit-text 提交按钮的文字
  */
 
 export default class App extends Component {
@@ -67,7 +68,7 @@ export default class App extends Component {
             </template>
 
             <s-formitem s-if="prompts && prompts.length" wrapperCol="{{formItemLayout.tailWrapperCol}}">
-              <s-button type="primary" htmlType="submit">提交</s-button>
+              <s-button type="primary" htmlType="submit">{{submitText}}</s-button>
             </s-formitem>
           </s-form>
       </div>

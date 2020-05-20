@@ -4,35 +4,45 @@
  */
 
 import {Component} from 'san';
-import {Form, Input} from 'santd';
+import {Form, Input, Spin} from 'santd';
 import PromptsForm from '@components/prompts-form';
 import {createApolloComponent} from '@lib/san-apollo';
 import PROJECT_INIT_CREATION from '@graphql/project/projectInitCreation.gql';
 import 'santd/es/input/style';
+import 'santd/es/spin/style';
 
 export default class App extends createApolloComponent(Component) {
     static template = /* html */`
         <div class="project-create">
             <s-form labelCol="{{formItemLayout.labelCol}}"
                 wrapperCol="{{formItemLayout.wrapperCol}}">
-                <s-formitem label="项目文件夹">
+                <s-formitem label="{{$t('project.components.create.folderName')}}">
                     <s-input value="{=app.name=}"></s-input>
                 </s-formitem>
             </s-form>
 
-            <s-prompts-form prompts="{{prompts}}" on-submit="onPromptsFormSubmit"></s-prompts-form>
+            <s-prompts-form prompts="{{prompts}}"
+                submit-text="{{$t('project.components.create.submitText')}}"
+                on-submit="onPromptsFormSubmit"></s-prompts-form>
+
+            <s-spin class="loading" 
+                    tip="{{$t('project.components.create.spinTip')}}" 
+                    spinning="{{isCreating}}" 
+                    size="large" />
         </div>
     `;
 
     static components = {
         's-form': Form,
         's-formitem': Form.FormItem,
+        's-spin': Spin,
         's-input': Input,
         's-prompts-form': PromptsForm
     };
 
     initData() {
         return {
+            isCreating: false,
             app: {
                 name: ''
             },
@@ -60,6 +70,7 @@ export default class App extends createApolloComponent(Component) {
     attached() {}
 
     onPromptsFormSubmit(presets) {
+        this.data.set('isCreating', true);
         this.$apollo.mutate({
             mutation: PROJECT_INIT_CREATION,
             variables: {
@@ -67,7 +78,10 @@ export default class App extends createApolloComponent(Component) {
                 presets
             }
         }).then(({data}) => {
-            console.log('Yes, you did it', {data});
+            // 创建完成
+            this.data.set('isCreating', false);
+
+            // TODO: 跳转到项目页面
         });
     }
 }

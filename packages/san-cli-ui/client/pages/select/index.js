@@ -56,17 +56,19 @@ export default class Select extends createApolloComponent(Component) {
                                 icon="plus"
                                 on-click="initProject"
                             >{{$t('project.select.create.stepsAction.initProject')}}</s-button>
-                            <s-button
-                                s-if="current > 0"
-                                icon="left"
-                                on-click="prev"
-                            >{{stepsAction.prev}}</s-button>
-                            <s-button
-                                s-if="current === 1"
-                                type="primary"
-                                icon="check"
-                                on-click="createProject"
-                            >{{$t('project.select.create.stepsAction.createProject')}}</s-button>
+                            <!---
+                                <s-button
+                                    s-if="current > 0"
+                                    icon="left"
+                                    on-click="prev"
+                                >{{stepsAction.prev}}</s-button>
+                                <s-button
+                                    s-if="current === 1"
+                                    type="primary"
+                                    icon="check"
+                                    on-click="createProject"
+                                >{{$t('project.select.create.stepsAction.createProject')}}</s-button>
+                            ---->
                         </div>
                     </div>
                 </template>

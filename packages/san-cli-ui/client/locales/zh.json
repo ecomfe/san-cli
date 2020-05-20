@@ -45,6 +45,13 @@
                     "createProject": "确认创建"
                 }
             }
-        }
+        },
+        "components": {
+            "create": {
+                "folderName": "项目文件夹",
+                "submitText": "开始创建",
+                "spinTip": "正在创建项目..."
+            }
+        }   
     }
 }
