@@ -4,7 +4,7 @@
  */
 
 import {Component} from 'san';
-import {Form, Input, Spin} from 'santd';
+import {Form, Input, Spin, Icon} from 'santd';
 import PromptsForm from '@components/prompts-form';
 import {createApolloComponent} from '@lib/san-apollo';
 import PROJECT_INIT_CREATION from '@graphql/project/projectInitCreation.gql';
@@ -31,7 +31,9 @@ export default class App extends createApolloComponent(Component) {
             <s-spin class="loading" 
                     tip="{{loadingTip}}" 
                     spinning="{{isCreating}}"
-                    size="large" />
+                    size="large">
+                    <s-icon slot="indicator" type="loading" style="font-size: 30px;" />
+                </s-spin>
         </div>
     `;
 
@@ -39,6 +41,7 @@ export default class App extends createApolloComponent(Component) {
         's-form': Form,
         's-formitem': Form.FormItem,
         's-spin': Spin,
+        's-icon': Icon,
         's-input': Input,
         's-prompts-form': PromptsForm
     };
