@@ -1,6 +1,6 @@
 {
     "name": "san-cli-docit",
-    "version": "0.1.0-alpha.6",
+    "version": "0.1.0",
     "main": "index.js",
     "license": "MIT",
     "engines": {
@@ -36,11 +36,11 @@
         "loader-utils": "^1.2.3",
         "opener": "^1.5.1",
         "qrcode-terminal": "^0.12.0",
-        "san-cli-docit-theme": "^0.1.0-alpha.6",
-        "san-cli-markdown-loader": "^0.1.0-alpha.6",
-        "san-cli-utils": "^0.1.0-alpha.5",
-        "san-cli-webpack": "^0.1.0-alpha.5",
+        "san-cli-docit-theme": "^0.1.0",
+        "san-cli-markdown-loader": "^0.1.0",
+        "san-cli-utils": "^0.1.0",
+        "san-cli-webpack": "^0.1.0",
         "toml": "^3.0.0"
     },
-    "gitHead": "b394f61d55b7b257e14b8a9fece7edc7ae61cc50"
+    "gitHead": "402d813859ac219434712fa2063e5f724819004a"
 }
