@@ -16,6 +16,7 @@ const debug = getDebugLogger('ui:create');
 const {getGitUser} = require('san-cli-utils/env');
 const {tmpl} = require('san-cli-utils/utils');
 const cwd = require('./cwd');
+const events = require('../utils/events');
 
 const TEMPLATE_PATH = '.san/templates/san-project';
 const isDev = process.env.SAN_CLI_UI_DEV;
@@ -47,6 +48,10 @@ const initTemplate = async (useCache = true) => {
 
     const onData = buffer => {
         const text = buffer.toString().trim();
+        events.emit('log', {
+            type: 'info',
+            message: text
+        });
         debug(text);
     };
 

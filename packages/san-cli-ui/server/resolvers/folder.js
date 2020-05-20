@@ -1,6 +1,5 @@
 /**
  * @file folder
- * @author
 */
 const folders = require('../connectors/folders');
 

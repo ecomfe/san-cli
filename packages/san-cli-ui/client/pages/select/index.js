@@ -47,7 +47,7 @@ export default class Select extends createApolloComponent(Component) {
                                 current-path="{{cwd}}"
                                 on-change="handleCwdChange"
                             />
-                            <c-create prompts="{{projectPrompts}}" s-elif="current === 1"/>
+                            <c-create prompts="{{projectPrompts}}" cwd="{{cwd}}" s-elif="current === 1"/>
                         </div>
                         <div class="steps-action">
                             <s-button

@@ -8,6 +8,7 @@ import {Form, Input, Spin} from 'santd';
 import PromptsForm from '@components/prompts-form';
 import {createApolloComponent} from '@lib/san-apollo';
 import PROJECT_INIT_CREATION from '@graphql/project/projectInitCreation.gql';
+import CONSOLE_LOG_ADDED from '@graphql/console/consoleLogAdded.gql';
 import 'santd/es/input/style';
 import 'santd/es/spin/style';
 
@@ -18,6 +19,7 @@ export default class App extends createApolloComponent(Component) {
                 wrapperCol="{{formItemLayout.wrapperCol}}">
                 <s-formitem label="{{$t('project.components.create.folderName')}}">
                     <s-input value="{=app.name=}"></s-input>
+                    <div class="grey">{{cwd}}/{{app.name}}</div>
                 </s-formitem>
             </s-form>
 
@@ -67,7 +69,19 @@ export default class App extends createApolloComponent(Component) {
         };
     }
 
-    attached() {}
+    attached() {
+        // add a subscribe for fetch the console.log from command line
+        this.observer = this.$apollo.subscribe({
+            query: CONSOLE_LOG_ADDED
+        });
+
+        this.observer.subscribe({
+            next(data) {
+                // Notify your application with the new arrived data
+                console.log({subscribe: data});
+            }
+        });
+    }
 
     onPromptsFormSubmit(presets) {
         this.data.set('isCreating', true);

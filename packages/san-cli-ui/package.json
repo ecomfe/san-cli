@@ -49,7 +49,8 @@
         "lowdb": "^1.0.0",
         "node-ipc": "^9.1.1",
         "portfinder": "^1.0.25",
-        "san-cli-utils": "^0.1.0-alpha.4"
+        "san-cli-utils": "^0.1.0-alpha.4",
+        "shortid": "^2.2.15"
     },
     "devDependencies": {
         "apollo-cache-inmemory": "^1.6.5",
