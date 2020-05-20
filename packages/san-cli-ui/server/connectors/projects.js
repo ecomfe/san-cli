@@ -46,16 +46,10 @@ const initTemplate = async (useCache = true) => {
         stdio: ['inherit', 'pipe', 'inherit']
     });
 
-    const onData = buffer => {
+    child.stdout.on('data', buffer => {
         const text = buffer.toString().trim();
-        events.emit('log', {
-            type: 'info',
-            message: text
-        });
         debug(text);
-    };
-
-    child.stdout.on('data', onData);
+    });
 
     await child;
 
@@ -112,12 +106,14 @@ const initCreator = async (params, context) => {
         stdio: ['inherit', 'pipe', 'inherit']
     });
 
-    const onData = buffer => {
+    child.stdout.on('data', buffer => {
         const text = buffer.toString().trim();
+        events.emit('log', {
+            type: 'info',
+            message: text
+        });
         debug(text);
-    };
-
-    child.stdout.on('data', onData);
+    });
 
     await child;
 
