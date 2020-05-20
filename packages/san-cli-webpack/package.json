@@ -1,12 +1,12 @@
 {
     "name": "san-cli-webpack",
-    "version": "0.1.0-alpha.5",
+    "version": "0.1.0",
     "main": "index.js",
     "dependencies": {
         "fs-extra": "^8.1.0",
         "html-webpack-plugin": "^3.2.0",
         "portfinder": "^1.0.25",
-        "san-cli-utils": "^0.1.0-alpha.5",
+        "san-cli-utils": "^0.1.0",
         "tty-table": "^2.8.2",
         "webpack": "^4.41.2",
         "webpack-dev-server": "^3.10.3",
@@ -32,5 +32,5 @@
     },
     "homepage": "https://ecomfe.github.io/san-cli",
     "license": "MIT",
-    "gitHead": "b394f61d55b7b257e14b8a9fece7edc7ae61cc50"
+    "gitHead": "402d813859ac219434712fa2063e5f724819004a"
 }

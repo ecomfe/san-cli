@@ -48,7 +48,7 @@
         "mini-css-extract-plugin": "^0.9.0",
         "postcss-loader": "^3.0.0",
         "san": "^3.8.1",
-        "san-hot-loader": "^0.1.0",
+        "san-hot-loader": "^0.1.1",
         "san-store": "^2.0.0",
         "san-update": "^2.1.0",
         "style-loader": "^1.1.3",
@@ -62,5 +62,5 @@
         "webpack": "^3.0.0 || ^4.1.0 || ^5.0.0-0"
     },
     "browserslist": "> 0.25%, not dead",
-    "gitHead": "b394f61d55b7b257e14b8a9fece7edc7ae61cc50"
+    "gitHead": "402d813859ac219434712fa2063e5f724819004a"
 }

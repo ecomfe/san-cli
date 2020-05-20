@@ -1,7 +1,7 @@
 {
     "name": "san-cli-service",
     "description": "定制化的前端工程构建工具",
-    "version": "0.1.0-alpha.5",
+    "version": "0.1.1",
     "main": "Service.js",
     "license": "MIT",
     "engines": {
@@ -58,10 +58,10 @@
         "resolve": "^1.12.0",
         "resolve-cwd": "^3.0.0",
         "san": "^3.7.9",
-        "san-cli-plugin-babel": "^0.1.0-alpha.5",
-        "san-cli-plugin-progress": "^0.1.0-alpha.6",
-        "san-cli-utils": "^0.1.0-alpha.5",
-        "san-cli-webpack": "^0.1.0-alpha.5",
+        "san-cli-plugin-babel": "^0.1.0",
+        "san-cli-plugin-progress": "^0.1.0",
+        "san-cli-utils": "^0.1.0",
+        "san-cli-webpack": "^0.1.0",
         "san-hot-loader": "^0.1.0",
         "san-loader": "^0.1.0",
         "semver": "^7.1.1",
@@ -78,5 +78,5 @@
         "sass": "^1.19.0",
         "sass-loader": "^8.0.0"
     },
-    "gitHead": "b394f61d55b7b257e14b8a9fece7edc7ae61cc50"
+    "gitHead": "402d813859ac219434712fa2063e5f724819004a"
 }

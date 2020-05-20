@@ -1,6 +1,6 @@
 {
     "name": "san-cli-markdown-loader",
-    "version": "0.1.0-alpha.6",
+    "version": "0.1.0",
     "description": "san markdown loader",
     "author": "ksky521",
     "repository": {
@@ -58,5 +58,5 @@
         "posthtml-render": "^1.1.5",
         "prismjs": "^1.18.0"
     },
-    "gitHead": "b394f61d55b7b257e14b8a9fece7edc7ae61cc50"
+    "gitHead": "402d813859ac219434712fa2063e5f724819004a"
 }

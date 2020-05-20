@@ -1,6 +1,6 @@
 {
     "name": "san-cli-docit-theme",
-    "version": "0.1.0-alpha.6",
+    "version": "0.1.0",
     "main": "index.js",
     "license": "MIT",
     "engines": {
@@ -30,5 +30,5 @@
         "san-loader"
     ],
     "site": "https://ecomfe.github.io/san-cli",
-    "gitHead": "b394f61d55b7b257e14b8a9fece7edc7ae61cc50"
+    "gitHead": "402d813859ac219434712fa2063e5f724819004a"
 }
