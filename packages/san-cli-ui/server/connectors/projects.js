@@ -133,8 +133,18 @@ const list = context => {
     return existedProjects;
 };
 
+const findOne = (id, context) => {
+    return context.db.get('projects').find({id}).value();
+};
+
+const setFavorite = ({id, favorite}, context) => {
+    context.db.get('projects').find({id}).assign({favorite}).write();
+    return findOne(id, context);
+};
 module.exports = {
     initTemplate,
     initCreator,
-    list
+    list,
+    findOne,
+    setFavorite
 };

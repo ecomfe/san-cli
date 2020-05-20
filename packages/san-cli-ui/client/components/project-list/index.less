@@ -1,10 +1,29 @@
 .project-list {
+    padding: 0 16px;
+    .favorite {
+        color: #1890ff;
+    }
     .list-item {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         padding: 12px;
-        border: 1px solid #eee;
-        border-radius: 8px;
         margin-bottom: 4px;
+        &:hover {
+            background-color: rgba(24, 144, 255, .2);
+        }
+        .content {
+            width: 800px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 14px;
+            color: rgba(0, 0, 0, .45);
+            .name {
+                font-size: 18px;
+                font-weight: 400;
+                color: rgba(0, 0, 0, .65);
+            }
+        }
     }
 }

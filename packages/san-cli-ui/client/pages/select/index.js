@@ -22,7 +22,9 @@ import './index.less';
 export default class Select extends createApolloComponent(Component) {
     static template = /* html */`
         <div class="project-select">
-            <s-spin class="loading" spinning="{{pageLoading}}" size="large"/>
+            <s-spin class="loading" spinning="{{pageLoading}}" size="large">
+                <s-icon slot="indicator" type="loading" style="font-size: 30px;" />
+            </s-spin>
             <c-layout menu="{{$t('project.select.menu')}}" nav="{=nav=}" on-menuclick="handleMenu">
                 <template slot="right">
                     <r-link to="/">
