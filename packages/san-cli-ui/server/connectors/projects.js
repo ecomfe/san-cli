@@ -15,8 +15,9 @@ const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const debug = getDebugLogger('ui:create');
 const {getGitUser} = require('san-cli-utils/env');
 const {tmpl} = require('san-cli-utils/utils');
-const TEMPLATE_PATH = '.san/templates/san-project';
+const cwd = require('./cwd');
 
+const TEMPLATE_PATH = '.san/templates/san-project';
 const isDev = process.env.SAN_CLI_UI_DEV;
 const SAN_COMMAND_NAME =  isDev ? 'yarn' : 'san';
 const SAN_COMMAND_ARGS =  isDev ? ['dev:san'] : [];
@@ -40,7 +41,7 @@ const initTemplate = async (useCache = true) => {
         'JUST-A-PLACEHOLDER',
         ...args
     ]), {
-        cwd: process.cwd(),
+        cwd: cwd.get(),
         stdio: ['inherit', 'pipe', 'inherit']
     });
 
@@ -120,22 +121,16 @@ const initCreator = async (params, context) => {
     };
 };
 
-function list(context) {
+const list = context => {
     // 得到项目列表，同时清理路径不存在的项目
-    let projects = context.db.get('projects').value();
-    let newProjects = [];
-    for (let project of projects) {
-        if (fs.existsSync(project.path)) {
-            newProjects.push(project);
-        }
+    const projects = context.db.get('projects').value();
+    const existedProjects = projects.filter(project => fs.existsSync(project.path));
+    if (existedProjects.length !== projects.length) {
+        console.log(`Auto cleaned ${projects.length - existedProjects.length} projects (folder not found).`);
+        context.db.set('projects', existedProjects).write();
     }
-    if (newProjects.length !== newProjects) {
-        console.log(`Auto cleaned ${projects.length - newProjects.length} projects (folder not found).`);
-        context.db.set('projects', newProjects).write();
-        projects = newProjects;
-    }
-    return projects;
-}
+    return existedProjects;
+};
 
 module.exports = {
     initTemplate,
