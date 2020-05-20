@@ -5,32 +5,48 @@
 
 import {Component} from 'san';
 import PROJECTS from '@graphql/project/projects.gql';
-import {Button, Icon} from 'santd';
-import 'santd/es/button/style';
-import 'santd/es/icon/style';
+import PROJECT_SET_FAVORITE from '@graphql/project/projectSetFavorite.gql';
+import List from './ui-list';
 import './index.less';
 export default class ProjectList extends Component {
 
     static template = /* html */`
         <div class="project-list">
-            项目列表
-            <div class="list">
-                <div class="list-item" s-for="item,index in list">
-                    <s-button on-click="favorite">
-                        <s-icon type="star" theme="{{item.favorite ? 'filled' : 'outlined'}}"></s-icon>
-                    </s-button>
-                    <div>
-                        <span>{{item.name}}</span>
-                        <span>{{item.path}}</span>
-                    </div>
-                    <s-button on-click="edit(item, index)">在编辑器中打开</s-button>
-                    <s-button icon="form" on-click="open(item, index)"></s-button>
-                    <s-button icon="close" on-click="delete(item, index)"></s-button>
-                </div>
+            <div s-if="!projects || projects.length <= 0">
+                暂无数据
             </div>
+            <template s-if="favoriteList && favoriteList.length > 0">
+                <h3 class="favorite">我的收藏</h3>
+                <c-list
+                    list="{=favoriteList=}"
+                    on-edit="onEdit"
+                    on-open="onOpen"
+                    on-delete="onDelete"
+                    on-favorite="onFavorite"
+                />
+            </template>
+            <template s-if="nomarlList && nomarlList.length > 0">
+                <h3>项目列表</h3>
+                <c-list
+                    list="{=nomarlList=}"
+                    on-edit="onEdit"
+                    on-open="onOpen"
+                    on-delete="onDelete"
+                    on-favorite="onFavorite"
+                />
+            </template>
         </div>
     `;
-
+    static computed = {
+        favoriteList() {
+            let projects = this.data.get('projects');
+            return projects && projects.filter(item => item.favorite);
+        },
+        nomarlList() {
+            let projects = this.data.get('projects');
+            return projects && projects.filter(item => !item.favorite);
+        }
+    };
     initData() {
         return {
             loading: false
@@ -38,21 +54,35 @@ export default class ProjectList extends Component {
     }
 
     static components = {
-        's-button': Button,
-        's-icon': Icon
+        'c-list': List
     }
-    async attached() {
+    attached() {
+        this.projectApollo();
+    }
+    async projectApollo() {
         let projects = await this.$apollo.query({query: PROJECTS});
         if (projects.data) {
-            this.data.set('list', projects.data.projects);
+            this.data.set('projects', projects.data.projects);
         }
     }
-    edit(item, index) {
-        console.log('edit', item, index);
+    onOpen(e) {
+        // console.log('onOpen', e);
     }
-    delete(item, index) {
-        console.log('delete', item, index);
+    onEdit(e) {
+        // console.log('onEdit', e);
     }
-    favorite() {
+    onDelete(e) {
+        // console.log('onDelete', e);
+    }
+    async onFavorite(e) {
+        // console.log('onFavorite', e);
+        await this.$apollo.mutate({
+            mutation: PROJECT_SET_FAVORITE,
+            variables: {
+                id: e.item.id,
+                favorite: e.item.favorite ? 0 : 1
+            }
+        });
+        this.projectApollo();
     }
 }

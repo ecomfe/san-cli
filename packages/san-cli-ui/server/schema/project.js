@@ -13,6 +13,7 @@ extend type Query {
 extend type Mutation {
   projectInitTemplate: ProjectInitTemplate
   projectInitCreation (name: String, presets: JSON): ProjectInitCreation
+  projectSetFavorite(id: ID, favorite: Int): Project
 }
 
 type ProjectInitCreation {

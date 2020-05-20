@@ -62,7 +62,7 @@ export default class FolderExplorer extends Component {
                 <s-tooltip title="{{tooltip.refresh}}">
                     <s-button type="primary" icon="redo" on-click="openFolder(folderCurrent.path)"></s-button>
                 </s-tooltip>
-                <s-tooltip s-if="foldersFavorite" title="{{tooltip.starDirs}}">
+                <s-tooltip s-if="foldersFavorite && foldersFavorite.length > 0" title="{{tooltip.starDirs}}">
                     <s-dropdown trigger="click">
                         <s-menu slot="overlay"
                             selectable="{{false}}"
