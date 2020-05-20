@@ -11,6 +11,7 @@ import PROJECT_INIT_CREATION from '@graphql/project/projectInitCreation.gql';
 import CONSOLE_LOG_ADDED from '@graphql/console/consoleLogAdded.gql';
 import 'santd/es/input/style';
 import 'santd/es/spin/style';
+import './index.less';
 
 export default class App extends createApolloComponent(Component) {
     static template = /* html */`
@@ -28,8 +29,8 @@ export default class App extends createApolloComponent(Component) {
                 on-submit="onPromptsFormSubmit"></s-prompts-form>
 
             <s-spin class="loading" 
-                    tip="{{$t('project.components.create.spinTip')}}" 
-                    spinning="{{isCreating}}" 
+                    tip="{{loadingTip}}" 
+                    spinning="{{isCreating}}"
                     size="large" />
         </div>
     `;
@@ -45,6 +46,7 @@ export default class App extends createApolloComponent(Component) {
     initData() {
         return {
             isCreating: false,
+            loadingTip: '',
             app: {
                 name: ''
             },
@@ -70,15 +72,16 @@ export default class App extends createApolloComponent(Component) {
     }
 
     attached() {
+        this.data.set('loadingTip', this.$t('project.components.create.spinTip'));
+
         // add a subscribe for fetch the console.log from command line
         this.observer = this.$apollo.subscribe({
             query: CONSOLE_LOG_ADDED
         });
 
         this.observer.subscribe({
-            next(data) {
-                // Notify your application with the new arrived data
-                console.log({subscribe: data});
+            next: ({data}) => {
+                this.data.set('loadingTip', data.consoleLogAdded.message);
             }
         });
     }
