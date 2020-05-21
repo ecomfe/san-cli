@@ -11,6 +11,7 @@
 const path = require('path');
 const fs = require('fs-extra');
 const execa = require('execa');
+const notifier = require('node-notifier');
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const debug = getDebugLogger('ui:create');
 const {getGitUser} = require('san-cli-utils/env');
@@ -18,7 +19,8 @@ const {tmpl} = require('san-cli-utils/utils');
 const cwd = require('./cwd');
 const events = require('../utils/events');
 
-const TEMPLATE_PATH = '.san/templates/san-project';
+const DEFAULT_TEMPLATE_PATH = '.san/templates/san-project';
+
 const isDev = process.env.SAN_CLI_UI_DEV;
 const SAN_COMMAND_NAME =  isDev ? 'yarn' : 'san';
 const SAN_COMMAND_ARGS =  isDev ? ['dev:san'] : [];
@@ -28,7 +30,7 @@ const initTemplate = async (useCache = true) => {
         '--download-repo-only'
     ];
 
-    const localTemplatePath = path.join(require('os').homedir(), TEMPLATE_PATH);
+    const localTemplatePath = path.join(require('os').homedir(), DEFAULT_TEMPLATE_PATH);
 
     // 1. 判断本地目录是否存在，如果存在则不去github远程拉取
     if (useCache) {
@@ -39,7 +41,8 @@ const initTemplate = async (useCache = true) => {
 
     const child = execa(SAN_COMMAND_NAME, SAN_COMMAND_ARGS.concat([
         'init',
-        'JUST-A-PLACEHOLDER',
+        // 初始化模板，此时app-name参数不需要
+        'APP_NAME_PLACEHOLDER',
         ...args
     ]), {
         cwd: cwd.get(),
@@ -60,7 +63,7 @@ const initTemplate = async (useCache = true) => {
         ...metaPrompts[name]
     }));
 
-    // 3. 替换占位符，通常是default字段
+    // 3. 替换default字段中的占位符
     const templateData = {
         name: path.basename(process.cwd()),
         author: getGitUser().name
@@ -87,10 +90,8 @@ const initCreator = async (params, context) => {
 
     debug(`
     ${SAN_COMMAND_NAME}
-        --project-presets='${JSON.stringify(params.presets)}'
     ${SAN_COMMAND_ARGS.concat([
         'init',
-        // template name
         params.name,
         ...args
     ]).join(' ')}
@@ -98,7 +99,6 @@ const initCreator = async (params, context) => {
 
     const child = execa(SAN_COMMAND_NAME, SAN_COMMAND_ARGS.concat([
         'init',
-        // template name
         params.name,
         ...args
     ]), {
@@ -116,6 +116,12 @@ const initCreator = async (params, context) => {
     });
 
     await child;
+
+    notifier.notify({
+        title: 'San Project Created',
+        message: `Project ${cwd.get()} created`,
+        icon: path.resolve(__dirname, '../../client/assets/done.png')
+    });
 
     return {
         errno: 0

@@ -48,6 +48,7 @@
         "launch-editor": "^2.2.1",
         "lowdb": "^1.0.0",
         "node-ipc": "^9.1.1",
+        "node-notifier": "^7.0.0",
         "portfinder": "^1.0.25",
         "san-cli-utils": "^0.1.0-alpha.4",
         "shortid": "^2.2.15"

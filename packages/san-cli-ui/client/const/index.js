@@ -2,7 +2,7 @@
  * @file 静态常量
  * @author zhangtingting12 <zhangtingting12@baidu.com>
 */
-import logo from '@assets/img/logo.svg';
+import logo from '@assets/logo.svg';
 
 // 将所有gql收敛到这里
 import CWD from '@graphql/cwd/cwd.gql';

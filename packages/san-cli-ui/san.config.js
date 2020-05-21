@@ -1,12 +1,8 @@
 /**
  * @file san config
- * @author
  */
 const path = require('path');
 const resolve = pathname => path.resolve(__dirname, pathname);
-
-// 静态文件域名
-const CDN = '/';
 
 // 生产环境下的静态目录
 const STATIC_PRO = 'static';
@@ -16,8 +12,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 process.env.SAN_VAR_APP_GRAPHQL_ENDPOINT = process.env.SAN_VAR_APP_GRAPHQL_ENDPOINT || '';
 
 module.exports = {
-    assetsDir: isProduction ? STATIC_PRO : 'static',
-    publicPath: isProduction ? CDN : '/',
+    assetsDir: STATIC_PRO,
+    publicPath: '/',
     outputDir: 'dist',
     filenameHashing: isProduction,
     loaderOptions: {
@@ -62,7 +58,7 @@ module.exports = {
             .options({
                 limit: 1000,
                 name: STATIC_PRO + '/img/[name].[hash:7].[ext]',
-                publicPath: isProduction ? CDN : ''
+                publicPath: '/'
             });
 
         config.module.rule('gql')

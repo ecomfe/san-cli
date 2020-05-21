@@ -4,13 +4,14 @@
  */
 
 import {Component} from 'san';
-import {Form, Input, Spin} from 'santd';
+import {Form, Input, Spin, Icon} from 'santd';
 import PromptsForm from '@components/prompts-form';
 import {createApolloComponent} from '@lib/san-apollo';
 import PROJECT_INIT_CREATION from '@graphql/project/projectInitCreation.gql';
 import CONSOLE_LOG_ADDED from '@graphql/console/consoleLogAdded.gql';
 import 'santd/es/input/style';
 import 'santd/es/spin/style';
+import './index.less';
 
 export default class App extends createApolloComponent(Component) {
     static template = /* html */`
@@ -28,9 +29,11 @@ export default class App extends createApolloComponent(Component) {
                 on-submit="onPromptsFormSubmit"></s-prompts-form>
 
             <s-spin class="loading" 
-                    tip="{{$t('project.components.create.spinTip')}}" 
-                    spinning="{{isCreating}}" 
-                    size="large" />
+                    tip="{{loadingTip}}" 
+                    spinning="{{isCreating}}"
+                    size="large">
+                    <s-icon slot="indicator" type="loading" style="font-size: 30px;" />
+                </s-spin>
         </div>
     `;
 
@@ -38,6 +41,7 @@ export default class App extends createApolloComponent(Component) {
         's-form': Form,
         's-formitem': Form.FormItem,
         's-spin': Spin,
+        's-icon': Icon,
         's-input': Input,
         's-prompts-form': PromptsForm
     };
@@ -45,6 +49,7 @@ export default class App extends createApolloComponent(Component) {
     initData() {
         return {
             isCreating: false,
+            loadingTip: '',
             app: {
                 name: ''
             },
@@ -70,15 +75,16 @@ export default class App extends createApolloComponent(Component) {
     }
 
     attached() {
+        this.data.set('loadingTip', this.$t('project.components.create.spinTip'));
+
         // add a subscribe for fetch the console.log from command line
         this.observer = this.$apollo.subscribe({
             query: CONSOLE_LOG_ADDED
         });
 
         this.observer.subscribe({
-            next(data) {
-                // Notify your application with the new arrived data
-                console.log({subscribe: data});
+            next: ({data}) => {
+                this.data.set('loadingTip', data.consoleLogAdded.message);
             }
         });
     }
