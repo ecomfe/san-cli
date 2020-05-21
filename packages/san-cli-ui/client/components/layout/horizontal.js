@@ -5,7 +5,7 @@
 
 import {Component} from 'san';
 import {logo} from '../../const';
-import {Layout, Icon, Menu, Grid} from 'santd';
+import {Layout, Icon, Menu} from 'santd';
 import {Link} from 'san-router';
 import 'santd/es/layout/style';
 import 'santd/es/menu/style';
@@ -33,7 +33,9 @@ export default class ComponentHorLayout extends Component {
                             </s-menuitem>
                         </s-menu>
                         <div class="head-right">
-                            <slot name="right"></slot>
+                            <r-link to="/about">
+                                <s-icon type="question-circle"></s-icon>
+                            </r-link>
                         </div>
                     </div>
                 </s-header>
@@ -51,8 +53,6 @@ export default class ComponentHorLayout extends Component {
         's-content': Layout.Content,
         's-menu': Menu,
         's-menuitem': Menu.Item,
-        's-row': Grid.Row,
-        's-col': Grid.Col,
         's-icon': Icon,
         'r-link': Link
     };
