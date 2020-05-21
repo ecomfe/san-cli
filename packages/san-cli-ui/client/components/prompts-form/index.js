@@ -67,8 +67,10 @@ export default class App extends Component {
                 </s-formitem>
             </template>
 
-            <s-formitem s-if="prompts && prompts.length" wrapperCol="{{formItemLayout.tailWrapperCol}}">
-              <s-button type="primary" htmlType="submit">{{submitText}}</s-button>
+            <s-formitem s-if="prompts && prompts.length && !hideSubmitBtn" 
+                wrapperCol="{{formItemLayout.tailWrapperCol}}">
+              <s-button type="primary"
+                        htmlType="submit">{{submitText}}</s-button>
             </s-formitem>
           </s-form>
       </div>
@@ -152,7 +154,7 @@ export default class App extends Component {
     }
 
     handleSubmit(e) {
-        e.preventDefault();
+        e && e.preventDefault();
         const prompts = this.data.get('prompts');
         const data = {};
         prompts.forEach(item => {

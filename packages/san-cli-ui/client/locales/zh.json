@@ -1,5 +1,5 @@
 {
-    "title": "SAN UI",
+    "title": "项目管理器",
     "project": {
         "select": {
             "menu": [{
@@ -46,6 +46,7 @@
             "create": {
                 "folderName": "项目文件夹",
                 "submitText": "开始创建",
+                "cancelSubmitText": "取消创建",
                 "spinTip": "正在创建项目..."
             }
         }   

@@ -32,36 +32,43 @@ export default class Select extends createApolloComponent(Component) {
                         on-change="handleListChange"
                     />
                     <div class="nav-create" s-if="route.query.nav === 'create'">
+                    <!---
                          <s-steps current="{{current}}" s-if="stepsData.length">
                             <s-step s-for="step in stepsData" title="{{step}}" />
                         </s-steps>
+                    -->
                         <div class="steps-content">
                             <c-folder-explorer s-if="current === 0"
                                 current-path="{{cwd}}"
                                 on-change="handleCwdChange"
                             />
-                            <c-create prompts="{{projectPrompts}}" cwd="{{cwd}}" s-elif="current === 1"/>
+                            <c-create s-ref="create" prompts="{{projectPrompts}}" cwd="{{cwd}}" s-elif="current === 1"/>
                         </div>
                         <div class="steps-action">
                             <s-button
+                                class="custom-santd-btn"
+                                size="large"
                                 s-if="current === 0"
                                 type="primary"
-                                icon="plus"
                                 on-click="initProject"
-                            >{{$t('project.select.create.stepsAction.initProject')}}</s-button>
-                            <!---
-                                <s-button
-                                    s-if="current > 0"
-                                    icon="left"
-                                    on-click="prev"
-                                >{{stepsAction.prev}}</s-button>
-                                <s-button
-                                    s-if="current === 1"
-                                    type="primary"
-                                    icon="check"
-                                    on-click="createProject"
-                                >{{$t('project.select.create.stepsAction.createProject')}}</s-button>
-                            ---->
+                            >{{$t('project.select.create.stepsAction.initProject')}}<s-icon type="right" /></s-button>
+                            
+                            
+                            <s-button
+                                class="custom-santd-btn"
+                                s-if="current === 1"
+                                size="large"
+                                on-click="createProject"
+                                type="primary"
+                            >{{$t('project.components.create.submitText')}}</s-button>
+
+                            <s-button type="link"
+                                      size="large"
+                                      class="cancel-submit"
+                                      on-click="cancelSubmit"
+                                      s-if="current === 1">
+                                {{$t('project.components.create.cancelSubmitText')}}
+                            </s-button>
                         </div>
                     </div>
                 </template>
@@ -139,10 +146,10 @@ export default class Select extends createApolloComponent(Component) {
             }
         });
     }
-    async createProject() { // 配置确认后开始创建工程
+    createProject() {
+        this.ref('create').submit();
     }
-    prev() {
-        const cur = +this.data.get('current');
-        this.data.set('current', cur - 1);
+    cancelSubmit() {
+        this.data.set('current', this.data.get('current') - 1);
     }
 }

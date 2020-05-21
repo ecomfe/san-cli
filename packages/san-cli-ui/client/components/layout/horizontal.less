@@ -1,6 +1,11 @@
 .hlayout {
     position: relative;
+    padding-top: 64px;
     .santd-layout-header {
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 10;
         width: 100%;
         background-color: #fff;
         box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
@@ -14,14 +19,10 @@
         .title {
             margin-right: 40px;
             padding: 0 16px;
-            color: rgba(0, 0, 0, .55);
+            color: #333;
             font-size: 18px;
             cursor: pointer;
-            .logo {
-                height: 32px;
-                display: inline-block;
-                margin-right: 6px;
-            }
+            font-size: 24px;
         }
         .santd-menu-horizontal {
             width: 600px;
@@ -29,6 +30,13 @@
             height: 62px;
             line-height: 62px;
             border-bottom: 0;
+            li {
+                margin-left: 50px;
+            }
+            a {
+                font-size: 18px;
+                text-decoration: none;
+            }
         }
         .head-right {
             text-align: right;
@@ -45,5 +53,11 @@
         max-width: 1200px;
         margin: 30px auto 0;
         padding: 16px 16px 0;
+    }
+
+    .custom-santd-btn {
+        padding-left: 28px !important;
+        padding-right: 28px !important;
+        height: 48px;
     }
 }

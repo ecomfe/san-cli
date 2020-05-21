@@ -4,12 +4,13 @@
  */
 
 import {Component} from 'san';
-import {Form, Input, Spin, Icon} from 'santd';
+import {Form, Input, Button, Spin, Icon} from 'santd';
 import PromptsForm from '@components/prompts-form';
 import {createApolloComponent} from '@lib/san-apollo';
 import PROJECT_INIT_CREATION from '@graphql/project/projectInitCreation.gql';
 import CONSOLE_LOG_ADDED from '@graphql/console/consoleLogAdded.gql';
 import 'santd/es/input/style';
+import 'santd/es/button/style';
 import 'santd/es/spin/style';
 import './index.less';
 
@@ -24,7 +25,8 @@ export default class App extends createApolloComponent(Component) {
                 </s-formitem>
             </s-form>
 
-            <s-prompts-form prompts="{{prompts}}"
+            <s-prompts-form s-ref="form" prompts="{{prompts}}"
+                hideSubmitBtn="true"
                 submit-text="{{$t('project.components.create.submitText')}}"
                 on-submit="onPromptsFormSubmit"></s-prompts-form>
 
@@ -43,6 +45,7 @@ export default class App extends createApolloComponent(Component) {
         's-spin': Spin,
         's-icon': Icon,
         's-input': Input,
+        's-button': Button,
         's-prompts-form': PromptsForm
     };
 
@@ -87,6 +90,10 @@ export default class App extends createApolloComponent(Component) {
                 this.data.set('loadingTip', data.consoleLogAdded.message);
             }
         });
+    }
+
+    submit() {
+        this.ref('form').handleSubmit();
     }
 
     onPromptsFormSubmit(presets) {

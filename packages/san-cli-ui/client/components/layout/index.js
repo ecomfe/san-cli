@@ -22,7 +22,7 @@ export default class ComponentLayout extends Component {
                     collapsible="{{true}}"
                     trigger="null"
                 >
-                    <div class="title"><img class="logo" src="{{logo}}"/> san项目管理</div>
+                    <div class="title">{{$t('title')}}</div>
                     <s-menu
                         mode="inline"
                         inlineCollapsed="{{collapsed}}"
