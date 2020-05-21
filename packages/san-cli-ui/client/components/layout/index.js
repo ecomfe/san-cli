@@ -4,7 +4,6 @@
  */
 
 import {Component} from 'san';
-import {logo} from '../../const';
 import {Layout, Icon, Menu} from 'santd';
 import {Link} from 'san-router';
 import 'santd/es/layout/style';
@@ -66,7 +65,6 @@ export default class ComponentLayout extends Component {
     };
     initData() {
         return {
-            logo,
             title: 'San CLI',
             height: window.screen.availHeight,
             collapsed: false

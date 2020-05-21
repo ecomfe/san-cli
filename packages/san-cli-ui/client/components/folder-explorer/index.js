@@ -13,7 +13,6 @@ import FOLDERS_FAVORITE from '@graphql/folder/foldersFavorite.gql';
 import FOLDER_OPEN from '@graphql/folder/folderOpen.gql';
 import FOLDER_SET_FAVORITE from '@graphql/folder/folderSetFavorite.gql';
 import FOLDER_CREATE from '@graphql/folder/folderCreate.gql';
-import view from '../../const/view';
 import 'santd/es/button/style';
 import 'santd/es/input/style';
 import 'santd/es/dropdown/style';
@@ -23,19 +22,16 @@ import 'santd/es/icon/style';
 import 'santd/es/modal/style';
 import './index.less';
 
-const folderExplorerView = view.project.select.folderExplorer;
-
 export default class FolderExplorer extends Component {
-
     static template = /* html */`
         <div class="folder-explorer">
             <div class="contents">
-                <s-tooltip title="{{tooltip.pre}}">
+                <s-tooltip title="{{$t('project.select.folderExplorer.tooltip.pre')}}">
                     <s-button type="primary" icon="left" on-click="onPathChange(-2)"></s-button>
                 </s-tooltip>
                 <div class="path-guide">
                     <s-input s-if="editing"
-                        placeholder="{{placeholder.edit}}"
+                        placeholder="{{$t('project.select.folderExplorer.placeholder.edit')}}"
                         value="{{inputValue}}"
                         on-blur="openFolder"
                     ></s-input>
@@ -51,19 +47,20 @@ export default class FolderExplorer extends Component {
                         >{{p}}</s-button>
                     </template>
                 </div>
-                <s-tooltip title="{{tooltip.edit}}" class="operate-btn">
+                <s-tooltip title="{{$t('project.select.folderExplorer.tooltip.edit')}}" class="operate-btn">
                     <s-button type="primary" icon="form" on-click="onEdit"></s-button>
                 </s-tooltip>
-                <s-tooltip title="{{tooltip.star}}" s-if="folderCurrent" class="operate-btn">
+                <s-tooltip title="{{$t('project.select.folderExplorer.tooltip.star')}}"
+                     s-if="folderCurrent" class="operate-btn">
                     <s-button type="primary" on-click="onFavorite">
                         <s-icon type="star" theme="{{folderCurrent.favorite ? 'filled' : 'outlined'}}"></s-icon>
                     </s-button>
                 </s-tooltip>
-                <s-tooltip title="{{tooltip.refresh}}" class="operate-btn">
+                <s-tooltip title="{{$t('project.select.folderExplorer.tooltip.refresh')}}" class="operate-btn">
                     <s-button type="primary" icon="redo" on-click="openFolder(folderCurrent.path)"></s-button>
                 </s-tooltip>
                 <s-tooltip s-if="foldersFavorite && foldersFavorite.length > 0"
-                    title="{{tooltip.starDirs}}"
+                    title="{{$t('project.select.folderExplorer.tooltip.starDirs')}}"
                     class="operate-btn"
                 >
                     <s-dropdown trigger="click">
@@ -79,9 +76,10 @@ export default class FolderExplorer extends Component {
                 </s-tooltip>
                 <s-dropdown trigger="click">
                     <s-menu slot="overlay" selectable="{{false}}" class="contents-menu" on-click="onMoreMenuClick">
-                        <s-menuitem key="1">{{menu.createFolder}}</s-menuitem>
+                        <s-menuitem key="1">{{$t('project.select.folderExplorer.menu.createFolder')}}</s-menuitem>
                         <s-menuitem key="2">
-                            {{showHiddenFolder ? menu.hiddenFolder : menu.hiddenFolderShow}}
+                            {{showHiddenFolder ? $t('project.select.folderExplorer.menu.hiddenFolder') 
+                                : $t('project.select.folderExplorer.menu.hiddenFolderShow')}}
                         </s-menuitem>
                     </s-menu>
                     <s-button type="primary" icon="more"></s-button>
@@ -157,12 +155,7 @@ export default class FolderExplorer extends Component {
             foldersFavorite: '',
             showHiddenFolder: false,
             newFolderName: '',
-            modalVisible: false,
-            // 文案字段合集
-            placeholder: folderExplorerView.placeholder,
-            tooltip: folderExplorerView.tooltip,
-            menu: folderExplorerView.menu,
-            modalCreateTitle: folderExplorerView.modalCreateTitle
+            modalVisible: false
         };
     }
 

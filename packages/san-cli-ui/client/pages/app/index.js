@@ -4,7 +4,8 @@
  */
 
 import {Component} from 'san';
-import {logo, CWD} from '../../const';
+import {logo} from '../../const';
+import CWD from '@graphql/cwd/cwd.gql';
 import {Link} from 'san-router';
 import {Button} from 'santd';
 import {createApolloComponent} from '@lib/san-apollo';
@@ -15,7 +16,7 @@ export default class App extends createApolloComponent(Component) {
     static template = /* html */`
         <div class="app" style="height: {{height}}px">
             <img class="logo" src="{{logo}}"/>
-            <h1 class="title">{{title}}</h1>
+            <h1 class="title">{{$t('title')}}</h1>
             <div class="btn-group">
                 <r-link to="/project/select">
                     <s-button type="primary">select san project</s-button>
@@ -35,7 +36,6 @@ export default class App extends createApolloComponent(Component) {
         return {
             logo,
             cwd: '',
-            title: 'San CLI',
             height: window.screen.availHeight
         };
     }

@@ -51,6 +51,7 @@
         "node-notifier": "^7.0.0",
         "portfinder": "^1.0.25",
         "san-cli-utils": "^0.1.0-alpha.4",
+        "santd": "0.2.7",
         "shortid": "^2.2.15"
     },
     "devDependencies": {
