@@ -10,7 +10,7 @@ import PROJECT_INIT_TEMPLATE from '@graphql/project/projectInitTemplate.gql';
 import ProjectList from '@components/project-list';
 import FolderExplorer from '@components/folder-explorer';
 import ProjectCreate from '@components/project-create';
-import Layout from '@components/layout';
+import Layout from '@components/layout/horizontal';
 import {Link} from 'san-router';
 import {Icon, Button, Spin, Steps} from 'santd';
 import 'santd/es/icon/style';
@@ -37,7 +37,7 @@ export default class Select extends createApolloComponent(Component) {
                 </template>
                 <template slot="content">
                     <c-list
-                        s-if="route.query.nav === 'select'"
+                        s-if="route.path === '/' || route.query.nav === 'select'"
                         on-change="handleListChange"
                     />
                     <div class="nav-create" s-if="route.query.nav === 'create'">

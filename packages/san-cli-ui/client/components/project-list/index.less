@@ -1,5 +1,5 @@
 .project-list {
-    padding: 0 16px;
+    width: 100%;
     .favorite {
         color: #1890ff;
     }
@@ -7,12 +7,19 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px;
         margin-bottom: 4px;
         &:hover {
             background-color: rgba(24, 144, 255, .2);
         }
+        & > .santd-btn {
+            margin-right: 8px;
+            &:last-child {
+                margin-right: 0;
+            }
+        }
         .content {
+            flex-grow: 1;
+            margin: 12px 16px;
             width: 800px;
             overflow: hidden;
             text-overflow: ellipsis;

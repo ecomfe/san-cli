@@ -9,10 +9,10 @@ import {Layout, Icon, Menu} from 'santd';
 import {Link} from 'san-router';
 import 'santd/es/layout/style';
 import 'santd/es/menu/style';
-import 'santd/es/tabs/style';
+import 'santd/es/icon/style';
 import './index.less';
 
-export default class App extends Component {
+export default class ComponentLayout extends Component {
     static template = /* html */`
         <div class="layout">
             <s-layout>

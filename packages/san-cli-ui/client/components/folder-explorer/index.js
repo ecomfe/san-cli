@@ -31,7 +31,7 @@ export default class FolderExplorer extends Component {
         <div class="folder-explorer">
             <div class="contents">
                 <s-tooltip title="{{tooltip.pre}}">
-                    <s-button type="primary" icon="up" on-click="onPathChange(-2)"></s-button>
+                    <s-button type="primary" icon="left" on-click="onPathChange(-2)"></s-button>
                 </s-tooltip>
                 <div class="path-guide">
                     <s-input s-if="editing"
@@ -51,18 +51,21 @@ export default class FolderExplorer extends Component {
                         >{{p}}</s-button>
                     </template>
                 </div>
-                <s-tooltip title="{{tooltip.edit}}">
+                <s-tooltip title="{{tooltip.edit}}" class="operate-btn">
                     <s-button type="primary" icon="form" on-click="onEdit"></s-button>
                 </s-tooltip>
-                <s-tooltip title="{{tooltip.star}}" s-if="folderCurrent">
+                <s-tooltip title="{{tooltip.star}}" s-if="folderCurrent" class="operate-btn">
                     <s-button type="primary" on-click="onFavorite">
                         <s-icon type="star" theme="{{folderCurrent.favorite ? 'filled' : 'outlined'}}"></s-icon>
                     </s-button>
                 </s-tooltip>
-                <s-tooltip title="{{tooltip.refresh}}">
+                <s-tooltip title="{{tooltip.refresh}}" class="operate-btn">
                     <s-button type="primary" icon="redo" on-click="openFolder(folderCurrent.path)"></s-button>
                 </s-tooltip>
-                <s-tooltip s-if="foldersFavorite && foldersFavorite.length > 0" title="{{tooltip.starDirs}}">
+                <s-tooltip s-if="foldersFavorite && foldersFavorite.length > 0"
+                    title="{{tooltip.starDirs}}"
+                    class="operate-btn"
+                >
                     <s-dropdown trigger="click">
                         <s-menu slot="overlay"
                             selectable="{{false}}"
