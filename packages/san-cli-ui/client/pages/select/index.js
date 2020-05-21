@@ -26,15 +26,6 @@ export default class Select extends createApolloComponent(Component) {
                 <s-icon slot="indicator" type="loading" style="font-size: 30px;" />
             </s-spin>
             <c-layout menu="{{$t('project.select.menu')}}" nav="{=nav=}" on-menuclick="handleMenu">
-                <template slot="right">
-                    <r-link to="/">
-                        {{$t('project.select.headRight.home')}}
-                    </r-link>
-                    |
-                    <r-link to="/about">
-                        {{$t('project.select.headRight.about')}}
-                    </r-link>
-                </template>
                 <template slot="content">
                     <c-list
                         s-if="route.path === '/' || route.query.nav === 'select'"

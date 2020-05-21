@@ -13,10 +13,6 @@
                 "key": "create",
                 "link": "/project/create"
             }],
-            "headRight": {
-                "about": "关于",
-                "home": "首页"
-            },
             "folderExplorer": {
                 "placeholder": {
                     "edit": "请输入合法路径",
