@@ -41,7 +41,8 @@ const initTemplate = async (useCache = true) => {
 
     const child = execa(SAN_COMMAND_NAME, SAN_COMMAND_ARGS.concat([
         'init',
-        'JUST-A-PLACEHOLDER',
+        // 初始化模板，此时app-name参数不需要
+        'APP_NAME_PLACEHOLDER',
         ...args
     ]), {
         cwd: cwd.get(),
