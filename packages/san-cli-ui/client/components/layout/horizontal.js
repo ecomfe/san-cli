@@ -6,7 +6,7 @@
 import {Component} from 'san';
 import {logo} from '../../const';
 import {Layout, Icon, Menu} from 'santd';
-import {Link} from 'san-router';
+import {router, Link} from 'san-router';
 import 'santd/es/layout/style';
 import 'santd/es/menu/style';
 import 'santd/es/grid/style';
@@ -64,6 +64,6 @@ export default class ComponentHorLayout extends Component {
         };
     }
     logoClick() {
-        location.hash = '#/';
+        router.locator.redirect('/');
     }
 }
