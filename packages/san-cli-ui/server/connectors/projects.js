@@ -13,7 +13,6 @@ const fs = require('fs-extra');
 const execa = require('execa');
 const notifier = require('node-notifier');
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
-const debug = getDebugLogger('ui:create');
 const {getGitUser} = require('san-cli-utils/env');
 const {tmpl} = require('san-cli-utils/utils');
 const cwd = require('./cwd');
@@ -25,6 +24,8 @@ const isDev = process.env.SAN_CLI_UI_DEV;
 const SAN_COMMAND_NAME =  isDev ? 'yarn' : 'san';
 const SAN_COMMAND_ARGS =  isDev ? ['dev:san'] : [];
 
+const debug = getDebugLogger('ui:project');
+
 const initTemplate = async (useCache = true) => {
     const args = [
         '--download-repo-only'
@@ -33,10 +34,12 @@ const initTemplate = async (useCache = true) => {
     const localTemplatePath = path.join(require('os').homedir(), DEFAULT_TEMPLATE_PATH);
 
     // 1. 判断本地目录是否存在，如果存在则不去github远程拉取
-    if (useCache) {
-        if (fs.existsSync(localTemplatePath)) {
-            args.push('--offline');
-        }
+    if (useCache && fs.existsSync(localTemplatePath)) {
+        debug('fetch template from local...');
+        args.push('--offline');
+    }
+    else {
+        debug('fetching template from github...');
     }
 
     const child = execa(SAN_COMMAND_NAME, SAN_COMMAND_ARGS.concat([
