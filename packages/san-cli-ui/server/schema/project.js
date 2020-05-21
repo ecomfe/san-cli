@@ -14,6 +14,7 @@ extend type Mutation {
   projectInitTemplate: ProjectInitTemplate
   projectInitCreation (name: String, presets: JSON): ProjectInitCreation
   projectSetFavorite(id: ID, favorite: Int): Project
+  projectImport (input: ProjectImportInput!): Project!
 }
 
 type ProjectInitCreation {
@@ -22,6 +23,11 @@ type ProjectInitCreation {
 
 type ProjectInitTemplate {
   prompts: [Prompt]
+}
+
+input ProjectImportInput {
+  path: String!
+  force: Boolean
 }
 
 type Prompt {

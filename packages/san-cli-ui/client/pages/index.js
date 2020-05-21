@@ -9,7 +9,7 @@ import {register} from '@lib/san-apollo';
 import localization from '@lib/san-localization';
 import createApolloServer from '@lib/createApolloServer';
 import App from './app';
-import ProjectSelect from './select';
+import Project from './project';
 import About from '@components/about';
 import NotFound from '@components/not-found';
 
@@ -21,11 +21,11 @@ register(san, createApolloServer(graphqlEndpoint));
 localization(san);
 
 const routes = [
-    {rule: '/', Component: ProjectSelect, target: '#app'},
+    {rule: '/', Component: Project, target: '#app'},
+    {rule: '/project', Component: Project, target: '#app'},
+    {rule: '/project/:nav', Component: Project, target: '#app'},
     {rule: '/home', Component: App, target: '#app'},
     {rule: '/about', Component: About, target: '#app'},
-    {rule: '/project', Component: ProjectSelect, target: '#app'},
-    {rule: '/project/:nav', Component: ProjectSelect, target: '#app'},
     {rule: '/notfound', Component: NotFound, target: '#app'}
 ];
 

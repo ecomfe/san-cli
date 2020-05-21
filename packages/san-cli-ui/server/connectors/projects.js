@@ -11,12 +11,14 @@
 const path = require('path');
 const fs = require('fs-extra');
 const execa = require('execa');
+const shortId = require('shortid');
 const notifier = require('node-notifier');
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const {getGitUser} = require('san-cli-utils/env');
 const {tmpl} = require('san-cli-utils/utils');
 const cwd = require('./cwd');
 const events = require('../utils/events');
+const folders = require('./folders');
 
 const DEFAULT_TEMPLATE_PATH = '.san/templates/san-project';
 
@@ -142,6 +144,26 @@ const list = context => {
     return existedProjects;
 };
 
+const importProject = async (input, context) => {
+    if (!input.force && !fs.existsSync(path.join(input.path, 'node_modules'))) {
+        throw new Error('NO_MODULES');
+    }
+
+    const project = {
+        id: shortId.generate(),
+        path: input.path,
+        favorite: 0,
+        type: folders.isSanProject(input.path) ? 'san' : 'unknown'
+    };
+
+    const packageData = folders.readPackage(project.path, context);
+    project.name = packageData.name;
+    context.db.get('projects').push(project).write();
+    return {
+        errno: 0
+    };
+};
+
 const findOne = (id, context) => {
     return context.db.get('projects').find({id}).value();
 };
@@ -150,10 +172,12 @@ const setFavorite = ({id, favorite}, context) => {
     context.db.get('projects').find({id}).assign({favorite}).write();
     return findOne(id, context);
 };
+
 module.exports = {
     initTemplate,
     initCreator,
     list,
     findOne,
-    setFavorite
+    setFavorite,
+    importProject
 };

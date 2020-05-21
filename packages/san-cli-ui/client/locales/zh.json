@@ -5,14 +5,20 @@
             "menu": [{
                 "text": "项目管理",
                 "icon": "unordered-list",
-                "key": "select",
-                "link": "/project/select"
+                "key": "list",
+                "link": "/project/list"
             }, {
                 "text": "创建项目",
                 "icon": "plus",
                 "key": "create",
                 "link": "/project/create"
-            }],
+            }, {
+                "text": "导入项目",
+                "icon": "import",
+                "key": "import",
+                "link": "/project/import"
+            }
+        ],
             "folderExplorer": {
                 "placeholder": {
                     "edit": "请输入合法路径",
@@ -35,11 +41,12 @@
             },
             "create": {
                 "steps": ["选择文件夹", "确认配置"],
-                "stepsAction": {
-                    "initProject": "在此创建工程",
-                    "prev": "上一步",
-                    "createProject": "确认创建"
-                }
+                "initProject": "在此创建工程",
+                "prev": "上一步",
+                "createProject": "确认创建"
+            },
+            "import": {
+                "importBtnText": "导入此文件夹"
             }
         },
         "components": {

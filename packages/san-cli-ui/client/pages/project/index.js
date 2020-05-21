@@ -7,6 +7,7 @@ import {Component} from 'san';
 import {createApolloComponent, createApolloDataComponent} from '@lib/san-apollo';
 import CWD from '@graphql/cwd/cwd.gql';
 import PROJECT_INIT_TEMPLATE from '@graphql/project/projectInitTemplate.gql';
+import PROJECT_IMPORT from '@graphql/project/projectImport.gql';
 import ProjectList from '@components/project-list';
 import FolderExplorer from '@components/folder-explorer';
 import ProjectCreate from '@components/project-create';
@@ -19,7 +20,7 @@ import 'santd/es/spin/style';
 import 'santd/es/steps/style';
 import './index.less';
 
-export default class Select extends createApolloComponent(Component) {
+export default class App extends createApolloComponent(Component) {
     static template = /* html */`
         <div class="project-select">
             <s-spin class="loading" spinning="{{pageLoading}}" size="large">
@@ -27,16 +28,14 @@ export default class Select extends createApolloComponent(Component) {
             </s-spin>
             <c-layout menu="{{$t('project.select.menu')}}" nav="{=nav=}" on-menuclick="handleMenu">
                 <template slot="content">
+                    <!--- 1.项目列表 -->
                     <c-list
-                        s-if="route.path === '/' || route.query.nav === 'select'"
+                        s-if="route.path === '/' || route.query.nav === 'list'"
                         on-change="handleListChange"
                     />
-                    <div class="nav-create" s-if="route.query.nav === 'create'">
-                    <!---
-                         <s-steps current="{{current}}" s-if="stepsData.length">
-                            <s-step s-for="step in stepsData" title="{{step}}" />
-                        </s-steps>
-                    -->
+
+                    <!--- 2.创建项目 -->
+                    <div class="project-create" s-if="route.query.nav === 'create'">
                         <div class="steps-content">
                             <c-folder-explorer s-if="current === 0"
                                 current-path="{{cwd}}"
@@ -44,15 +43,15 @@ export default class Select extends createApolloComponent(Component) {
                             />
                             <c-create s-ref="create" prompts="{{projectPrompts}}" cwd="{{cwd}}" s-elif="current === 1"/>
                         </div>
-                        <div class="steps-action">
+
+                        <div class="footer-wrapper">
                             <s-button
                                 class="custom-santd-btn"
                                 size="large"
                                 s-if="current === 0"
                                 type="primary"
                                 on-click="initProject"
-                            >{{$t('project.select.create.stepsAction.initProject')}}<s-icon type="right" /></s-button>
-                            
+                            >{{$t('project.select.create.initProject')}}<s-icon type="right" /></s-button>
                             
                             <s-button
                                 class="custom-santd-btn"
@@ -69,6 +68,27 @@ export default class Select extends createApolloComponent(Component) {
                                       s-if="current === 1">
                                 {{$t('project.components.create.cancelSubmitText')}}
                             </s-button>
+                        </div>
+                    </div>
+
+                    <!--- 3.导入项目 -->
+                    <div class="project-import" s-if="route.query.nav === 'import'">
+                        <div class="steps-content">
+                            <c-folder-explorer
+                                current-path="{{cwd}}"
+                                on-change="handleCwdChange"
+                            />
+                            
+                            <div class="footer-wrapper">
+                            <s-button
+                                class="custom-santd-btn"
+                                disabled="{{!isPackage}}"
+                                size="large"
+                                s-if="current === 0"
+                                type="primary"
+                                on-click="importProject"
+                            >{{$t('project.select.import.importBtnText')}}<s-icon type="right" /></s-button>
+                            </div>
                         </div>
                     </div>
                 </template>
@@ -102,7 +122,8 @@ export default class Select extends createApolloComponent(Component) {
             pageLoading: false,
             current: 0,
             stepsData: [],
-            menuData: []
+            menuData: [],
+            isPackage: true
         };
     }
 
@@ -118,9 +139,10 @@ export default class Select extends createApolloComponent(Component) {
     }
     handleListChange(e) {
     }
-    handleCwdChange(path) {
+    handleCwdChange({path, isPackage}) {
         // console.log('change', path);
         path && this.data.set('cwd', path);
+        this.data.set('isPackage', isPackage);
     }
 
     formatPrompts(data) {
@@ -151,5 +173,17 @@ export default class Select extends createApolloComponent(Component) {
     }
     cancelSubmit() {
         this.data.set('current', this.data.get('current') - 1);
+    }
+    importProject() {
+        this.data.set('pageLoading', true);
+        this.$apollo.mutate({
+            mutation: PROJECT_IMPORT,
+            variables: {
+                path: this.data.get('cwd'),
+                force: false
+            }
+        }).then(({data}) => {
+            this.data.set('pageLoading', false);
+        });
     }
 }

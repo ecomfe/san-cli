@@ -260,7 +260,7 @@ export default class FolderExplorer extends Component {
                 update: (cache, {data: {folderOpen}}) => {
                     cache.writeQuery({query: FOLDER_CURRENT, data: {folderCurrent: folderOpen}});
                     // notify parent component
-                    this.fire('change', folderOpen.path);
+                    this.fire('change', folderOpen);
                 }
             });
         } catch (e) {
