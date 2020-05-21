@@ -34,11 +34,13 @@ module.exports = {
         sourceMap: isProduction,
         cssPreprocessor: 'less'
     },
+
     pages: {
         index: {
             entry: './client/pages/index.js',
             filename: 'index.html',
-            title: 'San ClI UI'
+            template: './public/index.html',
+            title: '项目管理器 - san ui'
         }
     },
     alias: {
@@ -51,7 +53,6 @@ module.exports = {
     },
     chainWebpack: config => {
         // 这里可以用来扩展 webpack 的配置，使用的是 webpack-chain 语法
-
         config.module.rule('img')
             .test(/\.(png|jpe?g|gif)(\?.*)?$/)
             .use('url-loader').loader(require.resolve('url-loader'))
