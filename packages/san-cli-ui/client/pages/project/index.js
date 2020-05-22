@@ -51,7 +51,8 @@ export default class App extends createApolloComponent(Component) {
                                 s-if="current === 0"
                                 type="primary"
                                 on-click="initProject"
-                            >{{$t('project.select.create.initProject')}}<s-icon type="right" /></s-button>
+                                icon="plus"
+                            >{{$t('project.select.create.initProject')}}</s-button>
                             
                             <s-button
                                 class="custom-santd-btn"
@@ -84,10 +85,11 @@ export default class App extends createApolloComponent(Component) {
                                 class="custom-santd-btn"
                                 disabled="{{!isPackage}}"
                                 size="large"
+                                icon="import"
                                 s-if="current === 0"
                                 type="primary"
                                 on-click="importProject"
-                            >{{$t('project.select.import.importBtnText')}}<s-icon type="right" /></s-button>
+                            >{{$t('project.select.import.importBtnText')}}</s-button>
                             </div>
                         </div>
                     </div>

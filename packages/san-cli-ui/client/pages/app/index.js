@@ -4,7 +4,7 @@
  */
 
 import {Component} from 'san';
-import {logo} from '../../const';
+import {logo} from '@lib/const';
 import CWD from '@graphql/cwd/cwd.gql';
 import {Link} from 'san-router';
 import {Button} from 'santd';

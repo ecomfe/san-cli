@@ -6,7 +6,7 @@
 import {Component} from 'san';
 import {Button, Input, Dropdown, Menu, Tooltip, Icon, Modal} from 'santd';
 import {isValidMultiName} from '@lib/utils/folders';
-import {logo} from '../../const';
+import {logo} from '@lib/const';
 import CWD_CHANGE from '@graphql/cwd/cwdChanged.gql';
 import FOLDER_CURRENT from '@graphql/folder/folderCurrent.gql';
 import FOLDERS_FAVORITE from '@graphql/folder/foldersFavorite.gql';
@@ -76,8 +76,10 @@ export default class FolderExplorer extends Component {
                 </s-tooltip>
                 <s-dropdown trigger="click">
                     <s-menu slot="overlay" selectable="{{false}}" class="contents-menu" on-click="onMoreMenuClick">
-                        <s-menuitem key="1">{{$t('project.select.folderExplorer.menu.createFolder')}}</s-menuitem>
-                        <s-menuitem key="2">
+                        <s-menuitem key="showCreateModal">
+                            {{$t('project.select.folderExplorer.menu.createFolder')}}
+                        </s-menuitem>
+                        <s-menuitem key="showHiddenFolder">
                             {{showHiddenFolder ? $t('project.select.folderExplorer.menu.hiddenFolder') 
                                 : $t('project.select.folderExplorer.menu.hiddenFolderShow')}}
                         </s-menuitem>
@@ -155,7 +157,7 @@ export default class FolderExplorer extends Component {
             foldersFavorite: '',
             showHiddenFolder: false,
             newFolderName: '',
-            modalVisible: false
+            showCreateModal: false
         };
     }
 
@@ -240,10 +242,10 @@ export default class FolderExplorer extends Component {
     }
     onMoreMenuClick(ev) {
         switch (ev.key) {
-            case '1':
-                this.data.set('modalVisible', true);
+            case 'showCreateModal':
+                this.data.set('showCreateModal', true);
                 break;
-            case '2':
+            case 'showHiddenFolder':
                 this.data.set('showHiddenFolder', !this.data.get('showHiddenFolder'));
                 break;
         }
