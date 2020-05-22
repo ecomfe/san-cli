@@ -13,7 +13,8 @@ const fs = require('fs-extra');
 const execa = require('execa');
 const shortId = require('shortid');
 const notifier = require('node-notifier');
-const {getDebugLogger} = require('san-cli-utils/ttyLogger');
+const launch = require('launch-editor');
+const {getDebugLogger, log, info} = require('san-cli-utils/ttyLogger');
 const {getGitUser} = require('san-cli-utils/env');
 const {tmpl} = require('san-cli-utils/utils');
 const cwd = require('./cwd');
@@ -21,10 +22,9 @@ const events = require('../utils/events');
 const folders = require('./folders');
 
 const DEFAULT_TEMPLATE_PATH = '.san/templates/san-project';
-
-const isDev = process.env.SAN_CLI_UI_DEV;
-const SAN_COMMAND_NAME =  isDev ? 'yarn' : 'san';
-const SAN_COMMAND_ARGS =  isDev ? ['dev:san'] : [];
+const SAN_CLI_UI_DEV = process.env.SAN_CLI_UI_DEV;
+const SAN_COMMAND_NAME =  SAN_CLI_UI_DEV ? 'yarn' : 'san';
+const SAN_COMMAND_ARGS =  SAN_CLI_UI_DEV ? ['dev:san'] : [];
 
 const debug = getDebugLogger('ui:project');
 
@@ -86,6 +86,7 @@ const initTemplate = async (useCache = true) => {
     };
 };
 
+// 创建san项目
 const create = async (params, context) => {
     const args = [
         `--project-presets='${JSON.stringify(params.presets)}'`,
@@ -138,7 +139,7 @@ const list = context => {
     const projects = context.db.get('projects').value();
     const existedProjects = projects.filter(project => fs.existsSync(project.path));
     if (existedProjects.length !== projects.length) {
-        console.log(`Auto cleaned ${projects.length - existedProjects.length} projects (folder not found).`);
+        log(`Auto cleaned ${projects.length - existedProjects.length} projects (folder not found).`);
         context.db.set('projects', existedProjects).write();
     }
     return existedProjects;
@@ -174,11 +175,28 @@ const setFavorite = ({id, favorite}, context) => {
     return findOne(id, context);
 };
 
+const projectOpenInEditor = async (args, context) => {
+    const {line, column} = args;
+    let query = path.resolve(cwd.get(), args.path);
+    if (line) {
+        query += `:${line}`;
+        if (column) {
+            query += `:${column}`;
+        }
+    }
+    info(`Opening file '${query}' in code editor...`);
+    launch(query, 'code', (fileName, errorMsg) => {
+        console.error(`Unable to open '${fileName}': ${errorMsg}`);
+    });
+    return true;
+};
+
 module.exports = {
     initTemplate,
     create,
     list,
     findOne,
     setFavorite,
-    importProject
+    importProject,
+    projectOpenInEditor
 };
