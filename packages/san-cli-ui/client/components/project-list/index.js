@@ -7,7 +7,7 @@ import {Component} from 'san';
 import {Icon} from 'santd';
 import PROJECTS from '@graphql/project/projects.gql';
 import PROJECT_SET_FAVORITE from '@graphql/project/projectSetFavorite.gql';
-import List from './ui-list';
+import List from './project-list';
 import './index.less';
 export default class ProjectList extends Component {
 

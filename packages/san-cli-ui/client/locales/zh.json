@@ -4,6 +4,12 @@
         "emptyTip": "暂无项目",
         "collectionTitle": "收藏的项目",
         "listTitle": "全部项目",
+        "tooltip": {
+            "collect": "收藏",
+            "editor": "在编辑器中打开",
+            "rename": "修改文件名",
+            "del": "删除"
+        },
         "select": {
             "menu": [{
                 "text": "项目管理",
