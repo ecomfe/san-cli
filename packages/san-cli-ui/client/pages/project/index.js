@@ -36,13 +36,11 @@ export default class App extends createApolloComponent(Component) {
 
                     <!--- 2.创建项目 -->
                     <div class="project-create" s-if="route.query.nav === 'create'">
-                        <div class="steps-content">
-                            <c-folder-explorer s-if="current === 0"
-                                current-path="{{cwd}}"
-                                on-change="handleCwdChange"
-                            />
-                            <c-create s-ref="create" prompts="{{projectPrompts}}" cwd="{{cwd}}" s-elif="current === 1"/>
-                        </div>
+                        <c-folder-explorer s-if="current === 0"
+                            current-path="{{cwd}}"
+                            on-change="handleCwdChange"
+                        />
+                        <c-create s-ref="create" prompts="{{projectPrompts}}" cwd="{{cwd}}" s-elif="current === 1"/>
 
                         <div class="footer-wrapper">
                             <s-button

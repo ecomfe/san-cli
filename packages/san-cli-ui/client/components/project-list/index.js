@@ -4,6 +4,7 @@
  */
 
 import {Component} from 'san';
+import {Icon} from 'santd';
 import PROJECTS from '@graphql/project/projects.gql';
 import PROJECT_SET_FAVORITE from '@graphql/project/projectSetFavorite.gql';
 import List from './ui-list';
@@ -12,21 +13,31 @@ export default class ProjectList extends Component {
 
     static template = /* html */`
         <div class="project-list">
-            <div s-if="!projects || projects.length <= 0">
-                暂无数据
+            <!---empty tip---->
+            <div class="empty-tip" s-if="!projects || projects.length <= 0">
+                <div>
+                    <c-icon type="coffee" />
+                    <p class="tip-text">{{$t('project.emptyTip')}}</p>
+                </div>
             </div>
+
+            <!---favorite list---->
             <template s-if="favoriteList && favoriteList.length > 0">
-                <h3 class="favorite">我的收藏</h3>
-                <c-list
-                    list="{=favoriteList=}"
-                    on-edit="onEdit"
-                    on-open="onOpen"
-                    on-delete="onDelete"
-                    on-favorite="onFavorite"
-                />
+                <div class="favorite">
+                    <h3>{{$t('project.collectionTitle')}}</h3>
+                    <c-list
+                        list="{=favoriteList=}"
+                        on-edit="onEdit"
+                        on-open="onOpen"
+                        on-delete="onDelete"
+                        on-favorite="onFavorite"
+                    />
+                </div>
             </template>
+
+            <!---all list---->
             <template s-if="nomarlList && nomarlList.length > 0">
-                <h3>项目列表</h3>
+                <h3>{{$t('project.listTitle')}}</h3>
                 <c-list
                     list="{=nomarlList=}"
                     on-edit="onEdit"
@@ -54,6 +65,7 @@ export default class ProjectList extends Component {
     }
 
     static components = {
+        'c-icon': Icon,
         'c-list': List
     }
     attached() {

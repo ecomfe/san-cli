@@ -1,6 +1,9 @@
 {
     "title": "项目管理器",
     "project": {
+        "emptyTip": "暂无项目",
+        "collectionTitle": "收藏的项目",
+        "listTitle": "全部项目",
         "select": {
             "menu": [{
                 "text": "项目管理",
