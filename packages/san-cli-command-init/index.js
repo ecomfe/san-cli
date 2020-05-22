@@ -58,7 +58,6 @@ exports.handler = cliApi => {
 
     let {template, appName} = cliApi;
     let {templateAlias: templateAliasMap} = cliApi.getPresets() || {};
-
     if (appName === undefined && template) {
         // 只有一个参数，这个默认是使用当前文件夹，把 appName 当成是脚手架地址
         appName = template;

@@ -50,7 +50,6 @@ module.exports = (name, dest, options) => {
             Object.keys(metaData.helpers).forEach(key => {
                 Handlebars.registerHelper(key, metaData.helpers[key]);
             });
-
         // 2. 请回答
         task.info();
         const answers = await ask(metaData.prompts || {}, metaData, options);
@@ -115,8 +114,13 @@ async function startTask(src, dest, ctx, task) {
             .pipe(
                 rename((path, file) => {
                     if (!file.isDirectory()) {
-                        path.extname = path.basename.replace(/^_/, '.');
-                        path.basename = '';
+                        if (path.extname !== '') {
+                            path.basename = path.basename.replace(/^_/, '.');
+                        }
+                        else {
+                            path.extname = path.basename.replace(/^_/, '.');
+                            path.basename = '';
+                        }
                     }
 
                     return path;

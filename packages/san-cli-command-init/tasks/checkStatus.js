@@ -24,7 +24,8 @@ module.exports = (template, dest, options) => {
                 task.info('--force delete target directory');
                 fs.remove(dest);
                 // 如果是当前目录下建
-            } else if (options._inPlace) {
+            }
+            else if (options._inPlace) {
                 task.info(); // 添加这一句下面才能显示 prompt
                 // 来一个疑问句，问是否确定在当前目录创建？
                 // eslint-disable-next-line
@@ -39,7 +40,8 @@ module.exports = (template, dest, options) => {
                 if (!ok) {
                     return;
                 }
-            } else {
+            }
+            else {
                 task.info();
                 // 取一个相对目录
                 const shortDest = path.relative(process.cwd(), dest);
@@ -63,7 +65,8 @@ module.exports = (template, dest, options) => {
                 if (!action) {
                     return task.error(`Cancel overwrite ${shortDest} directory`);
                     // 选了覆盖
-                } else if (action === 'overwrite') {
+                }
+                else if (action === 'overwrite') {
                     task.info(`Overwrite selected, first delete ${shortDest}...`);
                     await fs.remove(dest);
                 }
@@ -79,7 +82,8 @@ module.exports = (template, dest, options) => {
             if (fs.existsSync(templatePath)) {
                 // 添加 本地template 路径
                 ctx.localTemplatePath = templatePath;
-            } else {
+            }
+            else {
                 // 直接使用本地的路径进行复制
                 const localAbsolutePath = path.resolve(template);
                 if (fs.existsSync(localAbsolutePath)) {
