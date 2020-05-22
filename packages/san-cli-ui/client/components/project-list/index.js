@@ -4,10 +4,11 @@
  */
 
 import {Component} from 'san';
-import {Icon} from 'santd';
+import {Icon, Modal, Input} from 'santd';
 import PROJECTS from '@graphql/project/projects.gql';
 import PROJECT_SET_FAVORITE from '@graphql/project/projectSetFavorite.gql';
-import List from './project-list';
+import List from './list';
+import 'santd/es/input/style';
 import './index.less';
 export default class ProjectList extends Component {
 
@@ -16,15 +17,15 @@ export default class ProjectList extends Component {
             <!---empty tip---->
             <div class="empty-tip" s-if="!projects || projects.length <= 0">
                 <div>
-                    <c-icon type="coffee" />
-                    <p class="tip-text">{{$t('project.emptyTip')}}</p>
+                    <s-icon type="coffee" />
+                    <p class="tip-text">{{$t('project.list.emptyTip')}}</p>
                 </div>
             </div>
 
             <!---favorite list---->
             <template s-if="favoriteList && favoriteList.length > 0">
                 <div class="favorite">
-                    <h3>{{$t('project.collectionTitle')}}</h3>
+                    <h3>{{$t('project.list.collectionTitle')}}</h3>
                     <c-list
                         list="{=favoriteList=}"
                         on-edit="onEdit"
@@ -37,7 +38,7 @@ export default class ProjectList extends Component {
 
             <!---all list---->
             <template s-if="nomarlList && nomarlList.length > 0">
-                <h3>{{$t('project.listTitle')}}</h3>
+                <h3>{{$t('project.list.listTitle')}}</h3>
                 <c-list
                     list="{=nomarlList=}"
                     on-edit="onEdit"
@@ -46,6 +47,21 @@ export default class ProjectList extends Component {
                     on-favorite="onFavorite"
                 />
             </template>
+
+            <s-modal title="{{$t('project.list.modal.title')}}"
+                visible="{=showRenameModal=}"
+                okText="{{$t('project.list.modal.oktext')}}"
+                on-ok="handleModalOk"
+                on-cancel="handleModalCancel"
+            >
+                <p>{{$t('project.list.modal.tip')}}</p>
+                <s-input placeholder="{{$t('project.list.modal.placeholder')}}"
+                    value="{=folderName=}"
+                    class="rename-input"
+                >
+                    <s-icon type="folder" style="color: #1890ff;" theme="filled" slot="prefix" ></s-icon>
+                </s-input>
+            </s-modal>
         </div>
     `;
     static computed = {
@@ -60,13 +76,16 @@ export default class ProjectList extends Component {
     };
     initData() {
         return {
-            loading: false
+            showRenameModal: false,
+            folderName: ''
         };
     }
 
     static components = {
-        'c-icon': Icon,
-        'c-list': List
+        's-icon': Icon,
+        'c-list': List,
+        's-modal': Modal,
+        's-input': Input
     }
     attached() {
         this.projectApollo();
@@ -81,7 +100,15 @@ export default class ProjectList extends Component {
         // console.log('onOpen', e);
     }
     onEdit(e) {
-        // console.log('onEdit', e);
+        console.log('onEdit', e);
+        this.data.set('showRenameModal', true);
+        this.data.set('folderName', e.item.name);
+    }
+    handleModalOk() {
+        this.data.set('showRenameModal', false);
+    }
+    handleModalCancel() {
+        this.data.set('showRenameModal', false);
     }
     onDelete(e) {
         // console.log('onDelete', e);

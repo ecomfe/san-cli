@@ -1,16 +1,6 @@
 {
     "title": "项目管理器",
     "project": {
-        "emptyTip": "暂无项目",
-        "collectionTitle": "收藏的项目",
-        "listTitle": "全部项目",
-        "tooltip": {
-            "collect": "收藏",
-            "cancelCollect": "取消收藏",
-            "editor": "在编辑器中打开",
-            "rename": "修改文件名",
-            "del": "删除"
-        },
         "select": {
             "menu": [{
                 "text": "项目管理",
@@ -57,6 +47,24 @@
             },
             "import": {
                 "importBtnText": "导入此文件夹"
+            }
+        },
+        "list": {
+            "emptyTip": "暂无项目",
+            "collectionTitle": "收藏的项目",
+            "listTitle": "全部项目",
+            "modal": {
+                "title": "重命名",
+                "tip": "输入新名称",
+                "placeholder": "请输入合法名称",
+                "oktext": "重命名"
+            },
+            "tooltip": {
+                "collect": "收藏",
+                "cancelCollect": "取消收藏",
+                "editor": "在编辑器中打开",
+                "rename": "修改文件名",
+                "del": "删除"
             }
         },
         "components": {
