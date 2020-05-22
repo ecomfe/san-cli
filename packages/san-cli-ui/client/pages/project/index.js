@@ -4,7 +4,7 @@
  */
 
 import {Component} from 'san';
-import {Link} from 'san-router';
+import {router, Link} from 'san-router';
 import {Icon, Button, Spin, Steps} from 'santd';
 import {createApolloComponent, createApolloDataComponent} from '@lib/san-apollo';
 import CWD from '@graphql/cwd/cwd.gql';
@@ -84,6 +84,7 @@ export default class App extends createApolloComponent(Component) {
                             <s-button
                                 class="custom-santd-btn"
                                 disabled="{{!isPackage}}"
+                                loading="{{isImporting}}"
                                 size="large"
                                 icon="import"
                                 s-if="current === 0"
@@ -125,6 +126,7 @@ export default class App extends createApolloComponent(Component) {
             current: 0,
             stepsData: [],
             menuData: [],
+            isImporting: false,
             isPackage: true
         };
     }
@@ -177,7 +179,7 @@ export default class App extends createApolloComponent(Component) {
         this.data.set('current', this.data.get('current') - 1);
     }
     importProject() {
-        this.data.set('pageLoading', true);
+        this.data.set('isImporting', true);
         this.$apollo.mutate({
             mutation: PROJECT_IMPORT,
             variables: {
@@ -185,7 +187,9 @@ export default class App extends createApolloComponent(Component) {
                 force: false
             }
         }).then(({data}) => {
-            this.data.set('pageLoading', false);
+            this.data.set('isImporting', false);
+            // TODO: redirect to project page
+            router.locator.redirect('/');
         });
     }
 }
