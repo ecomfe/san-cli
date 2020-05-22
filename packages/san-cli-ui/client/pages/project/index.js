@@ -4,6 +4,8 @@
  */
 
 import {Component} from 'san';
+import {Link} from 'san-router';
+import {Icon, Button, Spin, Steps} from 'santd';
 import {createApolloComponent, createApolloDataComponent} from '@lib/san-apollo';
 import CWD from '@graphql/cwd/cwd.gql';
 import PROJECT_INIT_TEMPLATE from '@graphql/project/projectInitTemplate.gql';
@@ -12,8 +14,6 @@ import ProjectList from '@components/project-list';
 import FolderExplorer from '@components/folder-explorer';
 import ProjectCreate from '@components/project-create';
 import Layout from '@components/layout/horizontal';
-import {Link} from 'san-router';
-import {Icon, Button, Spin, Steps} from 'santd';
 import 'santd/es/icon/style';
 import 'santd/es/button/style';
 import 'santd/es/spin/style';

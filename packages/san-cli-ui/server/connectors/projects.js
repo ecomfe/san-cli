@@ -144,23 +144,24 @@ const list = context => {
     return existedProjects;
 };
 
-const importProject = async (input, context) => {
-    if (!input.force && !fs.existsSync(path.join(input.path, 'node_modules'))) {
+const importProject = async (params, context) => {
+    if (!params.force && !fs.existsSync(path.join(params.path, 'node_modules'))) {
         throw new Error('NO_MODULES');
     }
 
     const project = {
         id: shortId.generate(),
-        path: input.path,
+        path: params.path,
         favorite: 0,
-        type: folders.isSanProject(input.path) ? 'san' : 'unknown'
+        type: folders.isSanProject(params.path) ? 'san' : 'unknown'
     };
 
     const packageData = folders.readPackage(project.path, context);
     project.name = packageData.name;
     context.db.get('projects').push(project).write();
+
     return {
-        errno: 0
+        ...project
     };
 };
 
