@@ -53,7 +53,7 @@ export default class ProjectList extends Component {
                 />
             </template>
 
-            <s-modal title="{{$t('project.list.modal.title')}}"
+            <s-modal title="{{$t('project.list.tooltip.rename')}}"
                 visible="{=showRenameModal=}"
                 okText="{{$t('project.list.modal.oktext')}}"
                 on-ok="handleModalOk"

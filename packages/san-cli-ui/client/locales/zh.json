@@ -54,7 +54,6 @@
             "collectionTitle": "收藏的项目",
             "listTitle": "全部项目",
             "modal": {
-                "title": "重命名",
                 "tip": "输入新名称",
                 "placeholder": "请输入合法名称",
                 "oktext": "重命名"
@@ -63,7 +62,7 @@
                 "collect": "收藏",
                 "cancelCollect": "取消收藏",
                 "editor": "在编辑器中打开",
-                "rename": "修改文件名",
+                "rename": "修改项目名",
                 "del": "删除"
             }
         },
