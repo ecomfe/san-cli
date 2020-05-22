@@ -7,7 +7,7 @@ import {Component} from 'san';
 import {Form, Input, Button, Spin, Icon} from 'santd';
 import PromptsForm from '@components/prompts-form';
 import {createApolloComponent} from '@lib/san-apollo';
-import PROJECT_INIT_CREATION from '@graphql/project/projectInitCreation.gql';
+import PROJECT_CREATION from '@graphql/project/projectCreation.gql';
 import CONSOLE_LOG_ADDED from '@graphql/console/consoleLogAdded.gql';
 import 'santd/es/input/style';
 import 'santd/es/button/style';
@@ -99,7 +99,7 @@ export default class App extends createApolloComponent(Component) {
     onPromptsFormSubmit(presets) {
         this.data.set('isCreating', true);
         this.$apollo.mutate({
-            mutation: PROJECT_INIT_CREATION,
+            mutation: PROJECT_CREATION,
             variables: {
                 name: this.data.get('app').name || '',
                 presets

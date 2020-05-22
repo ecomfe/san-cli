@@ -86,7 +86,7 @@ const initTemplate = async (useCache = true) => {
     };
 };
 
-const initCreator = async (params, context) => {
+const create = async (params, context) => {
     const args = [
         `--project-presets='${JSON.stringify(params.presets)}'`,
         '--offline',
@@ -176,7 +176,7 @@ const setFavorite = ({id, favorite}, context) => {
 
 module.exports = {
     initTemplate,
-    initCreator,
+    create,
     list,
     findOne,
     setFavorite,

@@ -12,12 +12,12 @@ extend type Query {
 
 extend type Mutation {
   projectInitTemplate: ProjectInitTemplate
-  projectInitCreation (name: String, presets: JSON): ProjectInitCreation
+  projectCreation (name: String, presets: JSON): projectCreation
   projectSetFavorite(id: ID, favorite: Int): Project
   projectImport (path: String, force: Boolean): Project!
 }
 
-type ProjectInitCreation {
+type projectCreation {
   prompts: [Prompt]
 }
 

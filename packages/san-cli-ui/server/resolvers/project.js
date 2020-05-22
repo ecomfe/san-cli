@@ -13,7 +13,7 @@ module.exports = {
     },
     Mutation: {
         projectInitTemplate: (root, args, context) => projects.initTemplate(),
-        projectInitCreation: (root, args, context) => projects.initCreator(args, context),
+        projectCreation: (root, args, context) => projects.create(args, context),
         projectSetFavorite: (root, args, context) => projects.setFavorite(args, context),
         projectImport: (root, args, context) => projects.importProject(args, context)
     }
