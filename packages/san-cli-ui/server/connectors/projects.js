@@ -174,11 +174,17 @@ const setFavorite = ({id, favorite}, context) => {
     return findOne(id, context);
 };
 
+const rename = ({id, name}, context) => {
+    context.db.get('projects').find({id}).assign({name}).write();
+    return findOne(id, context);
+};
+
 module.exports = {
     initTemplate,
     create,
     list,
     findOne,
     setFavorite,
-    importProject
+    importProject,
+    rename
 };

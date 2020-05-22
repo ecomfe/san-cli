@@ -1,0 +1,6 @@
+#import './projectFragment.gql'
+mutation renameProject ($id: ID!, $name: String!) {
+    projectRename (id: $id, name: $name) {
+        ...project
+    }
+}

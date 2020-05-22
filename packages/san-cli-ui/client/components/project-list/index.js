@@ -4,11 +4,14 @@
  */
 
 import {Component} from 'san';
-import {Icon, Modal, Input} from 'santd';
+import {Icon, Modal, Input, Message} from 'santd';
+import {isValidName} from '@lib/utils/folders';
 import PROJECTS from '@graphql/project/projects.gql';
 import PROJECT_SET_FAVORITE from '@graphql/project/projectSetFavorite.gql';
+import PROJECT_RENAME from '@graphql/project/projectRename.gql';
 import List from './list';
 import 'santd/es/input/style';
+import 'santd/es/message/style';
 import './index.less';
 export default class ProjectList extends Component {
 
@@ -56,7 +59,7 @@ export default class ProjectList extends Component {
             >
                 <p>{{$t('project.list.modal.tip')}}</p>
                 <s-input placeholder="{{$t('project.list.modal.placeholder')}}"
-                    value="{=folderName=}"
+                    value="{=projectName=}"
                     class="rename-input"
                 >
                     <s-icon type="folder" style="color: #1890ff;" theme="filled" slot="prefix" ></s-icon>
@@ -72,12 +75,16 @@ export default class ProjectList extends Component {
         nomarlList() {
             let projects = this.data.get('projects');
             return projects && projects.filter(item => !item.favorite);
+        },
+        newNameValid() {
+            return isValidName(this.data.get('projectName'));
         }
     };
     initData() {
         return {
             showRenameModal: false,
-            folderName: ''
+            projectName: '',
+            editProject: ''
         };
     }
 
@@ -100,12 +107,26 @@ export default class ProjectList extends Component {
         // console.log('onOpen', e);
     }
     onEdit(e) {
-        console.log('onEdit', e);
+        // console.log('onEdit', e);
         this.data.set('showRenameModal', true);
-        this.data.set('folderName', e.item.name);
+        this.data.set('editProject', e.item);
+        this.data.set('projectName', e.item.name);
     }
-    handleModalOk() {
+    async handleModalOk() {
+        const {editProject, projectName, newNameValid} = this.data.get();
+        if (!newNameValid) {
+            Message.error(this.$t('project.list.modal.placeholder'));
+            return;
+        }
+        await this.$apollo.mutate({
+            mutation: PROJECT_RENAME,
+            variables: {
+                id: editProject.id,
+                name: projectName
+            }
+        });
         this.data.set('showRenameModal', false);
+        this.projectApollo();
     }
     handleModalCancel() {
         this.data.set('showRenameModal', false);
