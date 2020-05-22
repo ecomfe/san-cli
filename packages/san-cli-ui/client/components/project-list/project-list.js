@@ -14,7 +14,8 @@ export default class ProjectList extends Component {
     static template = /* html */`
         <div class="list">
             <div class="list-item" s-for="item,index in list">
-                <s-tooltip title="{{$t('project.tooltip.collect')}}">
+                <s-tooltip 
+                title="{{$t(item.favorite ? 'project.tooltip.cancelCollect' : 'project.tooltip.collect')}}">
                     <s-button type="primary" on-click="favorite(item, index)">
                         <s-icon type="star" theme="{{item.favorite ? 'filled' : 'outlined'}}"></s-icon>
                     </s-button>

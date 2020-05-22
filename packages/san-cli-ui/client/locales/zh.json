@@ -6,6 +6,7 @@
         "listTitle": "全部项目",
         "tooltip": {
             "collect": "收藏",
+            "cancelCollect": "取消收藏",
             "editor": "在编辑器中打开",
             "rename": "修改文件名",
             "del": "删除"
