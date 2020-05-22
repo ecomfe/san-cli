@@ -9,8 +9,8 @@ import 'santd/es/button/style';
 import 'santd/es/icon/style';
 import 'santd/es/tooltip/style';
 import './index.less';
-export default class ProjectList extends Component {
 
+export default class ProjectList extends Component {
     static template = /* html */`
         <div class="list">
             <div class="list-item" s-for="item,index in list">
@@ -30,7 +30,7 @@ export default class ProjectList extends Component {
                 </div>
 
                 <s-tooltip title="{{$t('project.list.tooltip.editor')}}">
-                    <s-button type="primary" icon="codepen" on-click="open(item, index)"></s-button>
+                    <s-button type="primary" icon="codepen" on-click="openInEditor(item, index)"></s-button>
                 </s-tooltip>
 
                 <s-tooltip title="{{$t('project.list.tooltip.rename')}}">
@@ -55,15 +55,19 @@ export default class ProjectList extends Component {
         's-icon': Icon,
         's-tooltip': Tooltip
     }
-    open(item, index) {
+
+    openInEditor(item, index) {
         this.fire('open', {item, index});
     }
+
     edit(item, index) {
         this.fire('edit', {item, index});
     }
+
     delete(item, index) {
         this.fire('delete', {item, index});
     }
+
     favorite(item, index) {
         this.fire('favorite', {item, index});
     }

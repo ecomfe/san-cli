@@ -7,12 +7,14 @@ import {Component} from 'san';
 import {Icon, Modal, Input, Message} from 'santd';
 import {isValidName} from '@lib/utils/folders';
 import PROJECTS from '@graphql/project/projects.gql';
+import PROJECT_OPEN_IN_EDITOR from '@graphql/project/projectOpenInEditor.gql';
 import PROJECT_SET_FAVORITE from '@graphql/project/projectSetFavorite.gql';
 import PROJECT_RENAME from '@graphql/project/projectRename.gql';
 import List from './list';
 import 'santd/es/input/style';
 import 'santd/es/message/style';
 import './index.less';
+
 export default class ProjectList extends Component {
 
     static template = /* html */`
@@ -103,8 +105,15 @@ export default class ProjectList extends Component {
             this.data.set('projects', projects.data.projects);
         }
     }
-    onOpen(e) {
-        // console.log('onOpen', e);
+    onOpen({item}) {
+        this.$apollo.mutate({
+            mutation: PROJECT_OPEN_IN_EDITOR,
+            variables: {
+                path: item.path
+            }
+        }).then(({data}) => {
+            console.log('PROJECT_OPEN_IN_EDITOR:', {data});
+        });
     }
     onEdit(e) {
         // console.log('onEdit', e);

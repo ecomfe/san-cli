@@ -29,7 +29,6 @@ input OpenInEditorInput {
   file: String!
   line: Int
   column: Int
-  gitPath: Boolean
 }
 
 type Mutation {

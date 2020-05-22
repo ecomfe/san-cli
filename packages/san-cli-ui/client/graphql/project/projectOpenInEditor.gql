@@ -1,0 +1,3 @@
+mutation projectOpenInEditor ($path: String, $line: Int, $column: Int) {
+  projectOpenInEditor(path: $path, line: $line, column: $column)
+}
