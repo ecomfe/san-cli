@@ -9,13 +9,16 @@ import 'santd/es/button/style';
 import 'santd/es/icon/style';
 import 'santd/es/tooltip/style';
 import './index.less';
-export default class ProjectList extends Component {
 
+export default class ProjectList extends Component {
     static template = /* html */`
         <div class="list">
             <div class="list-item" s-for="item,index in list">
                 <s-tooltip 
-                title="{{$t(item.favorite ? 'project.tooltip.cancelCollect' : 'project.tooltip.collect')}}">
+                    title="{{item.favorite
+                        ? $t('project.list.tooltip.cancelCollect')
+                        : $t('project.list.tooltip.collect')}}"
+                    >
                     <s-button type="primary" on-click="favorite(item, index)">
                         <s-icon type="star" theme="{{item.favorite ? 'filled' : 'outlined'}}"></s-icon>
                     </s-button>
@@ -26,15 +29,15 @@ export default class ProjectList extends Component {
                     <div>{{item.path}}</div>
                 </div>
 
-                <s-tooltip title="{{$t('project.tooltip.editor')}}">
+                <s-tooltip title="{{$t('project.list.tooltip.editor')}}">
                     <s-button type="primary" icon="codepen" on-click="openInEditor(item, index)"></s-button>
                 </s-tooltip>
 
-                <s-tooltip title="{{$t('project.tooltip.rename')}}">
+                <s-tooltip title="{{$t('project.list.tooltip.rename')}}">
                     <s-button type="primary" icon="form" on-click="edit(item, index)"></s-button>
                 </s-tooltip>
 
-                <s-tooltip title="{{$t('project.tooltip.del')}}">
+                <s-tooltip title="{{$t('project.list.tooltip.del')}}">
                     <s-button type="primary" icon="close" on-click="delete(item, index)"></s-button>
                 </s-tooltip> 
             </div>

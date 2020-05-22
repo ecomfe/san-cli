@@ -115,7 +115,9 @@ export default class FolderExplorer extends Component {
                 on-ok="handleModalOk"
                 on-cancel="handleModalCancel"
             >
-                <s-input placeholder="{{placeholder.create}}" value="{=newFolderName=}"></s-input>
+                <s-input placeholder="{{$t('project.select.folderExplorer.placeholder.edit')}}"
+                    value="{=newFolderName=}"
+                ></s-input>
             </s-modal>
         </div>
     `;
