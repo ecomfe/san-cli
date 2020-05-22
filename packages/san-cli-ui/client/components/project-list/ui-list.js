@@ -4,18 +4,21 @@
  */
 
 import {Component} from 'san';
-import {Button, Icon} from 'santd';
+import {Button, Icon, Tooltip} from 'santd';
 import 'santd/es/button/style';
 import 'santd/es/icon/style';
+import 'santd/es/tooltip/style';
 import './index.less';
 export default class ProjectList extends Component {
 
     static template = /* html */`
         <div class="list">
             <div class="list-item" s-for="item,index in list">
-                <s-button type="primary" on-click="favorite(item, index)">
-                    <s-icon type="star" theme="{{item.favorite ? 'filled' : 'outlined'}}"></s-icon>
-                </s-button>
+                <s-tooltip title="{{$t('project.select.folderExplorer.tooltip.refresh')}}">
+                    <s-button type="primary" on-click="favorite(item, index)">
+                        <s-icon type="star" theme="{{item.favorite ? 'filled' : 'outlined'}}"></s-icon>
+                    </s-button>
+                </s-tooltip>
                 <div class="content">
                     <div class="name">{{item.name}}</div>
                     <div>{{item.path}}</div>
@@ -35,7 +38,8 @@ export default class ProjectList extends Component {
 
     static components = {
         's-button': Button,
-        's-icon': Icon
+        's-icon': Icon,
+        's-tooltip': Tooltip
     }
     open(item, index) {
         this.fire('open', {item, index});

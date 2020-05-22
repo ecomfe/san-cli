@@ -63,7 +63,7 @@ export default class FolderExplorer extends Component {
                     title="{{$t('project.select.folderExplorer.tooltip.starDirs')}}"
                     class="operate-btn"
                 >
-                    <s-dropdown trigger="click">
+                    <s-dropdown trigger="click" placement="bottomRight">
                         <s-menu slot="overlay"
                             selectable="{{false}}"
                             class="contents-menu"
@@ -74,8 +74,12 @@ export default class FolderExplorer extends Component {
                         <s-button type="primary" icon="caret-down"></s-button>
                     </s-dropdown>
                 </s-tooltip>
-                <s-dropdown trigger="click">
-                    <s-menu slot="overlay" selectable="{{false}}" class="contents-menu" on-click="onMoreMenuClick">
+                <s-dropdown trigger="click"  placement="bottomRight">
+                    <s-menu slot="overlay"
+                        selectable="{{false}}"
+                        class="contents-menu"
+                        on-click="onMoreMenuClick"
+                    >
                         <s-menuitem key="showCreateModal">
                             {{$t('project.select.folderExplorer.menu.createFolder')}}
                         </s-menuitem>
@@ -106,8 +110,8 @@ export default class FolderExplorer extends Component {
                     </div>
                 </template>
             </div>
-            <s-modal title="{{modal.createTitle}}"
-                visible="{=modalVisible=}"
+            <s-modal title="{{$t('project.select.folderExplorer.modalCreateTitle')}}"
+                visible="{=showCreateModal=}"
                 on-ok="handleModalOk"
                 on-cancel="handleModalCancel"
             >
@@ -272,10 +276,10 @@ export default class FolderExplorer extends Component {
     }
     handleModalOk() {
         this.createFolder();
-        this.data.set('modalVisible', false);
+        this.data.set('showCreateModal', false);
     }
     handleModalCancel() {
-        this.data.set('modalVisible', false);
+        this.data.set('showCreateModal', false);
     }
     async createFolder() {
         let {newFolderName, newFolderValid} = this.data.get();
