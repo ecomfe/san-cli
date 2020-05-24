@@ -17,6 +17,7 @@ module.exports = {
         projectSetFavorite: (root, args, context) => projects.setFavorite(args, context),
         projectImport: (root, args, context) => projects.importProject(args, context),
         projectOpenInEditor: (root, args, context) => projects.projectOpenInEditor(args, context),
-        projectRename: (root, args, context) => projects.rename(args, context)
+        projectRename: (root, args, context) => projects.rename(args, context),
+        projectRemove: (root, args, context) => projects.remove(args, context)
     }
 };

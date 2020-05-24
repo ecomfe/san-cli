@@ -196,6 +196,11 @@ const rename = ({id, name}, context) => {
     return findOne(id, context);
 };
 
+const remove = ({id}, context) => {
+    context.db.get('projects').remove({id}).write();
+    return true;
+};
+
 module.exports = {
     initTemplate,
     create,
@@ -204,5 +209,6 @@ module.exports = {
     setFavorite,
     importProject,
     projectOpenInEditor,
-    rename
+    rename,
+    remove
 };

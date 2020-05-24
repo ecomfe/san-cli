@@ -16,7 +16,8 @@ extend type Mutation {
   projectSetFavorite(id: ID, favorite: Int): Project
   projectImport (path: String, force: Boolean): Project!
   projectOpenInEditor (path: String, line: Int, column: Int): Boolean,
-  projectRename (id: ID!, name: String!): Project!
+  projectRename (id: ID!, name: String!): Project!,
+  projectRemove (id: ID!): Boolean!
 }
 
 type projectCreation {

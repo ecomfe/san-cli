@@ -10,6 +10,7 @@ import PROJECTS from '@graphql/project/projects.gql';
 import PROJECT_OPEN_IN_EDITOR from '@graphql/project/projectOpenInEditor.gql';
 import PROJECT_SET_FAVORITE from '@graphql/project/projectSetFavorite.gql';
 import PROJECT_RENAME from '@graphql/project/projectRename.gql';
+import PROJECT_REMOVE from '@graphql/project/projectRemove.gql';
 import List from './list';
 import 'santd/es/input/style';
 import 'santd/es/message/style';
@@ -140,8 +141,20 @@ export default class ProjectList extends Component {
     handleModalCancel() {
         this.data.set('showRenameModal', false);
     }
-    onDelete(e) {
+    async onDelete(e) {
         // console.log('onDelete', e);
+        let project = e.item;
+        await this.$apollo.mutate({
+            mutation: PROJECT_REMOVE,
+            variables: {
+                id: project.id
+            },
+            update: cache => {
+                const data = cache.readQuery({query: PROJECTS});
+                let projects = data.projects.filter(p => p.id === project.id);
+                cache.writeQuery({query: PROJECTS, data: {projects}});
+            }
+        });
     }
     async onFavorite(e) {
         // console.log('onFavorite', e);
