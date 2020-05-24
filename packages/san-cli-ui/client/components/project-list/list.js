@@ -38,7 +38,7 @@ export default class ProjectList extends Component {
                 </s-tooltip>
 
                 <s-tooltip title="{{$t('project.list.tooltip.del')}}">
-                    <s-button type="primary" icon="close" on-click="delete(item, index)"></s-button>
+                    <s-button type="primary" icon="close" on-click="remove(item, index)"></s-button>
                 </s-tooltip> 
             </div>
         </div>
@@ -64,8 +64,8 @@ export default class ProjectList extends Component {
         this.fire('edit', {item, index});
     }
 
-    delete(item, index) {
-        this.fire('delete', {item, index});
+    remove(item, index) {
+        this.fire('remove', {item, index});
     }
 
     favorite(item, index) {

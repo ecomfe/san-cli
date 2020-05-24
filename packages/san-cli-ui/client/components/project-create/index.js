@@ -14,19 +14,20 @@ import 'santd/es/button/style';
 import 'santd/es/spin/style';
 import './index.less';
 
-export default class App extends createApolloComponent(Component) {
+export default class ProjectCreate extends createApolloComponent(Component) {
     static template = /* html */`
         <div class="project-create">
-            <s-form labelCol="{{formItemLayout.labelCol}}"
-                wrapperCol="{{formItemLayout.wrapperCol}}">
+            <s-form label-col="{{formItemLayout.labelCol}}"
+                wrapper-col="{{formItemLayout.wrapperCol}}">
                 <s-formitem label="{{$t('project.components.create.folderName')}}">
                     <s-input value="{=app.name=}"></s-input>
                     <div class="grey">{{cwd}}/{{app.name}}</div>
                 </s-formitem>
             </s-form>
 
-            <s-prompts-form s-ref="form" prompts="{{prompts}}"
-                hideSubmitBtn="true"
+            <s-prompts-form s-ref="form"
+                prompts="{{prompts}}"
+                hide-submit-btn="true"
                 submit-text="{{$t('project.components.create.submitText')}}"
                 on-submit="onPromptsFormSubmit"></s-prompts-form>
 
@@ -34,7 +35,7 @@ export default class App extends createApolloComponent(Component) {
                     tip="{{loadingTip}}" 
                     spinning="{{isCreating}}"
                     size="large">
-                    <s-icon slot="indicator" type="loading" style="font-size: 30px;" />
+                    <s-icon slot="indicator" type="loading" style="font-size: 30px;" ></s-icon>
                 </s-spin>
         </div>
     `;

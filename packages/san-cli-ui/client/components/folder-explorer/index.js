@@ -51,7 +51,9 @@ export default class FolderExplorer extends Component {
                     <s-button type="primary" icon="form" on-click="onEdit"></s-button>
                 </s-tooltip>
                 <s-tooltip title="{{$t('project.select.folderExplorer.tooltip.star')}}"
-                     s-if="folderCurrent" class="operate-btn">
+                    s-if="folderCurrent"
+                    class="operate-btn"
+                >
                     <s-button type="primary" on-click="onFavorite">
                         <s-icon type="star" theme="{{folderCurrent.favorite ? 'filled' : 'outlined'}}"></s-icon>
                     </s-button>
@@ -204,8 +206,7 @@ export default class FolderExplorer extends Component {
             this.data.set('foldersFavorite', star.data.foldersFavorite);
         }
     }
-    onEdit(e) {
-        // e.stopPropagation();
+    onEdit() {
         let {paths, separator} = this.data.get();
         this.data.set('inputValue', paths.join(separator));
         this.data.set('editing', true);
@@ -246,8 +247,8 @@ export default class FolderExplorer extends Component {
             }
         });
     }
-    onMoreMenuClick(ev) {
-        switch (ev.key) {
+    onMoreMenuClick(e) {
+        switch (e.key) {
             case 'showCreateModal':
                 this.data.set('showCreateModal', true);
                 break;
@@ -271,7 +272,8 @@ export default class FolderExplorer extends Component {
                     this.fire('change', folderOpen);
                 }
             });
-        } catch (e) {
+        }
+        catch (e) {
             this.data.set('error', e);
         }
         this.data.set('loading', false);

@@ -19,8 +19,7 @@ export default class ComponentHorLayout extends Component {
                 <s-header>
                     <div class="header">
                         <div class="title" on-click="logoClick">{{$t('title')}}</div>
-                        <s-menu
-                            theme="light"
+                        <s-menu theme="light"
                             mode="horizontal"
                             selectedKeys="{{nav}}"
                         >

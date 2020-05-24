@@ -15,21 +15,19 @@ export default class ComponentLayout extends Component {
     static template = /* html */`
         <div class="layout">
             <s-layout>
-                <s-sider
-                    theme="light"
+                <s-sider theme="light"
                     collapsed="{{collapsed}}"
                     collapsible="{{true}}"
                     trigger="null"
                 >
                     <div class="title">{{$t('title')}}</div>
-                    <s-menu
-                        mode="inline"
+                    <s-menu mode="inline"
                         inlineCollapsed="{{collapsed}}"
                         selectedKeys="{{nav}}"
                     >
                         <s-menuitem s-for="item in menu" key="{{item.key}}">
                             <r-link to="{{item.link}}">
-                                <s-icon type="{{item.icon}}" />
+                                <s-icon type="{{item.icon}}"></s-icon>
                                 <span>{{item.text}}</span>
                             </r-link>
                         </s-menuitem>
@@ -37,13 +35,12 @@ export default class ComponentLayout extends Component {
                 </s-sider>
                 <s-layout style="min-height: {{height}}px">
                     <s-header style="background: #fff; padding: 0">
-                        <s-icon
-                            class="trigger"
+                        <s-icon class="trigger"
                             type="{{collapsed ? 'menu-unfold' : 'menu-fold'}}"
                             on-click="toggleCollapsed"
-                        />
+                        ></s-icon>
                         <div class="head-right">
-                           <slot name="right"></slot>
+                            <slot name="right"></slot>
                         </div>
                     </s-header>
                     <s-content class="main">
@@ -65,7 +62,6 @@ export default class ComponentLayout extends Component {
     };
     initData() {
         return {
-            title: 'San CLI',
             height: window.screen.availHeight,
             collapsed: false
         };

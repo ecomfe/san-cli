@@ -36,7 +36,7 @@ export default class ProjectList extends Component {
                         list="{=favoriteList=}"
                         on-edit="onEdit"
                         on-open="onOpen"
-                        on-delete="onDelete"
+                        on-remove="onRemove"
                         on-favorite="onFavorite"
                     />
                 </div>
@@ -49,7 +49,7 @@ export default class ProjectList extends Component {
                     list="{=nomarlList=}"
                     on-edit="onEdit"
                     on-open="onOpen"
-                    on-delete="onDelete"
+                    on-remove="onRemove"
                     on-favorite="onFavorite"
                 />
             </template>
@@ -117,7 +117,6 @@ export default class ProjectList extends Component {
         });
     }
     onEdit(e) {
-        // console.log('onEdit', e);
         this.data.set('showRenameModal', true);
         this.data.set('editProject', e.item);
         this.data.set('projectName', e.item.name);
@@ -141,8 +140,7 @@ export default class ProjectList extends Component {
     handleModalCancel() {
         this.data.set('showRenameModal', false);
     }
-    async onDelete(e) {
-        // console.log('onDelete', e);
+    async onRemove(e) {
         let project = e.item;
         await this.$apollo.mutate({
             mutation: PROJECT_REMOVE,
@@ -157,7 +155,6 @@ export default class ProjectList extends Component {
         });
     }
     async onFavorite(e) {
-        // console.log('onFavorite', e);
         await this.$apollo.mutate({
             mutation: PROJECT_SET_FAVORITE,
             variables: {

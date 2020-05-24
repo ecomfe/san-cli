@@ -2,9 +2,7 @@
  * @file 基于json动态创建一个form表单
  * @author jinzhan
  */
-import {
-    Component
-} from 'san';
+import {Component} from 'san';
 import {
     Form,
     Input,
@@ -15,8 +13,6 @@ import {
 import 'santd/es/form/style';
 import 'santd/es/input/style';
 import 'santd/es/select/style';
-import 'santd/es/cascader/style';
-import 'santd/es/input-number/style';
 import 'santd/es/switch/style';
 import 'santd/es/button/style';
 
@@ -28,15 +24,15 @@ import 'santd/es/button/style';
  * @param {string} submit-text 提交按钮的文字
  */
 
-export default class App extends Component {
+export default class PromptsForm extends Component {
     constructor(opts = {}) {
         super(opts);
     }
 
     static template = /* html */ `
       <div>
-        <s-form labelCol="{{formItemLayout.labelCol}}" 
-            wrapperCol="{{formItemLayout.wrapperCol}}"
+        <s-form label-col="{{formItemLayout.labelCol}}" 
+            wrapper-col="{{formItemLayout.wrapperCol}}"
             on-submit="handleSubmit">
             <template s-for="prompt in prompts">
                 <s-formitem s-if="!prompt.when || condition[prompt.when]" 
@@ -55,22 +51,24 @@ export default class App extends Component {
 
                     <template s-elif="prompt.type === 'confirm'">
                         <s-switch checked="{=prompt.value=}"
-                         on-change="changeSwitch" defaultChecked="{{prompt.value}}"></s-switch>
+                            on-change="changeSwitch"
+                            default-checked="{{prompt.value}}">
+                        </s-switch>
                     </template>
                         
                     <template s-elif="prompt.type === 'checkbox'">
                         <s-select mode="multiple" value="{=prompt.value=}">
                             <s-selectoption s-for="choice in prompt.choices" 
-                                value="{{choice.name}}}">{{choice.name}}</s-selectoption>
+                                value="{{choice.name}}}"
+                            >{{choice.name}}</s-selectoption>
                         </s-select>
                     </template>
                 </s-formitem>
             </template>
 
             <s-formitem s-if="prompts && prompts.length && !hideSubmitBtn" 
-                wrapperCol="{{formItemLayout.tailWrapperCol}}">
-              <s-button type="primary"
-                        htmlType="submit">{{submitText}}</s-button>
+                wrapper-col="{{formItemLayout.tailWrapperCol}}">
+                <s-button type="primary" html-type="submit">{{submitText}}</s-button>
             </s-formitem>
           </s-form>
       </div>
@@ -101,10 +99,10 @@ export default class App extends Component {
                 name: 'email',
                 rules: [{
                     type: 'email',
-                    message: 'The input is not valid E-mail!',
+                    message: 'The input is not valid E-mail!'
                 }, {
                     required: true,
-                    message: 'Please input your E-mail!',
+                    message: 'Please input your E-mail!'
                 }]
             },
             decorators: {},
@@ -179,4 +177,4 @@ export default class App extends Component {
         });
         this.fire('submit', data);
     }
-};
+}
