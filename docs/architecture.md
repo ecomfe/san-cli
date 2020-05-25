@@ -106,38 +106,69 @@ San CLI 的命令行插件值得是通过配置`.sanrc`的`commands`字段，给
 Command 的插件需要遵循 yargs command module 规范，即按照下面的写法：
 
 ```js
+// Commander 定义
+// name
 exports.command = 'your_command_name [your_option]';
-exports.describe = 'command description';
-// or exports.desc
-exports.aliases = ['alias_cmd'];
+// description
+exports.description = 'command description';
+// options
 exports.builder = {
     option1: {
         default: true,
         type: 'boolean'
     }
 };
-// builder 还支持函数写法，具体参见：
-// 1. https://github.com/yargs/yargs/blob/master/docs/api.md#positionalkey-opt
-// 2. https://github.com/yargs/yargs/blob/master/docs/api.md#commandmodule
-exports.handler = argv => {
-    console.log(`setting ${argv.key} to ${argv.value}`);
+// handler 接收 commanderAPI 实例 cliAPI
+exports.handler = cliAPI => {
+    console.log(`setting ${cliAPI.key} to ${cliAPI.value}`);
+    console.log(cliAPI.getPresets());
 };
 ```
 
-### Service 插件
+### Service
 
-San CLI 在实现可扩展 Webpack 配置的设计上，借鉴了 Vue CLI 的 Service 机制。现在已`san serve`命令执行流程为例，讲解下整个工作流程：
+San CLI 在实现可扩展 Webpack 配置的设计上，借鉴了 Vue CLI 的 Service 机制。
+
+Service 的使用方式如下：
+
+```js
+const service = new Service(name, {
+    // cwd 目录
+    cwd,
+    // config 文件路径
+    configFile,
+    // 是否 watch
+    watch,
+    // mode production/development
+    mode,
+    // 使用使用内置 Plugin
+    useBuiltInPlugin,
+    // 项目配置，这里是从 sanrc 读取内容传入
+    // 优先级比 san.config.js 低
+    projectOptions,
+    // 传入的插件 list
+    plugins,
+    // 是否使用 progress
+    useProgress,
+    // 是否使用Profiler
+    useProfiler
+});
+// 开始执行，执行结果回调，callback 传入 PluginAPI 实例
+service.run(callback);
+```
+
+现在已`san serve`命令执行流程为例，讲解下整个工作流程：
 
 1. 首先 CLI 通过主流程的 Command 解析 bin 命令，进入`commands/serve`的 handler；
 2. handler 主要是实例化 Service，实例化会将配置项和插件进行处理
-3. 然后执行`service.run('serve', argv)`，进入 service 流程，这部分代码主要在`service.run`中：
+3. 然后执行`service.run(callback)`，进入 service 流程，这部分代码主要在`service.run`中：
     1. `loadEnv`：加载 env 文件；
     2. `loadProjectOptions`：加载`san.config.js`；
     3. `init`：service 启动：
         1. 初始化插件，并且依次执行；
         2. 依次执行 webpackChain 回调栈；
         3. 依次执行 webpackConfig 回调栈；
-4. 触发 CLI 的 handler。
+4. 执行 `callback`。
 
 ![](./assets/service-flow.png)
 
@@ -145,12 +176,14 @@ San CLI 在实现可扩展 Webpack 配置的设计上，借鉴了 Vue CLI 的 Se
 > **webpackConfig 回调栈**存储的是接受普通 webpack 配置文件对象的处理函数。
 > P.S：handler 中可以通过 service 插件的 API 获取最终的 webpack config，然后结合`san-cli-webpack`的`build`/`serve`执行对应的打包操作。
 
+#### Service 插件
+
 插件的定义方法如下：
 
 ```js
 module.exports = {
     id: 'plugin-id',
-    apply(api, projectOptions) {
+    apply(api, projectOptions, pluginOptions) {
         api.chainWebpack(webpackConfig => {
             console.log(projectOptions);
             webpackConfig.entry(/*...*/);
@@ -160,27 +193,7 @@ module.exports = {
 };
 ```
 
-如果是定义一个 Service 级别的 Command，那么可以采用下面的写法：
-
-```js
-module.exports = {
-    id: 'san-cli-command-serve',
-    apply(api, projectOptions) {
-        // 注册命令
-        api.registerCommand(command, {
-            builder,
-            description,
-            handler(argv){
-                const webpackConfig = api.getWebpackConfig();
-                //...
-                开始 webpack 的操作
-            }
-        });
-    }
-};
-```
-
-### Service Plugin 流程
+#### Service Plugin 流程
 
 ![](./assets/service-plugin.png)
 
