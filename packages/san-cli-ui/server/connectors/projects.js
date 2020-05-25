@@ -22,7 +22,7 @@ const events = require('../utils/events');
 const folders = require('./folders');
 
 const DEFAULT_TEMPLATE_PATH = '.san/templates/san-project';
-const SAN_CLI_UI_DEV = process.env.SAN_CLI_UI_DEV;
+const SAN_CLI_UI_DEV = process.env.SAN_CLI_UI_DEV === 'true';
 const SAN_COMMAND_NAME =  SAN_CLI_UI_DEV ? 'yarn' : 'san';
 const SAN_COMMAND_ARGS =  SAN_CLI_UI_DEV ? ['dev:san'] : [];
 
@@ -37,19 +37,23 @@ const initTemplate = async (useCache = true) => {
 
     // 1. 判断本地目录是否存在，如果存在则不去github远程拉取
     if (useCache && fs.existsSync(localTemplatePath)) {
-        debug('fetch template from local...');
+        debug('Fetching template from local...');
         args.push('--offline');
     }
     else {
-        debug('fetching template from github...');
+        debug('Fetching template from github...');
     }
 
-    const child = execa(SAN_COMMAND_NAME, SAN_COMMAND_ARGS.concat([
+    const cmdArgs = SAN_COMMAND_ARGS.concat([
         'init',
         // 初始化模板，此时app-name参数不需要
         'APP_NAME_PLACEHOLDER',
         ...args
-    ]), {
+    ]);
+
+    debug(`${SAN_COMMAND_NAME} ${cmdArgs.join(' ')}`);
+
+    const child = execa(SAN_COMMAND_NAME, cmdArgs, {
         cwd: cwd.get(),
         stdio: ['inherit', 'pipe', 'inherit']
     });
@@ -94,20 +98,15 @@ const create = async (params, context) => {
         '--install'
     ];
 
-    debug(`
-    ${SAN_COMMAND_NAME}
-    ${SAN_COMMAND_ARGS.concat([
+    const cmdArgs = SAN_COMMAND_ARGS.concat([
         'init',
         params.name,
         ...args
-    ]).join(' ')}
-    `);
+    ]);
 
-    const child = execa(SAN_COMMAND_NAME, SAN_COMMAND_ARGS.concat([
-        'init',
-        params.name,
-        ...args
-    ]), {
+    debug(`${SAN_COMMAND_NAME} ${cmdArgs.join(' ')}`);
+
+    const child = execa(SAN_COMMAND_NAME, cmdArgs, {
         cwd: process.cwd(),
         stdio: ['inherit', 'pipe', 'inherit']
     });
