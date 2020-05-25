@@ -1,4 +1,3 @@
-
 # 内部实现
 
 San CLI 是一个命令行工具，其次它是一个内置 Webpack 的前端工程化构建工具。San CLI 在架构设计上采取了微核心和插件化的设计思想，我们可以通过插件机制添加命令行命令，还可以通过插件机制定制 Webpack 构建工具，从而满足不同 San 环境的前端工程化需求。
@@ -83,6 +82,8 @@ San CLI 的命令行使用了[yargs](https://github.com/yargs/yargs/)。在`lib/
     2. 将`.sanrc`中跟 Service 相关配置通过 Command 中间件添加到 `argv`对象
 6. 触发`process.argv`解析执行，开始 CLI 的正式执行。
 
+![](./assets/core-flow.png)
+
 ## san-cli-command-init：脚手架实现
 
 项目脚手架初始化是在`san-cli-command-init`中实现的，原理是通过 git 命令拉取对应 github/icode/gitlab 等脚手架模板的 repo 到本地，然后使用[vinyl-fs](https://github.com/gulpjs/vinyl-fs)将依次将文件进行处理后生成项目代码。
@@ -138,6 +139,8 @@ San CLI 在实现可扩展 Webpack 配置的设计上，借鉴了 Vue CLI 的 Se
         3. 依次执行 webpackConfig 回调栈；
 4. 触发 CLI 的 handler。
 
+![](./assets/service-flow.png)
+
 > **webpackChain 回调栈**存储的是接收[webpack-chain](https://github.com/neutrinojs/webpack-chain)格式的 webpack 配置文件的处理函数；
 > **webpackConfig 回调栈**存储的是接受普通 webpack 配置文件对象的处理函数。
 > P.S：handler 中可以通过 service 插件的 API 获取最终的 webpack config，然后结合`san-cli-webpack`的`build`/`serve`执行对应的打包操作。
@@ -176,6 +179,10 @@ module.exports = {
     }
 };
 ```
+
+### Service Plugin 流程
+
+![](./assets/service-plugin.png)
 
 #### Service 插件 API
 
