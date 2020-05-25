@@ -104,7 +104,7 @@ export default class FolderExplorer extends Component {
                         <div class="folder-name">
                             {{folder.name}}
                             <img s-if="folder.isSanProject"
-                                class="vue-ui-project-icon"
+                                class="san-project-icon"
                                 src="{{logo}}"
                             >
                         </div>
