@@ -6,7 +6,7 @@
 import {Component} from 'san';
 import {router, Link} from 'san-router';
 import {Icon, Button, Spin, Steps} from 'santd';
-import {createApolloComponent, createApolloDataComponent} from '@lib/san-apollo';
+import {createApolloComponent} from '@lib/san-apollo';
 import CWD from '@graphql/cwd/cwd.gql';
 import PROJECT_INIT_TEMPLATE from '@graphql/project/projectInitTemplate.gql';
 import PROJECT_IMPORT from '@graphql/project/projectImport.gql';
@@ -106,8 +106,7 @@ export default class App extends createApolloComponent(Component) {
         'c-list': ProjectList,
         'c-folder-explorer': FolderExplorer,
         'c-create': ProjectCreate,
-        'c-layout': Layout,
-        'com-apollo': createApolloDataComponent(Component)
+        'c-layout': Layout
     };
     initData() {
         return {
@@ -119,7 +118,7 @@ export default class App extends createApolloComponent(Component) {
             menuData: [],
             nav: [],
             isImporting: false,
-            isPackage: true
+            isPackage: false
         };
     }
 
@@ -135,8 +134,10 @@ export default class App extends createApolloComponent(Component) {
             this.data.set('cwd', res.data.cwd);
         }
     }
+
     handleListChange(e) {
     }
+
     handleCwdChange({path, isPackage}) {
         // console.log('change', path);
         path && this.data.set('cwd', path);
@@ -156,34 +157,35 @@ export default class App extends createApolloComponent(Component) {
 
     async initProject() {
         this.data.set('pageLoading', true);
-        this.$apollo.mutate({
+        const {data} = await this.$apollo.mutate({
             mutation: PROJECT_INIT_TEMPLATE
-        }).then(({data}) => {
-            this.data.set('pageLoading', false);
-            if (data.projectInitTemplate && data.projectInitTemplate.prompts) {
-                this.data.set('projectPrompts', this.formatPrompts(data.projectInitTemplate.prompts));
-                this.data.set('current', this.data.get('current') + 1);
-            }
         });
+        this.data.set('pageLoading', false);
+        if (data.projectInitTemplate && data.projectInitTemplate.prompts) {
+            this.data.set('projectPrompts', this.formatPrompts(data.projectInitTemplate.prompts));
+            this.data.set('current', this.data.get('current') + 1);
+        };
     }
+
     createProject() {
         this.ref('create').submit();
     }
+
     cancelSubmit() {
         this.data.set('current', this.data.get('current') - 1);
     }
-    importProject() {
+
+    async importProject() {
         this.data.set('isImporting', true);
-        this.$apollo.mutate({
+        const {data} = await this.$apollo.mutate({
             mutation: PROJECT_IMPORT,
             variables: {
                 path: this.data.get('cwd'),
                 force: false
             }
-        }).then(({data}) => {
-            this.data.set('isImporting', false);
-            // TODO: redirect to project page
-            router.locator.redirect('/');
         });
+        this.data.set('isImporting', false);
+        // TODO: redirect to project page
+        router.locator.redirect('/');
     }
 }

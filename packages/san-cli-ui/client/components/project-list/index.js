@@ -14,6 +14,7 @@ import PROJECT_REMOVE from '@graphql/project/projectRemove.gql';
 import List from './list';
 import 'santd/es/input/style';
 import 'santd/es/message/style';
+import 'animate.css';
 import './index.less';
 
 export default class ProjectList extends Component {
@@ -152,6 +153,8 @@ export default class ProjectList extends Component {
                 let projects = data.projects.filter(p => p.id === project.id);
                 cache.writeQuery({query: PROJECTS, data: {projects}});
             }
+        }).then(({data}) => {
+            console.log({data});
         });
     }
     async onFavorite(e) {

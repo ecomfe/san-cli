@@ -200,6 +200,7 @@ export default class FolderExplorer extends Component {
         let folder = await this.$apollo.query({query: FOLDER_CURRENT});
         if (folder.data) {
             this.data.set('folderCurrent', folder.data.folderCurrent);
+            this.fire('change', folder.data.folderCurrent);
         }
         let star = await this.$apollo.query({query: FOLDERS_FAVORITE});
         if (star.data) {
