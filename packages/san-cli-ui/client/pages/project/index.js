@@ -26,7 +26,7 @@ export default class App extends createApolloComponent(Component) {
             <s-spin class="loading" spinning="{{pageLoading}}" size="large">
                 <s-icon slot="indicator" type="loading" style="font-size: 30px;" />
             </s-spin>
-            <c-layout menu="{{$t('project.select.menu')}}" nav="{=nav=}" on-menuclick="handleMenu">
+            <c-layout menu="{{$t('project.select.menu')}}" nav="{=nav=}">
                 <template slot="content">
                     <!--- 1.项目列表 -->
                     <c-list
@@ -109,30 +109,26 @@ export default class App extends createApolloComponent(Component) {
         'c-layout': Layout,
         'com-apollo': createApolloDataComponent(Component)
     };
-    static computed = {
-        nav() {
-            let queryNav = this.data.get('route.query.nav');
-            let menuNav = (this.data.get('menuData')[0] || {}).key;
-            return [queryNav || menuNav];
-        }
-    };
     initData() {
         return {
-            CWD,
+            cwd: '',
             projectPrompts: [],
             pageLoading: false,
             current: 0,
             stepsData: [],
             menuData: [],
+            nav: [],
             isImporting: false,
             isPackage: true
         };
     }
 
-
     async attached() {
+        let menuData = this.$t('project.select.menu');
+        let queryNav = this.data.get('route.query.nav');
         this.data.set('stepsData', this.$t('project.select.create.steps'));
-        this.data.set('menuData', this.$t('project.select.menu'));
+        this.data.set('menuData', menuData);
+        this.data.set('nav', [queryNav || menuData[0].key]);
         // simple query demo
         let res = await this.$apollo.query({query: CWD});
         if (res.data) {
