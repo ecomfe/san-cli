@@ -153,6 +153,7 @@ export default class ProjectList extends Component {
                 cache.writeQuery({query: PROJECTS, data: {projects}});
             }
         });
+        this.projectApollo();
     }
     async onFavorite(e) {
         await this.$apollo.mutate({
