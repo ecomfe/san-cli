@@ -156,6 +156,7 @@ export default class ProjectList extends Component {
         }).then(({data}) => {
             console.log({data});
         });
+        this.projectApollo();
     }
     async onFavorite(e) {
         await this.$apollo.mutate({
