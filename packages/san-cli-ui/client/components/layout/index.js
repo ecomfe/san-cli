@@ -39,6 +39,7 @@ export default class ComponentLayout extends Component {
                             type="{{collapsed ? 'menu-unfold' : 'menu-fold'}}"
                             on-click="toggleCollapsed"
                         ></s-icon>
+                        <span>{{title}}</span>
                         <div class="head-right">
                             <slot name="right"></slot>
                         </div>

@@ -74,5 +74,47 @@
                 "spinTip": "正在创建项目..."
             }
         }   
+    },
+    "detail": {
+        "title": {
+            "dashboard": "项目仪表盘",
+            "plugin": "插件",
+            "dependency": "项目依赖",
+            "configuration": "项目配置",
+            "task": "任务"
+        },
+        "menu": [
+            {
+                "text": "仪表盘",
+                "icon": "dashboard",
+                "key": "dashboard",
+                "link": "/dashboard"
+            },
+            {
+                "text": "插件",
+                "icon": "deployment-unit",
+                "key": "plugin",
+                "link": "/plugin"
+            },
+            {
+                "text": "依赖",
+                "icon": "apartment",
+                "key": "dependency",
+                "link": "/dependency"
+            },
+            {
+                "text": "配置",
+                "icon": "setting",
+                "key": "configuration",
+                "link": "/configuration"
+            },
+            {
+                "text": "任务",
+                "icon": "schedule",
+                "key": "task",
+                "link": "/task"
+            }
+        ],
+        "customBtnText": "自定义"
     }
 }

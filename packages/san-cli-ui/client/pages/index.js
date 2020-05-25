@@ -12,6 +12,7 @@ import App from './app';
 import Project from './project';
 import About from '@components/about';
 import NotFound from '@components/not-found';
+import Detail from './detail';
 
 // eslint-disable-next-line no-undef
 const graphqlEndpoint = APP_GRAPHQL_ENDPOINT || `ws://${location.host}/graphql`;
@@ -26,7 +27,8 @@ const routes = [
     {rule: '/project/:nav', Component: Project, target: '#app'},
     {rule: '/home', Component: App, target: '#app'},
     {rule: '/about', Component: About, target: '#app'},
-    {rule: '/notfound', Component: NotFound, target: '#app'}
+    {rule: '/notfound', Component: NotFound, target: '#app'},
+    {rule: '/:func', Component: Detail, target: '#app'}
 ];
 
 routes.forEach(option => router.add(option));
