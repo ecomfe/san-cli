@@ -22,13 +22,13 @@ module.exports = {
 
             const isProd = api.isProd();
             const cssOptions = rootOptions.css || {};
-
+            const rootSourceMap = !!rootOptions.sourceMap;
             // 这里loaderOptions直接用 projectOptions.css 的内容
             // prettier-ignore
             const {
                 extract = isProd,
                 // 不在 css 中单独配置，默认跟 rootOptions.sourceMap 一致
-                sourceMap = rootOptions.sourceMap,
+                sourceMap = rootSourceMap,
                 loaderOptions = {},
                 cssPreprocessor,
                 cssnanoOptions
@@ -94,7 +94,8 @@ module.exports = {
                                 hmr: !isProd,
                                 publicPath: cssPublicPath
                             });
-                    } else {
+                    }
+                    else {
                         rule.use(styleLoader.name)
                             .loader(styleLoader.loader)
                             .options(styleLoader.options);
@@ -115,7 +116,8 @@ module.exports = {
                             localIdentName: '[name]_[local]_[hash:base64:5]',
                             ...cssLoaderOptions.modules
                         };
-                    } else {
+                    }
+                    else {
                         delete cssLoaderOptions.modules;
                     }
 
@@ -154,7 +156,8 @@ module.exports = {
                 let sassLoaderVersion;
                 try {
                     sassLoaderVersion = semver.major(require('sass-loader/package.json').version);
-                } catch (e) {}
+                }
+                catch (e) {}
                 if (sassLoaderVersion < 8) {
                     warn('A new version of sass-loader is available. Please upgrade for best experience.');
                 }
@@ -173,7 +176,8 @@ module.exports = {
                             loaderOptions.sass
                         )
                     );
-                } else {
+                }
+                else {
                     createCSSRule(
                         'sass',
                         /\.sass$/,
