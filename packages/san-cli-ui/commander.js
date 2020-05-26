@@ -48,11 +48,10 @@ exports.handler = cliApi => {
             const {textColor} = require('san-cli-utils/randomColor');
             /* eslint-disable no-console */
             console.log();
-            console.log(`  Application is running at: ${textColor(networkUrl)}`);
+            console.log(`✨ Application is running at: ${textColor(networkUrl)}`);
             if (process.env.SAN_CLI_UI_DEV !== 'true') {
                 // 打开浏览器地址
                 openBrowser(networkUrl);
-                console.log(`🌠  Ready on ${networkUrl}`);
             }
         })
         .catch(e => {

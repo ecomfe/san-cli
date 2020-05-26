@@ -9,11 +9,11 @@ const express = require('express');
 const portfinder = require('portfinder');
 const fallback = require('express-history-api-fallback');
 
-const {warn} = require('san-cli-utils/ttyLogger');
+const {getDebugLogger, warn} = require('san-cli-utils/ttyLogger');
 const {textBold} = require('san-cli-utils/randomColor');
 
 const server = require('./apollo-server');
-
+const debug = getDebugLogger('ui server');
 const app = express();
 
 function createServer(options) {
@@ -45,7 +45,7 @@ function createServer(options) {
         const origPort = (portfinder.basePort = parseInt(port, 10));
         const serverPort = await portfinder.getPortPromise();
         if (origPort !== serverPort) {
-            warn(`${port} 被占用，使用${textBold(serverPort)}启动 server`);
+            warn(`${port} is already in used, using ${textBold(serverPort)} to start server`);
         }
 
         // Start server
@@ -57,8 +57,8 @@ function createServer(options) {
                 port: serverPort
             },
             () => {
-                console.log(`🚀 Server ready at http://localhost:${port}${graphqlPath}`);
-                console.log(`🚀 Subscriptions ready at ws://localhost:${port}${subscriptionsPath}`);
+                debug(`Server ready on http://localhost:${port}${graphqlPath}`);
+                debug(`Subscriptions ready on ws://localhost:${port}${subscriptionsPath}`);
                 resolve({
                     host,
                     port: serverPort
