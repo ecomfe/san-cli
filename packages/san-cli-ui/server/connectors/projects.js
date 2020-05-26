@@ -169,6 +169,43 @@ const findOne = (id, context) => {
     return context.db.get('projects').find({id}).value();
 };
 
+
+const getCurrent = context => {
+    let id = context.db.get('config.currentOpenProject').value();
+    let currentProject = findOne(id, context);
+    if (currentProject && !fs.existsSync(currentProject.path)) {
+        log('Project folder not found', currentProject.id, currentProject.path);
+        return null;
+    }
+    return currentProject;
+};
+
+const open = ({id}, context) => {
+    const project = findOne(id, context);
+
+    if (!project) {
+        log('Project not found', id);
+        return null;
+    }
+    if (!fs.existsSync(project.path)) {
+        log('Project folder not found', id, project.path);
+        return null;
+    }
+    // save current open project id
+    context.db.set('config.currentOpenProject', id).write();
+    // change path
+    cwd.set(project.path, context);
+
+    // update project Date
+    context.db.get('projects').find({id}).assign({
+        openDate: Date.now()
+    }).write();
+
+    log('Project open', id, project.path);
+
+    return project;
+};
+
 const setFavorite = ({id, favorite}, context) => {
     context.db.get('projects').find({id}).assign({favorite}).write();
     return findOne(id, context);
@@ -204,7 +241,9 @@ module.exports = {
     initTemplate,
     create,
     list,
+    open,
     findOne,
+    getCurrent,
     setFavorite,
     importProject,
     projectOpenInEditor,

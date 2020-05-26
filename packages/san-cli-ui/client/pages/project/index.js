@@ -31,7 +31,7 @@ export default class App extends createApolloComponent(Component) {
                     <!--- 1.项目列表 -->
                     <c-list
                         s-if="route.path === '/' || route.query.nav === 'list'"
-                        on-change="handleListChange"
+                        on-routeto="handleRouteTo"
                     />
 
                     <!--- 2.创建项目 -->
@@ -135,7 +135,8 @@ export default class App extends createApolloComponent(Component) {
         }
     }
 
-    handleListChange(e) {
+    handleRouteTo(r) {
+        r && router.locator.redirect(r);
     }
 
     handleCwdChange({path, isPackage}) {
@@ -177,7 +178,7 @@ export default class App extends createApolloComponent(Component) {
 
     async importProject() {
         this.data.set('isImporting', true);
-        const {data} = await this.$apollo.mutate({
+        await this.$apollo.mutate({
             mutation: PROJECT_IMPORT,
             variables: {
                 path: this.data.get('cwd'),

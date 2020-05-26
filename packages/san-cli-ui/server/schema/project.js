@@ -15,6 +15,7 @@ extend type Mutation {
   projectCreation (name: String, presets: JSON): projectCreation
   projectSetFavorite(id: ID, favorite: Int): Project
   projectImport (path: String, force: Boolean): Project!
+  projectOpen (id: ID!): Project!,
   projectOpenInEditor (path: String, line: Int, column: Int): Boolean,
   projectRename (id: ID!, name: String!): Project!,
   projectRemove (id: ID!): Boolean!

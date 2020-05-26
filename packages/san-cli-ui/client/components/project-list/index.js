@@ -7,6 +7,8 @@ import {Component} from 'san';
 import {Icon, Modal, Input, Message} from 'santd';
 import {isValidName} from '@lib/utils/folders';
 import PROJECTS from '@graphql/project/projects.gql';
+import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
+import PROJECT_OPEN from '@graphql/project/projectOpen.gql';
 import PROJECT_OPEN_IN_EDITOR from '@graphql/project/projectOpenInEditor.gql';
 import PROJECT_SET_FAVORITE from '@graphql/project/projectSetFavorite.gql';
 import PROJECT_RENAME from '@graphql/project/projectRename.gql';
@@ -39,6 +41,7 @@ export default class ProjectList extends Component {
                         on-open="onOpen"
                         on-remove="onRemove"
                         on-favorite="onFavorite"
+                        on-itemclick="onItemClick"
                     />
                 </div>
             </template>
@@ -52,6 +55,7 @@ export default class ProjectList extends Component {
                     on-open="onOpen"
                     on-remove="onRemove"
                     on-favorite="onFavorite"
+                    on-itemclick="onItemClick"
                 />
             </template>
 
@@ -103,9 +107,10 @@ export default class ProjectList extends Component {
     }
     async projectApollo() {
         let projects = await this.$apollo.query({query: PROJECTS});
-        if (projects.data) {
-            this.data.set('projects', projects.data.projects);
-        }
+        projects.data && this.data.set('projects', projects.data.projects);
+        let projectCurrent = await this.$apollo.query({query: PROJECT_CURRENT});
+        // 当前打开的project,记录在数据库
+        projectCurrent.data && this.data.set('projectCurrent', projectCurrent.data.projectCurrent);
     }
     onOpen({item}) {
         this.$apollo.mutate({
@@ -114,7 +119,9 @@ export default class ProjectList extends Component {
                 path: item.path
             }
         }).then(({data}) => {
+            /* eslint-disable no-console */
             console.log('PROJECT_OPEN_IN_EDITOR:', {data});
+            /* eslint-enable no-console */
         });
     }
     onEdit(e) {
@@ -153,8 +160,6 @@ export default class ProjectList extends Component {
                 let projects = data.projects.filter(p => p.id === project.id);
                 cache.writeQuery({query: PROJECTS, data: {projects}});
             }
-        }).then(({data}) => {
-            console.log({data});
         });
         this.projectApollo();
     }
@@ -167,5 +172,19 @@ export default class ProjectList extends Component {
             }
         });
         this.projectApollo();
+    }
+    async onItemClick(e) {
+        let projectCurrent = this.data.get('projectCurrent');
+        if (!projectCurrent || projectCurrent.id !== e.item.id) {
+            let res = await this.$apollo.mutate({
+                mutation: PROJECT_OPEN,
+                variables: {
+                    id: e.item.id
+                }
+            });
+            res.data && this.data.set('projectCurrent', res.data.projectCurrent);
+        }
+        let r = this.$t('detail.menu') ? this.$t('detail.menu')[0].link : '';
+        this.fire('routeto', r);
     }
 }
