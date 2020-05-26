@@ -45,6 +45,7 @@ module.exports = class Service extends EventEmitter {
             configFile,
             watch = false,
             mode = process.env.NODE_ENV,
+            autoLoadConfigFile = true,
             plugins = [],
             useBuiltInPlugin = true,
             useProgress = true,
@@ -61,6 +62,8 @@ module.exports = class Service extends EventEmitter {
         this.useWatchMode = watch;
         // 配置文件
         this.configFile = configFile;
+        // 不存在的时候，是否主动查找&加载本地的 san.config.js
+        this.autoLoadConfigFile = autoLoadConfigFile;
 
         // 添加 global 配置，san config.js 使用
         global.__isProduction = mode === 'production';
@@ -208,7 +211,6 @@ module.exports = class Service extends EventEmitter {
                     return plugin;
                 }
                 logger.error(`Plugin is invalid: ${p}. Service plugin must has id and apply function!`);
-
             }
             catch (e) {
                 logger.error(`Plugin load failed: ${p}`);
@@ -262,10 +264,8 @@ module.exports = class Service extends EventEmitter {
                         return self[prop].bind(self);
                     }
                     return self[prop];
-
                 }
                 return target[prop];
-
             }
         });
     }
@@ -298,7 +298,7 @@ module.exports = class Service extends EventEmitter {
             filepath: originalConfigFile,
             config: configFile ? require(configFile) : false
         };
-        if (!configFile) {
+        if (!configFile && this.autoLoadConfigFile) {
             // 主动查找 cwd 目录的.san
             result.filepath = findExisting(['san.config.js', '.san.config.js'], this.cwd);
 
