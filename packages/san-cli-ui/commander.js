@@ -3,6 +3,7 @@
  * @author wangyongqing <wangyongqing01@baidu.com>
  */
 const path = require('path');
+const openBrowser = require('@jinzhan/open-browser');
 exports.builder = {
     port: {
         alias: 'p',
@@ -27,8 +28,8 @@ exports.command = 'ui';
 
 exports.handler = cliApi => {
     const {host, port} = cliApi;
-    const distPath = path.join(__filename, './dist');
-    const publicPath = path.join(__filename, './public');
+    const distPath = path.join(__dirname, './dist');
+    const publicPath = path.join(__dirname, './public');
 
     const createServer = require('./server/');
     createServer({
@@ -48,9 +49,11 @@ exports.handler = cliApi => {
             /* eslint-disable no-console */
             console.log();
             console.log(`  Application is running at: ${textColor(networkUrl)}`);
-            console.log('  URL QRCode is: ');
-            // 打开浏览器地址
-            cliApi.open && require('opener')(networkUrl);
+            if (process.env.SAN_CLI_UI_DEV !== 'true') {
+                // 打开浏览器地址
+                openBrowser(networkUrl);
+                console.log(`🌠  Ready on ${networkUrl}`);
+            }
         })
         .catch(e => {
             console.log(e);

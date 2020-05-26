@@ -27,11 +27,8 @@ function createServer(options) {
         cors
     } = options;
     const apolloServer = server(subscriptionsPath);
-    return new Promise(async (resolve, reject) => {
-        app.get('/', (req, res) => {
-            res.send('Hello World');
-        });
 
+    return new Promise(async (resolve, reject) => {
         // 静态资源 & public & fallback
         app.use(express.static(distPath));
         app.use('/public', express.static(publicPath));
