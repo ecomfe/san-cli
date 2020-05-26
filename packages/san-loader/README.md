@@ -305,3 +305,225 @@ style 模块用来书写组件的样式，在用法上与 template、script 类�
 <style src="./component-style.styl"></style>
 ```
 
+## CSS Modules
+
+### 基本使用
+
+[CSS Modules][css-modules] 是一个流行的用于模块化和组合 CSS 的系统，san-loader 提供了与 css-loader 的集成以支持 CSS Modules 的特性。在模板中可以这样写：
+
+```html
+<template>
+    <div class="{{$style.wrapper}}"></div>
+</template>
+
+<script>
+export default {
+    attached() {
+        let style = this.data.get('$style');
+        console.log(style);
+    }
+}
+</script>
+
+<style module>
+.wrapper {
+    color: black;
+}
+</style>
+```
+
+如果要对所有文件生效，在上面的 webpack 配置示例中给 css-loader 添加 `modules` 参数即可。例如：
+
+```javascript
+// webpack.config.js 省略上下文
+rules: [
+    {
+        test: /\.css$/,
+        use: [
+            'style-loader',
+            {
+                loader: 'css-loader',
+                options: {
+                    modules: {
+                        localIdentName: '[local]_[hash:base64:5]'
+                    },
+                    localsConvention: 'camelCase',
+                    sourceMap: true
+                }
+            }
+        ]
+    }
+]
+```
+
+其中 `localIdentName` 用来指定编译后的类名，在开发环境请使用 `'[hash:base64]'`；
+`localsConvention` 是在模板和 JavaScript 中引用的名称，默认是不转换，`'camelCase'` 是把类名转换为驼峰风格。详情请参考：[css-loader 文档][css-loader]。
+
+### 允许非 CSS Modules
+
+也可以指定部分 style 标签使用 CSS Modules，其他仍然是普通的全局 CSS：
+
+```html
+<style module>
+/* 这里是 CSS Modules */
+</style>
+
+<style>
+/* 这里是全局 CSS */
+</style>
+```
+
+san-loader 会给带 `module` 的 `<style>` 添加对应的 `resourceQuery`，所以你可以这样配置：
+
+```javascript
+// webpack.config.js 省略上下文
+rules: [
+    {
+        test: /\.css$/,
+        oneOf: [
+            // 这里匹配 `<style module>`
+            {
+                resourceQuery: /module/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: {
+                                localIdentName: '[local]_[hash:base64:5]',
+                            },
+                            localsConvention: 'camelCase',
+                            sourceMap: true
+                        }
+                    }
+                ]
+            },
+            // 这里匹配 `<style>`
+            {
+                use: [
+                    {
+                        loader: 'style-loader'
+                    },
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            sourceMap: true
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+]
+```
+
+### 和预处理器一起使用
+
+你也可以把 CSS Modules 和 LESS 等预处理器一起使用，添加对应的 loader 即可。比如：
+
+```javascript
+// webpack.config.js 省略上下文
+rules: [
+    {
+        test: /\.less$/,
+        oneOf: [
+            // 这里匹配 `<style lang="less" module>`
+            {
+                resourceQuery: /module/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: {
+                                localIdentName: '[local]_[hash:base64:5]'
+                            },
+                            localsConvention: 'camelCase',
+                            sourceMap: true
+                        }
+                    },
+                    {
+                        loader: 'less-loader',
+                        options: {
+                            sourceMap: true
+                        }
+                    }
+                ]
+            },
+            // 这里匹配 `<style lang="less">`
+            // ...
+        ]
+    }
+]
+```
+
+### 一些有用的用例
+
+CSS Modules 可以在使用 slot 时使用（会被编译到随机的类名）：
+
+```html
+<template>
+    <div>
+        <child-component>
+            <span class="{{$style.bold}}">foo</span>
+        </child-component>
+    </div>
+</template>
+
+<style module>
+.bold {
+    font-weight: bold;
+}
+</style>
+```
+
+也可以设置子组件的根元素样式（会被正确编译到随机类名）：
+
+```html
+<template>
+    <div>
+        <child-component class="child"></child-component>
+    </div>
+</template>
+
+<style module>
+.child {
+    font-weight: bold;
+}
+</style>
+```
+
+但父组件无法覆盖子组件的内部类的样式，比如子组件内存在类名 `.foo`，父组件里的 `.child .foo` 不会渗透进入子组件：
+
+```html
+<template>
+    <div>
+        <child-component class="child"></child-component>
+    </div>
+</template>
+
+<style module>
+.child .foo {
+    font-weight: bold;
+}
+</style>
+```
+
+但除类名之外的元素名、ID 等会渗透进入子组件，例如下面的 `.child span` 会作用于 `<child-component>` 里的 `<span>`：
+
+```html
+<template>
+    <div>
+        <child-component class="child"></child-component>
+    </div>
+</template>
+
+<style module>
+.child span {
+    font-weight: bold;
+}
+</style>
+```
+
+[css-modules]: https://github.com/css-modules/css-modules
+[css-loader]: https://github.com/webpack-contrib/css-loader#localsconvention

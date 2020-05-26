@@ -91,47 +91,85 @@ module.exports = {
             },
             {
                 test: /\.less$/,
-                use: [
-                    // {
-                    //     loader: MiniCssExtractPlugin.loader,
-                    //     options: {
-                    //         esModule: true
-                    //     }
-                    // },
+                oneOf: [
+                    // 这里匹配 `<style lang="less" module>`
                     {
-                        loader: 'style-loader'
+                        resourceQuery: /module/,
+                        use: [
+                            'style-loader',
+                            {
+                                loader: 'css-loader',
+                                options: {
+                                    modules: {
+                                        localIdentName: '[local]_[hash:base64:5]'
+                                    },
+                                    localsConvention: 'camelCase',
+                                    sourceMap: true
+                                }
+                            },
+                            {
+                                loader: 'less-loader',
+                                options: {
+                                    sourceMap: true
+                                }
+                            }
+                        ]
                     },
+                    // 这里匹配 `<style lang="less">`
                     {
-                        loader: 'css-loader',
-                        options: {
-                            sourceMap: true
-                        }
-                    },
-                    {
-                        loader: 'less-loader',
-                        options: {
-                            sourceMap: true
-                        }
+                        use: [
+                            {
+                                loader: 'style-loader'
+                            },
+                            {
+                                loader: 'css-loader',
+                                options: {
+                                    sourceMap: true
+                                }
+                            },
+                            {
+                                loader: 'less-loader',
+                                options: {
+                                    sourceMap: true
+                                }
+                            }
+                        ]
                     }
                 ]
             },
             {
                 test: /\.css$/,
-                use: [
-                    // {
-                    //     loader: MiniCssExtractPlugin.loader,
-                    //     options: {
-                    //         esModule: true
-                    //     }
-                    // },
+                oneOf: [
+                    // 这里匹配 `<style module>`
                     {
-                        loader: 'style-loader'
+                        resourceQuery: /module/,
+                        use: [
+                            'style-loader',
+                            {
+                                loader: 'css-loader',
+                                options: {
+                                    modules: {
+                                        localIdentName: '[local]_[hash:base64:5]',
+                                    },
+                                    localsConvention: 'camelCase',
+                                    sourceMap: true
+                                }
+                            }
+                        ]
                     },
+                    // 这里匹配 `<style>`
                     {
-                        loader: 'css-loader',
-                        options: {
-                            sourceMap: true
-                        }
+                        use: [
+                            {
+                                loader: 'style-loader'
+                            },
+                            {
+                                loader: 'css-loader',
+                                options: {
+                                    sourceMap: true
+                                }
+                            }
+                        ]
                     }
                 ]
             },
