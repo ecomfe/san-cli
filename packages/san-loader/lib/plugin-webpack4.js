@@ -87,6 +87,13 @@ function cloneRule(rule) {
             if (resourceQuery && !resourceQuery(query)) {
                 return false;
             }
+            if (parsed.type === 'style' && parsed.module !== undefined) {
+                const conf = findMatchedLoader('css-loader', rule, currentResource, resourceQuery);
+                // style 会经过很多规则，检查 css-loader 的那一个
+                if (conf && (!conf.options || !conf.options.modules)) {
+                    throw new Error(`css-loader#module not set, required by ${currentResource}${query}`);
+                }
+            }
             return true;
         }
     });
@@ -100,6 +107,35 @@ function cloneRule(rule) {
     }
 
     return res;
+}
+
+/**
+ * 找到 oneOf 或 use 中匹配的指定 loader
+ *
+ * @argument loaderName 要找的 loader 名
+ * @argument rule 当前匹配到的大规则，里面可能有 use 或 oneOf
+ * @argument resource 当前 resource
+ * @argument query 当前 resourceQuery
+ * @return 对应 loader 的配置，如果没有匹配返回 undefined
+ */
+function findMatchedLoader(loaderName, rule, resource, query) {
+    if (rule.use) {
+        for (let conf of rule.use) {
+            if (conf.loader === loaderName) {
+                return conf;
+            }
+        }
+    }
+    if (rule.oneOf) {
+        for (let subRule of rule.oneOf) {
+            if (
+                subRule.resource && subRule.resource(resource)
+                || subRule.resourceQuery && subRule.resourceQuery(query)
+            ) {
+                return findMatchedLoader(loaderName, subRule);
+            }
+        }
+    }
 }
 
 SanLoaderPlugin.NS = NS;

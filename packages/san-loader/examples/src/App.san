@@ -1,11 +1,14 @@
 <template>
     <div class="app-root">
         <span class="app-span">Hello, {{name}}</span>
-        <div class="comp-wrapper">
-            <comp-child age="2"></comp-child>
+        <div class="{{$style.wrapper}}">
+            <comp-child age="2">
+                <span class="{{$style.parent}}" slot="parent">x{{name}}</span>
+                <span slot="age">{{age}}</span>
+            </comp-child>
             <comp-component age="2"></comp-component>
             <comp-component age="2.5"></comp-component>
-            <comp-custom-store age="3"></comp-custom-store>
+            <comp-custom-store class="{{$style.customStore}}" age="3"></comp-custom-store>
             <comp-global-store age="4"></comp-global-store>
             <comp-src age="5"></comp-src>
             <comp-globalstorejs age="6"></comp-globalstorejs>
@@ -52,14 +55,29 @@ export default {
 <style lang="less">
 .app-root {
     .app-span {
-        color: #f2f3f5;
+        color: green;
     }
 }
 </style>
 
 <style>
 .app-span {
-    border: 1px solid black;
+    font-size: 2rem;
+}
+</style>
+
+<style module>
+.wrapper {
+    color: #333;
+}
+.wrapper .custom-store {
+    color: #fff;
+}
+.wrapper .custom-store span {
+    font-weight: bold;
+}
+.parent {
+    color: green;
 }
 </style>
 

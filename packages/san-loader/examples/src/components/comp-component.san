@@ -1,5 +1,5 @@
 <template>
-    <div class="comp-component">
+    <div class="{{ $style.compComponent }}">
         <div>this is <span>{{name}}</span>, the age is <span>{{age}}</span></div>
         <div><button on-click="click">clicked {{clicked.time}} times</button></div>
     </div>
@@ -37,7 +37,7 @@ console.log(`---- ${name} File loaded ----`)
 
 </script>
 
-<style lang="less">
+<style lang="less" module>
 .comp-component {
     background: green;
 }
