@@ -34,6 +34,7 @@ export default class FolderExplorer extends Component {
                         placeholder="{{$t('project.select.folderExplorer.placeholder.edit')}}"
                         value="{{inputValue}}"
                         on-blur="openFolder"
+                        on-pressEnter="openFolder"
                     ></s-input>
                     <template s-else s-for="p,index in paths">
                         <s-button s-if="index === 0"
@@ -194,6 +195,9 @@ export default class FolderExplorer extends Component {
                 /* eslint-enable no-console */
             }
         });
+    }
+    pressEnter() {
+        console.log('pressendter');
     }
     async folderApollo() {
         this.data.set('loading', false);
