@@ -196,9 +196,6 @@ export default class FolderExplorer extends Component {
             }
         });
     }
-    pressEnter() {
-        console.log('pressendter');
-    }
     async folderApollo() {
         this.data.set('loading', false);
         let folder = await this.$apollo.query({query: FOLDER_CURRENT});

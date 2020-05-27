@@ -30,7 +30,16 @@ export default class ProjectList extends Component {
                     <p class="tip-text">{{$t('project.list.emptyTip')}}</p>
                 </div>
             </div>
-
+            <div class="input-search" s-else>
+                <s-input
+                    placeholder="input search project name"
+                    value="{=filterInput=}"
+                    allow-clear="true"
+                    style="width: 400px;"
+                >
+                    <s-icon slot="addonBefore" type="search" />
+                </s-input>
+            </div>
             <!---favorite list---->
             <template s-if="favoriteList && favoriteList.length > 0">
                 <div class="favorite">
@@ -76,13 +85,18 @@ export default class ProjectList extends Component {
         </div>
     `;
     static computed = {
-        favoriteList() {
+        filterList() {
             let projects = this.data.get('projects');
-            return projects && projects.filter(item => item.favorite);
+            let filterInput = this.data.get('filterInput');
+            return filterInput ? projects.filter(item => item.name.indexOf(filterInput) >= 0) : projects;
+        },
+        favoriteList() {
+            let filterList = this.data.get('filterList');
+            return filterList && filterList.filter(item => item.favorite);
         },
         nomarlList() {
-            let projects = this.data.get('projects');
-            return projects && projects.filter(item => !item.favorite);
+            let filterList = this.data.get('filterList');
+            return filterList && filterList.filter(item => !item.favorite);
         },
         newNameValid() {
             return isValidName(this.data.get('projectName'));
@@ -92,7 +106,8 @@ export default class ProjectList extends Component {
         return {
             showRenameModal: false,
             projectName: '',
-            editProject: ''
+            editProject: '',
+            filterInput: ''
         };
     }
 
