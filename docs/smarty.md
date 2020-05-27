@@ -1,5 +1,3 @@
-
-
 # Smarty 相关
 
 使用 Smarty 的 PHP 模板，可以配置[Hulk Mock Server](https://www.npmjs.com/package/hulk-mock-server) 。
@@ -56,4 +54,3 @@ module.exports = {
     plugins
 };
 ```
-
