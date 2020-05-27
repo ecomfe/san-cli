@@ -1,4 +1,4 @@
-const channels = require('../apollo-server/channels');
+const {CONSOLE_LOG_ADDED} = require('../utils/channels');
 const logs = require('../connectors/console');
 
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
 
     Subscription: {
         consoleLogAdded: {
-            subscribe: (parent, args, context) => context.pubsub.asyncIterator(channels.CONSOLE_LOG_ADDED)
+            subscribe: (parent, args, context) => context.pubsub.asyncIterator(CONSOLE_LOG_ADDED)
         }
     }
 };

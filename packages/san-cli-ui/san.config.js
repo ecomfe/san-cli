@@ -65,5 +65,8 @@ module.exports = {
         config.module.rule('gql')
             .test(/\.(graphql|gql)$/)
             .use('graphql-loader').loader(require.resolve('graphql-tag/loader'));
+
+        config.resolve.alias
+            .set('san', isProduction ? 'san/dist/san.spa.min.js' : 'san/dist/san.spa.dev.js');
     }
 };

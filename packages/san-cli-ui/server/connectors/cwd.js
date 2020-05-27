@@ -1,7 +1,10 @@
+/**
+ * Reference: https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-ui/apollo-server/connectors/cwd.js
+ */
+
 const fs = require('fs');
 const path = require('path');
-
-const channels = require('../apollo-server/channels');
+const {CWD_CHANGED} = require('../utils/channels');
 
 let cwd = process.cwd();
 
@@ -28,7 +31,7 @@ module.exports = {
 
         cwd = value;
         process.env.SAN_CLI_CONTEXT = value;
-        context.pubsub.publish(channels.CWD_CHANGED, {
+        context.pubsub.publish(CWD_CHANGED, {
             cwdChanged: value
         });
         try {

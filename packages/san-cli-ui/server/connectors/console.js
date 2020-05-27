@@ -1,7 +1,7 @@
 const shortId = require('shortid');
-const channels = require('../apollo-server/channels');
 const pubsub = require('../apollo-server/pubsub');
 const events = require('../utils/events');
+const {CONSOLE_LOG_ADDED} = require('../utils/channels');
 
 /**
  * @typedef Log
@@ -24,7 +24,7 @@ const add = (log, pubsub) => {
         ...log
     };
     logs.push(item);
-    pubsub.publish(channels.CONSOLE_LOG_ADDED, {
+    pubsub.publish(CONSOLE_LOG_ADDED, {
         consoleLogAdded: item
     });
     return item;

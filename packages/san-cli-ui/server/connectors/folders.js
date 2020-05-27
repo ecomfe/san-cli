@@ -1,6 +1,7 @@
 /**
  * Reference: https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-ui/apollo-server/connectors/folders.js
  */
+
 const path = require('path');
 const fs = require('fs-extra');
 const LRU = require('lru-cache');

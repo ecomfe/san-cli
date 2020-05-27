@@ -1,8 +1,6 @@
 const globby = require('globby');
-const {
-    GraphQLJSON
-} = require('graphql-type-json');
-const channels = require('./channels');
+const {GraphQLJSON} = require('graphql-type-json');
+const {CWD_CHANGED} = require('../utils/channels');
 const cwd = require('../connectors/cwd');
 
 const resolvers = [{
@@ -18,14 +16,14 @@ const resolvers = [{
         cwd: () => cwd.get()
     },
 
-    // Mutation: {
-    // },
+    Mutation: {
+    },
 
     Subscription: {
         cwdChanged: {
             subscribe: (parent, args, {
                 pubsub
-            }) => pubsub.asyncIterator(channels.CWD_CHANGED)
+            }) => pubsub.asyncIterator(CWD_CHANGED)
         }
     }
 }];
@@ -35,6 +33,7 @@ const paths = globby.sync(['../resolvers/*.js'], {
     cwd: __dirname,
     absolute: true
 });
+
 paths.forEach(file => {
     const r = require(file);
     r && resolvers.push(r);
