@@ -1,7 +1,7 @@
 # San-Loader
 
 San-Loader 是基于 webpack 的工具，允许开发者书写 San
- 单文件的方式来进行组件开发。
+单文件的方式来进行组件开发。
 
 ```html
 <template>
@@ -9,19 +9,19 @@ San-Loader 是基于 webpack 的工具，允许开发者书写 San
 </template>
 
 <script>
-export default {
-    initData() {
-        return {
-            name: 'San'
-        };
-    }
-};
+    export default {
+        initData() {
+            return {
+                name: 'San'
+            };
+        }
+    };
 </script>
 
 <style>
-.content {
-    color: blue;
-}
+    .content {
+        color: blue;
+    }
 </style>
 ```
 
@@ -43,7 +43,6 @@ npm install --save-dev san-loader
 
 然后在 webpack 的配置文件上增加一条规则应用到 `.san` 文件上，并且增加一个 SanLoaderPlugin：
 
-
 ```js
 const SanLoaderPlugin = require('san-loader/lib/plugin');
 
@@ -54,13 +53,11 @@ module.exports = {
             {
                 test: /\.san$/,
                 loader: 'san-loader'
-            },
+            }
             // ...
         ]
     },
-    plugins: [
-        new SanLoaderPlugin()
-    ]
+    plugins: [new SanLoaderPlugin()]
 };
 ```
 
@@ -83,10 +80,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: [
-                    'style-loader',
-                    'css-loader'
-                ]
+                use: ['style-loader', 'css-loader']
             },
             {
                 test: /\.html$/,
@@ -95,24 +89,21 @@ module.exports = {
             // ...
         ]
     },
-    plugins: [
-        new SanLoaderPlugin()
-    ]
+    plugins: [new SanLoaderPlugin()]
 };
-
 ```
 
 在默认情况下，`template`、`script`、`style` 会分别采用 `.html`、`.js`、`.css` 所对应的 Loader 配置进行处理，当然我们也可以在相应的标签上添加 `lang` 属性来指定不同的语言处理比如：
 
 ```html
 <style lang="less">
-@grey: #999;
+    @grey: #999;
 
-div {
-    span {
-        color: @grey;
+    div {
+        span {
+            color: @grey;
+        }
     }
-}
 </style>
 ```
 
@@ -127,18 +118,14 @@ module.exports = {
             // ...
             {
                 test: /\.less$/,
-                use: [
-                    'style-loader',
-                    'css-loader',
-                    'less-loader'
-                ]
+                use: ['style-loader', 'css-loader', 'less-loader']
             }
         ]
     }
-}
+};
 ```
 
-更加完整的 webpack 配置，可以参考示例：[San-Loader Webpack 配置实例](./examples/webpack.config.js)。
+更加完整的 webpack 配置，可以参考示例：[San-Loader Webpack 配置实例](https://github.com/ecomfe/san-cli/blob/HEAD/packages/san-loader/examples/webpack.config.js)。
 
 ## 单文件写法
 
@@ -149,10 +136,11 @@ module.exports = {
 ```html
 <template>
     <div>
-        <img src="../assets/logo.png">
+        <img src="../assets/logo.png" />
     </div>
 </template>
 ```
+
 则需要在 webpack 配置文件当中增加如下配置：
 
 ```js
@@ -170,16 +158,16 @@ module.exports = {
             }
         ]
     }
-}
+};
 ```
 
 template 部分可以省略不写，直接在 script 模块当中定义也是可以的：
 
 ```html
 <script>
-export default {
-    template: '<div>{{name}}</div>'
-}
+    export default {
+        template: '<div>{{name}}</div>'
+    };
 </script>
 ```
 
@@ -195,13 +183,13 @@ script 模块必须通过 `export default` 将组件的 JS 代码导出。在写
 
 ```html
 <script>
-export default {
-    initData() {
-        return {
-            name: 'San'
-        };
-    }
-};
+    export default {
+        initData() {
+            return {
+                name: 'San'
+            };
+        }
+    };
 </script>
 ```
 
@@ -218,14 +206,14 @@ export default san.defineComponent(script);
 
 ```html
 <script>
-import san from 'san';
-export default class App extends san.Component {
-    initData() {
-        return {
-            name: 'San'
-        };
+    import san from 'san';
+    export default class App extends san.Component {
+        initData() {
+            return {
+                name: 'San'
+            };
+        }
     }
-}
 </script>
 ```
 
@@ -233,16 +221,18 @@ export default class App extends san.Component {
 
 ```html
 <script>
-import san from 'san';
-import {store, connect} from 'san-store';
-import {builder} from 'san-update';
+    import san from 'san';
+    import {store, connect} from 'san-store';
+    import {builder} from 'san-update';
 
-// ...
-export default connect.san({
-    name: 'user.name'
-})(san.defineComponent({
     // ...
-}))
+    export default connect.san({
+        name: 'user.name'
+    })(
+        san.defineComponent({
+            // ...
+        })
+    );
 </script>
 ```
 
@@ -260,7 +250,7 @@ export default connect.san({
 
 ```html
 <script lang="ts">
-// ...
+    // ...
 </script>
 ```
 
@@ -270,13 +260,13 @@ style 模块用来书写组件的样式，在用法上与 template、script 类�
 
 ```html
 <style>
-.parent {
-    color: red;
-}
+    .parent {
+        color: red;
+    }
 
-.parent .children {
-    color: green;
-}
+    .parent .children {
+        color: green;
+    }
 </style>
 ```
 
@@ -284,22 +274,24 @@ style 模块用来书写组件的样式，在用法上与 template、script 类�
 
 ```html
 <template><!-- 组件模板  --></template>
-<script>/* 组件 script */</script>
+<script>
+    /* 组件 script */
+</script>
 <style>
-/* 写普通 css */
-.parent .children {
-    color: green;
-}
+    /* 写普通 css */
+    .parent .children {
+        color: green;
+    }
 </style>
 
 <style lang="less">
-/* 写 less */
-@grey: #999;
-.parent {
-    .children {
-        background: @grey;
+    /* 写 less */
+    @grey: #999;
+    .parent {
+        .children {
+            background: @grey;
+        }
     }
-}
 </style>
 <!-- 引入外部 stylus 样式文件 -->
 <style src="./component-style.styl"></style>
@@ -317,18 +309,18 @@ style 模块用来书写组件的样式，在用法上与 template、script 类�
 </template>
 
 <script>
-export default {
-    attached() {
-        let style = this.data.get('$style');
-        console.log(style);
-    }
-}
+    export default {
+        attached() {
+            let style = this.data.get('$style');
+            console.log(style);
+        }
+    };
 </script>
 
 <style module>
-.wrapper {
-    color: black;
-}
+    .wrapper {
+        color: black;
+    }
 </style>
 ```
 
@@ -353,7 +345,7 @@ rules: [
             }
         ]
     }
-]
+];
 ```
 
 其中 `localIdentName` 用来指定编译后的类名，在开发环境请使用 `'[hash:base64]'`；
@@ -365,11 +357,11 @@ rules: [
 
 ```html
 <style module>
-/* 这里是 CSS Modules */
+    /* 这里是 CSS Modules */
 </style>
 
 <style>
-/* 这里是全局 CSS */
+    /* 这里是全局 CSS */
 </style>
 ```
 
@@ -390,7 +382,7 @@ rules: [
                         loader: 'css-loader',
                         options: {
                             modules: {
-                                localIdentName: '[local]_[hash:base64:5]',
+                                localIdentName: '[local]_[hash:base64:5]'
                             },
                             localsConvention: 'camelCase',
                             sourceMap: true
@@ -414,7 +406,7 @@ rules: [
             }
         ]
     }
-]
+];
 ```
 
 ### 和预处理器一起使用
@@ -449,12 +441,12 @@ rules: [
                         }
                     }
                 ]
-            },
+            }
             // 这里匹配 `<style lang="less">`
             // ...
         ]
     }
-]
+];
 ```
 
 ### 一些有用的用例
@@ -471,9 +463,9 @@ CSS Modules 可以在使用 slot 时使用（会被编译到随机的类名）�
 </template>
 
 <style module>
-.bold {
-    font-weight: bold;
-}
+    .bold {
+        font-weight: bold;
+    }
 </style>
 ```
 
@@ -487,9 +479,9 @@ CSS Modules 可以在使用 slot 时使用（会被编译到随机的类名）�
 </template>
 
 <style module>
-.child {
-    font-weight: bold;
-}
+    .child {
+        font-weight: bold;
+    }
 </style>
 ```
 
@@ -503,9 +495,9 @@ CSS Modules 可以在使用 slot 时使用（会被编译到随机的类名）�
 </template>
 
 <style module>
-.child .foo {
-    font-weight: bold;
-}
+    .child .foo {
+        font-weight: bold;
+    }
 </style>
 ```
 
@@ -519,9 +511,9 @@ CSS Modules 可以在使用 slot 时使用（会被编译到随机的类名）�
 </template>
 
 <style module>
-.child span {
-    font-weight: bold;
-}
+    .child span {
+        font-weight: bold;
+    }
 </style>
 ```
 
