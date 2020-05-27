@@ -4,8 +4,7 @@
  */
 
 import {Component} from 'san';
-import {Icon, Modal, Input, Message} from 'santd';
-import {isValidName} from '@lib/utils/folders';
+import {Icon, Modal, Input} from 'santd';
 import PROJECTS from '@graphql/project/projects.gql';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_OPEN from '@graphql/project/projectOpen.gql';
@@ -15,7 +14,6 @@ import PROJECT_RENAME from '@graphql/project/projectRename.gql';
 import PROJECT_REMOVE from '@graphql/project/projectRemove.gql';
 import List from './list';
 import 'santd/es/input/style';
-import 'santd/es/message/style';
 import 'animate.css';
 import './index.less';
 
@@ -34,7 +32,6 @@ export default class ProjectList extends Component {
                 <s-input-search
                     placeholder="{{$t('project.list.searchPlaceholder')}}"
                     value="{=filterInput=}"
-                    allow-clear="true"
                     style="width: 400px;"
                     size="large"
                 />
@@ -67,7 +64,9 @@ export default class ProjectList extends Component {
                 />
             </template>
 
-            <s-modal title="{{$t('project.list.tooltip.rename')}}"
+            <s-modal wrap-class-name="rename-modal"
+                width="580"
+                title="{{$t('project.list.tooltip.rename')}}"
                 visible="{=showRenameModal=}"
                 okText="{{$t('project.list.modal.oktext')}}"
                 on-ok="handleModalOk"
@@ -76,9 +75,9 @@ export default class ProjectList extends Component {
                 <p>{{$t('project.list.modal.tip')}}</p>
                 <s-input placeholder="{{$t('project.list.modal.placeholder')}}"
                     value="{=projectName=}"
-                    class="rename-input"
+                    size="large"
                 >
-                    <s-icon type="folder" style="color: #1890ff;" theme="filled" slot="prefix" ></s-icon>
+                    <s-icon type="folder" style="color: #1890ff;font-size:20px" theme="filled" slot="prefix" ></s-icon>
                 </s-input>
             </s-modal>
         </div>
@@ -96,9 +95,6 @@ export default class ProjectList extends Component {
         nomarlList() {
             let filterList = this.data.get('filterList');
             return filterList && filterList.filter(item => !item.favorite);
-        },
-        newNameValid() {
-            return isValidName(this.data.get('projectName'));
         }
     };
     initData() {
@@ -145,11 +141,7 @@ export default class ProjectList extends Component {
         this.data.set('projectName', e.item.name);
     }
     async handleModalOk() {
-        const {editProject, projectName, newNameValid} = this.data.get();
-        if (!newNameValid) {
-            Message.error(this.$t('project.list.modal.placeholder'));
-            return;
-        }
+        const {editProject, projectName} = this.data.get();
         await this.$apollo.mutate({
             mutation: PROJECT_RENAME,
             variables: {
