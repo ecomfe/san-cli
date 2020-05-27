@@ -101,13 +101,10 @@ export default class FolderExplorer extends Component {
                         class="folder-item {{folder.hidden ? 'hidden' : ''}}"
                         on-click="openFolder(folder.path)"
                     >
-                        <s-icon type="{{folder.isPackage ? 'folder' : 'folder-open'}}" theme="filled"></s-icon>
+                        <img s-if="folder.isSanProject" class="san-project-icon" src="{{logo}}" />
+                        <s-icon s-else type="{{folder.isPackage ? 'folder' : 'folder-open'}}" theme="filled"></s-icon>
                         <div class="folder-name">
-                            {{folder.name}}
-                            <img s-if="folder.isSanProject"
-                                class="san-project-icon"
-                                src="{{logo}}"
-                            >
+                            {{folder.name}}  
                         </div>
                         <s-icon s-if="folder.favorite" type="star" theme="filled"></s-icon>
                     </div>
