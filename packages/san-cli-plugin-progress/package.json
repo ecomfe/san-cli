@@ -4,10 +4,6 @@
     "version": "0.1.0",
     "scriptName": "san",
     "main": "index.js",
-    "bin": {
-        "3": "index.js",
-        "san": "index.js"
-    },
     "license": "MIT",
     "engines": {
         "node": ">=8.16"
