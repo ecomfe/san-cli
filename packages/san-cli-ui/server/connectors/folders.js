@@ -6,6 +6,9 @@ const path = require('path');
 const fs = require('fs-extra');
 const LRU = require('lru-cache');
 const winattr = require('@akryum/winattr');
+const {getDebugLogger} = require('san-cli-utils/ttyLogger');
+
+const debug = getDebugLogger('ui:folders');
 
 /* eslint-disable no-console */
 const hiddenPrefix = '.';
@@ -24,9 +27,7 @@ function isDirectory(file) {
         return fs.statSync(file).isDirectory();
     }
     catch (e) {
-        if (process.env.SAN_APP_CLI_UI_DEBUG) {
-            console.warn(e.message);
-        }
+        debug(e.message);
     }
     return false;
 }
@@ -70,10 +71,8 @@ function isHidden(file) {
         return (!isPlatformWindows && result.unix) || (isPlatformWindows && result.windows);
     }
     catch (e) {
-        if (process.env.SAN_APP_CLI_UI_DEBUG) {
-            console.log('file:', file);
-            console.error(e);
-        }
+        debug('file:', file);
+        console.error(e);
     }
 }
 
@@ -143,10 +142,7 @@ function isSanProject(file, context) {
         return devDependencies.includes('san-cli') || devDependencies.includes('@baidu/san-cli');
     }
     catch (e) {
-        if (process.env.SAN_APP_CLI_UI_DEBUG) {
-            console.log(e);
-        }
-
+        debug(e);
     }
     return false;
 }

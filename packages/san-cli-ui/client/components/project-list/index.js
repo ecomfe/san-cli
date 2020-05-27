@@ -31,14 +31,13 @@ export default class ProjectList extends Component {
                 </div>
             </div>
             <div class="input-search" s-else>
-                <s-input
-                    placeholder="input search project name"
+                <s-input-search
+                    placeholder="{{$t('project.list.searchPlaceholder')}}"
                     value="{=filterInput=}"
                     allow-clear="true"
                     style="width: 400px;"
-                >
-                    <s-icon slot="addonBefore" type="search" />
-                </s-input>
+                    size="large"
+                />
             </div>
             <!---favorite list---->
             <template s-if="favoriteList && favoriteList.length > 0">
@@ -115,7 +114,8 @@ export default class ProjectList extends Component {
         's-icon': Icon,
         'c-list': List,
         's-modal': Modal,
-        's-input': Input
+        's-input': Input,
+        's-input-search': Input.Search
     }
     attached() {
         this.projectApollo();

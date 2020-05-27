@@ -1,4 +1,6 @@
 /**
+ * @file To get/set cwd，base on process.cwd()
+ *
  * Reference: https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-ui/apollo-server/connectors/cwd.js
  */
 
@@ -8,27 +10,28 @@ const {CWD_CHANGED} = require('../utils/channels');
 
 let cwd = process.cwd();
 
-function normalize(value) {
-    if (value.length === 1) {
-        return value;
+const normalizeDir = dir => {
+    // keep / or \
+    if (dir.length === 1) {
+        return dir;
     }
 
-    const lastChar = value.charAt(value.length - 1);
+    // remote last / or \
+    const lastChar = dir.charAt(dir.length - 1);
     if (lastChar === path.sep) {
-        value = value.substr(0, value.length - 1);
+        dir = dir.substr(0, dir.length - 1);
     }
 
-    return value;
-}
+    return dir;
+};
 
 module.exports = {
     get: () => cwd,
     set: (value, context) => {
-        value = normalize(value);
+        value = normalizeDir(value);
         if (!fs.existsSync(value)) {
             return;
         }
-
         cwd = value;
         process.env.SAN_CLI_CONTEXT = value;
         context.pubsub.publish(CWD_CHANGED, {
@@ -37,6 +40,8 @@ module.exports = {
         try {
             process.chdir(value);
         }
-        catch (err) {}
+        catch (err) {
+            console.error(`chdir: ${err}`);
+        }
     }
 };

@@ -16,6 +16,8 @@ import Detail from './detail';
 
 // eslint-disable-next-line no-undef
 const graphqlEndpoint = APP_GRAPHQL_ENDPOINT || `ws://${location.host}/graphql`;
+
+// add $apollo to San Components
 register(san, createApolloServer(graphqlEndpoint));
 
 // add localization

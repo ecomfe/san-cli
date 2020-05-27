@@ -50,6 +50,7 @@
             }
         },
         "list": {
+            "searchPlaceholder": "请输入项目关键字",
             "emptyTip": "暂无项目",
             "collectionTitle": "收藏的项目",
             "listTitle": "全部项目",
