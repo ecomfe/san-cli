@@ -10,9 +10,21 @@ San CLI 在兼顾 San 生态的同时，尽量做到通用化配置，在设计�
 
 San CLI 的核心模块包含：
 
--   san-cli：核心模块，负责组装整个工作流程和实现核心功能
+-   san-cli：核心模块，负责整合整个工作流程和实现核心功能
 -   san-cli-utils：工具类
+-   san-cli-service：service 层
 -   san-cli-webpack：webpack build 和 dev-server 通用逻辑和 webpack 自研插件等
+-   san-cli-command-init：init 命令，脚手架
+-   san-loader：`.san`文件 webpack loader
+-   san-hot-loader：给 san 组件添加 HMR 功能
+-   san-cli-plugin-\*：对应 service 的 plugin
+-   san-cli-docit：一个方便编写组件文档和预览的小工具，可做建站工具，需要的模块包括：
+    -   san-cli-markdown-loader：markdown-loader
+    -   san-cli-docit-theme：docit 皮肤
+
+结合模块的主流程可以如下图所示：
+
+![](./assets/flow.png)
 
 ### san-cli-utils 重点方法介绍
 
