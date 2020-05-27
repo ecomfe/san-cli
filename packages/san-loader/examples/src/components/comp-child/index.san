@@ -1,8 +1,12 @@
 <template>
     <div class="comp-child">
-        <div>this is <span>{{name}}</span>, the age is <span>{{age}}</span></div>
+        <div>
+            this is <span>{{name}}</span>,
+            the parent is "<slot name="parent"></slot>",
+            the age is <slot name="age"></slot>
+        </div>
         <div><button on-click="click">clicked {{clicked.time}} times</button></div>
-        <sub-component age="{{clicked.time + 1}}"></sub-component>
+        <sub-component age="{{clicked.time + 1}}"><slot name="parent"></slot></sub-component>
     </div>
 </template>
 
