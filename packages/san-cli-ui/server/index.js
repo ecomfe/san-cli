@@ -12,7 +12,7 @@ const fallback = require('express-history-api-fallback');
 const {getDebugLogger, warn} = require('san-cli-utils/ttyLogger');
 const {textBold} = require('san-cli-utils/randomColor');
 
-const server = require('./apollo-server');
+const server = require('./main');
 const debug = getDebugLogger('ui server');
 const app = express();
 

@@ -1,5 +1,5 @@
 const shortId = require('shortid');
-const pubsub = require('../apollo-server/pubsub');
+const pubsub = require('../main/pubsub');
 const events = require('../utils/events');
 const {CONSOLE_LOG_ADDED} = require('../utils/channels');
 
