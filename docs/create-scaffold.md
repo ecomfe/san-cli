@@ -1,5 +1,3 @@
-
-
 # 如何创建一个脚手架项目
 
 日常开发中，团队可以创建自己的项目脚手架，本文将介绍脚手架创建的方法。
@@ -21,8 +19,30 @@ San CLI 使用 handlerbars 渲染 template 目录，所以脚手架请使用 han
 ##### meta.js
 
 ```js
+// meta 配置项
 module.exports = {
-    // meta 配置项
+    // 生成器会将 handlerbars 语法填上 prompts 内容
+    // 扩展 handlerbars helper
+    helpers: {},
+    // 过滤满足 value 跳转的目录 key，不做生成处理
+    filters: {
+        'mock/**': 'useMock'
+    },
+    // 脚手架交互问答
+    prompts: {
+        name: {
+            type: 'string',
+            required: true,
+            label: '项目名称',
+            // 默认 {{name}} 会被替换成init 命令的目录名
+            // 类似还有username、email 等 git 配置
+            default: '{{name}}'
+        },
+        useMock: {
+            type: 'confirm',
+            message: '使用 mock 数据？'
+        }
+    }
 };
 ```
 
