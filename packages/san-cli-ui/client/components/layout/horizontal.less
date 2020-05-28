@@ -1,11 +1,10 @@
+.hlayout,
+.main {
+    height: 100%;
+    overflow: hidden;
+}
 .hlayout {
-    position: relative;
-    padding-top: 64px;
     .santd-layout-header {
-        position: fixed;
-        left: 0;
-        top: 0;
-        z-index: 10;
         width: 100%;
         background-color: #fff;
         box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
@@ -49,11 +48,13 @@
     }
     .santd-layout-content  {
         background: #fff;
+        flex: 1 1 100%;
+        height: 0;
     }
     .main {
         max-width: 1200px;
-        margin: 30px auto 0;
-        padding: 16px 16px 0;
+        margin: 0 auto;
+        padding: 46px 16px 0;
     }
 
     .custom-santd-btn {
@@ -70,7 +71,7 @@
     > div {
         width: 100%;
     }
-    .santd-icon {   
+    .santd-icon {
         display: block;
         margin: 0 auto;
         color: #999;
