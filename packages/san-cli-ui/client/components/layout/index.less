@@ -1,51 +1,48 @@
 .layout {
     position: relative;
+    background-color: #fff;
     .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 16px;
-        text-align: center;
-        background: #7dbcea;
-        h2 {
-            color: #fff;
-            font-size: 20px;
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        background-color: #fff;
+        box-shadow: 0 2px 8px #f0f1f2;
+        padding: 0 30px;
+        .project-name {
+            display: inline-block;
+            height: 48px;
+            .santd-btn {
+                width: 150px;
+            }
+        }
+        .title {
+            color: #000000a6;
+            margin: 16px;
+            padding-left: 20px;
+            height: 32px;
+            line-height: 32px;
+            font-size: 18px;
+            display: inline-block;
+            border-left: 1px solid #ebedf0;
         }
     }
-    .santd-menu-item > a {
-        text-decoration: none;
+    .main-wrap {
+        flex: 1 1 100%;
+        margin-top: 10px;
+        .menu {
+            height: 100%;
+            .santd-menu-item > a {
+                text-decoration: none;
+            }
+        }
+        .main {
+            padding: 24px 12px;
+            background: #fff;
+        }
     }
     .head-right {
         position: absolute;
         right: 20px;
         top: 0;
-    }
-    .main {
-        margin: 8px 8px 0;
-        padding-top: 24px;
-        background: #fff;
-        min-height: 600px;
-    }
-    .trigger {
-        font-size: 18px;
-        line-height: 64px;
-        padding: 0 24px;
-        cursor: pointer;
-        transition: color .3s;
-    }
-
-    .trigger:hover {
-        color: #1890ff;
-    }
-    .title {
-        color: #000000a6;
-        text-align: center;
-        margin: 16px;
-        height: 32px;
-        line-height: 32px;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        font-size: 18px;
     }
 }
