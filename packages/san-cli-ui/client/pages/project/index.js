@@ -20,7 +20,7 @@ import 'santd/es/spin/style';
 import 'santd/es/steps/style';
 import './index.less';
 
-export default class App extends createApolloComponent(Component) {
+export default class Project extends createApolloComponent(Component) {
     static template = /* html */`
         <div class="project-select">
             <s-spin class="loading" spinning="{{pageLoading}}" size="large">
@@ -72,13 +72,11 @@ export default class App extends createApolloComponent(Component) {
 
                     <!--- 3.导入项目 -->
                     <div class="project-import" s-if="route.query.nav === 'import'">
-                        <div class="steps-content">
-                            <c-folder-explorer
-                                current-path="{{cwd}}"
-                                on-change="handleCwdChange"
-                            />
-                            
-                            <div class="footer-wrapper">
+                        <c-folder-explorer
+                            current-path="{{cwd}}"
+                            on-change="handleCwdChange"
+                        />
+                        <div class="footer-wrapper">
                             <s-button
                                 class="custom-santd-btn"
                                 disabled="{{!isPackage}}"
@@ -89,7 +87,6 @@ export default class App extends createApolloComponent(Component) {
                                 type="primary"
                                 on-click="importProject"
                             >{{$t('project.select.import.importBtnText')}}</s-button>
-                            </div>
                         </div>
                     </div>
                 </template>
