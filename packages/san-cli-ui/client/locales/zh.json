@@ -117,5 +117,9 @@
             }
         ],
         "customBtnText": "自定义"
+    },
+    "connection-status": {
+        "disconnected": "连接已断开",
+        "connected": "已连接"
     }
 }

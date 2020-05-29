@@ -10,6 +10,7 @@ import {createApolloComponent} from '@lib/san-apollo';
 import CWD from '@graphql/cwd/cwd.gql';
 import PROJECT_INIT_TEMPLATE from '@graphql/project/projectInitTemplate.gql';
 import PROJECT_IMPORT from '@graphql/project/projectImport.gql';
+import ConnectionStatus from '@components/connection-status';
 import ProjectList from '@components/project-list';
 import FolderExplorer from '@components/folder-explorer';
 import ProjectCreate from '@components/project-create';
@@ -23,6 +24,7 @@ import './index.less';
 export default class Project extends createApolloComponent(Component) {
     static template = /* html */`
         <div class="project-select">
+            <c-connection-status />
             <s-spin class="loading" spinning="{{pageLoading}}" size="large">
                 <s-icon slot="indicator" type="loading" style="font-size: 30px;" />
             </s-spin>
@@ -100,6 +102,7 @@ export default class Project extends createApolloComponent(Component) {
         's-spin': Spin,
         's-steps': Steps,
         's-step': Steps.Step,
+        'c-connection-status': ConnectionStatus,
         'c-list': ProjectList,
         'c-folder-explorer': FolderExplorer,
         'c-create': ProjectCreate,
