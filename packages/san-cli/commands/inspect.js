@@ -56,12 +56,12 @@ exports.handler = argv => {
             });
         } else if (argv.plugins) {
             res = config.plugins.map(p => p.__pluginName || p.constructor.name);
-        } else if (argv.paths.length > 1) {
+        } else if (argv.paths && argv.paths.length > 1) {
             res = {};
             argv.paths.forEach(path => {
                 res[path] = get(config, path);
             });
-        } else if (argv.paths.length === 1) {
+        } else if (argv.paths && argv.paths.length === 1) {
             res = get(config, argv.paths[0]);
         } else {
             res = config;
