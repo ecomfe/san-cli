@@ -23,28 +23,76 @@ const SAN_COMMAND_ARGS =  SAN_CLI_UI_DEV ? ['dev:san'] : [];
 
 const debug = getDebugLogger('ui:project');
 
-const initTemplate = async (useCache = true) => {
+const getTemplateList = async (useCache = true) => {
+    const child = await execa('san', ['remote', 'list']);
+    // 1. 默认的repositories
+    const defaultTemplates = [
+        {
+            label: 'icode:san-project-base（百度内部）',
+            value: 'ssh://git@icode.baidu.com:8235/baidu/hulk/san-project-base'
+        },
+        {
+            label: 'github:san-project-base',
+            value: 'https://github.com/ksky521/san-project'
+        }
+    ];
+
+    // 2. 默认的repositories来自于san remote list
+    let remoteList = child.stdout.split('\n').slice(1);
+    if (remoteList.length) {
+        remoteList = remoteList.map(val => {
+            const ri = val.split(/\s+/);
+            const value = ri.pop();
+            const label = ri.join(' ');
+            return {
+                label,
+                value
+            };
+        });
+    }
+
+    // 3. 看看本地有没有现在的缓存
+    const localTemplatePath = path.join(require('os').homedir(), DEFAULT_TEMPLATE_PATH);
+
+    if (fs.existsSync(localTemplatePath)) {
+        remoteList.unshift({
+            label: 'Local（本地）',
+            value: '--offline'
+        });
+    }
+
+    // 4. 添加默认的库
+    const templates = remoteList.concat(defaultTemplates);
+
+    debug({templates});
+
+    return templates;
+};
+
+const initTemplate = async ({template, useCache}) => {
+    debug(`template: ${template}`);
+
     const args = [
+        // 仅仅初始化模板，获取模板数据
         '--download-repo-only'
     ];
 
     const localTemplatePath = path.join(require('os').homedir(), DEFAULT_TEMPLATE_PATH);
 
-    // 1. 判断本地目录是否存在，如果存在则不去github远程拉取
-    if (useCache && fs.existsSync(localTemplatePath)) {
-        debug('Fetching template from local...');
-        args.push('--offline');
-    }
-    else {
-        debug('Fetching template from github...');
+    // 1. 如果是 -- 开头，则标明是参数，不是模板地址，此时放到 args里面
+    if (/^\-\-/.test(template)) {
+        debug(`Add template[${template}] param to args.`);
+        args.push(template);
+        template = '';
     }
 
-    const cmdArgs = SAN_COMMAND_ARGS.concat([
-        'init',
-        // 初始化模板，此时app-name参数不需要
-        'APP_NAME_PLACEHOLDER',
-        ...args
-    ]);
+    const cmdArgs = SAN_COMMAND_ARGS
+        .concat(template ? ['init', template] : 'init')
+        .concat([
+            // 初始化模板，此时app-name参数不需要
+            'APP_NAME_PLACEHOLDER',
+            ...args
+        ]);
 
     debug(`${SAN_COMMAND_NAME} ${cmdArgs.join(' ')}`);
 
@@ -233,6 +281,7 @@ const remove = ({id}, context) => {
 };
 
 module.exports = {
+    getTemplateList,
     initTemplate,
     create,
     list,

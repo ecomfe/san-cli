@@ -9,9 +9,11 @@ import {Icon, Button, Spin, Steps} from 'santd';
 import {createApolloComponent} from '@lib/san-apollo';
 import CWD from '@graphql/cwd/cwd.gql';
 import PROJECT_INIT_TEMPLATE from '@graphql/project/projectInitTemplate.gql';
+import PROJECT_TEMPLATE_LIST from '@graphql/project/projectTemplateList.gql';
 import PROJECT_IMPORT from '@graphql/project/projectImport.gql';
 import ConnectionStatus from '@components/connection-status';
 import ProjectList from '@components/project-list';
+import ProjectTemplateList from '@components/projectTemplateList';
 import FolderExplorer from '@components/folder-explorer';
 import ProjectCreate from '@components/project-create';
 import Layout from '@components/layout/horizontal';
@@ -42,15 +44,25 @@ export default class Project extends createApolloComponent(Component) {
                             current-path="{{cwd}}"
                             on-change="handleCwdChange"
                         />
-                        <c-create s-ref="create" prompts="{{projectPrompts}}" cwd="{{cwd}}" s-elif="current === 1"/>
+                        <c-project-template-list 
+                            s-elif="current === 1"
+                            s-ref="projectTemplates"
+                            on-submit="initProject"
+                            hide-submit-btn="{{true}}"
+                            current-template="{{projectTemplateList.length ? projectTemplateList[0].value : ''}}"
+                            project-template-list="{{projectTemplateList}}"></c-project-template-list>
+                        <c-create 
+                            s-elif="current === 2"
+                            s-ref="create" prompts="{{projectPrompts}}" cwd="{{cwd}}" />
 
+                        <!---底部按钮--->
                         <div class="footer-wrapper">
                             <s-button
                                 class="custom-santd-btn"
                                 size="large"
                                 s-if="current === 0"
                                 type="primary"
-                                on-click="initProject"
+                                on-click="getProjectTemplateList"
                                 icon="plus"
                             >{{$t('project.select.create.initProject')}}</s-button>
                             
@@ -58,16 +70,25 @@ export default class Project extends createApolloComponent(Component) {
                                 class="custom-santd-btn"
                                 s-if="current === 1"
                                 size="large"
+                                on-click="handleInitProject"
+                                type="primary"
+                            >{{$t('next')}}</s-button>
+
+                            <s-button
+                                class="custom-santd-btn"
+                                s-if="current === 2"
+                                size="large"
                                 on-click="createProject"
                                 type="primary"
                             >{{$t('project.components.create.submitText')}}</s-button>
 
+                            <!----上一步---->
                             <s-button type="link"
                                       size="large"
                                       class="cancel-submit"
                                       on-click="cancelSubmit"
-                                      s-if="current === 1">
-                                {{$t('project.components.create.cancelSubmitText')}}
+                                      s-if="current > 0">
+                                {{$t('pre')}}
                             </s-button>
                         </div>
                     </div>
@@ -106,7 +127,8 @@ export default class Project extends createApolloComponent(Component) {
         'c-list': ProjectList,
         'c-folder-explorer': FolderExplorer,
         'c-create': ProjectCreate,
-        'c-layout': Layout
+        'c-layout': Layout,
+        'c-project-template-list': ProjectTemplateList
     };
     initData() {
         return {
@@ -118,7 +140,8 @@ export default class Project extends createApolloComponent(Component) {
             menuData: [],
             nav: [],
             isImporting: false,
-            isPackage: false
+            isPackage: false,
+            projectTemplateList: []
         };
     }
 
@@ -147,6 +170,11 @@ export default class Project extends createApolloComponent(Component) {
 
     formatPrompts(data) {
         data.forEach(item => {
+            // cli中的name是默认文件夹名称，web里面不能使用，故设置为空
+            if (item.name === 'name') {
+                item.default = '';
+            }
+
             // 把default赋值给value
             item.default && (item.value = item.default);
 
@@ -156,16 +184,34 @@ export default class Project extends createApolloComponent(Component) {
         return data;
     }
 
-    async initProject() {
+    // 获取可选的脚手架
+    async getProjectTemplateList() {
+        this.data.set('pageLoading', true);
+        const {data} = await this.$apollo.query({
+            query: PROJECT_TEMPLATE_LIST
+        });
+        this.data.set('pageLoading', false);
+        this.data.set('current', this.data.get('current') + 1);
+        this.data.set('projectTemplateList', data.projectTemplateList);
+    }
+
+    async initProject(template) {
         this.data.set('pageLoading', true);
         const {data} = await this.$apollo.mutate({
-            mutation: PROJECT_INIT_TEMPLATE
+            mutation: PROJECT_INIT_TEMPLATE,
+            variables: {
+                template
+            }
         });
         this.data.set('pageLoading', false);
         if (data.projectInitTemplate && data.projectInitTemplate.prompts) {
             this.data.set('projectPrompts', this.formatPrompts(data.projectInitTemplate.prompts));
             this.data.set('current', this.data.get('current') + 1);
         };
+    }
+
+    handleInitProject() {
+        this.ref('projectTemplates').handleSubmit();
     }
 
     createProject() {

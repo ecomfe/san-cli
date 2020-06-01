@@ -121,5 +121,14 @@
     "connection-status": {
         "disconnected": "连接已断开",
         "connected": "已连接"
+    },
+    "confirmText": "确定",
+    "pre": "上一步",
+    "next": "下一步",
+    "scaffold": {
+        "chooseLabel": "选择脚手架模板",
+        "choosePlaceholder": "请选择脚手架模板",
+        "customLabel": "自定义模板地址",
+        "optionLabel": "自定义脚手架模板"
     }
 }

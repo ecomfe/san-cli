@@ -1,5 +1,5 @@
-mutation projectInitTemplate {
-  projectInitTemplate {
+mutation projectInitTemplate ($template: String) {
+  projectInitTemplate (template: $template) {
     prompts {
       name
       type

@@ -8,11 +8,12 @@ module.exports = gql`
 extend type Query {
   projects: [Project]
   projectCurrent: Project
+  projectTemplateList: JSON
 }
 
 extend type Mutation {
-  projectInitTemplate: ProjectInitTemplate
-  projectCreation (name: String, presets: JSON): projectCreation
+  projectInitTemplate (template: String): ProjectInitTemplate
+  projectCreation (name: String, presets: JSON): ProjectCreation
   projectSetFavorite(id: ID, favorite: Int): Project
   projectImport (path: String, force: Boolean): Project!
   projectOpen (id: ID!): Project!,
@@ -21,7 +22,12 @@ extend type Mutation {
   projectRemove (id: ID!): Boolean!
 }
 
-type projectCreation {
+type ProjectTemplate {
+  label: String
+  value: String
+}
+
+type ProjectCreation {
   prompts: [Prompt]
 }
 

@@ -7,10 +7,11 @@ const projects = require('../connectors/projects');
 module.exports = {
     Query: {
         projects: (root, args, context) => projects.list(context),
+        projectTemplateList: (root, args, context) => projects.getTemplateList(context),
         projectCurrent: (root, args, context) => projects.getCurrent(context)
     },
     Mutation: {
-        projectInitTemplate: (root, args, context) => projects.initTemplate(),
+        projectInitTemplate: (root, args, context) => projects.initTemplate(args, context),
         projectCreation: (root, args, context) => projects.create(args, context),
         projectSetFavorite: (root, args, context) => projects.setFavorite(args, context),
         projectImport: (root, args, context) => projects.importProject(args, context),
