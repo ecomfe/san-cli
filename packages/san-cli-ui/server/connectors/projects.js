@@ -23,7 +23,7 @@ const SAN_COMMAND_ARGS =  SAN_CLI_UI_DEV ? ['dev:san'] : [];
 
 const debug = getDebugLogger('ui:project');
 
-const getTemplateList = async (useCache = true) => {
+const getTemplateList = async () => {
     const child = await execa('san', ['remote', 'list']);
     // 1. 默认的repositories
     const defaultTemplates = [

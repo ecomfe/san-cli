@@ -6,7 +6,7 @@ import {SubscriptionClient} from 'subscriptions-transport-ws';
 import ApolloClient from 'apollo-client';
 import {InMemoryCache} from 'apollo-cache-inmemory';
 import {WebSocketLink} from 'apollo-link-ws';
-import {setConnected, resetApollo} from './clientState/connectors';
+// import {setConnected, resetApollo} from './clientState/connectors';
 import defaults from './clientState/defaults';
 import resolvers from './clientState/resolvers';
 import typeDefs from './clientState/typeDefs';
@@ -39,19 +39,28 @@ export default path => {
     });
 
     // 客户端cache初始化
-    const onCacheInit = cache => cache.writeData({data: defaults()});
-    onCacheInit(cache);
-    apolloClient.onResetStore(() => onCacheInit(cache));
+    const writeCacheData = cache => cache.writeData({data: defaults()});
+    writeCacheData(cache);
+    apolloClient.onResetStore(() => writeCacheData(cache));
 
     // online
-    client.on('connected', () => setConnected(true, apolloClient));
-    client.on('reconnected', async () => {
-        await resetApollo(apolloClient);
-        setConnected(true, apolloClient);
+    client.on('connected', () => {
+        console.log('connected!');
+        // setConnected(true, apolloClient);
     });
+
+    client.on('reconnected', async () => {
+        // await resetApollo(apolloClient);
+        // setConnected(true, apolloClient);
+    });
+
     // Offline
-    client.on('disconnected', () => setConnected(false, apolloClient));
-    client.on('error', () => setConnected(false, apolloClient));
+    client.on('disconnected', () => {
+        console.log('disconnected!');
+       // setConnected(false, apolloClient);
+    });
+   
+    // client.on('error', () => setConnected(false, apolloClient));
 
     return apolloClient;
 };

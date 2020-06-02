@@ -13,7 +13,7 @@ import PROJECT_TEMPLATE_LIST from '@graphql/project/projectTemplateList.gql';
 import PROJECT_IMPORT from '@graphql/project/projectImport.gql';
 import ConnectionStatus from '@components/connection-status';
 import ProjectList from '@components/project-list';
-import ProjectTemplateList from '@components/projectTemplateList';
+import ProjectTemplateList from '@components/project-template-list';
 import FolderExplorer from '@components/folder-explorer';
 import ProjectCreate from '@components/project-create';
 import Layout from '@components/layout/horizontal';
