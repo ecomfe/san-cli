@@ -4,22 +4,18 @@
  */
 
 import {Component} from 'san';
+import {onConnected, onDisconnected} from '@lib/connection';
 import {Icon} from 'santd';
-import CONNECTED from '@/graphql/connected/connected.gql';
 import 'santd/es/icon/style';
 import './index.less';
 
-export default class ConnectionStatus extends Component {
 
+export default class ConnectionStatus extends Component {
     static template = /* html */`
-        <div s-if="connected" class="connection-status">
-            <div class="content disconnected">
-                <s-icon type="disconnect"/>
-                <span>{{$t('connection-status.disconnected')}}</span>
-            </div>
-            <div class="content connected">
-                <s-icon type="wifi"/>
-                <span>{{$t('connection-status.connected')}}</span>
+        <div class="connection-status {{showStatus ? '' : 'connection-animation'}}">
+            <div class="content {{connected ? 'connected' : 'disconnected'}}">
+                <s-icon type="{{connected ? 'wifi' : 'disconnect'}}"/>
+                <span>{{$t(connected ? 'connection-status.connected' : 'connection-status.disconnected')}}</span>
             </div>
         </div>
     `;
@@ -29,15 +25,27 @@ export default class ConnectionStatus extends Component {
 
     initData() {
         return {
-            connected: true
+            // 控制样式
+            connected: true,
+            // 控制动画及状态可见性
+            showStatus: false
         };
     }
 
     async attached() {
-        let connected = await this.$apollo.query({query: CONNECTED});
-        // console.log(connected);
-        if (connected.data) {
-            this.data.set('connected', connected.data.connected);
-        }
+        // 断线时触发
+        onDisconnected(() => {
+            this.data.set('showStatus', true);
+            this.data.set('connected', false);
+        });
+
+        // 断线重连时触发
+        onConnected(() => {
+            this.data.set('showStatus', true);
+            this.data.set('connected', true);
+            setTimeout(() => {
+                this.data.set('showStatus', false);
+            }, 1500);
+        });
     }
 }

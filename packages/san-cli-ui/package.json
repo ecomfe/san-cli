@@ -69,6 +69,7 @@
         "san": "^3.8.3",
         "san-router": "^1.2.2",
         "santd": "^0.2.5",
-        "subscriptions-transport-ws": "^0.9.16"
+        "subscriptions-transport-ws": "^0.9.16",
+        "tiny-emitter": "^2.1.0"
     }
 }

@@ -2,6 +2,7 @@
     color: #fff;
     height: 45px;
     position: relative;
+    transition: margin-top .2s ease-out .05s;
     .content {
         display: flex;
         align-items: center;
@@ -16,35 +17,14 @@
             margin-right: 10px;
         }
     }
-
     .connected {
         background-color: #52c41a;
-        animation: slide-from-top .15s;
-        transition: height .15s ease-out;
     }
     .disconnected {
         background-color: #f5222d;
-        // animation: slide-to-bottom .15s forwards;
     }
 }
-@keyframes slide-to-bottom {
-    0% {
-        transform: none;
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(45px);
-        opacity: 0;
-    }
+
+.connection-animation {
+    margin-top: -45px;
 }
-@keyframes slide-from-top {
-    0% {
-        transform: translateY(-45px);
-        opacity: 0;
-    }
-    100% {
-        transform: none;
-        opacity: 1;
-    }
-}
-  

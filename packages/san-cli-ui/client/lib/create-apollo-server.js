@@ -6,10 +6,7 @@ import {SubscriptionClient} from 'subscriptions-transport-ws';
 import ApolloClient from 'apollo-client';
 import {InMemoryCache} from 'apollo-cache-inmemory';
 import {WebSocketLink} from 'apollo-link-ws';
-// import {setConnected, resetApollo} from './clientState/connectors';
-import defaults from './clientState/defaults';
-import resolvers from './clientState/resolvers';
-import typeDefs from './clientState/typeDefs';
+import emitter from 'tiny-emitter/instance';
 
 export default path => {
     const defaultOptions = {
@@ -33,34 +30,23 @@ export default path => {
     let apolloClient = new ApolloClient({
         cache,
         link,
-        defaultOptions,
-        typeDefs,
-        resolvers
+        defaultOptions
     });
-
-    // 客户端cache初始化
-    const writeCacheData = cache => cache.writeData({data: defaults()});
-    writeCacheData(cache);
-    apolloClient.onResetStore(() => writeCacheData(cache));
 
     // online
     client.on('connected', () => {
         console.log('connected!');
-        // setConnected(true, apolloClient);
     });
 
+    // 断线重连
     client.on('reconnected', async () => {
-        // await resetApollo(apolloClient);
-        // setConnected(true, apolloClient);
+        emitter.emit('connected');
     });
 
-    // Offline
+    // 触发断线
     client.on('disconnected', () => {
-        console.log('disconnected!');
-       // setConnected(false, apolloClient);
+        emitter.emit('disconnected');
     });
-   
-    // client.on('error', () => setConnected(false, apolloClient));
 
     return apolloClient;
 };
