@@ -25,7 +25,6 @@ module.exports = (cwd, useCache = true) => {
             cache[src] = pkg;
         }
         return pkg;
-    } else {
-        return {};
     }
+    return {};
 };

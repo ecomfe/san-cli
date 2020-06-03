@@ -35,7 +35,9 @@ module.exports = {
                 ifSourcemap = true;
             }
             webpackConfig
-                .devtool(ifSourcemap ? 'source-map' : false)
+                .devtool(
+                    ifSourcemap ? (typeof options.sourceMap === 'string' ? options.sourceMap : 'source-map') : false
+                )
                 .output.filename(filename)
                 .chunkFilename(filename);
 

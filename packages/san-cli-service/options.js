@@ -65,7 +65,7 @@ const schema = joi
         // 生产环境优化相关
         polyfill: joi.boolean(),
         terserOptions: joi.object(),
-        sourceMap: joi.boolean(),
+        sourceMap: joi.alternatives().try(joi.boolean(), joi.string()),
         filenameHashing: joi.boolean(),
         largeAssetSize: joi.number(),
         // css 相关

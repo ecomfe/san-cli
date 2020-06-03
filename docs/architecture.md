@@ -1,4 +1,3 @@
-
 # 内部实现
 
 San CLI 是一个命令行工具，其次它是一个内置 Webpack 的前端工程化构建工具。San CLI 在架构设计上采取了微核心和插件化的设计思想，我们可以通过插件机制添加命令行命令，还可以通过插件机制定制 Webpack 构建工具，从而满足不同 San 环境的前端工程化需求。
@@ -11,9 +10,21 @@ San CLI 在兼顾 San 生态的同时，尽量做到通用化配置，在设计�
 
 San CLI 的核心模块包含：
 
--   san-cli：核心模块，负责组装整个工作流程和实现核心功能
+-   san-cli：核心模块，负责整合整个工作流程和实现核心功能
 -   san-cli-utils：工具类
+-   san-cli-service：service 层
 -   san-cli-webpack：webpack build 和 dev-server 通用逻辑和 webpack 自研插件等
+-   san-cli-command-init：init 命令，脚手架
+-   san-loader：`.san`文件 webpack loader
+-   san-hot-loader：给 san 组件添加 HMR 功能
+-   san-cli-plugin-\*：对应 service 的 plugin
+-   san-cli-docit：一个方便编写组件文档和预览的小工具，可做建站工具，需要的模块包括：
+    -   san-cli-markdown-loader：markdown-loader
+    -   san-cli-docit-theme：docit 皮肤
+
+结合模块的主流程可以如下图所示：
+
+![](./assets/flow.png)
 
 ### san-cli-utils 重点方法介绍
 
@@ -83,6 +94,8 @@ San CLI 的命令行使用了[yargs](https://github.com/yargs/yargs/)。在`lib/
     2. 将`.sanrc`中跟 Service 相关配置通过 Command 中间件添加到 `argv`对象
 6. 触发`process.argv`解析执行，开始 CLI 的正式执行。
 
+![](./assets/core-flow.png)
+
 ## san-cli-command-init：脚手架实现
 
 项目脚手架初始化是在`san-cli-command-init`中实现的，原理是通过 git 命令拉取对应 github/icode/gitlab 等脚手架模板的 repo 到本地，然后使用[vinyl-fs](https://github.com/gulpjs/vinyl-fs)将依次将文件进行处理后生成项目代码。
@@ -105,49 +118,84 @@ San CLI 的命令行插件值得是通过配置`.sanrc`的`commands`字段，给
 Command 的插件需要遵循 yargs command module 规范，即按照下面的写法：
 
 ```js
+// Commander 定义
+// name
 exports.command = 'your_command_name [your_option]';
-exports.describe = 'command description';
-// or exports.desc
-exports.aliases = ['alias_cmd'];
+// description
+exports.description = 'command description';
+// options
 exports.builder = {
     option1: {
         default: true,
         type: 'boolean'
     }
 };
-// builder 还支持函数写法，具体参见：
-// 1. https://github.com/yargs/yargs/blob/master/docs/api.md#positionalkey-opt
-// 2. https://github.com/yargs/yargs/blob/master/docs/api.md#commandmodule
-exports.handler = argv => {
-    console.log(`setting ${argv.key} to ${argv.value}`);
+// handler 接收 commanderAPI 实例 cliAPI
+exports.handler = cliAPI => {
+    console.log(`setting ${cliAPI.key} to ${cliAPI.value}`);
+    console.log(cliAPI.getPresets());
 };
 ```
 
-### Service 插件
+### Service
 
-San CLI 在实现可扩展 Webpack 配置的设计上，借鉴了 Vue CLI 的 Service 机制。现在已`san serve`命令执行流程为例，讲解下整个工作流程：
+San CLI 在实现可扩展 Webpack 配置的设计上，借鉴了 Vue CLI 的 Service 机制。
+
+Service 的使用方式如下：
+
+```js
+const service = new Service(name, {
+    // cwd 目录
+    cwd,
+    // config 文件路径
+    configFile,
+    // 是否 watch
+    watch,
+    // mode production/development
+    mode,
+    // 使用使用内置 Plugin
+    useBuiltInPlugin,
+    // 项目配置，这里是从 sanrc 读取内容传入
+    // 优先级比 san.config.js 低
+    projectOptions,
+    // 传入的插件 list
+    plugins,
+    // 是否使用 progress
+    useProgress,
+    // 是否使用Profiler
+    useProfiler
+});
+// 开始执行，执行结果回调，callback 传入 PluginAPI 实例
+service.run(callback);
+```
+
+现在已`san serve`命令执行流程为例，讲解下整个工作流程：
 
 1. 首先 CLI 通过主流程的 Command 解析 bin 命令，进入`commands/serve`的 handler；
 2. handler 主要是实例化 Service，实例化会将配置项和插件进行处理
-3. 然后执行`service.run('serve', argv)`，进入 service 流程，这部分代码主要在`service.run`中：
+3. 然后执行`service.run(callback)`，进入 service 流程，这部分代码主要在`service.run`中：
     1. `loadEnv`：加载 env 文件；
     2. `loadProjectOptions`：加载`san.config.js`；
     3. `init`：service 启动：
         1. 初始化插件，并且依次执行；
         2. 依次执行 webpackChain 回调栈；
         3. 依次执行 webpackConfig 回调栈；
-4. 触发 CLI 的 handler。
+4. 执行 `callback`。
+
+![](./assets/service-flow.png)
 
 > **webpackChain 回调栈**存储的是接收[webpack-chain](https://github.com/neutrinojs/webpack-chain)格式的 webpack 配置文件的处理函数；
 > **webpackConfig 回调栈**存储的是接受普通 webpack 配置文件对象的处理函数。
 > P.S：handler 中可以通过 service 插件的 API 获取最终的 webpack config，然后结合`san-cli-webpack`的`build`/`serve`执行对应的打包操作。
+
+#### Service 插件
 
 插件的定义方法如下：
 
 ```js
 module.exports = {
     id: 'plugin-id',
-    apply(api, projectOptions) {
+    apply(api, projectOptions, pluginOptions) {
         api.chainWebpack(webpackConfig => {
             console.log(projectOptions);
             webpackConfig.entry(/*...*/);
@@ -157,25 +205,9 @@ module.exports = {
 };
 ```
 
-如果是定义一个 Service 级别的 Command，那么可以采用下面的写法：
+#### Service Plugin 流程
 
-```js
-module.exports = {
-    id: 'san-cli-command-serve',
-    apply(api, projectOptions) {
-        // 注册命令
-        api.registerCommand(command, {
-            builder,
-            description,
-            handler(argv){
-                const webpackConfig = api.getWebpackConfig();
-                //...
-                开始 webpack 的操作
-            }
-        });
-    }
-};
-```
+![](./assets/service-plugin.png)
 
 #### Service 插件 API
 

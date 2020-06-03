@@ -27,19 +27,24 @@ function generateStyleImport(descriptor, options) {
         return '';
     }
 
+    let injectStyles = [];
     let styles = descriptor.style;
     let code = '';
 
     for (let i = 0; i < styles.length; i++) {
         let style = styles[i];
-        let resource;
+        let isCSSModule = style.attribs.module !== undefined;
+        let resourcePath;
+        let resourceQuery;
 
         if (style.attribs.src) {
-            resource = style.attribs.src;
+            resourcePath = style.attribs.src;
+            resourceQuery = {...style.attribs};
+            delete resourceQuery.src;
         }
         else {
-            let resourcePath = options.resourcePath;
-            let query = Object.assign(
+            resourcePath = options.resourcePath;
+            resourceQuery = Object.assign(
                 {},
                 DEFAULT_STYLE_ATTR,
                 options.query,
@@ -50,10 +55,17 @@ function generateStyleImport(descriptor, options) {
                     index: i
                 }
             );
-            resource = `${resourcePath}?${qs.stringify(query)}`;
         }
-        code += `import '${resource}';\n`;
+        let resource = `${resourcePath}?${qs.stringify(resourceQuery)}`;
+        if (isCSSModule) {
+            code += `import style${i} from '${resource}';\n`;
+            injectStyles.push(`style${i}`);
+        }
+        else {
+            code += `import '${resource}';\n`;
+        }
     }
+    code += `let injectStyles = [${injectStyles.join(', ')}];\n`;
 
     return code;
 }

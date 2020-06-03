@@ -224,18 +224,63 @@ It converts "HTML", but keep intact partial entries like "xxxHTMLyyy" and so on.
 
 ### [Custom containers](https://github.com/markdown-it/markdown-it-container)
 
-::: warning 提示
-_here be dragons_
+## Emoji 支持
+
+**输入：**
+
+```
+:robot: :tada: :100: :muscle: :santa: :cn: :boom: :fox_face:
+```
+
+**输出：**
+
+:robot: :tada: :100: :muscle: :santa: :cn: :boom: :fox_face:
+
+可以在[这里](https://github.com/markdown-it/markdown-it-emoji/blob/master/lib/data/full.json)找到所有支持的 Emoji。
+
+## 提示框
+
+**输入：**
+
+```
+::: info
+这是一个提示
 :::
 
-::: danger 错误
-_here be dragons_
+::: info 标题
+这是一个提示
 :::
 
-::: info 提示
-_here be dragons_
+::: warning
+这是一个警告
 :::
 
-::: success 成功
-_here be dragons_
+::: danger
+这是一个危险警告
+:::
+
+::: success
+这是一个成功提示
+:::
+```
+
+**输出：**
+::: info
+这是一个提示
+:::
+
+::: info 标题
+这是一个提示
+:::
+
+::: warning
+这是一个警告
+:::
+
+::: danger
+这是一个危险警告
+:::
+
+::: success
+这是一个成功提示
 :::

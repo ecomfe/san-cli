@@ -27,8 +27,8 @@ const linkText = `For more information, visit ${textColor('https://ecomfe.github
 const globalDebug = getDebugLogger();
 const debug = getDebugLogger('command');
 module.exports = class Command {
-    constructor(rawArgs, cwd = process.cwd()) {
-        this.rawArgs = rawArgs || process.argv.slice(2);
+    constructor(rawArgs = process.argv.slice(2), cwd = process.cwd()) {
+        this.rawArgs = rawArgs;
         this.cwd = cwd;
         this._fristLog = true;
         this.help = () => {};
@@ -225,19 +225,20 @@ module.exports = class Command {
             .alias('help', 'h')
             .alias('version', 'v');
     }
-    run() {
+    run(args) {
+        args = args || this.rawArgs;
         const cli = this.cli;
         // 1. 读取comands，然后添加它
         this._resolveCommand();
         // 2. 生成help
         this._resolveCliHelp();
         // 3. 检验参数
-        if (!this.rawArgs[0]) {
+        if (!args[0]) {
             cli.help();
             return;
         }
         // 4. 触发handler
-        this.parsedArgv = cli.parse(this.rawArgs);
+        this.parsedArgv = cli.parse(args);
     }
     _resolveCommand() {
         const self = this;
@@ -314,7 +315,9 @@ module.exports = class Command {
                 ['--version, -v', 'Show version number'],
                 ['--help, -h', 'Show help']
             ].forEach(([option, info]) => {
-                const spaces = new Array(width - option.length).join(' ');
+                let len = width - option.length;
+                len = len < 2 ? 2 : len;
+                const spaces = new Array(len).join(' ');
                 log(`  ${option}${spaces}${info}`);
             });
             log();
@@ -323,7 +326,10 @@ module.exports = class Command {
 
             commands.forEach((command, idx) => {
                 const commandString = `${scriptName} ${command[0].replace(/^\$0 ?/, '')}`;
-                const spaces = new Array(width - commandString.length).join(' ');
+                let len = width - commandString.length;
+                len = len < 2 ? 2 : len;
+
+                const spaces = new Array(len).join(' ');
                 if (idx === 5) {
                     log();
                 }

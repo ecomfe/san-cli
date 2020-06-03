@@ -57,9 +57,9 @@ const SAN_TAGNAMES = Object.keys(SAN_BLOCK_MAP);
  * @param {Object} options 参数
  * @return {Object} {code, map}
  */
-function select(descriptor, options) {
-    let getter = SAN_BLOCK_MAP[options.query.type];
-    return getter(descriptor, options);
+function extract(descriptor, options) {
+    let extractor = SAN_BLOCK_MAP[options.query.type];
+    return extractor(descriptor, options);
 }
 
 module.exports = function (source) {
@@ -76,7 +76,7 @@ module.exports = function (source) {
     };
     // 根据 type 等参数指定返回不同的代码块
     if (query && query.san === '' && query.type) {
-        let {code, map} = select(descriptor, options);
+        let {code, map} = extract(descriptor, options);
         if (this.sourceMap) {
             this.callback(null, code, map);
         }
@@ -95,10 +95,9 @@ module.exports = function (source) {
         ${styleCode}
         ${templateCode}
         ${scriptCode}
-        export default normalize(script, template);
+        export default normalize(script, template, injectStyles);
         /* san-hmr component */
     `;
-
     this.callback(null, codo);
 };
 
