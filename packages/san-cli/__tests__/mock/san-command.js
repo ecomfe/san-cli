@@ -14,7 +14,7 @@ exports.builder = {
         type: 'string'
     }
 };
-exports.desc = 'San Command Plugin Demo';
+exports.description = 'San Command Plugin Demo';
 exports.handler = argv => {
     console.log(`hello, ${argv.name}`);
 };

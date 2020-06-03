@@ -85,7 +85,8 @@ module.exports = {
                 const sanFile = resolve.sync('san', {basedir: api.getCwd()});
                 const sanPath = path.dirname(sanFile);
                 webpackConfig.resolve.alias.set('san', `${sanPath}/${!isProd ? 'san.spa.dev.js' : 'san.spa.js'}`);
-            } catch (e) {
+            }
+            catch (e) {
                 const sanPath = path.dirname(require.resolve('san'));
                 webpackConfig.resolve.alias.set('san', `${sanPath}/${!isProd ? 'san.spa.dev.js' : 'san.spa.js'}`);
             }
@@ -160,6 +161,7 @@ module.exports = {
             // 将 env 中的值进行赋值
             function defineVar() {
                 const vars = {
+                    // TODO 这里要不要按照 mode 设置下 undefined 的情况？
                     NODE_ENV: JSON.stringify(process.env.NODE_ENV),
                     PRODUCTION: JSON.stringify(isProd),
                     BASE_URL: JSON.stringify(projectOptions.publicPath)
