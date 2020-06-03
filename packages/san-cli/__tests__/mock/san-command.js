@@ -15,6 +15,6 @@ exports.builder = {
     }
 };
 exports.description = 'San Command Plugin Demo';
-exports.handler = argv => {
-    console.log(`hello, ${argv.name}`);
+exports.handler = cliApi => {
+    console.log(`hello, ${cliApi.name}`);
 };
