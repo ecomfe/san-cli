@@ -13,19 +13,19 @@ const listeners = {
 function onConnected(cb) {
     listeners.connected.push(cb);
     return () => off(listeners.connected, cb);
-};
+}
 
 function onDisconnected(cb) {
     listeners.disconnected.push(cb);
     return () => off(listeners.disconnected, cb);
-};
+}
 
 function off(listeners, cb) {
     const index = listeners.indexOf(cb);
     if (index !== -1) {
         listeners.splice(index, 1);
     }
-};
+}
 
 emitter.on('connected', (component, ...args) => {
     for (const listener of listeners.connected) {

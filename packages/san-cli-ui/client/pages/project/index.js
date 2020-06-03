@@ -5,7 +5,7 @@
 
 import {Component} from 'san';
 import {router, Link} from 'san-router';
-import {Icon, Button, Spin, Steps} from 'santd';
+import {Icon, Button, Spin} from 'santd';
 import {createApolloComponent} from '@lib/san-apollo';
 import CWD from '@graphql/cwd/cwd.gql';
 import PROJECT_INIT_TEMPLATE from '@graphql/project/projectInitTemplate.gql';
@@ -20,7 +20,6 @@ import Layout from '@components/layout/horizontal';
 import 'santd/es/icon/style';
 import 'santd/es/button/style';
 import 'santd/es/spin/style';
-import 'santd/es/steps/style';
 import './index.less';
 
 export default class Project extends createApolloComponent(Component) {
@@ -50,10 +49,14 @@ export default class Project extends createApolloComponent(Component) {
                             on-submit="initProject"
                             hide-submit-btn="{{true}}"
                             current-template="{{projectTemplateList.length ? projectTemplateList[0].value : ''}}"
-                            project-template-list="{{projectTemplateList}}"></c-project-template-list>
+                            project-template-list="{{projectTemplateList}}"
+                        />
                         <c-create 
                             s-elif="current === 2"
-                            s-ref="create" prompts="{{projectPrompts}}" cwd="{{cwd}}" />
+                            s-ref="create"
+                            prompts="{{projectPrompts}}"
+                            cwd="{{cwd}}"
+                        />
 
                         <!---底部按钮--->
                         <div class="footer-wrapper">
@@ -83,13 +86,12 @@ export default class Project extends createApolloComponent(Component) {
                             >{{$t('project.components.create.submitText')}}</s-button>
 
                             <!----上一步---->
-                            <s-button type="link"
-                                      size="large"
-                                      class="cancel-submit"
-                                      on-click="cancelSubmit"
-                                      s-if="current > 0">
-                                {{$t('pre')}}
-                            </s-button>
+                            <s-button s-if="current > 0"
+                                type="link"
+                                size="large"
+                                class="cancel-submit"
+                                on-click="cancelSubmit"
+                            >{{$t('pre')}}</s-button>
                         </div>
                     </div>
 
@@ -121,8 +123,6 @@ export default class Project extends createApolloComponent(Component) {
         'r-link': Link,
         's-button': Button,
         's-spin': Spin,
-        's-steps': Steps,
-        's-step': Steps.Step,
         'c-connection-status': ConnectionStatus,
         'c-list': ProjectList,
         'c-folder-explorer': FolderExplorer,
@@ -136,7 +136,6 @@ export default class Project extends createApolloComponent(Component) {
             projectPrompts: [],
             pageLoading: false,
             current: 0,
-            stepsData: [],
             menuData: [],
             nav: [],
             isImporting: false,
@@ -148,10 +147,9 @@ export default class Project extends createApolloComponent(Component) {
     async attached() {
         let menuData = this.$t('project.select.menu');
         let queryNav = this.data.get('route.query.nav');
-        this.data.set('stepsData', this.$t('project.select.create.steps'));
         this.data.set('menuData', menuData);
         this.data.set('nav', [queryNav || menuData[0].key]);
-        // simple query demo
+
         let res = await this.$apollo.query({query: CWD});
         if (res.data) {
             this.data.set('cwd', res.data.cwd);
@@ -163,7 +161,6 @@ export default class Project extends createApolloComponent(Component) {
     }
 
     handleCwdChange({path, isPackage}) {
-        // console.log('change', path);
         path && this.data.set('cwd', path);
         this.data.set('isPackage', isPackage);
     }
@@ -207,7 +204,7 @@ export default class Project extends createApolloComponent(Component) {
         if (data.projectInitTemplate && data.projectInitTemplate.prompts) {
             this.data.set('projectPrompts', this.formatPrompts(data.projectInitTemplate.prompts));
             this.data.set('current', this.data.get('current') + 1);
-        };
+        }
     }
 
     handleInitProject() {

@@ -40,7 +40,6 @@
                 "modalCreateTitle": "输入文件夹名称"
             },
             "create": {
-                "steps": ["选择文件夹", "确认配置"],
                 "initProject": "在此创建工程",
                 "prev": "上一步",
                 "createProject": "确认创建"
