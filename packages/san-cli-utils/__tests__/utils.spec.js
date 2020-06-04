@@ -31,11 +31,11 @@ describe('测试tmpl', () => {
             .toEqual('My name is Jinz Hello JS');
 
         expect(tmpl('My name is {{name}} {{hello}} {{w}}',
-            {name: 'Jinz', hello: 'Hello JS'})).toEqual('My name is Jinz Hello JS ');
+            {name: 'Jinz', hello: 'Hello JS'})).toEqual('My name is Jinz Hello JS undefined');
     });
     test('异常数据', () => {
         expect(tmpl('My name is {{name}}', '')).toEqual('My name is {{name}}');
-        expect(tmpl('My name is {{name}}', {})).toEqual('My name is ');
+        expect(tmpl('My name is {{name}}', {})).toEqual('My name is undefined');
         expect(() => tmpl(['name'], {name: 'Jinz'})).toThrowError('error');
     });
 });

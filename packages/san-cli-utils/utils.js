@@ -40,5 +40,5 @@ exports.tmpl = (tpl = '', data = {}) => {
     if (typeof data !== 'object') {
         return tpl;
     }
-    return tpl.replace(/\{\{(\w+)\}\}/g, (word, key) => (data[key] || ''));
+    return tpl.replace(/\{\{(\w+)\}\}/g, (word, key) => data[key]);
 };
