@@ -9,7 +9,6 @@ import createApolloServer from '@lib/create-apollo-server';
 import {register} from '@lib/san-apollo';
 import localization from '@lib/san-localization';
 import Project from './project';
-import Detail from './detail';
 import About from '@components/about';
 import NotFound from '@components/not-found';
 
@@ -27,15 +26,9 @@ const routes = [
     {rule: '/project', Component: Project, target: '#app'},
     {rule: '/project/:nav', Component: Project, target: '#app'},
     {rule: '/about', Component: About, target: '#app'},
-    {rule: '/notfound', Component: NotFound, target: '#app'},
-    {rule: '/:func', Component: Detail, target: '#app'}
+    {rule: '/notfound', Component: NotFound, target: '#app'}
 ];
 
 routes.forEach(option => router.add(option));
-
-router.listen((e, config) => {
-    // eslint-disable-next-line no-console
-    console.log(e);
-});
 
 router.start();
