@@ -19,6 +19,7 @@ const filter = require('gulp-filter');
 const rename = require('gulp-rename');
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const evaluate = require('../utils/evaluate');
+const validatePrompts = require('../utils/promptsValidator');
 const {getGitUser} = require('san-cli-utils/env');
 
 const ask = require('../ask');
@@ -52,9 +53,18 @@ module.exports = (name, dest, options) => {
             });
         // 2. 请回答
         task.info();
-        // 在cli ui中，模板中的预设已经通过 --project-presets 参数传过来了，就不再询问
-        const answers = options.projectPresets ? JSON.parse(options.projectPresets)
-            : await ask(metaData.prompts || {}, metaData, options);
+
+        // 在cli ui中，模板中的预设已经通过 --project-presets 参数传过来了
+        const projectPresets = options.projectPresets && JSON.parse(options.projectPresets);
+
+        // 如果projectPresets存在，且不合法
+        if (projectPresets && !validatePrompts(metaData.prompts, projectPresets)) {
+            console.log('🌚 Project presets illegal.');
+            return;
+        }
+
+        // 预设存在，就不再询问配置项
+        const answers = projectPresets || await ask(metaData.prompts || {}, metaData, options);
         const data = Object.assign(
             {
                 destDirName: dest,
