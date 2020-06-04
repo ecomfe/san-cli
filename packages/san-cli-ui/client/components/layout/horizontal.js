@@ -29,11 +29,13 @@ export default class ComponentHorLayout extends Component {
                                 </r-link>
                             </s-menuitem>
                         </s-menu>
+                        <!---
                         <div class="head-right">
                             <r-link to="/about">
                                 <s-icon type="question-circle"></s-icon>
                             </r-link>
                         </div>
+                        --->
                     </div>
                 </s-header>
                 <s-content>

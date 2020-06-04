@@ -16,7 +16,7 @@ const normalizeDir = dir => {
         return dir;
     }
 
-    // remote last / or \
+    // remove last / or \
     const lastChar = dir.charAt(dir.length - 1);
     if (lastChar === path.sep) {
         dir = dir.substr(0, dir.length - 1);

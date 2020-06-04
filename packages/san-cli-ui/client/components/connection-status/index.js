@@ -4,7 +4,7 @@
  */
 
 import {Component} from 'san';
-import {onConnected, onDisconnected} from '@lib/connection';
+import {onReconnected, onDisconnected} from '@lib/connection';
 import {Icon} from 'santd';
 import 'santd/es/icon/style';
 import './index.less';
@@ -33,14 +33,12 @@ export default class ConnectionStatus extends Component {
     }
 
     async attached() {
-        // 断线时触发
         onDisconnected(() => {
             this.data.set('showStatus', true);
             this.data.set('connected', false);
         });
 
-        // 断线重连时触发
-        onConnected(() => {
+        onReconnected(() => {
             this.data.set('showStatus', true);
             this.data.set('connected', true);
             setTimeout(() => {

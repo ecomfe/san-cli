@@ -28,10 +28,6 @@ const getTemplateList = async () => {
     // 1. 默认的repositories
     const defaultTemplates = [
         {
-            label: 'icode:san-project-base（百度内部）',
-            value: 'ssh://git@icode.baidu.com:8235/baidu/hulk/san-project-base'
-        },
-        {
             label: 'github:san-project-base',
             value: 'https://github.com/ksky521/san-project'
         }
@@ -64,7 +60,7 @@ const getTemplateList = async () => {
     // 4. 添加默认的库
     const templates = remoteList.concat(defaultTemplates);
 
-    debug({templates});
+    debug(`templates: ${templates.join(' \/ ')}`);
 
     return templates;
 };
@@ -79,7 +75,7 @@ const initTemplate = async ({template, useCache}) => {
 
     const localTemplatePath = path.join(require('os').homedir(), DEFAULT_TEMPLATE_PATH);
 
-    // 1. 如果是 -- 开头，则标明是参数，不是模板地址，此时放到 args里面
+    // 1. 如果是以 -- 开头的参数，则放到args里面
     if (/^\-\-/.test(template)) {
         debug(`Add template[${template}] param to args.`);
         args.push(template);
