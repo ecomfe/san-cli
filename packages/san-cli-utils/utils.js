@@ -27,10 +27,18 @@ exports.isDirectoryAndNotCwd = p => {
 /**
  * 简单的模板字符串替换，类似es6 template String，处理一些占位问题
  *
- * @param {string} tmpl 字符串模板
+ * @param {string} tpl 字符串模板
  * @param {Object} data 模板需要的数据
  * @return {string} 返回处理后的字符串
  *
  * tmpl('My name is {{name}}', {name: 'Jinz'}); // 'My name is Jinz'
  */
-exports.tmpl = (tmpl, data) => tmpl.replace(/\{\{(\w+)\}\}/g, (word, key) => data[key]);
+exports.tmpl = (tpl = '', data = {}) => {
+    if (typeof tpl !== 'string') {
+        throw new TypeError('tmpl parameter type error');
+    }
+    if (typeof data !== 'object') {
+        return tpl;
+    }
+    return tpl.replace(/\{\{(\w+)\}\}/g, (word, key) => data[key]);
+};
