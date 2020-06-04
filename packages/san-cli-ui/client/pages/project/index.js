@@ -157,7 +157,8 @@ export default class Project extends createApolloComponent(Component) {
     }
 
     handleRouteTo(r) {
-        r && router.locator.redirect(r);
+        // TODO: 暂时屏蔽入口
+        // r && router.locator.redirect(r);
     }
 
     handleCwdChange({path, isPackage}) {

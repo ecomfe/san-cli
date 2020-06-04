@@ -7,12 +7,18 @@ import emitter from 'tiny-emitter/instance';
 
 const listeners = {
     connected: [],
+    reconnected: [],
     disconnected: []
 };
 
 function onConnected(cb) {
     listeners.connected.push(cb);
     return () => off(listeners.connected, cb);
+}
+
+function onReconnected(cb) {
+    listeners.reconnected.push(cb);
+    return () => off(listeners.reconnected, cb);
 }
 
 function onDisconnected(cb) {
@@ -33,6 +39,12 @@ emitter.on('connected', (component, ...args) => {
     }
 });
 
+emitter.on('reconnected', (component, ...args) => {
+    for (const listener of listeners.reconnected) {
+        listener(component, args);
+    }
+});
+
 emitter.on('disconnected', (component, ...args) => {
     for (const listener of listeners.disconnected) {
         listener(component, args);
@@ -41,5 +53,6 @@ emitter.on('disconnected', (component, ...args) => {
 
 module.exports = {
     onConnected,
+    onReconnected,
     onDisconnected
 };

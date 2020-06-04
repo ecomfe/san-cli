@@ -33,17 +33,14 @@ export default path => {
         defaultOptions
     });
 
-    // online
     client.on('connected', () => {
-        console.log('connected!');
-    });
-
-    // 断线重连
-    client.on('reconnected', async () => {
         emitter.emit('connected');
     });
 
-    // 触发断线
+    client.on('reconnected', async () => {
+        emitter.emit('reconnected');
+    });
+
     client.on('disconnected', () => {
         emitter.emit('disconnected');
     });
