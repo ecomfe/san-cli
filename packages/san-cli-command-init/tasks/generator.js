@@ -57,10 +57,14 @@ module.exports = (name, dest, options) => {
         // 在cli ui中，模板中的预设已经通过 --project-presets 参数传过来了
         const projectPresets = options.projectPresets && JSON.parse(options.projectPresets);
 
-        // 如果projectPresets存在，且不合法
-        if (projectPresets && !validatePrompts(metaData.prompts, projectPresets)) {
-            console.log('🌚 Project presets illegal.');
-            return;
+        if (projectPresets) {
+            if (validatePrompts(metaData.prompts, projectPresets)) {
+                debug('ProjectPresets is valid!');
+            }
+            else {
+                console.log('🌚 Project presets illegal.');
+                return;
+            }
         }
 
         // 预设存在，就不再询问配置项
