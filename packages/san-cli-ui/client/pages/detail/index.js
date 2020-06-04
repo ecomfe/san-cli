@@ -1,6 +1,6 @@
 /**
  * @file 项目配置详情页面
- * @author zhangtingting12 <zhangtingting12@baidu.com>
+ * @author zttonly
  */
 
 import {Component} from 'san';

@@ -1,6 +1,6 @@
 /**
  * @file command Component
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author jinzhan
  */
 const path = require('path');
 const openBrowser = require('@jinzhan/open-browser');

@@ -1,6 +1,6 @@
 /**
  * @file connectionStatus组件
- * @author zhangtingting12 <zhangtingting12@baidu.com>
+ * @author zttonly
  */
 
 import {Component} from 'san';

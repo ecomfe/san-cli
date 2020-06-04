@@ -37,6 +37,7 @@ describe('Commander', () => {
             'plugin',
             'remote',
             'docit',
+            'ui',
             'hello'
         ]);
     });

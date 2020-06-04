@@ -1,6 +1,6 @@
 /**
  * @file server 入口文件
- * @author wangyongqing <wangyongqing01@baidu.com>
+ * @author zttonly
  */
 const path = require('path');
 const http = require('http');

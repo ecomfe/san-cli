@@ -1,6 +1,6 @@
 /**
  * @file index
- * @author zhangtingting12 <zhangtingting12@baidu.com>
+ * @author zttonly
  */
 
 import san from 'san';
