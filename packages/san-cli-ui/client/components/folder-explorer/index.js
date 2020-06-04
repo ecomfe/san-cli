@@ -179,6 +179,7 @@ export default class FolderExplorer extends Component {
                 }
 
                 if (loading) {
+                    // TODO: 测试loading态可见时长后决定页面增加显示效果
                     console.log('loading');
                 }
 
