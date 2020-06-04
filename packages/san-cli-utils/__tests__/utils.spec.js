@@ -33,9 +33,9 @@ describe('测试tmpl', () => {
         expect(tmpl('My name is {{name}} {{hello}} {{w}}',
             {name: 'Jinz', hello: 'Hello JS'})).toEqual('My name is Jinz Hello JS ');
     });
-    test('非法数据', () => {
+    test('异常数据', () => {
         expect(tmpl('My name is {{name}}', '')).toEqual('My name is {{name}}');
         expect(tmpl('My name is {{name}}', {})).toEqual('My name is ');
-        expect(tmpl(['name'], {name: 'Jinz'})).toEqual(['name']);
+        expect(() => tmpl(['name'], {name: 'Jinz'})).toThrowError('error');
     });
 });

@@ -34,7 +34,10 @@ exports.isDirectoryAndNotCwd = p => {
  * tmpl('My name is {{name}}', {name: 'Jinz'}); // 'My name is Jinz'
  */
 exports.tmpl = (tpl = '', data = {}) => {
-    if (typeof tpl !== 'string' || typeof data !== 'object') {
+    if (typeof tpl !== 'string') {
+        throw new TypeError('tmpl parameter type error');
+    }
+    if (typeof data !== 'object') {
         return tpl;
     }
     return tpl.replace(/\{\{(\w+)\}\}/g, (word, key) => (data[key] || ''));
