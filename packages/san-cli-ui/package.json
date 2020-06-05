@@ -9,6 +9,7 @@
     "scripts": {
         "ui": "cross-env DEBUG=san-cli:* node ../san-cli/index.js ui",
         "build": "cross-env NODE_ENV=production node ../san-cli/index.js build --config san.config.js",
+        "prepublish": "npm run build",
         "analyze": "cross-env NODE_ENV=production node ../san-cli/index.js build --config san.config.js --analyze",
         "serve": "cross-env SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql node ../san-cli/index.js serve --config san.config.js",
         "start": "cross-env DEBUG=san-cli:ui:* SAN_CLI_UI_DEV=true nodemon ../san-cli/index.js ui",
