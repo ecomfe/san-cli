@@ -25,10 +25,6 @@ import 'santd/es/button/style';
  */
 
 export default class PromptsForm extends Component {
-    constructor(opts = {}) {
-        super(opts);
-    }
-
     static template = /* html */ `
       <div>
         <s-form label-col="{{formItemLayout.labelCol}}" 

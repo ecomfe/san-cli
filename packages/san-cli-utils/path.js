@@ -10,6 +10,7 @@
 
 const url = require('url');
 const path = require('path');
+const hash = require('hash-sum');
 const importLazy = require('import-lazy')(require);
 const address = importLazy('address');
 const home = require('user-home');
@@ -99,6 +100,8 @@ exports.getLocalTplPath = template => {
     return path.join(
         getUserHomeFolder(),
         'templates',
+        // 增加一层hash的目录，避免同名文件被覆盖
+        hash(template),
         template.replace(/[/:#]/g, '-').substring(template.lastIndexOf('/') + 1)
     );
 };

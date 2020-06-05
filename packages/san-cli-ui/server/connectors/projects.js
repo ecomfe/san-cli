@@ -12,12 +12,15 @@ const launch = require('launch-editor');
 const {getDebugLogger, log, info} = require('san-cli-utils/ttyLogger');
 const {getGitUser} = require('san-cli-utils/env');
 const {tmpl} = require('san-cli-utils/utils');
+const downloadRepo = require('san-cli-utils/downloadRepo');
+const {getLocalTplPath} = require('san-cli-utils/path');
 const cwd = require('./cwd');
 const events = require('../utils/events');
 const folders = require('./folders');
 
-const DEFAULT_TEMPLATE_PATH = '.san/templates/san-project';
 const SAN_CLI_UI_DEV = process.env.SAN_CLI_UI_DEV === 'true';
+
+// 用于本地开发调试
 const SAN_COMMAND_NAME =  SAN_CLI_UI_DEV ? 'yarn' : 'san';
 const SAN_COMMAND_ARGS =  SAN_CLI_UI_DEV ? ['dev:san'] : [];
 
@@ -33,7 +36,7 @@ const getTemplateList = async () => {
         }
     ];
 
-    // 2. 默认的repositories来自于san remote list
+    // 2. 来自于san remote list的repositories
     let remoteList = child.stdout.split('\n').slice(1);
     if (remoteList.length) {
         remoteList = remoteList.map(val => {
@@ -47,17 +50,7 @@ const getTemplateList = async () => {
         });
     }
 
-    // 3. 看看本地有没有现在的缓存
-    const localTemplatePath = path.join(require('os').homedir(), DEFAULT_TEMPLATE_PATH);
-
-    if (fs.existsSync(localTemplatePath)) {
-        remoteList.unshift({
-            label: 'Local（本地）',
-            value: '--offline'
-        });
-    }
-
-    // 4. 添加默认的库
+    // 3. 添加默认的库
     const templates = remoteList.concat(defaultTemplates);
 
     debug(`templates: ${templates.join(' \/ ')}`);
@@ -66,46 +59,23 @@ const getTemplateList = async () => {
 };
 
 const initTemplate = async ({template, useCache}) => {
-    debug(`template: ${template}`);
+    // 临时存放地址，存放在~/.san/templates下面
+    let tmp = getLocalTplPath(template);
 
-    const args = [
-        // 仅仅初始化模板，获取模板数据
-        '--download-repo-only'
-    ];
-
-    const localTemplatePath = path.join(require('os').homedir(), DEFAULT_TEMPLATE_PATH);
-
-    // 1. 如果是以 -- 开头的参数，则放到args里面
-    if (/^\-\-/.test(template)) {
-        debug(`Add template[${template}] param to args.`);
-        args.push(template);
-        template = '';
+    // 优先使用缓存
+    if (fs.existsSync(tmp)) {
+        debug(`🥰 Using local template from ${tmp}`);
+    }
+    else {
+        debug(`🥰 Downloading repository from ${template}`);
+        await downloadRepo(template, tmp, {
+            template,
+            appName: 'APP_NAME_PLACEHOLDER'
+        }).catch(errMessage => console.log(errMessage));
     }
 
-    const cmdArgs = SAN_COMMAND_ARGS
-        .concat(template ? ['init', template] : 'init')
-        .concat([
-            // 初始化模板，此时app-name参数不需要
-            'APP_NAME_PLACEHOLDER',
-            ...args
-        ]);
-
-    debug(`${SAN_COMMAND_NAME} ${cmdArgs.join(' ')}`);
-
-    const child = execa(SAN_COMMAND_NAME, cmdArgs, {
-        cwd: cwd.get(),
-        stdio: ['inherit', 'pipe', 'inherit']
-    });
-
-    child.stdout.on('data', buffer => {
-        const text = buffer.toString().trim();
-        debug(text);
-    });
-
-    await child;
-
     // 2. 获取项目脚手架的预设，传给前端
-    const metaPrompts = require(`${localTemplatePath}/meta.js`).prompts;
+    const metaPrompts = require(`${tmp}/meta.js`).prompts;
     const prompts = Object.keys(metaPrompts).map(name => ({
         name,
         ...metaPrompts[name]
@@ -137,8 +107,11 @@ const create = async (params, context) => {
         '--install'
     ];
 
+    debug(`${JSON.stringify(params)}`);
+
     const cmdArgs = SAN_COMMAND_ARGS.concat([
         'init',
+        params.template,
         params.name,
         ...args
     ]);

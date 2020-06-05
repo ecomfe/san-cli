@@ -140,7 +140,8 @@ export default class Project extends createApolloComponent(Component) {
             nav: [],
             isImporting: false,
             isPackage: false,
-            projectTemplateList: []
+            projectTemplateList: [],
+            projectTemplate: ''
         };
     }
 
@@ -203,6 +204,8 @@ export default class Project extends createApolloComponent(Component) {
         });
         this.data.set('pageLoading', false);
         if (data.projectInitTemplate && data.projectInitTemplate.prompts) {
+            // 存储起来，create项目的时候要用
+            this.data.set('projectTemplate', template);
             this.data.set('projectPrompts', this.formatPrompts(data.projectInitTemplate.prompts));
             this.data.set('current', this.data.get('current') + 1);
         }
@@ -213,7 +216,9 @@ export default class Project extends createApolloComponent(Component) {
     }
 
     createProject() {
-        this.ref('create').submit();
+        this.ref('create').submit({
+            template: this.data.get('projectTemplate')
+        });
     }
 
     cancelSubmit() {

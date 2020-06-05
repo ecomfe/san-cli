@@ -11,7 +11,7 @@
 const path = require('path');
 const fs = require('fs-extra');
 const {getLocalTplPath} = require('san-cli-utils/path');
-const downloadRepo = require('../utils/downloadRepo');
+const downloadRepo = require('san-cli-utils/downloadRepo');
 
 module.exports = (template, dest, options) => {
     return async (ctx, task) => {

@@ -37,11 +37,6 @@ module.exports = (template, appName, options = {}) => {
     ];
 
     // cli ui需要获取模板中的meta配置，然后再执行安装
-    // 使用cli ui在初始化安装的时候，执行到第2步即可，所以在这里加了个--download-repo-only参数
-    if (options.downloadRepoOnly) {
-        taskList.splice(2);
-    }
-
     // 离线脚手架目录处理
     // 1. 下载安装包 download
     // 2. 解包 unpack

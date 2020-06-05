@@ -13,7 +13,7 @@ extend type Query {
 
 extend type Mutation {
   projectInitTemplate (template: String): ProjectInitTemplate
-  projectCreation (name: String, presets: JSON): ProjectCreation
+  projectCreation (name: String, template: String, presets: JSON): ProjectCreation
   projectSetFavorite(id: ID, favorite: Int): Project
   projectImport (path: String, force: Boolean): Project!
   projectOpen (id: ID!): Project!,

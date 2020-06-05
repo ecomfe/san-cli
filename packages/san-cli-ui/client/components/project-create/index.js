@@ -93,7 +93,8 @@ export default class ProjectCreate extends createApolloComponent(Component) {
         });
     }
 
-    submit() {
+    submit(data) {
+        this.formData = data;
         this.ref('form').handleSubmit();
     }
 
@@ -103,7 +104,8 @@ export default class ProjectCreate extends createApolloComponent(Component) {
             mutation: PROJECT_CREATION,
             variables: {
                 name: this.data.get('app').name || '',
-                presets
+                presets,
+                ...this.formData
             }
         }).then(({data}) => {
             // 创建完成
