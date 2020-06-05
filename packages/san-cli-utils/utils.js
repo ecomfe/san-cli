@@ -42,3 +42,14 @@ exports.tmpl = (tpl = '', data = {}) => {
     }
     return tpl.replace(/\{\{(\w+)\}\}/g, (word, key) => data[key]);
 };
+
+/**
+ * 获取耗时时长
+ *
+ * @param {number|Object} 起始的时间戳，Date对象
+ * @param {number} decimals小数的位数
+ */
+exports.timeCost = (startTime, decimals = 2) => {
+    const duration = new Date() - new Date(startTime);
+    return (duration / 1e3).toFixed(decimals);
+};
