@@ -91,18 +91,6 @@
                 "link": "/dashboard"
             },
             {
-                "text": "插件",
-                "icon": "deployment-unit",
-                "key": "plugin",
-                "link": "/plugin"
-            },
-            {
-                "text": "依赖",
-                "icon": "apartment",
-                "key": "dependency",
-                "link": "/dependency"
-            },
-            {
                 "text": "配置",
                 "icon": "setting",
                 "key": "configuration",
