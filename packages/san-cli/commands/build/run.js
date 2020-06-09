@@ -10,6 +10,7 @@
 
 module.exports = function apply(argv, api, projectOptions) {
     const path = require('path');
+    const fs = require('fs');
     const {info, success: successLog, error} = require('san-cli-utils/ttyLogger');
     const {textColor} = require('san-cli-utils/randomColor');
     const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
@@ -19,7 +20,7 @@ module.exports = function apply(argv, api, projectOptions) {
     // 重新赋值
     argv.mode = mode;
 
-    const {watch, analyze, verbose, dest, modern} = argv;
+    const {watch, analyze, verbose, dest, modern, statsJson} = argv;
     // --modern + --analyze 应该显示 modern 的 analyze 的结果
     if (modern && analyze) {
         process.env.SAN_CLI_MODERN_BUILD = true;
@@ -59,6 +60,10 @@ module.exports = function apply(argv, api, projectOptions) {
                     resolve: p => api.resolve(p)
                 })
             );
+            if (statsJson) {
+                // 将 stats 生成 stats.json
+                fs.writeFileSync(path.join(targetDir, 'stats.json'), JSON.stringify(stats));
+            }
             if (!watch) {
                 const duration = (Date.now() - startTime) / 1e3;
                 if (isModern) {

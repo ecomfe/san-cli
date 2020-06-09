@@ -45,22 +45,23 @@ exports.builder = {
         default: false,
         describe: 'Modern mode'
     },
-    'report-json': {
-        alias: 'reportJson',
+    'stats-json': {
+        alias: 'statsJson',
         type: 'boolean',
         hidden: true,
         default: false,
         describe: 'Generate package report as report.json'
     },
+    // 'no-minimize': {
+    //     type: 'boolean',
+    //     hidden: true,
+    //     default: false,
+    //     describe: 'Do not open minimize'
+    // },
     remote: {
         type: 'string',
         alias: 'r',
         describe: 'Send compiled output to the remote target machine'
-    },
-    report: {
-        type: 'boolean',
-        default: false,
-        describe: 'Generate package report as report.html'
     },
     dest: {
         alias: 'd',
