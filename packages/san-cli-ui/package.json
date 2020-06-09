@@ -67,7 +67,7 @@
         "cross-env": "^7.0.2",
         "graphql-tag": "^2.10.3",
         "nodemon": "^2.0.4",
-        "san": "^3.8.3",
+        "san": "^3.8.5",
         "san-router": "^1.2.2",
         "santd": "^0.2.5",
         "subscriptions-transport-ws": "^0.9.16",
