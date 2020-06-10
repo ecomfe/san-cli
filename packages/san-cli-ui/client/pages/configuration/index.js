@@ -18,7 +18,7 @@ export default class Configuration extends createApolloComponent(Component) {
     static template = /* html */`
         <div class="config">
             <s-spin class="loading" spinning="{{pageLoading}}" size="large"/>
-            <c-layout menu="{{menuData}}" nav="{=nav=}" title="{=headTitle=}">
+            <c-layout menu="{{$t('menu')}}" nav="{{['configuration']}}" title="{=headTitle=}">
                 <template slot="right">
                     <div>
                         configuration head
@@ -48,8 +48,6 @@ export default class Configuration extends createApolloComponent(Component) {
 
 
     async attached() {
-        this.data.set('menuData', this.$t('menu'));
-        this.data.set('nav', ['configuration']);
         // simple query demo
         let res = await this.$apollo.query({query: CWD});
         if (res.data) {

@@ -15,7 +15,7 @@ import './index.less';
 
 export default class Detail extends createApolloComponent(Component) {
     static template = /* html */`
-        <c-layout nav="{{['task']}}" title="{{$t('task.title')}}">
+        <c-layout menu="{{$t('menu')}}" nav="{{['task']}}" title="{{$t('task.title')}}">
             <template slot="right"></template>
             <div slot="content">
                 
@@ -39,7 +39,6 @@ export default class Detail extends createApolloComponent(Component) {
     }
 
     async attached() {
-        this.data.set('title', this.$t('detail.title'));
         // simple query demo
         let res = await this.$apollo.query({query: CWD});
         if (res.data) {
