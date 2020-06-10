@@ -52,7 +52,7 @@
             "searchPlaceholder": "请输入项目关键字",
             "emptyTip": "暂无项目",
             "collectionTitle": "收藏的项目",
-            "listTitle": "全部项目",
+            "listTitle": "其他项目",
             "modal": {
                 "tip": "输入新名称",
                 "placeholder": "请输入合法名称",
