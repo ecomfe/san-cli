@@ -191,7 +191,7 @@ export default class ProjectList extends Component {
             });
             res.data && this.data.set('projectCurrent', res.data.projectCurrent);
         }
-        let r = this.$t('detail.menu') ? this.$t('detail.menu')[0].link : '';
+        let r = this.$t('menu') ? this.$t('menu')[0].link : '';
         this.fire('routeto', r);
     }
 }
