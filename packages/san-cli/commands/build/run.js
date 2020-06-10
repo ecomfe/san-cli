@@ -7,7 +7,33 @@
  * @file build run
  * @author ksky521
  */
-
+const statsOptions = {
+    assets: true,
+    builtAt: false,
+    moduleAssets: false,
+    moduleTrace: false,
+    cachedAssets: false,
+    children: true,
+    chunks: true,
+    chunkGroups: false,
+    chunkModules: false,
+    chunkRootModules: false,
+    chunkOrigins: false,
+    source: false,
+    performance: true,
+    providedExports: false,
+    errors: false,
+    errorDetails: false,
+    errorStack: false,
+    entrypoints: false,
+    warnings: false,
+    outputPath: false,
+    hash: true,
+    publicPath: true,
+    timings: true,
+    version: true,
+    logging: 'none'
+};
 module.exports = function apply(argv, api, projectOptions) {
     const path = require('path');
     const fs = require('fs');
@@ -60,10 +86,7 @@ module.exports = function apply(argv, api, projectOptions) {
                     resolve: p => api.resolve(p)
                 })
             );
-            if (statsJson) {
-                // 将 stats 生成 stats.json
-                fs.writeFileSync(path.join(targetDir, 'stats.json'), JSON.stringify(stats));
-            }
+
             if (!watch) {
                 const duration = (Date.now() - startTime) / 1e3;
                 if (isModern) {
@@ -82,9 +105,18 @@ module.exports = function apply(argv, api, projectOptions) {
                         `${duration}/${time / 1e3}s`
                     )}, Webpack ${version}.`
                 );
+
+                // 放到！watch 里面，watch 时候没人关注 stats.json 吧
+                if (statsJson) {
+                    // 将 stats 生成 stats.json
+                    fs.writeFileSync(
+                        path.join(targetDir, 'stats.json'),
+                        JSON.stringify(webpackStats.toJson(statsOptions), null, 2)
+                    );
+                }
             }
         }
-        if (watch) {
+        else {
             successLog('Build complete. Watching for changes...');
         }
     }
