@@ -75,6 +75,9 @@
             }
         }   
     },
+    "task": {
+        "title": "任务"
+    },
     "detail": {
         "title": {
             "dashboard": "项目仪表盘",

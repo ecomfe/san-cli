@@ -33,10 +33,11 @@ export default class ComponentLayout extends Component {
                         <slot name="right"></slot>
                     </div>
                 </s-header>
+
                 <s-layout class="main-wrap">
                     <s-sider theme="light">
                         <s-menu class="menu" mode="inline" selectedKeys="{{nav}}">
-                            <s-menuitem s-for="item in menu" key="{{item.key}}">
+                            <s-menuitem s-for="item in $t('detail.menu')" key="{{item.key}}">
                                 <r-link to="{{item.link}}">
                                     <s-icon type="{{item.icon}}"></s-icon>
                                     <span>{{item.text}}</span>
