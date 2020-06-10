@@ -75,6 +75,20 @@
             }
         }   
     },
+    "menu": [
+        {
+            "text": "配置",
+            "icon": "setting",
+            "key": "configuration",
+            "link": "/configuration"
+        },
+        {
+            "text": "任务",
+            "icon": "schedule",
+            "key": "task",
+            "link": "/task"
+        }
+    ],
     "detail": {
         "title": {
             "dashboard": "项目仪表盘",
@@ -82,28 +96,7 @@
             "dependency": "项目依赖",
             "configuration": "项目配置",
             "task": "任务"
-        },
-        "menu": [
-            {
-                "text": "仪表盘",
-                "icon": "dashboard",
-                "key": "dashboard",
-                "link": "/dashboard"
-            },
-            {
-                "text": "配置",
-                "icon": "setting",
-                "key": "configuration",
-                "link": "/configuration"
-            },
-            {
-                "text": "任务",
-                "icon": "schedule",
-                "key": "task",
-                "link": "/task"
-            }
-        ],
-        "customBtnText": "自定义"
+        }
     },
     "connection-status": {
         "disconnected": "连接已断开",
