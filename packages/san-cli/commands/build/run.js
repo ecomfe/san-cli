@@ -7,36 +7,9 @@
  * @file build run
  * @author ksky521
  */
-const statsOptions = {
-    assets: true,
-    builtAt: false,
-    moduleAssets: false,
-    moduleTrace: false,
-    cachedAssets: false,
-    children: true,
-    chunks: true,
-    chunkGroups: false,
-    chunkModules: false,
-    chunkRootModules: false,
-    chunkOrigins: false,
-    source: false,
-    performance: true,
-    providedExports: false,
-    errors: false,
-    errorDetails: false,
-    errorStack: false,
-    entrypoints: false,
-    warnings: false,
-    outputPath: false,
-    hash: true,
-    publicPath: true,
-    timings: true,
-    version: true,
-    logging: 'none'
-};
+
 module.exports = function apply(argv, api, projectOptions) {
     const path = require('path');
-    const fs = require('fs');
     const {info, success: successLog, error} = require('san-cli-utils/ttyLogger');
     const {textColor} = require('san-cli-utils/randomColor');
     const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
@@ -46,7 +19,7 @@ module.exports = function apply(argv, api, projectOptions) {
     // 重新赋值
     argv.mode = mode;
 
-    const {watch, analyze, verbose, dest, modern, statsJson} = argv;
+    const {watch, analyze, verbose, dest, modern} = argv;
     // --modern + --analyze 应该显示 modern 的 analyze 的结果
     if (modern && analyze) {
         process.env.SAN_CLI_MODERN_BUILD = true;
@@ -105,15 +78,6 @@ module.exports = function apply(argv, api, projectOptions) {
                         `${duration}/${time / 1e3}s`
                     )}, Webpack ${version}.`
                 );
-
-                // 放到！watch 里面，watch 时候没人关注 stats.json 吧
-                if (statsJson) {
-                    // 将 stats 生成 stats.json
-                    fs.writeFileSync(
-                        path.join(targetDir, 'stats.json'),
-                        JSON.stringify(webpackStats.toJson(statsOptions), null, 2)
-                    );
-                }
             }
         }
         else {

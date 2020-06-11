@@ -14,7 +14,7 @@ const {error, chalk} = require('san-cli-utils/ttyLogger');
 
 module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     // 读取 cli 传入的 argv
-    const {mode, entry, dest, analyze, watch, clean, remote, report, modern, modernBuild = false} = argv;
+    const {mode, entry, dest, analyze, watch, clean, remote, report, statsJson, modern, modernBuild = false} = argv;
     const targetDir = api.resolve(dest || projectOptions.outputDir);
 
     if (clean) {
@@ -34,7 +34,8 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
                     isModernBuild: false
                 }
             ]);
-        } else {
+        }
+        else {
             // Inject plugin to read non-modern build stats and inject HTML
             chainConfig.plugin('modern-mode-modern').use(ModernModePlugin, [
                 {
@@ -48,7 +49,8 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
         // 添加 analyze
         const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
         chainConfig.plugin('bundle-analyzer').use(new BundleAnalyzerPlugin());
-    } else if (report || argv['report-json']) {
+    }
+    else if (report || statsJson) {
         const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
         // 单独标示 modern 打包
         const bundleName = modern ? (modernBuild ? 'modern-' : 'legacy-') : '';
@@ -59,8 +61,8 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
                 openAnalyzer: false,
                 analyzerMode: report ? 'static' : 'disabled',
                 reportFilename: `${bundleName}report.html`,
-                statsFilename: `${bundleName}report.json`,
-                generateStatsFile: !!argv['report-json']
+                statsFilename: `${bundleName}stats.json`,
+                generateStatsFile: !!statsJson
             })
         );
     }
@@ -88,7 +90,8 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
                     /* eslint-enable max-len */
                 );
                 process.exit(1);
-            } else {
+            }
+            else {
                 remoteObj[key] = process.env[`SAN_REMOTE_${upperRemote}_${upperKey}`];
             }
         });

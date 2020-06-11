@@ -27,12 +27,12 @@ exports.builder = {
         alias: 'analyzer',
         type: 'boolean',
         default: false,
-        describe: 'Enable webpack-analyze-bunlde'
+        describe: 'Enable webpack-bundle-analyzer server'
     },
     'no-clean': {
         type: 'boolean',
         default: false,
-        describe: 'Do not delete the dist directory before building'
+        describe: 'Do not delete the output directory before building'
     },
     'no-colors': {
         alias: 'no-color',
@@ -46,11 +46,15 @@ exports.builder = {
         describe: 'Modern mode'
     },
     'stats-json': {
-        alias: 'statsJson',
+        alias: 'stats',
         type: 'boolean',
-        hidden: true,
         default: false,
-        describe: 'Generate package report as report.json'
+        describe: 'Generate webpack stats JSON file'
+    },
+    'report': {
+        type: 'boolean',
+        default: false,
+        describe: 'Generate bundle report HTML file'
     },
     // 'no-minimize': {
     //     type: 'boolean',
