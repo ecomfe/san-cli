@@ -115,7 +115,8 @@ module.exports = {
                     } = pageConfig;
 
                     // inject entry
-                    webpackConfig.entry(name).add(api.resolve(entry));
+                    const entries = Array.isArray(entry) ? entry : [entry];
+                    webpackConfig.entry(name).merge(entries.map(e => api.resolve(e)));
 
                     if (!filename) {
                         // 处理 smarty 情况
@@ -193,7 +194,6 @@ module.exports = {
                                     });
                                 }
                                 return content;
-
                             }
                         }
                         : {};
@@ -242,5 +242,4 @@ function ensureRelative(outputDir, p) {
         return path.relative(outputDir, p);
     }
     return p;
-
 }
