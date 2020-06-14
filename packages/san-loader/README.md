@@ -177,6 +177,8 @@ template 模块也支持通过 src 标签引入 template 文件：
 <template src="./component-template.html"></template>
 ```
 
+> 注意：html-loader 最新版本在生产环境（[production](https://github.com/webpack-contrib/html-loader/blob/master/src/index.js#L38-L41)）会默认开启`minimize=true`，会导致 san 解析 template 失败，所以使用 html-loader 的时候建议开启`minimize=false`。
+
 ### script
 
 script 模块必须通过 `export default` 将组件的 JS 代码导出。在写法上，支持类似 Vue 的写法：
