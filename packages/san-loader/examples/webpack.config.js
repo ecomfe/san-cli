@@ -179,7 +179,8 @@ module.exports = {
                     {
                         loader: 'html-loader',
                         options: {
-                            esModule: false
+                            esModule: false,
+                            minimize: false
                         }
                     }
                 ]
