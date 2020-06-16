@@ -1,0 +1,95 @@
+    {
+      mode: 'development',
+      context: '/Users/liuhuyue/san-cli',
+      devtool: 'cheap-module-eval-source-map',
+      output: {
+        path: '/Users/liuhuyue/san-cli/output',
+        jsonpFunction: 'HK3',
+        filename: '[name].js',
+        publicPath: '/'
+      },
+      resolve: {
+        symlinks: false,
+        alias: {
+          'core-js': '/Users/liuhuyue/san-cli/packages/san-cli-service/node_modules/core-js',
+          'regenerator-runtime': '/Users/liuhuyue/san-cli/node_modules/regenerator-runtime',
+          san: '/Users/liuhuyue/san-cli/node_modules/san/dist/san.spa.dev.js'
+        },
+        extensions: [ '.js', '.css', '.less', '.san' ],
+        modules: [
+          'node_modules',
+          '/Users/liuhuyue/san-cli/node_modules',
+          '/Users/liuhuyue/san-cli/packages/san-cli-service/node_modules'
+        ],
+        plugins: [ [Object] ]
+      },
+      resolveLoader: {
+        modules: [
+          '/Users/liuhuyue/san-cli/packages/san-cli-plugin-babel/node_modules',
+          'node_modules',
+          '/Users/liuhuyue/san-cli/node_modules',
+          '/Users/liuhuyue/san-cli/packages/san-cli-service/node_modules'
+        ],
+        plugins: [ [Object] ]
+      },
+      module: {
+        rules: [
+          [Object], [Object],
+          [Object], [Object],
+          [Object], [Object],
+          [Object], [Object],
+          [Object], [Object],
+          [Object], [Object],
+          [Object], [Object]
+        ]
+      },
+      plugins: [
+        SanLoaderPlugin {},
+        CaseSensitivePathsPlugin {
+          options: {},
+          logger: [CustomConsole],
+          pathCache: {},
+          fsOperations: 0,
+          primed: false
+        },
+        DefinePlugin { definitions: [Object] },
+        HotModuleReplacementPlugin {
+          options: {},
+          multiStep: undefined,
+          fullBuildTimeout: 200,
+          requestTimeout: 10000
+        },
+        NoEmitOnErrorsPlugin {},
+        HtmlWebpackPlugin { options: [Object] },
+        HtmlWebpackHarddiskPlugin { outputPath: undefined },
+        WebpackBarPlugin {
+          profile: false,
+          handler: [Function],
+          modulesCount: 500,
+          showEntries: false,
+          showModules: true,
+          showActiveModules: true,
+          options: [Object],
+          reporters: [Array]
+        }
+      ],
+      devServer: {
+        watchContentBase: false,
+        hot: true,
+        hotOnly: false,
+        logLevel: 'silent',
+        clientLogLevel: 'silent',
+        overlay: { warnings: false, errors: true },
+        stats: 'errors-only',
+        inline: false,
+        lazy: false,
+        index: 'index.html',
+        watchOptions: { aggregateTimeout: 300, ignored: /node_modules/, poll: 100 },
+        disableHostCheck: true,
+        compress: false,
+        host: '0.0.0.0',
+        port: 8899,
+        https: false,
+        before: undefined
+      }
+    }

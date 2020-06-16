@@ -13,6 +13,227 @@ const Service = require('../Service');
 jest.unmock('fs-extra');
 // jest.unmock('cosmiconfig');
 
+describe('e2e 测试', () => {
+    test('检查 npm start 时的 webpack 配置', done => {  // eslint-disable-line
+        const service = new Service('serve', {
+            autoLoadConfigFile: false,
+            mode: 'development',
+            projectOptions: {
+                assetsDir: 'static',
+                publicPath: '/',
+                outputDir: 'output',
+                filenameHashing: false,
+                copy: {from: 'template', to: 'template'},
+                pages: {
+                    index: {
+                        entry: '/Users/liuhuyue/san-cli/src/pages/index/index.js',
+                        template: '/Users/liuhuyue/san-cli/template/index/index.tpl',
+                        filename: 'template/index/index.tpl'
+                    }
+                },
+                css: {sourceMap: false, cssPreprocessor: 'less'},
+                alias: {
+                    '@assets': '/Users/liuhuyue/san-cli/src/assets',
+                    '@components': '/Users/liuhuyue/san-cli/src/components',
+                    '@app': '/Users/liuhuyue/san-cli/src/lib/App.js',
+                    '@store': '/Users/liuhuyue/san-cli/src/lib/Store.js'
+                },
+                sourceMap: false,
+                polyfill: true,
+                devServer: {
+                    watchContentBase: false,
+                    hot: true,
+                    hotOnly: false,
+                    logLevel: 'silent',
+                    clientLogLevel: 'silent',
+                    overlay: {warnings: false, errors: true},
+                    stats: 'errors-only',
+                    inline: false,
+                    lazy: false,
+                    index: 'index.html',
+                    watchOptions: {aggregateTimeout: 300, ignored: /node_modules/, poll: 100},
+                    disableHostCheck: true,
+                    compress: false,
+                    host: '0.0.0.0',
+                    port: 8899,
+                    https: false
+                }
+            }
+        });
+
+        service.run(api => {
+            const webpackConfig = api.getWebpackConfig();
+            expect(webpackConfig).toMatchObject({
+                mode: 'development',
+                context: '/Users/liuhuyue/san-cli',
+                devtool: 'cheap-module-eval-source-map',
+                output: {
+                    path: '/Users/liuhuyue/san-cli/output',
+                    jsonpFunction: 'HK3',
+                    filename: '[name].js',
+                    publicPath: '/'
+                },
+                resolve: {
+                    symlinks: false,
+                    alias: {
+                        'core-js': '/Users/liuhuyue/san-cli/packages/san-cli-service/node_modules/core-js',
+                        'regenerator-runtime': '/Users/liuhuyue/san-cli/node_modules/regenerator-runtime',
+                        san: '/Users/liuhuyue/san-cli/node_modules/san/dist/san.spa.dev.js',
+                        '@assets': '/Users/liuhuyue/san-cli/src/assets',
+                        '@components': '/Users/liuhuyue/san-cli/src/components',
+                        '@app': '/Users/liuhuyue/san-cli/src/lib/App.js',
+                        '@store': '/Users/liuhuyue/san-cli/src/lib/Store.js'
+                    },
+                    extensions: ['.js', '.css', '.less', '.san'],
+                    modules: [
+                        'node_modules',
+                        '/Users/liuhuyue/san-cli/node_modules',
+                        '/Users/liuhuyue/san-cli/packages/san-cli-service/node_modules'
+                    ]
+                },
+                resolveLoader: {
+                    modules: [
+                        '/Users/liuhuyue/san-cli/packages/san-cli-plugin-babel/node_modules',
+                        'node_modules',
+                        '/Users/liuhuyue/san-cli/node_modules',
+                        '/Users/liuhuyue/san-cli/packages/san-cli-service/node_modules'
+                    ]
+                },
+                entry: {index: ['/Users/liuhuyue/san-cli/src/pages/index/index.js']},
+                devServer: {
+                    watchContentBase: false,
+                    hot: true,
+                    hotOnly: false,
+                    logLevel: 'silent',
+                    clientLogLevel: 'silent',
+                    overlay: {warnings: false, errors: true},
+                    stats: 'errors-only',
+                    inline: false,
+                    lazy: false,
+                    index: 'index.html',
+                    watchOptions: {aggregateTimeout: 300, ignored: /node_modules/, poll: 100},
+                    disableHostCheck: true,
+                    compress: false,
+                    host: '0.0.0.0',
+                    port: 8899,
+                    https: false
+                }
+            });
+            done();
+        });
+    });
+
+    test('检查 npm run build 时的 webpack 配置', done => {  // eslint-disable-line
+        const service = new Service('build', {
+            autoLoadConfigFile: false,
+            mode: 'production',
+            projectOptions: {
+                assetsDir: 'static/san-cli',
+                publicPath: 'https://s.bdstatic.com/',
+                outputDir: 'output',
+                filenameHashing: true,
+                copy: {from: 'template', to: 'template'},
+                pages: {
+                    index: {
+                        entry: '/Users/liuhuyue/san-cli/src/pages/index/index.js',
+                        template: '/Users/liuhuyue/san-cli/template/index/index.tpl',
+                        filename: 'template/index/index.tpl'
+                    }
+                },
+                css: {sourceMap: true, cssPreprocessor: 'less'},
+                alias: {
+                    '@assets': '/Users/liuhuyue/san-cli/src/assets',
+                    '@components': '/Users/liuhuyue/san-cli/src/components',
+                    '@app': '/Users/liuhuyue/san-cli/src/lib/App.js',
+                    '@store': '/Users/liuhuyue/san-cli/src/lib/Store.js'
+                },
+                sourceMap: true,
+                polyfill: true,
+                devServer: {
+                    watchContentBase: false,
+                    hot: true,
+                    hotOnly: false,
+                    logLevel: 'silent',
+                    clientLogLevel: 'silent',
+                    overlay: {warnings: false, errors: true},
+                    stats: 'errors-only',
+                    inline: false,
+                    lazy: false,
+                    index: 'index.html',
+                    watchOptions: {aggregateTimeout: 300, ignored: /node_modules/, poll: 100},
+                    disableHostCheck: true,
+                    compress: false,
+                    host: '0.0.0.0',
+                    port: 8899,
+                    https: false
+                }
+            }
+        });
+
+        service.run(api => {
+            const webpackConfig = api.getWebpackConfig();
+            expect(webpackConfig).toMatchObject({
+                mode: 'production',
+                context: '/Users/liuhuyue/san-cli',
+                devtool: 'source-map',
+                output: {
+                    path: '/Users/liuhuyue/san-cli/output',
+                    jsonpFunction: 'HK3',
+                    filename: 'static/san-cli/js/[name].[hash:8].js',
+                    publicPath: 'https://s.bdstatic.com/',
+                    chunkFilename: 'static/san-cli/js/[name].[hash:8].js'
+                },
+                resolve: {
+                    symlinks: false,
+                    alias: {
+                        'core-js': '/Users/liuhuyue/san-cli/packages/san-cli-service/node_modules/core-js',
+                        'regenerator-runtime': '/Users/liuhuyue/san-cli/node_modules/regenerator-runtime',
+                        san: '/Users/liuhuyue/san-cli/node_modules/san/dist/san.spa.js',
+                        '@assets': '/Users/liuhuyue/san-cli/src/assets',
+                        '@components': '/Users/liuhuyue/san-cli/src/components',
+                        '@app': '/Users/liuhuyue/san-cli/src/lib/App.js',
+                        '@store': '/Users/liuhuyue/san-cli/src/lib/Store.js'
+                    },
+                    extensions: ['.js', '.css', '.less', '.san'],
+                    modules: [
+                        'node_modules',
+                        '/Users/liuhuyue/san-cli/node_modules',
+                        '/Users/liuhuyue/san-cli/packages/san-cli-service/node_modules'
+                    ]
+                },
+                resolveLoader: {
+                    modules: [
+                        '/Users/liuhuyue/san-cli/packages/san-cli-plugin-babel/node_modules',
+                        'node_modules',
+                        '/Users/liuhuyue/san-cli/node_modules',
+                        '/Users/liuhuyue/san-cli/packages/san-cli-service/node_modules'
+                    ],
+                },
+                entry: {index: ['/Users/liuhuyue/san-cli/src/pages/index/index.js']},
+                devServer: {
+                    watchContentBase: false,
+                    hot: true,
+                    hotOnly: false,
+                    logLevel: 'silent',
+                    clientLogLevel: 'silent',
+                    overlay: {warnings: false, errors: true},
+                    stats: 'errors-only',
+                    inline: false,
+                    lazy: false,
+                    index: 'index.html',
+                    watchOptions: {aggregateTimeout: 300, ignored: /node_modules/, poll: 100},
+                    disableHostCheck: true,
+                    compress: false,
+                    host: '0.0.0.0',
+                    port: 8899,
+                    https: false,
+                }
+            });
+            done();
+        });
+    });
+});
+
 describe('constructor resolvePlugins _loadPlugin', () => {
     test('plugins有值，useBuiltInPlugin为true', () => {
         const service = new Service('name', {
@@ -30,8 +251,7 @@ describe('constructor resolvePlugins _loadPlugin', () => {
             useBuiltInPlugin: true,
             projectOptions: {
                 outputDir: 'output'
-            },
-            cli: () => {}
+            }
         });
         // 检测plugins新增的插件是否已加入进去
         expect(
@@ -63,8 +283,7 @@ describe('constructor resolvePlugins _loadPlugin', () => {
             useBuiltInPlugin: true,
             projectOptions: {
                 outputDir: 'output'
-            },
-            cli: () => {}
+            }
         });
         // 检测plugins插件值是否正常
         expect(
@@ -82,8 +301,7 @@ describe('constructor resolvePlugins _loadPlugin', () => {
             useBuiltInPlugin: false,
             projectOptions: {
                 outputDir: 'output'
-            },
-            cli: () => {}
+            }
         });
         // 检测plugins插件值是否正常
         expect(service.plugins).toEqual([]);
@@ -91,11 +309,8 @@ describe('constructor resolvePlugins _loadPlugin', () => {
 });
 
 describe('loadEnv', () => {
-    let service = null;
-    beforeEach(() => {
-        service = new Service('name', {
-            cwd: __dirname + '/mock'
-        });
+    const service = new Service('name', {
+        cwd: __dirname + '/mock'
     });
     test('有mode值', () => {
         service.loadEnv('production');
@@ -109,11 +324,8 @@ describe('loadEnv', () => {
 });
 
 describe('loadProjectOptions', () => {
-    let service = null;
-    beforeEach(() => {
-        service = new Service('name', {
-            cwd: __dirname + '/mock'
-        });
+    const service = new Service('name', {
+        cwd: __dirname + '/mock'
     });
     test('可查到的文件路径', async () => {
         const config = await service.loadProjectOptions('./mock/san.config.js');
@@ -151,11 +363,8 @@ describe('loadProjectOptions', () => {
 });
 
 describe('initPlugin', () => {
-    let service = null;
-    beforeEach(() => {
-        service = new Service('name', {
-            cwd: __dirname + '/mock'
-        });
+    const service = new Service('name', {
+        cwd: __dirname + '/mock'
     });
     const expectfunc = api => {
         expect(typeof api.addPlugin).toBe('function');
