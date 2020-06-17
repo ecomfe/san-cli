@@ -65,19 +65,23 @@ san inspect --plugin copy-webpack-plugin
 
 ```js
 new CopyPlugin(
-  [
-    {
-      transform: function () { /* omitted long function */ },
-      from: '/Users/baidu/Desktop/baidu/xxx/template',
-      to: '/Users/baidu/Desktop/baidu/xxx/output/template',
-      ignore: [
-        'index.html',
-        '.DS_Store',
-        'index/index.tpl',
-        'demo-store/index.tpl'
-      ]
-    }
-  ]
+  {
+    patterns: [
+      {
+        transform: function () { /* omitted long function */ },
+        from: '/Users/baidu/Desktop/baidu/xxx/template',
+        to: '/Users/baidu/Desktop/baidu/xxx/output/template',
+        globOptions: {
+          ignore: [
+            'index.html',
+            '.DS_Store',
+            'index/index.tpl',
+            'demo-store/index.tpl'
+          ]
+        }
+      }
+    ]
+  }
 )
 ```
 
