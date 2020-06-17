@@ -208,7 +208,9 @@ module.exports = {
                             Object.assign(defaultTransformOptions, options, {
                                 from,
                                 to: path.join(outputDir, to),
-                                ignore
+                                globOptions: {
+                                    ignore
+                                }
                             })
                         );
                     }
@@ -218,7 +220,9 @@ module.exports = {
                             Object.assign(defaultTransformOptions, options, {
                                 from,
                                 to: path.join(outputDir, to),
-                                ignore
+                                globOptions: {
+                                    ignore
+                                }
                             })
                         );
                     }
@@ -232,7 +236,7 @@ module.exports = {
                 }
             }
             if (copyArgs.length) {
-                webpackConfig.plugin('copy-webpack-plugin').use(require('copy-webpack-plugin'), [copyArgs]);
+                webpackConfig.plugin('copy-webpack-plugin').use(require('copy-webpack-plugin'), [{patterns: copyArgs}]);
             }
         });
     }
