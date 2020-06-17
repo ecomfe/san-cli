@@ -14,6 +14,7 @@ jest.unmock('fs-extra');
 // jest.unmock('cosmiconfig');
 
 describe('e2e 测试', () => {
+    const cwd = process.cwd();
     test('检查 npm start 时的 webpack 配置', done => {  // eslint-disable-line
         const service = new Service('serve', {
             autoLoadConfigFile: false,
@@ -26,17 +27,17 @@ describe('e2e 测试', () => {
                 copy: {from: 'template', to: 'template'},
                 pages: {
                     index: {
-                        entry: '/Users/liuhuyue/san-cli/src/pages/index/index.js',
-                        template: '/Users/liuhuyue/san-cli/template/index/index.tpl',
+                        entry: cwd + '/src/pages/index/index.js',
+                        template: cwd + '/template/index/index.tpl',
                         filename: 'template/index/index.tpl'
                     }
                 },
                 css: {sourceMap: false, cssPreprocessor: 'less'},
                 alias: {
-                    '@assets': '/Users/liuhuyue/san-cli/src/assets',
-                    '@components': '/Users/liuhuyue/san-cli/src/components',
-                    '@app': '/Users/liuhuyue/san-cli/src/lib/App.js',
-                    '@store': '/Users/liuhuyue/san-cli/src/lib/Store.js'
+                    '@assets': cwd + '/src/assets',
+                    '@components': cwd + '/src/components',
+                    '@app': cwd + '/src/lib/App.js',
+                    '@store': cwd + '/src/lib/Store.js'
                 },
                 sourceMap: false,
                 polyfill: true,
@@ -65,10 +66,10 @@ describe('e2e 测试', () => {
             const webpackConfig = api.getWebpackConfig();
             expect(webpackConfig).toMatchObject({
                 mode: 'development',
-                context: '/Users/liuhuyue/san-cli',
+                context: cwd + '',
                 devtool: 'cheap-module-eval-source-map',
                 output: {
-                    path: '/Users/liuhuyue/san-cli/output',
+                    path: cwd + '/output',
                     jsonpFunction: 'HK3',
                     filename: '[name].js',
                     publicPath: '/'
@@ -76,30 +77,30 @@ describe('e2e 测试', () => {
                 resolve: {
                     symlinks: false,
                     alias: {
-                        'core-js': '/Users/liuhuyue/san-cli/packages/san-cli-service/node_modules/core-js',
-                        'regenerator-runtime': '/Users/liuhuyue/san-cli/node_modules/regenerator-runtime',
-                        san: '/Users/liuhuyue/san-cli/node_modules/san/dist/san.spa.dev.js',
-                        '@assets': '/Users/liuhuyue/san-cli/src/assets',
-                        '@components': '/Users/liuhuyue/san-cli/src/components',
-                        '@app': '/Users/liuhuyue/san-cli/src/lib/App.js',
-                        '@store': '/Users/liuhuyue/san-cli/src/lib/Store.js'
+                        'core-js': cwd + '/packages/san-cli-service/node_modules/core-js',
+                        'regenerator-runtime': cwd + '/node_modules/regenerator-runtime',
+                        san: cwd + '/node_modules/san/dist/san.spa.dev.js',
+                        '@assets': cwd + '/src/assets',
+                        '@components': cwd + '/src/components',
+                        '@app': cwd + '/src/lib/App.js',
+                        '@store': cwd + '/src/lib/Store.js'
                     },
                     extensions: ['.js', '.css', '.less', '.san'],
                     modules: [
                         'node_modules',
-                        '/Users/liuhuyue/san-cli/node_modules',
-                        '/Users/liuhuyue/san-cli/packages/san-cli-service/node_modules'
+                        cwd + '/node_modules',
+                        cwd + '/packages/san-cli-service/node_modules'
                     ]
                 },
                 resolveLoader: {
                     modules: [
-                        '/Users/liuhuyue/san-cli/packages/san-cli-plugin-babel/node_modules',
+                        cwd + '/packages/san-cli-plugin-babel/node_modules',
                         'node_modules',
-                        '/Users/liuhuyue/san-cli/node_modules',
-                        '/Users/liuhuyue/san-cli/packages/san-cli-service/node_modules'
+                        cwd + '/node_modules',
+                        cwd + '/packages/san-cli-service/node_modules'
                     ]
                 },
-                entry: {index: ['/Users/liuhuyue/san-cli/src/pages/index/index.js']},
+                entry: {index: [cwd + '/src/pages/index/index.js']},
                 devServer: {
                     watchContentBase: false,
                     hot: true,
@@ -135,17 +136,17 @@ describe('e2e 测试', () => {
                 copy: {from: 'template', to: 'template'},
                 pages: {
                     index: {
-                        entry: '/Users/liuhuyue/san-cli/src/pages/index/index.js',
-                        template: '/Users/liuhuyue/san-cli/template/index/index.tpl',
+                        entry: cwd + '/src/pages/index/index.js',
+                        template: cwd + '/template/index/index.tpl',
                         filename: 'template/index/index.tpl'
                     }
                 },
                 css: {sourceMap: true, cssPreprocessor: 'less'},
                 alias: {
-                    '@assets': '/Users/liuhuyue/san-cli/src/assets',
-                    '@components': '/Users/liuhuyue/san-cli/src/components',
-                    '@app': '/Users/liuhuyue/san-cli/src/lib/App.js',
-                    '@store': '/Users/liuhuyue/san-cli/src/lib/Store.js'
+                    '@assets': cwd + '/src/assets',
+                    '@components': cwd + '/src/components',
+                    '@app': cwd + '/src/lib/App.js',
+                    '@store': cwd + '/src/lib/Store.js'
                 },
                 sourceMap: true,
                 polyfill: true,
@@ -174,10 +175,10 @@ describe('e2e 测试', () => {
             const webpackConfig = api.getWebpackConfig();
             expect(webpackConfig).toMatchObject({
                 mode: 'production',
-                context: '/Users/liuhuyue/san-cli',
+                context: cwd + '',
                 devtool: 'source-map',
                 output: {
-                    path: '/Users/liuhuyue/san-cli/output',
+                    path: cwd + '/output',
                     jsonpFunction: 'HK3',
                     filename: 'static/san-cli/js/[name].[hash:8].js',
                     publicPath: 'https://s.bdstatic.com/',
@@ -186,30 +187,30 @@ describe('e2e 测试', () => {
                 resolve: {
                     symlinks: false,
                     alias: {
-                        'core-js': '/Users/liuhuyue/san-cli/packages/san-cli-service/node_modules/core-js',
-                        'regenerator-runtime': '/Users/liuhuyue/san-cli/node_modules/regenerator-runtime',
-                        san: '/Users/liuhuyue/san-cli/node_modules/san/dist/san.spa.js',
-                        '@assets': '/Users/liuhuyue/san-cli/src/assets',
-                        '@components': '/Users/liuhuyue/san-cli/src/components',
-                        '@app': '/Users/liuhuyue/san-cli/src/lib/App.js',
-                        '@store': '/Users/liuhuyue/san-cli/src/lib/Store.js'
+                        'core-js': cwd + '/packages/san-cli-service/node_modules/core-js',
+                        'regenerator-runtime': cwd + '/node_modules/regenerator-runtime',
+                        san: cwd + '/node_modules/san/dist/san.spa.js',
+                        '@assets': cwd + '/src/assets',
+                        '@components': cwd + '/src/components',
+                        '@app': cwd + '/src/lib/App.js',
+                        '@store': cwd + '/src/lib/Store.js'
                     },
                     extensions: ['.js', '.css', '.less', '.san'],
                     modules: [
                         'node_modules',
-                        '/Users/liuhuyue/san-cli/node_modules',
-                        '/Users/liuhuyue/san-cli/packages/san-cli-service/node_modules'
+                        cwd + '/node_modules',
+                        cwd + '/packages/san-cli-service/node_modules'
                     ]
                 },
                 resolveLoader: {
                     modules: [
-                        '/Users/liuhuyue/san-cli/packages/san-cli-plugin-babel/node_modules',
+                        cwd + '/packages/san-cli-plugin-babel/node_modules',
                         'node_modules',
-                        '/Users/liuhuyue/san-cli/node_modules',
-                        '/Users/liuhuyue/san-cli/packages/san-cli-service/node_modules'
+                        cwd + '/node_modules',
+                        cwd + '/packages/san-cli-service/node_modules'
                     ],
                 },
-                entry: {index: ['/Users/liuhuyue/san-cli/src/pages/index/index.js']},
+                entry: {index: [cwd + '/src/pages/index/index.js']},
                 devServer: {
                     watchContentBase: false,
                     hot: true,
