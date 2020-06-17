@@ -5,7 +5,7 @@
 
 import {Component} from 'san';
 import {createApolloComponent} from '@lib/san-apollo';
-import CWD from '@graphql/cwd/cwd.gql';
+import CONFIGURATIONS from '@graphql/configuration/configurations.gql';
 import Layout from '@components/layout';
 import {Link} from 'san-router';
 import {Icon, Button, Spin} from 'santd';
@@ -49,9 +49,9 @@ export default class Configuration extends createApolloComponent(Component) {
 
     async attached() {
         // simple query demo
-        let res = await this.$apollo.query({query: CWD});
+        let res = await this.$apollo.query({query: CONFIGURATIONS});
         if (res.data) {
-            this.data.set('cwd', res.data.cwd);
+            this.data.set('cwd', res.data.configurations);
         }
     }
 }
