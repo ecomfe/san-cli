@@ -18,6 +18,7 @@ module.exports = {
         projectOpen: (root, args, context) => projects.open(args, context),
         projectOpenInEditor: (root, args, context) => projects.projectOpenInEditor(args, context),
         projectRename: (root, args, context) => projects.rename(args, context),
-        projectRemove: (root, args, context) => projects.remove(args, context)
+        projectRemove: (root, args, context) => projects.remove(args, context),
+        projectCwdReset: (root, args, context) => projects.resetCwd(context)
     }
 };

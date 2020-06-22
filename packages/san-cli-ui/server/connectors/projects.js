@@ -193,6 +193,7 @@ const getCurrent = context => {
 };
 
 const open = ({id}, context) => {
+    console.log('!!!!open');
     const project = findOne(id, context);
 
     if (!project) {
@@ -206,6 +207,7 @@ const open = ({id}, context) => {
     // save current open project id
     context.db.set('config.currentOpenProject', id).write();
     // change path
+    console.log('cwd.set', project.path);
     cwd.set(project.path, context);
 
     // update project Date
@@ -245,10 +247,25 @@ const rename = ({id, name}, context) => {
 };
 
 const remove = ({id}, context) => {
+    if (context.db.get('config.currentOpenProject').value() === id) {
+        context.db.set('config.currentOpenProject', undefined).write();
+    }
+    if (context.db.get('config.lastOpenProject').value() === id) {
+        context.db.set('config.lastOpenProject', undefined).write();
+    }
     context.db.get('projects').remove({id}).write();
     return true;
 };
-
+const findByPath = (file, context) => {
+    return context.db.get('projects').find({path: file}).value();
+};
+const resetCwd = context => {
+    let id = context.db.get('config.currentOpenProject').value();
+    let currentProject = findOne(id, context);
+    if (currentProject) {
+        cwd.set(currentProject.path, context);
+    }
+};
 module.exports = {
     getTemplateList,
     initTemplate,
@@ -261,5 +278,7 @@ module.exports = {
     importProject,
     projectOpenInEditor,
     rename,
-    remove
+    remove,
+    resetCwd,
+    findByPath
 };

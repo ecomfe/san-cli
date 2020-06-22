@@ -234,7 +234,6 @@ export default class Project extends createApolloComponent(Component) {
             }
         });
         this.data.set('isImporting', false);
-        // TODO: redirect to project page
         router.locator.redirect('/');
     }
 }
