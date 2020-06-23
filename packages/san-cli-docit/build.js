@@ -18,7 +18,7 @@ module.exports = function build(argv, api, projectOptions) {
 
     const {dest} = argv;
 
-    // 获取 webpack 配置
+    // 编译失败处理逻辑
     function fail({err, stats}) {
         info('Build failed with errors.');
         if (stats && stats.toJson) {
