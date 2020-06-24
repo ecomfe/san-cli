@@ -113,5 +113,64 @@
         "choosePlaceholder": "请选择脚手架模板",
         "customLabel": "自定义模板地址",
         "optionLabel": "自定义脚手架模板"
+    },
+    "config": {
+        "san-cli": {
+            "description": "配置san项目",
+            "groups": {
+                "general": "基础设置",
+                "css": "CSS 设置"
+            },
+            "publicPath": {
+                "label": "公共路径",
+                "description": "应用的部署地址，如 '/my-app/'。如果留空，所有资源将使用相对路径。"
+            },
+            "outputDir": {
+                "label": "输出目录",
+                "description": "构建产生的文件将会生成在这里。"
+            },
+            "assetsDir": {
+                "label": "资源目录",
+                "description": "静态资源(js, css, img, fonts)会生成在这里。"
+            },
+            "pages": {
+                "label": "多页面配置",
+                "description": "对应html-webpack-plugin中的相应配置项"
+            },
+            "copy": {
+                "label": "模板拷贝",
+                "description": "对应copy-webpack-plugin中的相应配置项"
+            },
+            "sourceMap": {
+                "label": "在生产环境启用 Source Map",
+                "description": "如果你不需要生产环境下的 source map，禁用此项可以加速生产环境构建。"
+            },
+            "filenameHashing": {
+                "label": "给文件路径添加hash值",
+                "description": "文件路径添加hash值"
+            },
+            "largeAssetSize": {
+                "label": "资源编译大小上限",
+                "description": "小于这个配置的图片和文件会被编译成 base64 放到 css 中"
+            },
+            "css": {
+                "cssPreprocessor": {
+                    "label": "css 预处理器白名单",
+                    "description": "默认值只能为'less', 'sass', 'styl', 'stylus', 'scss'，例如写了 less，那么只编译 less、css 代码，默认全编译。"
+                },
+                "requireModuleExtension": {
+                    "label": "启用 CSS Modules",
+                    "description": "默认只有 *.module.[ext] 文件名被视为 CSS modules 文件。启用后将所有样式文件视为 CSS modules。"
+                },
+                "extract": {
+                    "label": "抽取 CSS",
+                    "description": "将组件中的样式抽取为单独的样式文件（不开启则使用 JavaScript 动态注入样式）。"
+                },
+                "sourceMap": {
+                    "label": "启用 CSS Source Map",
+                    "description": "启用对构建性能稍有影响。"
+                }
+            }
+        }
     }
 }
