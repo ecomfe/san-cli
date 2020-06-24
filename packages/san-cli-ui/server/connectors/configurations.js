@@ -7,9 +7,10 @@
 const plugin = require('./plugins');
 const cwd = require('./cwd');
 
-function list(context) {
+const list = context => {
     return plugin.getApi(cwd.get()).configurations;
-}
+};
+
 module.exports = {
     list
 };
