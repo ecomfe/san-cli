@@ -1,0 +1,44 @@
+.task-nav {
+    height: 100%;
+    overflow: auto;
+    .task-nav-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #efefef;
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    .task-icon {
+        margin-right: 16px;
+        position: relative;
+        width: 44px;
+        height: 44px;
+        img {
+            width: 44px;
+            height: 44px;
+        }
+        .santd-icon {
+            font-size: 44px;
+        }
+    }
+
+    .task-info {
+        flex: 1 1 100%;
+        overflow: hidden;
+    }
+
+    .task-info-name {
+        font-size: 18px;
+    }
+
+    .task-info-description {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}

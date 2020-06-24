@@ -4,9 +4,10 @@
 import {Component} from 'san';
 import {Link} from 'san-router';
 import {createApolloComponent} from '@lib/san-apollo';
-import CWD from '@graphql/cwd/cwd.gql';
+import TASK from '@graphql/task/tasks.gql';
 import Layout from '@components/layout';
-import Task from '@components/task';
+import TaskNav from '@components/task-nav';
+import TaskContent from '@components/task-content';
 import {Icon, Button, Spin} from 'santd';
 import 'santd/es/icon/style';
 import 'santd/es/button/style';
@@ -17,8 +18,9 @@ export default class Detail extends createApolloComponent(Component) {
     static template = /* html */`
         <c-layout nav="{{['task']}}" title="{{$t('task.title')}}">
             <template slot="right"></template>
-            <div slot="content">
-                
+            <div slot="content" class="task">
+                <c-task-nav tasks="{{tasks}}"></c-task-nav>
+                <c-task-content></c-task-content>
             </div>
         </c-layout>
     `;
@@ -28,22 +30,23 @@ export default class Detail extends createApolloComponent(Component) {
         's-button': Button,
         's-spin': Spin,
         'c-layout': Layout,
-        'c-task': Task
+        'c-task-nav': TaskNav,
+        'c-task-content': TaskContent
     };
 
     initData() {
         return {
-            cwd: '',
+            tasks: [],
             pageLoading: true
         };
     }
 
     async attached() {
         this.data.set('title', this.$t('detail.title'));
-        // simple query demo
-        let res = await this.$apollo.query({query: CWD});
+        let res = await this.$apollo.query({query: TASK});
         if (res.data) {
-            this.data.set('cwd', res.data.cwd);
+            console.log(res.data);
+            this.data.set('tasks', res.data.tasks);
         }
     }
 }

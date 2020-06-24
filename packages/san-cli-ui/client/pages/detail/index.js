@@ -10,7 +10,7 @@ import Layout from '@components/layout';
 import {Link} from 'san-router';
 import Dashboard from '@components/dashboard';
 import Configuration from '@components/configuration';
-import Task from '@components/task';
+// import Task from '@components/task';
 import NotFound from '@components/not-found';
 import {Icon, Button, Spin} from 'santd';
 import 'santd/es/icon/style';
@@ -53,7 +53,7 @@ export default class Detail extends createApolloComponent(Component) {
         'c-layout': Layout,
         'c-dashboard': Dashboard,
         'c-configuration': Configuration,
-        'c-task': Task,
+        // 'c-task': Task,
         'c-not-found': NotFound
     };
     static computed = {
