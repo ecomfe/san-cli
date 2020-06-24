@@ -56,9 +56,16 @@ type Choice {
 type Project {
   id: ID!
   name: String!
+  type: ProjectType
   path: String!
   favorite: Int
+  plugins: [Plugin]
   homepage: String
   openDate: JSON
+}
+
+enum ProjectType {
+  san
+  unknown
 }
 `;

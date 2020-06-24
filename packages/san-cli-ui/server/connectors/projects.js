@@ -193,7 +193,6 @@ const getCurrent = context => {
 };
 
 const open = ({id}, context) => {
-    console.log('!!!!open');
     const project = findOne(id, context);
 
     if (!project) {
@@ -207,7 +206,6 @@ const open = ({id}, context) => {
     // save current open project id
     context.db.set('config.currentOpenProject', id).write();
     // change path
-    console.log('cwd.set', project.path);
     cwd.set(project.path, context);
 
     // update project Date
@@ -266,6 +264,20 @@ const resetCwd = context => {
         cwd.set(currentProject.path, context);
     }
 };
+
+const getType = (project, context) => {
+    if (typeof project === 'string') {
+        project = findByPath(project, context);
+    }
+    if (!project) {
+        return 'unknown';
+    }
+    return !project.type ? 'san' : project.type;
+};
+const getLast = context => {
+    let id = context.db.get('config.lastOpenProject').value();
+    return findOne(id, context);
+};
 module.exports = {
     getTemplateList,
     initTemplate,
@@ -280,5 +292,7 @@ module.exports = {
     rename,
     remove,
     resetCwd,
-    findByPath
+    findByPath,
+    getType,
+    getLast
 };

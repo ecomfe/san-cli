@@ -3,8 +3,13 @@
  * @author jinzhan
 */
 const projects = require('../connectors/projects');
+const plugins = require('../connectors/plugins');
 
 module.exports = {
+    Project: {
+        type: (project, args, context) => projects.getType(project, context),
+        plugins: (project, args, context) => plugins.list(project.path, context)
+    },
     Query: {
         projects: (root, args, context) => projects.list(context),
         projectTemplateList: (root, args, context) => projects.getTemplateList(context),
