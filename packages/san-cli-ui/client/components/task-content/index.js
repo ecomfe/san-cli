@@ -42,11 +42,17 @@ export default class TaskList extends Component {
                     <span class="task-output-head-output">
                         <s-icon type="code" />{{$t('task.output')}}
                     </span>
-                    <s-tooltip title="{{$t('task.clear')}}">
-                        <s-icon type="delete" class="task-xterm-btn" on-click="clear" />
+
+                    <s-tooltip title="{{$t('task.bottom')}}">
+                        <s-icon type="enter" class="task-xterm-btn" on-click="scrollToBottom" />
                     </s-tooltip>
+
                     <s-tooltip title="{{$t('task.copy')}}">
                         <s-icon type="copy" class="task-xterm-btn" on-click="copyContent" />
+                    </s-tooltip>
+
+                    <s-tooltip title="{{$t('task.clear')}}">
+                        <s-icon type="delete" class="task-xterm-btn" on-click="clear" />
                     </s-tooltip>
                 </div>
                 <div class="task-output-content"></div>
@@ -114,6 +120,10 @@ export default class TaskList extends Component {
 
     clear() {
         this.terminal.clear();
+    }
+
+    scrollToTop() {
+        this.terminal.scrollToTop();
     }
 
     scrollToBottom() {
