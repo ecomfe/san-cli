@@ -189,7 +189,7 @@ export default class ProjectList extends Component {
                     id: e.item.id
                 }
             });
-            res.data && this.data.set('projectCurrent', res.data.projectCurrent);
+            res.data && this.data.set('projectCurrent', res.data.projectOpen);
         }
         let r = this.$t('menu') ? this.$t('menu')[0].link : '';
         this.fire('routeto', r);

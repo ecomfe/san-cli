@@ -4,6 +4,9 @@
  */
 
 import {Component} from 'san';
+import PROJECTS from '@graphql/project/projects.gql';
+import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
+import PROJECT_OPEN from '@graphql/project/projectOpen.gql';
 import {Layout, Icon, Menu, Dropdown, Button} from 'santd';
 import {Link} from 'san-router';
 import 'santd/es/layout/style';
@@ -22,12 +25,11 @@ export default class ComponentLayout extends Component {
                             selectable="{{false}}"
                             on-click="handleMenuClick"
                         >
-                            <s-menuitem key="1">1st menu item</s-menuitem>
-                            <s-menuitem key="2">2nd memu item</s-menuitem>
-                            <s-menuitem key="3">3rd menu item</s-menuitem>
+                            <s-menuitem s-for="project in list" key="{{project.id}}">{{project.name}}</s-menuitem>
                         </s-menu>
-                        <s-button>project name <s-icon type="down" /></s-button>
+                        <s-button>{{projectCurrent.name}}<s-icon type="down" /></s-button>
                     </s-dropdown>
+                    <span class="line"></span>
                     <span class="title">{{title}}</span>
                     <div class="head-right">
                         <slot name="right"></slot>
@@ -65,12 +67,27 @@ export default class ComponentLayout extends Component {
     };
     initData() {
         return {
-            height: window.screen.availHeight,
-            collapsed: false
+            list: [],
+            projectCurrent: {}
         };
     }
-    handleMenuClick(e) {
-        // TODO: add content
-        // console.log('click', e);
+    inited() {
+        this.getProjectList();
+    }
+    async getProjectList() {
+        let projects = await this.$apollo.query({query: PROJECTS});
+        projects.data && this.data.set('list', projects.data.projects);
+        let projectCurrent = await this.$apollo.query({query: PROJECT_CURRENT});
+        // 当前打开的project,记录在数据库
+        projectCurrent.data && this.data.set('projectCurrent', projectCurrent.data.projectCurrent);
+    }
+    async handleMenuClick(e) {
+        let res = await this.$apollo.mutate({
+            mutation: PROJECT_OPEN,
+            variables: {
+                id: e.key
+            }
+        });
+        res.data && this.data.set('projectCurrent', res.data.projectOpen);
     }
 }
