@@ -1,6 +1,36 @@
 .config,
 .layout,
-.main-wrap {
+.main-wrap,
+.main-content {
     height: 100%;
     overflow: hidden;
+}
+.main-content {
+    .nav-list {
+        height: 100%;
+        background-color: #e6f7ff;
+        padding: 12px 0;
+    }
+    .filter-input {
+        padding: 12px;
+    }
+    .item-logo {
+        margin-right: 16px;
+        position: relative;
+        width: 42px;
+        height: 42px;
+        border-radius: 5px;
+    }
+    .list-item {
+        padding: 12px;
+        display: flex;
+        flex-direction: row;
+        user-select: none;
+        cursor: pointer;
+        &:hover,
+        &.selected {
+            color: #1890ff;
+            background-color: #ccedfd;
+        }
+    }
 }

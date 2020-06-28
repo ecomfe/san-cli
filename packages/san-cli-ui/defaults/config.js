@@ -7,14 +7,14 @@ module.exports = api => {
     api.describeConfig({
         id: 'san.san-cli',
         name: 'San CLI',
-        description: 'san-cli.description',
+        description: 'config.san-cli.description',
         link: 'https://ecomfe.github.io/san-cli/#/config',
         files: {
             san: {
                 js: ['san.config.js']
             }
         },
-        // icon: '/public/san-cli.png',
+        icon: 'https://baidu.github.io/san/img/logo2.png',
         onRead: ({data}) => ({
             prompts: [
                 {
@@ -22,9 +22,9 @@ module.exports = api => {
                     type: 'input',
                     default: '/',
                     value: data.san && data.san.publicPath,
-                    message: 'san-cli.publicPath.label',
-                    description: 'san-cli.publicPath.description',
-                    group: 'san-cli.groups.general',
+                    message: 'config.san-cli.publicPath.label',
+                    description: 'config.san-cli.publicPath.description',
+                    group: 'config.san-cli.groups.general',
                     link: 'https://ecomfe.github.io/san-cli/#/config'
                 },
                 {
@@ -33,9 +33,9 @@ module.exports = api => {
                     default: 'dist',
                     value: data.san && data.san.outputDir,
                     validate: input => !!input,
-                    message: 'san-cli.outputDir.label',
-                    description: 'san-cli.outputDir.description',
-                    group: 'san-cli.groups.general',
+                    message: 'config.san-cli.outputDir.label',
+                    description: 'config.san-cli.outputDir.description',
+                    group: 'config.san-cli.groups.general',
                     link: 'https://ecomfe.github.io/san-cli/#/config'
                 },
                 {
@@ -43,9 +43,9 @@ module.exports = api => {
                     type: 'input',
                     default: '',
                     value: data.san && data.san.assetsDir,
-                    message: 'san-cli.assetsDir.label',
-                    description: 'san-cli.assetsDir.description',
-                    group: 'san-cli.groups.general',
+                    message: 'config.san-cli.assetsDir.label',
+                    description: 'config.san-cli.assetsDir.description',
+                    group: 'config.san-cli.groups.general',
                     link: 'https://ecomfe.github.io/san-cli/#/config'
                 },
                 {
@@ -53,9 +53,9 @@ module.exports = api => {
                     type: 'input',
                     default: {},
                     value: data.san && data.san.pages,
-                    message: 'san-cli.pages.label',
-                    description: 'san-cli.pages.description',
-                    group: 'san-cli.groups.general',
+                    message: 'config.san-cli.pages.label',
+                    description: 'config.san-cli.pages.description',
+                    group: 'config.san-cli.groups.general',
                     link: 'https://ecomfe.github.io/san-cli/#/config'
                 },
                 {
@@ -63,9 +63,9 @@ module.exports = api => {
                     type: 'input',
                     default: false,
                     value: data.san && data.san.copy,
-                    message: 'san-cli.copy.label',
-                    description: 'san-cli.copy.description',
-                    group: 'san-cli.groups.general',
+                    message: 'config.san-cli.copy.label',
+                    description: 'config.san-cli.copy.description',
+                    group: 'config.san-cli.groups.general',
                     link: 'https://ecomfe.github.io/san-cli/#/config'
                 },
                 {
@@ -73,9 +73,9 @@ module.exports = api => {
                     type: 'confirm',
                     default: true,
                     value: data.san && data.san.sourceMap,
-                    message: 'san-cli.sourceMap.label',
-                    description: 'san-cli.sourceMap.description',
-                    group: 'san-cli.groups.general',
+                    message: 'config.san-cli.sourceMap.label',
+                    description: 'config.san-cli.sourceMap.description',
+                    group: 'config.san-cli.groups.general',
                     link: 'https://ecomfe.github.io/san-cli/#/config'
                 },
                 {
@@ -83,9 +83,9 @@ module.exports = api => {
                     type: 'confirm',
                     default: true,
                     value: data.san && data.san.filenameHashing,
-                    message: 'san-cli.filenameHashing.label',
-                    description: 'san-cli.filenameHashing.description',
-                    group: 'san-cli.groups.general',
+                    message: 'config.san-cli.filenameHashing.label',
+                    description: 'config.san-cli.filenameHashing.description',
+                    group: 'config.san-cli.groups.general',
                     link: 'https://ecomfe.github.io/san-cli/#/config'
                 },
                 {
@@ -93,9 +93,9 @@ module.exports = api => {
                     type: 'input',
                     default: 4e3,
                     value: data.san && data.san.largeAssetSize,
-                    message: 'san-cli.largeAssetSize.label',
-                    description: 'san-cli.largeAssetSize.description',
-                    group: 'san-cli.groups.general',
+                    message: 'config.san-cli.largeAssetSize.label',
+                    description: 'config.san-cli.largeAssetSize.description',
+                    group: 'config.san-cli.groups.general',
                     link: 'https://ecomfe.github.io/san-cli/#/config'
                 },
                 {
@@ -103,9 +103,9 @@ module.exports = api => {
                     type: 'confirm',
                     default: true,
                     value: data.san && data.san.css && data.san.css.sourceMap,
-                    message: 'san-cli.css.sourceMap.label',
-                    description: 'san-cli.css.sourceMap.description',
-                    group: 'san-cli.groups.general',
+                    message: 'config.san-cli.css.sourceMap.label',
+                    description: 'config.san-cli.css.sourceMap.description',
+                    group: 'config.san-cli.groups.general',
                     link: 'https://ecomfe.github.io/san-cli/#/config'
                 },
                 {
@@ -113,9 +113,9 @@ module.exports = api => {
                     type: 'input',
                     default: 'less',
                     value: data.san && data.san.css && data.san.css.cssPreprocessor,
-                    message: 'san-cli.css.cssPreprocessor.label',
-                    description: 'san-cli.css.cssPreprocessor.description',
-                    group: 'san-cli.groups.general',
+                    message: 'config.san-cli.css.cssPreprocessor.label',
+                    description: 'config.san-cli.css.cssPreprocessor.description',
+                    group: 'config.san-cli.groups.general',
                     link: 'https://ecomfe.github.io/san-cli/#/config'
                 },
                 {
@@ -123,9 +123,9 @@ module.exports = api => {
                     type: 'confirm',
                     default: true,
                     value: data.san && data.san.css && data.san.css.extract,
-                    message: 'san-cli.css.extract.label',
-                    description: 'san-cli.css.extract.description',
-                    group: 'san-cli.groups.css',
+                    message: 'config.san-cli.css.extract.label',
+                    description: 'config.san-cli.css.extract.description',
+                    group: 'config.san-cli.groups.css',
                     link: 'https://ecomfe.github.io/san-cli/#/config'
                 },
                 {
@@ -133,9 +133,9 @@ module.exports = api => {
                     type: 'confirm',
                     default: true,
                     value: data.san && data.san.css && data.san.css.requireModuleExtension,
-                    message: 'san-cli.css.requireModuleExtension.label',
-                    description: 'san-cli.css.requireModuleExtension.description',
-                    group: 'san-cli.groups.css',
+                    message: 'config.san-cli.css.requireModuleExtension.label',
+                    description: 'config.san-cli.css.requireModuleExtension.description',
+                    group: 'config.san-cli.groups.css',
                     link: 'https://ecomfe.github.io/san-cli/#/config'
                 }
             ]

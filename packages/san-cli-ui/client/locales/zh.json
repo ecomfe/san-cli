@@ -115,6 +115,7 @@
         "optionLabel": "自定义脚手架模板"
     },
     "config": {
+        "title": "项目配置",
         "san-cli": {
             "description": "配置san项目",
             "groups": {
@@ -171,6 +172,9 @@
                     "description": "启用对构建性能稍有影响。"
                 }
             }
+        },
+        "list-item-info": {
+            "more": "更多信息"
         }
     }
 }

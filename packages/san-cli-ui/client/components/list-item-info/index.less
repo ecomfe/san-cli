@@ -1,0 +1,21 @@
+.list-item-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    .name {
+        margin-right: 4px;
+    }
+    .description {
+        color: #6a8bad;
+    }
+    .more-info {
+        color: #1890ff;
+        padding: 0 4px 0 2px;
+        display: inline-block;
+    }
+    &.selected {
+        .name {
+            color: #1890ff;
+        }
+    }
+}
