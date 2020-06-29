@@ -3,8 +3,13 @@
  * @author jinzhan
 */
 const projects = require('../connectors/projects');
+const plugins = require('../connectors/plugins');
 
 module.exports = {
+    Project: {
+        type: (project, args, context) => projects.getType(project, context),
+        plugins: (project, args, context) => plugins.list(project.path, context)
+    },
     Query: {
         projects: (root, args, context) => projects.list(context),
         projectTemplateList: (root, args, context) => projects.getTemplateList(context),
@@ -18,6 +23,7 @@ module.exports = {
         projectOpen: (root, args, context) => projects.open(args, context),
         projectOpenInEditor: (root, args, context) => projects.projectOpenInEditor(args, context),
         projectRename: (root, args, context) => projects.rename(args, context),
-        projectRemove: (root, args, context) => projects.remove(args, context)
+        projectRemove: (root, args, context) => projects.remove(args, context),
+        projectCwdReset: (root, args, context) => projects.resetCwd(context)
     }
 };

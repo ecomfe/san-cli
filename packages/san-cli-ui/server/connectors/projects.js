@@ -245,10 +245,39 @@ const rename = ({id, name}, context) => {
 };
 
 const remove = ({id}, context) => {
+    if (context.db.get('config.currentOpenProject').value() === id) {
+        context.db.set('config.currentOpenProject', undefined).write();
+    }
+    if (context.db.get('config.lastOpenProject').value() === id) {
+        context.db.set('config.lastOpenProject', undefined).write();
+    }
     context.db.get('projects').remove({id}).write();
     return true;
 };
+const findByPath = (file, context) => {
+    return context.db.get('projects').find({path: file}).value();
+};
+const resetCwd = context => {
+    let id = context.db.get('config.currentOpenProject').value();
+    let currentProject = findOne(id, context);
+    if (currentProject) {
+        cwd.set(currentProject.path, context);
+    }
+};
 
+const getType = (project, context) => {
+    if (typeof project === 'string') {
+        project = findByPath(project, context);
+    }
+    if (!project) {
+        return 'unknown';
+    }
+    return !project.type ? 'san' : project.type;
+};
+const getLast = context => {
+    let id = context.db.get('config.lastOpenProject').value();
+    return findOne(id, context);
+};
 module.exports = {
     getTemplateList,
     initTemplate,
@@ -261,5 +290,9 @@ module.exports = {
     importProject,
     projectOpenInEditor,
     rename,
-    remove
+    remove,
+    resetCwd,
+    findByPath,
+    getType,
+    getLast
 };

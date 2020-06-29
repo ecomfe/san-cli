@@ -8,22 +8,29 @@
         background-color: #fff;
         box-shadow: 0 2px 8px #f0f1f2;
         padding: 0 30px;
+        display: flex;
+        align-items: center;
         .project-name {
             display: inline-block;
-            height: 48px;
+            overflow: hidden;
+            margin: 16px 0;
+            height: 32px;
+            line-height: 1;
             .santd-btn {
                 width: 150px;
             }
         }
+        .line {
+            width: 1px;
+            height: 32px;
+            margin-left: 16px;
+            background-color: #ebedf0;
+            display: inline-block;
+        }
         .title {
             color: #000000a6;
-            margin: 16px;
-            padding-left: 20px;
-            height: 32px;
-            line-height: 32px;
+            margin-left: 20px;
             font-size: 18px;
-            display: inline-block;
-            border-left: 1px solid #ebedf0;
         }
     }
     .main-wrap {
@@ -36,7 +43,6 @@
             }
         }
         .main {
-            padding: 24px 12px;
             background: #fff;
         }
     }

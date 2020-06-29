@@ -53,7 +53,7 @@ export default class ProjectList extends Component {
 
             <!---all list---->
             <template s-if="nomarlList && nomarlList.length > 0">
-                <h3>{{$t('project.list.listTitle')}}</h3>
+                <h3 s-if="favoriteList && favoriteList.length > 0">{{$t('project.list.listTitle')}}</h3>
                 <c-list
                     list="{=nomarlList=}"
                     on-edit="onEdit"
@@ -189,9 +189,9 @@ export default class ProjectList extends Component {
                     id: e.item.id
                 }
             });
-            res.data && this.data.set('projectCurrent', res.data.projectCurrent);
+            res.data && this.data.set('projectCurrent', res.data.projectOpen);
         }
-        let r = this.$t('detail.menu') ? this.$t('detail.menu')[0].link : '';
+        let r = this.$t('menu') ? this.$t('menu')[0].link : '';
         this.fire('routeto', r);
     }
 }

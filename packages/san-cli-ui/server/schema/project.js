@@ -19,7 +19,8 @@ extend type Mutation {
   projectOpen (id: ID!): Project!,
   projectOpenInEditor (path: String, line: Int, column: Int): Boolean,
   projectRename (id: ID!, name: String!): Project!,
-  projectRemove (id: ID!): Boolean!
+  projectRemove (id: ID!): Boolean!,
+  projectCwdReset: String
 }
 
 type ProjectTemplate {
@@ -55,9 +56,16 @@ type Choice {
 type Project {
   id: ID!
   name: String!
+  type: ProjectType
   path: String!
   favorite: Int
+  plugins: [Plugin]
   homepage: String
   openDate: JSON
+}
+
+enum ProjectType {
+  san
+  unknown
 }
 `;
