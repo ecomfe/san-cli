@@ -35,9 +35,9 @@ export default class Configuration extends createApolloComponent(Component) {
                     <s-col span="6">
                         <div class="nav-list">
                             <div class="filter-input">
-                                <s-input value="{{search}}" />
+                                <s-input-search value="{=search=}" />
                             </div>
-                            <div s-for="item,index in configurations"
+                            <div s-for="item,index in filterList"
                                 class="list-item {{nav === index ? 'selected' : ''}}"
                                 on-click="switchNav(index)"
                             >
@@ -72,7 +72,7 @@ export default class Configuration extends createApolloComponent(Component) {
         's-spin': Spin,
         's-menu': Menu,
         's-menuitem': Menu.Item,
-        's-input': Input,
+        's-input-search': Input.Search,
         's-radiogroup': Radio.Group,
         's-radiobutton': Radio.Button,
         's-tooltip': Tooltip,
@@ -83,14 +83,21 @@ export default class Configuration extends createApolloComponent(Component) {
     };
     initData() {
         return {
-            configurations: '',
+            configurations: [],
             plugins: '',
             pageLoading: false,
             search: '',
             nav: -1
         };
     }
-
+    static computed = {
+        filterList() {
+            let configurations = this.data.get('configurations');
+            let search = this.data.get('search');
+            return search ? configurations.filter(item => item.name.toLowerCase().indexOf(search) >= 0)
+                : configurations;
+        }
+    };
 
     async attached() {
         // simple query demo
