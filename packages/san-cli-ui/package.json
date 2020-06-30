@@ -56,7 +56,8 @@
         "portfinder": "^1.0.25",
         "san-cli-utils": "^0.1.0",
         "santd": "0.2.7",
-        "shortid": "^2.2.15"
+        "shortid": "^2.2.15",
+        "util": "^0.12.3"
     },
     "devDependencies": {
         "animate.css": "^4.1.0",
@@ -71,6 +72,9 @@
         "san-router": "^1.2.2",
         "santd": "^0.2.5",
         "subscriptions-transport-ws": "^0.9.16",
-        "tiny-emitter": "^2.1.0"
+        "tiny-emitter": "^2.1.0",
+        "xterm": "^4.7.0",
+        "xterm-addon-fit": "^0.4.0",
+        "xterm-addon-web-links": "^0.4.0"
     }
 }

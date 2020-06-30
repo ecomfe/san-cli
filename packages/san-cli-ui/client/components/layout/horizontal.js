@@ -23,10 +23,10 @@ export default class ComponentHorLayout extends Component {
                             selectedKeys="{{nav}}"
                         >
                             <s-menuitem s-for="item in menu" key="{{item.key}}">
-                                <r-link to="{{item.link}}">
+                                <s-link to="{{item.link}}">
                                     <s-icon type="{{item.icon}}" />
                                     <span>{{item.text}}</span>
-                                </r-link>
+                                </s-link>
                             </s-menuitem>
                         </s-menu>
                         <!---
@@ -52,7 +52,7 @@ export default class ComponentHorLayout extends Component {
         's-menu': Menu,
         's-menuitem': Menu.Item,
         's-icon': Icon,
-        'r-link': Link
+        's-link': Link
     };
     initData() {
         return {
