@@ -108,8 +108,8 @@
             {
                 "text": "任务",
                 "icon": "schedule",
-                "key": "task",
-                "link": "/task"
+                "key": "tasks",
+                "link": "/tasks"
             }
         ],
         "customBtnText": "自定义"

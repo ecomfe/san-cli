@@ -14,19 +14,22 @@ import 'santd/es/button/style';
 import 'santd/es/spin/style';
 import './index.less';
 
-export default class Detail extends createApolloComponent(Component) {
+export default class Task extends createApolloComponent(Component) {
     static template = /* html */`
         <c-layout nav="{{['task']}}" title="{{$t('task.title')}}">
             <template slot="right"></template>
-            <div slot="content" class="task">
-                <c-task-nav tasks="{{tasks}}"></c-task-nav>
-                <c-task-content></c-task-content>
+            <div slot="content" class="{{route.query.task ? 'task' : 'task-home'}}">
+                <c-task-nav 
+                    tasks="{{tasks}}" 
+                    queryName="{{route.query.task}}" 
+                    routePath="{{routePath}}"></c-task-nav>
+                <c-task-content s-if="{{route.query.task}}"></c-task-content>
             </div>
         </c-layout>
     `;
     static components = {
         's-icon': Icon,
-        'r-link': Link,
+        's-link': Link,
         's-button': Button,
         's-spin': Spin,
         'c-layout': Layout,
@@ -37,6 +40,7 @@ export default class Detail extends createApolloComponent(Component) {
     initData() {
         return {
             tasks: [],
+            routePath: '',
             pageLoading: true
         };
     }
@@ -45,8 +49,13 @@ export default class Detail extends createApolloComponent(Component) {
         this.data.set('title', this.$t('detail.title'));
         let res = await this.$apollo.query({query: TASK});
         if (res.data) {
-            console.log(res.data);
             this.data.set('tasks', res.data.tasks);
         }
+
+        let routePath = this.data.get('route.path');
+        if (routePath) {
+            routePath = routePath.split('/')[1];
+            this.data.set('routePath', routePath);
+        }
     }
-}
+};

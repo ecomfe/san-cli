@@ -1,16 +1,21 @@
 .task-nav {
     height: 100%;
     overflow: auto;
-    .task-nav-item {
+    .task-nav-item a {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: center;
         padding: 15px 0;
         border-bottom: 1px solid #efefef;
+        color: #333;
         &:last-child {
             border-bottom: none;
         }
+    }
+
+    .task-nav-item-current a {
+        color: #1890ff;
     }
 
     .task-icon {

@@ -29,7 +29,8 @@ const routes = [
     {rule: '/project/:nav', Component: Project, target: '#app'},
     {rule: '/about', Component: About, target: '#app'},
     {rule: '/notfound', Component: NotFound, target: '#app'},
-    {rule: '/task', Component: Task, target: '#app'},
+    {rule: '/tasks', Component: Task, target: '#app'},
+    {rule: '/tasks/:task', Component: Task, target: '#app'},
     {rule: '/:func', Component: Detail, target: '#app'}
 ];
 
