@@ -12,6 +12,7 @@ const folders = require('./folders');
 const projects = require('./projects');
 const logs = require('./logs');
 const notify = require('../utils/notify');
+const plugins = require('./plugins');
 const {
     terminate
 } = require('../utils/terminate');
@@ -24,13 +25,6 @@ const tasks = new Map();
 // TODO: 获取配置信息
 const prompts = {
     getAnswers() {
-        return {};
-    }
-};
-
-// TODO: 插件钩子
-const plugins = {
-    callHook() {
         return {};
     }
 };
