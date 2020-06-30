@@ -4,7 +4,8 @@
 import {Component} from 'san';
 import {Link} from 'san-router';
 import {createApolloComponent} from '@lib/san-apollo';
-import TASK from '@graphql/task/tasks.gql';
+import TASKS from '@graphql/task/tasks.gql';
+import TASK from '@graphql/task/task.gql';
 import Layout from '@components/layout';
 import TaskNav from '@components/task-nav';
 import TaskContent from '@components/task-content';
@@ -18,12 +19,12 @@ export default class Task extends createApolloComponent(Component) {
     static template = /* html */`
         <c-layout nav="{{['task']}}" title="{{$t('task.title')}}">
             <template slot="right"></template>
-            <div slot="content" class="{{route.query.task ? 'task' : 'task-home'}}">
+            <div slot="content" class="{{taskName ? 'task' : 'task-home'}}">
                 <c-task-nav 
                     tasks="{{tasks}}" 
-                    queryName="{{route.query.task}}" 
+                    queryName="{{taskName}}" 
                     routePath="{{routePath}}"></c-task-nav>
-                <c-task-content s-if="{{route.query.task}}"></c-task-content>
+                <c-task-content s-if="{{taskName}}" taskInfo="{{taskInfo}}" ></c-task-content>
             </div>
         </c-layout>
     `;
@@ -37,6 +38,12 @@ export default class Task extends createApolloComponent(Component) {
         'c-task-content': TaskContent
     };
 
+    static computed = {
+        taskName() {
+            return this.data.get('route.query.task');
+        }
+    };
+
     initData() {
         return {
             tasks: [],
@@ -47,15 +54,43 @@ export default class Task extends createApolloComponent(Component) {
 
     async attached() {
         this.data.set('title', this.$t('detail.title'));
-        let res = await this.$apollo.query({query: TASK});
-        if (res.data) {
-            this.data.set('tasks', res.data.tasks);
+
+        const tasksData = await this.$apollo.query({query: TASKS});
+
+        if (tasksData.data) {
+            this.data.set('tasks', tasksData.data.tasks);
         }
 
         let routePath = this.data.get('route.path');
+
         if (routePath) {
             routePath = routePath.split('/')[1];
             this.data.set('routePath', routePath);
         }
+
+        const taskName = this.data.get('taskName');
+
+        if (taskName) {
+            const taskInfo = await this.getTaskInfo(taskName);
+            this.data.set('taskInfo', taskInfo);
+        }
+
+        this.watch('route.query.task', async task => {
+            const taskInfo = await this.getTaskInfo(task);
+            this.data.set('taskInfo', taskInfo);
+        });
+    }
+
+    async getTaskInfo(id) {
+        if (!id) {
+            return {};
+        }
+        const res = await this.$apollo.query({
+            query: TASK,
+            variables: {
+                id
+            }
+        });
+        return res.data ? res.data.task : {};
     }
 };

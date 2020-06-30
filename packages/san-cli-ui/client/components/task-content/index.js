@@ -8,7 +8,6 @@ import {
 import {
     Button,
     Tooltip,
-    Spin,
     Icon
 } from 'santd';
 import {
@@ -24,12 +23,17 @@ import 'santd/es/button/style';
 import 'santd/es/spin/style';
 import './index.less';
 
-export default class TaskList extends Component {
+/**
+ * 组件props
+ *
+ * @param {Object} taskInfo 当前的任务信息
+ */
+export default class TaskContent extends Component {
     static template = /* html */ `
         <div class="task-content">
             <div class="task-head">
-                <span class="task-name"><s-icon type="coffee" />taskName</span>
-                <span class="task-command">task info</span>
+                <span class="task-name"><s-icon type="coffee" />{{taskInfo.name}}</span>
+                <span class="task-command">{{taskInfo.command}}</span>
             </div>
 
             <div class="task-config">
@@ -70,11 +74,10 @@ export default class TaskList extends Component {
         return {};
     }
 
-    attached() {
+    async attached() {
         this.nextTick(() => {
             this.initTerminal();
-            const c = 'Hi~';
-            this.setContent(c);
+            this.setContent('');
             window.addEventListener('resize', () => {
                 this.fitAddon.fit();
             });
@@ -153,4 +156,4 @@ export default class TaskList extends Component {
             }
         }
     }
-}
+};
