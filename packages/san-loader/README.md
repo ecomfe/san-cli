@@ -256,6 +256,49 @@ export default san.defineComponent(script);
 </script>
 ```
 
+这时候需要修改`ts-loader`配置：
+
+```js
+{
+    test: /\.ts$/,
+    loader: 'ts-loader',
+    options: { appendTsSuffixTo: [/\.san$/] }
+}
+```
+
+或者`babel-loader`的配置：
+
+```js
+{
+    test: /\.ts$/,
+    use: [
+        {
+            loader: 'babel-loader',
+            options: {
+                plugins: [
+                    require.resolve('@babel/plugin-proposal-class-properties'),
+                    require.resolve('san-hot-loader/lib/babel-plugin')
+                ],
+                presets: [
+                    [
+                        require.resolve('@babel/preset-env'),
+                        {
+                            targets: {
+                                browsers: '> 1%, last 2 versions'
+                            },
+                            modules: false
+                        }
+
+                    ],
+                    // 下面配置 allExtensions
+                    [require.resolve('@babel/preset-typescript'), {allExtensions: true}]
+                ]
+            }
+        }
+    ]
+}
+```
+
 ### style
 
 style 模块用来书写组件的样式，在用法上与 template、script 类似，例如：

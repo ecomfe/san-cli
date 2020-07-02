@@ -83,7 +83,7 @@ module.exports = {
                                     }
 
                                 ],
-                                require.resolve('@babel/preset-typescript')
+                                [require.resolve('@babel/preset-typescript'), {allExtensions: true}]
                             ]
                         }
                     }
