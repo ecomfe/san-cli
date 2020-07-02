@@ -87,6 +87,12 @@
             "icon": "schedule",
             "key": "task",
             "link": "/task"
+        },
+        {
+            "text": "安装依赖",
+            "icon": "plus",
+            "key": "dependency",
+            "link": "/dependency"
         }
     ],
     "task": {
