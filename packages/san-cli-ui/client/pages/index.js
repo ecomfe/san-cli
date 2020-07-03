@@ -12,6 +12,7 @@ import Project from './project';
 import Task from './task';
 import About from '@components/about';
 import NotFound from '@components/not-found';
+import Dependency from './dependency';
 import Configuration from './configuration';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_CWD_RESET from '@graphql/project/projectCwdReset.gql';
@@ -32,7 +33,8 @@ const routes = [
     {rule: '/tasks', Component: Task, target: '#app'},
     {rule: '/tasks/:task', Component: Task, target: '#app'},
     {rule: '/about', Component: About, target: '#app'},
-    {rule: '/:func', Component: NotFound, target: '#app'}
+    {rule: '/:func', Component: NotFound, target: '#app'},
+    {rule: '/dependency', Component: Dependency, target: '#app'}
 ];
 
 routes.forEach(option => router.add(option));
