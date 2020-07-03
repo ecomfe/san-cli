@@ -7,6 +7,7 @@
         "node": ">=8"
     },
     "scripts": {
+        "v": "npm -v",
         "ui": "cross-env DEBUG=san-cli:* node ../san-cli/index.js ui",
         "build": "cross-env NODE_ENV=production node ../san-cli/index.js build --config san.config.js",
         "prepublish": "npm run build",

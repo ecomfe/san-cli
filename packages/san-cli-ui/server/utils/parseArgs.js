@@ -4,7 +4,7 @@
  *
  * @param {string} args
  */
-exports.parseArgs = args => {
+module.exports = args => {
     const parts = args.split(/\s+/);
     const result = [];
     let arg;
