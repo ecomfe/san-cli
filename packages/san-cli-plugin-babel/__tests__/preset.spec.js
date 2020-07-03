@@ -13,6 +13,7 @@ const babel = require('@babel/core');
 
 const defaultOptions = {
     presets: preset().presets,
+    // 这个字段虽然暂时看上去没用上，但是不传会报错
     filename: 'test-entry-file.js'
 };
 
@@ -53,9 +54,11 @@ test('modern 模式会省略不必要的 polyfill', () => {
         presets: preset({}, {targets: {esmodules: true}}).presets,
         filename: 'test-entry-file.js'
     });
+    expect(code).toMatch('"core-js/modules/es.array.iterator"');
     expect(code).not.toMatch('"core-js/modules/es.map"');
     expect(code).not.toMatch('"core-js/modules/es.object.to-string"');
     expect(code).not.toMatch('"core-js/modules/es.string.iterator"');
+    expect(code).toMatch('"core-js/modules/web.dom-collections.iterator"');
 });
 
 test('解构赋值', () => {
