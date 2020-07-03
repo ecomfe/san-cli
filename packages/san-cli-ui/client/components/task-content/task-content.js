@@ -21,7 +21,8 @@ import 'santd/es/tooltip/style';
 import 'santd/es/input/style';
 import 'santd/es/button/style';
 import 'santd/es/spin/style';
-import './index.less';
+import TASK_RUN from '@graphql/task/taskRun.gql';
+import './task-content.less';
 
 /**
  * 组件props
@@ -37,7 +38,7 @@ export default class TaskContent extends Component {
             </div>
 
             <div class="task-config">
-                <s-button type="primary" icon="caret-right">{{$t('task.run')}}</s-button>
+                <s-button type="primary" icon="caret-right" on-click="runTask">{{$t('task.run')}}</s-button>
                 <s-button type="default" icon="setting">{{$t('task.setting')}}</s-button>
             </div>
 
@@ -82,6 +83,16 @@ export default class TaskContent extends Component {
                 this.fitAddon.fit();
             });
         });
+    }
+
+    async runTask() {
+        const res = await this.$apollo.mutate({
+            mutation: TASK_RUN,
+            variables: {
+                id: this.data.get('taskInfo.name')
+            }
+        });
+        console.log({res});
     }
 
     initTerminal() {

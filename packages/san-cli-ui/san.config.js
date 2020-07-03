@@ -4,6 +4,8 @@
 const path = require('path');
 const resolve = pathname => path.resolve(__dirname, pathname);
 
+const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
+
 // 生产环境下的静态目录
 const STATIC_PRO = 'static';
 
@@ -66,6 +68,15 @@ module.exports = {
             .test(/\.(graphql|gql)$/)
             .use('graphql-loader').loader(require.resolve('graphql-tag/loader'));
 
+        config.resolve.plugin('directory-named-webpack-plugin')
+            .use(DirectoryNamedWebpackPlugin, [{
+                honorIndex: true,
+                exclude: /node_modules/,
+                include: [
+                    resolve('client/components'),
+                    resolve('client/pages')
+                ]
+            }]);
         config.resolve.alias
             .set('san', isProduction ? 'san/dist/san.spa.min.js' : 'san/dist/san.spa.dev.js');
     }

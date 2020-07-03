@@ -8,7 +8,7 @@ import {router, Link} from 'san-router';
 import 'santd/es/input/style';
 import 'santd/es/button/style';
 import 'santd/es/spin/style';
-import './index.less';
+import './task-nav.less';
 
 export default class TaskNav extends Component {
     static template = /* html */`
