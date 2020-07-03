@@ -21,18 +21,22 @@ import {defineComponent} from 'san';
 export default function (script, template, injectStyles) {
     for (const proto of componentDefinitions(script)) {
         if (template) {
-            proto.template = template;
+            if (typeof template === 'string') {
+                proto.template = template;
+            }
+            else if (template instanceof Array) {
+                proto.aPack = template;
+            }
+            else {
+                proto.aNode = template;
+            }
         }
         if (injectStyles.length) {
             injectStylesIntoInitData(proto, injectStyles);
         }
     }
 
-    return (
-        typeof script === 'object'
-            ? defineComponent(script)
-            : script
-    );
+    return typeof script === 'object' ? defineComponent(script) : script;
 }
 
 function injectStylesIntoInitData(proto, injectStyles) {
@@ -43,7 +47,7 @@ function injectStylesIntoInitData(proto, injectStyles) {
     const original = proto.initData;
     proto.initData = original
         ? function () {
-            return Object.assign({}, original.call(this), {'$style': style});
+            return Object.assign({}, original.call(this), {$style: style});
         }
         : function () {
             return style;

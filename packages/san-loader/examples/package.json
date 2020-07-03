@@ -20,7 +20,7 @@
         "http-server": "^0.12.3",
         "less-loader": "^6.1.0",
         "mini-css-extract-plugin": "^0.9.0",
-        "san": "~3.8.5",
+        "san": "~3.9.0",
         "san-hot-loader": "^0.1.1",
         "san-store": "^2.0.2",
         "san-update": "^2.1.0",

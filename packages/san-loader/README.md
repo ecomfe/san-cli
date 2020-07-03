@@ -127,6 +127,21 @@ module.exports = {
 
 更加完整的 webpack 配置，可以参考示例：[San-Loader Webpack 配置实例](https://github.com/ecomfe/san-cli/blob/HEAD/packages/san-loader/examples/webpack.config.js)。
 
+## Options
+
+|       Name        |            Type            | Default  | Description                                                               |
+| :---------------: | :------------------------: | :------: | :------------------------------------------------------------------------ |
+| `compileTemplate` | `{'none'|'aPack'|'aNode'}` | `'none'` | 将组件的`template` 编译成`aPack`、`aNode`，**默认不编译**，详细见下面说明 |
+
+**特殊说明：**
+
+> `compileTemplate`：San 组件的`string`类型的`template`通过编译可以返回[aNode](https://github.com/baidu/san/blob/master/doc/anode.md)结构，在定义组件的时候，可以直接使用`aNode`作为 template，这样可以减少了组件的`template`编译时间，提升了代码的执行效率，但是转成`aNode`的组件代码相对来说比较大，所以在`san@3.9.0`引入的概念的`aNode`压缩结构`aPack`，**使用`aPack`可以兼顾体积和效率的问题**。san-loader 中的`compileTemplate`就是来指定要不要将组件编译为`aPack`/`aNode`。
+
+### 扩展阅读
+
+-   [aNode 结构设计](https//github.com/baidu/san/blob/master/doc/anode.md)
+-   [aPack: aNode 压缩结构设计](https://github.com/baidu/san/blob/master/doc/anode-pack.md)
+
 ## 单文件写法
 
 ### template

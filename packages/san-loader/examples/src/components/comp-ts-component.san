@@ -39,7 +39,7 @@ console.log(`---- ${name} File loaded ----`)
 
 <style lang="less" module>
 .comp-component {
-    background: green;
+    background: lightblue;
 }
 </style>
 
