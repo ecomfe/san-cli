@@ -198,6 +198,12 @@
         },
         "list-item-info": {
             "more": "更多信息"
+        },
+        "actions": {
+            "more": "查看更多",
+            "cancel": "取消",
+            "refresh": "刷新",
+            "save": "保存"
         }
     }
 }
