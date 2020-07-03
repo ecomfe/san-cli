@@ -1,5 +1,5 @@
 /**
- * @file NpmPackageSearch组件
+ * @file 搜索依赖模态框
  * @author sunxiaoyu333
  */
 
@@ -16,7 +16,7 @@ export default class NpmPackageSearch extends Component {
         <div class="npm">
             <div class="backdrop"></div>
             <div class="wrap">
-                <div class="title">安装新的依赖</div>
+                <div class="title">{{$t('dependency.newDependency')}}</div>
                 <s-icon type="close" class="close" on-click="modeClose"/>
                 <div class="container">
                     <s-input-search class="head-input"/>
@@ -44,7 +44,7 @@ export default class NpmPackageSearch extends Component {
     modeClose() {
         this.fire('modeClose');
     }
-    search(name = '') {
+    async search(name = '') {
         let param = searchParam({
             query: encodeURIComponent(name),
             maxValuesPerFacet: 20,
@@ -52,7 +52,7 @@ export default class NpmPackageSearch extends Component {
             facets: ['name'],
             tagFilters: ''
         });
-        axios({
+        let data = await axios({
             url: SEARCHURL,
             method: 'POST',
             headers: {
@@ -64,11 +64,10 @@ export default class NpmPackageSearch extends Component {
                     params: param
                 }]
             }
-        }).then(data => {
-            let results = data && data.data && data.data.results;
-            if (results && results.length) {
-                this.data.set('searchData', results[0].hits);
-            }
         });
+        let results = data && data.data && data.data.results;
+        if (results && results.length) {
+            this.data.set('searchData', results[0].hits);
+        }
     }
 }

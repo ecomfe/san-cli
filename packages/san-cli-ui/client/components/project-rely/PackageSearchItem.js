@@ -1,5 +1,5 @@
 /**
- * @file PackageSearchItem组件
+ * @file 搜索依赖模态框的item
  * @author sunxiaoyu333
  */
 
@@ -27,8 +27,8 @@ export default class PackageSearchItem extends Component {
                 <div class="button"></div>
             </div>
             <div class="operate">
-                <s-button on-click="onCheck">查看详情</s-button>
-                <s-button on-click="onInstallPlugin">安装</s-button>
+                <s-button on-click="onCheck">{{$t('dependency.checkDetail')}}</s-button>
+                <s-button on-click="onInstallPlugin">{{$t('dependency.install')}}</s-button>
             </div>
         </div>
     `;

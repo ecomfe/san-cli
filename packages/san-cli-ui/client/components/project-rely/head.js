@@ -1,5 +1,5 @@
 /**
- * @file Head组件
+ * @file 安装依赖头部组件（搜索框+安装依赖按钮）
  * @author sunxiaoyu333
  */
 
@@ -13,7 +13,7 @@ export default class ProjectHead extends Component {
             <s-input-search class="head-input"/>
             <s-button class="head-button" on-click="modeShow" type="primary">
                 <s-icon type="plus" class="head-plus"/>
-                <span class="head-text">安装依赖</span>
+                <span class="head-text">{{$t('dependency.installDependency')}}</span>
             </s-button>
         </div>
     `;

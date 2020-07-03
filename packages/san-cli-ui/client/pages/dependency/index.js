@@ -11,7 +11,7 @@ import './index.less';
 
 export default class Dependency extends createApolloComponent(Component) {
     static template = /* html */`
-        <c-layout menu="{{$t('menu')}}" nav="{{['dependency']}}" title="{{$t('dependency.title')}}">
+        <c-layout menu="{{$t('menu')}}" nav="{{['dependency']}}">
             <div slot="content">
                 <s-project-rely/>  
             </div>

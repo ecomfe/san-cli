@@ -107,6 +107,17 @@
             "task": "任务"
         }
     },
+    "dependency": {
+        "title": "项目依赖",
+        "installed": "已安装",
+        "install": "安装",
+        "checkDetail": "查看详情",
+        "version": "版本",
+        "lowVersion": "要求最低版本",
+        "currentVersion": "当前最新版本",
+        "installDependency": "安装依赖",
+        "newDependency": "安装新的依赖"
+    },
     "connection-status": {
         "disconnected": "连接已断开",
         "connected": "已连接"

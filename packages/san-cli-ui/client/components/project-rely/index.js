@@ -1,5 +1,5 @@
 /**
- * @file Rely组件
+ * @file 安装依赖入口
  * @author sunxiaoyu333
  */
 
