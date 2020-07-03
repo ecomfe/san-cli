@@ -1,6 +1,6 @@
 /**
  * @file 基于json动态创建一个form表单
- * @author jinzhan
+ * @author jinzhan,zttonly
  */
 import {Component} from 'san';
 import {
@@ -33,7 +33,8 @@ export default class PromptsForm extends Component {
             <template s-for="prompt in prompts">
                 <s-formitem s-if="!prompt.when || condition[prompt.when]" 
                     title="{{prompt.name}}" 
-                    label="{{prompt.label || prompt.message}}">
+                    label="{{(prompt.label || prompt.message) | textFormat}}"
+                    extra="{{prompt.description | textFormat}}">
                     <template s-if="prompt.type === 'list'">
                         <s-select value="{=prompt.value=}">
                             <s-selectoption s-for="choice in prompt.choices" 
@@ -79,7 +80,11 @@ export default class PromptsForm extends Component {
         's-button': Button,
         's-selectoption': Select.Option
     };
-
+    static filters = {
+        textFormat(value) {
+            return value && value.indexOf('.') > -1 ? this.$t(value) : value;
+        }
+    };
     static computed = {
         condition() {
             const prompts = this.data.get('prompts');
