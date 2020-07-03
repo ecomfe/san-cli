@@ -1,7 +1,7 @@
 /**
- * @file To get/set cwd，base on process.cwd()
+ * @file plugins
  *
- * Reference: https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-ui/apollo-server/connectors/cwd.js
+ * Reference: https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-ui/apollo-server/connectors/plugins.js
  */
 const path = require('path');
 const {
@@ -118,7 +118,7 @@ const resetPluginApi = ({file}, context) => {
                 file,
                 project
             }, context);
-            // console.log('!!!set:', pluginApi);
+
             pluginApiInstances.set(file, pluginApi);
 
             // Run Plugin API
@@ -153,8 +153,7 @@ const list = async (file, context, {resetApi = true, autoLoadApi = true} = {}) =
     let plugins = [];
     plugins = plugins.concat(findPlugins(pkg.devDependencies || {}, file));
     plugins = plugins.concat(findPlugins(pkg.dependencies || {}, file));
-    // console.log('!!!!plugins:', plugins)
-    // Put cli service at the top
+    // cli service 放在最上面
     const index = plugins.findIndex(p => p.id === CLI_SERVICE);
     if (index !== -1) {
         const service = plugins.splice(index, 1);
@@ -170,8 +169,17 @@ const list = async (file, context, {resetApi = true, autoLoadApi = true} = {}) =
     }
     return plugins;
 };
-
+const findOne = ({id, file}, context) => {
+    const plugins = getPlugins(file);
+    const plugin = plugins.find(p => p.id === id);
+    if (!plugin) {
+        console.log('Plugin Not found', id, file);
+    }
+    return plugin;
+};
 module.exports = {
     getApi,
-    list
+    list,
+    findOne,
+    callHook
 };
