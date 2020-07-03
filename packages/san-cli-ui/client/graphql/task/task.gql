@@ -1,0 +1,18 @@
+#import "./taskFragment.gql"
+
+query task ($id: ID!) {
+  task (id: $id) {
+    ...task
+    link
+    # prompts {
+    #   ...prompt
+    # }
+    views {
+      id
+      label
+      icon
+      component
+    }
+    defaultView
+  }
+}

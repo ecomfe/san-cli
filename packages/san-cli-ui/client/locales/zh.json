@@ -85,12 +85,18 @@
         {
             "text": "任务",
             "icon": "schedule",
-            "key": "task",
-            "link": "/task"
+            "key": "tasks",
+            "link": "/tasks"
         }
     ],
     "task": {
-        "title": "任务"
+        "title": "任务",
+        "run": "运行",
+        "setting": "配置",
+        "output": "输出",
+        "clear": "清空",
+        "copy": "复制",
+        "bottom": "跳到底部"
     },
     "detail": {
         "title": {
