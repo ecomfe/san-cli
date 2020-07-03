@@ -20,7 +20,7 @@ import Layout from '@components/layout/horizontal';
 import 'santd/es/icon/style';
 import 'santd/es/button/style';
 import 'santd/es/spin/style';
-import './index.less';
+import './project.less';
 
 export default class Project extends createApolloComponent(Component) {
     static template = /* html */`

@@ -7,7 +7,7 @@ import {createApolloComponent} from '@lib/san-apollo';
 import Layout from '@components/layout';
 import ProjectRely from '@components/project-rely';
 
-import './index.less';
+import './dependency.less';
 
 export default class Dependency extends createApolloComponent(Component) {
     static template = /* html */`

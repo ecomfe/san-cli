@@ -18,7 +18,7 @@ import 'santd/es/button/style';
 import 'santd/es/spin/style';
 import 'santd/es/input/style';
 import 'santd/es/grid/style';
-import './index.less';
+import './configuration.less';
 
 export default class Configuration extends createApolloComponent(Component) {
     static template = /* html */`

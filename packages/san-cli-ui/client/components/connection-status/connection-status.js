@@ -7,7 +7,7 @@ import {Component} from 'san';
 import {onReconnected, onDisconnected} from '@lib/connection';
 import {Icon} from 'santd';
 import 'santd/es/icon/style';
-import './index.less';
+import './connection-status.less';
 
 
 export default class ConnectionStatus extends Component {

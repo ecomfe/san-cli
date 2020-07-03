@@ -9,8 +9,8 @@ import {Icon, Radio, Button} from 'santd';
 import 'santd/es/icon/style';
 import 'santd/es/radio/style';
 import 'santd/es/button/style';
-import './index.less';
-import PromptsList from '../prompts-form';
+import './config-detail.less';
+import PromptsList from '../prompts-form/prompts-form';
 
 export default class ConfigDetail extends Component {
 

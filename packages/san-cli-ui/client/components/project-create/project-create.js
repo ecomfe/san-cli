@@ -12,7 +12,7 @@ import CONSOLE_LOG_ADDED from '@graphql/console/consoleLogAdded.gql';
 import 'santd/es/input/style';
 import 'santd/es/button/style';
 import 'santd/es/spin/style';
-import './index.less';
+import './project-create.less';
 
 export default class ProjectCreate extends createApolloComponent(Component) {
     static template = /* html */`
