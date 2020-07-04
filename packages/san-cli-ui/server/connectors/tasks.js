@@ -277,7 +277,6 @@ async function run(id, context) {
         });
 
         child.stdout.on('data', buffer => {
-            debug(buffer.toString());
             outPipe.add(buffer.toString());
         });
 
@@ -473,7 +472,14 @@ function addLog(log, context) {
         if (task.logs.length === MAX_LOGS) {
             task.logs.shift();
         }
+        // TODO: log demo
+        // log.id = 's' + Date.now().toString(36);
+        // log.type = 'log';
+        // log.message = log.text;
 
+        // context.pubsub.publish(channels.CONSOLE_LOG_ADDED, {
+        //     consoleLogAdded: log
+        // });
         task.logs.push(log);
         context.pubsub.publish(channels.TASK_LOG_ADDED, {
             taskLogAdded: log

@@ -22,6 +22,8 @@ import 'santd/es/input/style';
 import 'santd/es/button/style';
 import 'santd/es/spin/style';
 import TASK_RUN from '@graphql/task/taskRun.gql';
+import CONSOLE_LOG_ADDED from '@graphql/console/consoleLogAdded.gql';
+import TASK_LOG_ADDED from '@graphql/task/taskLogAdded.gql';
 import './task-content.less';
 
 /**
@@ -78,10 +80,27 @@ export default class TaskContent extends Component {
     async attached() {
         this.nextTick(() => {
             this.initTerminal();
-            this.setContent('');
             window.addEventListener('resize', () => {
                 this.fitAddon.fit();
             });
+        });
+        this.watch('taskInfo.name', name => {
+            name && this.subscribeConsoleLog(name);
+        });
+    }
+
+    subscribeConsoleLog(id) {
+        console.log('taskId: ' + id);
+        this.observer = this.$apollo.subscribe({
+            query: TASK_LOG_ADDED,
+            variables: {
+                id
+            }
+        });
+        this.observer.subscribe({
+            next: ({data}) => {
+                this.setContent(data.taskLogAdded.text);
+            }
         });
     }
 
@@ -92,7 +111,8 @@ export default class TaskContent extends Component {
                 id: this.data.get('taskInfo.name')
             }
         });
-        console.log({res});
+        const taskRun = res.data.taskRun;
+        console.log({taskRun});
     }
 
     initTerminal() {
@@ -115,6 +135,12 @@ export default class TaskContent extends Component {
         this.fitAddon = fitAddon;
     }
 
+    /**
+     * 这里的setContent是增量添加log的
+     *
+     * @param {string} value
+     * @param {boolean} ln 是否换行
+    */
     setContent(value, ln = true) {
         if (value.indexOf('\n') !== -1) {
             value.split('\n').forEach(t => this.setContent(t));

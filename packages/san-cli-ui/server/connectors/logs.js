@@ -27,7 +27,6 @@ let logs = [];
  * @param {any} context
  */
 exports.add = function (log, context) {
-
     /** @type {Log} */
     const item = {
         id: shortId.generate(),
