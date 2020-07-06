@@ -22,8 +22,8 @@ import 'santd/es/input/style';
 import 'santd/es/button/style';
 import 'santd/es/spin/style';
 import TASK_RUN from '@graphql/task/taskRun.gql';
-import CONSOLE_LOG_ADDED from '@graphql/console/consoleLogAdded.gql';
 import TASK_LOG_ADDED from '@graphql/task/taskLogAdded.gql';
+import TASK_LOGS from '@graphql/task/taskLogs.gql';
 import './task-content.less';
 
 /**
@@ -44,7 +44,7 @@ export default class TaskContent extends Component {
                 <s-button type="default" icon="setting">{{$t('task.setting')}}</s-button>
             </div>
 
-            <div class="task-output">
+            <div class="task-output-opt">
                 <div class="task-output-head">
                     <span class="task-output-head-output">
                         <s-icon type="code" />{{$t('task.output')}}
@@ -62,8 +62,8 @@ export default class TaskContent extends Component {
                         <s-icon type="delete" class="task-xterm-btn" on-click="clear" />
                     </s-tooltip>
                 </div>
-                <div class="task-output-content"></div>
             </div>
+            <div class="task-output-content"></div>
         </div>
     `;
 
@@ -85,19 +85,49 @@ export default class TaskContent extends Component {
             });
         });
         this.watch('taskInfo.name', name => {
-            name && this.subscribeConsoleLog(name);
+            if (!name) {
+                return;
+            }
+            // 1. 清除 -> 界面上的log
+            this.clear();
+
+            // 2. 读取 -> 历史记录中的log
+            this.setConsoleLogLast(name);
+
+            // 3. 订阅 -> 命令产生的log
+            this.subscribeConsoleLog(name);
         });
     }
 
+    // 设置历史log
+    async setConsoleLogLast(id) {
+        // TASK_LOGS
+        const query = await this.$apollo.query({
+            query: TASK_LOGS,
+            variables: {
+                id: this.data.get('taskInfo.name')
+            }
+        });
+        const taskLogs = query.data.taskLogs;
+        const logs = taskLogs && taskLogs.logs;
+        // console.log({logs});
+        if (taskLogs.logs) {
+            const logsText = logs.map(log => log.text).join('\n');
+            this.setContent(logsText);
+        }
+    }
+
     subscribeConsoleLog(id) {
-        console.log('taskId: ' + id);
-        this.observer = this.$apollo.subscribe({
+        // 避免重复订阅
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+        this.subscription = this.$apollo.subscribe({
             query: TASK_LOG_ADDED,
             variables: {
                 id
             }
-        });
-        this.observer.subscribe({
+        }).subscribe({
             next: ({data}) => {
                 this.setContent(data.taskLogAdded.text);
             }
@@ -105,14 +135,15 @@ export default class TaskContent extends Component {
     }
 
     async runTask() {
-        const res = await this.$apollo.mutate({
+        const mutation = await this.$apollo.mutate({
             mutation: TASK_RUN,
             variables: {
                 id: this.data.get('taskInfo.name')
             }
         });
-        const taskRun = res.data.taskRun;
+        const taskRun = mutation.data.taskRun;
         console.log({taskRun});
+        // TODO: 增加任务运行的状态
     }
 
     initTerminal() {
