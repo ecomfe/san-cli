@@ -35,7 +35,7 @@ export default class TaskContent extends Component {
     static template = /* html */ `
         <div class="task-content">
             <div class="task-head">
-                <span class="task-name"><s-icon type="coffee" />{{taskInfo.name}}</span>
+                <span class="task-name"><s-icon type="file-text" />{{taskInfo.name}}</span>
                 <span class="task-command">{{taskInfo.command}}</span>
             </div>
 

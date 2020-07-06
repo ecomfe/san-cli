@@ -73,9 +73,21 @@
                 "cancelSubmitText": "取消创建",
                 "spinTip": "正在创建项目..."
             }
-        }   
+        }
     },
     "menu": [
+        {
+            "text": "插件",
+            "icon": "gold",
+            "key": "plugins",
+            "link": "/plugins"
+        },
+        {
+            "text": "依赖",
+            "icon": "cluster",
+            "key": "dependency",
+            "link": "/dependency"
+        },
         {
             "text": "配置",
             "icon": "setting",
@@ -87,14 +99,11 @@
             "icon": "schedule",
             "key": "tasks",
             "link": "/tasks"
-        },
-        {
-            "text": "安装依赖",
-            "icon": "plus",
-            "key": "dependency",
-            "link": "/dependency"
         }
     ],
+    "plugins": {
+        "title": "插件"
+    },
     "task": {
         "title": "任务",
         "run": "运行",
