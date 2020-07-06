@@ -5,10 +5,10 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import {Component} from 'san';
 
-const name = 'Comp Component';
+const name: string = 'Comp TS Component';
 
 export default class CompComponent extends Component {
     initData() {
@@ -39,7 +39,7 @@ console.log(`---- ${name} File loaded ----`)
 
 <style lang="less" module>
 .comp-component {
-    background: lightgreen;
+    background: lightblue;
 }
 </style>
 

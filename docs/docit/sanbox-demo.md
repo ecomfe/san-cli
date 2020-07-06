@@ -70,7 +70,7 @@ san docit 命令是放在`packages/san-cli-docit`中实现的，它是一个 Com
         <san-code />
     </div>
 </template>
-<style lang="less" module>
+<style lang="less">
     @red: red;
     .markdown .sanbox-demo {
         h1 {

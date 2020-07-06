@@ -8,6 +8,7 @@
             </comp-child>
             <comp-component age="2"></comp-component>
             <comp-component age="2.5"></comp-component>
+            <comp-ts-component age="2"></comp-ts-component>
             <comp-custom-store class="{{$style.customStore}}" age="3"></comp-custom-store>
             <comp-global-store age="4"></comp-global-store>
             <comp-src age="5"></comp-src>
@@ -21,6 +22,7 @@
 <script>
 import CompChild from './components/comp-child/index';
 import CompComponent from './components/comp-component';
+import CompTSComponent from './components/comp-ts-component';
 import CompCustomStore from './components/comp-custom-store';
 import CompGlobalStore from './components/comp-global-store';
 import CompSimpleObj from './components/comp-simple-obj';
@@ -32,6 +34,7 @@ export default {
     components: {
         'comp-child': CompChild,
         'comp-component': CompComponent,
+        'comp-ts-component': CompTSComponent,
         'comp-custom-store': CompCustomStore,
         'comp-global-store': CompGlobalStore,
         'comp-simple-obj': CompSimpleObj,

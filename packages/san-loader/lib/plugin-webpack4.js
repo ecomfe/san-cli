@@ -33,7 +33,6 @@ class SanLoaderPlugin {
         }
 
         const sanRule = rules[sanRuleIndex];
-
         const clonedRules = rules.filter(r => r !== sanRule).map(cloneRule);
 
         compiler.options.module.rules = [

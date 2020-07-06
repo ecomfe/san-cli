@@ -32,7 +32,7 @@ module.exports = {
 
 这样，在启动 webpack 进行代码调试的时候，就自动实现了 San 组件与 San-Store 的热更新功能。
 
-> **需要注意的是**，当项目代码使用了 ES7 即以上的语法时，通常需要 babel-loader 将代码进行转换成 ES5 语法，这个转换过程可能会带来额外的 Babel Helper、Polyfill 代码的注入，在这种情况下，san-hot-loader 同时也提供了 babel 插件来实现热更新代码注入：
+> **需要注意的是**，当项目代码使用了 ES7 及以上的语法时，通常需要 babel-loader 将代码进行转换成 ES5 语法，这个转换过程可能会带来额外的 Babel Helper、Polyfill 代码的注入，在这种情况下，san-hot-loader 同时也提供了 babel 插件来实现热更新代码注入：
 
 
 **代码2-2**

@@ -27,7 +27,7 @@ module.exports = function apply(argv, api, projectOptions) {
     const bundleTag = modern ? (process.env.SAN_CLI_MODERN_BUILD ? 'modern bundle ' : 'legacy bundle ') : '';
     info(`Building ${bundleTag}for ${mode}...`);
 
-    // 获取 webpack 配置
+    // 编译失败处理逻辑
     function fail({err, stats}) {
         if (stats && stats.toJson) {
             // const info = stats.toJson();
@@ -59,6 +59,7 @@ module.exports = function apply(argv, api, projectOptions) {
                     resolve: p => api.resolve(p)
                 })
             );
+
             if (!watch) {
                 const duration = (Date.now() - startTime) / 1e3;
                 if (isModern) {
@@ -79,7 +80,7 @@ module.exports = function apply(argv, api, projectOptions) {
                 );
             }
         }
-        if (watch) {
+        else {
             successLog('Build complete. Watching for changes...');
         }
     }

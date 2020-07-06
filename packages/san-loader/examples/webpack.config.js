@@ -20,8 +20,8 @@ module.exports = {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist')
     },
-    // devtool: 'inline-source-map',
-    devtool: false,
+    devtool: 'inline-source-map',
+    // devtool: false,
     mode: 'development',
     module: {
         rules: [
@@ -32,7 +32,10 @@ module.exports = {
                         loader: require.resolve('san-hot-loader')
                     },
                     {
-                        loader: path.resolve(__dirname, '../index.js')
+                        loader: path.resolve(__dirname, '../index.js'),
+                        options: {
+                            compileTemplate: 'aPack'
+                        }
                     }
                 ]
             },
@@ -55,7 +58,6 @@ module.exports = {
                                         },
                                         modules: false
                                     }
-
                                 ]
                             ]
                         }
@@ -81,9 +83,8 @@ module.exports = {
                                         },
                                         modules: false
                                     }
-
                                 ],
-                                require.resolve('@babel/preset-typescript')
+                                [require.resolve('@babel/preset-typescript'), {allExtensions: true}]
                             ]
                         }
                     }
@@ -149,7 +150,7 @@ module.exports = {
                                 loader: 'css-loader',
                                 options: {
                                     modules: {
-                                        localIdentName: '[local]_[hash:base64:5]',
+                                        localIdentName: '[local]_[hash:base64:5]'
                                     },
                                     localsConvention: 'camelCase',
                                     sourceMap: true
@@ -179,7 +180,8 @@ module.exports = {
                     {
                         loader: 'html-loader',
                         options: {
-                            esModule: false
+                            esModule: false,
+                            minimize: false
                         }
                     }
                 ]
@@ -221,4 +223,3 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin()
     ]
 };
-
