@@ -43,18 +43,19 @@ export default class PromptsForm extends Component {
                     </template>
 
                     <template s-elif="prompt.type === 'input' || prompt.type === 'string'">
-                        <s-input value="{=prompt.value=}"></s-input>
+                        <s-input value="{=prompt.value=}" on-change="handleChange(prompt, $event)"></s-input>
                     </template>
 
                     <template s-elif="prompt.type === 'confirm'">
                         <s-switch checked="{=prompt.value=}"
-                            on-change="changeSwitch"
-                            default-checked="{{prompt.value}}">
+                            default-checked="{{prompt.value}}"
+                            on-change="handleChange(prompt, $event)"
+                        >
                         </s-switch>
                     </template>
-                        
+
                     <template s-elif="prompt.type === 'checkbox'">
-                        <s-select mode="multiple" value="{=prompt.value=}">
+                        <s-select mode="multiple" value="{=prompt.value=}" on-change="handleChange(prompt, $event)">
                             <s-selectoption s-for="choice in prompt.choices" 
                                 value="{{choice.name}}}"
                             >{{choice.name}}</s-selectoption>
@@ -151,7 +152,9 @@ export default class PromptsForm extends Component {
             });
         });
     }
-
+    handleChange(prompt, value) {
+        this.fire('valuechanged', {prompt, value});
+    }
     handleSubmit(e) {
         e && e.preventDefault();
         const prompts = this.data.get('prompts');
@@ -164,7 +167,7 @@ export default class PromptsForm extends Component {
                 }
             }
             const value = item.value;
-            if (item.type === 'string') {
+            if (item.type === 'string' || item.type === 'input') {
                 data[item.name] = value || item.default || '';
             }
             else if (item.type === 'list') {

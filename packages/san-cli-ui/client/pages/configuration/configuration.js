@@ -10,7 +10,7 @@ import CONFIGURATION from '@graphql/configuration/configuration.gql';
 import PLUGINS from '@graphql/plugin/plugins.gql';
 import Layout from '@components/layout';
 import ListItemInfo from '@components/list-item-info';
-import ConfigDetail from '@components/config-detail';
+import ConfigContent from '@components/config-content';
 import {Link} from 'san-router';
 import {Icon, Button, Spin, Input, Grid} from 'santd';
 import 'santd/es/icon/style';
@@ -51,9 +51,10 @@ export default class Configuration extends createApolloComponent(Component) {
                     </s-col>
                     <s-col span="18">
                         <div class="nav-content {{currentConfigId && currentConfig ? 'slide' : ''}}">
-                            <c-config-detail s-if="currentConfigId && currentConfig"
+                            <c-config-content s-if="currentConfigId && currentConfig"
                                 current-config-id="{=currentConfigId=}"
                                 config="{=currentConfig=}"
+                                on-refetch="updateCurrentConfig"
                             />
                         </div>
                     </s-col>
@@ -71,7 +72,7 @@ export default class Configuration extends createApolloComponent(Component) {
         's-row': Grid.Row,
         'c-item-info': ListItemInfo,
         'c-layout': Layout,
-        'c-config-detail': ConfigDetail
+        'c-config-content': ConfigContent
     };
     initData() {
         return {
@@ -96,6 +97,7 @@ export default class Configuration extends createApolloComponent(Component) {
         this.init();
     }
     async init() {
+        console.log('init');
         // init plugin
         let plugins = await this.$apollo.query({query: PLUGINS});
         if (plugins.data) {
@@ -114,7 +116,6 @@ export default class Configuration extends createApolloComponent(Component) {
             variables: {id}
         });
         if (configuration.data) {
-            console.log('set config', configuration.data.configuration);
             this.data.set('currentConfig', configuration.data.configuration);
         }
     }
