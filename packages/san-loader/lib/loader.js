@@ -75,14 +75,27 @@ module.exports = function (source) {
     if (query && query.san === '' && query.type) {
         let {code, map} = extract(descriptor, options);
         // 处理compileTemplate情况
-        if (query.type === 'template' && ['aPack', 'aNode'].includes(compileTemplate)) {
-            let aNode = aNodeUtils.parseTemplate(code);
-            if (compileTemplate === 'aNode') {
-                code = aNode;
+        if (query.type === 'template') {
+            let compileTpl;
+            const compileTemplateTypes = ['aPack', 'aNode'];
+            // 优先使用template上面的compileTemplate
+            if (compileTemplateTypes.includes(query.compileTemplate)) {
+                compileTpl = query.compileTemplate;
             }
-            else {
-                let aPack = aNodeUtils.pack(aNode.children[0]);
-                code = aPack;
+            else if (compileTemplateTypes.includes(compileTemplate)) {
+                compileTpl = compileTemplate;
+            }
+            if (compileTpl) {
+                let aNode = aNodeUtils.parseTemplate(code);
+                switch (compileTpl) {
+                    case 'aNode':
+                        code = aNode;
+                        break;
+                    case 'aPack':
+                        let aPack = aNodeUtils.pack(aNode.children[0]);
+                        code = aPack;
+                        break;
+                }
             }
         }
         if (this.sourceMap) {

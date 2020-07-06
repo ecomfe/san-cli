@@ -65,4 +65,29 @@ describe('option-compileTemplate', () => {
             ]
         });
     });
+    test('优先使用template tag的compileTemplate', () => {
+        const source = '<template compileTemplate="aNode"><span>san@3.9.0支持aPack</span></template>';
+        const scope = {
+            query: {
+                compileTemplate: 'aPack'
+            },
+            resourcePath: '/foo.san?lang=html&san=&type=template&compileTemplate=aNode',
+            resourceQuery: '?lang=html&san=&type=template&compileTemplate=aNode'
+        };
+        const ctx = webpackContext(scope).runLoader(loader, source);
+        expect(ctx.code).toEqual({
+            directives: {},
+            props: [],
+            events: [],
+            children: [
+                {
+                    directives: {},
+                    props: [],
+                    events: [],
+                    children: [{textExpr: {type: 1, value: 'san@3.9.0支持aPack'}}],
+                    tagName: 'span'
+                }
+            ]
+        });
+    });
 });
