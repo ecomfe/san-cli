@@ -21,7 +21,10 @@ import 'santd/es/tooltip/style';
 import 'santd/es/input/style';
 import 'santd/es/button/style';
 import 'santd/es/spin/style';
-import './index.less';
+import TASK_RUN from '@graphql/task/taskRun.gql';
+import TASK_LOG_ADDED from '@graphql/task/taskLogAdded.gql';
+import TASK_LOGS from '@graphql/task/taskLogs.gql';
+import './task-content.less';
 
 /**
  * 组件props
@@ -32,16 +35,16 @@ export default class TaskContent extends Component {
     static template = /* html */ `
         <div class="task-content">
             <div class="task-head">
-                <span class="task-name"><s-icon type="coffee" />{{taskInfo.name}}</span>
+                <span class="task-name"><s-icon type="file-text" />{{taskInfo.name}}</span>
                 <span class="task-command">{{taskInfo.command}}</span>
             </div>
 
             <div class="task-config">
-                <s-button type="primary" icon="caret-right">{{$t('task.run')}}</s-button>
+                <s-button type="primary" icon="caret-right" on-click="runTask">{{$t('task.run')}}</s-button>
                 <s-button type="default" icon="setting">{{$t('task.setting')}}</s-button>
             </div>
 
-            <div class="task-output">
+            <div class="task-output-opt">
                 <div class="task-output-head">
                     <span class="task-output-head-output">
                         <s-icon type="code" />{{$t('task.output')}}
@@ -59,8 +62,8 @@ export default class TaskContent extends Component {
                         <s-icon type="delete" class="task-xterm-btn" on-click="clear" />
                     </s-tooltip>
                 </div>
-                <div class="task-output-content"></div>
             </div>
+            <div class="task-output-content"></div>
         </div>
     `;
 
@@ -77,11 +80,70 @@ export default class TaskContent extends Component {
     async attached() {
         this.nextTick(() => {
             this.initTerminal();
-            this.setContent('');
             window.addEventListener('resize', () => {
                 this.fitAddon.fit();
             });
         });
+        this.watch('taskInfo.name', name => {
+            if (!name) {
+                return;
+            }
+            // 1. 清除 -> 界面上的log
+            this.clear();
+
+            // 2. 读取 -> 历史记录中的log
+            this.setConsoleLogLast(name);
+
+            // 3. 订阅 -> 命令产生的log
+            this.subscribeConsoleLog(name);
+        });
+    }
+
+    // 设置历史log
+    async setConsoleLogLast(id) {
+        // TASK_LOGS
+        const query = await this.$apollo.query({
+            query: TASK_LOGS,
+            variables: {
+                id: this.data.get('taskInfo.name')
+            }
+        });
+        const taskLogs = query.data.taskLogs;
+        const logs = taskLogs && taskLogs.logs;
+        // console.log({logs});
+        if (taskLogs.logs) {
+            const logsText = logs.map(log => log.text).join('\n');
+            this.setContent(logsText);
+        }
+    }
+
+    subscribeConsoleLog(id) {
+        // 避免重复订阅
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+        this.subscription = this.$apollo.subscribe({
+            query: TASK_LOG_ADDED,
+            variables: {
+                id
+            }
+        }).subscribe({
+            next: ({data}) => {
+                this.setContent(data.taskLogAdded.text);
+            }
+        });
+    }
+
+    async runTask() {
+        const mutation = await this.$apollo.mutate({
+            mutation: TASK_RUN,
+            variables: {
+                id: this.data.get('taskInfo.name')
+            }
+        });
+        const taskRun = mutation.data.taskRun;
+        console.log({taskRun});
+        // TODO: 增加任务运行的状态
     }
 
     initTerminal() {
@@ -104,6 +166,12 @@ export default class TaskContent extends Component {
         this.fitAddon = fitAddon;
     }
 
+    /**
+     * 这里的setContent是增量添加log的
+     *
+     * @param {string} value
+     * @param {boolean} ln 是否换行
+    */
     setContent(value, ln = true) {
         if (value.indexOf('\n') !== -1) {
             value.split('\n').forEach(t => this.setContent(t));

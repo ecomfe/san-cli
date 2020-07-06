@@ -15,7 +15,7 @@ import PROJECT_REMOVE from '@graphql/project/projectRemove.gql';
 import List from './list';
 import 'santd/es/input/style';
 import 'animate.css';
-import './index.less';
+import './project-list.less';
 
 export default class ProjectList extends Component {
 

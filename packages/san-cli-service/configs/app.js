@@ -115,7 +115,8 @@ module.exports = {
                     } = pageConfig;
 
                     // inject entry
-                    webpackConfig.entry(name).add(api.resolve(entry));
+                    const entries = Array.isArray(entry) ? entry : [entry];
+                    webpackConfig.entry(name).merge(entries.map(e => api.resolve(e)));
 
                     if (!filename) {
                         // 处理 smarty 情况
@@ -193,7 +194,6 @@ module.exports = {
                                     });
                                 }
                                 return content;
-
                             }
                         }
                         : {};
@@ -208,7 +208,9 @@ module.exports = {
                             Object.assign(defaultTransformOptions, options, {
                                 from,
                                 to: path.join(outputDir, to),
-                                ignore
+                                globOptions: {
+                                    ignore
+                                }
                             })
                         );
                     }
@@ -218,7 +220,9 @@ module.exports = {
                             Object.assign(defaultTransformOptions, options, {
                                 from,
                                 to: path.join(outputDir, to),
-                                ignore
+                                globOptions: {
+                                    ignore
+                                }
                             })
                         );
                     }
@@ -232,7 +236,7 @@ module.exports = {
                 }
             }
             if (copyArgs.length) {
-                webpackConfig.plugin('copy-webpack-plugin').use(require('copy-webpack-plugin'), [copyArgs]);
+                webpackConfig.plugin('copy-webpack-plugin').use(require('copy-webpack-plugin'), [{patterns: copyArgs}]);
             }
         });
     }
@@ -242,5 +246,4 @@ function ensureRelative(outputDir, p) {
         return path.relative(outputDir, p);
     }
     return p;
-
 }

@@ -20,7 +20,7 @@ import 'santd/es/menu/style';
 import 'santd/es/tooltip/style';
 import 'santd/es/icon/style';
 import 'santd/es/modal/style';
-import './index.less';
+import './folder-explorer.less';
 
 export default class FolderExplorer extends Component {
     static template = /* html */`

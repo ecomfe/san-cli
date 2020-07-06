@@ -32,7 +32,8 @@ export default class ProjectList extends Component {
                     </s-select>
                 </s-formitem>
 
-                <s-formitem label="{{$t('scaffold.customLabel')}}" s-if="projectTemplateList.length && !currentTemplate[0]">
+                <s-formitem label="{{$t('scaffold.customLabel')}}" 
+                    s-if="projectTemplateList.length && !currentTemplate[0]">
                     <s-input 
                         placeholder="{{$t('scaffold.customLabel')}}"
                         value="{=customTemplate=}"></s-input>

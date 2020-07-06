@@ -34,10 +34,14 @@ module.exports = {
             subscribe: (parent, args, {pubsub}) => pubsub.asyncIterator(channels.TASK_CHANGED)
         },
         taskLogAdded: {
-            subscribe: withFilter(
-                (parent, args, {pubsub}) => pubsub.asyncIterator(channels.TASK_LOG_ADDED),
-                (payload, vars) => payload.taskLogAdded.taskId === vars.id
-            )
+            // subscribe: withFilter(
+            //     (parent, args, {pubsub}) => pubsub.asyncIterator(channels.TASK_LOG_ADDED),
+            //     (payload, vars) => {
+            //         console.log('payload.taskLogAdded.taskId === vars.id:', payload.taskLogAdded.taskId, vars.id);
+            //         return payload.taskLogAdded.taskId === vars.id;
+            //     }
+            // )
+            subscribe: (parent, args, {pubsub}) => pubsub.asyncIterator(channels.TASK_LOG_ADDED)
         }
     }
 };

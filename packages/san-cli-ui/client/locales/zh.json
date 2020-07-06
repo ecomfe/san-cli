@@ -73,9 +73,21 @@
                 "cancelSubmitText": "取消创建",
                 "spinTip": "正在创建项目..."
             }
-        }   
+        }
     },
     "menu": [
+        {
+            "text": "插件",
+            "icon": "gold",
+            "key": "plugins",
+            "link": "/plugins"
+        },
+        {
+            "text": "依赖",
+            "icon": "cluster",
+            "key": "dependency",
+            "link": "/dependency"
+        },
         {
             "text": "配置",
             "icon": "setting",
@@ -85,17 +97,13 @@
         {
             "text": "任务",
             "icon": "schedule",
-            "key": "task",
-            "link": "/task"
-        },
-        {
-            "text": "依赖",
-            "text": "依赖",
-            "icon": "plus",
-            "key": "dependency",
-            "link": "/dependency"
+            "key": "tasks",
+            "link": "/tasks"
         }
     ],
+    "plugins": {
+        "title": "插件"
+    },
     "task": {
         "title": "任务",
         "run": "运行",
@@ -199,6 +207,12 @@
         },
         "list-item-info": {
             "more": "更多信息"
+        },
+        "actions": {
+            "more": "查看更多",
+            "cancel": "取消",
+            "refresh": "刷新",
+            "save": "保存"
         }
     }
 }

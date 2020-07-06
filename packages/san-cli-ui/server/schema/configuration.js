@@ -7,6 +7,7 @@ const gql = require('graphql-tag');
 module.exports = gql`
 extend type Query {
   configurations: [Configuration]
+  configuration (id: ID!): Configuration
 }
 
 
@@ -24,6 +25,6 @@ type ConfigurationTab {
   id: ID!
   label: String!
   icon: String
-  prompts: [Prompt]
+  prompts: [PromptCommon]
 }
 `;

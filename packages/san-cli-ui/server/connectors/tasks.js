@@ -4,7 +4,7 @@
 
 const execa = require('execa');
 const chalk = require('chalk');
-const {log} = require('san-cli-utils/ttyLogger');
+const {log, getDebugLogger} = require('san-cli-utils/ttyLogger');
 const channels = require('../utils/channels');
 const parseArgs = require('../utils/parseArgs');
 const cwd = require('./cwd');
@@ -20,6 +20,7 @@ const {
 const MAX_LOGS = 2000;
 const WIN_ENOENT_THRESHOLD = 500; // ms
 
+const debug = getDebugLogger('ui:tasks');
 const tasks = new Map();
 
 // TODO: 获取配置信息
@@ -178,6 +179,7 @@ async function run(id, context) {
 
         // Answers
         const answers = prompts.getAnswers();
+
         let [command, ...args] = parseArgs(task.command);
 
         // Output colors
@@ -234,6 +236,7 @@ async function run(id, context) {
             id: task.id,
             status: 'running'
         }, context);
+
         logs.add({
             message: `Task ${task.id} started`,
             type: 'info'
@@ -272,6 +275,7 @@ async function run(id, context) {
                 text: queue
             }, context);
         });
+
         child.stdout.on('data', buffer => {
             outPipe.add(buffer.toString());
         });
@@ -283,6 +287,7 @@ async function run(id, context) {
                 text: queue
             }, context);
         });
+
         child.stderr.on('data', buffer => {
             errPipe.add(buffer.toString());
         });
@@ -295,6 +300,7 @@ async function run(id, context) {
 
             const duration = Date.now() - task.time;
             const seconds = Math.round(duration / 10) / 100;
+
             addLog({
                 taskId: task.id,
                 type: 'stdout',
@@ -317,6 +323,7 @@ async function run(id, context) {
                     id: task.id,
                     status: 'terminated'
                 }, context);
+
                 logs.add({
                     message: `Task ${task.id} was terminated`,
                     type: 'info'
@@ -327,10 +334,12 @@ async function run(id, context) {
                     id: task.id,
                     status: 'error'
                 }, context);
+
                 logs.add({
                     message: `Task ${task.id} ended with error code ${code}`,
                     type: 'error'
                 }, context);
+
                 notify({
                     title: 'Task error',
                     message: `Task ${task.id} ended with error code ${code}`,
@@ -342,10 +351,12 @@ async function run(id, context) {
                     id: task.id,
                     status: 'done'
                 }, context);
+
                 logs.add({
                     message: `Task ${task.id} completed`,
                     type: 'done'
                 }, context);
+
                 notify({
                     title: 'Task completed',
                     message: `Task ${task.id} completed in ${seconds}s.`
@@ -396,6 +407,7 @@ async function run(id, context) {
                 type: 'stdout',
                 text: chalk.red(`Error while running task ${task.id} with message '${error.message}'`)
             }, context);
+
             console.error(error);
         });
 
@@ -460,7 +472,14 @@ function addLog(log, context) {
         if (task.logs.length === MAX_LOGS) {
             task.logs.shift();
         }
+        // TODO: log demo
+        // log.id = 's' + Date.now().toString(36);
+        // log.type = 'log';
+        // log.message = log.text;
 
+        // context.pubsub.publish(channels.CONSOLE_LOG_ADDED, {
+        //     consoleLogAdded: log
+        // });
         task.logs.push(log);
         context.pubsub.publish(channels.TASK_LOG_ADDED, {
             taskLogAdded: log

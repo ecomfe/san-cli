@@ -8,7 +8,6 @@ import {Button, Icon, Tooltip} from 'santd';
 import 'santd/es/button/style';
 import 'santd/es/icon/style';
 import 'santd/es/tooltip/style';
-import './index.less';
 
 export default class ProjectList extends Component {
     static template = /* html */`

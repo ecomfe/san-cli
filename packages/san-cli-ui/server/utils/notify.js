@@ -11,7 +11,7 @@ const builtinIcons = {
 };
 
 // 提供给桌面的消息通知，默认使用成功图标
-exports.exports = ({
+module.exports = ({
     title,
     message,
     icon = 'done'

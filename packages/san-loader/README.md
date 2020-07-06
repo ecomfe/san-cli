@@ -127,6 +127,21 @@ module.exports = {
 
 更加完整的 webpack 配置，可以参考示例：[San-Loader Webpack 配置实例](https://github.com/ecomfe/san-cli/blob/HEAD/packages/san-loader/examples/webpack.config.js)。
 
+## Options
+
+|       Name        |            Type            | Default  | Description                                                               |
+| :---------------: | :------------------------: | :------: | :------------------------------------------------------------------------ |
+| `compileTemplate` | `{'none'|'aPack'|'aNode'}` | `'none'` | 将组件的`template` 编译成`aPack`、`aNode`，**默认不编译**，详细见下面说明 |
+
+**特殊说明：**
+
+> `compileTemplate`：San 组件的`string`类型的`template`通过编译可以返回[aNode](https://github.com/baidu/san/blob/master/doc/anode.md)结构，在定义组件的时候，可以直接使用`aNode`作为 template，这样可以减少了组件的`template`编译时间，提升了代码的执行效率，但是转成`aNode`的组件代码相对来说比较大，所以在`san@3.9.0`引入的概念的`aNode`压缩结构`aPack`，**使用`aPack`可以兼顾体积和效率的问题**。san-loader 中的`compileTemplate`就是来指定要不要将组件编译为`aPack`/`aNode`。
+
+### 扩展阅读
+
+-   [aNode 结构设计](https//github.com/baidu/san/blob/master/doc/anode.md)
+-   [aPack: aNode 压缩结构设计](https://github.com/baidu/san/blob/master/doc/anode-pack.md)
+
 ## 单文件写法
 
 ### template
@@ -176,6 +191,8 @@ template 模块也支持通过 src 标签引入 template 文件：
 ```html
 <template src="./component-template.html"></template>
 ```
+
+> 注意：html-loader 最新版本在生产环境（[production](https://github.com/webpack-contrib/html-loader/blob/master/src/index.js#L38-L41)）会默认开启`minimize=true`，会导致 san 解析 template 失败，所以使用 html-loader 的时候建议开启`minimize=false`。
 
 ### script
 
@@ -252,6 +269,49 @@ export default san.defineComponent(script);
 <script lang="ts">
     // ...
 </script>
+```
+
+这时候需要修改`ts-loader`配置：
+
+```js
+{
+    test: /\.ts$/,
+    loader: 'ts-loader',
+    options: { appendTsSuffixTo: [/\.san$/] }
+}
+```
+
+或者`babel-loader`的配置：
+
+```js
+{
+    test: /\.ts$/,
+    use: [
+        {
+            loader: 'babel-loader',
+            options: {
+                plugins: [
+                    require.resolve('@babel/plugin-proposal-class-properties'),
+                    require.resolve('san-hot-loader/lib/babel-plugin')
+                ],
+                presets: [
+                    [
+                        require.resolve('@babel/preset-env'),
+                        {
+                            targets: {
+                                browsers: '> 1%, last 2 versions'
+                            },
+                            modules: false
+                        }
+
+                    ],
+                    // 下面配置 allExtensions
+                    [require.resolve('@babel/preset-typescript'), {allExtensions: true}]
+                ]
+            }
+        }
+    ]
+}
 ```
 
 ### style

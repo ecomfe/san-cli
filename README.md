@@ -1,8 +1,18 @@
-<h1 align="center">San-CLI</h1>
-
 <div align="center">
-A CLI Tooling based on <a href="https://baidu.github.io/san/">San.js</a> for rapid development
-
+    <h1>San-CLI</h1>
+    <blockquote>A CLI Tooling based on <a href="https://baidu.github.io/san/">San.js</a> for rapid development</blockquote>
+    <a href="https://travis-ci.org/ecomfe/san-cli/builds">
+        <img src="https://img.shields.io/travis/ecomfe/san-cli/master.svg?style=flat-square" alt="Build Status">
+    </a>
+    <a href="https://www.npmjs.com/package/san-cli">
+        <img src="http://img.shields.io/npm/v/san-cli.svg?style=flat-square" alt="NPM version">
+    </a>
+    <a href="https://github.com/ecomfe/san-cli/issues">
+        <img src="https://img.shields.io/github/issues/ecomfe/san-cli.svg?style=flat-square" alt="Issues">
+    </a>
+    <a href="https://www.npmjs.com/package/san-cli">
+        <img src="https://img.shields.io/github/license/ecomfe/san-cli.svg?style=flat-square" alt="License">
+    </a>
 </div>
 
 English | [简体中文](./README-zh_CN.md)
@@ -75,6 +85,21 @@ The [debug](https://npmjs.org/package/debug) module is used in the San CLI, so i
 ## 📝 Documentation
 
 For detailed documentation, please check the [San CLI docs](./docs/README.md).
+
+## 🍻 Companions
+
+-   [san-devtool](https://github.com/baidu/san-devtool/blob/master/docs/user_guide.md) - Chrome DevTool extension
+-   [san-router](https://github.com/baidu/san-router) - SPA Router
+-   [san-store](https://github.com/baidu/san-store) - Application States Management
+-   [san-update](https://github.com/baidu/san-update) - Immutable Data Update
+-   [san-factory](https://github.com/baidu/san-factory) - Component register and instantiation
+-   [santd](https://ecomfe.github.io/santd/) - Components Library following the [Ant Design](https://ant.design/) specification
+-   [san-mui](https://ecomfe.github.io/san-mui/) - [Material Design](https://www.material.io/) Components Library
+-   [san-xui](https://ecomfe.github.io/san-xui/) - A Set of SAN UI Components that widely used on Baidu Cloud Console
+-   [drei](https://github.com/ssddi456/drei/) - VSCode extension for SAN
+-   [san-cli](https://github.com/ecomfe/san-cli) - A CLI tooling based on SAN for rapid development
+-   [san-test-utils](https://github.com/ecomfe/san-test-utils) - The unit testing utility library for SAN
+-   [san-loader](https://github.com/ecomfe/san-cli/tree/master/packages/san-loader) - Webpack loader for single-file SAN components
 
 ## ☀️ License
 

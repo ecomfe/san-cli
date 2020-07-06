@@ -6,7 +6,7 @@
 import {Component} from 'san';
 import {Icon} from 'santd';
 import 'santd/es/icon/style';
-import './index.less';
+import './list-item-info.less';
 
 export default class ListItemInfo extends Component {
 

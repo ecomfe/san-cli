@@ -87,8 +87,9 @@ module.exports = class HulkHtmlWebpackPlugin {
             if (HtmlWebpackPlugin.getHooks) {
                 // 支持v4
                 HtmlWebpackPlugin.getHooks(compilation).alterAssetTags.tapAsync(name, alterAssetTags);
-                HtmlWebpackPlugin.getHooks(compilation).afterTemplateExecution.tapAsync(name, alterAssetTags);
-            } else {
+                HtmlWebpackPlugin.getHooks(compilation).afterTemplateExecution.tapAsync(name, afterHTMLProcessing);
+            }
+            else {
                 compilation.hooks.htmlWebpackPluginAlterAssetTags.tapAsync(name, alterAssetTags);
                 compilation.hooks.htmlWebpackPluginAfterHtmlProcessing.tap(name, afterHTMLProcessing);
             }

@@ -1,4 +1,5 @@
 #import "./configurationFragment.gql"
+#import "../prompt/promptFragment.gql"
 
 query configuration ($id: ID!) {
   configuration(id: $id) {
@@ -8,9 +9,9 @@ query configuration ($id: ID!) {
       id
       label
       icon
-      # prompts {
-      #   ...prompt
-      # }
+      prompts {
+        ...prompt
+      }
     }
   }
 }

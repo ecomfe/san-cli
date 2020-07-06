@@ -9,19 +9,12 @@
  */
 
 const qs = require('querystring');
+const loaderUtils = require('loader-utils');
+const aNodeUtils = require('san-anode-utils');
 const parse = require('./utils/parse');
-const {
-    generateTemplateImport,
-    getTemplateCode
-} = require('./blocks/template');
-const {
-    generateScriptImport,
-    getScriptCode
-} = require('./blocks/script');
-const {
-    generateStyleImport,
-    getStyleCode
-} = require('./blocks/style');
+const {generateTemplateImport, getTemplateCode} = require('./blocks/template');
+const {generateScriptImport, getScriptCode} = require('./blocks/script');
+const {generateStyleImport, getStyleCode} = require('./blocks/style');
 
 /**
  * runtime 模块路径
@@ -63,11 +56,15 @@ function extract(descriptor, options) {
 }
 
 module.exports = function (source) {
+    const loaderOptions = loaderUtils.getOptions(this);
+    const {compileTemplate = 'none'} = loaderOptions;
+
     const {descriptor, ast} = parse(source, SAN_TAGNAMES);
     const rawQuery = this.resourceQuery.slice(1);
     const query = qs.parse(rawQuery);
 
     const options = {
+        compileTemplate,
         source: source,
         resourcePath: this.resourcePath,
         needMap: this.sourceMap,
@@ -77,6 +74,17 @@ module.exports = function (source) {
     // 根据 type 等参数指定返回不同的代码块
     if (query && query.san === '' && query.type) {
         let {code, map} = extract(descriptor, options);
+        // 处理compileTemplate情况
+        if (query.type === 'template' && ['aPack', 'aNode'].includes(compileTemplate)) {
+            let aNode = aNodeUtils.parseTemplate(code);
+            if (compileTemplate === 'aNode') {
+                code = aNode;
+            }
+            else {
+                let aPack = aNodeUtils.pack(aNode.children[0]);
+                code = aPack;
+            }
+        }
         if (this.sourceMap) {
             this.callback(null, code, map);
         }
@@ -100,4 +108,3 @@ module.exports = function (source) {
     `;
     this.callback(null, codo);
 };
-

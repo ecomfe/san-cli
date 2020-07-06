@@ -14,6 +14,7 @@ import About from '@components/about';
 import NotFound from '@components/not-found';
 import Dependency from './dependency';
 import Configuration from './configuration';
+import Plugins from './plugins';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_CWD_RESET from '@graphql/project/projectCwdReset.gql';
 // eslint-disable-next-line no-undef
@@ -29,11 +30,12 @@ const routes = [
     {rule: '/', Component: Project, target: '#app'},
     {rule: '/project', Component: Project, target: '#app'},
     {rule: '/project/:nav', Component: Project, target: '#app'},
+    {rule: '/plugins', Component: Plugins, target: '#app'},
+    {rule: '/dependency', Component: Dependency, target: '#app'},
     {rule: '/configuration', Component: Configuration, target: '#app', needProject: true},
     {rule: '/tasks', Component: Task, target: '#app'},
     {rule: '/tasks/:task', Component: Task, target: '#app'},
     {rule: '/about', Component: About, target: '#app'},
-    {rule: '/dependency', Component: Dependency, target: '#app'},
     {rule: '/:func', Component: NotFound, target: '#app'}
 ];
 

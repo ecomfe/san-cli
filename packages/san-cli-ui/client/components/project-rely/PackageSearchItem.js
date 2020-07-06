@@ -6,8 +6,8 @@
 import {Component} from 'san';
 import {Input, Button, Icon} from 'santd';
 import './index.less';
-// import DEPENDENCY_INSTALL from '@/graphql/dependency/dependencyInstall.gql'
-// import DEPENDENCIES from '@/graphql/dependency/dependencies.gql';
+import DEPENDENCY_INSTALL from '@graphql/dependency/dependency-install.gql';
+import DEPENDENCIES from '@graphql/dependency/dependencies.gql';
 
 export default class PackageSearchItem extends Component {
     static template = /* html */`
@@ -50,13 +50,17 @@ export default class PackageSearchItem extends Component {
         window.open(data.repository.url);
     }
     // 点击安装
-    async onInstallPlugin() {
-        console.log('onInstallPlugin');
-    //     await this.$apollo.mutate({
-    //         mutation: DEPENDENCY_INSTALL,
-    //         variables: {
-    //             id: this.data.get('data').name,
-    //             type: 'dependencies'
-    //         }
+    async onInstallPlugin(e) {
+        let data =  await this.$apollo.mutate({
+            mutation: DEPENDENCY_INSTALL,
+            variables: {
+                id: this.data.get('data').name,
+                type: this.data.get('installType')
+            },
+            update: async (cache, {data: {dependencyInstall}}) => {
+                let cacheData = await this.$apollo.query({query: DEPENDENCIES});
+                cache.writeQuery({query: DEPENDENCIES, data: {cacheData}});
+            }
+        });
     }
 }

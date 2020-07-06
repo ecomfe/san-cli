@@ -18,7 +18,7 @@ import 'santd/es/button/style';
 import 'santd/es/spin/style';
 import 'santd/es/input/style';
 import 'santd/es/grid/style';
-import './index.less';
+import './configuration.less';
 
 export default class Configuration extends createApolloComponent(Component) {
     static template = /* html */`
@@ -50,8 +50,11 @@ export default class Configuration extends createApolloComponent(Component) {
                         </div>
                     </s-col>
                     <s-col span="18">
-                        <div s-if="currentConfigId && currentConfig" class="nav-list">
-                            <c-config-detail current-config-id="{=currentConfigId=}" config="{=currentConfig=}" />
+                        <div class="nav-content {{currentConfigId && currentConfig ? 'slide' : ''}}">
+                            <c-config-detail s-if="currentConfigId && currentConfig"
+                                current-config-id="{=currentConfigId=}"
+                                config="{=currentConfig=}"
+                            />
                         </div>
                     </s-col>
                 </s-row>
@@ -105,13 +108,19 @@ export default class Configuration extends createApolloComponent(Component) {
         }
     }
     async updateCurrentConfig() {
-        let configuration = await this.$apollo.query({query: CONFIGURATION});
+        let id = this.data.get('currentConfigId');
+        let configuration = await this.$apollo.query({
+            query: CONFIGURATION,
+            variables: {id}
+        });
         if (configuration.data) {
-            this.data.set('configurations', configuration.data.configuration);
+            console.log('set config', configuration.data.configuration);
+            this.data.set('currentConfig', configuration.data.configuration);
         }
     }
     switchConfig(id) {
         if (id) {
+            console.log(id);
             this.data.set('currentConfigId', id);
             this.updateCurrentConfig();
         }

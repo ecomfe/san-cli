@@ -1,0 +1,45 @@
+<template>
+    <div class="{{ $style.compComponent }}">
+        <div>this is <span>{{name}}</span>, the age is <span>{{age}}</span></div>
+        <div><button on-click="click">clicked {{clicked.time}} times</button></div>
+    </div>
+</template>
+
+<script lang="ts">
+import {Component} from 'san';
+
+const name: string = 'Comp TS Component';
+
+export default class CompComponent extends Component {
+    initData() {
+        return {
+            name: name,
+            clicked: {
+                time: 0
+            }
+        }
+    }
+
+    click() {
+        this.data.set('clicked.time', this.data.get('clicked.time') + 1);
+    }
+
+    attached() {
+        console.log(`--- ${name} attached ---`)
+    }
+
+    detached() {
+        console.log(`--- ${name} detached --`)
+    }
+}
+
+console.log(`---- ${name} File loaded ----`)
+
+</script>
+
+<style lang="less" module>
+.comp-component {
+    background: lightblue;
+}
+</style>
+
