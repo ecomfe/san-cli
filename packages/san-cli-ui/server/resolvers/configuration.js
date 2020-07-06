@@ -19,5 +19,7 @@ module.exports = {
     },
 
     Mutation: {
+        configurationSave: (root, {id}, context) => configurations.save(id, context),
+        configurationCancel: (root, {id}, context) => configurations.cancel(id, context)
     }
 };
