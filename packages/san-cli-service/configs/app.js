@@ -165,7 +165,7 @@ module.exports = {
                 // html-webpack-harddisk-plugin
                 webpackConfig
                     .plugin('html-webpack-harddisk-plugin')
-                    .use(require('san-cli-webpack/lib/HTMLHarddiskPlugin'));
+                    .use(require('html-webpack-harddisk-plugin'));
             }
             const copyArgs = [];
             // copy static assets in public/
