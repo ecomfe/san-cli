@@ -89,14 +89,21 @@
             "link": "/task"
         },
         {
-            "text": "安装依赖",
+            "text": "依赖",
+            "text": "依赖",
             "icon": "plus",
             "key": "dependency",
             "link": "/dependency"
         }
     ],
     "task": {
-        "title": "任务"
+        "title": "任务",
+        "run": "运行",
+        "setting": "配置",
+        "output": "输出",
+        "clear": "清空",
+        "copy": "复制",
+        "bottom": "跳到底部"
     },
     "detail": {
         "title": {

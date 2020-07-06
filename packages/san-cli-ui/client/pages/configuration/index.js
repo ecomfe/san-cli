@@ -6,19 +6,18 @@
 import {Component} from 'san';
 import {createApolloComponent} from '@lib/san-apollo';
 import CONFIGURATIONS from '@graphql/configuration/configurations.gql';
+import CONFIGURATION from '@graphql/configuration/configuration.gql';
 import PLUGINS from '@graphql/plugin/plugins.gql';
 import Layout from '@components/layout';
 import ListItemInfo from '@components/list-item-info';
+import ConfigDetail from '@components/config-detail';
 import {Link} from 'san-router';
-import {Icon, Button, Spin, Menu, Input, Radio, Grid, Tooltip} from 'santd';
+import {Icon, Button, Spin, Input, Grid} from 'santd';
 import 'santd/es/icon/style';
 import 'santd/es/button/style';
 import 'santd/es/spin/style';
-import 'santd/es/menu/style';
 import 'santd/es/input/style';
-import 'santd/es/radio/style';
 import 'santd/es/grid/style';
-import 'santd/es/tooltip/style';
 import './index.less';
 
 export default class Configuration extends createApolloComponent(Component) {
@@ -37,29 +36,23 @@ export default class Configuration extends createApolloComponent(Component) {
                             <div class="filter-input">
                                 <s-input-search value="{=search=}" />
                             </div>
-                            <div s-for="item,index in filterList"
-                                class="list-item {{nav === index ? 'selected' : ''}}"
-                                on-click="switchNav(index)"
+                            <div s-for="item in filterList"
+                                class="list-item {{currentConfigId === item.id ? 'selected' : ''}}"
+                                on-click="switchConfig(item.id)"
                             >
                                 <img src="{{item.icon}}" class="item-logo"/>
                                 <c-item-info
                                     name="{{item.name}}"
                                     description="{{$t(item.description)}}"
-                                    selected="{{nav === index}"
+                                    selected="{{currentConfigId === item.id}}"
                                 />
                             </div>
                         </div>
                     </s-col>
                     <s-col span="18">
-                        <div s-if="configuration.tabs.length > 1" class="tabs">
-                            <s-radiogroup on-change="handleSizeChange" name="size">
-                                <s-radiobutton s-for="tab in configuration.tabs">{{tab.label}}</s-radiobutton>
-                            </s-radiogroup>
+                        <div s-if="currentConfigId && currentConfig" class="nav-list">
+                            <c-config-detail current-config-id="{=currentConfigId=}" config="{=currentConfig=}" />
                         </div>
-                        <prompts-list
-                            prompts="{=visiblePrompts=}"
-                            on-answer="answerPrompt"
-                        />
                     </s-col>
                 </s-row>
             </c-layout>
@@ -70,16 +63,12 @@ export default class Configuration extends createApolloComponent(Component) {
         'r-link': Link,
         's-button': Button,
         's-spin': Spin,
-        's-menu': Menu,
-        's-menuitem': Menu.Item,
         's-input-search': Input.Search,
-        's-radiogroup': Radio.Group,
-        's-radiobutton': Radio.Button,
-        's-tooltip': Tooltip,
         's-col': Grid.Col,
         's-row': Grid.Row,
         'c-item-info': ListItemInfo,
-        'c-layout': Layout
+        'c-layout': Layout,
+        'c-config-detail': ConfigDetail
     };
     initData() {
         return {
@@ -87,7 +76,8 @@ export default class Configuration extends createApolloComponent(Component) {
             plugins: '',
             pageLoading: false,
             search: '',
-            nav: -1
+            currentConfigId: '',
+            currentConfig: null
         };
     }
     static computed = {
@@ -99,20 +89,31 @@ export default class Configuration extends createApolloComponent(Component) {
         }
     };
 
-    async attached() {
-        // simple query demo
+    attached() {
+        this.init();
+    }
+    async init() {
+        // init plugin
         let plugins = await this.$apollo.query({query: PLUGINS});
         if (plugins.data) {
             this.data.set('plugins', plugins.data.plugins);
         }
+        // init config
         let configurations = await this.$apollo.query({query: CONFIGURATIONS});
-        console.log(configurations);
         if (configurations.data) {
             this.data.set('configurations', configurations.data.configurations);
         }
     }
-    switchNav(index) {
-        console.log(index);
-        this.data.set('nav', index);
+    async updateCurrentConfig() {
+        let configuration = await this.$apollo.query({query: CONFIGURATION});
+        if (configuration.data) {
+            this.data.set('configurations', configuration.data.configuration);
+        }
+    }
+    switchConfig(id) {
+        if (id) {
+            this.data.set('currentConfigId', id);
+            this.updateCurrentConfig();
+        }
     }
 }

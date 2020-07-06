@@ -29,12 +29,12 @@ const routes = [
     {rule: '/', Component: Project, target: '#app'},
     {rule: '/project', Component: Project, target: '#app'},
     {rule: '/project/:nav', Component: Project, target: '#app'},
-    {rule: '/about', Component: About, target: '#app'},
     {rule: '/configuration', Component: Configuration, target: '#app', needProject: true},
-    {rule: '/task', Component: Task, target: '#app'},
+    {rule: '/tasks', Component: Task, target: '#app'},
+    {rule: '/tasks/:task', Component: Task, target: '#app'},
+    {rule: '/about', Component: About, target: '#app'},
     {rule: '/dependency', Component: Dependency, target: '#app'},
-    {rule: '/:func', Component: NotFound, target: '#app'},
-
+    {rule: '/:func', Component: NotFound, target: '#app'}
 ];
 
 routes.forEach(option => router.add(option));

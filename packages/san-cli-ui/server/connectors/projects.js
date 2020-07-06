@@ -7,13 +7,13 @@ const path = require('path');
 const fs = require('fs-extra');
 const execa = require('execa');
 const shortId = require('shortid');
-const notifier = require('node-notifier');
 const launch = require('launch-editor');
 const {getDebugLogger, log, info} = require('san-cli-utils/ttyLogger');
 const {getGitUser} = require('san-cli-utils/env');
 const {tmpl} = require('san-cli-utils/utils');
 const downloadRepo = require('san-cli-utils/downloadRepo');
 const {getLocalTplPath} = require('san-cli-utils/path');
+const notify = require('../utils/notify');
 const cwd = require('./cwd');
 const events = require('../utils/events');
 const folders = require('./folders');
@@ -134,10 +134,9 @@ const create = async (params, context) => {
 
     await child;
 
-    notifier.notify({
+    notify({
         title: 'San Project Created',
-        message: `Project ${cwd.get()} created`,
-        icon: path.resolve(__dirname, '../../client/assets/done.png')
+        message: `Project ${cwd.get()} created`
     });
 
     return {

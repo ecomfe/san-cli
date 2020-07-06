@@ -173,5 +173,6 @@ const list = async (file, context, {resetApi = true, autoLoadApi = true} = {}) =
 
 module.exports = {
     getApi,
-    list
+    list,
+    callHook
 };
