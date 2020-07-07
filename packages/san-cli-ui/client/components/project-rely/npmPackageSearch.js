@@ -22,7 +22,8 @@ export default class NpmPackageSearch extends Component {
                     <s-input-search class="head-input"/>
                 </div>
                 <div class="search-item">
-                    <s-package-search-item s-for="data, index in searchData" data="{{data}}"/>
+                    <s-package-search-item s-for="data, index in searchData"
+                        data="{{data}}" installType="{{installType}}"/>
                 </div>
             </div>
         </div>
@@ -35,7 +36,9 @@ export default class NpmPackageSearch extends Component {
     }
     initData() {
         return {
-            searchData: {}
+            searchData: {},
+            // 运行依赖
+            installType: 'dependencies'
         };
     }
     inited() {

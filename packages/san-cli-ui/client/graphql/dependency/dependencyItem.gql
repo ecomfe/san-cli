@@ -1,0 +1,8 @@
+mutation dependencyItem ($id: String!) {
+    dependencyItem (id: $id) {
+        current
+        latest
+        wanted
+        range
+    }
+}
