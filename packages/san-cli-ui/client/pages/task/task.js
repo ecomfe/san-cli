@@ -3,13 +3,13 @@
  */
 import {Component} from 'san';
 import {Link} from 'san-router';
+import {Icon, Button, Spin} from 'santd';
 import {createApolloComponent} from '@lib/san-apollo';
 import TASKS from '@graphql/task/tasks.gql';
 import TASK from '@graphql/task/task.gql';
 import Layout from '@components/layout';
-import TaskNav from '../../components/task-nav';
-import TaskContent from '@components/task-content';
-import {Icon, Button, Spin} from 'santd';
+import TaskNav from '@components/task/task-nav';
+import TaskContent from '@components/task/task-content';
 import 'santd/es/icon/style';
 import 'santd/es/button/style';
 import 'santd/es/spin/style';
