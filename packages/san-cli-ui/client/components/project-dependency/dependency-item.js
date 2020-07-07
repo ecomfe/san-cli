@@ -22,9 +22,11 @@ export default class DependenceItem extends Component {
                     <span class="pkg-version">{{$t('dependency.currentVersion')}}{{dependencyItem.latest}}</span>
                     <s-icon class="pkg-check-ico" type="check-circle" />
                     <span class="status">{{$t('dependency.installed')}}</span>
-                    <span class="pkg-detail-item pkg-detail-link" on-click="onCheck">
+                    <a s-if="{{dependencyItem.website}}" href="{{dependencyItem.website}}" 
+                        target="_blank"
+                        class="pkg-detail-item pkg-detail-link">
                         {{$t('dependency.checkDetail')}}
-                    </span>
+                    </a>
                 </div>
             </div>
             <s-icon type="delete" on-click="onDelete" class="delete"/>
@@ -53,11 +55,6 @@ export default class DependenceItem extends Component {
         if (mutation.data && mutation.data.dependencyItem) {
             this.data.set('dependencyItem', mutation.data.dependencyItem);
         }
-    }
-
-    onCheck() {
-        let website = this.data.get('item').website;
-        window.open(website);
     }
 
     // 卸载npm包
