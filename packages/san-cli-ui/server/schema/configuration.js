@@ -10,6 +10,10 @@ extend type Query {
   configuration (id: ID!): Configuration
 }
 
+extend type Mutation {
+  configurationSave (id: ID!): Configuration
+  configurationCancel (id: ID!): Configuration
+}
 
 type Configuration implements DescribedEntity {
   id: ID!
