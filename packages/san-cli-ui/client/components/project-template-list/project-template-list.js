@@ -1,3 +1,8 @@
+/**
+ * @file 脚手架模板组件
+ * @author jinzhan
+ */
+
 import {Component} from 'san';
 import {
     Form,
@@ -27,7 +32,7 @@ export default class ProjectList extends Component {
                     <s-select value="{=currentTemplate=}" placeholder="{{$('scaffold.choosePlaceholder')}}">
                         <s-selectoption s-for="template in projectTemplateList"
                             value="{{template.value}}">{{template.label}}</s-selectoption>
-                        <!----自定义---->
+                        <!----自定义的模板项---->
                         <s-selectoption>{{$t('scaffold.optionLabel')}}</s-selectoption>
                     </s-select>
                 </s-formitem>

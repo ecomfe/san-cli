@@ -78,7 +78,7 @@
     "menu": [
         {
             "text": "插件",
-            "icon": "gold",
+            "icon": "build",
             "key": "plugins",
             "link": "/plugins"
         },
