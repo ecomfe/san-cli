@@ -5,16 +5,16 @@
 
 import {Component} from 'san';
 import {Button, Icon} from 'santd';
-import './index.less';
 import DEPENDENCYITEM from '@graphql/dependency/dependencyItem.gql';
 import DEPENDENCY_UNINSTALL from '@/graphql/dependency/dependency-uninstall.gql';
-
+import avatars from '@lib/utils/avatars';
+import './index.less';
 
 export default class DependenceItem extends Component {
     static template = /* html */`
         <div class="dependency-item">
             <div class="item">
-                <div class="image-wrap"><img class="image" src="https://avatars.dicebear.com/v2/identicon/@baidu-nano.svg"/></div>
+                <div class="image-wrap"><img class="image" src="{{avatars(item.id)}}"/></div>
                 <div class="name-wrap">
                     <div class="name">{{item.id}}</div>
                     <div class="version">{{$t('dependency.version')}}{{dependencyItem.current}}</div>
@@ -28,32 +28,39 @@ export default class DependenceItem extends Component {
             <s-icon type="delete" on-click="onDelete" class="delete"/>
         </div>
     `;
+
+    static components = {
+        's-button': Button,
+        's-icon': Icon
+    }
+
     initData() {
         return {
             dependencyItem: {}
         };
     }
+
     async inited() {
-        let item = this.data.get('item');
-        let result = await this.$apollo.mutate({
+        const {id} = this.data.get('item');
+        const mutation = await this.$apollo.mutate({
             mutation: DEPENDENCYITEM,
             variables: {
-                id: item.id
+                id
             }
         });
-        if (result.data && result.data.dependencyItem) {
-            this.data.set('dependencyItem', result.data.dependencyItem);
+        if (mutation.data && mutation.data.dependencyItem) {
+            this.data.set('dependencyItem', mutation.data.dependencyItem);
         }
     }
+
     onCheck() {
         let website = this.data.get('item').website;
         window.open(website);
     }
+
     async onDelete() {
         // 卸载npm包
         let {id, type} = this.data.get('item');
-        console.log('item', id, type);
-
         await this.$apollo.mutate({
             mutation: DEPENDENCY_UNINSTALL,
             variables: {
@@ -63,8 +70,7 @@ export default class DependenceItem extends Component {
         });
     }
 
-    static components = {
-        's-button': Button,
-        's-icon': Icon
+    avatars(packageName) {
+        return avatars(packageName);
     }
 }

@@ -1,12 +1,11 @@
 /**
- * @file 任务管理
+ * @file 依赖管理
  */
 import {Component} from 'san';
 import {Link} from 'san-router';
 import {createApolloComponent} from '@lib/san-apollo';
 import Layout from '@components/layout';
 import ProjectDependency from '@components/project-dependency';
-
 import './dependency.less';
 
 export default class Dependency extends createApolloComponent(Component) {

@@ -8,9 +8,7 @@ import DependencyHead from './dependence-head';
 import DependencyItem from './dependency-item';
 import DependencyPackageSearch from './dependency-package-search';
 import DEPENDENCIES from '@graphql/dependency/dependencies.gql';
-
 import './index.less';
-
 
 export default class ProjectDependency extends Component {
 

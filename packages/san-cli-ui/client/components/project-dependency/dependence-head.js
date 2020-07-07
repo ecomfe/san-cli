@@ -18,11 +18,6 @@ export default class DependenceHead extends Component {
         </div>
     `;
 
-    initData() {
-        return {
-        };
-    }
-
     static components = {
         's-button': Button,
         's-input-search': Input.Search,
