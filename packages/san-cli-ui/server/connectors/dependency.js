@@ -25,7 +25,6 @@ const PACKAGE_INSTLL_CONFIG = {
         upgrade: ['update', '--loglevel', 'error'],
         remove: ['uninstall', '--loglevel', 'error']
     },
-    // pnpm: hasPnpmVersionOrLater('4.0.0') ? PACKAGE_MANAGER_PNPM4_CONFIG : PACKAGE_MANAGER_PNPM3_CONFIG,
     yarn: {
         install: [],
         add: ['add'],
@@ -41,7 +40,7 @@ const registries = {
 };
 
 function shouldUseTaobao() {
-    console.log('dd', fs.existsSync(path.join(cwd.get(), '.npmrc')));
+    // console.log('dd', fs.existsSync(path.join(cwd.get(), '.npmrc')));
 }
 
 function installTool() {
@@ -99,24 +98,24 @@ function isInstalled(id) {
     return resolvedPath && fs.existsSync(resolvedPath);
 }
 
-function readPackage(id, context) {
+function readPackage(id) {
     try {
         let idPath = getPath(id);
-        return idPath && folders.readPackage(idPath, context);
+        return idPath && folders.readPackage(idPath);
     } catch (e) {
         console.log(e);
     }
     return {};
 }
 
-function getLink(id, context) {
-    const pkg = readPackage(id, context);
+function getLink(id) {
+    const pkg = readPackage(id);
     return pkg && pkg.homepage
         || (pkg && pkg.repository && pkg.repository.url)
         || `https://www.npmjs.com/package/${id.replace('/', '%2F')}`;
 }
 
-function findDependencies(deps, type, context) {
+function findDependencies(deps, type) {
     return Object.keys(deps).filter(
         id => !isPlugin(id)
     ).map(
@@ -124,46 +123,54 @@ function findDependencies(deps, type, context) {
             id,
             versionRange: deps[id],
             installed: isInstalled(id),
-            website: getLink(id, context),
+            website: getLink(id),
             type,
             baseFir: filePath
         })
     );
 }
 
-function list(context) {
-    const pkg = folders.readPackage(filePath, context);
+function list() {
+    const pkg = folders.readPackage(filePath);
     dependencies = [];
     dependencies = dependencies.concat(
-        findDependencies(pkg.devDependencies || {}, 'devDependencies', context)
+        findDependencies(pkg.devDependencies || {}, 'devDependencies')
     );
     dependencies = dependencies.concat(
-        findDependencies(pkg.dependencies || {}, 'dependencies', context)
+        findDependencies(pkg.dependencies || {}, 'dependencies')
     );
     return dependencies;
 }
 
 function findOne(id) {
+    list();
     return dependencies.find(
         p => p.id === id
     );
 }
 
-async function install(args, context) {
+async function install(args) {
     let {id, type} = args;
     // 工具太多选 npm - yarn- pnpm - 先走通功能
     let dev = type ? ['-D'] : [];
     // npm安装依赖
     runCommand('add', [id, ...(dev || [])]);
-    // dependencies = list(context);
     return findOne(id);
 }
 
-async function getVersion({id}, context) {
+function unInstall(args) {
+    let {id, type} = args;
+    let dev = type ? ['-D'] : [];
+    // 卸载npm安装依赖
+    runCommand('remove', [id, ...(dev || [])]);
+    return findOne(id);
+}
+
+async function getVersion({id}) {
     let current;
 
     const registry = await getRegistry();
-    const pkg = readPackage(id, context);
+    const pkg = readPackage(id);
     current = pkg.version;
 
     let latest = '';
@@ -200,5 +207,6 @@ async function getVersion({id}, context) {
 module.exports = {
     install,
     list,
-    getVersion
+    getVersion,
+    unInstall
 };

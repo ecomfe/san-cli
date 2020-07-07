@@ -9,16 +9,16 @@ import './index.less';
 import DEPENDENCY_INSTALL from '@graphql/dependency/dependency-install.gql';
 import DEPENDENCIES from '@graphql/dependency/dependencies.gql';
 
-export default class PackageSearchItem extends Component {
+export default class DependenceSearchItem extends Component {
     static template = /* html */`
-        <div class="package-search-item">
+        <div class="dependency-search-item">
             <div class="container">
                 <div class="image-wrap">
                     <div class="image" style="background-image: url({{data.owner.avatar}})"></div>
                 </div>
                 <div class="name-wrap">
                     <div>
-                        <span >{{data.name}}</span>
+                        <span>{{data.name}}</span>
                         <span class="version">{{data.version}}</span>
                         <s-icon type="download"/><span class="download">{{downloadAmount}}</span>
                     </div>

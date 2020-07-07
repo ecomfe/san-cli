@@ -7,13 +7,13 @@ import {Component} from 'san';
 import {Input, Button, Icon} from 'santd';
 import './index.less';
 
-export default class ProjectHead extends Component {
+export default class DependenceHead extends Component {
     static template = /* html */`
-        <div class="head">
-            <s-input-search class="head-input"/>
-            <s-button class="head-button" on-click="modeShow" type="primary">
-                <s-icon type="plus" class="head-plus"/>
-                <span class="head-text">{{$t('dependency.installDependency')}}</span>
+        <div class="dependency-head">
+            <s-input-search class="dependency-head-input"/>
+            <s-button class="dependency-head-button" on-click="modeShow" type="primary">
+                <s-icon type="plus" class="dependency-head-plus"/>
+                <span class="dependency-head-text">{{$t('dependency.installDependency')}}</span>
             </s-button>
         </div>
     `;

@@ -1,4 +1,5 @@
 fragment dependency on  dependency {
     id
     type
+    website
 }

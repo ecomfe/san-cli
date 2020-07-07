@@ -1,9 +1,11 @@
-.rely {
+.dependency {
     &-body {
         padding: 0 60px;
     }
+    overflow: scroll;
+    padding-bottom: 30px;
 }
-.head {
+.dependency-head {
     display: flex;
     justify-content: flex-end;
     &-input {
@@ -24,22 +26,20 @@
         color: #fff;
     }
 }
-.body, .package-search-item {
+.dependency-item, .dependency-search-item {
     background-color: #e6f7ff;
     border-radius: 8px;
     margin-top: 20px;
     padding: 5px 0px 5px 20px;
     color: #6a8bad;
-    .list {
-        margin-top: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
     .item {
         display: flex;
         align-items: center;
-        margin: 0 0 30px 0;
+        margin: 30px 0;
     }
     .image-wrap {
         border-radius: 50% 50%;
@@ -65,11 +65,14 @@
     .status {
         margin: 0 4px;
     }
+    .check {
+        color: #1890ff;
+    }
     .delete {
         margin-right: 10px;
     }
 }
-.npm {
+.dependency-package-search {
     position: fixed;
     top: 0;
     left: 0;
@@ -79,6 +82,13 @@
         overflow: scroll;
         width: 100%;
         height: 80%;
+    }
+    .head-input {
+        width: 300px;
+        margin-right: 20px;
+        .santd-input {
+            border-radius: 76px;
+        }
     }
     .wrap {
         
@@ -113,7 +123,7 @@
         margin-top: 15px;
     }
 }
-.package-search-item,  {
+.dependency-search-item {
     margin-top: 5px;
     display: flex;
     align-items: center;

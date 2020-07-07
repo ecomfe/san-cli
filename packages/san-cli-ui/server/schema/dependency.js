@@ -7,6 +7,7 @@ const gql = require('graphql-tag');
 module.exports = gql`
     extend type Mutation {
         dependencyInstall (id: String!, type: String!): dependency,
+        dependencyUninstall (id: String!, type: String!): dependency,
         dependencyItem (id: String!): version
     }
 
@@ -17,6 +18,7 @@ module.exports = gql`
     type dependency {
         id: String!
         type: String!
+        website: String
     }
     type version {
         current: String

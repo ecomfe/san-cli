@@ -5,15 +5,15 @@
 
 import {Component} from 'san';
 import {Input, Button, Icon} from 'santd';
-import PackageSearchItem from './PackageSearchItem';
+import DependencySearchItem from './dependency-search-item';
 import './index.less';
 import axios from 'axios';
 import {searchParam} from '@lib/utils/searchParam';
 import {SEARCHURL} from '@lib/const';
 
-export default class NpmPackageSearch extends Component {
+export default class DependencePackageSearch extends Component {
     static template = /* html */`
-        <div class="npm">
+        <div class="dependency-package-search">
             <div class="backdrop"></div>
             <div class="wrap">
                 <div class="title">{{$t('dependency.newDependency')}}</div>
@@ -22,7 +22,7 @@ export default class NpmPackageSearch extends Component {
                     <s-input-search class="head-input"/>
                 </div>
                 <div class="search-item">
-                    <s-package-search-item s-for="data, index in searchData"
+                    <s-dependency-search-item s-for="data, index in searchData"
                         data="{{data}}" installType="{{installType}}"/>
                 </div>
             </div>
@@ -32,7 +32,7 @@ export default class NpmPackageSearch extends Component {
         's-button': Button,
         's-input-search': Input.Search,
         's-icon': Icon,
-        's-package-search-item': PackageSearchItem
+        's-dependency-search-item': DependencySearchItem
     }
     initData() {
         return {

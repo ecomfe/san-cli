@@ -7,6 +7,7 @@ const dependency = require('../connectors/dependency');
 module.exports = {
     Mutation: {
         dependencyInstall: (root, args, context) => dependency.install(args, context),
+        dependencyUninstall: (root, args, context) => dependency.unInstall(args, context),
         dependencyItem: (root, args, context) => dependency.getVersion(args, context)
     },
     Query: {
