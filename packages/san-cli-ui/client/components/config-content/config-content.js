@@ -120,13 +120,12 @@ export default class ConfigDetail extends Component {
         });
     }
     async save() {
-        let data = await this.$apollo.mutate({
+        await this.$apollo.mutate({
             mutation: CONFIGURATION_SAVE,
             variables: {
                 id: this.data.get('config.id')
             }
         });
-        console.log(data);
         this.fire('refetch');
     }
     async cancel() {

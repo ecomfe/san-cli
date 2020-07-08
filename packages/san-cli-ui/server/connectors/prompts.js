@@ -179,6 +179,10 @@ const setAnswers = async newAnswers => {
     await updatePrompts();
 };
 
+const getAnswers = () => {
+    return answers;
+};
+
 const reset = async (answers = {}) => {
     prompts = [];
     await setAnswers(answers);
@@ -232,15 +236,15 @@ const answerPrompt = async ({id, value}, context) => {
 module.exports = {
     setAnswers,
     //   changeAnswers,
-    //   getAnswers,
+    getAnswers,
     //   getAnswer,
     reset,
-    //   list,
+    list,
     add,
     //   remove,
     start,
     //   setValue,
-    //   findOne,
+    findOne,
     getDefaultValue,
     answerPrompt
 };
