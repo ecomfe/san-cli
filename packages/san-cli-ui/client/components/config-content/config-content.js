@@ -9,12 +9,12 @@ import CONFIGURATION from '@graphql/configuration/configuration.gql';
 import CONFIGURATION_SAVE from '@/graphql/configuration/configurationSave.gql';
 import CONFIGURATION_CANCEL from '@/graphql/configuration/configurationCancel.gql';
 import PROMPT_ANSWER from '@/graphql/prompt/promptAnswer.gql';
+import PromptsList from '../prompts-form/prompts-form';
 import {Icon, Radio, Button} from 'santd';
 import 'santd/es/icon/style';
 import 'santd/es/radio/style';
 import 'santd/es/button/style';
-import './config-content.less';
-import PromptsList from '../prompts-form/prompts-form';
+
 
 export default class ConfigContent extends Component {
 

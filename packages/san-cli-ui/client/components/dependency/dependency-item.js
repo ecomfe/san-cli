@@ -15,7 +15,7 @@ export default class DependenceItem extends Component {
     static template = /* html */`
         <s-spin class="loading" size="large" spinning="{{spinning}}" tip="{{loadingTip}}">
             <div class="x-dependency-item" slot="content">
-                <div class="pkg-icon"><img src="{{avatars(item.id)}}"/></div>
+                <div class="pkg-icon" style="background-image: url({{avatars(item.id)}})"></div>
                 <div class="pkg-info">
                     <div class="pkg-name">{{item.id}}</div>
                     <div class="pkg-detail" s-if="{{dependencyItem.current}}">

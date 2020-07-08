@@ -77,6 +77,12 @@
     },
     "menu": [
         {
+            "text": "仪表盘",
+            "icon": "dashboard",
+            "key": "dashboard",
+            "link": "/dashboard"
+        },
+        {
             "text": "插件",
             "icon": "build",
             "key": "plugins",
@@ -220,5 +226,11 @@
             "refresh": "刷新",
             "save": "保存"
         }
+    },
+    "dashboard": {
+        "title": "",
+        "tools": "安装devtools",
+        "operationOff": "自定义",
+        "operationOn": "完成"
     }
 }

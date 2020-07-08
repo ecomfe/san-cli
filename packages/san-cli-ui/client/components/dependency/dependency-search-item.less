@@ -1,7 +1,6 @@
 .dependency-search-item {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     position: relative;
     padding: 20px 0;
     background-color: #e6f7ff;
@@ -19,6 +18,7 @@
         border-bottom: 1px solid #C0C0C0;
     }
 
+
     .pkg-nav-item {
         display: flex;
         align-items: center;
@@ -26,23 +26,17 @@
     }
 
     .pkg-icon {
-        border-radius: 50% 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: url(../../assets/default.png) no-repeat 100% 100% / cover;
-        div {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background-size: cover;
-            background-repeat: no-repeat;
-            margin: auto;
-        }
+        min-width: 42px;
+        min-height: 42px;
+        border-radius: 50%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-image: url(../../assets/default.png);
     }
 
     .pkg-name-wrap {
         margin-left: 20px;
+        overflow: hidden;
     }
     
     .pkg-version {
