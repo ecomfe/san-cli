@@ -1,13 +1,15 @@
-const {
-    ApolloServer
-} = require('apollo-server-express');
+/**
+ * @file 创建ApolloServer实例
+ * @author jinzhan
+*/
 
+const {ApolloServer} = require('apollo-server-express');
 const typeDefs = require('./schema');
 const resolvers = require('./resolves');
+const db = require('./db');
 const pubsub = require('./pubsub');
-const {db} = require('../utils/db');
 
-const server = subscribtionpPath => new ApolloServer({
+module.exports = subscribtionpPath => new ApolloServer({
     typeDefs,
     resolvers,
     pubsub,
@@ -17,7 +19,6 @@ const server = subscribtionpPath => new ApolloServer({
             pubsub
         };
     },
-    // Resolvers context from WebSocket
     subscriptions: {
         path: subscribtionpPath,
         onConnect: async (connection, websocket) => {
@@ -28,5 +29,3 @@ const server = subscribtionpPath => new ApolloServer({
         }
     }
 });
-
-module.exports = server;

@@ -1,5 +1,8 @@
+/**
+ * @file 简单的GraphQL pubsub机制
+ * @author jinzhan
+*/
+
 const {PubSub} = require('graphql-subscriptions');
 
-const pubsub = new PubSub();
-pubsub.ee.setMaxListeners(Infinity);
-module.exports = pubsub;
+module.exports = new PubSub();

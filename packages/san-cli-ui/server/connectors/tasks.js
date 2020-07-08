@@ -13,9 +13,7 @@ const logs = require('./logs');
 const notify = require('../utils/notify');
 const plugins = require('./plugins');
 const {readPackage} = require('../utils/fileHelper');
-const {
-    terminate
-} = require('../utils/terminate');
+const terminate = require('../utils/terminate');
 
 const MAX_LOGS = 2000;
 const WIN_ENOENT_THRESHOLD = 500; // ms

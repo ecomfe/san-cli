@@ -8,28 +8,29 @@ const {currentOS} = require('san-cli-utils/env');
 const execFile = util.promisify(cp.execFile);
 const spawn = util.promisify(cp.spawn);
 
-exports.terminate = async (childProcess, cwd) => {
+module.exports = async (processX, cwd) => {
     if (currentOS.isWindows) {
-        try {
-            const options = {
-                stdio: ['pipe', 'pipe', 'ignore']
-            };
-            if (cwd) {
-                options.cwd = cwd;
-            }
-            await execFile('taskkill', ['/T', '/F', '/PID', childProcess.pid.toString()], options);
+        const options = {
+            stdio: ['pipe', 'pipe', 'ignore']
+        };
+        if (cwd) {
+            options.cwd = cwd;
         }
-        catch (err) {
+        try {
+            // Windows下使用 taskkill 命令结束进程
+            await execFile('taskkill', ['/T', '/F', '/PID', processX.pid.toString()], options);
+        }
+        catch (error) {
             return {
                 success: false,
-                error: err
+                error
             };
         }
     }
     else if (currentOS.isLinux || currentOS.isMacintosh) {
+        const cmd = path.resolve(__dirname, './terminate.sh');
         try {
-            const cmd = path.resolve(__dirname, './terminate.sh');
-            const result = await spawn(cmd, [childProcess.pid.toString()], {
+            const result = await spawn(cmd, [processX.pid.toString()], {
                 cwd
             });
             if (result.error) {
@@ -38,17 +39,16 @@ exports.terminate = async (childProcess, cwd) => {
                     error: result.error
                 };
             }
-
         }
-        catch (err) {
+        catch (error) {
             return {
                 success: false,
-                error: err
+                error
             };
         }
     }
     else {
-        childProcess.kill('SIGKILL');
+        processX.kill('SIGKILL');
     }
     return {
         success: true

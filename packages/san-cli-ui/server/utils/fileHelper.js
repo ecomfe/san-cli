@@ -133,7 +133,28 @@ const isSanProject = (file, context) => {
     return false;
 };
 
+/**
+ * 格式化目录路径
+ *
+ * @param {string} dir 目录
+ * @return {string}  去掉结尾的(反)斜杠后的路径
+*/
+const normalizeDir = dir => {
+    // keep / or \
+    if (dir.length === 1) {
+        return dir;
+    }
+
+    const lastChar = dir.charAt(dir.length - 1);
+    if (lastChar === path.sep) {
+        dir = dir.substr(0, dir.length - 1);
+    }
+
+    return dir;
+};
+
 module.exports = {
+    normalizeDir,
     isDirectory,
     fileList,
     isPackage,

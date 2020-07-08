@@ -1,5 +1,6 @@
 /**
  * @file 桌面通知
+ * @author jinzhan
  */
 
 const path = require('path');

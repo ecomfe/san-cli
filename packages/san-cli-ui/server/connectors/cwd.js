@@ -5,25 +5,10 @@
  */
 
 const fs = require('fs');
-const path = require('path');
 const {CWD_CHANGED} = require('../utils/channels');
+const {normalizeDir} = require('../utils/fileHelper');
 
 let cwd = process.cwd();
-
-const normalizeDir = dir => {
-    // keep / or \
-    if (dir.length === 1) {
-        return dir;
-    }
-
-    // remove last / or \
-    const lastChar = dir.charAt(dir.length - 1);
-    if (lastChar === path.sep) {
-        dir = dir.substr(0, dir.length - 1);
-    }
-
-    return dir;
-};
 
 module.exports = {
     get: () => cwd,
