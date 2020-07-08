@@ -5,7 +5,7 @@
  */
 
 const cwd = require('./cwd');
-const folders = require('./folders');
+const {readPackage} = require('../utils/fileHelper');
 const {resolveModule, resolveModuleRoot} = require('../utils/module');
 const {getMetadata} = require('../utils/getVersion');
 const fs = require('fs');
@@ -13,6 +13,7 @@ const path = require('path');
 const minimist = require('minimist');
 const execa = require('execa');
 const semver = require('semver');
+
 const {
     isPlugin
 } = require('san-cli-utils/plugin');
@@ -68,21 +69,6 @@ async function getRegistry() {
     return registry;
 }
 
-function runCommand(type, args) {
-    // 获取npm的安装源
-    getRegistry();
-    let tool = installTool();
-
-    // npm安装依赖
-    execa(tool, [
-        ...PACKAGE_INSTLL_CONFIG[tool][type],
-        ...(args || [])
-    ], {
-        filePath,
-        stdio: ['inherit', 'inherit', 'inherit']
-    });
-}
-
 function getPath(id) {
     // 检测每个模快的是否有package.json
     const getfilePath = resolveModule(path.join(id, 'package.json'), filePath);
@@ -98,18 +84,9 @@ function isInstalled(id) {
     return resolvedPath && fs.existsSync(resolvedPath);
 }
 
-function readPackage(id) {
-    try {
-        let idPath = getPath(id);
-        return idPath && folders.readPackage(idPath);
-    } catch (e) {
-        console.log(e);
-    }
-    return {};
-}
-
 function getLink(id) {
-    const pkg = readPackage(id);
+    let idPath = getPath(id);
+    const pkg = readPackage(idPath);
     return pkg && pkg.homepage
         || (pkg && pkg.repository && pkg.repository.url)
         || `https://www.npmjs.com/package/${id.replace('/', '%2F')}`;
@@ -131,7 +108,7 @@ function findDependencies(deps, type) {
 }
 
 function list() {
-    const pkg = folders.readPackage(filePath);
+    const pkg = readPackage(filePath);
     dependencies = [];
     dependencies = dependencies.concat(
         findDependencies(pkg.devDependencies || {}, 'devDependencies')
@@ -149,20 +126,36 @@ function findOne(id) {
     );
 }
 
+async function runCommand(type, args) {
+    // 获取npm的安装源
+    getRegistry();
+    let tool = installTool();
+
+    // npm安装依赖
+    const child = await execa(tool, [
+        ...PACKAGE_INSTLL_CONFIG[tool][type],
+        ...(args || [])
+    ], {
+        filePath,
+        stdio: ['inherit', 'inherit', 'inherit']
+    }).then(result => {
+        return '';
+    });
+}
+
 async function install(args) {
     let {id, type} = args;
     // 工具太多选 npm - yarn- pnpm - 先走通功能
     let dev = type ? ['-D'] : [];
     // npm安装依赖
-    runCommand('add', [id, ...(dev || [])]);
+    await runCommand('add', [id, ...(dev || [])]);
     return findOne(id);
 }
 
-function unInstall(args) {
-    let {id, type} = args;
-    let dev = type ? ['-D'] : [];
+async function unInstall(args) {
+    let {id} = args;
     // 卸载npm安装依赖
-    runCommand('remove', [id, ...(dev || [])]);
+    await runCommand('remove', [id]);
     return findOne(id);
 }
 

@@ -2,8 +2,11 @@
  * @file 项目相关的resolver
  * @author jinzhan
 */
+
+const openInEditor = require('../utils/openInEditor');
 const projects = require('../connectors/projects');
 const plugins = require('../connectors/plugins');
+const cwd = require('../connectors/cwd');
 
 module.exports = {
     Project: {
@@ -21,7 +24,7 @@ module.exports = {
         projectSetFavorite: (root, args, context) => projects.setFavorite(args, context),
         projectImport: (root, args, context) => projects.importProject(args, context),
         projectOpen: (root, args, context) => projects.open(args, context),
-        projectOpenInEditor: (root, args, context) => projects.projectOpenInEditor(args, context),
+        projectOpenInEditor: (root, args, context) => openInEditor(args, cwd.get()),
         projectRename: (root, args, context) => projects.rename(args, context),
         projectRemove: (root, args, context) => projects.remove(args, context),
         projectCwdReset: (root, args, context) => projects.resetCwd(context)

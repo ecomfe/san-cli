@@ -1,20 +1,28 @@
 /**
- * @file folder
+ * @file 文件夹处理相关API
+ * @author jinzhan
 */
+
 const folders = require('../connectors/folders');
+const {
+    isDirectory,
+    fileList,
+    isPackage,
+    isSanProject
+} = require('../utils/fileHelper');
 
 module.exports = {
     Folder: {
-        children: (folder, args, context) => folders.list(folder.path, context),
-        isPackage: (folder, args, context) => folders.isPackage(folder.path, context),
-        isSanProject: (folder, args, context) => folders.isSanProject(folder.path, context),
+        children: (folder, args, context) => fileList(folder.path),
+        isPackage: (folder, args, context) => isPackage(folder.path),
+        isSanProject: (folder, args, context) => isSanProject(folder.path),
         favorite: (folder, args, context) => folders.isFavorite(folder.path, context)
     },
 
     Query: {
         folderCurrent: (root, args, context) => folders.getCurrent(args, context),
         foldersFavorite: (root, args, context) => folders.listFavorite(context),
-        folderExists: (root, {file}, context) => folders.isDirectory(file)
+        folderExists: (root, {file}, context) => isDirectory(file)
     },
 
     Mutation: {
