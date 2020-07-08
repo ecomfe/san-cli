@@ -29,7 +29,7 @@ export default class ProjectDependency extends Component {
     }
     initData() {
         return {
-            packageModalShow: true
+            packageModalShow: false
         };
     }
     async attached() {
