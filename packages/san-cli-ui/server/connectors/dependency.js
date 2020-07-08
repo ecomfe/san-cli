@@ -13,6 +13,7 @@ const path = require('path');
 const minimist = require('minimist');
 const execa = require('execa');
 const semver = require('semver');
+
 const {
     isPlugin
 } = require('san-cli-utils/plugin');
@@ -66,21 +67,6 @@ async function getRegistry() {
         }
     }
     return registry;
-}
-
-function runCommand(type, args) {
-    // 获取npm的安装源
-    getRegistry();
-    let tool = installTool();
-
-    // npm安装依赖
-    execa(tool, [
-        ...PACKAGE_INSTLL_CONFIG[tool][type],
-        ...(args || [])
-    ], {
-        filePath,
-        stdio: ['inherit', 'inherit', 'inherit']
-    });
 }
 
 function getPath(id) {
@@ -149,20 +135,36 @@ function findOne(id) {
     );
 }
 
+async function runCommand(type, args) {
+    // 获取npm的安装源
+    getRegistry();
+    let tool = installTool();
+
+    // npm安装依赖
+    const child = await execa(tool, [
+        ...PACKAGE_INSTLL_CONFIG[tool][type],
+        ...(args || [])
+    ], {
+        filePath,
+        stdio: ['inherit', 'inherit', 'inherit']
+    }).then(result => {
+        return '';
+    });
+}
+
 async function install(args) {
     let {id, type} = args;
     // 工具太多选 npm - yarn- pnpm - 先走通功能
     let dev = type ? ['-D'] : [];
     // npm安装依赖
-    runCommand('add', [id, ...(dev || [])]);
+    await runCommand('add', [id, ...(dev || [])]);
     return findOne(id);
 }
 
-function unInstall(args) {
-    let {id, type} = args;
-    let dev = type ? ['-D'] : [];
+async function unInstall(args) {
+    let {id} = args;
     // 卸载npm安装依赖
-    runCommand('remove', [id, ...(dev || [])]);
+    await runCommand('remove', [id]);
     return findOne(id);
 }
 
