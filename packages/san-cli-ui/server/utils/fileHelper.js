@@ -28,6 +28,11 @@ const isDirectory = file => {
     return false;
 };
 
+/**
+ * 判断是否为隐藏文件
+ *
+ * @param {string} file 文件路径
+*/
 const isHidden = file => {
     const hiddenPrefix = '.';
     try {
@@ -50,7 +55,12 @@ const isHidden = file => {
     }
 };
 
-const fileList = async base => {
+/**
+ * 获取文件夹列表
+ *
+ * @param {string} base base url
+*/
+const folderList = async base => {
     let dir = base;
     if (currentOS.isWindows) {
         if (base.match(/^([A-Z]{1}:)$/)) {
@@ -73,6 +83,11 @@ const fileList = async base => {
     );
 };
 
+/**
+ * 获取文件对应的目录
+ *
+ * @param {string} file 文件路径
+ */
 const generateFolder = file => {
     return {
         name: path.basename(file),
@@ -80,6 +95,11 @@ const generateFolder = file => {
     };
 };
 
+/**
+ * 是否包含package.json
+ *
+ * @param {string} file 文件路径
+ */
 const isPackage = file => {
     try {
         return fs.existsSync(path.join(file, 'package.json'));
@@ -90,6 +110,12 @@ const isPackage = file => {
     return false;
 };
 
+/**
+ * 获取package.json信息
+ *
+ * @param {string} file 文件路径
+ * @param {boolean} force 是否走缓存中读，force为true代表不走
+ */
 const readPackage = (file, force = false) => {
     if (!force) {
         const cachedValue = pkgCache.get(file);
@@ -105,7 +131,7 @@ const readPackage = (file, force = false) => {
     }
 };
 
-const invalidatePackage = file => {
+const delInvalidatePackage = file => {
     pkgCache.del(file);
     return true;
 };
@@ -114,7 +140,7 @@ const writePackage = ({file, data}, context) => {
     fs.outputJsonSync(path.join(file, 'package.json'), data, {
         spaces: 2
     });
-    invalidatePackage(file, context);
+    delInvalidatePackage(file, context);
     return true;
 };
 
@@ -156,11 +182,10 @@ const normalizeDir = dir => {
 module.exports = {
     normalizeDir,
     isDirectory,
-    fileList,
+    folderList,
     isPackage,
     readPackage,
     writePackage,
-    invalidatePackage,
     isSanProject,
     generateFolder
 };
