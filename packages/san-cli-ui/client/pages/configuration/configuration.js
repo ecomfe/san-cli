@@ -4,7 +4,6 @@
  */
 
 import {Component} from 'san';
-import {createApolloComponent} from '@lib/san-apollo';
 import CONFIGURATIONS from '@graphql/configuration/configurations.gql';
 import CONFIGURATION from '@graphql/configuration/configuration.gql';
 import PLUGINS from '@graphql/plugin/plugins.gql';
@@ -20,15 +19,15 @@ import 'santd/es/input/style';
 import 'santd/es/grid/style';
 import './configuration.less';
 
-export default class Configuration extends createApolloComponent(Component) {
+export default class Configuration extends Component {
     static template = /* html */`
         <div class="config">
             <s-spin class="loading" spinning="{{pageLoading}}" size="large"/>
             <c-layout menu="{{$t('menu')}}" nav="{{['configuration']}}" title="{{$t('config.title')}}">
                 <template slot="right">
-                    <div>
-                        configuration head
-                    </div>
+                    <s-button disabled="{{true}}">
+                        {{$t('config.tools')}}
+                    </s-button>
                 </template>
                 <s-row type="flex" slot="content" class="main-content">
                     <s-col span="6">

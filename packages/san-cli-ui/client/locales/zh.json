@@ -148,6 +148,7 @@
     },
     "config": {
         "title": "项目配置",
+        "tools": "安装devtools",
         "san-cli": {
             "description": "配置san项目",
             "groups": {
