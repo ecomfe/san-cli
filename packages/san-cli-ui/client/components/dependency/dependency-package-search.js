@@ -6,7 +6,7 @@
 import {Component} from 'san';
 import {Input, Button, Icon} from 'santd';
 import DependencySearchItem from './dependency-search-item';
-import './index.less';
+import './dependency-package-search.less';
 import axios from 'axios';
 import {searchParam} from '@lib/utils/searchParam';
 import {SEARCHURL} from '@lib/const';
@@ -14,15 +14,13 @@ import {SEARCHURL} from '@lib/const';
 export default class DependencePackageSearch extends Component {
     static template = /* html */`
         <div class="dependency-package-search">
-            <div class="backdrop"></div>
-            <div class="wrap">
-                <div class="title">{{$t('dependency.newDependency')}}</div>
-                <s-icon type="close" class="close" on-click="modeClose"/>
-                <div class="container">
-                    <s-input-search class="head-input"/>
-                </div>
-                <div class="search-item">
-                    <s-dependency-search-item s-for="data, index in searchData"
+            <div class="pkg-background"></div>
+            <div class="pkg-modal">
+                <div class="pkg-title">{{$t('dependency.newDependency')}}</div>
+                <s-icon type="close" class="pkg-modal-close" on-click="modalClose"/>
+                <div class="pkg-input-warp"><s-input-search class="pkg-search-input"/></div>
+                <div class="pkg-search-item">
+                    <c-dependency-search-item s-for="data, index in searchData"
                         data="{{data}}" installType="{{installType}}"/>
                 </div>
             </div>
@@ -32,7 +30,7 @@ export default class DependencePackageSearch extends Component {
         's-button': Button,
         's-input-search': Input.Search,
         's-icon': Icon,
-        's-dependency-search-item': DependencySearchItem
+        'c-dependency-search-item': DependencySearchItem
     }
     initData() {
         return {
@@ -44,8 +42,8 @@ export default class DependencePackageSearch extends Component {
     inited() {
         this.search();
     }
-    modeClose() {
-        this.fire('modeClose');
+    modalClose() {
+        this.fire('modalClose');
     }
     async search(name = '') {
         let param = searchParam({
