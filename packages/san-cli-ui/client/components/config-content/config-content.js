@@ -16,10 +16,10 @@ import 'santd/es/button/style';
 import './config-content.less';
 import PromptsList from '../prompts-form/prompts-form';
 
-export default class ConfigDetail extends Component {
+export default class ConfigContent extends Component {
 
     static template = /* html */`
-        <div class="config-detail">
+        <div class="config-content">
             <div class="tabs" s-if="config.tabs && config.tabs.length > 0">
                 <s-radiogroup s-if="config.tabs.length > 1" on-change="handleSizeChange" name="size">
                     <s-radiobutton s-for="tab in config.tabs">{{tab.label}}</s-radiobutton>
