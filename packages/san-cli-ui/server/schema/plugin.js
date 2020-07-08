@@ -20,5 +20,4 @@ type Plugin {
   githubStats: GitHubStats
   logo: String
 }
-
 `;

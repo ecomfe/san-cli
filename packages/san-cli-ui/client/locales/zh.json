@@ -108,7 +108,9 @@
         }
     ],
     "plugins": {
-        "title": "插件"
+        "title": "插件",
+        "subTitle": "已安装的插件",
+        "emptyTip": "没有安装任何插件"
     },
     "task": {
         "title": "任务",
@@ -118,15 +120,6 @@
         "clear": "清空",
         "copy": "复制",
         "bottom": "跳到底部"
-    },
-    "detail": {
-        "title": {
-            "dashboard": "项目仪表盘",
-            "plugin": "插件",
-            "dependency": "项目依赖",
-            "configuration": "项目配置",
-            "task": "任务"
-        }
     },
     "dependency": {
         "title": "项目依赖",

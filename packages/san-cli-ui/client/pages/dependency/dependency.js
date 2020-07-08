@@ -2,7 +2,6 @@
  * @file 依赖管理
  */
 import {Component} from 'san';
-import {createApolloComponent} from '@lib/san-apollo';
 import Layout from '@components/layout';
 import DependencyHead from '@components/dependency/dependency-head';
 import DependencyItem from '@components/dependency/dependency-item';
@@ -10,9 +9,9 @@ import DependencyPackageSearch from '@components/dependency/dependency-package-s
 import DEPENDENCIES from '@graphql/dependency/dependencies.gql';
 import './dependency.less';
 
-export default class Dependency extends createApolloComponent(Component) {
+export default class Dependency extends Component {
     static template = /* html */`
-        <c-layout menu="{{$t('menu')}}" nav="{{['dependency']}}">
+        <c-layout menu="{{$t('menu')}}" nav="{{['dependency']}}" title="{{$t('dependency.title')}}">
             <div slot="content" class="dependency">
                 <c-dependence-head on-modalShow="onModalShow"/>
                 <div class="pkg-body" s-if="listData.length">
