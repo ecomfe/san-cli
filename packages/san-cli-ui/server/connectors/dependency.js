@@ -5,7 +5,7 @@
  */
 
 const cwd = require('./cwd');
-const folders = require('./folders');
+const {readPackage} = require('../utils/fileHelper');
 const {resolveModule, resolveModuleRoot} = require('../utils/module');
 const {getMetadata} = require('../utils/getVersion');
 const fs = require('fs');
@@ -84,18 +84,9 @@ function isInstalled(id) {
     return resolvedPath && fs.existsSync(resolvedPath);
 }
 
-function readPackage(id) {
-    try {
-        let idPath = getPath(id);
-        return idPath && folders.readPackage(idPath);
-    } catch (e) {
-        console.log(e);
-    }
-    return {};
-}
-
 function getLink(id) {
-    const pkg = readPackage(id);
+    let idPath = getPath(id);
+    const pkg = readPackage(idPath);
     return pkg && pkg.homepage
         || (pkg && pkg.repository && pkg.repository.url)
         || `https://www.npmjs.com/package/${id.replace('/', '%2F')}`;
@@ -117,7 +108,7 @@ function findDependencies(deps, type) {
 }
 
 function list() {
-    const pkg = folders.readPackage(filePath);
+    const pkg = readPackage(filePath);
     dependencies = [];
     dependencies = dependencies.concat(
         findDependencies(pkg.devDependencies || {}, 'devDependencies')

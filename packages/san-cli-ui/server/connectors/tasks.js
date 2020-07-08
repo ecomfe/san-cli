@@ -8,11 +8,11 @@ const {log, getDebugLogger} = require('san-cli-utils/ttyLogger');
 const channels = require('../utils/channels');
 const parseArgs = require('../utils/parseArgs');
 const cwd = require('./cwd');
-const folders = require('./folders');
 const projects = require('./projects');
 const logs = require('./logs');
 const notify = require('../utils/notify');
 const plugins = require('./plugins');
+const {readPackage} = require('../utils/fileHelper');
 const {
     terminate
 } = require('../utils/terminate');
@@ -47,7 +47,7 @@ async function list({
 } = {}, context) {
     file = file || cwd.get();
     let list = getTasks(file);
-    const pkg = folders.readPackage(file, context);
+    const pkg = readPackage(file, context);
     if (pkg.scripts) {
         const existing = new Map();
         const scriptKeys = Object.keys(pkg.scripts);
