@@ -12,6 +12,7 @@ import PROJECT_OPEN_IN_EDITOR from '@graphql/project/projectOpenInEditor.gql';
 import PROJECT_SET_FAVORITE from '@graphql/project/projectSetFavorite.gql';
 import PROJECT_RENAME from '@graphql/project/projectRename.gql';
 import PROJECT_REMOVE from '@graphql/project/projectRemove.gql';
+import PROJECT_CWD_RESET from '@graphql/project/projectCwdReset.gql';
 import List from './list';
 import 'santd/es/input/style';
 import 'animate.css';
@@ -191,6 +192,9 @@ export default class ProjectList extends Component {
             });
             res.data && this.data.set('projectCurrent', res.data.projectOpen);
         }
+        await this.$apollo.mutate({
+            mutation: PROJECT_CWD_RESET
+        });
         let r = this.$t('menu') ? this.$t('menu')[0].link : '';
         this.fire('routeto', r);
     }
