@@ -163,7 +163,8 @@ async function getVersion({id}) {
     let current;
 
     const registry = await getRegistry();
-    const pkg = readPackage(id);
+    let idPath = getPath(id);
+    const pkg = readPackage(idPath);
     current = pkg.version;
 
     let latest = '';
