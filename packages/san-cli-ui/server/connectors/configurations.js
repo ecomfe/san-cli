@@ -6,13 +6,13 @@
 const fs = require('fs-extra');
 const path = require('path');
 const clone = require('clone');
+const stringifyJS = require('javascript-stringify');
 const plugins = require('./plugins');
-const folders = require('./folders');
 const cwd = require('./cwd');
 const prompts = require('./prompts');
 const {get, set, unset} = require('../utils/object');
 const extendJSConfig = require('../utils/extendJSConfig');
-const stringifyJS = require('javascript-stringify');
+const {readPackage} = require('../utils/fileHelper');
 
 const fileTypes = ['js', 'json'];
 let current = {};
@@ -25,7 +25,7 @@ const findOne = (id, context) => {
 };
 const findFile = (fileDescriptor, context) => {
     if (fileDescriptor.package) {
-        const pkg = folders.readPackage(cwd.get(), context);
+        const pkg = readPackage(cwd.get(), context);
         const data = pkg[fileDescriptor.package];
         if (data) {
             return {type: 'package', path: path.join(cwd.get(), 'package.json')};
@@ -50,7 +50,7 @@ const readFile = (config, fileDescriptor, context) => {
     let fileData = {};
     if (file) {
         if (file.type === 'package') {
-            const pkg = folders.readPackage(cwd.get(), context);
+            const pkg = readPackage(cwd.get(), context);
             fileData = pkg[fileDescriptor.package];
         }
         else if (file.type === 'js') {
@@ -111,7 +111,7 @@ const writeFile = (config, fileId, data, changedFields, context) => {
     fs.ensureFileSync(file.path);
     let rawContent;
     if (file.type === 'package') {
-        const pkg = folders.readPackage(cwd.get(), context);
+        const pkg = readPackage(cwd.get(), context);
         pkg[fileDescriptor.package] = data;
         rawContent = JSON.stringify(pkg, null, 2);
     }

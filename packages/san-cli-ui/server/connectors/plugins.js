@@ -12,13 +12,12 @@ const {
 
 const ipc = require('../utils/ipc');
 const PluginApi = require('../api/PluginApi');
+const cwd = require('./cwd');
+const {readPackage} = require('../utils/fileHelper');
 const pluginApiInstances = new Map();
 const pkgStore = new Map();
 const pluginsStore = new Map();
 const CLI_SERVICE = 'san-cli-service';
-
-const folders = require('./folders');
-const cwd = require('./cwd');
 
 const getApi = folder => {
     return pluginApiInstances.get(folder);
@@ -145,7 +144,7 @@ const resetPluginApi = ({file}, context) => {
     });
 };
 const list = async (file, context, {resetApi = true, autoLoadApi = true} = {}) => {
-    let pkg = folders.readPackage(file, context);
+    let pkg = readPackage(file, context);
     let pkgContext = cwd.get();
 
     pkgStore.set(file, {pkgContext, pkg});

@@ -15,7 +15,7 @@ const {getLocalTplPath} = require('san-cli-utils/path');
 const notify = require('../utils/notify');
 const cwd = require('./cwd');
 const events = require('../utils/events');
-const folders = require('./folders');
+const {isSanProject, readPackage} = require('../utils/fileHelper');
 
 const SAN_CLI_UI_DEV = process.env.SAN_CLI_UI_DEV === 'true';
 
@@ -171,10 +171,10 @@ class Projects {
             id: shortId.generate(),
             path: params.path,
             favorite: 0,
-            type: folders.isSanProject(params.path) ? 'san' : 'unknown'
+            type: isSanProject(params.path) ? 'san' : 'unknown'
         };
 
-        const packageData = folders.readPackage(project.path, context);
+        const packageData = readPackage(project.path, context);
         project.name = packageData.name;
         context.db.get('projects').push(project).write();
 
