@@ -4,19 +4,17 @@
  * Reference: https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-ui/apollo-server/connectors/dependencies.js
  */
 
-const cwd = require('./cwd');
-const {readPackage} = require('../utils/fileHelper');
-const {resolveModule, resolveModuleRoot} = require('../utils/module');
-const {getMetadata} = require('../utils/getVersion');
 const fs = require('fs');
 const path = require('path');
 const minimist = require('minimist');
 const execa = require('execa');
 const semver = require('semver');
+const {isPlugin} = require('san-cli-utils/plugin');
+const cwd = require('./cwd');
+const {readPackage} = require('../utils/fileHelper');
+const {resolveModule, resolveModuleRoot} = require('../utils/module');
+const {getMetadata} = require('../utils/getVersion');
 
-const {
-    isPlugin
-} = require('san-cli-utils/plugin');
 const filePath = cwd.get();
 let dependencies;
 const PACKAGE_INSTLL_CONFIG = {
