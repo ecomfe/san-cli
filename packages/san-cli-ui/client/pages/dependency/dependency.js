@@ -39,11 +39,11 @@ export default class Dependency extends Component {
     }
     attached() {
         this.initList();
-        // this.watch('packageModalShow', packageModalShow => {
-        //     if (!packageModalShow) {
-        //         this.initList();
-        //     }
-        // });
+        this.watch('packageModalShow', packageModalShow => {
+            if (!packageModalShow) {
+                this.initList();
+            }
+        });
     }
     // 初始化获取数据列表
     async initList() {

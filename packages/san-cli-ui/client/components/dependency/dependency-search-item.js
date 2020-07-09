@@ -22,7 +22,9 @@ export default class DependenceSearchItem extends Component {
                 </div>
                 <div class="pkg-install-button"></div>
                 <div class="pkg-btn-operate">
-                    <s-button on-click="onCheck">{{$t('dependency.checkDetail')}}</s-button>
+                    <a href="{{data.repository.url}}" target="_blank">
+                        <s-button>{{$t('dependency.checkDetail')}}</s-button>
+                    </a>
                     <s-button on-click="onInstallPlugin">{{$t('dependency.install')}}</s-button>
                 </div>
             </div>
@@ -51,11 +53,7 @@ export default class DependenceSearchItem extends Component {
     async inited() {
         this.data.set('loadingTip', this.$t('dependency.installing'));
     }
-    // 点击查看详情
-    onCheck() {
-        let data = this.data.get('data');
-        window.open(data.repository.url);
-    }
+
     // 点击安装
     async onInstallPlugin(e) {
         this.data.set('spinning', true);

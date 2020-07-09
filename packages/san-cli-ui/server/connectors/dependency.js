@@ -40,6 +40,9 @@ const registries = {
     pnpm: 'https://registry.npmjs.org'
 };
 
+const DEPENDENCISE = 'dependencies';
+const DEVDEPENDENCISE = 'devDependencies';
+
 function shouldUseTaobao() {
     // console.log('dd', fs.existsSync(path.join(cwd.get(), '.npmrc')));
 }
@@ -111,10 +114,10 @@ function list() {
     const pkg = readPackage(filePath);
     dependencies = [];
     dependencies = dependencies.concat(
-        findDependencies(pkg.devDependencies || {}, 'devDependencies')
+        findDependencies(pkg.devDependencies || {}, DEVDEPENDENCISE)
     );
     dependencies = dependencies.concat(
-        findDependencies(pkg.dependencies || {}, 'dependencies')
+        findDependencies(pkg.dependencies || {}, DEPENDENCISE)
     );
     return dependencies;
 }
@@ -146,7 +149,7 @@ async function runCommand(type, args) {
 async function install(args) {
     let {id, type} = args;
     // 工具太多选 npm - yarn- pnpm - 先走通功能
-    let dev = type ? ['-D'] : [];
+    let dev = type === DEVDEPENDENCISE ? ['-D'] : [];
     // npm安装依赖
     await runCommand('add', [id, ...(dev || [])]);
     return findOne(id);
