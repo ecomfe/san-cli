@@ -24,7 +24,7 @@ import 'santd/es/button/style';
 */
 export default class ProjectList extends Component {
     static template = /* html */`
-        <div class="project-template-list" style="padding: 50px">
+        <div class="flex-all project-template-list" style="padding: 50px">
             <s-form label-col="{{formItemLayout.labelCol}}" 
                     wrapper-col="{{formItemLayout.wrapperCol}}"
                     on-submit="handleSubmit">

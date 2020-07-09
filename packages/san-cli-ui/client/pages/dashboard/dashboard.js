@@ -18,7 +18,7 @@ import './dashboard.less';
 
 export default class Dashboard extends Component {
     static template = /* html */`
-        <div class="dashboard {{editing ? 'custom' : ''}}">
+        <div class="inherit dashboard {{editing ? 'custom' : ''}}">
             <s-spin class="loading" spinning="{{pageLoading}}" size="large"/>
             <c-layout menu="{{$t('menu')}}" nav="{{['dashboard']}}" title="{{$t('dashboard.title')}}">
                 <template slot="right">
@@ -32,7 +32,7 @@ export default class Dashboard extends Component {
                         </template>
                     </s-button>
                 </template>
-                <div slot="content" class="main-content">
+                <div slot="content" class="inherit dashboard-content">
                     <div class="widgets">
                         <c-widget
                             s-for="widget in widgets"
