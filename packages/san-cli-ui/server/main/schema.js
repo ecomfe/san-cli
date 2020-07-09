@@ -1,3 +1,7 @@
+/**
+ * @file 主schema入口，集成了./schema下全部文件
+ * @author jinzhan
+*/
 const gql = require('graphql-tag');
 const globby = require('globby');
 

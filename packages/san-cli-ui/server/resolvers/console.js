@@ -1,3 +1,8 @@
+/**
+ * @file 控制台日志相关API
+ * @author jinzhan
+*/
+
 const {CONSOLE_LOG_ADDED} = require('../utils/channels');
 const logs = require('../connectors/console');
 

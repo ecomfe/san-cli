@@ -30,7 +30,7 @@ export default class ComponentLayout extends Component {
                         <s-button>{{projectCurrent.name}}<s-icon type="down" /></s-button>
                     </s-dropdown>
                     <span class="line"></span>
-                    <span class="title">{{title}}</span>
+                    <h1 class="title">{{title}}</h1>
                     <div class="head-right">
                         <slot name="right"></slot>
                     </div>

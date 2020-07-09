@@ -1,5 +1,5 @@
 /**
- * @file 项目相关的resolver
+ * @file 项目相关的API
  * @author jinzhan
 */
 

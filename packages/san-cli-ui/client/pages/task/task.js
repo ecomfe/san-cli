@@ -17,7 +17,7 @@ import './task.less';
 
 export default class Task extends createApolloComponent(Component) {
     static template = /* html */`
-        <c-layout menu="{{$t('menu')}}" nav="{{['task']}}" title="{{$t('task.title')}}">
+        <c-layout menu="{{$t('menu')}}" nav="{{['tasks']}}" title="{{$t('task.title')}}">
             <template slot="right"></template>
             <div slot="content" class="{{taskName ? 'task' : 'task-home'}}">
                 <c-task-nav 
@@ -53,8 +53,6 @@ export default class Task extends createApolloComponent(Component) {
     }
 
     async attached() {
-        this.data.set('title', this.$t('detail.title'));
-
         const tasksData = await this.$apollo.query({query: TASKS});
 
         if (tasksData.data) {

@@ -1,3 +1,8 @@
+/**
+ * @file 任务相关的API
+ * @author jinzhan
+*/
+
 // Subs
 const {withFilter} = require('graphql-subscriptions');
 const channels = require('../utils/channels');

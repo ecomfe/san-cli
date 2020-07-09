@@ -1,3 +1,8 @@
+/**
+ * @file 主resolvers入口，集成了./resolvers下全部文件
+ * @author jinzhan
+*/
+
 const globby = require('globby');
 const {GraphQLJSON} = require('graphql-type-json');
 const {CWD_CHANGED} = require('../utils/channels');

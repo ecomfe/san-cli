@@ -1,9 +1,7 @@
 /**
  * @file Context passed to all resolvers (third argument)
  */
-const {
-    db
-} = require('./db');
+const db = require('../main/db');
 const pubsub = require('../main/pubsub');
 const cwd = require('../connectors/cwd');
 

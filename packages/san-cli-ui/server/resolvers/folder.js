@@ -6,14 +6,14 @@
 const folders = require('../connectors/folders');
 const {
     isDirectory,
-    fileList,
+    folderList,
     isPackage,
     isSanProject
 } = require('../utils/fileHelper');
 
 module.exports = {
     Folder: {
-        children: (folder, args, context) => fileList(folder.path),
+        children: (folder, args, context) => folderList(folder.path),
         isPackage: (folder, args, context) => isPackage(folder.path),
         isSanProject: (folder, args, context) => isSanProject(folder.path),
         favorite: (folder, args, context) => folders.isFavorite(folder.path, context)

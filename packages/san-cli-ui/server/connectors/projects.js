@@ -32,10 +32,6 @@ const DEFAULT_TEMPLATES = [{
 const debug = getDebugLogger('ui:project');
 
 class Projects {
-    constructor() {
-        // init
-    }
-
     /**
      * 获取san的脚手架模板
      *
