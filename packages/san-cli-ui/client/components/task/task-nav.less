@@ -1,16 +1,20 @@
 .task-nav {
     height: 100%;
     overflow: auto;
-    .task-nav-item a {
+    padding: 0 20px;
+    background-color: #e6f7ff;
+    .task-nav-item {
         display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        padding: 15px 0;
-        border-bottom: 1px solid #efefef;
-        color: #333;
-        &:last-child {
-            border-bottom: none;
+        a {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #efefef;
+            color: #333;
+            &:last-child {
+                border-bottom: none;
+            }
         }
     }
 
@@ -23,9 +27,12 @@
         position: relative;
         width: 44px;
         height: 44px;
+        border-radius: 50%;
+        overflow: hidden;
         img {
             width: 44px;
             height: 44px;
+            display: block;
         }
         .santd-icon {
             font-size: 44px;
@@ -33,7 +40,8 @@
     }
 
     .task-info {
-        flex: 1 1 100%;
+        width: 240px;
+        padding-right: 15px;
         overflow: hidden;
     }
 

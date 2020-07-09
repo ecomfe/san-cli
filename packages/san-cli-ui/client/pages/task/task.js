@@ -9,6 +9,7 @@ import TASKS from '@graphql/task/tasks.gql';
 import TASK from '@graphql/task/task.gql';
 import Layout from '@components/layout';
 import TaskNav from '@components/task/task-nav';
+import TaskCard from '@components/task/task-card';
 import TaskContent from '@components/task/task-content';
 import 'santd/es/icon/style';
 import 'santd/es/button/style';
@@ -23,7 +24,14 @@ export default class Task extends createApolloComponent(Component) {
                 <c-task-nav 
                     tasks="{{tasks}}" 
                     queryName="{{taskName}}" 
-                    routePath="{{routePath}}"></c-task-nav>
+                    routePath="{{routePath}}"
+                    s-if="{{taskName}}" />
+                <c-task-card
+                    s-else
+                    tasks="{{tasks}}" 
+                    queryName="{{taskName}}" 
+                    routePath="{{routePath}}" />
+
                 <c-task-content s-if="{{taskName}}" taskInfo="{{taskInfo}}" ></c-task-content>
             </div>
         </c-layout>
@@ -35,6 +43,7 @@ export default class Task extends createApolloComponent(Component) {
         's-spin': Spin,
         'c-layout': Layout,
         'c-task-nav': TaskNav,
+        'c-task-card': TaskCard,
         'c-task-content': TaskContent
     };
 

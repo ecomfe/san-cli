@@ -1,0 +1,93 @@
+.task-cards {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px 30px;
+    .task-card-item {
+        flex: 0 0 25%;
+        max-width: 25%;
+        min-height: 1px;
+        padding-left: .9375rem;
+        padding-right: .9375rem;
+    }
+    
+    .card-item {
+        background-color: #fff;
+        border: .0625rem solid #dee2e6;
+        border-radius: .142rem;
+        margin-bottom: .9375rem;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        color: #58666e;
+    }
+    
+    .card-heading {
+        overflow: hidden;
+        padding: .625rem .9375rem;
+        flex: 1 0 auto;
+    }
+    
+    .card-avtar {
+        float: left;
+        margin-right: .9375rem;
+        max-width: 12.5rem;
+        width: 50px;
+        display: inline-block;
+        border-width: 3px;
+        width: 50px;
+        display: inline-block;
+        img {
+            height: auto;
+            max-width: 100%;
+            vertical-align: middle;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+    }
+    
+    .card-meta {
+        display: block;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+        margin-right: 1.25rem;
+    }
+    
+    .card-title {
+        color: #414c52;
+        font-size: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .card-subtitle {
+        max-height: 2.625rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: #99a6ad;
+        line-clamp: 2;
+        box-orient: vertical;
+        display: box;
+    }
+    
+   .card-actions {
+        border-top: .0625rem solid #edeff1;
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+        a {
+            background-color: transparent;
+            display: table-cell;
+            border-color: #edeff1;
+            border-style: solid;
+            border-width: 0 .0625rem 0 0;
+            color: #58666e;
+            text-align: center;
+            line-height: 2.5rem;
+            font-size: .875rem;
+        }
+    }
+}
+

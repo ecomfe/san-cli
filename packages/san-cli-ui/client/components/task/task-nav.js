@@ -6,6 +6,7 @@
 import {Component} from 'san';
 import {Icon} from 'santd';
 import {router, Link} from 'san-router';
+import avatars from '@lib/utils/avatars';
 import 'santd/es/input/style';
 import 'santd/es/button/style';
 import 'santd/es/spin/style';
@@ -18,7 +19,7 @@ export default class TaskNav extends Component {
                 <s-link to="{{'/' + routePath + '/' + task.name}}">
                     <div class="task-icon">
                         <img s-if="task.icon" src="{{task.icon}}" />
-                        <s-icon s-else type="right-circle" />
+                        <img s-else src="{{avatars(task.name)}}" />
                     </div>
                     <div class="task-info">
                         <div class="task-info-name">{{task.name}}</div>
@@ -33,4 +34,8 @@ export default class TaskNav extends Component {
         's-icon': Icon,
         's-link': Link
     };
+
+    avatars(name) {
+        return avatars(name, 'initials');
+    }
 };
