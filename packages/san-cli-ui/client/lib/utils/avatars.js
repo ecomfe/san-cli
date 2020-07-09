@@ -18,8 +18,18 @@ const category = [
 
 const len = category.length;
 
-module.exports = id => {
+/**
+ * 返回个性化的头像
+ *
+ * @param {string} id 头像的标识
+ * @param {string} iconType 头像的类型，如果不设置则按照首字母的charCode分配一个
+ *
+ * @return {string} 头像的地址
+*/
+module.exports = (id, iconType = '') => {
     const index = id.replace('@', '').toLowerCase().charCodeAt(0);
-    const iconType = category[index % len];
+    if (!iconType || category.indexOf(iconType) === -1) {
+        iconType = category[index % len];
+    }
     return `https://avatars.dicebear.com/api/${iconType}/${id}.svg`;
 };
