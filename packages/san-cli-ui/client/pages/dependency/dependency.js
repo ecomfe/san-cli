@@ -74,11 +74,15 @@ export default class Dependency extends Component {
 
     attached() {
         this.getDependencies();
+        this.watch('packageModalShow', packageModalShow => {
+            if (!packageModalShow) {
+                this.getDependencies();
+            }
+        });
     }
 
     keywordChange(keyword) {
         keyword = keyword.trim();
-        console.log({keyword});
         this.data.set('keyword', keyword);
     }
 

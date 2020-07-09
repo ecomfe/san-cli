@@ -8,6 +8,7 @@ import {Button, Icon, Spin} from 'santd';
 import DEPENDENCYITEM from '@graphql/dependency/dependencyItem.gql';
 import DEPENDENCY_UNINSTALL from '@/graphql/dependency/dependency-uninstall.gql';
 import DEPENDENCY_INSTALL from '@graphql/dependency/dependency-install.gql';
+import DEPENDENCIES from '@graphql/dependency/dependencies.gql';
 import avatars from '@lib/utils/avatars';
 import './dependency-item.less';
 
@@ -76,10 +77,11 @@ export default class DependenceItem extends Component {
             },
             update: async (cache, {data: {dependencyUninstall}}) => {
                 // 暂停加载状态
-                this.data.set('spinning', false);
-
+                let cacheData = cache.readQuery({query: DEPENDENCIES});
+                // TODO: 同步数据
             }
         });
+        this.data.set('spinning', false);
     }
     async onUpdate() {
         // 更新npm包
