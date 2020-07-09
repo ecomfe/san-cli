@@ -66,11 +66,14 @@ export default class DependenceSearchItem extends Component {
                 type: this.data.get('installType')
             },
             update: async (cache, {data: {dependencyInstall}}) => {
-                // 暂停加载状态
-                this.data.set('spinning', false);
-                let cacheData = await this.$apollo.query({query: DEPENDENCIES});
+                let cacheData = cache.readQuery({query: DEPENDENCIES});
+                cacheData = {
+                    dependencies: [...cacheData.dependencies, dependencyInstall]
+                };
                 cache.writeQuery({query: DEPENDENCIES, data: {cacheData}});
             }
         });
+        // 暂停加载状态
+        this.data.set('spinning', false);
     }
 }

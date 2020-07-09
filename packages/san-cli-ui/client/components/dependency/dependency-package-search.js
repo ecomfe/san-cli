@@ -4,7 +4,7 @@
  */
 
 import {Component} from 'san';
-import {Input, Button, Icon} from 'santd';
+import {Input, Button, Icon, Radio} from 'santd';
 import DependencySearchItem from './dependency-search-item';
 import './dependency-package-search.less';
 import axios from 'axios';
@@ -18,10 +18,16 @@ export default class DependencePackageSearch extends Component {
             <div class="pkg-modal">
                 <div class="pkg-title">{{$t('dependency.newDependency')}}</div>
                 <s-icon type="close" class="pkg-modal-close" on-click="modalClose"/>
-                <div class="pkg-input-warp"><s-input-search class="pkg-search-input"/></div>
+                <div class="pkg-input-warp">
+                    <s-input-search class="pkg-search-input"/>
+                    <s-group name="radiogroup" value="{{radioValue}}" on-change="radioChange">
+                        <s-radio value="dependencies">{{$t('dependency.dependencies')}}</s-radio>
+                        <s-radio value="devDependencies">{{$t('dependency.devDependencies')}}</s-radio>
+                    </s-group>
+                </div>
                 <div class="pkg-search-item">
                     <c-dependency-search-item s-for="data, index in searchData"
-                        data="{{data}}" installType="{{installType}}"/>
+                        data="{{data}}" installType="{{radioValue}}"/>
                 </div>
             </div>
         </div>
@@ -30,13 +36,15 @@ export default class DependencePackageSearch extends Component {
         's-button': Button,
         's-input-search': Input.Search,
         's-icon': Icon,
-        'c-dependency-search-item': DependencySearchItem
+        'c-dependency-search-item': DependencySearchItem,
+        's-radio': Radio,
+        's-group': Radio.Group
     }
     initData() {
         return {
             searchData: {},
             // 运行依赖
-            installType: 'dependencies'
+            radioValue: 'dependencies'
         };
     }
     inited() {
@@ -70,5 +78,8 @@ export default class DependencePackageSearch extends Component {
         if (results && results.length) {
             this.data.set('searchData', results[0].hits);
         }
+    }
+    radioChange(event) {
+        this.data.set('radioChange', event.target.value);
     }
 }

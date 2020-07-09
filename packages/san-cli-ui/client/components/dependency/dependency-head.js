@@ -11,8 +11,8 @@ export default class DependenceHead extends Component {
     static template = /* html */`
         <div class="dependency-head">
             <s-group name="radiogroup" value="{{radioValue}}" on-change="radioChange">
-                <s-radio value="{{$t('dependency.dependencies')}}">运行依赖</s-radio>
-                <s-radio value="{{$t('dependency.devDependencies')}}">开发依赖</s-radio>
+                <s-radio value="dependencies">{{$t('dependency.dependencies')}}</s-radio>
+                <s-radio value="devDependencies">{{$t('dependency.devDependencies')}}</s-radio>
             </s-group>
             <s-input-search class="pkg-input"/>
             <s-button class="pkg-modal-button" on-click="modalShow" type="primary">
@@ -29,15 +29,10 @@ export default class DependenceHead extends Component {
         's-radio': Radio,
         's-group': Radio.Group
     }
-    initData() {
-        return {
-            radioValue: ''
-        };
-    }
     modalShow() {
         this.fire('modalShow');
     }
-    radioChange(e) {
-        this.data.set('radioValue', e.target.value);
+    radioChange(event) {
+        this.fire('radioChange', event);
     }
 }
