@@ -24,7 +24,7 @@ import './project.less';
 
 export default class Project extends createApolloComponent(Component) {
     static template = /* html */`
-        <div class="inherit project-select">
+        <div class="h1oh project-select">
             <c-connection-status />
             <s-spin class="loading" spinning="{{pageLoading}}" size="large">
                 <s-icon slot="indicator" type="loading" style="font-size: 30px;" />
@@ -38,7 +38,7 @@ export default class Project extends createApolloComponent(Component) {
                     />
 
                     <!--- 2.创建项目 -->
-                    <div class="inherit project-create" s-if="route.query.nav === 'create'">
+                    <div class="h1oh project-create" s-if="route.query.nav === 'create'">
                         <c-folder-explorer s-if="current === 0"
                             current-path="{{cwd}}"
                             on-change="handleCwdChange"
@@ -96,7 +96,7 @@ export default class Project extends createApolloComponent(Component) {
                     </div>
 
                     <!--- 3.导入项目 -->
-                    <div class="inherit project-import" s-if="route.query.nav === 'import'">
+                    <div class="h1oh project-import" s-if="route.query.nav === 'import'">
                         <c-folder-explorer
                             current-path="{{cwd}}"
                             on-change="handleCwdChange"

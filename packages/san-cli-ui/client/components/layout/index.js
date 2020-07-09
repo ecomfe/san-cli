@@ -18,7 +18,7 @@ import './index.less';
 
 export default class ComponentLayout extends Component {
     static template = /* html */`
-            <s-layout class="inherit layout">
+            <s-layout class="h1oh layout">
                 <s-header class="header">
                     <s-dropdown trigger="click" class="project-name">
                         <s-menu slot="overlay"
@@ -36,7 +36,7 @@ export default class ComponentLayout extends Component {
                     </div>
                 </s-header>
 
-                <s-layout class="inherit flex-all main-wrap">
+                <s-layout class="h1oh flex-all main-wrap">
                     <s-sider theme="light">
                         <s-menu class="menu" mode="inline" selectedKeys="{{nav}}">
                             <s-menuitem s-for="item in $t('menu')" key="{{item.key}}">
