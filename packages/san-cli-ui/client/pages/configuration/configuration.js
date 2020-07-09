@@ -21,7 +21,7 @@ import './configuration.less';
 
 export default class Configuration extends Component {
     static template = /* html */`
-        <div class="config">
+        <div class="inherit">
             <s-spin class="loading" spinning="{{pageLoading}}" size="large"/>
             <c-layout menu="{{$t('menu')}}" nav="{{['configuration']}}" title="{{$t('config.title')}}">
                 <template slot="right">
@@ -29,8 +29,8 @@ export default class Configuration extends Component {
                         {{$t('config.tools')}}
                     </s-button>
                 </template>
-                <s-row type="flex" slot="content" class="main-content">
-                    <s-col span="6">
+                <s-row type="flex" slot="content" class="inherit config-content">
+                    <s-col span="6" class="inherit">
                         <div class="nav-list">
                             <div class="filter-input">
                                 <s-input-search value="{=search=}" />
@@ -48,7 +48,7 @@ export default class Configuration extends Component {
                             </div>
                         </div>
                     </s-col>
-                    <s-col span="18">
+                    <s-col span="18" class="inherit">
                         <div class="nav-content {{currentConfigId && currentConfig ? 'slide' : ''}}">
                             <c-config-content s-if="currentConfigId && currentConfig"
                                 current-config-id="{=currentConfigId=}"

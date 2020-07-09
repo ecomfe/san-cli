@@ -20,7 +20,7 @@ export default class TaskNav extends Component {
                         <img s-if="task.icon" src="{{task.icon}}" />
                         <s-icon s-else type="right-circle" />
                     </div>
-                    <div class="task-info">
+                    <div class="flex-all task-info">
                         <div class="task-info-name">{{task.name}}</div>
                         <div class="task-info-description">{{task.description || task.command}}</div>
                     </div>

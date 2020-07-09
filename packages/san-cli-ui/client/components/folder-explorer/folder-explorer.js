@@ -24,8 +24,8 @@ import './folder-explorer.less';
 
 export default class FolderExplorer extends Component {
     static template = /* html */`
-        <div class="folder-explorer">
-            <div class="contents">
+        <div class="flex-all folder-explorer">
+            <div class="flex-none contents">
                 <s-tooltip title="{{$t('project.select.folderExplorer.tooltip.pre')}}">
                     <s-button type="primary" icon="left" on-click="onPathChange(-2)"></s-button>
                 </s-tooltip>
@@ -94,7 +94,7 @@ export default class FolderExplorer extends Component {
                     <s-button type="primary" icon="more"></s-button>
                 </s-dropdown>
             </div>
-            <div class="folders">
+            <div class="flex-all folders">
                 <s-spin spinning="{{loading}}"/>
                 <template s-if="folderCurrent && folderCurrent.children" s-for="folder in folderCurrent.children">
                     <div s-if="showHiddenFolder || !folder.hidden"

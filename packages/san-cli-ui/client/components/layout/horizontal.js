@@ -14,7 +14,7 @@ import './horizontal.less';
 
 export default class ComponentHorLayout extends Component {
     static template = /* html */`
-            <s-layout class="hlayout">
+            <s-layout class="inherit hlayout">
                 <s-header>
                     <div class="header">
                         <div class="title" on-click="logoClick">{{$t('title')}}</div>
@@ -38,8 +38,8 @@ export default class ComponentHorLayout extends Component {
                         --->
                     </div>
                 </s-header>
-                <s-content>
-                    <div class="main">
+                <s-content class="flex-all">
+                    <div class="inherit main">
                         <slot name="content"></slot>
                     </div>
                 </s-content>

@@ -16,7 +16,7 @@ import './create.less';
 
 export default class ProjectCreate extends createApolloComponent(Component) {
     static template = /* html */`
-        <div class="project-create">
+        <div class="flex-all create">
             <s-form label-col="{{formItemLayout.labelCol}}"
                 wrapper-col="{{formItemLayout.wrapperCol}}">
                 <s-formitem label="{{$t('project.components.create.folderName')}}">
