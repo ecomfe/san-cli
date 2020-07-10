@@ -4,7 +4,7 @@
  */
 
 import {Component} from 'san';
-import {Button, Icon, Spin, Notification} from 'santd';
+import {Button, Icon, Spin, Notification, Popconfirm} from 'santd';
 import DEPENDENCY_UNINSTALL from '@/graphql/dependency/dependency-uninstall.gql';
 import DEPENDENCY_INSTALL from '@graphql/dependency/dependency-install.gql';
 import avatars from '@lib/utils/avatars';
@@ -13,6 +13,8 @@ import 'santd/es/button/style';
 import 'santd/es/icon/style';
 import 'santd/es/spin/style';
 import 'santd/es/notification/style';
+import 'santd/es/popover/style';
+
 export default class DependenceItem extends Component {
     static template = /* html */`
         <s-spin class="loading" size="large" spinning="{{spinning}}" tip="{{loadingTip}}">
@@ -37,9 +39,17 @@ export default class DependenceItem extends Component {
                             class="pkg-detail-link">
                             {{$t('dependency.checkDetail')}}
                         </a>
+                        <s-icon type="download" class="pkg-download" on-click="onPkgUpdate"/>
                     </div>
                 </div>
-                <s-icon type="delete" on-click="onPkgDelete"/>
+            
+                 <s-popconfirm
+                    title="{{$t('dependency.confirmUninstall') + item.id + '?'}}"
+                    okText="{{$t('confirmText')}}"
+                    cancelText="{{$t('cancelText')}}"
+                    on-confirm="onPkgDelete">
+                        <s-icon type="delete" class="highlight" />
+                 </s-popconfirm>
             </div>
         </s-spin>
     `;
@@ -47,7 +57,8 @@ export default class DependenceItem extends Component {
     static components = {
         's-button': Button,
         's-icon': Icon,
-        's-spin': Spin
+        's-spin': Spin,
+        's-popconfirm': Popconfirm
     }
 
     initData() {
@@ -71,15 +82,14 @@ export default class DependenceItem extends Component {
         this.fire('pkgDelete');
         this.data.set('spinning', false);
         Notification.open({
-            message: '依赖卸载',
-            description: '卸载成功'
+            message: this.$t('dependency.deleteDependency'),
+            description: this.$t('dependency.deleteSuccess')
         });
     }
-    async onPkgUpdate() {
-        // TODO
-        // 更新npm包
-        let {id, type} = this.data.get('item');
 
+    // 更新npm包
+    async onPkgUpdate() {
+        let {id, type} = this.data.get('item');
         await this.$apollo.mutate({
             mutation: DEPENDENCY_INSTALL,
             variables: {
@@ -88,6 +98,7 @@ export default class DependenceItem extends Component {
             }
         });
     }
+
     avatars(packageName) {
         return avatars(packageName);
     }

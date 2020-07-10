@@ -7,12 +7,12 @@ import {Component} from 'san';
 import {Input, Button, Icon, Spin, Notification} from 'santd';
 import './dependency-search-item.less';
 import DEPENDENCY_INSTALL from '@graphql/dependency/dependency-install.gql';
-import DEPENDENCIES from '@graphql/dependency/dependencies.gql';
 import 'santd/es/input/style';
 import 'santd/es/button/style';
 import 'santd/es/icon/style';
 import 'santd/es/spin/style';
 import 'santd/es/notification/style';
+
 export default class DependenceSearchItem extends Component {
     static template = /* html */`
         <s-spin class="loading" size="large" spinning="{{spinning}}" tip="{{loadingTip}}">
@@ -66,20 +66,13 @@ export default class DependenceSearchItem extends Component {
             variables: {
                 id: this.data.get('data').name,
                 type: this.data.get('installType')
-            },
-            update: async (cache, {data: {dependencyInstall}}) => {
-                // let cacheData = cache.readQuery({query: DEPENDENCIES});
-                // cacheData = {
-                //     dependencies: [...cacheData.dependencies, dependencyInstall]
-                // };
-                // cache.writeQuery({query: DEPENDENCIES, data: {cacheData}});
             }
         });
         // 暂停加载状态
         this.data.set('spinning', false);
         Notification.open({
-            message: '依赖安装',
-            description: '安装成功'
+            message: this.$t('dependency.installDependency'),
+            description: this.$t('dependency.installSuccess')
         });
     }
 }

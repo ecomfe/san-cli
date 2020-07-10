@@ -15,7 +15,7 @@
         border-radius: 50%;
         background-size: cover;
         background-repeat: no-repeat;
-        background-image: url(../../assets/default.png);
+        background-image: url(../../assets/paw.png);
     }
 
     .pkg-info {
@@ -29,17 +29,23 @@
     }
 
     .pkg-detail {
-        .pkg-version {
+        .pkg-version, .pkg-download {
             min-width: 138px;
             display: inline-block;
         }
     }
 
-    .pkg-detail-link {
+    .pkg-detail-link, .pkg-download {
         color: #1890ff;
     }
     
     .pkg-check-ico {
         margin-right: 5px;
+    }
+
+    .highlight {
+        :hover {
+            color: #1890ff;
+        }
     }
 }
