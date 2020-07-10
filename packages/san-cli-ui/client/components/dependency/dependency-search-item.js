@@ -66,20 +66,13 @@ export default class DependenceSearchItem extends Component {
             variables: {
                 id: this.data.get('data').name,
                 type: this.data.get('installType')
-            },
-            update: async (cache, {data: {dependencyInstall}}) => {
-                // let cacheData = cache.readQuery({query: DEPENDENCIES});
-                // cacheData = {
-                //     dependencies: [...cacheData.dependencies, dependencyInstall]
-                // };
-                // cache.writeQuery({query: DEPENDENCIES, data: {cacheData}});
             }
         });
         // 暂停加载状态
         this.data.set('spinning', false);
         Notification.open({
-            message: '依赖安装',
-            description: '安装成功'
+            message: this.$t('dependency.installDependency'),
+            description: this.$t('dependency.installSuccess')
         });
     }
 }

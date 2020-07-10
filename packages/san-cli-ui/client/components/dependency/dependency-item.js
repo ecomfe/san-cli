@@ -4,7 +4,7 @@
  */
 
 import {Component} from 'san';
-import {Button, Icon, Spin, Notification} from 'santd';
+import {Button, Icon, Spin, Notification, Popconfirm} from 'santd';
 import DEPENDENCYITEM from '@graphql/dependency/dependencyItem.gql';
 import DEPENDENCY_UNINSTALL from '@/graphql/dependency/dependency-uninstall.gql';
 import DEPENDENCY_INSTALL from '@graphql/dependency/dependency-install.gql';
@@ -15,6 +15,8 @@ import 'santd/es/button/style';
 import 'santd/es/icon/style';
 import 'santd/es/spin/style';
 import 'santd/es/notification/style';
+import 'santd/es/popover/style';
+
 export default class DependenceItem extends Component {
     static template = /* html */`
         <s-spin class="loading" size="large" spinning="{{spinning}}" tip="{{loadingTip}}">
@@ -26,16 +28,23 @@ export default class DependenceItem extends Component {
                         <span class="pkg-version">{{$t('dependency.version')}}{{dependencyItem.current}}</span>
                         <span class="pkg-version">{{$t('dependency.lowVersion')}}{{dependencyItem.wanted}}</span>
                         <span class="pkg-version">{{$t('dependency.currentVersion')}}{{dependencyItem.latest}}</span>
-                        <s-icon class="pkg-check-ico" type="check-circle" />
+                        <s-icon class="pkg-check-ico" type="check-circle"/>
                         <span class="pkg-version">{{$t('dependency.installed')}}</span>
                         <a s-if="{{item.website}}" href="{{item.website}}" 
                             target="_blank"
                             class="pkg-detail-link">
                             {{$t('dependency.checkDetail')}}
                         </a>
+                        <s-icon type="download" class="pkg-download" on-click="onPkgUpdate"/>
                     </div>
                 </div>
-                <s-icon type="delete" on-click="onPkgDelete"/>
+                 <s-popconfirm
+                    title="{{$t('dependency.isDeleteDependency')}}"
+                    okText="Yes"
+                    cancelText="No"
+                    on-confirm="onPkgDelete">
+                    <s-icon type="delete" />
+                 </s-popconfirm>
             </div>
         </s-spin>
     `;
@@ -43,7 +52,8 @@ export default class DependenceItem extends Component {
     static components = {
         's-button': Button,
         's-icon': Icon,
-        's-spin': Spin
+        's-spin': Spin,
+        's-popconfirm': Popconfirm
     }
 
     initData() {
@@ -82,13 +92,13 @@ export default class DependenceItem extends Component {
         this.fire('pkgDelete');
         this.data.set('spinning', false);
         Notification.open({
-            message: '依赖卸载',
-            description: '卸载成功'
+            message: this.$t('dependency.deleteDependency'),
+            description: this.$t('dependency.deleteSuccess')
         });
     }
+
+    // 更新npm包
     async onPkgUpdate() {
-        // TODO
-        // 更新npm包
         let {id, type} = this.data.get('item');
 
         await this.$apollo.mutate({
