@@ -4,30 +4,35 @@
  */
 
 import {Component} from 'san';
-import {Input, Button, Icon, Radio} from 'santd';
+import {Input, Button, Icon, Radio, Pagination} from 'santd';
 import DependencySearchItem from './dependency-search-item';
 import './dependency-package-search.less';
 import axios from 'axios';
 import {searchParam} from '@lib/utils/searchParam';
 import {SEARCHURL} from '@lib/const';
-
+import 'santd/es/input/style';
+import 'santd/es/button/style';
+import 'santd/es/icon/style';
+import 'santd/es/radio/style';
+import 'santd/es/pagination/style';
 export default class DependencePackageSearch extends Component {
     static template = /* html */`
         <div class="dependency-package-search">
             <div class="pkg-background"></div>
             <div class="pkg-modal">
                 <div class="pkg-title">{{$t('dependency.newDependency')}}</div>
-                <s-icon type="close" class="pkg-modal-close" on-click="modalClose"/>
+                <s-icon type="close" class="pkg-modal-close" on-click="onModalClose"/>
                 <div class="pkg-input-warp">
                     <s-input-search class="pkg-search-input"/>
-                    <s-group name="radiogroup" value="{{radioValue}}" on-change="radioChange">
+                    <s-group name="radiogroup" value="{{radioValue}}" on-change="onRadioChange">
                         <s-radio value="dependencies">{{$t('dependency.dependencies')}}</s-radio>
                         <s-radio value="devDependencies">{{$t('dependency.devDependencies')}}</s-radio>
                     </s-group>
                 </div>
-                <div class="pkg-search-item">
+                <div class="pkg-search-item" s-if="searchData.length">
                     <c-dependency-search-item s-for="data, index in searchData"
                         data="{{data}}" installType="{{radioValue}}"/>
+                    <s-pagination class="pkg-pagination" total="{{500}}" on-change="onPagination"></s-pagination>
                 </div>
             </div>
         </div>
@@ -38,21 +43,21 @@ export default class DependencePackageSearch extends Component {
         's-icon': Icon,
         'c-dependency-search-item': DependencySearchItem,
         's-radio': Radio,
-        's-group': Radio.Group
+        's-group': Radio.Group,
+        's-pagination': Pagination
     }
     initData() {
         return {
-            searchData: {},
+            searchData: [],
             // 运行依赖
-            radioValue: 'dependencies'
+            radioValue: 'dependencies',
+            currentPage: 1
         };
     }
     inited() {
         this.search();
     }
-    modalClose() {
-        this.fire('modalClose');
-    }
+
     async search(name = '') {
         let param = searchParam({
             query: encodeURIComponent(name),
@@ -79,7 +84,14 @@ export default class DependencePackageSearch extends Component {
             this.data.set('searchData', results[0].hits);
         }
     }
-    radioChange(event) {
+    onModalClose() {
+        this.fire('modalClose');
+    }
+    onRadioChange(event) {
         this.data.set('radioChange', event.target.value);
+    }
+    onPagination(event) {
+        this.data.set('currentPage', event.page);
+
     }
 }

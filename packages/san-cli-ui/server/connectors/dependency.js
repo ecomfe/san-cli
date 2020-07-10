@@ -109,7 +109,7 @@ function findDependencies(deps, type) {
 }
 
 function list() {
-    const pkg = readPackage(filePath);
+    const pkg = readPackage(filePath, true);
     dependencies = [];
     dependencies = dependencies.concat(
         findDependencies(pkg.devDependencies || {}, DEVDEPENDENCISE)
@@ -155,9 +155,10 @@ async function install(args) {
 
 async function unInstall(args) {
     let {id} = args;
+    let deleteData  = findOne(id);
     // 卸载npm安装依赖
     await runCommand('remove', [id]);
-    return findOne(id);
+    return deleteData;
 }
 
 async function getVersion({id}) {
