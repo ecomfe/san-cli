@@ -77,6 +77,7 @@
         "babel-plugin-import": "^1.13.0",
         "cross-env": "^7.0.2",
         "directory-named-webpack-plugin": "^4.0.1",
+        "fastq": "^1.8.0",
         "graphql-tag": "^2.10.3",
         "nodemon": "^2.0.4",
         "san": "^3.8.5",

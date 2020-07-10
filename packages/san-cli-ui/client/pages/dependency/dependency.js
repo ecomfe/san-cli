@@ -2,11 +2,13 @@
  * @file 依赖管理
  */
 import {Component} from 'san';
+import fastq from 'fastq';
 import Layout from '@components/layout';
 import DependencySearch from '@components/dependency/dependency-filter';
 import DependencyItem from '@components/dependency/dependency-item';
 import DependencyPackageSearch from '@components/dependency/dependency-package-search';
 import DEPENDENCIES from '@graphql/dependency/dependencies.gql';
+import DEPENDENCYITEM from '@graphql/dependency/dependencyItem.gql';
 import {Button, Icon} from 'santd';
 import './dependency.less';
 import 'santd/es/button/style';
@@ -77,8 +79,31 @@ export default class Dependency extends Component {
         };
     }
 
-    attached() {
-        this.getDependencies();
+    async attached() {
+        const dependencies = await this.getDependencies();
+        // 使用队列来优化性能，并发量3
+        const concurrency = 3;
+        const queue = fastq(this, this.getDependencyItem, concurrency);
+        dependencies.forEach(({id}, index) => {
+            queue.push({id, index}, (err, data) => {
+                if (err) {
+                    throw err;
+                }
+                this.data.set(`dependenciesList[${index}].detail`, data);
+            });
+        });
+    }
+
+    async getDependencyItem({id, index}, callback) {
+        const mutation = await this.$apollo.mutate({
+            mutation: DEPENDENCYITEM,
+            variables: {id}
+        });
+
+        const dependencyItem = mutation.data && mutation.data.dependencyItem;
+        if (dependencyItem) {
+            callback && callback(null, dependencyItem);
+        }
     }
 
     keywordChange(keyword) {
@@ -89,7 +114,9 @@ export default class Dependency extends Component {
     // 初始化获取数据列表
     async getDependencies() {
         const query = await this.$apollo.query({query: DEPENDENCIES});
-        this.data.set('dependenciesList', query.data ? query.data.dependencies : []);
+        const dependencies = query.data ? query.data.dependencies : [];
+        this.data.set('dependenciesList', dependencies);
+        return dependencies;
     }
 
     // 搜索模态框展示

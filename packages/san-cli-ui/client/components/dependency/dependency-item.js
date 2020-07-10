@@ -5,10 +5,8 @@
 
 import {Component} from 'san';
 import {Button, Icon, Spin, Notification} from 'santd';
-import DEPENDENCYITEM from '@graphql/dependency/dependencyItem.gql';
 import DEPENDENCY_UNINSTALL from '@/graphql/dependency/dependency-uninstall.gql';
 import DEPENDENCY_INSTALL from '@graphql/dependency/dependency-install.gql';
-import DEPENDENCIES from '@graphql/dependency/dependencies.gql';
 import avatars from '@lib/utils/avatars';
 import './dependency-item.less';
 import 'santd/es/button/style';
@@ -22,10 +20,16 @@ export default class DependenceItem extends Component {
                 <div class="pkg-icon" style="background-image: url({{avatars(item.id)}})"></div>
                 <div class="pkg-info">
                     <div class="pkg-name">{{item.id}}</div>
-                    <div class="pkg-detail" s-if="{{dependencyItem.current}}">
-                        <span class="pkg-version">{{$t('dependency.version')}}{{dependencyItem.current}}</span>
-                        <span class="pkg-version">{{$t('dependency.lowVersion')}}{{dependencyItem.wanted}}</span>
-                        <span class="pkg-version">{{$t('dependency.currentVersion')}}{{dependencyItem.latest}}</span>
+                    <div class="pkg-detail">
+                        <span class="pkg-version">
+                            {{$t('dependency.version')}}{{item.detail.current || ' ...'}}
+                        </span>
+                        <span class="pkg-version">
+                            {{$t('dependency.lowVersion')}}{{item.detail.wanted || ' ...'}}
+                        </span>
+                        <span class="pkg-version">
+                            {{$t('dependency.currentVersion')}}{{item.detail.latest || ' ...'}}
+                        </span>
                         <s-icon class="pkg-check-ico" type="check-circle" />
                         <span class="pkg-version">{{$t('dependency.installed')}}</span>
                         <a s-if="{{item.website}}" href="{{item.website}}" 
@@ -48,24 +52,9 @@ export default class DependenceItem extends Component {
 
     initData() {
         return {
-            dependencyItem: {},
-            loadingTip: '',
+            loadingTip: this.$t('dependency.uninstall'),
             spinning: false
         };
-    }
-
-    async inited() {
-        this.data.set('loadingTip', this.$t('dependency.uninstall'));
-        let item = this.data.get('item');
-        let mutation = await this.$apollo.mutate({
-            mutation: DEPENDENCYITEM,
-            variables: {
-                id: item.id
-            }
-        });
-        if (mutation.data && mutation.data.dependencyItem) {
-            this.data.set('dependencyItem', mutation.data.dependencyItem);
-        }
     }
 
     async onPkgDelete() {
