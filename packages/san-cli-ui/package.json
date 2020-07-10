@@ -64,6 +64,12 @@
         "util": "^0.12.3"
     },
     "devDependencies": {
+        "@dicebear/avatars": "^4.2.1",
+        "@dicebear/avatars-bottts-sprites": "^4.2.1",
+        "@dicebear/avatars-gridy-sprites": "^4.2.1",
+        "@dicebear/avatars-identicon-sprites": "^4.2.1",
+        "@dicebear/avatars-initials-sprites": "^4.2.1",
+        "@dicebear/avatars-jdenticon-sprites": "^4.2.1",
         "animate.css": "^4.1.0",
         "apollo-cache-inmemory": "^1.6.5",
         "apollo-client": "^2.6.8",
