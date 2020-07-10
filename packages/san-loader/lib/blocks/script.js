@@ -33,7 +33,7 @@ function generateScriptImport(descriptor, options) {
         resource = script.attribs.src;
     }
     else {
-        let resourcePath = options.resourcePath;
+        let resourcePath = options.resourcePath.replace(/\\/g, '/');
         let query = Object.assign(
             {},
             DEFAULT_SCRIPT_ATTR,
