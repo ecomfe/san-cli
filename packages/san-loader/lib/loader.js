@@ -21,7 +21,7 @@ const {generateStyleImport, getStyleCode} = require('./blocks/style');
  *
  * @type {string}
  */
-const normalizePath = require.resolve('./runtime/normalize');
+const normalizePath = require.resolve('./runtime/normalize').replace(/\\/g, '/');
 
 /**
  * San 单文件有效的标签块及其代码提取方法集合
