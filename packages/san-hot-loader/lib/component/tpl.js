@@ -10,8 +10,8 @@
 
 const path = require('path');
 const genId = require('../utils/gen-id');
-const componentHmrPath = require.resolve('../runtime/component-client-api');
-const utilsPath = require.resolve('../runtime/utils');
+const componentHmrPath = require.resolve('../runtime/component-client-api').replace(/\\/g, '/');
+const utilsPath = require.resolve('../runtime/utils').replace(/\\/g, '/');
 
 module.exports = function ({
     resourcePath

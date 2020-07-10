@@ -56,6 +56,7 @@ function generateStyleImport(descriptor, options) {
                 }
             );
         }
+        resourcePath = resourcePath.replace(/\\/g, '/');
         let resource = `${resourcePath}?${qs.stringify(resourceQuery)}`;
         if (isCSSModule) {
             code += `import style${i} from '${resource}';\n`;
