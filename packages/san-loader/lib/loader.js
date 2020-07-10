@@ -17,13 +17,6 @@ const {generateScriptImport, getScriptCode} = require('./blocks/script');
 const {generateStyleImport, getStyleCode} = require('./blocks/style');
 
 /**
- * runtime 模块路径
- *
- * @type {string}
- */
-const normalizePath = require.resolve('./runtime/normalize');
-
-/**
  * San 单文件有效的标签块及其代码提取方法集合
  *
  * @const
@@ -111,8 +104,10 @@ module.exports = function (source) {
     let styleCode = generateStyleImport(descriptor, options);
     let scriptCode = generateScriptImport(descriptor, options);
 
+    // runtime 模块路径
+    const normalizePath = loaderUtils.stringifyRequest(this, require.resolve('./runtime/normalize'));
     let codo = `
-        import normalize from '${normalizePath}';
+        import normalize from ${normalizePath};
         ${styleCode}
         ${templateCode}
         ${scriptCode}
