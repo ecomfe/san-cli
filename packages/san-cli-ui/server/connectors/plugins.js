@@ -1,7 +1,6 @@
 /**
  * @file plugins
- *
- * Reference: https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-ui/apollo-server/connectors/plugins.js
+ * @author jinzhan
  */
 const path = require('path');
 const {
@@ -9,176 +8,175 @@ const {
     isOfficialPlugin,
     getPluginLink
 } = require('san-cli-utils/plugin');
-
+const {log, getDebugLogger} = require('san-cli-utils/ttyLogger');
 const ipc = require('../utils/ipc');
 const PluginApi = require('../api/PluginApi');
 const cwd = require('./cwd');
 const {readPackage} = require('../utils/fileHelper');
-const pluginApiInstances = new Map();
-const pkgStore = new Map();
-const pluginsStore = new Map();
-const CLI_SERVICE = 'san-cli-service';
+const debug = getDebugLogger('ui:plugins');
 
-const getApi = folder => {
-    return pluginApiInstances.get(folder);
-};
-const callHook = ({id, args, file}, context) => {
-    const pluginApi = getApi(file);
-    if (!pluginApi) {
-        return;
+const CLI_SAN = 'san';
+
+class Plugins {
+    constructor() {
+        this.pluginApiInstances = new Map();
+        this.pkgStore = new Map();
+        this.pluginsStore = new Map();
     }
-    const fns = pluginApi.hooks[id];
-    console.log(`Hook ${id}`, fns.length, 'handlers');
-    fns.forEach(fn => fn(...args));
-};
-
-const findPlugins = (deps, file) => {
-    return Object.keys(deps).filter(
-        id => isPlugin(id) || id === CLI_SERVICE
-    ).map(
-        id => ({
-            id,
-            versionRange: deps[id],
-            official: isOfficialPlugin(id) || id === CLI_SERVICE,
-            installed: false,
-            website: id === CLI_SERVICE ? 'https://ecomfe.github.io/san-cli' : getPluginLink(id),
-            baseDir: file
-        })
-    );
-};
-
-const getPlugins = file => {
-    const plugins = pluginsStore.get(file);
-    if (!plugins) {
-        return [];
+    getApi(folder) {
+        return this.pluginApiInstances.get(folder);
     }
-    return plugins;
-};
 
-const runPluginApi = (id, pluginApi, context, filename = 'ui') => {
-    const name = filename !== 'ui' ? `${id}/${filename}` : id;
-
-    let module;
-    try {
-        module = require(`${id}/${filename}`);
-    } catch (e) {
-        if (process.env.SAN_CLI_DEBUG) {
-            console.error(e);
+    callHook({id, args, file}, context) {
+        const pluginApi = this.getApi(file);
+        if (!pluginApi) {
+            return;
         }
+        const fns = pluginApi.hooks[id] || [];
+        log(`Hook ${id}`, fns.length, 'handlers');
+        fns.forEach(fn => fn(...args));
     }
 
-    if (module) {
-        if (typeof module !== 'function') {
-            console.log('ERROR while loading plugin API: no function exported, for', name, pluginApi.cwd);
+    findPlugins(deps, file) {
+        return Object.keys(deps).filter(
+            id => isPlugin(id) || id === CLI_SAN
+        ).map(
+            id => ({
+                id,
+                versionRange: deps[id],
+                official: isOfficialPlugin(id) || id === CLI_SAN,
+                installed: false,
+                website: id === CLI_SAN ? 'https://ecomfe.github.io/san-cli' : getPluginLink(id),
+                baseDir: file
+            })
+        );
+    }
+
+    getPlugins(file) {
+        const plugins = this.pluginsStore.get(file);
+        if (!plugins) {
+            return [];
         }
-        else {
-            pluginApi.pluginId = id;
-            try {
-                module(pluginApi);
-                console.log('Plugin API loaded for', name, pluginApi.cwd);
-            } catch (e) {
-                console.log('ERROR while loading plugin API for ${name}:', e);
+        return plugins;
+    }
+
+    runPluginApi(id, pluginApi, context, filename = 'ui') {
+        const name = filename !== 'ui' ? `${id}/${filename}` : id;
+        let module;
+        try {
+            module = require(`${id}/${filename}`);
+        }
+        catch (e) {
+            debug(e);
+        }
+
+        if (module) {
+            if (typeof module !== 'function') {
+                log('ERROR while loading plugin API: no function exported, for', name, pluginApi.cwd);
             }
-            pluginApi.pluginId = null;
+            else {
+                pluginApi.pluginId = id;
+                try {
+                    module(pluginApi);
+                    log('Plugin API loaded for', name, pluginApi.cwd);
+                }
+                catch (e) {
+                    log('ERROR while loading plugin API for ${name}:', e);
+                }
+                pluginApi.pluginId = null;
+            }
         }
     }
-};
-const resetPluginApi = ({file}, context) => {
-    return new Promise((resolve, reject) => {
-        console.log('Plugin API reloading...', file);
 
-        let pluginApi = pluginApiInstances.get(file);
-        let projectId;
+    resetPluginApi({file}, context) {
+        return new Promise((resolve, reject) => {
+            log('Plugin API reloading...', file);
+            let pluginApi = this.pluginApiInstances.get(file);
+            let projectId;
 
-        // Clean up
-        if (pluginApi) {
-            projectId = pluginApi.project.id;
-            pluginApi.ipcHandlers.forEach(fn => ipc.off(fn));
-        }
-
-        // Cyclic dependency with projects connector
-        setTimeout(async () => {
-            const projects = require('./projects');
-            const project = projects.findByPath(file, context);
-
-            if (!project) {
-                resolve(false);
-                return;
+            // Clean up
+            if (pluginApi) {
+                projectId = pluginApi.project.id;
+                pluginApi.ipcHandlers.forEach(fn => ipc.off(fn));
             }
 
-            if (project && projects.getType(project, context) !== 'san') {
-                resolve(false);
-                return;
-            }
-            const plugins = getPlugins(file);
+            // Cyclic dependency with projects connector
+            setTimeout(async () => {
+                const projects = require('./projects');
+                const project = projects.findByPath(file, context);
+                if (!project) {
+                    resolve(false);
+                    return;
+                }
+                if (project && projects.getType(project, context) !== 'san') {
+                    resolve(false);
+                    return;
+                }
+                const plugins = this.getPlugins(file);
 
-            pluginApi = new PluginApi({
-                plugins,
-                file,
-                project
-            }, context);
-
-            pluginApiInstances.set(file, pluginApi);
-
-            // Run Plugin API
-            runPluginApi(path.resolve(__dirname, '../../'), pluginApi, context, 'defaults');
-            plugins.forEach(plugin => runPluginApi(plugin.id, pluginApi, context));
-            // Local plugins
-
-            if (projectId !== project.id) {
-                callHook({
-                    id: 'projectOpen',
-                    args: [project, projects.getLast(context)],
-                    file
+                pluginApi = new PluginApi({
+                    plugins,
+                    file,
+                    project
                 }, context);
-            } else {
-                callHook({
-                    id: 'pluginReload',
-                    args: [project],
-                    file
-                }, context);
-            }
 
-            resolve(true);
+                this.pluginApiInstances.set(file, pluginApi);
+
+                // Run Plugin API
+                this.runPluginApi(path.resolve(__dirname, '../../'), pluginApi, context, 'defaults');
+                plugins.forEach(plugin => this.runPluginApi(plugin.id, pluginApi, context));
+
+                // Local plugins
+                if (projectId !== project.id) {
+                    this.callHook({
+                        id: 'projectOpen',
+                        args: [project, projects.getLast(context)],
+                        file
+                    }, context);
+                }
+                else {
+                    this.callHook({
+                        id: 'pluginReload',
+                        args: [project],
+                        file
+                    }, context);
+                }
+                resolve(true);
+            });
         });
-    });
-};
-const list = async (file, context, {resetApi = true, autoLoadApi = true} = {}) => {
-    let pkg = readPackage(file, context);
-    let pkgContext = cwd.get();
-
-    pkgStore.set(file, {pkgContext, pkg});
-
-    let plugins = [];
-    plugins = plugins.concat(findPlugins(pkg.devDependencies || {}, file));
-    plugins = plugins.concat(findPlugins(pkg.dependencies || {}, file));
-    // cli service 放在最上面
-    const index = plugins.findIndex(p => p.id === CLI_SERVICE);
-    if (index !== -1) {
-        const service = plugins.splice(index, 1);
-        plugins.unshift(service[0]);
     }
 
-    pluginsStore.set(file, plugins);
+    async list(file, context, {resetApi = true, autoLoadApi = true} = {}) {
+        let pkg = readPackage(file, context);
+        let pkgContext = cwd.get();
+        this.pkgStore.set(file, {pkgContext, pkg});
+        let plugins = [];
+        plugins = plugins.concat(this.findPlugins(pkg.devDependencies || {}, file));
+        plugins = plugins.concat(this.findPlugins(pkg.dependencies || {}, file));
 
-    console.log('Plugins found:', plugins.length, file);
+        // cli放在最上面
+        const index = plugins.findIndex(p => p.id === CLI_SAN);
+        if (index !== -1) {
+            const service = plugins.splice(index, 1);
+            plugins.unshift(service[0]);
+        }
 
-    if (resetApi || (autoLoadApi && !pluginApiInstances.has(file))) {
-        await resetPluginApi({file}, context);
+        this.pluginsStore.set(file, plugins);
+        log('Plugins found:', plugins.length, file);
+        if (resetApi || (autoLoadApi && !this.pluginApiInstances.has(file))) {
+            await this.resetPluginApi({file}, context);
+        }
+        return plugins;
     }
-    return plugins;
-};
-const findOne = ({id, file}, context) => {
-    const plugins = getPlugins(file);
-    const plugin = plugins.find(p => p.id === id);
-    if (!plugin) {
-        console.log('Plugin Not found', id, file);
+
+    findOne({id, file}, context) {
+        const plugins = this.getPlugins(file);
+        const plugin = plugins.find(p => p.id === id);
+        if (!plugin) {
+            log('Plugin Not found', id, file);
+        }
+        return plugin;
     }
-    return plugin;
 };
-module.exports = {
-    getApi,
-    list,
-    findOne,
-    callHook
-};
+
+module.exports = new Plugins();
