@@ -20,7 +20,7 @@ export default class ComponentLayout extends Component {
     static template = /* html */`
             <s-layout class="h1oh layout">
                 <s-header class="header">
-                    <s-link to="{{'/'}}">
+                    <s-link to="/">
                         <s-icon type="home" class="home-link" />
                     </s-link>
                     <s-dropdown trigger="click" class="project-name">
@@ -43,10 +43,10 @@ export default class ComponentLayout extends Component {
                     <s-sider theme="light">
                         <s-menu class="menu" mode="inline" selectedKeys="{{nav}}">
                             <s-menuitem s-for="item in $t('menu')" key="{{item.key}}">
-                                <r-link to="{{item.link}}">
+                                <s-link to="{{item.link}}">
                                     <s-icon type="{{item.icon}}"></s-icon>
                                     <span>{{item.text}}</span>
-                                </r-link>
+                                </s-link>
                             </s-menuitem>
                         </s-menu>
                     </s-sider>
