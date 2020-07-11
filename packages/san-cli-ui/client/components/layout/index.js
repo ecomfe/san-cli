@@ -20,6 +20,9 @@ export default class ComponentLayout extends Component {
     static template = /* html */`
             <s-layout class="h1oh layout">
                 <s-header class="header">
+                    <s-link to="{{'/'}}">
+                        <s-icon type="home" class="home-link" />
+                    </s-link>
                     <s-dropdown trigger="click" class="project-name">
                         <s-menu slot="overlay"
                             selectable="{{false}}"
@@ -63,7 +66,7 @@ export default class ComponentLayout extends Component {
         's-dropdown': Dropdown,
         's-button': Button,
         's-icon': Icon,
-        'r-link': Link
+        's-link': Link
     };
     initData() {
         return {
