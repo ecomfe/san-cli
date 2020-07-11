@@ -5,9 +5,9 @@
 
 import {Component} from 'san';
 import {Button, Icon, Spin, Notification, Popconfirm} from 'santd';
+import avatars from '@lib/utils/avatars';
 import DEPENDENCY_UNINSTALL from '@/graphql/dependency/dependency-uninstall.gql';
 import DEPENDENCY_INSTALL from '@graphql/dependency/dependency-install.gql';
-import avatars from '@lib/utils/avatars';
 import './dependency-item.less';
 import 'santd/es/button/style';
 import 'santd/es/icon/style';

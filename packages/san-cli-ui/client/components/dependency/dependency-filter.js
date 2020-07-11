@@ -1,5 +1,5 @@
 /**
- * @file package包搜索框
+ * @file 已安装的package检索框
  * @author sunxiaoyu333
  */
 
@@ -9,7 +9,7 @@ import './dependency-filter.less';
 
 export default class SearchBox extends Component {
     static template = /* html */`
-        <div class="dependency-searchbox">
+        <div class="dependency-filter">
             <s-input-search
                 placeholder="{{$t('dependency.searchPlaceholder')}}"
                 value="{=filterKeyword=}"

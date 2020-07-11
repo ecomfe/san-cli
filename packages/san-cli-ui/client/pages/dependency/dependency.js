@@ -4,9 +4,9 @@
 import {Component} from 'san';
 import fastq from 'fastq';
 import Layout from '@components/layout';
-import DependencySearch from '@components/dependency/dependency-filter';
+import DependencyFilter from '@components/dependency/dependency-filter';
 import DependencyItem from '@components/dependency/dependency-item';
-import DependencyPackageSearch from '@components/dependency/dependency-package-search';
+import DependencySearch from '@components/dependency/dependency-search';
 import DEPENDENCIES from '@graphql/dependency/dependencies.gql';
 import DEPENDENCYITEM from '@graphql/dependency/dependencyItem.gql';
 import {Button, Icon} from 'santd';
@@ -23,7 +23,7 @@ export default class Dependency extends Component {
                 </s-button>
             </template>
             <div slot="content" class="dependency">
-                <c-dependence-search on-keywordChange="keywordChange" />
+                <c-dependence-filter on-keywordChange="keywordChange" />
                 <div class="dependency-wrapper">
                     <div class="pkg-body" s-if="dependencies.length">
                         <h2>{{$t('dependency.dependencies')}}</h2>
@@ -38,7 +38,7 @@ export default class Dependency extends Component {
                         </template>
                     </div>
                 </div>
-                <c-dependency-packgae-search s-if="packageModalShow" on-modalClose="onModalClose" />
+                <c-dependency-search s-if="packageModalShow" on-modalClose="onModalClose" />
             </div>
         </c-layout>
     `;
@@ -47,9 +47,9 @@ export default class Dependency extends Component {
         's-button': Button,
         's-icon': Icon,
         'c-layout': Layout,
-        'c-dependence-search': DependencySearch,
+        'c-dependence-filter': DependencyFilter,
         'c-dependency-item': DependencyItem,
-        'c-dependency-packgae-search': DependencyPackageSearch
+        'c-dependency-search': DependencySearch
     };
 
     static computed = {

@@ -5,19 +5,20 @@
 
 import {Component} from 'san';
 import {Input, Button, Icon, Radio, Pagination} from 'santd';
-import DependencySearchItem from './dependency-search-item';
-import './dependency-package-search.less';
 import axios from 'axios';
-import {searchParam} from '@lib/utils/searchParam';
-import {SEARCHURL} from '@lib/const';
 import 'santd/es/input/style';
 import 'santd/es/button/style';
 import 'santd/es/icon/style';
 import 'santd/es/radio/style';
 import 'santd/es/pagination/style';
+import DependencySearchItem from './dependency-search-item';
+import {searchParam} from '@lib/utils/searchParam';
+import {SEARCHURL} from '@lib/const';
+import './dependency-search.less';
+
 export default class DependencePackageSearch extends Component {
     static template = /* html */`
-        <div class="dependency-package-search">
+        <div class="dependency-search">
             <div class="pkg-background"></div>
             <div class="pkg-modal">
                 <div class="pkg-title">{{$t('dependency.newDependency')}}</div>
