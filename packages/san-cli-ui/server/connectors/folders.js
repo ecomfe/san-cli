@@ -1,5 +1,5 @@
 /**
- * @file 文件系统相关的方案
+ * @file 文件系统相关API
  * @author jinzhan
  */
 
