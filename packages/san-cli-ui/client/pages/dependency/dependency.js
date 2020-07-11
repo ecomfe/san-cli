@@ -8,7 +8,7 @@ import DependencyFilter from '@components/dependency/dependency-filter';
 import DependencyItem from '@components/dependency/dependency-item';
 import DependencySearch from '@components/dependency/dependency-search';
 import DEPENDENCIES from '@graphql/dependency/dependencies.gql';
-import DEPENDENCYITEM from '@graphql/dependency/dependencyItem.gql';
+import DEPENDENCY_ITEM from '@graphql/dependency/dependencyItem.gql';
 import {Button, Icon} from 'santd';
 import './dependency.less';
 import 'santd/es/button/style';
@@ -96,7 +96,7 @@ export default class Dependency extends Component {
 
     async getDependencyItem({id, index}, callback) {
         const mutation = await this.$apollo.mutate({
-            mutation: DEPENDENCYITEM,
+            mutation: DEPENDENCY_ITEM,
             variables: {id}
         });
 
