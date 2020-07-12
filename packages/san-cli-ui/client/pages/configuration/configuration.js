@@ -53,7 +53,7 @@ export default class Configuration extends Component {
                             <c-config-content s-if="currentConfigId && currentConfig"
                                 current-config-id="{=currentConfigId=}"
                                 config="{=currentConfig=}"
-                                on-refetch="updateCurrentConfig"
+                                on-refetch="refetch"
                             />
                         </div>
                     </s-col>
@@ -107,6 +107,10 @@ export default class Configuration extends Component {
         if (configurations.data) {
             this.data.set('configurations', configurations.data.configurations);
         }
+    }
+    refetch() {
+        this.init();
+        this.updateCurrentConfig();
     }
     async updateCurrentConfig() {
         let id = this.data.get('currentConfigId');
