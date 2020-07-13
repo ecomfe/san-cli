@@ -6,10 +6,11 @@
 
 const fs = require('fs');
 const path = require('path');
-const minimist = require('minimist');
 const execa = require('execa');
 const semver = require('semver');
 const {isPlugin} = require('san-cli-utils/plugin');
+const {installTool} = require('../utils/installTool');
+const {getRegistry} = require('../utils/getRegistry');
 const cwd = require('./cwd');
 const {readPackage} = require('../utils/fileHelper');
 const {resolveModule, resolveModuleRoot} = require('../utils/module');
@@ -31,44 +32,10 @@ const PACKAGE_INSTLL_CONFIG = {
         remove: ['remove']
     }
 };
-const registries = {
-    npm: 'https://registry.npmjs.org',
-    yarn: 'https://registry.yarnpkg.com',
-    taobao: 'https://registry.npm.taobao.org',
-    pnpm: 'https://registry.npmjs.org'
-};
 
 const DEPENDENCISE = 'dependencies';
 const DEVDEPENDENCISE = 'devDependencies';
 
-function shouldUseTaobao() {
-    // console.log('dd', fs.existsSync(path.join(cwd.get(), '.npmrc')));
-}
-
-function installTool() {
-    return 'npm';
-}
-
-async function getRegistry() {
-    const args = minimist(process.argv, {
-        alias: {
-            r: 'registry'
-        }
-    });
-    let registry = args.registry;
-    let tool = installTool();
-
-    if (await shouldUseTaobao(tool)) {
-        registry = registries.taobao;
-    } else {
-        try {
-            registry = (await execa(tool, ['config', 'get', 'registry'])).stdout;
-        } catch (e) {
-            registry = (await execa(tool, ['config', 'get', 'npmRegistryServer'])).stdout;
-        }
-    }
-    return registry;
-}
 
 function getPath(id) {
     // 检测每个模快的是否有package.json
@@ -128,9 +95,7 @@ function findOne(id) {
 }
 
 async function runCommand(type, args) {
-    // 获取npm的安装源
-    getRegistry();
-    let tool = installTool();
+    let tool = installTool(cwd.get());
 
     // npm安装依赖
     const child = await execa(tool, [
@@ -163,8 +128,10 @@ async function unInstall(args) {
 
 async function getVersion({id}) {
     let current;
+    let tool = installTool(cwd.get());
 
-    const registry = await getRegistry();
+    const registry = await getRegistry(tool);
+
     let idPath = getPath(id);
     const pkg = readPackage(idPath);
     current = pkg.version;
@@ -172,7 +139,6 @@ async function getVersion({id}) {
     let latest = '';
     let wanted = '';
     let versionRange = '';
-    let tool = installTool();
 
     const metadata = await getMetadata({id, tool, registry, filePath});
     if (metadata) {
