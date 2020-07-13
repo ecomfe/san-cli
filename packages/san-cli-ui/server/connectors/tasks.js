@@ -121,6 +121,33 @@ class Tasks {
         }
     }
 
+    /**
+     * TODO: 删除重复参数
+     * @param {Array} args 命令（npm）参数
+     *  */
+    deduplicateArgs(args) {
+        const dedupedArgs = [];
+        for (let i = args.length - 1; i >= 0; i--) {
+            const arg = args[i];
+            if (typeof arg === 'string' && arg.indexOf('--') === 0) {
+                if (dedupedArgs.indexOf(arg) === -1) {
+                    dedupedArgs.push(arg);
+                }
+                else {
+                    const value = args[i + 1];
+                    if (value && value.indexOf('--') !== 0) {
+                        dedupedArgs.pop();
+                    }
+                }
+            }
+            else {
+                dedupedArgs.push(arg);
+            }
+        }
+        args = dedupedArgs.reverse();
+        return args;
+    }
+
     async run(id, context) {
         const task = this.findTask(id, context);
         if (task && task.status !== TASK_STATUS_RUNNING) {
@@ -145,26 +172,7 @@ class Tasks {
                 });
             }
 
-            // TODO: 删除重复参数
-            const dedupedArgs = [];
-            for (let i = args.length - 1; i >= 0; i--) {
-                const arg = args[i];
-                if (typeof arg === 'string' && arg.indexOf('--') === 0) {
-                    if (dedupedArgs.indexOf(arg) === -1) {
-                        dedupedArgs.push(arg);
-                    }
-                    else {
-                        const value = args[i + 1];
-                        if (value && value.indexOf('--') !== 0) {
-                            dedupedArgs.pop();
-                        }
-                    }
-                }
-                else {
-                    dedupedArgs.push(arg);
-                }
-            }
-            args = dedupedArgs.reverse();
+            args = this.deduplicateArgs(args);
 
             if (command === 'npm') {
                 args.splice(0, 0, '--');
@@ -233,11 +241,13 @@ class Tasks {
                 outPipe.flush();
                 errPipe.flush();
 
+                // 命令行log
                 log('Task exit', command, args, 'code:', code, 'signal:', signal);
 
                 const duration = Date.now() - task.time;
                 const seconds = Math.round(duration / 10) / 100;
 
+                // 通过websocket，往web界面打log
                 this.addLog({
                     taskId: task.id,
                     type: 'stdout',
@@ -455,8 +465,8 @@ class Tasks {
 
     saveParameters({id}, context) {
         const answers = prompts.getAnswers();
-        // Save parameters
-        this.updateSavedData({
+        // 保存参数
+        this.updateData({
             id,
             answers
         }, context);
