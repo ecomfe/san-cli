@@ -7,6 +7,7 @@ import Layout from '@components/layout';
 import DependencyFilter from '@components/dependency/dependency-filter';
 import DependencyItem from '@components/dependency/dependency-item';
 import DependencySearch from '@components/dependency/dependency-search';
+import Modal from '@components/modal/modal';
 import DEPENDENCIES from '@graphql/dependency/dependencies.gql';
 import DEPENDENCY_ITEM from '@graphql/dependency/dependencyItem.gql';
 import {Button, Icon} from 'santd';
@@ -16,8 +17,8 @@ import 'santd/es/button/style';
 
 export default class Dependency extends Component {
     static template = /* html */`
-        <c-layout menu="{{$t('menu')}}" nav="{{['dependency']}}" title="{{$t('dependency.title')}}">
-            <template slot="right">
+        <c-layout menu="{{$t('menu')}}" nav="{{['dependency']}}" title="{{title}}">
+            <template slot="right" s-if="!modalVisible">
                 <s-button type="primary" on-click="onModalShow">
                     <s-icon type="plus"/>{{$t('dependency.installDependency')}}
                 </s-button>
@@ -38,7 +39,11 @@ export default class Dependency extends Component {
                         </template>
                     </div>
                 </div>
-                <c-dependency-search s-if="packageModalShow" on-modalClose="onModalClose" />
+                <c-modal on-cancel="onModalClose" visible="{{modalVisible}}">
+                    <template slot="content">
+                        <c-dependency-search/>
+                    </template>
+                </c-modal>
             </div>
         </c-layout>
     `;
@@ -49,7 +54,8 @@ export default class Dependency extends Component {
         'c-layout': Layout,
         'c-dependence-filter': DependencyFilter,
         'c-dependency-item': DependencyItem,
-        'c-dependency-search': DependencySearch
+        'c-dependency-search': DependencySearch,
+        'c-modal': Modal
     };
 
     static computed = {
@@ -68,6 +74,10 @@ export default class Dependency extends Component {
                     return item.type === 'dependencies'
                         && (!keyword || ~item.id.indexOf(keyword));
                 });
+        },
+        title() {
+            return this.data.get('modalVisible')
+                ? this.data.get('searchTitle') : this.data.get('homeTitle');
         }
     };
 
@@ -75,7 +85,9 @@ export default class Dependency extends Component {
         return {
             keyword: '',
             dependenciesList: [],
-            packageModalShow: false
+            modalVisible: false,
+            homeTitle: this.$t('dependency.title'),
+            searchTitle: this.$t('dependency.searchTitle')
         };
     }
 
@@ -119,15 +131,15 @@ export default class Dependency extends Component {
         return dependencies;
     }
 
-    // 搜索模态框展示
+    // 搜索模态框取消
     onModalClose() {
-        this.data.set('packageModalShow', false);
+        this.data.set('modalVisible', false);
         this.getDependencies();
     }
 
-    // 搜索模态框取消
+    // 搜索模态框展示
     onModalShow() {
-        this.data.set('packageModalShow', true);
+        this.data.set('modalVisible', true);
     }
 
     // npm列表删除依赖包

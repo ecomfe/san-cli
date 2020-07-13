@@ -24,13 +24,10 @@ export default class DependenceSearchItem extends Component {
                     <s-icon type="download"/><span>{{downloadAmount}}</span>
                     <div class="pkg-description">{{data.description}}</div>
                 </div>
-                <div class="pkg-install-button"></div>
-                <div class="pkg-btn-operate">
-                    <a href="{{data.repository.url}}" target="_blank">
-                        <s-button>{{$t('dependency.checkDetail')}}</s-button>
-                    </a>
-                    <s-button on-click="onInstallPlugin">{{$t('dependency.install')}}</s-button>
-                </div>
+                <a href="{{data.repository.url}}" target="_blank" class="pkg-check">
+                    {{$t('dependency.checkDetail')}}
+                </a>
+                <s-button class="pkg-btn-operate" on-click="onInstallPlugin">{{$t('dependency.install')}}</s-button>
             </div>
         </s-spin>
     `;
