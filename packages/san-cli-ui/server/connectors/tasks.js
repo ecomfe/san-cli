@@ -78,15 +78,17 @@ class Tasks {
     */
     findTask(id, context) {
         for (const [, list] of this.tasks) {
-            const result = list.find(t => t.id === id || t.id === t.path + ':' + id);
-            if (result) {
-                return result;
+            const task = list.find(t => t.id === id || t.id === t.path + ':' + id);
+            if (task) {
+                return task;
             }
         }
     }
 
     /**
      * 更新任务
+     * 1. 更新任务map
+     * 2. 发布websocket消息
     */
     updateTask(data, context) {
         const task = this.findTask(data.id);
@@ -104,21 +106,17 @@ class Tasks {
             id
         }).value();
         // 拷贝一份
-        if (data != null) {
+        if (data) {
             data = JSON.parse(JSON.stringify(data));
         }
         return data;
     }
 
     updateData(data, context) {
-        if (this.getData(data.id, context)) {
-            context.db.get('tasks').find({
-                id: data.id
-            }).assign(data).write();
-        }
-        else {
-            context.db.get('tasks').push(data).write();
-        }
+        const {id} = data;
+        const tasksDb = context.db.get('tasks');
+        this.getData(id, context) ? tasksDb.find({id}).assign(data).write()
+            : tasksDb.push(data).write();
     }
 
     /**
@@ -148,236 +146,232 @@ class Tasks {
         return args;
     }
 
+    handlerUpdateTask(task, code, context) {
+        const duration = Date.now() - task.time;
+        const seconds = Math.round(duration / 10) / 100;
+
+        // 通过websocket，往web界面打log
+        this.addLog({
+            taskId: task.id,
+            type: 'stdout',
+            text: chalk.grey(`Total task duration: ${seconds}s`)
+        }, context);
+
+        let message;
+        let type;
+        let status;
+        if (!code || task.$terminating) {
+            message = `Task ${task.id} was terminated`;
+            status = 'terminated';
+            type = 'info';
+        }
+        else if (code !== 0) {
+            message = `Task ${task.id} ended with error code ${code}`;
+            status = 'error';
+            type = 'error';
+            notify({
+                title: 'Task error',
+                message: `Task ${task.id} ended with error code ${code}`,
+                icon: 'error'
+            });
+        }
+        else {
+            message = `Task ${task.id} completed`;
+            status = 'done';
+            type = 'done';
+            notify({
+                title: 'Task completed',
+                message: `Task ${task.id} completed in ${seconds}s.`
+            });
+        }
+
+        this.updateTask({
+            id: task.id,
+            status
+        }, context);
+
+        logs.add({
+            message,
+            type
+        }, context);
+    }
+
     async run(id, context) {
+        // 查找要运行的任务
         const task = this.findTask(id, context);
-        if (task && task.status !== TASK_STATUS_RUNNING) {
-            task.$terminating = false;
-            const answers = prompts.getAnswers();
-            let [command, ...args] = parseArgs(task.command);
 
-            // onBeforeRun任务hook
-            if (task.onBeforeRun) {
-                if (!answers.$_overrideArgs) {
-                    const push = args.push.bind(args);
-                    args.push = (...items) => {
-                        if (items.length && args.indexOf(items[0]) !== -1) {
-                            return items.length;
-                        }
-                        return push(...items);
-                    };
-                }
-                await task.onBeforeRun({
-                    answers,
-                    args
-                });
+        // 如果任务已在执行或者任务不存在
+        if (!task || task.status === TASK_STATUS_RUNNING) {
+            return task;
+        }
+
+        task.$terminating = false;
+        const answers = prompts.getAnswers();
+        let [command, ...args] = parseArgs(task.command);
+
+        // onBeforeRun任务hook
+        if (task.onBeforeRun) {
+            if (!answers.$_overrideArgs) {
+                const push = args.push.bind(args);
+                args.push = (...items) => {
+                    if (items.length && args.indexOf(items[0]) !== -1) {
+                        return items.length;
+                    }
+                    return push(...items);
+                };
             }
-
-            args = this.deduplicateArgs(args);
-
-            if (command === 'npm') {
-                args.splice(0, 0, '--');
-            }
-
-            log('Task run', command, args);
-
-            // 修改任务状态
-            this.updateTask({
-                id: task.id,
-                status: TASK_STATUS_RUNNING
-            }, context);
-
-            logs.add({
-                message: `Task ${task.id} started`,
-                type: 'info'
-            }, context);
-
-            this.addLog({
-                taskId: task.id,
-                type: 'stdout',
-                text: chalk.grey(`$ ${command} ${args.join(' ')}`)
-            }, context);
-
-            task.time = Date.now();
-            const nodeEnv = process.env.NODE_ENV;
-            delete process.env.NODE_ENV;
-
-            const child = execa(command, args, {
-                cwd: cwd.get(),
-                stdio: ['inherit', 'pipe', 'pipe'],
-                shell: true
+            await task.onBeforeRun({
+                answers,
+                args
             });
+        }
 
-            if (typeof nodeEnv !== 'undefined') {
-                process.env.NODE_ENV = nodeEnv;
-            }
+        // TODO: 清理参数的重复项
+        args = this.deduplicateArgs(args);
 
-            task.child = child;
+        // 格式化为execa执行格式
+        if (command === 'npm') {
+            args.splice(0, 0, '--');
+        }
 
-            const outPipe = this.logPipe(queue => {
-                this.addLog({
-                    taskId: task.id,
-                    type: 'stdout',
-                    text: queue
-                }, context);
+        // 修改任务状态
+        this.updateTask({
+            id: task.id,
+            status: TASK_STATUS_RUNNING
+        }, context);
+
+        logs.add({
+            message: `Task ${task.id} started`,
+            type: 'info'
+        }, context);
+
+        this.addLog({
+            taskId: task.id,
+            type: 'stdout',
+            text: chalk.grey(`$ ${command} ${args.join(' ')}`)
+        }, context);
+
+
+        // 运行任务
+        const child = this.runTask(task, command, args, context);
+
+        if (task.onRun) {
+            await task.onRun({
+                args,
+                child,
+                cwd: cwd.get()
             });
+        }
 
-            child.stdout.on('data', buffer => {
-                outPipe.add(buffer.toString());
-            });
+        plugins.callHook({
+            id: 'taskRun',
+            args: [{
+                task,
+                args,
+                child,
+                cwd: cwd.get()
+            }],
+            file: cwd.get()
+        }, context);
 
-            const errPipe = this.logPipe(queue => {
-                this.addLog({
-                    taskId: task.id,
-                    type: 'stderr',
-                    text: queue
-                }, context);
-            });
+        return task;
+    }
 
-            child.stderr.on('data', buffer => {
-                errPipe.add(buffer.toString());
-            });
+    runTask(task, command, args, context) {
+        // 开始执行任务
+        log('Task run', command, args);
 
-            const onExit = async (code, signal) => {
-                outPipe.flush();
-                errPipe.flush();
+        task.time = Date.now();
+        const nodeEnv = process.env.NODE_ENV;
+        delete process.env.NODE_ENV;
 
-                // 命令行log
-                log('Task exit', command, args, 'code:', code, 'signal:', signal);
+        const child = execa(command, args, {
+            cwd: cwd.get(),
+            stdio: ['inherit', 'pipe', 'pipe'],
+            shell: true
+        });
 
-                const duration = Date.now() - task.time;
-                const seconds = Math.round(duration / 10) / 100;
+        if (typeof nodeEnv !== 'undefined') {
+            process.env.NODE_ENV = nodeEnv;
+        }
 
-                // 通过websocket，往web界面打log
-                this.addLog({
-                    taskId: task.id,
-                    type: 'stdout',
-                    text: chalk.grey(`Total task duration: ${seconds}s`)
-                }, context);
+        task.child = child;
 
-                // Plugin API
-                if (task.onExit) {
-                    await task.onExit({
-                        args,
-                        child,
-                        cwd: cwd.get(),
-                        code,
-                        signal
-                    });
-                }
+        child.stdout.on('data', buffer => {
+            this.logHandler(task, 'stdout', context).add(buffer.toString());
+        });
 
-                if (code === null || task.$terminating) {
-                    this.updateTask({
-                        id: task.id,
-                        status: 'terminated'
-                    }, context);
+        child.stderr.on('data', buffer => {
+            this.logHandler(task, 'stderr', context).add(buffer.toString());
+        });
 
-                    logs.add({
-                        message: `Task ${task.id} was terminated`,
-                        type: 'info'
-                    }, context);
-                }
-                else if (code !== 0) {
-                    this.updateTask({
-                        id: task.id,
-                        status: 'error'
-                    }, context);
+        const onExit = async (code, signal) => {
+            this.logHandler(task, 'stdout', context).flush();
+            this.logHandler(task, 'stderr', context).flush();
 
-                    logs.add({
-                        message: `Task ${task.id} ended with error code ${code}`,
-                        type: 'error'
-                    }, context);
-
-                    notify({
-                        title: 'Task error',
-                        message: `Task ${task.id} ended with error code ${code}`,
-                        icon: 'error'
-                    });
-                }
-                else {
-                    this.updateTask({
-                        id: task.id,
-                        status: 'done'
-                    }, context);
-
-                    logs.add({
-                        message: `Task ${task.id} completed`,
-                        type: 'done'
-                    }, context);
-
-                    notify({
-                        title: 'Task completed',
-                        message: `Task ${task.id} completed in ${seconds}s.`
-                    });
-                }
-
-                plugins.callHook({
-                    id: 'taskExit',
-                    args: [{
-                        task,
-                        args,
-                        child,
-                        cwd: cwd.get(),
-                        signal,
-                        code
-                    }],
-                    file: cwd.get()
-                }, context);
-            };
-
-            child.on('exit', onExit);
-            child.on('error', err => {
-                const duration = Date.now() - task.time;
-                if (process.platform === 'win32' && err.code === 'ENOENT' && duration > WIN_ENOENT_THRESHOLD) {
-                    return onExit(null);
-                }
-
-                this.updateTask({
-                    id: task.id,
-                    status: 'error'
-                }, context);
-
-                logs.add({
-                    message: `Error while running task ${task.id} with message'${err.message}'`,
-                    type: 'error'
-                }, context);
-
-                notify({
-                    title: 'Task error',
-                    message: `Error while running task ${task.id} with message'${err.message}'`,
-                    icon: 'error'
-                });
-
-                this.addLog({
-                    taskId: task.id,
-                    type: 'stdout',
-                    text: chalk.red(`Error while running task ${task.id} with message '${err.message}'`)
-                }, context);
-
-                error(err);
-            });
+            // 命令行log
+            log('Task exit', command, args, 'code:', code, 'signal:', signal);
 
             // Plugin API
-            if (task.onRun) {
-                await task.onRun({
+            if (task.onExit) {
+                await task.onExit({
                     args,
                     child,
-                    cwd: cwd.get()
+                    cwd: cwd.get(),
+                    code,
+                    signal
                 });
             }
 
+            this.handlerUpdateTask(task, code, context);
+
             plugins.callHook({
-                id: 'taskRun',
+                id: 'taskExit',
                 args: [{
                     task,
                     args,
                     child,
-                    cwd: cwd.get()
+                    cwd: cwd.get(),
+                    signal,
+                    code
                 }],
                 file: cwd.get()
             }, context);
-        }
+        };
 
-        return task;
+        child.on('exit', onExit);
+
+        child.on('error', err => {
+            const duration = Date.now() - task.time;
+            if (process.platform === 'win32' && err.code === 'ENOENT' && duration > WIN_ENOENT_THRESHOLD) {
+                return onExit(null);
+            }
+
+            this.updateTask({
+                id: task.id,
+                status: 'error'
+            }, context);
+
+            logs.add({
+                message: `Error while running task ${task.id} with message'${err.message}'`,
+                type: 'error'
+            }, context);
+
+            notify({
+                title: 'Task error',
+                message: `Error while running task ${task.id} with message'${err.message}'`,
+                icon: 'error'
+            });
+
+            this.addLog({
+                taskId: task.id,
+                type: 'stdout',
+                text: chalk.red(`Error while running task ${task.id} with message '${err.message}'`)
+            }, context);
+
+            error(err);
+        });
+        return child;
     }
 
     addLog(log, context) {
@@ -461,6 +455,16 @@ class Tasks {
             add,
             flush
         };
+    }
+
+    logHandler(task, type, context) {
+        return this.logPipe(queue => {
+            this.addLog({
+                taskId: task.id,
+                type,
+                text: queue
+            }, context);
+        });
     }
 
     saveParameters({id}, context) {
