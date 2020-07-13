@@ -8,8 +8,8 @@ const chalk = require('chalk');
 const {log, error, getDebugLogger} = require('san-cli-utils/ttyLogger');
 const channels = require('../utils/channels');
 const parseArgs = require('../utils/parseArgs');
-const cwd = require('./cwd');
 const projects = require('./projects');
+const cwd = require('./cwd');
 const logs = require('./logs');
 const notify = require('../utils/notify');
 const plugins = require('./plugins');
@@ -17,7 +17,9 @@ const {readPackage} = require('../utils/fileHelper');
 const terminate = require('../utils/terminate');
 
 const MAX_LOGS = 2000;
-const WIN_ENOENT_THRESHOLD = 500; // ms
+const WIN_ENOENT_THRESHOLD = 500;
+const TASK_STATUS_IDLE = 'idle';
+const TASK_STATUS_RUNNING  = 'running';
 const debug = getDebugLogger('ui:tasks');
 
 // TODO: 获取配置信息
@@ -29,98 +31,52 @@ const prompts = {
 
 class Tasks {
     constructor() {
+        // 这里存储多个项目任务
         this.tasks = new Map();
     }
 
     /**
-     * 获取项目下的任务列表
+     * 获取某个项目下的任务列表
      *
-     * @param {string} 文件路径
+     * @param {string} file 文件路径
     */
-    getTasks(file = cwd.get()) {
-        let list = this.tasks.get(file);
-        if (!list) {
-            list = [];
-            this.tasks.set(file, list);
-        }
-        return list;
-    }
+    getTasks(file = cwd.get(), context) {
+        const list = this.tasks.get(file) || [];
 
-    async list({file = cwd.get(), api = true} = {}, context) {
-        let list = this.getTasks(file);
+        // 从当前项目的package.json中script获取信息
         const pkg = readPackage(file, context);
         if (pkg.scripts) {
-            const existing = new Map();
             const scriptKeys = Object.keys(pkg.scripts);
-            let currentTasks = scriptKeys.map(
+            scriptKeys.forEach(
                 name => {
                     const id = `${file}:${name}`;
-                    existing.set(id, true);
                     const command = pkg.scripts[name];
-                    return {
+                    const index = list.findIndex(t => t.id === id);
+                    const task = {
                         id,
                         name,
                         command,
-                        index: list.findIndex(t => t.id === id),
+                        index,
                         prompts: [],
                         views: [],
-                        path: file
+                        path: file,
+                        status: TASK_STATUS_IDLE,
+                        logs: []
                     };
+                    // 如果任务已存在，更新list数据，否则添加到任务list中
+                    ~index ? Object.assign(list[index], task) : list.push(task);
                 }
             );
-
-            // Process existing tasks
-            const existingTasks = currentTasks.filter(
-                task => task.index !== -1
-            );
-
-            // Update tasks data
-            existingTasks.forEach(task => {
-                Object.assign(list[task.index], task);
-            });
-
-            // Process removed tasks
-            const removedTasks = list.filter(
-                t => currentTasks.findIndex(c => c.id === t.id) === -1
-            );
-
-            // Process new tasks
-            const newTasks = currentTasks.filter(
-                task => task.index === -1
-            ).map(
-                task => ({
-                    ...task,
-                    status: 'idle',
-                    child: null,
-                    logs: []
-                })
-            );
-
-            // Keep existing running tasks
-            list = list.filter(
-                task => existing.get(task.id) || task.status === 'running'
-            );
-
-            // Add the new tasks
-            list = list.concat(newTasks);
-
-            // Sort
-            const getSortScore = task => {
-                const index = scriptKeys.indexOf(task.name);
-                if (index !== -1) {
-                    return index;
-                }
-                return Infinity;
-            };
-
-            list.sort((a, b) => getSortScore(a) - getSortScore(b));
-
-            this.tasks.set(file, list);
         }
+        this.tasks.set(file, list);
         return list;
     }
 
-    findOne(id, context) {
+    /**
+     * 通个id去查找一个任务
+     * @param {string} id 任务id或者任务path
+    */
+    findTask(id, context) {
         for (const [, list] of this.tasks) {
             const result = list.find(t => t.id === id || t.id === t.path + ':' + id);
             if (result) {
@@ -129,19 +85,33 @@ class Tasks {
         }
     }
 
-    getSavedData(id, context) {
+    /**
+     * 更新任务
+    */
+    updateTask(data, context) {
+        const task = this.findTask(data.id);
+        if (task) {
+            Object.assign(task, data);
+            context.pubsub.publish(channels.TASK_CHANGED, {
+                taskChanged: task
+            });
+        }
+        return task;
+    }
+
+    getData(id, context) {
         let data = context.db.get('tasks').find({
             id
         }).value();
-        // Clone
+        // 拷贝一份
         if (data != null) {
             data = JSON.parse(JSON.stringify(data));
         }
         return data;
     }
 
-    updateSavedData(data, context) {
-        if (this.getSavedData(data.id, context)) {
+    updateData(data, context) {
+        if (this.getData(data.id, context)) {
             context.db.get('tasks').find({
                 id: data.id
             }).assign(data).write();
@@ -151,41 +121,22 @@ class Tasks {
         }
     }
 
-    updateOne(data, context) {
-        const task = this.findOne(data.id);
-        if (task) {
-            if (task.status !== data.status) {
-                // updateViewBadges({
-                //     task,
-                //     data
-                // }, context);
-            }
-            Object.assign(task, data);
-            context.pubsub.publish(channels.TASK_CHANGED, {
-                taskChanged: task
-            });
-        }
-        return task;
-    }
-
     async run(id, context) {
-        const task = this.findOne(id, context);
-        if (task && task.status !== 'running') {
-            task._terminating = false;
-
-            // Answers
+        const task = this.findTask(id, context);
+        if (task && task.status !== TASK_STATUS_RUNNING) {
+            task.$terminating = false;
             const answers = prompts.getAnswers();
             let [command, ...args] = parseArgs(task.command);
 
-            // Plugin API
+            // onBeforeRun任务hook
             if (task.onBeforeRun) {
                 if (!answers.$_overrideArgs) {
-                    const origPush = args.push.bind(args);
+                    const push = args.push.bind(args);
                     args.push = (...items) => {
                         if (items.length && args.indexOf(items[0]) !== -1) {
                             return items.length;
                         }
-                        return origPush(...items);
+                        return push(...items);
                     };
                 }
                 await task.onBeforeRun({
@@ -194,7 +145,7 @@ class Tasks {
                 });
             }
 
-            // Deduplicate arguments
+            // TODO: 删除重复参数
             const dedupedArgs = [];
             for (let i = args.length - 1; i >= 0; i--) {
                 const arg = args[i];
@@ -221,9 +172,10 @@ class Tasks {
 
             log('Task run', command, args);
 
-            this.updateOne({
+            // 修改任务状态
+            this.updateTask({
                 id: task.id,
-                status: 'running'
+                status: TASK_STATUS_RUNNING
             }, context);
 
             logs.add({
@@ -238,10 +190,6 @@ class Tasks {
             }, context);
 
             task.time = Date.now();
-
-            // Task env
-            process.env.san_CLI_CONTEXT = cwd.get();
-            process.env.san_CLI_PROJECT_ID = projects.getCurrent(context).id;
             const nodeEnv = process.env.NODE_ENV;
             delete process.env.NODE_ENV;
 
@@ -307,8 +255,8 @@ class Tasks {
                     });
                 }
 
-                if (code === null || task._terminating) {
-                    this.updateOne({
+                if (code === null || task.$terminating) {
+                    this.updateTask({
                         id: task.id,
                         status: 'terminated'
                     }, context);
@@ -319,7 +267,7 @@ class Tasks {
                     }, context);
                 }
                 else if (code !== 0) {
-                    this.updateOne({
+                    this.updateTask({
                         id: task.id,
                         status: 'error'
                     }, context);
@@ -336,7 +284,7 @@ class Tasks {
                     });
                 }
                 else {
-                    this.updateOne({
+                    this.updateTask({
                         id: task.id,
                         status: 'done'
                     }, context);
@@ -373,7 +321,7 @@ class Tasks {
                     return onExit(null);
                 }
 
-                this.updateOne({
+                this.updateTask({
                     id: task.id,
                     status: 'error'
                 }, context);
@@ -423,18 +371,11 @@ class Tasks {
     }
 
     addLog(log, context) {
-        const task = this.findOne(log.taskId, context);
+        const task = this.findTask(log.taskId, context);
         if (task) {
             if (task.logs.length === MAX_LOGS) {
                 task.logs.shift();
             }
-            // TODO: log demo
-            // log.id = 's' + Date.now().toString(36);
-            // log.type = 'log';
-            // log.message = log.text;
-            // context.pubsub.publish(channels.CONSOLE_LOG_ADDED, {
-            //     consoleLogAdded: log
-            // });
             task.logs.push(log);
             context.pubsub.publish(channels.TASK_LOG_ADDED, {
                 taskLogAdded: log
@@ -443,13 +384,13 @@ class Tasks {
     }
 
     async stop(id, context) {
-        const task = this.findOne(id, context);
-        if (task && task.status === 'running' && task.child) {
-            task._terminating = true;
+        const task = this.findTask(id, context);
+        if (task && task.status === TASK_STATUS_RUNNING && task.child) {
+            task.$terminating = true;
             try {
                 const {success, error} = await terminate(task.child, cwd.get());
                 if (success) {
-                    this.updateOne({
+                    this.updateTask({
                         id: task.id,
                         status: 'terminated'
                     }, context);
@@ -463,14 +404,14 @@ class Tasks {
             }
             catch (e) {
                 log(chalk.red(`Can't terminate process ${task.child.pid}`));
-                console.error(e);
+                error(e);
             }
         }
         return task;
     }
 
     clearLogs(id, context) {
-        const task = this.findOne(id, context);
+        const task = this.findTask(id, context);
         if (task) {
             task.logs = [];
         }
