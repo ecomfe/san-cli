@@ -12,6 +12,7 @@ const {log, getDebugLogger} = require('san-cli-utils/ttyLogger');
 const ipc = require('../utils/ipc');
 const PluginApi = require('../api/PluginApi');
 const cwd = require('./cwd');
+const widgets = require('./widgets');
 const {readPackage} = require('../utils/fileHelper');
 const debug = getDebugLogger('ui:plugins');
 
@@ -126,6 +127,10 @@ class Plugins {
                 this.runPluginApi(path.resolve(__dirname, '../../'), pluginApi, context, 'defaults');
                 plugins.forEach(plugin => this.runPluginApi(plugin.id, pluginApi, context));
 
+                // Register widgets
+                for (const definition of pluginApi.widgetDefs) {
+                    await widgets.registerDefinition({definition, project}, context);
+                }
                 // Local plugins
                 if (projectId !== project.id) {
                     this.callHook({
@@ -141,6 +146,7 @@ class Plugins {
                         file
                     }, context);
                 }
+                widgets.load(context);
                 resolve(true);
             });
         });

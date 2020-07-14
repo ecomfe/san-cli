@@ -12,7 +12,7 @@ const getDefaultWidgets = () => (
     [
         {
             id: shortid(),
-            definitionId: 'org.vue.widgets.welcome',
+            definitionId: 'widgetsWelcome',
             x: 0,
             y: 0,
             width: 3,
@@ -22,7 +22,7 @@ const getDefaultWidgets = () => (
         },
         {
             id: shortid(),
-            definitionId: 'org.vue.widgets.kill-port',
+            definitionId: 'killPort',
             x: 3,
             y: 0,
             width: 2,
@@ -35,12 +35,7 @@ const getDefaultWidgets = () => (
 
 class Widgets {
     constructor() {
-        this.widgetDefs = new Map();
-        this.widgetCount = new Map();
-        this.widgets = [];
-        this.currentWidget = null;
-        this.loadPromise = null;
-        this.loadResolve = null;
+        this.reset();
     }
     reset() {
         this.widgetDefs = new Map();
@@ -79,7 +74,7 @@ class Widgets {
         }
         return def;
     }
-    async list(context) {
+    async list() {
         log('loadPromise', this.loadPromise);
         if (this.loadPromise) {
             await this.loadPromise;

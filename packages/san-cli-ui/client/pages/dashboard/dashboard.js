@@ -72,7 +72,7 @@ export default class Dashboard extends Component {
         let widgets = await this.$apollo.query({query: WIDGETS});
         console.log(widgets);
         if (widgets.data) {
-            this.data.set('plugins', widgets.data.widgets);
+            this.data.set('widgets', widgets.data.widgets);
         }
     }
 
