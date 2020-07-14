@@ -6,15 +6,16 @@
 const execa = require('execa');
 const chalk = require('chalk');
 const {log, error, getDebugLogger} = require('san-cli-utils/ttyLogger');
+const notify = require('../utils/notify');
+const {readPackage} = require('../utils/fileHelper');
+const terminate = require('../utils/terminate');
 const channels = require('../utils/channels');
 const parseArgs = require('../utils/parseArgs');
+const flush = require('../utils/flush');
 const projects = require('./projects');
 const cwd = require('./cwd');
 const logs = require('./logs');
-const notify = require('../utils/notify');
 const plugins = require('./plugins');
-const {readPackage} = require('../utils/fileHelper');
-const terminate = require('../utils/terminate');
 
 const MAX_LOGS = 2000;
 const WIN_ENOENT_THRESHOLD = 500;
@@ -300,13 +301,8 @@ class Tasks {
             this.taskLogPipe(task, 'stdout', context).add(buffer.toString());
         });
 
-        child.stderr.on('data', buffer => {
-            this.taskLogPipe(task, 'stderr', context).add(buffer.toString());
-        });
-
         const onExit = async (code, signal) => {
             this.taskLogPipe(task, 'stdout', context).flush();
-            this.taskLogPipe(task, 'stderr', context).flush();
 
             // 命令行log
             log('Task exit', command, args, 'code:', code, 'signal:', signal);
@@ -405,43 +401,8 @@ class Tasks {
         }
     }
 
-    logPipe(action) {
-        const maxTime = 300;
-        let queue = '';
-        let size = 0;
-        let time = Date.now();
-        let timeout;
-
-        const flush = () => {
-            clearTimeout(timeout);
-            if (!size) {
-                return;
-            }
-            action(queue);
-            queue = '';
-            size = 0;
-            time = Date.now();
-        };
-
-        const add = string => {
-            queue += string;
-            size++;
-            if (size === 50 || Date.now() > time + maxTime) {
-                flush();
-            }
-            else {
-                clearTimeout(timeout);
-                timeout = setTimeout(flush, maxTime);
-            }
-        };
-        return {
-            add,
-            flush
-        };
-    }
-
     taskLogPipe(task, type, context) {
-        return this.logPipe(queue => {
+        return flush(queue => {
             this.addTaskLog({
                 taskId: task.id,
                 type,
