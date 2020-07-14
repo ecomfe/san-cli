@@ -19,9 +19,11 @@ export default class DependenceItem extends Component {
     static template = /* html */`
         <s-spin class="loading" size="large" spinning="{{spinning}}" tip="{{loadingTip}}">
             <div class="x-dependency-item" slot="content">
-                <div class="pkg-icon" style="background-image: url({{avatars(item.id)}})"></div>
+                <a href="{{item.website}}" target="_blank">
+                    <div class="pkg-icon" style="background-image: url({{avatars(item.id)}})"></div>
+                </a>
                 <div class="pkg-info">
-                    <div class="pkg-name">{{item.id}}</div>
+                    <a href="{{item.website}}" target="_blank">{{item.id}}</a>
                     <div class="pkg-detail">
                         <span class="pkg-version">
                             {{$t('dependency.version')}}{{item.detail.current || ' ...'}}
@@ -34,11 +36,6 @@ export default class DependenceItem extends Component {
                         </span>
                         <s-icon class="pkg-check-ico" type="check-circle" />
                         <span class="pkg-version">{{$t('dependency.installed')}}</span>
-                        <a s-if="{{item.website}}" href="{{item.website}}" 
-                            target="_blank"
-                            class="pkg-detail-link">
-                            {{$t('dependency.checkDetail')}}
-                        </a>
                         <s-icon type="download" class="pkg-download" on-click="onPkgUpdate"/>
                     </div>
                 </div>

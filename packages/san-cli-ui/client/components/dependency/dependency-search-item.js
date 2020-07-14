@@ -17,16 +17,15 @@ export default class DependenceSearchItem extends Component {
     static template = /* html */`
         <s-spin class="loading" size="large" spinning="{{spinning}}" tip="{{loadingTip}}">
             <div class="dependency-search-item" slot="content">
-                <div class="pkg-icon" style="background-image: url({{data.owner.avatar}})"></div>
+                <a href="{{data.repository.url}}" target="_blank" class="pkg-check">
+                    <div class="pkg-icon" style="background-image: url({{data.owner.avatar}})"></div>
+                </a>
                 <div class="pkg-name-wrap">
-                    <span>{{data.name}}</span>
+                    <a href="{{data.repository.url}}" target="_blank" class="pkg-check">{{data.name}}</a>
                     <span class="pkg-version">{{data.version}}</span>
                     <s-icon type="download"/><span>{{downloadAmount}}</span>
                     <div class="pkg-description">{{data.description}}</div>
                 </div>
-                <a href="{{data.repository.url}}" target="_blank" class="pkg-check">
-                    {{$t('dependency.checkDetail')}}
-                </a>
                 <s-button class="pkg-btn-operate" on-click="onInstallPlugin">{{$t('dependency.install')}}</s-button>
             </div>
         </s-spin>

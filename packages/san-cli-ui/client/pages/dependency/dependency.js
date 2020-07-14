@@ -17,7 +17,7 @@ import 'santd/es/button/style';
 
 export default class Dependency extends Component {
     static template = /* html */`
-        <c-layout menu="{{$t('menu')}}" nav="{{['dependency']}}" title="{{title}}">
+        <c-layout menu="{{$t('menu')}}" nav="{{['dependency']}}" title="{{$t('dependency.title')}}">
             <template slot="right" s-if="!modalVisible">
                 <s-button type="primary" on-click="onModalShow">
                     <s-icon type="plus"/>{{$t('dependency.installDependency')}}
@@ -74,10 +74,6 @@ export default class Dependency extends Component {
                     return item.type === 'dependencies'
                         && (!keyword || ~item.id.indexOf(keyword));
                 });
-        },
-        title() {
-            return this.data.get('modalVisible')
-                ? this.data.get('searchTitle') : this.data.get('homeTitle');
         }
     };
 
@@ -85,9 +81,7 @@ export default class Dependency extends Component {
         return {
             keyword: '',
             dependenciesList: [],
-            modalVisible: false,
-            homeTitle: this.$t('dependency.title'),
-            searchTitle: this.$t('dependency.searchTitle')
+            modalVisible: false
         };
     }
 
