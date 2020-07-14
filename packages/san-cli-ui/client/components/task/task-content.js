@@ -23,6 +23,8 @@ import 'santd/es/input/style';
 import 'santd/es/button/style';
 import 'santd/es/spin/style';
 import TASK_RUN from '@graphql/task/taskRun.gql';
+import TASK_STOP from '@graphql/task/taskStop.gql';
+import TASK_CHANGED from '@graphql/task/taskChanged.gql';
 import TASK_LOG_ADDED from '@graphql/task/taskLogAdded.gql';
 import TASK_LOGS from '@graphql/task/taskLogs.gql';
 import './task-content.less';
@@ -44,7 +46,7 @@ export default class TaskContent extends Component {
                 <s-button type="primary" 
                     icon="{{isRunning ? 'stop' : 'caret-right'}}" 
                     loading="{{taskPending}}"
-                    on-click="runTask">{{isRunning ? $t('task.stop') : $t('task.run')}}</s-button>
+                    on-click="execute">{{isRunning ? $t('task.stop') : $t('task.run')}}</s-button>
                 <s-button type="default" icon="setting">{{$t('task.setting')}}</s-button>
             </div>
 
@@ -105,6 +107,9 @@ export default class TaskContent extends Component {
 
             // 3. 订阅 -> 命令产生的log
             this.subscribeConsoleLog(name);
+
+            // 4. 监听命令行的变化
+            this.subscribeTaskChanged(name);
         });
     }
 
@@ -125,12 +130,31 @@ export default class TaskContent extends Component {
         }
     }
 
+    subscribeTaskChanged(id) {
+        // 避免重复订阅
+        if (this.taskChangeSubscription) {
+            this.taskChangeSubscription.unsubscribe();
+        }
+        this.taskChangeSubscription = this.$apollo.subscribe({
+            query: TASK_CHANGED,
+            variables: {
+                id
+            }
+        }).subscribe({
+            next: ({data}) => {
+                const status = data.taskChanged.status;
+                console.log({taskStatus: status});
+                this.setStatu(status);
+            }
+        });
+    }
+
     subscribeConsoleLog(id) {
         // 避免重复订阅
-        if (this.subscription) {
-            this.subscription.unsubscribe();
+        if (this.consoleLogSubscription) {
+            this.consoleLogSubscription.unsubscribe();
         }
-        this.subscription = this.$apollo.subscribe({
+        this.consoleLogSubscription = this.$apollo.subscribe({
             query: TASK_LOG_ADDED,
             variables: {
                 id
@@ -151,23 +175,38 @@ export default class TaskContent extends Component {
                 this.data.set('taskPending', false);
                 this.data.set('isRunning', true);
                 break;
-            case 'finished':
+            // Maybe
+            // case 'finished':
+            // case 'terminated':
+            // case 'done':
+            default:
                 this.data.set('taskPending', false);
                 this.data.set('isRunning', false);
-                break;
         }
     }
 
-    async runTask() {
+    execute() {
+        if (this.data.get('taskPending')) {
+            return;
+        }
+        const isRunning = this.data.get('isRunning');
         this.setStatu('pending');
-        const mutation = await this.$apollo.mutate({
+        const id = this.data.get('taskInfo.name');
+        isRunning ? this.stopTask(id) : this.runTask(id);
+    }
+
+    async runTask(id) {
+        await this.$apollo.mutate({
             mutation: TASK_RUN,
-            variables: {
-                id: this.data.get('taskInfo.name')
-            }
+            variables: {id}
         });
-        const taskRun = mutation.data.taskRun;
-        this.setStatu(taskRun.status);
+    }
+
+    async stopTask(id) {
+        await this.$apollo.mutate({
+            mutation: TASK_STOP,
+            variables: {id}
+        });
     }
 
     initTerminal() {
