@@ -186,7 +186,7 @@ class Projects {
     }
 
     getCurrent(context) {
-        let id = context.db.get('config.currentOpenProject').value();
+        let id = context.db.get('config.lastOpenProject').value();
         let currentProject = this.findOne(id, context);
         if (currentProject && !fs.existsSync(currentProject.path)) {
             log('Project folder not found', currentProject.id, currentProject.path);
@@ -208,13 +208,12 @@ class Projects {
             return null;
         }
 
-        // save current open project id
-        context.db.set('config.currentOpenProject', id).write();
+        // 存放到最近打开的项目中
+        context.db.set('config.lastOpenProject', id).write();
 
-        // change path
         cwd.set(project.path, context);
 
-        // update project Date
+        // 更新打开时间
         context.db.get('projects').find({
             id
         }).assign({
@@ -245,9 +244,6 @@ class Projects {
     }
 
     remove({id}, context) {
-        if (context.db.get('config.currentOpenProject').value() === id) {
-            context.db.set('config.currentOpenProject', undefined).write();
-        }
         if (context.db.get('config.lastOpenProject').value() === id) {
             context.db.set('config.lastOpenProject', undefined).write();
         }
@@ -264,7 +260,7 @@ class Projects {
     }
 
     resetCwd(context) {
-        let id = context.db.get('config.currentOpenProject').value();
+        let id = context.db.get('config.lastOpenProject').value();
         let currentProject = this.findOne(id, context);
         if (currentProject) {
             cwd.set(currentProject.path, context);
