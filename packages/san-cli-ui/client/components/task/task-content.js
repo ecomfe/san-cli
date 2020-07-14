@@ -41,7 +41,10 @@ export default class TaskContent extends Component {
             </div>
 
             <div class="task-config">
-                <s-button type="primary" icon="caret-right" on-click="runTask">{{$t('task.run')}}</s-button>
+                <s-button type="primary" 
+                    icon="{{isRunning ? 'stop' : 'caret-right'}}" 
+                    loading="{{taskPending}}"
+                    on-click="runTask">{{isRunning ? $t('task.stop') : $t('task.run')}}</s-button>
                 <s-button type="default" icon="setting">{{$t('task.setting')}}</s-button>
             </div>
 
@@ -75,7 +78,12 @@ export default class TaskContent extends Component {
     };
 
     initData() {
-        return {};
+        return {
+            // 请求发送中
+            taskPending: false,
+            // 脚本执行中
+            isRunning: false
+        };
     }
 
     async attached() {
@@ -111,7 +119,6 @@ export default class TaskContent extends Component {
         });
         const taskLogs = query.data.taskLogs;
         const logs = taskLogs && taskLogs.logs;
-        // console.log({logs});
         if (taskLogs.logs) {
             const logsText = logs.map(log => log.text).join('\n');
             this.setContent(logsText);
@@ -135,7 +142,24 @@ export default class TaskContent extends Component {
         });
     }
 
+    setStatu(type) {
+        switch (type) {
+            case 'pending':
+                this.data.set('taskPending', true);
+                break;
+            case 'running':
+                this.data.set('taskPending', false);
+                this.data.set('isRunning', true);
+                break;
+            case 'finished':
+                this.data.set('taskPending', false);
+                this.data.set('isRunning', false);
+                break;
+        }
+    }
+
     async runTask() {
+        this.setStatu('pending');
         const mutation = await this.$apollo.mutate({
             mutation: TASK_RUN,
             variables: {
@@ -143,8 +167,7 @@ export default class TaskContent extends Component {
             }
         });
         const taskRun = mutation.data.taskRun;
-        console.log({taskRun});
-        // TODO: 增加任务运行的状态
+        this.setStatu(taskRun.status);
     }
 
     initTerminal() {
