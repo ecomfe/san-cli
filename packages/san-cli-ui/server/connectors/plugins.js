@@ -128,9 +128,12 @@ class Plugins {
                 plugins.forEach(plugin => this.runPluginApi(plugin.id, pluginApi, context));
 
                 // Register widgets
-                for (const definition of pluginApi.widgetDefs) {
-                    await widgets.registerDefinition({definition, project}, context);
+                if (pluginApi.widgetDefs) {
+                    for (const definition of pluginApi.widgetDefs) {
+                        await widgets.registerDefinition({definition, project}, context);
+                    }
                 }
+
                 // Local plugins
                 if (projectId !== project.id) {
                     this.callHook({
