@@ -3,10 +3,7 @@
  * @author jinzhan
 */
 
-// Subs
-const {withFilter} = require('graphql-subscriptions');
 const channels = require('../utils/channels');
-// Connectors
 const tasks = require('../connectors/tasks');
 const projects = require('../connectors/projects');
 
@@ -39,13 +36,6 @@ module.exports = {
             subscribe: (parent, args, {pubsub}) => pubsub.asyncIterator(channels.TASK_CHANGED)
         },
         taskLogAdded: {
-            // subscribe: withFilter(
-            //     (parent, args, {pubsub}) => pubsub.asyncIterator(channels.TASK_LOG_ADDED),
-            //     (payload, vars) => {
-            //         console.log('payload.taskLogAdded.taskId === vars.id:', payload.taskLogAdded.taskId, vars.id);
-            //         return payload.taskLogAdded.taskId === vars.id;
-            //     }
-            // )
             subscribe: (parent, args, {pubsub}) => pubsub.asyncIterator(channels.TASK_LOG_ADDED)
         }
     }

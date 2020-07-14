@@ -89,19 +89,59 @@ class Tasks {
      * 更新任务
      * 1. 更新任务map
      * 2. 发布websocket消息
-    */
-    updateTask(data, context) {
-        const task = this.findTask(data.id);
+     * 3. 打日志
+     * 4. 发送通知
+     *
+     * @param {Object} taskData 任务信息
+     * @param {Object} context 透传的context
+     * @param {Object} taskLog push到前端task界面的log信息
+     */
+    updateTask(taskData, context, taskLog) {
+        const {id, message, status} = taskData;
+        const task = this.findTask(id);
         if (task) {
-            Object.assign(task, data);
+            Object.assign(task, taskData);
             context.pubsub.publish(channels.TASK_CHANGED, {
                 taskChanged: task
             });
         }
+
+        // 如果需要打log
+        if (message) {
+            debug(message);
+
+            // 任务是否完成
+            const isCompleted = ~['done', 'error'].indexOf(status);
+
+            // 往界面全局命令行面板push log，类型默认为info类型
+            const defaultLogType = 'info';
+            const type = isCompleted ? status : defaultLogType;
+            logs.add({
+                message,
+                type
+            }, context);
+
+            // 桌面通知
+            isCompleted && notify({
+                title: `Task ${status}`,
+                message,
+                icon: status
+            });
+
+            // 往task的web命名行中push日志
+            let text = taskLog || message;
+            text = status === 'error' ? chalk.red(text) : chalk.grey(text);
+            this.addTaskLog({
+                taskId: id,
+                type: 'stdout',
+                text
+            }, context);
+        }
+
         return task;
     }
 
-    getData(id, context) {
+    getDbData(id, context) {
         let data = context.db.get('tasks').find({
             id
         }).value();
@@ -112,10 +152,10 @@ class Tasks {
         return data;
     }
 
-    updateData(data, context) {
+    updateDbData(data, context) {
         const {id} = data;
         const tasksDb = context.db.get('tasks');
-        this.getData(id, context) ? tasksDb.find({id}).assign(data).write()
+        this.getDbData(id, context) ? tasksDb.find({id}).assign(data).write()
             : tasksDb.push(data).write();
     }
 
@@ -146,54 +186,24 @@ class Tasks {
         return args;
     }
 
-    handlerUpdateTask(task, code, context) {
+    getTaskStatus(task, code) {
         const duration = Date.now() - task.time;
         const seconds = Math.round(duration / 10) / 100;
-
-        // 通过websocket，往web界面打log
-        this.addLog({
-            taskId: task.id,
-            type: 'stdout',
-            text: chalk.grey(`Total task duration: ${seconds}s`)
-        }, context);
-
         let message;
-        let type;
         let status;
-        if (!code || task.$terminating) {
+        if (task.$terminating) {
             message = `Task ${task.id} was terminated`;
             status = 'terminated';
-            type = 'info';
         }
         else if (code !== 0) {
             message = `Task ${task.id} ended with error code ${code}`;
             status = 'error';
-            type = 'error';
-            notify({
-                title: 'Task error',
-                message: `Task ${task.id} ended with error code ${code}`,
-                icon: 'error'
-            });
         }
         else {
-            message = `Task ${task.id} completed`;
+            message = `Task ${task.id} completed in ${seconds}s.`;
             status = 'done';
-            type = 'done';
-            notify({
-                title: 'Task completed',
-                message: `Task ${task.id} completed in ${seconds}s.`
-            });
         }
-
-        this.updateTask({
-            id: task.id,
-            status
-        }, context);
-
-        logs.add({
-            message,
-            type
-        }, context);
+        return {status, message};
     }
 
     async run(id, context) {
@@ -237,20 +247,9 @@ class Tasks {
         // 修改任务状态
         this.updateTask({
             id: task.id,
-            status: TASK_STATUS_RUNNING
-        }, context);
-
-        logs.add({
-            message: `Task ${task.id} started`,
-            type: 'info'
-        }, context);
-
-        this.addLog({
-            taskId: task.id,
-            type: 'stdout',
-            text: chalk.grey(`$ ${command} ${args.join(' ')}`)
-        }, context);
-
+            status: TASK_STATUS_RUNNING,
+            message: `Task ${task.id} started`
+        }, context, `$ ${command} ${args.join(' ')}`);
 
         // 运行任务
         const child = this.runTask(task, command, args, context);
@@ -298,16 +297,16 @@ class Tasks {
         task.child = child;
 
         child.stdout.on('data', buffer => {
-            this.logHandler(task, 'stdout', context).add(buffer.toString());
+            this.taskLogPipe(task, 'stdout', context).add(buffer.toString());
         });
 
         child.stderr.on('data', buffer => {
-            this.logHandler(task, 'stderr', context).add(buffer.toString());
+            this.taskLogPipe(task, 'stderr', context).add(buffer.toString());
         });
 
         const onExit = async (code, signal) => {
-            this.logHandler(task, 'stdout', context).flush();
-            this.logHandler(task, 'stderr', context).flush();
+            this.taskLogPipe(task, 'stdout', context).flush();
+            this.taskLogPipe(task, 'stderr', context).flush();
 
             // 命令行log
             log('Task exit', command, args, 'code:', code, 'signal:', signal);
@@ -322,8 +321,12 @@ class Tasks {
                     signal
                 });
             }
+            const taskStatus = this.getTaskStatus(task, code);
 
-            this.handlerUpdateTask(task, code, context);
+            this.updateTask({
+                ...task,
+                ...taskStatus
+            }, context);
 
             plugins.callHook({
                 id: 'taskExit',
@@ -346,45 +349,16 @@ class Tasks {
             if (process.platform === 'win32' && err.code === 'ENOENT' && duration > WIN_ENOENT_THRESHOLD) {
                 return onExit(null);
             }
-
+            const message = `Error while running task ${task.id} with message'${err.message}'`;
             this.updateTask({
                 id: task.id,
-                status: 'error'
-            }, context);
-
-            logs.add({
-                message: `Error while running task ${task.id} with message'${err.message}'`,
-                type: 'error'
-            }, context);
-
-            notify({
-                title: 'Task error',
-                message: `Error while running task ${task.id} with message'${err.message}'`,
-                icon: 'error'
-            });
-
-            this.addLog({
-                taskId: task.id,
-                type: 'stdout',
-                text: chalk.red(`Error while running task ${task.id} with message '${err.message}'`)
+                status: 'error',
+                message
             }, context);
 
             error(err);
         });
         return child;
-    }
-
-    addLog(log, context) {
-        const task = this.findTask(log.taskId, context);
-        if (task) {
-            if (task.logs.length === MAX_LOGS) {
-                task.logs.shift();
-            }
-            task.logs.push(log);
-            context.pubsub.publish(channels.TASK_LOG_ADDED, {
-                taskLogAdded: log
-            });
-        }
     }
 
     async stop(id, context) {
@@ -414,12 +388,21 @@ class Tasks {
         return task;
     }
 
-    clearLogs(id, context) {
-        const task = this.findTask(id, context);
+    /**
+     * 1. tasks字段里面添加日志
+     * 2. 往命令行中push日志
+    */
+    addTaskLog(log, context) {
+        const task = this.findTask(log.taskId, context);
         if (task) {
-            task.logs = [];
+            if (task.logs.length === MAX_LOGS) {
+                task.logs.shift();
+            }
+            task.logs.push(log);
+            context.pubsub.publish(channels.TASK_LOG_ADDED, {
+                taskLogAdded: log
+            });
         }
-        return task;
     }
 
     logPipe(action) {
@@ -457,9 +440,9 @@ class Tasks {
         };
     }
 
-    logHandler(task, type, context) {
+    taskLogPipe(task, type, context) {
         return this.logPipe(queue => {
-            this.addLog({
+            this.addTaskLog({
                 taskId: task.id,
                 type,
                 text: queue
@@ -467,10 +450,18 @@ class Tasks {
         });
     }
 
+    clearLogs(id, context) {
+        const task = this.findTask(id, context);
+        if (task) {
+            task.logs = [];
+        }
+        return task;
+    }
+
     saveParameters({id}, context) {
         const answers = prompts.getAnswers();
         // 保存参数
-        this.updateData({
+        this.updateDbData({
             id,
             answers
         }, context);
