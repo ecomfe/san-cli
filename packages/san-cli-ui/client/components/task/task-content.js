@@ -22,6 +22,7 @@ import 'santd/es/tooltip/style';
 import 'santd/es/input/style';
 import 'santd/es/button/style';
 import 'santd/es/spin/style';
+import TASK from '@graphql/task/task.gql';
 import TASK_RUN from '@graphql/task/taskRun.gql';
 import TASK_STOP from '@graphql/task/taskStop.gql';
 import TASK_CHANGED from '@graphql/task/taskChanged.gql';
@@ -99,6 +100,9 @@ export default class TaskContent extends Component {
             if (!name) {
                 return;
             }
+            // 0. 获取task的信息，task可能正在执行
+            this.updateTask();
+
             // 1. 清除 -> 界面上的log
             this.clear();
 
@@ -130,6 +134,20 @@ export default class TaskContent extends Component {
         }
     }
 
+    // 获取task的状态
+    async updateTask(id) {
+        const query = await this.$apollo.query({
+            query: TASK,
+            variables: {
+                id: this.data.get('taskInfo.name')
+            }
+        });
+        const task = query.data.task;
+        if (task) {
+            this.setStatu(task.status);
+        }
+    }
+
     subscribeTaskChanged(id) {
         // 避免重复订阅
         if (this.taskChangeSubscription) {
@@ -143,7 +161,6 @@ export default class TaskContent extends Component {
         }).subscribe({
             next: ({data}) => {
                 const status = data.taskChanged.status;
-                console.log({taskStatus: status});
                 this.setStatu(status);
             }
         });
@@ -171,11 +188,14 @@ export default class TaskContent extends Component {
             case 'pending':
                 this.data.set('taskPending', true);
                 break;
+
             case 'running':
                 this.data.set('taskPending', false);
                 this.data.set('isRunning', true);
                 break;
+
             // Maybe
+            // case 'idle':
             // case 'finished':
             // case 'terminated':
             // case 'done':
