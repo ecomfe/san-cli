@@ -17,8 +17,8 @@ module.exports = {
     // },
 
     Query: {
-        tasks: (root, args, context) => tasks.list(undefined, context),
-        task: (root, {id}, context) => tasks.findOne(id, context)
+        tasks: (root, args, context) => tasks.getTasks(undefined, context),
+        task: (root, {id}, context) => tasks.findTask(id, context)
     },
 
     Mutation: {

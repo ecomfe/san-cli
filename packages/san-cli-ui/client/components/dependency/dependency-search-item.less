@@ -18,7 +18,6 @@
         border-bottom: 1px solid #C0C0C0;
     }
 
-
     .pkg-nav-item {
         display: flex;
         align-items: center;
@@ -35,8 +34,13 @@
     }
 
     .pkg-name-wrap {
-        margin-left: 20px;
+        margin: 0 20px;
         overflow: hidden;
+        z-index: 33;
+    }
+
+    .pkg-check {
+        z-index: 33;
     }
     
     .pkg-version {
@@ -50,17 +54,11 @@
         color: #2c3e50;
     }
 
-    .pkg-install-button {
-        width: 240px;
-        height: 50px;
-        visibility: hidden;
-    }
-
     .pkg-btn-operate {
         z-index: 33;
-        min-width: 140px;
+        min-width: 100px;
         position: absolute;
-        top: 20px;
-        right: 10px;
+        top: 25px;
+        right: 0px;
     }
 }

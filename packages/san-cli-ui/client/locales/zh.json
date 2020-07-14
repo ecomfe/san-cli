@@ -125,7 +125,6 @@
         "title": "项目依赖",
         "installed": "已安装",
         "install": "安装",
-        "checkDetail": "查看详情",
         "updateDetail": "更新",
         "version": "版本",
         "lowVersion": "最低",
@@ -142,7 +141,6 @@
         "deleteSuccess": "卸载成功",
         "installDependency": "安装依赖",
         "installSuccess": "安装成功"
-
     },
     "connection-status": {
         "disconnected": "连接已断开",
