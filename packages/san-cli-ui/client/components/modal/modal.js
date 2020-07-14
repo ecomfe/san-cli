@@ -8,11 +8,11 @@ import {Icon} from 'santd';
 import 'santd/es/icon/style';
 import './modal.less';
 
-export default class DependencePackageSearch extends Component {
+export default class Modal extends Component {
     static template = /* html */`
-        <div class="dependency-modal" s-if="{{visible}}" on-click="onClickOverlay">
-            <div class="pkg-content" >
-                <s-icon type="close" class="pkg-modal-close" on-click="onCancel"/>
+        <div class="modal" s-if="{{visible}}" on-click="onClickOverlay">
+            <div class="content" >
+                <s-icon type="close" class="modal-close" on-click="onCancel"/>
                 <slot name="content"></slot>
             </div>
         </div>

@@ -229,7 +229,7 @@
         }
     },
     "dashboard": {
-        "title": "",
+        "title": "项目仪表盘",
         "tools": "安装devtools",
         "operationOff": "自定义",
         "operationOn": "完成"

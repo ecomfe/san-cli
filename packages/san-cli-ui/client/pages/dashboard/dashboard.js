@@ -4,7 +4,7 @@
  */
 
 import {Component} from 'san';
-// import WIDGETS from '@graphql/widget/widgets.gql';
+import WIDGETS from '@graphql/widget/widgets.gql';
 import Layout from '@components/layout';
 import Widget from '@components/dashboard-widget/dashboard-widget';
 import WidgetList from '@components/dashboard-widget/widget-list';
@@ -66,7 +66,14 @@ export default class Dashboard extends Component {
     };
 
     attached() {
-
+        this.init();
+    }
+    async init() {
+        let widgets = await this.$apollo.query({query: WIDGETS});
+        console.log(widgets);
+        if (widgets.data) {
+            this.data.set('widgets', widgets.data.widgets);
+        }
     }
 
     showCustom() {
