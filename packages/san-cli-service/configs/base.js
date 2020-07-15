@@ -84,11 +84,11 @@ module.exports = {
             try {
                 const sanFile = resolve.sync('san', {basedir: api.getCwd()});
                 const sanPath = path.dirname(sanFile);
-                webpackConfig.resolve.alias.set('san', `${sanPath}/${!isProd ? 'san.spa.dev.js' : 'san.spa.js'}`);
+                webpackConfig.resolve.alias.set('san', path.join(sanPath, !isProd ? 'san.spa.dev.js' : 'san.spa.js'));
             }
             catch (e) {
                 const sanPath = path.dirname(require.resolve('san'));
-                webpackConfig.resolve.alias.set('san', `${sanPath}/${!isProd ? 'san.spa.dev.js' : 'san.spa.js'}`);
+                webpackConfig.resolve.alias.set('san', path.join(sanPath, !isProd ? 'san.spa.dev.js' : 'san.spa.js'));
             }
             // projectOptions.alias
             if (projectOptions.alias) {
