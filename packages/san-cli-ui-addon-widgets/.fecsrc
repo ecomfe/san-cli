@@ -1,0 +1,21 @@
+{
+    "eslint": {
+          "rules": {
+              "fecs-esnext-ext": [
+                  "2",
+                  [
+                      "js",
+                      "san"
+                  ]
+              ],
+              "fecs-valid-jsdoc": [
+                  "0"
+              ]
+          }
+      },
+      "csshint": {},
+      "htmlcs": {},
+      "jformatter": {},
+      "esformatter": {},
+      "csscomb": {}
+}

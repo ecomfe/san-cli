@@ -1,0 +1,15 @@
+{
+    "singleQuote": true,
+    "semi": true,
+    "printWidth": 120,
+    "tabWidth": 4,
+    "useTab": false,
+    "bracketSpacing": false,
+    "arrowParens": "avoid",
+    "trailingComma": "none",
+    "overrides": [
+        {
+            "options": {"parser": "json"}
+        }
+    ]
+}

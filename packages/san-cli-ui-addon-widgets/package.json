@@ -1,0 +1,54 @@
+{
+  "name": "san-cli-ui-addon-widgets",
+  "version": "0.0.1",
+  "private": true,
+  "description": "san cli ui addon widgets",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development san serve src/index.js --config san.config.js",
+    "build": "cross-env NODE_ENV=production san build src/index.js --config san.config.js",
+    "analyzer": "cross-env NODE_ENV=production san build src/index.js --config san.config.js --analyze",
+    "build:modern": "cross-env NODE_ENV=production san build src/index.js --config san.config.js --modern"
+  },
+  "keywords": [
+    "San",
+    "San CLI"
+  ],
+  "lint-staged": {
+        "(scripts|src)/**/*.js": [
+            "eslint --fix"
+        ]
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+
+  "author": "zttonly <zttonly@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-prettier": "^3.1.2",
+    "babel-eslint": "^10.1.0",
+    "prettier": "^2.0.5",
+    "eslint-plugin-babel":"^5.3.0",
+    "eslint": "^6.8.0",
+    "@ecomfe/eslint-config": "^3.2.0",
+    "@babel/core": "^7.8.6",
+    "@babel/preset-env": "^7.8.6",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.9",
+    "babel-plugin-import": "^1.13.0",
+    "cross-env": "^7.0.2",
+    "fecs": "^1.6.2",
+    "postcss-import": "^11.0.0",
+    "postcss-loader": "^2.0.8",
+    "autoprefixer": "^9.7.5",
+    "postcss-url": "^7.2.1",
+    "san-cli": "^0.1.0"
+  },
+  "dependencies": {
+    "san": "^3.8.1",
+    "san-cli-ui": "^0.0.1"
+  }
+}
