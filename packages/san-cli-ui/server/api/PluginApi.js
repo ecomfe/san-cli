@@ -30,6 +30,7 @@ class PluginApi {
         this.configurations = [];
         this.actions = new Map();
         this.ipcHandlers = [];
+        this.widgetDefs = [];
     }
 
     /**
@@ -201,6 +202,69 @@ class PluginApi {
      */
     storageSet(id, value) {
         this.db.set(id, value).write();
+    }
+
+    /**
+   * Register a client addon (a JS bundle which will be loaded in the browser).
+   * Used to load components and add vue-router routes.
+   *
+   * @param {Object} options Client addon options
+   *   {
+   *     id: string,
+   *     url: string
+   *   }
+   *   or
+   *   {
+   *     id: string,
+   *     path: string
+   *   }
+   */
+    addClientAddon(options) {
+        try {
+            if (options.url && options.path) {
+                throw new Error('\'url\' and \'path\' can\'t be defined at the same time.');
+            }
+            this.clientAddons.push({
+                ...options,
+                pluginId: this.pluginId
+            });
+        }
+        catch (e) {
+            console.error(new Error(`Invalid options: ${e.message}`));
+        }
+    }
+
+    /**
+   * Register a widget for project dashboard
+   *
+   * @param {Object} def Widget definition
+   */
+    registerWidget(def) {
+        try {
+            this.widgetDefs.push({
+                ...def,
+                pluginId: this.pluginId
+            });
+        }
+        catch (e) {
+            console.error(new Error(`Invalid definition: ${e.message}`));
+        }
+    }
+
+    /**
+     * Create a namespaced version of:
+     *   - registerWidget
+     *
+     * @param {string} namespace Prefix to add to the id params
+     * @return {Object}
+    */
+    namespace(namespace) {
+        return {
+            registerWidget(def) {
+                def.id = namespace + def.id;
+                return this.registerWidget(def);
+            }
+        };
     }
 }
 

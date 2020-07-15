@@ -12,7 +12,7 @@ const getDefaultWidgets = () => (
     [
         {
             id: shortid(),
-            definitionId: 'widgetsWelcome',
+            definitionId: 'san.widgets.components.welcome',
             x: 0,
             y: 0,
             width: 3,
@@ -22,7 +22,7 @@ const getDefaultWidgets = () => (
         },
         {
             id: shortid(),
-            definitionId: 'killPort',
+            definitionId: 'san.widgets.components.kill-port',
             x: 3,
             y: 0,
             width: 2,
