@@ -14,8 +14,11 @@ import 'santd/es/pagination/style';
 import DependencySearchItem from './dependency-search-item';
 import DependencyFilter from './dependency-filter';
 import {searchParam} from '@lib/utils/searchParam';
-import {SEARCHURL} from '@lib/const';
+import {SEARCH_URL, SEARCH_DEBOUNCE_DELAY} from '@lib/const';
 import './dependency-search.less';
+
+// 和视图无关的数据
+let searchTimeoutID;
 
 export default class DependencePackageSearch extends Component {
     static template = /* html */`
@@ -47,8 +50,7 @@ export default class DependencePackageSearch extends Component {
             searchData: [],
             // 运行依赖
             radioValue: 'dependencies',
-            currentPage: 1,
-            searchTimeoutID: 0
+            currentPage: 1
         };
     }
     inited() {
@@ -64,7 +66,7 @@ export default class DependencePackageSearch extends Component {
             tagFilters: ''
         });
         let data = await axios({
-            url: SEARCHURL,
+            url: SEARCH_URL,
             method: 'POST',
             headers: {
                 'content-type': 'application/x-www-form-urlencoded'
@@ -90,10 +92,9 @@ export default class DependencePackageSearch extends Component {
     }
     keywordChange(keyword) {
         keyword = keyword.trim();
-        const searchTimeoutID = this.data.get('searchTimeoutID');
         searchTimeoutID && clearTimeout(searchTimeoutID);
-        this.data.set('searchTimeoutID', setTimeout(() => {
+        searchTimeoutID = setTimeout(() => {
             this.search(keyword);
-        }, 1000));
+        }, SEARCH_DEBOUNCE_DELAY);
     }
 }

@@ -4,7 +4,7 @@
  */
 
 import {Component} from 'san';
-import {layoutOneThird} from '@lib/const';
+import {LAYOUT_ONE_THIRD} from '@lib/const';
 import CONFIGURATION from '@graphql/configuration/configuration.gql';
 import CONFIGURATION_SAVE from '@/graphql/configuration/configurationSave.gql';
 import CONFIGURATION_CANCEL from '@/graphql/configuration/configurationCancel.gql';
@@ -76,7 +76,7 @@ export default class ConfigContent extends Component {
             hasPromptsChanged: false,
             currentTab: 0,
             selected: false,
-            formItemLayout: layoutOneThird
+            formItemLayout: LAYOUT_ONE_THIRD
         };
     }
 
