@@ -44,11 +44,11 @@ export default class DependencePackageSearch extends Component {
     }
     initData() {
         return {
-            keyword: '',
             searchData: [],
             // 运行依赖
             radioValue: 'dependencies',
-            currentPage: 1
+            currentPage: 1,
+            searchTimeoutID: 0
         };
     }
     inited() {
@@ -90,6 +90,10 @@ export default class DependencePackageSearch extends Component {
     }
     keywordChange(keyword) {
         keyword = keyword.trim();
-        this.data.set('keyword', keyword);
+        const searchTimeoutID = this.data.get('searchTimeoutID');
+        searchTimeoutID && clearTimeout(searchTimeoutID);
+        this.data.set('searchTimeoutID', setTimeout(() => {
+            this.search(keyword);
+        }, 1000));
     }
 }
