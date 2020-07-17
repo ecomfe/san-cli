@@ -5,7 +5,7 @@
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-exports.clientAddonConfig = function ({id, port = 8042}) {
+exports.clientAddonConfig = function ({id, port = 8889}) {
     return {
         publicPath: isProduction
             ? `/_addon/${id}`
