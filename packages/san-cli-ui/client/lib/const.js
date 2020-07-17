@@ -28,5 +28,5 @@ export {
 };
 
 export const SEARCH_URL = 'http://ofcncog2cu-2.algolianet.com/1/indexes/*/queries?x-algolia-application-id=OFCNCOG2CU&x-algolia-api-key=db283631f89b5b8a10707311f911fd00';
-
 export const SEARCH_DEBOUNCE_DELAY = 1000;
+export const MAX_SEARCH_RESULT_TOTAL = 1000;
