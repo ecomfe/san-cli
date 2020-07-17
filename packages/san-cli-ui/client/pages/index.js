@@ -52,7 +52,15 @@ routes.forEach(option => router.add(option));
 // eslint-disable-next-line no-undef
 APP_GRAPHQL_ENDPOINT || router.setMode('html5');
 
+// 初始化时首先校正当前project路径
+const resetCwd = async () => {
+    await san.Component.prototype.$apollo.mutate({
+        mutation: PROJECT_CWD_RESET
+    });
+};
+
 router.listen(async (e, config) => {
+    // 此处的处理属于路由切换后，有些前置的操作需要在切换的函数中处理，例如project-list
     if (config.needProject) {
         const result = await san.Component.prototype.$apollo.query({
             query: PROJECT_CURRENT,
@@ -63,11 +71,10 @@ router.listen(async (e, config) => {
             router.locator.redirect('/');
             return;
         }
-        await san.Component.prototype.$apollo.mutate({
-            mutation: PROJECT_CWD_RESET
-        });
+        resetCwd();
     }
 });
 
+resetCwd();
 router.start();
 export default router;
