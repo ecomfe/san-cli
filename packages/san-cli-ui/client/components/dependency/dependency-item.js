@@ -17,7 +17,7 @@ import 'santd/es/popover/style';
 
 export default class DependenceItem extends Component {
     static template = /* html */`
-        <s-spin class="loading" size="large" spinning="{{spinning}}" tip="{{loadingTip}}">
+        <s-spin size="large" spinning="{{spinning}}" tip="{{loadingTip}}">
             <div class="x-dependency-item" slot="content">
                 <a href="{{item.website}}" target="_blank">
                     <div class="pkg-icon" style="background-image: url({{avatars(item.id)}})"></div>

@@ -31,8 +31,7 @@ export default class ProjectCreate extends createApolloComponent(Component) {
                 submit-text="{{$t('project.components.create.submitText')}}"
                 on-submit="onPromptsFormSubmit"></s-prompts-form>
 
-            <s-spin class="loading" 
-                    tip="{{loadingTip}}" 
+            <s-spin tip="{{loadingTip}}" 
                     spinning="{{isCreating}}"
                     size="large">
                     <s-icon slot="indicator" type="loading" style="font-size: 30px;" ></s-icon>

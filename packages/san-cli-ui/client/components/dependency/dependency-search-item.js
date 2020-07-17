@@ -15,7 +15,7 @@ import 'santd/es/notification/style';
 
 export default class DependenceSearchItem extends Component {
     static template = /* html */`
-        <s-spin class="loading" size="large" spinning="{{spinning}}" tip="{{loadingTip}}">
+        <s-spin size="large" spinning="{{spinning}}" tip="{{loadingTip}}">
             <div class="dependency-search-item" slot="content">
                 <a href="{{data.repository.url}}" target="_blank" class="pkg-check">
                     <div class="pkg-icon" style="background-image: url({{data.owner.avatar}})"></div>
