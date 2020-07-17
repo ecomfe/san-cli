@@ -1,5 +1,5 @@
 /**
- * @file 布局组件
+ * @file 带侧边栏布局组件
  * @author zttonly
  */
 
@@ -7,13 +7,14 @@ import {Component} from 'san';
 import PROJECTS from '@graphql/project/projects.gql';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_OPEN from '@graphql/project/projectOpen.gql';
-import {Layout, Icon, Menu, Dropdown, Button} from 'santd';
+import {Layout, Icon, Menu, Dropdown, Button, Spin} from 'santd';
 import {Link} from 'san-router';
 import 'santd/es/layout/style';
 import 'santd/es/menu/style';
 import 'santd/es/icon/style';
 import 'santd/es/dropdown/style';
 import 'santd/es/button/style';
+import 'santd/es/spin/style';
 import './index.less';
 
 export default class ComponentLayout extends Component {
@@ -51,6 +52,13 @@ export default class ComponentLayout extends Component {
                         </s-menu>
                     </s-sider>
                     <s-content class="main">
+                        <s-spin s-if="pageLoading"
+                            class="loading"
+                            spinning="{=pageLoading=}"
+                            size="large"
+                        >
+                            <s-icon slot="indicator" type="loading" style="font-size: 30px;" />
+                        </s-spin>
                         <slot name="content"></slot>
                     </s-content>
                 </s-layout>
@@ -66,12 +74,14 @@ export default class ComponentLayout extends Component {
         's-dropdown': Dropdown,
         's-button': Button,
         's-icon': Icon,
+        's-spin': Spin,
         's-link': Link
     };
     initData() {
         return {
             list: [],
-            projectCurrent: {}
+            projectCurrent: {},
+            pageLoading: false
         };
     }
     inited() {

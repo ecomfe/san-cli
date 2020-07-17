@@ -5,7 +5,7 @@
 
 import {Component} from 'san';
 import {router, Link} from 'san-router';
-import {Icon, Button, Spin} from 'santd';
+import {Icon, Button} from 'santd';
 import {createApolloComponent} from '@lib/san-apollo';
 import CWD from '@graphql/cwd/cwd.gql';
 import PROJECT_INIT_TEMPLATE from '@graphql/project/projectInitTemplate.gql';
@@ -19,17 +19,16 @@ import ProjectCreate from '@components/project/create';
 import Layout from '@components/layout/horizontal';
 import 'santd/es/icon/style';
 import 'santd/es/button/style';
-import 'santd/es/spin/style';
 import './project.less';
 
 export default class Project extends createApolloComponent(Component) {
     static template = /* html */`
         <div class="h1oh project-select">
             <c-connection-status />
-            <s-spin class="loading" spinning="{{pageLoading}}" size="large">
-                <s-icon slot="indicator" type="loading" style="font-size: 30px;" />
-            </s-spin>
-            <c-layout menu="{{$t('project.select.menu')}}" nav="{=nav=}">
+            <c-layout menu="{{$t('project.select.menu')}}"
+                nav="{=nav=}"
+                page-loading="{=pageLoading=}"
+            >
                 <template slot="content">
                     <!--- 1.项目列表 -->
                     <c-list
@@ -122,7 +121,6 @@ export default class Project extends createApolloComponent(Component) {
         's-icon': Icon,
         'r-link': Link,
         's-button': Button,
-        's-spin': Spin,
         'c-connection-status': ConnectionStatus,
         'c-list': ProjectList,
         'c-folder-explorer': FolderExplorer,

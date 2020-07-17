@@ -22,8 +22,11 @@ import './configuration.less';
 export default class Configuration extends Component {
     static template = /* html */`
         <div class="h1oh">
-            <s-spin class="loading" spinning="{{pageLoading}}" size="large"/>
-            <c-layout menu="{{$t('menu')}}" nav="{{['configuration']}}" title="{{$t('config.title')}}">
+            <c-layout menu="{{$t('menu')}}"
+                nav="{{['configuration']}}"
+                title="{{$t('config.title')}}"
+                page-loading="{=pageLoading=}"
+            >
                 <template slot="right">
                     <s-button disabled="{{true}}">
                         {{$t('config.tools')}}
@@ -96,7 +99,7 @@ export default class Configuration extends Component {
         this.init();
     }
     async init() {
-        console.log('init');
+        this.data.set('pageLoading', true);
         // init plugin
         let plugins = await this.$apollo.query({query: PLUGINS});
         if (plugins.data) {
@@ -107,6 +110,7 @@ export default class Configuration extends Component {
         if (configurations.data) {
             this.data.set('configurations', configurations.data.configurations);
         }
+        this.data.set('pageLoading', false);
     }
     refetch() {
         this.init();
@@ -124,7 +128,6 @@ export default class Configuration extends Component {
     }
     switchConfig(id) {
         if (id) {
-            console.log(id);
             this.data.set('currentConfigId', id);
             this.updateCurrentConfig();
         }
