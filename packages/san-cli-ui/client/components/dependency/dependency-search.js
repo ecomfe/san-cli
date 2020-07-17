@@ -4,13 +4,14 @@
  */
 
 import {Component} from 'san';
-import {Input, Button, Icon, Radio, Pagination} from 'santd';
+import {Input, Button, Icon, Radio, Pagination, Spin} from 'santd';
 import axios from 'axios';
 import 'santd/es/input/style';
 import 'santd/es/button/style';
 import 'santd/es/icon/style';
 import 'santd/es/radio/style';
 import 'santd/es/pagination/style';
+import 'santd/es/spin/style';
 import DependencySearchItem from './dependency-search-item';
 import DependencyFilter from './dependency-filter';
 import {searchParam} from '@lib/utils/searchParam';
@@ -23,23 +24,28 @@ let searchKeyword = '';
 
 export default class DependencePackageSearch extends Component {
     static template = /* html */`
-        <div class="dependency-search">
-            <c-dependence-filter on-keywordChange="keywordChange"/>
-            <s-group name="radiogroup" value="{{radioValue}}" on-change="onRadioChange" class="pkg-radio">
-                <s-radio value="dependencies">{{$t('dependency.dependencies')}}</s-radio>
-                <s-radio value="devDependencies">{{$t('dependency.devDependencies')}}</s-radio>
-            </s-group>
-            <div class="pkg-search-item" s-if="searchData.length" s-ref="pkg-search-item">
-                <c-dependency-search-item s-for="data, index in searchData"
-                    data="{{data}}" installType="{{radioValue}}"/>
-                <s-pagination
-                    class="pkg-pagination"
-                    total="{{searchResultTotal}}"
-                    on-change="onPagination"
-                    pageSize="20">
-                </s-pagination>
+        <s-spin spinning="{{loading}}" class="dependency-search-wrap">
+            <div class="dependency-search" slot="content">
+                <c-dependence-filter on-keywordChange="keywordChange"/>
+                <s-group name="radiogroup" value="{{radioValue}}" on-change="onRadioChange" class="pkg-radio">
+                    <s-radio value="dependencies">{{$t('dependency.dependencies')}}</s-radio>
+                    <s-radio value="devDependencies">{{$t('dependency.devDependencies')}}</s-radio>
+                </s-group>
+                <div class="pkg-search-item" s-if="searchData.length">
+                    <c-dependency-search-item
+                        s-for="data, index in searchData"
+                        data="{{data}}"
+                        installType="{{radioValue}}">
+                    </c-dependency-search-item>
+                    <s-pagination
+                        class="pkg-pagination"
+                        total="{{searchResultTotal}}"
+                        on-change="onPagination"
+                        pageSize="20">
+                    </s-pagination>
+                </div>
             </div>
-        </div>
+        </s-spin>
     `;
     static components = {
         's-button': Button,
@@ -49,14 +55,16 @@ export default class DependencePackageSearch extends Component {
         's-group': Radio.Group,
         's-pagination': Pagination,
         'c-dependency-search-item': DependencySearchItem,
-        'c-dependence-filter': DependencyFilter
+        'c-dependence-filter': DependencyFilter,
+        's-spin': Spin
     }
     initData() {
         return {
             searchData: [],
             // 运行依赖
             radioValue: 'dependencies',
-            searchResultTotal: MAX_SEARCH_RESULT_TOTAL
+            searchResultTotal: MAX_SEARCH_RESULT_TOTAL,
+            loading: false
         };
     }
     inited() {
@@ -89,6 +97,13 @@ export default class DependencePackageSearch extends Component {
             const {hits, nbHits} = results[0];
             this.data.set('searchData', hits);
             this.data.set('searchResultTotal', nbHits > MAX_SEARCH_RESULT_TOTAL ? MAX_SEARCH_RESULT_TOTAL : nbHits);
+            // 回到搜索结果列表的顶部
+            this.nextTick(() => {
+                // 裹了一层santd的spin组件后，用ref获取元素就失效了，只好采用以下这种方式获取元素
+                this.el.children[0].children[0].children[2].scrollTop = 0;
+            });
+
+            this.data.set('loading', false);
         }
     }
 
@@ -96,9 +111,8 @@ export default class DependencePackageSearch extends Component {
         this.data.set('radioChange', event.target.value);
     }
     onPagination(event) {
+        this.data.set('loading', true);
         this.search(searchKeyword, event.page - 1);
-        // 回到搜索结果列表的顶部
-        this.ref('pkg-search-item').scrollTop = 0;
     }
     keywordChange(keyword) {
         keyword = keyword.trim();

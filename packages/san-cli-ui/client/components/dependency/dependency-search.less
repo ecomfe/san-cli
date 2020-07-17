@@ -1,19 +1,26 @@
-.dependency-search {
+.dependency-search-wrap {
     height: 100%;
-    .pkg-radio {
-        display: flex;
-        justify-content: center;
+    .dependency-search {
+        height: 100%;
+        .pkg-radio {
+            display: flex;
+            justify-content: center;
+        }
+    
+        .pkg-search-item {
+            overflow-y: scroll;
+            width: 100%;
+            height: 80%;
+            padding: 0 30px;
+        }
+    
+        .pkg-pagination {
+            margin-top: 8px;
+            text-align: center;
+        }
     }
-
-    .pkg-search-item {
-        overflow-y: scroll;
-        width: 100%;
-        height: 80%;
-        padding: 0 30px;
-    }
-
-    .pkg-pagination {
-        margin-top: 8px;
-        text-align: center;
-    }
+}
+// 这个class是从santd的spin组件最后的渲染结果里找的
+.santd-spin-container {
+    height: 100%;
 }
