@@ -12,7 +12,10 @@ import 'santd/es/tooltip/style';
 export default class ProjectList extends Component {
     static template = /* html */`
         <div class="list">
-            <div class="list-item" s-for="item,index in list" on-click="handleClick(item, index)">
+            <div
+                class="list-item{{lastOpenedProject === item.id ? ' last-clicked-item' : ''}}"
+                s-for="item, index in list"
+                on-click="handleClick(item, index)">
                 <s-tooltip 
                     title="{{item.favorite
                         ? $t('project.list.tooltip.cancelCollect')
@@ -45,7 +48,8 @@ export default class ProjectList extends Component {
 
     initData() {
         return {
-            loading: false
+            loading: false,
+            lastOpenedProject: localStorage.getItem('lastOpenedProject')
         };
     }
 

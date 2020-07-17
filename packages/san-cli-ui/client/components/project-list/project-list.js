@@ -197,5 +197,6 @@ export default class ProjectList extends Component {
         });
         let r = this.$t('menu') ? this.$t('menu')[0].link : '';
         this.fire('routeto', r);
+        localStorage.setItem('lastOpenedProject', e.item.id);
     }
 }
