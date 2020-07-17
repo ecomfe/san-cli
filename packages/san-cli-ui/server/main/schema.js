@@ -33,6 +33,11 @@ type GitHubStats {
   stars: Int
 }
 
+type ClientAddon {
+  id: ID!
+  url: String!
+}
+
 type Locale {
   lang: String!
   strings: JSON!
@@ -40,6 +45,7 @@ type Locale {
 
 type Query {
   cwd: String!
+  clientAddons: [ClientAddon]
 }
 
 input OpenInEditorInput {
@@ -54,6 +60,7 @@ type Mutation {
 
 type Subscription {
   cwdChanged: String!
+  clientAddonAdded: ClientAddon
 }
 `];
 

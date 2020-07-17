@@ -5,8 +5,9 @@
 
 const globby = require('globby');
 const {GraphQLJSON} = require('graphql-type-json');
-const {CWD_CHANGED} = require('../utils/channels');
+const {CWD_CHANGED, CLIENT_ADDON_ADDED} = require('../utils/channels');
 const cwd = require('../connectors/cwd');
+const clientAddons = require('../connectors/client-addons');
 
 const resolvers = [{
     JSON: GraphQLJSON,
@@ -17,8 +18,13 @@ const resolvers = [{
         }
     },
 
+    ClientAddon: {
+        url: (addon, args, context) => clientAddons.getUrl(addon, context)
+    },
+
     Query: {
-        cwd: () => cwd.get()
+        cwd: () => cwd.get(),
+        clientAddons: (root, args, context) => clientAddons.list(context)
     },
 
     Mutation: {
@@ -29,6 +35,9 @@ const resolvers = [{
             subscribe: (parent, args, {
                 pubsub
             }) => pubsub.asyncIterator(CWD_CHANGED)
+        },
+        clientAddonAdded: {
+            subscribe: (parent, args, {pubsub}) => pubsub.asyncIterator(CLIENT_ADDON_ADDED)
         }
     }
 }];
