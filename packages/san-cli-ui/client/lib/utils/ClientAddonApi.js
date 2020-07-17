@@ -14,7 +14,6 @@ export default class ClientAddonApi {
     constructor() {
         this.components = new Map();
         this.componentListeners = new Map();
-        window.components = window.components || new Map();
     }
 
     /**
@@ -26,7 +25,6 @@ export default class ClientAddonApi {
     component(id, definition) {
         this.components.set(id, definition);
         const componentId = toComponentId(id);
-        window.components.set(componentId, definition);
         // eslint-disable-next-line no-console
         console.log(`[ClientAddonApi] Registered ${componentId} component`);
         // Call listeners

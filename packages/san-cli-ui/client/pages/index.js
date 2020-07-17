@@ -19,6 +19,7 @@ import Plugins from './plugins';
 import Dashboard from './dashboard';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_CWD_RESET from '@graphql/project/projectCwdReset.gql';
+import PLUGINS from '@graphql/plugin/plugins.gql';
 import './index.less';
 // eslint-disable-next-line no-undef
 const graphqlEndpoint = APP_GRAPHQL_ENDPOINT || `ws://${location.host}/graphql`;
@@ -53,10 +54,12 @@ routes.forEach(option => router.add(option));
 APP_GRAPHQL_ENDPOINT || router.setMode('html5');
 
 // 初始化时首先校正当前project路径
-const resetCwd = async () => {
+const resetStatus = async () => {
     await san.Component.prototype.$apollo.mutate({
         mutation: PROJECT_CWD_RESET
     });
+    // plugin初始化需要尽早调用
+    await san.Component.prototype.$apollo.query({query: PLUGINS});
 };
 
 router.listen(async (e, config) => {
@@ -71,10 +74,9 @@ router.listen(async (e, config) => {
             router.locator.redirect('/');
             return;
         }
-        resetCwd();
     }
 });
 
-resetCwd();
+resetStatus();
 router.start();
 export default router;

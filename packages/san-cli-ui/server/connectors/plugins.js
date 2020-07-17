@@ -19,7 +19,7 @@ const {readPackage} = require('../utils/fileHelper');
 const getContext = require('../utils/context');
 const debug = getDebugLogger('ui:plugins');
 
-const CLI_SAN = 'san';
+const CLI_SAN = 'san-cli';
 
 class Plugins {
     constructor() {
@@ -71,7 +71,7 @@ class Plugins {
             module = require(`${id}/${filename}`);
         }
         catch (e) {
-            debug(e);
+            // debug(e);
         }
 
         if (module) {

@@ -38,16 +38,19 @@ export default class Dashboard extends Component {
                 </template>
                 <div slot="content" class="h1oh dashboard-content">
                     <div class="widgets">
-                        <c-widget
-                            s-for="widget in widgets"
-                            widget="{=widget=}"
-                            custom="{=editing=}"
-                        />
+                        <template s-for="widget in widgets">
+                            <c-widget
+                                s-if="widget"
+                                widget="{=widget=}"
+                                custom="{=editing=}"
+                                loaded="{=scriptLoaded=}"
+                            />
+                        </template>
                     </div>
                     <c-widget-list visible="{=editing=}"/>
                 </div>
             </c-layout>
-            <c-client-addon s-if="isReady"/>
+            <c-client-addon s-if="isReady" on-scriptloaded="onScriptLoad"/>
         </div>
     `;
     static components = {
@@ -65,7 +68,8 @@ export default class Dashboard extends Component {
             editing: false,
             widgets: [],
             pageLoading: false,
-            isReady: false
+            isReady: false,
+            scriptLoaded: false
         };
     }
     static computed = {
@@ -85,7 +89,9 @@ export default class Dashboard extends Component {
             this.data.set('widgets', widgets.data.widgets);
         }
     }
-
+    onScriptLoad() {
+        this.data.set('scriptLoaded', true);
+    }
     showCustom() {
         let editing = this.data.get('editing');
         this.data.set('editing', !editing);

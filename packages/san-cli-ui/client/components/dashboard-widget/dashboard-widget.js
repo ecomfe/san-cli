@@ -4,16 +4,12 @@
  */
 
 import {Component} from 'san';
-import {Icon, Button} from 'santd';
-import 'santd/es/icon/style';
-import 'santd/es/button/style';
 
 export default class DashboardWidget extends Component {
 
     static template = /* html */`
         <div class="dashboard-widget">
-            {{widget}}
-            <div s-if="custom">
+            <div s-if="custom" class="custom">
                 modal
             </div>
         </div>
@@ -24,11 +20,41 @@ export default class DashboardWidget extends Component {
 
     initData() {
         return {
+            widget: null,
+            custom: false,
+            loaded: false
         };
     }
+    attached() {
+        if (this.data.get('loaded')) {
+            this.nextTick(() => this.addChild());
+        }
+        else {
+            this.watch('loaded', function (value) {
+                if (value) {
+                    this.nextTick(() => this.addChild());
+                }
+            });
+        }
+    }
+    addChild() {
+        const widget = this.data.get('widget');
+        const addonApi = window.ClientAddonApi;
+        const parentEl = this.el;
+        if (!widget || !addonApi) {
+            return;
+        }
 
-    static components = {
-        's-icon': Icon,
-        's-button': Button
+        let Child = addonApi.getComponent(widget.definition.component);
+        if (!Child) {
+            return;
+        }
+        let node = new Child({
+            parent: this,
+            data: widget
+        });
+
+        node.attach(parentEl);
+        this.children.push(node);
     }
 }
