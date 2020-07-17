@@ -31,6 +31,7 @@ class PluginApi {
         this.actions = new Map();
         this.ipcHandlers = [];
         this.widgetDefs = [];
+        this.clientAddons = [];
     }
 
     /**
@@ -259,10 +260,11 @@ class PluginApi {
      * @return {Object}
     */
     namespace(namespace) {
+        let that = this;
         return {
             registerWidget(def) {
                 def.id = namespace + def.id;
-                return this.registerWidget(def);
+                return that.registerWidget(def);
             }
         };
     }
