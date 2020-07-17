@@ -5,22 +5,26 @@
 
 import {Component} from 'san';
 import WIDGETS from '@graphql/widget/widgets.gql';
+import PLUGINS from '@graphql/plugin/plugins.gql';
 import Layout from '@components/layout';
-import Widget from '@components/dashboard-widget/dashboard-widget';
+import Widget from '@components/dashboard-widget';
 import WidgetList from '@components/dashboard-widget/widget-list';
+import clientAddon from '@components/client-addon/client-addon-loader';
 import {Link} from 'san-router';
-import {Icon, Button, Spin, Input} from 'santd';
+import {Icon, Button, Input} from 'santd';
 import 'santd/es/icon/style';
 import 'santd/es/button/style';
-import 'santd/es/spin/style';
 import 'santd/es/input/style';
 import './dashboard.less';
 
 export default class Dashboard extends Component {
     static template = /* html */`
         <div class="h1oh dashboard {{editing ? 'custom' : ''}}">
-            <s-spin class="loading" spinning="{{pageLoading}}" size="large"/>
-            <c-layout menu="{{$t('menu')}}" nav="{{['dashboard']}}" title="{{$t('dashboard.title')}}">
+            <c-layout menu="{{$t('menu')}}" 
+                nav="{{['dashboard']}}" 
+                title="{{$t('dashboard.title')}}"
+                page-loading="{=pageLoading=}"
+            >
                 <template slot="right">
                     <s-button disabled="{{true}}">{{$t('dashboard.tools')}}</s-button>
                     <s-button type="primary" on-click="showCustom">
@@ -43,23 +47,25 @@ export default class Dashboard extends Component {
                     <c-widget-list visible="{=editing=}"/>
                 </div>
             </c-layout>
+            <c-client-addon s-if="isReady"/>
         </div>
     `;
     static components = {
         's-icon': Icon,
         'r-link': Link,
         's-button': Button,
-        's-spin': Spin,
         's-input-search': Input.Search,
         'c-layout': Layout,
         'c-widget': Widget,
-        'c-widget-list': WidgetList
+        'c-widget-list': WidgetList,
+        'c-client-addon': clientAddon
     };
     initData() {
         return {
             editing: false,
-            widgets: [1, 2, 3, 4, 5, 6],
-            pageLoading: false
+            widgets: [],
+            pageLoading: false,
+            isReady: false
         };
     }
     static computed = {
@@ -69,9 +75,13 @@ export default class Dashboard extends Component {
         this.init();
     }
     async init() {
+        this.data.set('pageLoading', true);
+        // init plugin todo: plugin初始化依赖集中到一处
+        await this.$apollo.query({query: PLUGINS});
+        this.data.set('isReady', true);
         let widgets = await this.$apollo.query({query: WIDGETS});
-        console.log(widgets);
         if (widgets.data) {
+            this.data.set('pageLoading', false);
             this.data.set('widgets', widgets.data.widgets);
         }
     }
