@@ -13,7 +13,10 @@ const ipc = require('../utils/ipc');
 const PluginApi = require('../api/PluginApi');
 const cwd = require('./cwd');
 const widgets = require('./widgets');
+const dependencies = require('./dependency');
+const clientAddons = require('./client-addons');
 const {readPackage} = require('../utils/fileHelper');
+const getContext = require('../utils/context');
 const debug = getDebugLogger('ui:plugins');
 
 const CLI_SAN = 'san';
@@ -127,6 +130,10 @@ class Plugins {
                 this.runPluginApi(path.resolve(__dirname, '../../'), pluginApi, context, 'defaults');
                 plugins.forEach(plugin => this.runPluginApi(plugin.id, pluginApi, context));
 
+                // Add client addons
+                pluginApi.clientAddons && pluginApi.clientAddons.forEach(options => {
+                    clientAddons.add(options, context);
+                });
                 // Register widgets
                 if (pluginApi.widgetDefs) {
                     for (const definition of pluginApi.widgetDefs) {
@@ -149,6 +156,7 @@ class Plugins {
                         file
                     }, context);
                 }
+
                 widgets.load(context);
                 resolve(true);
             });
@@ -186,6 +194,35 @@ class Plugins {
         }
         return plugin;
     }
-};
+    serve(req, res) {
+        const {id: pluginId, 0: file} = req.params;
+        this.serveFile({pluginId, file: path.join('public', file)}, res);
+    }
+    serveFile({pluginId, projectId = null, file}, res) {
+        let baseFile = cwd.get();
+        if (projectId) {
+            const projects = require('./projects');
+            const project = projects.findOne(projectId, getContext());
+            if (project) {
+                baseFile = project.path;
+            }
+        }
+
+        if (pluginId) {
+            const basePath = pluginId === '.' ? baseFile
+                : dependencies.getPath({id: decodeURIComponent(pluginId), file: baseFile});
+            if (basePath) {
+                res.sendFile(path.join(basePath, file));
+                return;
+            }
+        }
+        else {
+            console.log('serve issue', 'pluginId:', pluginId, 'projectId:', projectId, 'file:', file);
+        }
+
+        res.status(404);
+        res.send(`Addon ${pluginId} not found in loaded addons. Try opening a vue-cli project first?`);
+    }
+}
 
 module.exports = new Plugins();

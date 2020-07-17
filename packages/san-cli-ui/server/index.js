@@ -7,12 +7,15 @@ const http = require('http');
 const express = require('express');
 const portfinder = require('portfinder');
 const fallback = require('express-history-api-fallback');
+const clientAddons = require('./connectors/client-addons');
+const plugins = require('./connectors/plugins');
 const {getDebugLogger, warn} = require('san-cli-utils/ttyLogger');
 const {textBold} = require('san-cli-utils/randomColor');
 
 const server = require('./main');
 const debug = getDebugLogger('UI Server');
 const app = express();
+const CACHE_CONTROL = 'no-store, no-cache, must-revalidate, private';
 
 module.exports = options => {
     const {
@@ -28,9 +31,14 @@ module.exports = options => {
     const apolloServer = server(subscriptionsPath);
     app.use(express.static(distPath));
     app.use('/public', express.static(publicPath));
-
+    app.use('/_plugin/:id/*', plugins.serve);
+    app.use('/_addon/:id/*', clientAddons.serve);
     // 默认页面为dist/index.html
-    app.use(fallback(path.join(distPath, 'index.html')));
+    app.use(fallback(path.join(distPath, 'index.html'), {
+        headers: {
+            'Cache-Control': CACHE_CONTROL
+        }
+    }));
 
     // 集成Apollo GraphQL中间件
     apolloServer.applyMiddleware({

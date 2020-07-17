@@ -5,6 +5,7 @@
 
 import san from 'san';
 import {router} from 'san-router';
+import ClientAddonApi from '../lib/utils/ClientAddonApi';
 import createApolloServer from '@lib/create-apollo-server';
 import {register} from '@lib/san-apollo';
 import localization from '@lib/san-localization';
@@ -27,6 +28,8 @@ register(san, createApolloServer(graphqlEndpoint));
 
 // add localization
 localization(san);
+
+window.ClientAddonApi = new ClientAddonApi();
 
 const routes = [
     {rule: '/', Component: Project, target: '#app'},
@@ -67,3 +70,4 @@ router.listen(async (e, config) => {
 });
 
 router.start();
+export default router;
