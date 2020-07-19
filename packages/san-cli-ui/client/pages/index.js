@@ -6,9 +6,10 @@
 import san from 'san';
 import {router} from 'san-router';
 import ClientAddonApi from '../lib/utils/ClientAddonApi';
-import createApolloServer from '@lib/create-apollo-server';
-import {register} from '@lib/san-apollo';
-import localization from '@lib/san-localization';
+import createClient from '@lib/apollo-client';
+import mixin from '@lib/san-mixin';
+import localization from '@lib/localization';
+import eventBus from '@lib/event-bus';
 import Project from './project';
 import Task from './task';
 import About from '@components/about';
@@ -21,14 +22,19 @@ import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_CWD_RESET from '@graphql/project/projectCwdReset.gql';
 import PLUGINS from '@graphql/plugin/plugins.gql';
 import './index.less';
+
+// 调试模式使用package.json中定义的APP_GRAPHQL_ENDPOINT
 // eslint-disable-next-line no-undef
 const graphqlEndpoint = APP_GRAPHQL_ENDPOINT || `ws://${location.host}/graphql`;
 
-// add $apollo to San Components
-register(san, createApolloServer(graphqlEndpoint));
-
-// add localization
-localization(san);
+mixin(san.Component, {
+    // 导入语言包
+    $t: localization,
+    // 导入$apollo对象
+    $apollo: createClient(graphqlEndpoint),
+    // 导入事件总线
+    ...eventBus
+});
 
 window.ClientAddonApi = new ClientAddonApi();
 
