@@ -9,7 +9,8 @@ import ClientAddonApi from '../lib/utils/ClientAddonApi';
 import createClient from '@lib/apollo-client';
 import mixin from '@lib/san-mixin';
 import localization from '@lib/localization';
-import eventBus from '@lib/event-bus';
+// import eventBus from '@lib/event-bus';
+import pluginAction from '@lib/plugin-action';
 import Project from './project';
 import Task from './task';
 import About from '@components/about';
@@ -27,13 +28,19 @@ import './index.less';
 // eslint-disable-next-line no-undef
 const graphqlEndpoint = APP_GRAPHQL_ENDPOINT || `ws://${location.host}/graphql`;
 
+// 注入全局方法
 mixin(san.Component, {
     // 导入语言包
     $t: localization,
+
+    // TODO: 这里可以导入事件总线
+    // ...eventBus
+
+    // 导入插件回调方法
+    ...pluginAction,
+
     // 导入$apollo对象
     $apollo: createClient(graphqlEndpoint),
-    // 导入事件总线
-    ...eventBus
 });
 
 window.ClientAddonApi = new ClientAddonApi();

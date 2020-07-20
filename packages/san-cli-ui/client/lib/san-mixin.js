@@ -1,6 +1,5 @@
 /**
- * 往san的组件中添加全局方法
- * 注意：会引起控制台出现warning，可以先忽略
+ * @file 往san的组件中添加全局方法（注意：san dev下会引起控制台的warning）
  * @author jinzhan
  */
 
