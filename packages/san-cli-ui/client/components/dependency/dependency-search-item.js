@@ -21,7 +21,7 @@ export default class DependenceSearchItem extends Component {
                     <div class="pkg-icon" style="background-image: url({{data.owner.avatar}})"></div>
                 </a>
                 <div class="pkg-name-wrap">
-                    <a href="{{data.repository.url}}" target="_blank" class="pkg-check">{{data.name}}</a>
+                    <a href="{{data.repository.url}}" target="_blank" class="pkg-check">{{data.objectID}}</a>
                     <span class="pkg-version">{{data.version}}</span>
                     <s-icon type="download"/><span>{{downloadAmount}}</span>
                     <div class="pkg-description">{{data.description}}</div>
@@ -60,7 +60,7 @@ export default class DependenceSearchItem extends Component {
         let data =  await this.$apollo.mutate({
             mutation: DEPENDENCY_INSTALL,
             variables: {
-                id: this.data.get('data').name,
+                id: this.data.get('data').objectID,
                 type: this.data.get('installType')
             }
         });

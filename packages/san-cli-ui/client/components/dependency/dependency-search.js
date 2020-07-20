@@ -74,10 +74,10 @@ export default class DependencePackageSearch extends Component {
     async search(name = '', page = 0) {
         let param = searchParam({
             query: encodeURIComponent(name),
-            maxValuesPerFacet: 20,
+            hitsPerPage: 20,
             page,
-            facets: ['name'],
-            tagFilters: ''
+            attributesToRetrieve: ["description","repository.url","version","owner.avatar","humanDownloadsLast30Days"],
+            attributesToHighlight: []
         });
         let data = await axios({
             url: SEARCH_URL,
