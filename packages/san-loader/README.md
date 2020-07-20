@@ -131,7 +131,7 @@ module.exports = {
 
 |       Name        |            Type            | Default  | Description                                                               |
 | :---------------: | :------------------------: | :------: | :------------------------------------------------------------------------ |
-| `compileTemplate` | `{'none'|'aPack'|'aNode'}` | `'none'` | 将组件的`template` 编译成`aPack`、`aNode`，**默认不编译**，详细见下面说明 |
+| `compileTemplate` | <code>{'none'&#124;'aPack'&#124;'aNode'}</code> | `'none'` | 将组件的`template` 编译成`aPack`、`aNode`，**默认不编译**，详细见下面说明 |
 
 **特殊说明：**
 
