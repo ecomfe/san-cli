@@ -17,6 +17,7 @@ function wrapStore(id, store) {
         return;
     }
     actionCache[id] = {};
+    // 这里的bind方法会报错，'bind' of undefined,暂时还没有想到很好的方法解决这个问题
     var originalAddAction = store.addAction.bind(store);
     store.addAction = function (name, callback) {
         if (store.actions[name] && !actionCache[id][name]) {

@@ -8,6 +8,8 @@
  * @author clark-t
  */
 
+// 加上如下注释条件，则会强制启动components HMR
+/* san-hmr components */
 export default `
 <div>
     <button on-click="clicked">child {{num}} {{clickee}}</button>
