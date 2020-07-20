@@ -18,7 +18,7 @@ import {searchParam} from '@lib/utils/searchParam';
 import {SEARCH_URL, SEARCH_DEBOUNCE_DELAY, MAX_SEARCH_RESULT_TOTAL} from '@lib/const';
 import './dependency-search.less';
 
-// 和视图无关的数据
+// 和视图不直接相关的数据
 let searchTimeoutID;
 let searchKeyword = '';
 

@@ -17,6 +17,7 @@ import List from './list';
 import 'santd/es/input/style';
 import 'animate.css';
 import './project-list.less';
+import {updateRecentProjects} from '@lib/utils/updateRecentProjects';
 
 export default class ProjectList extends Component {
 
@@ -197,6 +198,9 @@ export default class ProjectList extends Component {
         });
         let r = this.$t('menu') ? this.$t('menu')[0].link : '';
         this.fire('routeto', r);
+
         localStorage.setItem('lastOpenedProject', e.item.id);
+
+        updateRecentProjects(e.item.id);
     }
 }

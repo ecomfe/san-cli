@@ -16,6 +16,10 @@ import 'santd/es/dropdown/style';
 import 'santd/es/button/style';
 import 'santd/es/spin/style';
 import './index.less';
+import {updateRecentProjects} from '@lib/utils/updateRecentProjects';
+
+// 和视图不直接相关的数据
+const projectMap = {};
 
 export default class ComponentLayout extends Component {
     static template = /* html */`
@@ -84,23 +88,38 @@ export default class ComponentLayout extends Component {
             pageLoading: false
         };
     }
-    inited() {
-        this.getProjectList();
-    }
-    async getProjectList() {
-        let projects = await this.$apollo.query({query: PROJECTS});
-        projects.data && this.data.set('list', projects.data.projects);
+    async inited() {
+        const projects = await this.$apollo.query({query: PROJECTS});
+        projects.data.projects.forEach((project) => {
+            projectMap[project.id] = project;
+        })
+    
+        this.getRecentProjectList();
+    
         let projectCurrent = await this.$apollo.query({query: PROJECT_CURRENT});
         // 当前打开的project,记录在数据库
         projectCurrent.data && this.data.set('projectCurrent', projectCurrent.data.projectCurrent);
     }
+    async getRecentProjectList() {
+        const recentProjectIdList = JSON.parse(localStorage.getItem('recentProjects'));
+        const recentProjectList = [];
+        recentProjectIdList.forEach((id, index) => {
+            recentProjectList[index] = projectMap[id];
+        })
+        this.data.set('list', recentProjectList);
+    }
     async handleMenuClick(e) {
+        const key = e.key;
+
         let res = await this.$apollo.mutate({
             mutation: PROJECT_OPEN,
             variables: {
-                id: e.key
+                id: key
             }
         });
         res.data && this.data.set('projectCurrent', res.data.projectOpen);
+
+        updateRecentProjects(key);
+        this.getRecentProjectList();
     }
 }
