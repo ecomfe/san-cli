@@ -99,8 +99,7 @@ export default class DependencePackageSearch extends Component {
             this.data.set('searchResultTotal', nbHits > MAX_SEARCH_RESULT_TOTAL ? MAX_SEARCH_RESULT_TOTAL : nbHits);
             // 回到搜索结果列表的顶部
             this.nextTick(() => {
-                // 裹了一层santd的spin组件后，用ref获取元素就失效了，只好采用以下这种方式获取元素
-                this.el.children[0].children[0].children[2].scrollTop = 0;
+                document.querySelector('.pkg-search-item').scrollTop = 0;
             });
 
             this.data.set('loading', false);
