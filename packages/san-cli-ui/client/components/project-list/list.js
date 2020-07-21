@@ -49,7 +49,7 @@ export default class ProjectList extends Component {
     initData() {
         return {
             loading: false,
-            lastOpenedProject: JSON.parse(localStorage.getItem('recentProjects'))[0]
+            lastOpenedProject: localStorage.getItem('recentProjects') === null ? '' : JSON.parse(localStorage.getItem('recentProjects'))[0]
         };
     }
 
