@@ -23,8 +23,8 @@ module.exports = api => {
 
     registerWidget({
         id: 'welcome',
-        title: 'widgets.welcome.title',
-        description: 'widgets.welcome.description',
+        title: 'dashboard.widgets.welcome.title',
+        description: 'dashboard.widgets.welcome.description',
         icon: 'smile',
         component: 'san.widgets.components.welcome',
         minWidth: 3,
@@ -37,8 +37,8 @@ module.exports = api => {
     // Kill port widget
     registerWidget({
         id: 'kill-port',
-        title: 'widgets.kill-port.title',
-        description: 'widgets.kill-port.description',
+        title: 'dashboard.widgets.kill-port.title',
+        description: 'dashboard.widgets.kill-port.description',
         icon: 'thunderbolt',
         component: 'san.widgets.components.kill-port',
         minWidth: 2,
@@ -53,8 +53,8 @@ module.exports = api => {
 
     registerWidget({
         id: 'plugin-updates',
-        title: 'widgets.plugin-updates.title',
-        description: 'widgets.plugin-updates.description',
+        title: 'dashboard.widgets.plugin-updates.title',
+        description: 'dashboard.widgets.plugin-updates.description',
         icon: 'build',
         component: 'san.widgets.components.plugin-updates',
         minWidth: 2,
@@ -68,8 +68,8 @@ module.exports = api => {
 
     registerWidget({
         id: 'dependency-updates',
-        title: 'widgets.dependency-updates.title',
-        description: 'widgets.dependency-updates.description',
+        title: 'dashboard.widgets.dependency-updates.title',
+        description: 'dashboard.widgets.dependency-updates.description',
         icon: 'cluster',
         component: 'widgets.components.dependency-updates',
         minWidth: 2,
@@ -83,8 +83,8 @@ module.exports = api => {
 
     registerWidget({
         id: 'vulnerability',
-        title: 'widgets.vulnerability.title',
-        description: 'widgets.vulnerability.description',
+        title: 'dashboard.widgets.vulnerability.title',
+        description: 'dashboard.widgets.vulnerability.description',
         icon: 'safety-certificate',
         component: 'san.widgets.components.vulnerability',
         detailsComponent: 'san.widgets.components.vulnerability-details',
@@ -99,8 +99,8 @@ module.exports = api => {
 
     registerWidget({
         id: 'run-task',
-        title: 'widgets.run-task.title',
-        description: 'widgets.run-task.description',
+        title: 'dashboard.widgets.run-task.title',
+        description: 'dashboard.widgets.run-task.description',
         icon: 'schedule',
         component: 'widgets.components.run-task',
         minWidth: 2,
@@ -128,8 +128,8 @@ module.exports = api => {
 
     registerWidget({
         id: 'news',
-        title: 'widgets.news.title',
-        description: 'widgets.news.description',
+        title: 'dashboard.widgets.news.title',
+        description: 'dashboard.widgets.news.description',
         icon: 'info-circle',
         component: 'san.widgets.components.news',
         detailsComponent: 'san.widgets.components.news',
