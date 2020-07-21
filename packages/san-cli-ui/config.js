@@ -21,6 +21,20 @@ exports.clientAddonConfig = function ({id, port = 8889}) {
             sourceMap: isProduction,
             cssPreprocessor: 'less'
         },
+        loaderOptions: {
+            babel: {
+                plugins: [
+                    [
+                        require.resolve('babel-plugin-import'),
+                        {
+                            libraryName: 'santd',
+                            libraryDirectory: 'es',
+                            style: true
+                        }
+                    ]
+                ]
+            }
+        },
         chainWebpack: config => {
             config.output
                 .filename('index.js')
