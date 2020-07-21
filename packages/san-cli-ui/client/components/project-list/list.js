@@ -60,7 +60,7 @@ export default class ProjectList extends Component {
 
     openInEditor(item, index, e) {
         e.stopPropagation();
-        this.fire('open', {item, index});
+        this.fire('open', {item});
     }
 
     edit(item, index, e) {

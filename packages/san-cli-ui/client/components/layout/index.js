@@ -16,6 +16,7 @@ import 'santd/es/dropdown/style';
 import 'santd/es/button/style';
 import 'santd/es/spin/style';
 import './index.less';
+import {openInEditor} from '@lib/utils/openInEditor';
 
 export default class ComponentLayout extends Component {
     static template = /* html */`
@@ -29,7 +30,9 @@ export default class ComponentLayout extends Component {
                             selectable="{{false}}"
                             on-click="handleMenuClick"
                         >
-                            <s-menuitem s-for="project in list" key="{{project.id}}">{{project.name}}</s-menuitem>
+                            <s-menu-item key="open-in-editor">在编辑器中打开</s-menu-item>
+                            <s-menu-divider></s-menu-divider>
+                            <s-menu-item s-for="project in list" key="{{project.id}}">{{project.name}}</s-menu-item>
                         </s-menu>
                         <s-button>{{projectCurrent.name}}<s-icon type="down" /></s-button>
                     </s-dropdown>
@@ -43,12 +46,12 @@ export default class ComponentLayout extends Component {
                 <s-layout class="h1oh flex-all main-wrap">
                     <s-sider theme="light">
                         <s-menu class="menu" mode="inline" selectedKeys="{{nav}}">
-                            <s-menuitem s-for="item in $t('menu')" key="{{item.key}}">
+                            <s-menu-item s-for="item in $t('menu')" key="{{item.key}}">
                                 <s-link to="{{item.link}}">
                                     <s-icon type="{{item.icon}}"></s-icon>
                                     <span>{{item.text}}</span>
                                 </s-link>
-                            </s-menuitem>
+                            </s-menu-item>
                         </s-menu>
                     </s-sider>
                     <s-content class="main">
@@ -70,12 +73,13 @@ export default class ComponentLayout extends Component {
         's-content': Layout.Content,
         's-sider': Layout.Sider,
         's-menu': Menu,
-        's-menuitem': Menu.Item,
+        's-menu-item': Menu.Item,
         's-dropdown': Dropdown,
         's-button': Button,
         's-icon': Icon,
         's-spin': Spin,
-        's-link': Link
+        's-link': Link,
+        's-menu-divider': Menu.MenuDivider,
     };
     initData() {
         return {
@@ -99,6 +103,11 @@ export default class ComponentLayout extends Component {
         }
     }
     async handleMenuClick(e) {
+        if (e.key === 'open-in-editor') {
+            openInEditor.call(this, this.data.get('projectCurrent.path'));
+            return;
+        }
+
         let res = await this.$apollo.mutate({
             mutation: PROJECT_OPEN,
             variables: {

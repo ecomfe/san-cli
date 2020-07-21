@@ -8,7 +8,6 @@ import {Icon, Modal, Input} from 'santd';
 import PROJECTS from '@graphql/project/projects.gql';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_OPEN from '@graphql/project/projectOpen.gql';
-import PROJECT_OPEN_IN_EDITOR from '@graphql/project/projectOpenInEditor.gql';
 import PROJECT_SET_FAVORITE from '@graphql/project/projectSetFavorite.gql';
 import PROJECT_RENAME from '@graphql/project/projectRename.gql';
 import PROJECT_REMOVE from '@graphql/project/projectRemove.gql';
@@ -17,6 +16,7 @@ import List from './list';
 import 'santd/es/input/style';
 import 'animate.css';
 import './project-list.less';
+import {openInEditor} from '@lib/utils/openInEditor';
 
 export default class ProjectList extends Component {
 
@@ -131,16 +131,7 @@ export default class ProjectList extends Component {
         projectCurrent.data && this.data.set('projectCurrent', projectCurrent.data.projectCurrent);
     }
     onOpen({item}) {
-        this.$apollo.mutate({
-            mutation: PROJECT_OPEN_IN_EDITOR,
-            variables: {
-                path: item.path
-            }
-        }).then(({data}) => {
-            /* eslint-disable no-console */
-            console.log('PROJECT_OPEN_IN_EDITOR:', {data});
-            /* eslint-enable no-console */
-        });
+        openInEditor.call(this, item.path);
     }
     onEdit(e) {
         this.data.set('showRenameModal', true);
