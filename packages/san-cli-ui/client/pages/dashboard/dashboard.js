@@ -6,6 +6,8 @@
 import {Component} from 'san';
 import WIDGETS from '@graphql/widget/widgets.gql';
 import PLUGINS from '@graphql/plugin/plugins.gql';
+import WIDGET_REMOVE from '@graphql/widget/widgetRemove.gql';
+import WIDGET_DEFINITION_FRAGMENT from '@graphql/widget/widgetDefinitionFragment.gql';
 import Layout from '@components/layout';
 import Widget from '@components/dashboard-widget';
 import WidgetList from '@components/dashboard-widget/widget-list';
@@ -63,6 +65,26 @@ export default class Dashboard extends Component {
         'c-widget-list': WidgetList,
         'c-client-addon': clientAddon
     };
+    static messages = {
+        async ['Widget:remove'](arg) {
+            const id = arg.value;
+            const res = await this.$apollo.mutate({
+                mutation: WIDGET_REMOVE,
+                variables: {id},
+                update: (store, {data: {widgetRemove}}) => {
+                    let {widgets} = store.readQuery({query: WIDGETS});
+                    widgets = widgets.filter(w => w.id !== id);
+                    store.writeQuery({query: WIDGETS, data: {widgets}});
+                    store.writeFragment({
+                        fragment: WIDGET_DEFINITION_FRAGMENT,
+                        id: widgetRemove.definition.id,
+                        data: widgetRemove.definition
+                    });
+                    this.init();
+                }
+            });
+        }
+    };
     initData() {
         return {
             editing: false,
@@ -72,8 +94,6 @@ export default class Dashboard extends Component {
             scriptLoaded: false
         };
     }
-    static computed = {
-    };
 
     attached() {
         this.init();
