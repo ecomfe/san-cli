@@ -16,6 +16,7 @@ const server = require('./main');
 const debug = getDebugLogger('UI Server');
 const app = express();
 const CACHE_CONTROL = 'no-store, no-cache, must-revalidate, private';
+const setHeaders = (res, path, stat) => res.set('Cache-Control', CACHE_CONTROL);
 
 module.exports = options => {
     const {
@@ -29,8 +30,8 @@ module.exports = options => {
     } = options;
 
     const apolloServer = server(subscriptionsPath);
-    app.use(express.static(distPath));
-    app.use('/public', express.static(publicPath));
+    app.use(express.static(distPath, {setHeaders}));
+    app.use('/public', express.static(publicPath, {setHeaders}));
     app.use('/_plugin/:id/*', plugins.serve);
     app.use('/_addon/:id/*', clientAddons.serve);
     // 默认页面为dist/index.html
