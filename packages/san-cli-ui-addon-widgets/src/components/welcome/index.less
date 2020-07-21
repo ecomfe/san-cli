@@ -1,3 +1,42 @@
 .welcome {
-    display: block;
+    display: flex;
+    padding: 16px;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    .logo-wrapper {
+        align-items: stretch;
+        justify-content: center;
+        margin: 16px 0;
+        .logo {
+            width: 100px;
+            height: 100px;
+        }
+    }
+    .title {
+        font-size: 32px;
+        font-weight: 300;
+        text-align: center;
+        margin-bottom: 32px;
+    }
+    .tips {
+        flex: 1;
+        .tip {
+            font-size: 16px;
+            padding: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .message {
+                flex: 1;
+                margin-left: 24px;
+            }
+        }
+    }
+    .actions {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-bottom: 16px;
+    }
 }

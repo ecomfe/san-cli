@@ -14,16 +14,15 @@
     "San CLI"
   ],
   "lint-staged": {
-        "(scripts|src)/**/*.js": [
-            "eslint --fix"
-        ]
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
-
+    "(scripts|src)/**/*.js": [
+      "eslint --fix"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "author": "zttonly <zttonly@gmail.com>",
   "license": "MIT",
   "devDependencies": {
@@ -31,7 +30,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "babel-eslint": "^10.1.0",
     "prettier": "^2.0.5",
-    "eslint-plugin-babel":"^5.3.0",
+    "eslint-plugin-babel": "^5.3.0",
     "eslint": "^6.8.0",
     "@ecomfe/eslint-config": "^3.2.0",
     "@babel/core": "^7.8.6",
@@ -49,6 +48,7 @@
   },
   "dependencies": {
     "san": "^3.8.1",
-    "san-cli-ui": "^0.0.1"
+    "san-cli-ui": "^0.0.1",
+    "santd": "^0.2.8"
   }
 }
