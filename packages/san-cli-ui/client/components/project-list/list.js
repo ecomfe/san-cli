@@ -13,7 +13,7 @@ export default class ProjectList extends Component {
     static template = /* html */`
         <div class="list">
             <div
-                class="list-item{{lastOpenedProject === item.id ? ' last-clicked-item' : ''}}"
+                class="list-item{{lastOpenProject === item.id ? ' last-clicked-item' : ''}}"
                 s-for="item, index in list"
                 on-click="handleClick(item, index)">
                 <s-tooltip 
@@ -48,8 +48,7 @@ export default class ProjectList extends Component {
 
     initData() {
         return {
-            loading: false,
-            lastOpenedProject: localStorage.getItem('recentProjects') === null ? '' : JSON.parse(localStorage.getItem('recentProjects'))[0]
+            loading: false
         };
     }
 

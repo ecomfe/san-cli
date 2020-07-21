@@ -49,6 +49,7 @@ export default class ProjectList extends Component {
                         on-remove="onRemove"
                         on-favorite="onFavorite"
                         on-itemclick="onItemClick"
+                        lastOpenProject="{=lastOpenProject=}"
                     />
                 </div>
             </template>
@@ -63,6 +64,7 @@ export default class ProjectList extends Component {
                     on-remove="onRemove"
                     on-favorite="onFavorite"
                     on-itemclick="onItemClick"
+                    lastOpenProject="{=lastOpenProject=}"
                 />
             </template>
 
@@ -97,6 +99,10 @@ export default class ProjectList extends Component {
         nomarlList() {
             let filterList = this.data.get('filterList');
             return filterList && filterList.filter(item => !item.favorite);
+        },
+        lastOpenProject() {
+            const projectCurrent = this.data.get('projectCurrent');
+            return projectCurrent && projectCurrent.id;
         }
     };
     initData() {
