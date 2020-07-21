@@ -7,17 +7,45 @@
 .dashboard-content {
     display: flex;
     flex-direction: row;
+    padding: 8px;
+    box-sizing: border-box;
     .widgets {
         flex: auto 1 1;
         display: flex;
         justify-content: space-around;
         flex-wrap: wrap;
+        overflow-y: auto;
+        position: relative;
         .dashboard-widget {
-            width: 200px;
-            height: 100px;
-            background-color: #e6f7ff;
             flex: auto 1 1;
-            margin: 8px;
+            .shell,
+            .wrap {
+                height: 100%;
+                width: 100%;
+            }
+            .shell {
+                position: absolute;
+                padding: 8px;
+                box-sizing: border-box;
+            }
+            .wrap {
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                background-color: #e6f7ff;
+                border-radius: 6px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, .05);
+            }
+            .head-bar {
+                padding: 12px 12px 6px 16px;
+                display: flex;
+                flex-direction: row;
+            }
+            .head-title {
+                flex: 1;
+                opacity: .5;
+                color: #4f6f7f;
+            }
         }
     }
 
