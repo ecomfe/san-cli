@@ -7,7 +7,7 @@ import {Component} from 'san';
 import {Icon, Button} from 'santd';
 import 'santd/es/icon/style';
 import 'santd/es/button/style';
-import './index.less';
+import './welcome.less';
 
 export default class Welcome extends Component {
 

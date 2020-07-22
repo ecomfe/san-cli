@@ -1,0 +1,57 @@
+.kill-port {
+    height: 100%;
+    padding: 16px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .status {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 48px;
+        .santd-icon {
+            color: #1890ff;
+            font-size: 32px;
+            padding: 0 8px;
+            margin-right: 16px;
+        }
+        .info {
+            font-size: 18px;
+        }
+    }
+    .status-killed {
+        .santd-icon {
+            color: #52c41a;
+        }
+    }
+    .status-error {
+        .santd-icon {
+            color: #f5222d;
+        }
+    }
+    .actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        .santd-input-number {
+            margin-right: 16px;
+            flex: 1;
+        }
+        .huge {
+            font-size: 16px;
+            &.santd-btn:not(.santd-btn-circle):not(.santd-btn-circle-outline).santd-btn-icon-only {
+                padding: 0 18px;
+            }
+            .santd-icon {
+                margin-right: 8px;
+            }
+        }
+        .santd-input-number,
+        .santd-input-number-input,
+        .huge {
+            height: 44px;
+            line-height: 32px;
+        }
+    }
+}

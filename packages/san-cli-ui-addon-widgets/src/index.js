@@ -3,8 +3,8 @@
  * @author zttonly
 */
 
-import Welcome from './components/welcome';
-import KillPort from './components/kill-port';
+import Welcome from './components/welcome/welcome';
+import KillPort from './components/kill-port/kill-port';
 // import PluginUpdates from './components/plugin-updates.js';
 // import DependencyUpdates from './components/dependency-updates.js';
 // import RunTask from './components/run-task.js';
