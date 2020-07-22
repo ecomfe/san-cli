@@ -124,5 +124,7 @@ export default class ComponentLayout extends Component {
         res.data && this.data.set('projectCurrent', res.data.projectOpen);
 
         this.getRecentProjectList();
+        
+        location.reload();
     }
 }
