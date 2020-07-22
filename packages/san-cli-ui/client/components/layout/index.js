@@ -103,8 +103,10 @@ export default class ComponentLayout extends Component {
     async getRecentProjectList() {
         const projects = await this.$apollo.query({query: PROJECTS});
         if (projects.data) {
-            projects.data.projects.sort((project1, project2) => project2.openDate - project1.openDate);
-            this.data.set('list', projects.data.projects.slice(0, 3));
+            const projectsDuplicate = projects.data.projects.slice();
+            // 之所以不直接对 projects.data.projects 进行 sort，是因为如果这里改了 projects.data.projects，还会影响其它用到了 projects.data.projects 的地方
+            projectsDuplicate.sort((project1, project2) => project2.openDate - project1.openDate);
+            this.data.set('list', projectsDuplicate.slice(0, 3));
         }
     }
     async handleMenuClick(e) {
