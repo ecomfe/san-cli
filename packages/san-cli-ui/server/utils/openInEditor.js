@@ -7,10 +7,15 @@ const launch = require('launch-editor');
 const {info, error} = require('san-cli-utils/ttyLogger');
 
 module.exports = async (options, cwd) => {
-    const {line = 0, column = 0} = options;
+    const {line, column} = options;
     cwd = cwd || process.cwd();
     let query = path.resolve(cwd, options.path);
-    query = `${query}:${line}:${column}`;
+    if (line) {
+        query += `:${line}`
+        if (column) {
+          query += `:${column}`
+        }
+      }
     info(`Opening [${query}] in code editor...`);
     launch(query, 'code', (fileName, errorMsg) => {
         error(`Unable to open [${fileName}]: ${errorMsg}`);
