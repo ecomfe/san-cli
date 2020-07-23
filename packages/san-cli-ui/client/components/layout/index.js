@@ -35,7 +35,7 @@ export default class ComponentLayout extends Component {
                                 <s-icon type="codepen"></s-icon>在编辑器中打开
                             </s-menu-item>
                             <s-menu-divider></s-menu-divider>
-                            <s-menu-item-group title="最近打用">
+                            <s-menu-item-group title="最近打开">
                                 <s-menu-item s-for="project in list" key="{{project.id}}">
                                     <s-icon type="history"></s-icon>{{project.name}}
                                 </s-menu-item>
@@ -109,7 +109,7 @@ export default class ComponentLayout extends Component {
             const projectsDuplicate = projects.data.projects.slice();
             // 之所以不直接对 projects.data.projects 进行 sort，是因为如果这里改了 projects.data.projects，还会影响其它用到了 projects.data.projects 的地方
             projectsDuplicate.sort((project1, project2) => project2.openDate - project1.openDate);
-            this.data.set('list', projectsDuplicate.slice(0, 3));
+            this.data.set('list', projectsDuplicate.slice(1, 4));
         }
     }
     async handleMenuClick(e) {
