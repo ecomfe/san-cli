@@ -25,6 +25,10 @@ module.exports = {
         }).subscribe({
             next: ({data}) => {
                 callback(data.pluginActionCalled);
+            },
+            error: err => {
+                // eslint-disable-next-line no-console
+                console.log('$onPluginActionCalled error', err);
             }
         });
     },

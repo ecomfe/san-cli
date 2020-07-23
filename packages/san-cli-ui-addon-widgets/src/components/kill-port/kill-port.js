@@ -62,6 +62,25 @@ export default {
     },
     attached() {
         this.statusTimer = null;
+        if (this.data.get('status') !== 'idle') {
+            this.statusReset();
+        }
+        else {
+            this.watch('status', function (value) {
+                if (this.data.get('status') !== 'idle') {
+                    this.statusReset();
+                }
+            });
+        }
+        this.$onPluginActionResolved(({results}) => {
+            results[0] && this.data.set('status', results[0].status);
+        });
+    },
+    statusReset() {
+        this.statusTimer = setTimeout(() => {
+            this.data.set('status', 'idle');
+            this.data.set('port', '');
+        }, 3000);
     },
     onchange(p) {
         this.data.set('port', p);

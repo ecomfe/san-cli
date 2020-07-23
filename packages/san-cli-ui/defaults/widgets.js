@@ -50,17 +50,22 @@ module.exports = api => {
     // setSharedData('kill-port.status', 'idle');
     onAction('actions.kill-port', async params => {
         const fkill = require('fkill');
+        let res = 'killing';
         // setSharedData('kill-port.status', 'killing')
         try {
-            console.log('kill try', params);
             await fkill(`:${params.port}`);
             // setSharedData('kill-port.status', 'killed')
+            res = 'killed';
         }
         catch (e) {
-            console.log('kill catch');
+            // eslint-disable-next-line no-console
             console.log(e);
             // setSharedData('kill-port.status', 'error')
+            res = 'error';
         }
+        return {
+            status: res
+        };
     });
 
 
