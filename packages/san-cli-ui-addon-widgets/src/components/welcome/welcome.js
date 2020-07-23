@@ -2,16 +2,13 @@
  * @file 欢迎组件
  * @author zttonly
  */
-
-import {Component} from 'san';
 import {Icon, Button} from 'santd';
 import 'santd/es/icon/style';
 import 'santd/es/button/style';
 import './welcome.less';
 
-export default class Welcome extends Component {
-
-    static template = /* html */`
+export default {
+    template: /* html */`
         <div class="welcome">
             <div class="logo-wrapper">
                 <img src="https://baidu.github.io/san/img/logo-colorful.svg" class="logo"/>
@@ -36,11 +33,11 @@ export default class Welcome extends Component {
                 >{{text.welcome.content.ok}}</s-button>
             </div>
         </div>
-    `;
-    static components = {
+    `,
+    components: {
         's-icon': Icon,
         's-button': Button
-    };
+    },
     initData() {
         return {
             num: [1, 2, 3],
@@ -52,13 +49,9 @@ export default class Welcome extends Component {
             widget: {},
             text: {}
         };
-    }
-    attached() {
-        // eslint-disable-next-line no-console
-        console.log('welcome attached', this.data.get());
-    }
+    },
     remove() {
         const id = this.data.get('widget.id');
         this.dispatch('Widget:remove', id);
     }
-}
+};

@@ -47,7 +47,6 @@
     "san-cli": "^0.1.0"
   },
   "dependencies": {
-    "san": "^3.8.1",
     "san-cli-ui": "^0.0.1",
     "santd": "^0.2.8"
   }

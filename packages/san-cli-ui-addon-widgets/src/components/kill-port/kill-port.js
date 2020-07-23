@@ -2,17 +2,14 @@
  * @file kill端口组件
  * @author zttonly
  */
-
-import {Component} from 'san';
 import {Icon, Button, InputNumber} from 'santd';
 import 'santd/es/icon/style';
 import 'santd/es/button/style';
 import 'santd/es/input-number/style';
 import './kill-port.less';
 
-export default class KillPort extends Component {
-
-    static template = /* html */`
+export default {
+    template: /* html */`
         <div class="kill-port">
             <div class="status status-{{status}}">
                 <s-icon type="{{icons[status]}}"/>
@@ -22,22 +19,22 @@ export default class KillPort extends Component {
                 <s-input-number
                     min="0" 
                     max="9999"
-                    value="{=inputPort=}"
+                    value="{=port=}"
                     size="large"
-                    on-change="onChange"
+                    on-change="onchange"
                 ></s-input-number>
-                <s-button class="huge" type="primary" value="large">
+                <s-button class="huge" type="primary" value="large" on-click="kill">
                     <s-icon type="thunderbolt" theme="filled"/>{{state.kill}}
                 </s-button>
             </div>
         </div>
-    `;
-    static components = {
+    `,
+    components: {
         's-icon': Icon,
         's-button': Button,
         's-input-number': InputNumber
-    };
-    static computed = {
+    },
+    computed: {
         state() {
             const text = this.data.get('text');
             if (!text) {
@@ -51,7 +48,7 @@ export default class KillPort extends Component {
                 kill: v.kill
             };
         }
-    };
+    },
     initData() {
         return {
             status: 'idle',
@@ -60,15 +57,19 @@ export default class KillPort extends Component {
                 killed: 'check-circle',
                 error: 'exclamation-circle'
             },
-            inputPort: 0
+            port: ''
         };
-    }
+    },
     attached() {
-        // eslint-disable-next-line no-console
-        console.log('kill-port attached', this.data.get());
+        this.statusTimer = null;
+    },
+    onchange(p) {
+        this.data.set('port', p);
+    },
+    kill() {
+        this.statusTimer && clearTimeout(this.statusTimer);
+        this.$callPluginAction('san.widgets.actions.kill-port', {
+            port: this.data.get('port')
+        });
     }
-    onChange() {
-        // eslint-disable-next-line no-console
-        console.log('number');
-    }
-}
+};

@@ -2,7 +2,7 @@
  * @file ClientAddonApi
  * @author zttonly
 */
-
+import san from 'san';
 import router from '../../pages/index';
 
 export const toComponentId = id => {
@@ -23,14 +23,15 @@ export default class ClientAddonApi {
      * @param {Object} definition Component definition
      */
     component(id, definition) {
-        this.components.set(id, definition);
         const componentId = toComponentId(id);
+        const definitionCom = san.defineComponent(definition);
+        this.components.set(id, definitionCom);
         // eslint-disable-next-line no-console
         console.log(`[ClientAddonApi] Registered ${componentId} component`);
         // Call listeners
         const listeners = this.componentListeners.get(id);
         if (listeners) {
-            listeners.forEach(l => l(definition));
+            listeners.forEach(l => l(definitionCom));
             this.componentListeners.delete(id);
         }
     }
