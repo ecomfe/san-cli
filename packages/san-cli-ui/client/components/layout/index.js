@@ -35,9 +35,11 @@ export default class ComponentLayout extends Component {
                                 <s-icon type="codepen"></s-icon>在编辑器中打开
                             </s-menu-item>
                             <s-menu-divider></s-menu-divider>
-                            <s-menu-item s-for="project in list" key="{{project.id}}">
-                                <s-icon type="history"></s-icon>{{project.name}}
-                            </s-menu-item>
+                            <s-menu-item-group title="最近打用">
+                                <s-menu-item s-for="project in list" key="{{project.id}}">
+                                    <s-icon type="history"></s-icon>{{project.name}}
+                                </s-menu-item>
+                            </s-menu-item-group>
                         </s-menu>
                         <s-button>{{projectCurrent.name}}<s-icon type="down" /></s-button>
                     </s-dropdown>
@@ -85,6 +87,7 @@ export default class ComponentLayout extends Component {
         's-spin': Spin,
         's-link': Link,
         's-menu-divider': Menu.MenuDivider,
+        's-menu-item-group': Menu.MenuItemGroup
     };
     initData() {
         return {
