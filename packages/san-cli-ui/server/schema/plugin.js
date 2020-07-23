@@ -10,6 +10,15 @@ extend type Query {
   plugin (id: ID!): Plugin
 }
 
+extend type Mutation {
+  pluginActionCall (id: ID!, params: JSON): PluginActionResult
+}
+
+extend type Subscription {
+  pluginActionCalled: PluginActionCall
+  pluginActionResolved: PluginActionResult
+}
+
 type Plugin {
   id: ID!
   version: Version!
@@ -19,5 +28,17 @@ type Plugin {
   description: String
   githubStats: GitHubStats
   logo: String
+}
+
+type PluginActionCall {
+  id: ID!
+  params: JSON
+}
+
+type PluginActionResult {
+  id: ID!
+  params: JSON
+  results: [JSON]
+  errors: [JSON]
 }
 `;

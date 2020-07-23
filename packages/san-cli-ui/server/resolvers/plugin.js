@@ -4,6 +4,7 @@
 */
 const plugins = require('../connectors/plugins');
 const cwd = require('../connectors/cwd');
+const channels = require('../utils/channels');
 
 module.exports = {
     Plugin: {
@@ -17,5 +18,14 @@ module.exports = {
     },
 
     Mutation: {
+        pluginActionCall: (root, args, context) => plugins.callAction(args, context)
+    },
+    Subscription: {
+        pluginActionCalled: {
+            subscribe: (parent, args, {pubsub}) => pubsub.asyncIterator(channels.PLUGIN_ACTION_CALLED)
+        },
+        pluginActionResolved: {
+            subscribe: (parent, args, {pubsub}) => pubsub.asyncIterator(channels.PLUGIN_ACTION_RESOLVED)
+        }
     }
 };

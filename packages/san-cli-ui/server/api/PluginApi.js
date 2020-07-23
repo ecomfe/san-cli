@@ -253,6 +253,33 @@ class PluginApi {
     }
 
     /**
+     * Listener triggered when a Plugin action is called from a client addon component.
+     *
+     * @param {string} id Id of the action to listen
+     * @param {any} cb Callback (ex: (params) => {} )
+     */
+    onAction(id, cb) {
+        let list = this.actions.get(id);
+        if (!list) {
+            list = [];
+        }
+        list.push(cb);
+        this.actions.set(id, list);
+    }
+
+    /**
+     * Call a Plugin action. This can also listened by client addon components.
+     *
+     * @param {string} id Id of the action
+     * @param {Object} params Params object passed as 1st argument to callbacks
+     * @return {Promise}
+     */
+    callAction(id, params) {
+        const plugins = require('../connectors/plugins');
+        return plugins.callAction({id, params}, this.context);
+    }
+
+    /**
      * Create a namespaced version of:
      *   - registerWidget
      *
@@ -265,6 +292,28 @@ class PluginApi {
             registerWidget(def) {
                 def.id = namespace + def.id;
                 return that.registerWidget(def);
+            },
+
+            /**
+             * Listener triggered when a Plugin action is called from a client addon component.
+             *
+             * @param {string} id Id of the action to listen
+             * @param {any} cb Callback (ex: (params) => {} )
+             * @return {Function}
+             */
+            onAction(id, cb) {
+                return that.onAction(namespace + id, cb);
+            },
+
+            /**
+             * Call a Plugin action. This can also listened by client addon components.
+             *
+             * @param {string} id Id of the action
+             * @param {Object} params Params object passed as 1st argument to callbacks
+             * @return {Promise}
+             */
+            callAction(id, params) {
+                return this.callAction(namespace + id, params);
             }
         };
     }

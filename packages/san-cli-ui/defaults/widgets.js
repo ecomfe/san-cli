@@ -4,7 +4,7 @@
  */
 
 module.exports = api => {
-    let {registerWidget} = api.namespace('san.widgets.');
+    let {registerWidget, onAction} = api.namespace('san.widgets.');
 
     if (process.env.SAN_CLI_UI_DEV) {
         api.addClientAddon({
@@ -46,6 +46,21 @@ module.exports = api => {
         maxWidth: 2,
         maxHeight: 1,
         maxCount: 1
+    });
+    // setSharedData('kill-port.status', 'idle');
+    onAction('actions.kill-port', async params => {
+        const fkill = require('fkill');
+        // setSharedData('kill-port.status', 'killing')
+        try {
+            console.log('kill try', params);
+            await fkill(`:${params.port}`);
+            // setSharedData('kill-port.status', 'killed')
+        }
+        catch (e) {
+            console.log('kill catch');
+            console.log(e);
+            // setSharedData('kill-port.status', 'error')
+        }
     });
 
 

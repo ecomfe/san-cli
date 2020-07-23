@@ -8,6 +8,10 @@ const {
     isOfficialPlugin,
     getPluginLink
 } = require('san-cli-utils/plugin');
+const {
+    PLUGIN_ACTION_CALLED,
+    PLUGIN_ACTION_RESOLVED
+} = require('../utils/channels');
 const {log, getDebugLogger} = require('san-cli-utils/ttyLogger');
 const ipc = require('../utils/ipc');
 const PluginApi = require('../api/PluginApi');
@@ -222,6 +226,38 @@ class Plugins {
 
         res.status(404);
         res.send(`Addon ${pluginId} not found in loaded addons. Try opening a vue-cli project first?`);
+    }
+    // pluginActionCall this.$callPluginAction
+    async callAction({id, params, file = cwd.get()}, context) {
+        const pluginApi = this.getApi(file);
+
+        context.pubsub.publish(PLUGIN_ACTION_CALLED, {
+            pluginActionCalled: {id, params}
+        });
+        log('PluginAction called', id, params);
+        const results = [];
+        const errors = [];
+        const list = pluginApi.actions.get(id);
+        if (list) {
+            for (const cb of list) {
+                let result = null;
+                let error = null;
+                try {
+                    // get every action result
+                    result = await cb(params);
+                }
+                catch (e) {
+                    error = e;
+                }
+                results.push(result);
+                errors.push(error);
+            }
+        }
+        context.pubsub.publish(PLUGIN_ACTION_RESOLVED, {
+            pluginActionResolved: {id, params, results, errors}
+        });
+        log('PluginAction resolved', id, params, 'results:', results, 'errors:', errors);
+        return {id, params, results, errors};
     }
 }
 
