@@ -1,5 +1,5 @@
 /**
- * @file client-addons connectors
+ * @file clientAddons connectors
  * @author zttonly
  */
 const path = require('path');

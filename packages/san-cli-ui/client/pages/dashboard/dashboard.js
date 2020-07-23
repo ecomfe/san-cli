@@ -68,7 +68,7 @@ export default class Dashboard extends Component {
     static messages = {
         async ['Widget:remove'](arg) {
             const id = arg.value;
-            const res = await this.$apollo.mutate({
+            await this.$apollo.mutate({
                 mutation: WIDGET_REMOVE,
                 variables: {id},
                 update: (store, {data: {widgetRemove}}) => {

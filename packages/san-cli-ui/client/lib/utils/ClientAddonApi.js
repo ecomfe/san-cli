@@ -5,10 +5,6 @@
 import san from 'san';
 import router from '../../pages/index';
 
-export const toComponentId = id => {
-    id = id.replace(/\./g, '-');
-    return `client-addon--${id}`;
-};
 
 export default class ClientAddonApi {
     constructor() {
@@ -23,11 +19,10 @@ export default class ClientAddonApi {
      * @param {Object} definition Component definition
      */
     component(id, definition) {
-        const componentId = toComponentId(id);
         const definitionCom = san.defineComponent(definition);
         this.components.set(id, definitionCom);
         // eslint-disable-next-line no-console
-        console.log(`[ClientAddonApi] Registered ${componentId} component`);
+        console.log(`[ClientAddonApi] Registered ${id} component`);
         // Call listeners
         const listeners = this.componentListeners.get(id);
         if (listeners) {

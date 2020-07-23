@@ -1,0 +1,7 @@
+#import "./widgetFragment.gql"
+
+mutation widgetConfigReset ($id: ID!) {
+  widgetConfigReset (id: $id) {
+    ...widget
+  }
+}
