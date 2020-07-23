@@ -5,9 +5,11 @@
 
 const globby = require('globby');
 const {GraphQLJSON} = require('graphql-type-json');
-const {CWD_CHANGED, CLIENT_ADDON_ADDED} = require('../utils/channels');
+const channels = require('../utils/channels');
 const cwd = require('../connectors/cwd');
-const clientAddons = require('../connectors/client-addons');
+const clientAddons = require('../connectors/clientAddons');
+const sharedData = require('../connectors/sharedData');
+const {withFilter} = require('graphql-subscriptions');
 
 const resolvers = [{
     JSON: GraphQLJSON,
@@ -24,20 +26,35 @@ const resolvers = [{
 
     Query: {
         cwd: () => cwd.get(),
-        clientAddons: (root, args, context) => clientAddons.list(context)
+        clientAddons: (root, args, context) => clientAddons.list(context),
+        sharedData: (root, args, context) => sharedData.get(args, context)
     },
 
     Mutation: {
+        sharedDataUpdate: (root, args, context) => sharedData.set(args, context)
     },
 
     Subscription: {
         cwdChanged: {
             subscribe: (parent, args, {
                 pubsub
-            }) => pubsub.asyncIterator(CWD_CHANGED)
+            }) => pubsub.asyncIterator(channels.CWD_CHANGED)
         },
         clientAddonAdded: {
-            subscribe: (parent, args, {pubsub}) => pubsub.asyncIterator(CLIENT_ADDON_ADDED)
+            subscribe: (parent, args, {pubsub}) => pubsub.asyncIterator(channels.CLIENT_ADDON_ADDED)
+        },
+        sharedDataUpdated: {
+            subscribe: withFilter(
+                (parent, args, {pubsub}) => pubsub.asyncIterator(channels.SHARED_DATA_UPDATED),
+                (payload, vars) => {
+                    const result = payload.sharedDataUpdated.id === vars.id
+                        && payload.sharedDataUpdated.projectId === vars.projectId;
+                    if (result) {
+                        sharedData.getStats(`shared-data_${vars.projectId}`, vars.id).value++;
+                    }
+                    return result;
+                }
+            )
         }
     }
 }];

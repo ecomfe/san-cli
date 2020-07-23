@@ -38,14 +38,14 @@ type ClientAddon {
   url: String!
 }
 
+type SharedData {
+  id: ID!
+  value: JSON
+}
+
 type Locale {
   lang: String!
   strings: JSON!
-}
-
-type Query {
-  cwd: String!
-  clientAddons: [ClientAddon]
 }
 
 input OpenInEditorInput {
@@ -54,13 +54,21 @@ input OpenInEditorInput {
   column: Int
 }
 
+type Query {
+  cwd: String!
+  clientAddons: [ClientAddon]
+  sharedData (id: ID!, projectId: ID!): SharedData
+}
+
 type Mutation {
   fileOpenInEditor (input: OpenInEditorInput!): Boolean
+  sharedDataUpdate (id: ID!, projectId: ID!, value: JSON!): SharedData
 }
 
 type Subscription {
   cwdChanged: String!
   clientAddonAdded: ClientAddon
+  sharedDataUpdated (id: ID!, projectId: ID!): SharedData
 }
 `];
 

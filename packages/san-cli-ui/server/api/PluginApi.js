@@ -7,6 +7,7 @@ const path = require('path');
 // Connectors
 // Utils
 const ipc = require('../utils/ipc');
+const sharedData = require('../connectors/sharedData');
 const {matchesPluginId} = require('san-cli-utils/plugin');
 // Validators
 // const {validateConfiguration} = require('./configuration');
@@ -88,6 +89,7 @@ class PluginApi {
             });
         }
         catch (e) {
+            // eslint-disable-next-line no-console
             console.error(new Error(`Invalid options: ${e.message}`));
         }
     }
@@ -151,6 +153,7 @@ class PluginApi {
 
     /**
      * Indicates if a specific plugin is used by the project
+     *
      * @param {string} id Plugin id or short id
      * @return {boolean}
      */
@@ -160,6 +163,7 @@ class PluginApi {
 
     /**
      * Get current working directory.
+     *
      * @return {string}
      */
     getCwd() {
@@ -168,6 +172,7 @@ class PluginApi {
 
     /**
      * Resolves a file relative to current working directory
+     *
      * @param {string} file Path to file relative to project
      * @return {string}
      */
@@ -177,6 +182,7 @@ class PluginApi {
 
     /**
      * Get currently open project
+     *
      * @return {string}
      */
     getProject() {
@@ -231,6 +237,7 @@ class PluginApi {
             });
         }
         catch (e) {
+            // eslint-disable-next-line no-console
             console.error(new Error(`Invalid options: ${e.message}`));
         }
     }
@@ -248,6 +255,7 @@ class PluginApi {
             });
         }
         catch (e) {
+            // eslint-disable-next-line no-console
             console.error(new Error(`Invalid definition: ${e.message}`));
         }
     }
@@ -277,6 +285,58 @@ class PluginApi {
     callAction(id, params) {
         const plugins = require('../connectors/plugins');
         return plugins.callAction({id, params}, this.context);
+    }
+
+    /**
+     * Retrieve a Shared data instance.
+     *
+     * @param {string} id Id of the Shared data
+     * @return {SharedData} Shared data instance
+     */
+    getSharedData(id) {
+        return sharedData.get({id, projectId: this.project.id}, this.context);
+    }
+
+    /**
+     * Set or update the value of a Shared data
+     *
+     * @param {string} id Id of the Shared data
+     * @param {any} value Value of the Shared data
+     * @param {SetSharedDataOptions} options options
+     * @return {Function}
+     */
+    async setSharedData(id, value, {disk = false} = {}) {
+        return sharedData.set({id, projectId: this.project.id, value, disk}, this.context);
+    }
+
+    /**
+     * Delete a shared data.
+     *
+     * @param {string} id Id of the Shared data
+     * @return {Function}
+     */
+    async removeSharedData(id) {
+        return sharedData.remove({id, projectId: this.project.id}, this.context);
+    }
+
+    /**
+     * Watch for a value change of a shared data
+     *
+     * @param {string} id Id of the Shared data
+     * @param {Function} handler Callback
+     */
+    watchSharedData(id, handler) {
+        sharedData.watch({id, projectId: this.project.id}, handler);
+    }
+
+    /**
+     * Delete the watcher of a shared data.
+     *
+     * @param {string} id Id of the Shared data
+     * @param {Function} handler Callback
+     */
+    unwatchSharedData(id, handler) {
+        sharedData.unwatch({id, projectId: this.project.id}, handler);
     }
 
     /**
@@ -314,6 +374,56 @@ class PluginApi {
              */
             callAction(id, params) {
                 return this.callAction(namespace + id, params);
+            },
+
+            /**
+             * Retrieve a Shared data instance.
+             *
+             * @param {string} id Id of the Shared data
+             * @return {SharedData} Shared data instance
+             */
+            getSharedData(id) {
+                return this.getSharedData(namespace + id);
+            },
+
+            /**
+             * Set or update the value of a Shared data
+             *
+             * @param {string} id Id of the Shared data
+             * @param {any} value Value of the Shared data
+             * @param {SetSharedDataOptions} options options
+             */
+            setSharedData(id, value, options) {
+                this.setSharedData(namespace + id, value, options);
+            },
+
+            /**
+             * Delete a shared data.
+             *
+             * @param {string} id Id of the Shared data
+             */
+            removeSharedData(id) {
+                this.removeSharedData(namespace + id);
+            },
+
+            /**
+             * Watch for a value change of a shared data
+             *
+             * @param {string} id Id of the Shared data
+             * @param {Function} handler Callback
+             */
+            watchSharedData(id, handler) {
+                this.watchSharedData(namespace + id, handler);
+            },
+
+            /**
+             * Delete the watcher of a shared data.
+             *
+             * @param {string} id Id of the Shared data
+             * @param {Function} handler Callback
+             */
+            unwatchSharedData(id, handler) {
+                this.unwatchSharedData(namespace + id, handler);
             }
         };
     }
