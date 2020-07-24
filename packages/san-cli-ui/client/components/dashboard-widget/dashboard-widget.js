@@ -4,7 +4,16 @@
  */
 
 import {Component} from 'san';
-import {getPositionStyle, getSizeStyle, GRID_SIZE, ZOOM} from '@lib/utils/position';
+import {
+    // getPositionStyle,
+    getSizeStyle,
+    GRID_SIZE,
+    ZOOM
+} from '@lib/utils/position';
+import {Icon, Button} from 'santd';
+import 'santd/es/icon/style';
+import 'santd/es/button/style';
+import './dashboard-widget.less';
 
 export default class DashboardWidget extends Component {
 
@@ -65,12 +74,25 @@ export default class DashboardWidget extends Component {
                     <div
                         s-if="moveState"
                         class="move-ghost"
-                        sstyle="{{moveGhostStyle}}"
+                        style="{{moveGhostStyle}}"
                     >
                         <div class="backdrop"></div>
                     </div>
-                    <div s-if="custom" class="custom">
-                        modal
+                    <div s-if="custom"
+                        class="overlay"
+                        on-click="select"
+                    >
+                        <div class="definition-chip">
+                            <s-icon type="{{widget.definition.icon}}"/>
+                            <div class="title">{{customTitle || $t(widget.definition.title) }}</div>
+                        </div>
+                        <s-button
+                            class="remove-button"
+                            type="primary"
+                            icon="close"
+                            shape="circle"
+                            on-click="remove"
+                        ></s-button>
                     </div>
                 </div>
             </div>
@@ -86,12 +108,12 @@ export default class DashboardWidget extends Component {
             }
             if (moveState) {
                 return {
-                    ...getPositionStyle(moveState.pxX, moveState.pxY),
+                    // ...getPositionStyle(moveState.pxX, moveState.pxY),
                     ...getSizeStyle({field, gridSize: GRID_SIZE})
                 };
             }
             return {
-                ...getPositionStyle(GRID_SIZE * field.x, GRID_SIZE * field.y),
+                // ...getPositionStyle(GRID_SIZE * field.x, GRID_SIZE * field.y),
                 ...getSizeStyle({field, gridSize: GRID_SIZE})
             };
         },
@@ -103,12 +125,15 @@ export default class DashboardWidget extends Component {
                 return {};
             }
             return {
-                ...getPositionStyle(GRID_SIZE * moveState.x, GRID_SIZE * moveState.y),
+                // ...getPositionStyle(GRID_SIZE * moveState.x, GRID_SIZE * moveState.y),
                 ...getSizeStyle({field, gridSize: GRID_SIZE})
             };
         }
     };
-
+    static components = {
+        's-icon': Icon,
+        's-button': Button
+    };
     initData() {
         return {
             moveState: null,
@@ -155,6 +180,10 @@ export default class DashboardWidget extends Component {
 
         node.attach(parentEl);
         this.children.push(node);
+    }
+    remove() {
+        const id = this.data.get('widget.id');
+        this.dispatch('Widget:remove', id);
     }
     removeMoveListeners() {
         window.removeEventListener('mousemove', this.onMoveUpdate);
