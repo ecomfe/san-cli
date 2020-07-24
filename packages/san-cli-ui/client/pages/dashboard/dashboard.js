@@ -68,6 +68,8 @@ export default class Dashboard extends Component {
     static messages = {
         async ['Widget:remove'](arg) {
             const id = arg.value;
+            // reset widget
+            this.data.set('widgets', []);
             await this.$apollo.mutate({
                 mutation: WIDGET_REMOVE,
                 variables: {id},
