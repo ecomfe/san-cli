@@ -1,0 +1,81 @@
+
+@import '../../assets/vars.less';
+.dashboard-widget {
+    flex: auto 1 1;
+    .shell,
+    .wrap {
+        height: 100%;
+        width: 100%;
+    }
+    .shell {
+        // position: absolute;
+        margin: 0 auto;
+        padding: @padding16 / 2;
+        box-sizing: border-box;
+    }
+    .wrap {
+        .v-box();
+        position: relative;
+        background-color: @light-primary-color;
+        border-radius: @br6;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, .05);
+    }
+    .head-bar {
+        padding: 12px 12px 6px @padding16;
+        .h-box();
+    }
+    .head-title {
+        flex: 1;
+        opacity: .5;
+        color: #4f6f7f;
+    }
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        border-radius: @br6;
+        .v-box();
+        .box-center();
+        cursor: move;
+        user-select: none;
+        box-sizing: border-box;
+        border: transparent 1px solid;
+        .definition-chip {
+            background: @primary-color;
+            color: @light-primary-color;
+            border-radius: @br6;
+            user-select: none;
+            .h-box();
+            .box-center();
+            .title {
+                padding: @padding16 / 2 @padding16 @padding16 / 2 0;
+                font-size: 16px;
+            }
+            .santd-icon {
+                margin: @padding16 / 4 @padding16;
+                font-size: 24px;
+            }
+        }
+    }
+    .overlay:hover,
+    .selected .overlay {
+        background: @primary-color-rgba2;
+    }
+
+    .remove-button {
+        position: absolute;
+        top: @padding16;
+        right: @padding16;
+    }
+}
+.customizing {
+    .wrap {
+        border-radius: @br6;
+    }
+    .content {
+        opacity: .15;
+    }
+}

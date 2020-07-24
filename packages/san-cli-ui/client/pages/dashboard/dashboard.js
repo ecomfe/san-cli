@@ -21,7 +21,7 @@ import './dashboard.less';
 
 export default class Dashboard extends Component {
     static template = /* html */`
-        <div class="h1oh dashboard {{editing ? 'custom' : ''}}">
+        <div class="h1oh dashboard {{editing ? 'customizing' : ''}}">
             <c-layout menu="{{$t('menu')}}" 
                 nav="{{['dashboard']}}" 
                 title="{{$t('dashboard.title')}}"
@@ -40,14 +40,16 @@ export default class Dashboard extends Component {
                 </template>
                 <div slot="content" class="h1oh dashboard-content">
                     <div class="widgets">
-                        <template s-for="widget in widgets">
-                            <c-widget
-                                s-if="widget"
-                                widget="{=widget=}"
-                                custom="{=editing=}"
-                                loaded="{=scriptLoaded=}"
-                            />
-                        </template>
+                        <div class="inner">
+                            <template s-for="widget in widgets">
+                                <c-widget
+                                    s-if="widget"
+                                    widget="{=widget=}"
+                                    custom="{=editing=}"
+                                    loaded="{=scriptLoaded=}"
+                                />
+                            </template>
+                        </div>
                     </div>
                     <c-widget-list visible="{=editing=}"/>
                 </div>
