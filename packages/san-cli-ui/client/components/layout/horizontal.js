@@ -11,13 +11,17 @@ import 'santd/es/menu/style';
 import 'santd/es/icon/style';
 import 'santd/es/spin/style';
 import './horizontal.less';
+import logo from '@assets/logo.svg';
 
 export default class ComponentHorLayout extends Component {
     static template = /* html */`
             <s-layout class="h1oh hlayout">
                 <s-header>
                     <div class="header">
-                        <div class="title" on-click="logoClick">{{$t('title')}}</div>
+                        <div class="title" on-click="logoClick">
+                            <img src="{{logo}}" />
+                            {{$t('title')}}
+                        </div>
                         <s-menu theme="light"
                             mode="horizontal"
                             selectedKeys="{{nav}}"
@@ -64,6 +68,7 @@ export default class ComponentHorLayout extends Component {
     };
     initData() {
         return {
+            logo,
             pageLoading: false
         };
     }
