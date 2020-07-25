@@ -5,7 +5,7 @@
 */
 
 import {Component} from 'san';
-import defaultComponents from './component';
+import defaultComponents from './components';
 import createClient from '@lib/apollo-client';
 import mixin from '@lib/san-mixin';
 import localization from '@lib/localization';
