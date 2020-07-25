@@ -3,11 +3,8 @@
  * @author zttonly
  */
 
-import {Component} from 'san';
-import {Button, Icon, Tooltip} from 'santd';
-import 'santd/es/button/style';
-import 'santd/es/icon/style';
-import 'santd/es/tooltip/style';
+// 第一个例子：使用san-component
+import Component from '@lib/san-component';
 
 export default class ProjectList extends Component {
     static template = /* html */`
@@ -50,12 +47,6 @@ export default class ProjectList extends Component {
         return {
             loading: false
         };
-    }
-
-    static components = {
-        's-button': Button,
-        's-icon': Icon,
-        's-tooltip': Tooltip
     }
 
     openInEditor(item, index, e) {

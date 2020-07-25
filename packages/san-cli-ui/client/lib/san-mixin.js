@@ -35,8 +35,10 @@ export default (Component, mixins) => {
                 break;
 
             // 处理组件成员对象
-            case 'filters':
             case 'components':
+                // 忽略：static方法不能被mixin，详见./san-component.js
+                break;
+            case 'filters':
             case 'computed':
             case 'messages':
                 Component.prototype[key] = Object.assign(mixin, original);
