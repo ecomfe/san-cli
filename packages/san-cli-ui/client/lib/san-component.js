@@ -12,7 +12,7 @@ import localization from '@lib/localization';
 // import eventBus from '@lib/event-bus';
 import pluginAction from '@lib/plugin-action';
 
-class SuperComponent extends Component {
+class SubComponent extends Component {
     constructor(options) {
         super(options);
         this.defaultComponents = defaultComponents;
@@ -33,7 +33,7 @@ class SuperComponent extends Component {
 const graphqlEndpoint = APP_GRAPHQL_ENDPOINT || `ws://${location.host}/graphql`;
 
 // 注入全局方法
-mixin(SuperComponent, {
+mixin(SubComponent, {
     // 导入语言包
     $t: localization,
 
@@ -47,4 +47,4 @@ mixin(SuperComponent, {
     $apollo: createClient(graphqlEndpoint),
 });
 
-export default SuperComponent;
+export default SubComponent;
