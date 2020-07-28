@@ -9,7 +9,7 @@ import defaultComponents from './components';
 import createClient from '@lib/apollo-client';
 import mixin from '@lib/san-mixin';
 import localization from '@lib/localization';
-// import eventBus from '@lib/event-bus';
+import events from '@lib/events';
 import pluginAction from '@lib/plugin-action';
 
 class SubComponent extends Component {
@@ -38,7 +38,7 @@ mixin(SubComponent, {
     $t: localization,
 
     // TODO: 这里可以导入事件总线
-    // ...eventBus
+    ...events,
 
     // 导入插件回调方法
     ...pluginAction,
