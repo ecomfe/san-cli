@@ -136,11 +136,12 @@ const writeFile = (config, fileId, data, changedFields, context) => {
     fs.writeFileSync(file.path, rawContent, {encoding: 'utf8'});
 };
 
-function writeData({config, data, changedFields}, context) {
+const writeData = ({config, data, changedFields}, context) => {
     for (const fileId in data) {
         writeFile(config, fileId, data[fileId], changedFields[fileId], context);
     }
-}
+};
+
 const getPromptTabs = async (id, context) => {
     const config = findOne(id, context);
     if (config) {

@@ -24,7 +24,7 @@ export default class ListItemInfo extends Component {
                     on-click="handleLink($event)"
                 >
                     <s-icon type="info-circle"></s-icon>
-                    {{$t('config.list-item-info.more')}}
+                    {{$t('list-item-info.more')}}
                 </a>
             </div>
         </div>

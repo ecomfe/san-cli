@@ -51,7 +51,7 @@ export default class Dashboard extends Component {
                             </template>
                         </div>
                     </div>
-                    <c-widget-list visible="{=editing=}"/>
+                    <c-widget-list visible="{=editing=}" on-close="showCustom"/>
                 </div>
             </c-layout>
             <c-client-addon s-if="isReady" on-scriptloaded="onScriptLoad"/>

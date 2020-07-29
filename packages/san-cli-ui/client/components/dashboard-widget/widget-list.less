@@ -1,0 +1,74 @@
+
+@import '../../assets/vars.less';
+.widget-list {
+    position: relative;
+    z-index: 1;
+    .v-box();
+    box-shadow: 0 0 10px rgba(black, .1);
+    .title-bar {
+        .h-box();
+        .box-center();
+        padding: 6px 6px 6px @padding16;
+        .title {
+            flex: 100% 1 1;
+            width: 0;
+            margin-left: @padding16 / 2;
+        }
+        .icon-button {
+            border: 0;
+        }
+    }
+    .toolbar {
+        margin: @padding16;
+        .search-input {
+            width: 100%;
+        }
+    }
+    .widgets {
+        flex: 1;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    .widget-item {
+        &,
+        .actions,
+        .info {
+            .h-box();
+            .box-center();
+        }
+        &:hover {
+            background-color: @light-primary-color;
+        }
+        .actions {
+            margin-right: @padding16;
+        }
+        .info {
+            flex: 1;
+            overflow: hidden;
+            padding: @padding16;
+        }
+
+        .list-item-info {
+            flex: 1;
+            overflow: hidden;
+            .description {
+                flex: 1;
+            }
+        }
+    }
+}
+.custom-body {
+    padding: 0 24px @padding16;
+    .details {
+        display: flex;
+        margin-bottom: @padding16;
+    }
+    .instances {
+        font-size: 16px;
+    }
+}
+.item-icon {
+    font-size: 32px;
+    margin-right: @padding16;
+    color: @primary-color;
+}

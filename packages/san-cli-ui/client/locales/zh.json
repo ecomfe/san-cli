@@ -218,15 +218,15 @@
                 }
             }
         },
-        "list-item-info": {
-            "more": "更多信息"
-        },
         "actions": {
             "more": "查看更多",
             "cancel": "取消",
             "refresh": "刷新",
             "save": "保存"
         }
+    },
+    "list-item-info": {
+        "more": "更多信息"
     },
     "dashboard": {
         "title": "项目仪表盘",
@@ -240,9 +240,6 @@
                 "save": "保存",
                 "reset-config": "重置配置",
                 "open-details": "显示更多"
-            },
-            "widget-add-pane": {
-                "title": "添加部件"
             },
             "welcome": {
                 "title": "欢迎",
@@ -270,6 +267,88 @@
                     "killed": "成功终止!",
                     "error": "无法终止进程"
                 }
+            },
+            "news": {
+                "title": "新闻",
+                "description": "阅读新闻流",
+                "refresh": "强制刷新",
+                "select-tip": "从左侧选择新闻",
+                "prompts": {
+                    "url": "RSS 源/GitHub 仓库地址"
+                },
+                "errors": {
+                    "fetch": "无法获取新闻流",
+                    "offline": "你已离线",
+                    "empty": "没有新闻"
+                }
+            },
+            "run-task": {
+                "title": "运行任务",
+                "description": "快速运行任务",
+                "prompts": {
+                    "task": "选择一项任务"
+                },
+                "page": "前往“任务”页"
+            },
+            "vulnerability": {
+                "title": "安全隐患检查",
+                "description": "检查项目依赖中已知的安全隐患",
+                "messages": {
+                    "ok": "未发现安全隐患",
+                    "loading": "正在检查项目安全性……",
+                    "attention": "发现 {n} 个安全隐患",
+                    "error": "无法检测漏洞"
+                },
+                "severity": {
+                    "critical": "严重程度危险",
+                    "high": "严重程度高",
+                    "moderate": "严重程度中等",
+                    "low": "严重程度低"
+                },
+                "direct-dep": "直接依赖",
+                "versions": {
+                    "vulnerable": "易受攻击版本",
+                    "patched": "补丁后版本"
+                },
+                "recheck": "再次检查"
+            },
+            "dependency-updates": {
+                "title": "更新依赖",
+                "description": "监控依赖更新",
+                "messages": {
+                    "ok": "所有依赖已是最新",
+                    "loading": "正在检查更新……",
+                    "attention": "有{n}个依赖可更新"
+                },
+                "page": "前往“依赖”页"
+            },
+            "plugin-updates": {
+                "title": "更新插件",
+                "description": "监控插件更新",
+                "messages": {
+                    "ok": "所有插件已是最新",
+                    "loading": "正在检查更新……",
+                    "attention": "有{n}个插件可更新"
+                },
+                "page": "前往“插件”页"
+            },
+            "status-widget": {
+                "last-updated": "更新于",
+                "never": "还未更新",
+                "check": "检查更新",
+                "more": "更多细节"
+            }
+        },
+        "widgetList": {
+            "title": "添加部件",
+            "searchPlaceholder": "输入待搜索部件"
+        },
+        "widgetAddItem": {
+            "add": "添加部件",
+            "details": {
+                "title": "部件详情",
+                "maxInstances": "最大实例数量:",
+                "unlimited": "unlimited"
             }
         }
     }
