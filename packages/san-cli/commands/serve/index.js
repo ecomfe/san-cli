@@ -23,7 +23,6 @@ exports.builder = {
     },
     port: {
         alias: 'p',
-        default: 8888,
         type: 'number',
         describe: 'Port number of the URL'
     },
