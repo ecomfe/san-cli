@@ -39,6 +39,19 @@ describe('option-compileTemplate', () => {
         expect(ctx.code).toEqual([1, 'span', 1, undefined, 3, 'san@3.9.0支持aPack']);
     });
 
+    test('compileTemplate = aPack and Template is empty', () => {
+        const source = '<template></template>';
+        const scope = {
+            query: {
+                compileTemplate: 'aPack'
+            },
+            resourcePath: '/foo.san?lang=html&san=&type=template',
+            resourceQuery: '?lang=html&san=&type=template'
+        };
+        const ctx = webpackContext(scope).runLoader(loader, source);
+        expect(ctx.code).toEqual([]);
+    });
+
     test('compileTemplate = aNode', () => {
         const source = '<template><span>san@3.9.0支持aPack</span></template>';
         const scope = {

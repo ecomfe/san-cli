@@ -85,8 +85,14 @@ module.exports = function (source) {
                         code = aNode;
                         break;
                     case 'aPack':
-                        let aPack = aNodeUtils.pack(aNode.children[0]);
-                        code = aPack;
+                        if (aNode.children.length) {
+                            let aPack = aNodeUtils.pack(aNode.children[0]);
+                            code = aPack;
+                        }
+                        else {
+                            code = [];
+                        }
+
                         break;
                 }
             }
