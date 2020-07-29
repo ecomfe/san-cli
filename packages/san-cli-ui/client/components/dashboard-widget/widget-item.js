@@ -96,14 +96,12 @@ export default class WidgetItem extends Component {
             count: 0
         };
     }
-    attached() {
-        console.log(this.data.get('definition'));
-    }
     add() {
-
+        const id = this.data.get('definition.id');
+        this.dispatch('Widget:add', id);
     }
     remove() {
-        const id = this.data.get('widget.id');
+        const id = this.data.get('definition.id');
         this.dispatch('Widget:remove', id);
     }
     close() {

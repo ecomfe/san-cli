@@ -4,7 +4,6 @@
  */
 
 import {Component} from 'san';
-import WIDGET_DEFINITIONS from '@graphql/widget/widgetDefinitions.gql';
 import {Icon, Button, Input} from 'santd';
 import widgetItem from './widget-item';
 import 'santd/es/icon/style';
@@ -63,8 +62,8 @@ export default class widgetList extends Component {
         },
         filterList() {
             const search = this.data.get('search');
-            const list = this.data.get('list');
-            return search ? list.filter(item => item.name.indexOf(search) > -1) : list;
+            const list = this.data.get('definitions');
+            return search ? list.filter(item => item.title.indexOf(search) > -1) : list;
         }
     };
 
@@ -74,20 +73,10 @@ export default class widgetList extends Component {
             isTransitionend: false,
             actived: false,
             search: '',
-            list: []
+            definitions: []
         };
     }
 
-    attached() {
-        this.init();
-    }
-    async init() {
-        let definitions = await this.$apollo.query({query: WIDGET_DEFINITIONS});
-        if (definitions.data) {
-            console.log(definitions.data.widgetDefinitions);
-            this.data.set('list', definitions.data.widgetDefinitions);
-        }
-    }
     onTransitionstart() {
         this.data.set('isTransitionend', false);
     }

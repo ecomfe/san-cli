@@ -6,7 +6,9 @@
 import {Component} from 'san';
 import WIDGETS from '@graphql/widget/widgets.gql';
 import PLUGINS from '@graphql/plugin/plugins.gql';
+import WIDGET_DEFINITIONS from '@graphql/widget/widgetDefinitions.gql';
 import WIDGET_REMOVE from '@graphql/widget/widgetRemove.gql';
+import WIDGET_ADD from '@graphql/widget/widgetAdd.gql';
 import WIDGET_DEFINITION_FRAGMENT from '@graphql/widget/widgetDefinitionFragment.gql';
 import Layout from '@components/layout';
 import Widget from '@components/dashboard-widget';
@@ -51,7 +53,7 @@ export default class Dashboard extends Component {
                             </template>
                         </div>
                     </div>
-                    <c-widget-list visible="{=editing=}" on-close="showCustom"/>
+                    <c-widget-list visible="{=editing=}" definitions="{=definitions=}" on-close="showCustom"/>
                 </div>
             </c-layout>
             <c-client-addon s-if="isReady" on-scriptloaded="onScriptLoad"/>
@@ -87,30 +89,58 @@ export default class Dashboard extends Component {
                     this.init();
                 }
             });
+        },
+        async ['Widget:add'](arg) {
+            const id = arg.value;
+            await this.$apollo.mutate({
+                mutation: WIDGET_ADD,
+                variables: {
+                    input: {
+                        definitionId: id
+                    }
+                },
+                update: (store, {data: {widgetAdd}}) => {
+                    let {widgets} = store.readQuery({query: WIDGETS});
+                    widgets = [...widgets, widgetAdd];
+                    store.writeQuery({query: WIDGETS, data: {widgets}});
+                    store.writeFragment({
+                        fragment: WIDGET_DEFINITION_FRAGMENT,
+                        id: widgetAdd.definition.id,
+                        data: widgetAdd.definition
+                    });
+                    this.init();
+                }
+            });
         }
     };
     initData() {
         return {
             editing: false,
             widgets: [],
+            definitions: [],
             pageLoading: false,
             isReady: false,
             scriptLoaded: false
         };
     }
-
-    attached() {
-        this.init();
-    }
-    async init() {
+    async created() {
         this.data.set('pageLoading', true);
         // init plugin todo: plugin初始化依赖集中到一处
         await this.$apollo.query({query: PLUGINS});
         this.data.set('isReady', true);
+    }
+    attached() {
+        this.init();
+    }
+    async init() {
         let widgets = await this.$apollo.query({query: WIDGETS});
         if (widgets.data) {
             this.data.set('pageLoading', false);
             this.data.set('widgets', widgets.data.widgets);
+        }
+        let definitions = await this.$apollo.query({query: WIDGET_DEFINITIONS});
+        if (definitions.data) {
+            this.data.set('definitions', definitions.data.widgetDefinitions);
         }
     }
     onScriptLoad() {

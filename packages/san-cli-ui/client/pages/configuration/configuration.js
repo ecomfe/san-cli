@@ -94,17 +94,18 @@ export default class Configuration extends Component {
                 : configurations;
         }
     };
-
-    attached() {
-        this.init();
-    }
-    async init() {
+    async created() {
         this.data.set('pageLoading', true);
         // init plugin
         let plugins = await this.$apollo.query({query: PLUGINS});
         if (plugins.data) {
             this.data.set('plugins', plugins.data.plugins);
         }
+    }
+    attached() {
+        this.init();
+    }
+    async init() {
         // init config
         let configurations = await this.$apollo.query({query: CONFIGURATIONS});
         if (configurations.data) {
