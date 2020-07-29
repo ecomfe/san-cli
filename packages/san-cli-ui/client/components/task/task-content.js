@@ -9,7 +9,8 @@ import {
 import {
     Button,
     Tooltip,
-    Icon
+    Icon,
+    Tabs
 } from 'santd';
 import {
     Terminal
@@ -21,7 +22,7 @@ import 'xterm/css/xterm.css';
 import 'santd/es/tooltip/style';
 import 'santd/es/input/style';
 import 'santd/es/button/style';
-import 'santd/es/spin/style';
+import 'santd/es/tabs/style';
 import TASK from '@graphql/task/task.gql';
 import TASK_RUN from '@graphql/task/taskRun.gql';
 import TASK_STOP from '@graphql/task/taskStop.gql';
@@ -29,6 +30,7 @@ import TASK_CHANGED from '@graphql/task/taskChanged.gql';
 import TASK_LOG_ADDED from '@graphql/task/taskLogAdded.gql';
 import TASK_LOGS from '@graphql/task/taskLogs.gql';
 import './task-content.less';
+import TaskDashboard from './task-dashboard-temp';
 
 /**
  * 组件props
@@ -36,48 +38,15 @@ import './task-content.less';
  * @param {Object} taskInfo 当前的任务信息
  */
 export default class TaskContent extends Component {
-    static template = /* html */ `
-        <div class="task-content">
-            <div class="task-head">
-                <span class="task-name"><s-icon type="file-text" />{{taskInfo.name}}</span>
-                <span class="task-command">{{taskInfo.command}}</span>
-            </div>
-
-            <div class="task-config">
-                <s-button type="primary" 
-                    icon="{{isRunning ? 'stop' : 'caret-right'}}" 
-                    loading="{{taskPending}}"
-                    on-click="execute">{{isRunning ? $t('task.stop') : $t('task.run')}}</s-button>
-                <s-button type="default" icon="setting">{{$t('task.setting')}}</s-button>
-            </div>
-
-            <div class="task-output-opt">
-                <div class="task-output-head">
-                    <span class="task-output-head-output">
-                        <s-icon type="code" />{{$t('task.output')}}
-                    </span>
-
-                    <s-tooltip title="{{$t('task.bottom')}}">
-                        <s-icon type="enter" class="task-xterm-btn" on-click="scrollToBottom" />
-                    </s-tooltip>
-
-                    <s-tooltip title="{{$t('task.copy')}}">
-                        <s-icon type="copy" class="task-xterm-btn" on-click="copyContent" />
-                    </s-tooltip>
-
-                    <s-tooltip title="{{$t('task.clear')}}">
-                        <s-icon type="delete" class="task-xterm-btn" on-click="clear" />
-                    </s-tooltip>
-                </div>
-            </div>
-            <div class="task-output-content"></div>
-        </div>
-    `;
+    static template = require('./task-content.html');
 
     static components = {
         's-icon': Icon,
         's-button': Button,
-        's-tooltip': Tooltip
+        's-tooltip': Tooltip,
+        's-tabs': Tabs,
+        's-tabpane': Tabs.TabPane,
+        'c-task-dashboard': TaskDashboard
     };
 
     initData() {

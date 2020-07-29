@@ -1,0 +1,33 @@
+<div class="task-dashboard">
+    <s-row class="row" gutter="16">
+        <s-col span="16">
+            <s-card bordered="{{false}}" class="card">
+                <c-build-status></c-build-status>
+            </s-card>
+        </s-col>
+        <s-col span="8">
+            <s-card bordered="{{false}}" class="card">
+                <c-build-progress></c-build-progress>
+            </s-card>
+        </s-col>
+    </s-row>
+    <s-row class="row">
+        <s-col span="24">
+            <s-card bordered="{{false}}" class="card" title="速度统计">
+                <c-speed-stats></c-speed-stats>
+            </s-card>
+        </s-col>
+    </s-row>
+    <s-row class="row" gutter="16">
+        <s-col span="16">
+            <s-card bordered="{{false}}" class="card" title="资源">
+                <c-asset-list></c-asset-list>
+            </s-card>
+        </s-col>
+        <s-col span="8">
+            <s-card bordered="{{false}}" class="card" title="依赖项">
+                <c-module-list></c-module-list>
+            </s-card>
+        </s-col>
+    </s-row>
+</div>

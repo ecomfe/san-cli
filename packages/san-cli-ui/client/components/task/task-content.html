@@ -1,0 +1,48 @@
+<div class="task-content">
+    <div class="task-head">
+        <span class="task-name"><s-icon type="file-text" />{{taskInfo.name}}</span>
+        <span class="task-command">{{taskInfo.command}}</span>
+    </div>
+
+    <div class="task-config">
+        <s-button type="primary" 
+            icon="{{isRunning ? 'stop' : 'caret-right'}}" 
+            loading="{{taskPending}}"
+            on-click="execute">{{isRunning ? $t('task.stop') : $t('task.run')}}</s-button>
+        <s-button type="default" icon="setting">{{$t('task.setting')}}</s-button>
+    </div>
+
+    <s-tabs defaultActiveKey="1">
+        <s-tabpane key="1">
+            <template slot="tab">
+                <s-icon type="code" />输出
+            </template>
+            <div class="task-output-opt">
+                <div class="task-output-head">
+                    <span class="task-output-head-output">
+                        <s-icon type="code" />{{$t('task.output')}}
+                    </span>
+        
+                    <s-tooltip title="{{$t('task.bottom')}}">
+                        <s-icon type="enter" class="task-xterm-btn" on-click="scrollToBottom" />
+                    </s-tooltip>
+        
+                    <s-tooltip title="{{$t('task.copy')}}">
+                        <s-icon type="copy" class="task-xterm-btn" on-click="copyContent" />
+                    </s-tooltip>
+        
+                    <s-tooltip title="{{$t('task.clear')}}">
+                        <s-icon type="delete" class="task-xterm-btn" on-click="clear" />
+                    </s-tooltip>
+                </div>
+            </div>
+            <div class="task-output-content"></div>
+        </s-tabpane>
+        <s-tabpane key="2">
+            <template slot="tab">
+                <s-icon type="dashboard" />仪表盘
+            </template>
+            <c-task-dashboard></c-task-dashboard>
+        </s-tabpane>
+    </s-tabs>
+</div>
