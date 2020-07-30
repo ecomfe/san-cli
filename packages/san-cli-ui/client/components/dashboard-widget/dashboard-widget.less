@@ -19,10 +19,20 @@
         background-color: @light-primary-color;
         border-radius: @br6;
         box-shadow: 0 4px 15px rgba(0, 0, 0, .05);
+        .content {
+            overflow: hidden;
+        }
     }
     .head-bar {
         padding: 12px 12px 6px @padding16;
         .h-box();
+        .icon-button {
+            width: 24px;
+            height: 24px;
+            padding: 0 !important;
+            margin-right: @padding16 / 4;
+            background-color: @light-primary-color;
+        }
     }
     .head-title {
         flex: 1;
@@ -75,7 +85,8 @@
     .wrap {
         border-radius: @br6;
     }
-    .content {
+    .content,
+    .head-bar {
         opacity: .15;
     }
 }

@@ -25,37 +25,37 @@ export default class DashboardWidget extends Component {
                         <div class="head-title">{{customTitle || $t(widget.definition.title)}}</div>
 
                         <!-- Custom actions -->
-                        <template s-if="widget.configured" s-for="action in headerActions">
-                            <s-button
+                        <template s-if="widget.configured && headerActions.length > 0" s-for="action in headerActions">
+                           <s-button
                                 s-if="!action.hidden"
-                                icon="{{action.icon}}"
-                                disabled="{{action.disabled}}"
-                                type="primary"
-                                on-click="action.onCalled"
+                                icon="{=action.icon=}"
+                                disabled="{=action.disabled=}"
+                                class="icon-button"
+                                on-click="onCustomAction(action)"
                             ></s-button>
                         </template>
 
                         <!-- Settings button -->
                         <s-button
                                 s-if="widget.definition.hasConfigPrompts"
-                                icon="settings"
-                                class="icon-button flat primary"
+                                icon="setting"
+                                class="icon-button"
                                 on-click="openConfig"
                             ></s-button>
 
-                        <!-- Close button -->
+                        <!-- Exit button -->
                         <s-button
                             s-if="details"
-                            icon="close"
-                            class="icon-button flat primary"
-                            on-click="handleClose"
+                            icon="fullscreen-exit"
+                            class="icon-button"
+                            on-click="exitDetails"
                         ></s-button>
 
                         <!-- Open details button -->
                         <s-button
                             s-elif="widget.definition.openDetailsButton"
-                            icon="zoom_out_map"
-                            class="icon-button flat primary"
+                            icon="fullscreen"
+                            class="icon-button"
                             on-click="openDetails"
                         ></s-button>
                     </div>
@@ -134,6 +134,15 @@ export default class DashboardWidget extends Component {
         's-icon': Icon,
         's-button': Button
     };
+    static messages = {
+        async ['Widget:title'](arg) {
+            const title = arg.value;
+            this.data.set('customTitle', title);
+        },
+        async ['Widget:addHeaderAction'](arg) {
+            this.addHeaderAction(arg.value);
+        }
+    }
     initData() {
         return {
             moveState: null,
@@ -143,7 +152,8 @@ export default class DashboardWidget extends Component {
             custom: false,
             loaded: false,
             text: this.$t('dashboard.widgets'),
-            customTitle: null
+            customTitle: null,
+            details: false
         };
     }
     attached() {
@@ -246,9 +256,7 @@ export default class DashboardWidget extends Component {
         if (!action.hidden) {
             action.hidden = false;
         }
-        let headerActions = this.data.get('headerActions');
-        headerActions.push(action);
-        this.data.set('headerActions', headerActions);
+        this.data.push('headerActions', action);
     }
 
     removeHeaderAction(id) {
@@ -261,5 +269,14 @@ export default class DashboardWidget extends Component {
     }
     openConfig() {
         console.log('openconfig');
+    }
+    openDetails() {
+        this.data.set('details', true);
+    }
+    exitDetails() {
+        this.data.set('details', true);
+    }
+    onCustomAction(action) {
+        return action.onCalled();
     }
 }

@@ -146,34 +146,60 @@ module.exports = api => {
 
     // News
 
-    // registerWidget({
-    //     id: 'news',
-    //     title: 'dashboard.widgets.news.title',
-    //     description: 'dashboard.widgets.news.description',
-    //     icon: 'info-circle',
-    //     component: 'san.widgets.components.news',
-    //     detailsComponent: 'san.widgets.components.news',
-    //     minWidth: 2,
-    //     minHeight: 1,
-    //     maxWidth: 6,
-    //     maxHeight: 6,
-    //     defaultWidth: 2,
-    //     defaultHeight: 3,
-    //     openDetailsButton: true,
-    //     defaultConfig: () => ({
-    //         url: 'https://vuenews.fireside.fm/rss'
-    //     }),
-    //     async onConfigOpen() {
-    //         return {
-    //             prompts: [
-    //                 {
-    //                     name: 'url',
-    //                     type: 'input',
-    //                     message: 'org.vue.widgets.news.prompts.url',
-    //                     validate: input => !!input
-    //                 }
-    //             ]
-    //         };
-    //     }
-    // });
+    registerWidget({
+        id: 'news',
+        title: 'dashboard.widgets.news.title',
+        description: 'dashboard.widgets.news.description',
+        icon: 'info-circle',
+        component: 'san.widgets.components.news',
+        minWidth: 2,
+        minHeight: 1,
+        maxWidth: 6,
+        maxHeight: 6,
+        defaultWidth: 2,
+        defaultHeight: 3,
+        openDetailsButton: false,
+        defaultConfig: () => ({
+            url: 'https://vuenews.fireside.fm/rss'
+        }),
+        async onConfigOpen() {
+            return {
+                prompts: [
+                    {
+                        name: 'url',
+                        type: 'input',
+                        message: 'san.widgets.news.prompts.url',
+                        validate: input => !!input
+                    }
+                ]
+            };
+        }
+    });
+
+    const newsCache = global['san.newsCache'] = global['san.newsCache'] || {};
+    let parser;
+
+    onAction('actions.fetch-news', async params => {
+        if (!parser) {
+            const Parser = require('rss-parser');
+            parser = new Parser();
+        }
+
+        if (!params.force) {
+            const cached = newsCache[params.url];
+            if (cached) {
+                return cached;
+            }
+        }
+
+        let url = params.url;
+        // GitHub repo
+        if (url.match(/^[\w_.-]+\/[\w_.-]+$/)) {
+            url = `https://github.com/${url}/releases.atom`;
+        }
+
+        const result = await parser.parseURL(url);
+        newsCache[params.url] = result;
+        return result;
+    });
 };

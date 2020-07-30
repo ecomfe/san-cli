@@ -351,5 +351,8 @@
                 "unlimited": "unlimited"
             }
         }
+    },
+    "common": {
+        "back": "返回"
     }
 }
