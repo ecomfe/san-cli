@@ -27,7 +27,7 @@ export default class ConfigContent extends Component {
                 <c-prompts s-ref="configForm"
                     form-item-layout="{{formItemLayout}}"
                     hide-submit-btn="{{true}}"
-                    prompts="{=prompts=}"
+                    prompts="{=visiblePrompts=}"
                     on-submit="save"
                     on-valuechanged="onConfigChange"
                 />
@@ -53,7 +53,7 @@ export default class ConfigContent extends Component {
     `;
 
     static computed = {
-        prompts() {
+        visiblePrompts() {
             let currentTab = this.data.get('currentTab');
             let tabs = this.data.get('config.tabs');
             return tabs ? tabs[currentTab].prompts.filter(p => {
