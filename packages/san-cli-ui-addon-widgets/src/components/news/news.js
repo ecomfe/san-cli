@@ -157,16 +157,16 @@ export default {
         });
     },
     async fetchFeed(force = false) {
-        this.data.get('selectedItem', null);
+        this.data.set('selectedItem', null);
 
         if (!navigator.onLine) {
-            this.data.get('loading', false);
-            this.data.get('error', 'offline');
+            this.data.set('loading', false);
+            this.data.set('error', 'offline');
             return;
         }
 
-        this.data.get('loading', true);
-        this.data.get('error', false);
+        this.data.set('loading', true);
+        this.data.set('error', false);
         this.dispatch('Widget:title', null);
         try {
             const {results, errors} = await this.$callPluginAction('san.widgets.actions.fetch-news', {
@@ -177,12 +177,13 @@ export default {
                 throw new Error(errors[0]);
             }
             let feed = results[0];
-            this.data.set('feed', feed);
-            if (!feed.items.length) {
+            if (feed && feed.items && feed.items.length) {
+                this.data.set('feed', feed);
+                this.dispatch('Widget:title', feed.title);
+            }
+            else {
                 this.data.set('error', 'empty');
             }
-
-            this.dispatch('Widget:title', feed.title);
         }
         catch (e) {
             this.data.set('error', 'fetch');
