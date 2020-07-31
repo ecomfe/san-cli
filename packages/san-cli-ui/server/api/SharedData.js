@@ -3,8 +3,10 @@
  * @author jinzhan
  */
 
+const sharedData = require('../connectors/sharedData');
+
 class SharedData {
-    constructor(sharedData, {project, context}) {
+    constructor({project, context}) {
         this.sharedData = sharedData;
         this.project = project;
         this.context = context;

@@ -1,3 +1,8 @@
+/**
+ * @file 配置类的插件
+ * @author jinzhan
+ */
+
 class ConfigPlugin {
     constructor() {
         this.hooks = {
@@ -9,7 +14,7 @@ class ConfigPlugin {
 
     registerConfig(options) {
         try {
-            // validateConfiguration(options);
+            // TODO: validate Configuration
             this.configurations.push({
                 ...options,
                 pluginId: this.pluginId

@@ -7,7 +7,6 @@ const path = require('path');
 const {matchesPluginId} = require('san-cli-utils/plugin');
 const {log, error} = require('san-cli-utils/ttyLogger');
 const ipc = require('../utils/ipc');
-const sharedData = require('../connectors/sharedData');
 const notify = require('../utils/notify');
 const DB = require('./DB');
 const SharedData = require('./SharedData');
@@ -258,7 +257,7 @@ class PluginManager {
      * @param {string} id sharedData的id
      */
     getSharedData() {
-        return new SharedData(sharedData, {
+        return new SharedData({
             project: this.project,
             context: this.context
         });

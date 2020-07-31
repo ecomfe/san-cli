@@ -4,9 +4,10 @@
  */
 const path = require('path');
 const fs = require('fs-extra');
-const os = require('os');
-const channels = require('../utils/channels');
 const {log} = require('san-cli-utils/ttyLogger');
+const rcPath = require('../utils/rcPath');
+const channels = require('../utils/channels');
+
 
 class SharedData {
     constructor() {
@@ -17,9 +18,8 @@ class SharedData {
          * @prop {Date} updated
          * @prop {boolean} disk
         */
-        const rcFolder = path.join(os.homedir(), '.san-cli-ui');
-        fs.ensureDirSync(path.resolve(rcFolder));
-        this.rootFolder = path.resolve(rcFolder, 'shared-data');
+        fs.ensureDirSync(path.resolve(rcPath));
+        this.rootFolder = path.resolve(rcPath, 'shared-data');
         fs.ensureDirSync(this.rootFolder);
 
         /**
