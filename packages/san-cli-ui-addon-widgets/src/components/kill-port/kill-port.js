@@ -13,7 +13,9 @@ export default {
         <div class="kill-port">
             <div class="status status-{{status}}">
                 <s-icon type="{{icons[status]}}"/>
-                <div class="info">{{state.status}}</div>
+                <div class="info">
+                    {{$t('dashboard.widgets.kill-port.status.' + status)}}
+                </div>
             </div>
             <div class="actions">
                 <s-input-number
@@ -24,7 +26,8 @@ export default {
                     on-change="onchange"
                 ></s-input-number>
                 <s-button class="huge" type="primary" value="large" on-click="kill">
-                    <s-icon type="thunderbolt" theme="filled"/>{{state.kill}}
+                    <s-icon type="thunderbolt" theme="filled"/>
+                    {{$t('dashboard.widgets.kill-port.kill')}}
                 </s-button>
             </div>
         </div>
@@ -33,21 +36,6 @@ export default {
         's-icon': Icon,
         's-button': Button,
         's-input-number': InputNumber
-    },
-    computed: {
-        state() {
-            const text = this.data.get('text');
-            if (!text) {
-                return;
-            }
-            const v = text['kill-port'];
-            const status = this.data.get('status');
-            return {
-                status: v.status[status],
-                placeholder: v.input.placeholder,
-                kill: v.kill
-            };
-        }
     },
     initData() {
         return {
@@ -66,29 +54,39 @@ export default {
             this.statusReset();
         }
         else {
-            this.watch('status', function (value) {
-                if (this.data.get('status') !== 'idle') {
+            this.watch('status', s => {
+                if (s === 'killed') {
+                    this.data.set('port', '');
+                }
+                if (s !== 'idle') {
                     this.statusReset();
                 }
             });
         }
-        this.$onPluginActionResolved(({results}) => {
-            results[0] && this.data.set('status', results[0].status);
-        });
     },
     statusReset() {
         this.statusTimer = setTimeout(() => {
             this.data.set('status', 'idle');
-            this.data.set('port', '');
         }, 3000);
     },
     onchange(p) {
         this.data.set('port', p);
     },
-    kill() {
+    async kill() {
         this.statusTimer && clearTimeout(this.statusTimer);
-        this.$callPluginAction('san.widgets.actions.kill-port', {
-            port: this.data.get('port')
-        });
+        try {
+            const {results, errors} = await this.$callPluginAction('san.widgets.actions.kill-port', {
+                port: this.data.get('port')
+            });
+            if (errors.length && errors[0]) {
+                throw new Error(errors[0]);
+            }
+            results[0] && results[0].status && this.data.set('status', results[0].status);
+        }
+        catch (e) {
+            this.data.set('status', 'error');
+            // eslint-disable-next-line no-console
+            console.error(e);
+        }
     }
 };

@@ -14,13 +14,13 @@ export default {
                 <img src="https://baidu.github.io/san/img/logo-colorful.svg" class="logo"/>
             </div>
             <div class="title">
-                {{text.welcome.content.title}}
+                {{$t('dashboard.widgets.welcome.content.title')}}
             </div>
             <div class="tips">
                 <div s-for="n in num" class="tip">
                     <s-icon type="{{tipIcons[n - 1]}}" style="font-size: 26px; color: #1890ff"/>
                     <div class="message">
-                        {{text.welcome.content.tips[n - 1]}}
+                        {{$t('dashboard.widgets.welcome.content.tips' + n)}}
                     </div>
                 </div>
             </div>
@@ -30,7 +30,9 @@ export default {
                     type="primary"
                     size="large"
                     on-click="remove"
-                >{{text.welcome.content.ok}}</s-button>
+                >
+                    {{$t('dashboard.widgets.welcome.content.ok')}}
+                </s-button>
             </div>
         </div>
     `,
@@ -46,8 +48,7 @@ export default {
                 'arrow-left',
                 'home'
             ],
-            widget: {},
-            text: {}
+            widget: {}
         };
     },
     remove() {

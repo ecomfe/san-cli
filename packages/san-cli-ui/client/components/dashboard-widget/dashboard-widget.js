@@ -199,7 +199,6 @@ export default class DashboardWidget extends Component {
             widget: null,
             custom: false,
             loaded: false,
-            text: this.$t('dashboard.widgets'),
             customTitle: null,
             details: false,
             loadingConfig: false,
@@ -236,7 +235,7 @@ export default class DashboardWidget extends Component {
         }
         let node = new Child({
             owner: this,
-            source: '<x-child widget="{=widget=}" text="{=text=}"/>'
+            source: '<x-child widget="{=widget=}" />'
         });
 
         node.attach(parentEl);
