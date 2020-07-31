@@ -49,6 +49,7 @@ export default class Dashboard extends Component {
                                     widget="{=widget=}"
                                     custom="{=editing=}"
                                     loaded="{=scriptLoaded=}"
+                                    on-refetch="refetch"
                                 />
                             </template>
                         </div>
@@ -130,7 +131,7 @@ export default class Dashboard extends Component {
         this.data.set('isReady', true);
     }
     attached() {
-        this.init();
+        this.refetch();
     }
     async init() {
         let widgets = await this.$apollo.query({query: WIDGETS});
@@ -149,5 +150,9 @@ export default class Dashboard extends Component {
     showCustom() {
         let editing = this.data.get('editing');
         this.data.set('editing', !editing);
+    }
+    refetch() {
+        this.data.set('widgets', []);
+        this.init();
     }
 }

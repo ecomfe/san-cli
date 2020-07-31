@@ -233,6 +233,13 @@
         "tools": "安装devtools",
         "operationOff": "自定义",
         "operationOn": "完成",
+        "widget": {
+            "remove": "移除部件",
+            "configure": "配置部件",
+            "save": "保存",
+            "reset-config": "重置设定",
+            "open-details": "显示更多"
+        },
         "widgets": {
             "widget": {
                 "configure": "配置部件",

@@ -168,7 +168,7 @@ module.exports = api => {
                     {
                         name: 'url',
                         type: 'input',
-                        message: 'san.widgets.news.prompts.url',
+                        message: 'dashboard.widgets.news.prompts.url',
                         validate: input => !!input
                     }
                 ]
