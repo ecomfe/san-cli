@@ -42,7 +42,7 @@ export default class DashboardWidget extends Component {
                             ></s-button>
                         </template>
 
-                        <!-- Settings button -->
+                        <!-- Setting button -->
                         <s-button
                                 s-if="widget.definition.hasConfigPrompts"
                                 icon="setting"
@@ -73,10 +73,13 @@ export default class DashboardWidget extends Component {
                     </div>
                     <div s-else class="flex-all content not-configured">
                         <s-icon
-                            type="settings"
+                            type="setting"
                             class="icon huge"
                         />
-                        <s-button on-click="openConfig">{{$t('dashboard.widgets.widget.configure')}}</s-button>
+                        <s-button type="primary"
+                            ghost="{{true}}"
+                            on-click="openConfig"
+                        >{{$t('dashboard.widgets.widget.configure')}}</s-button>
                     </div>
                     <div
                         s-if="moveState"
@@ -326,6 +329,7 @@ export default class DashboardWidget extends Component {
                 id: this.data.get('widget.id')
             }
         });
+        // console.log(widgetConfig);
         if (widgetConfig.data) {
             this.data.set('showConfig', true);
             this.data.set('widget', widgetConfig.data.widgetConfigOpen);

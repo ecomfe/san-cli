@@ -117,32 +117,32 @@ module.exports = api => {
 
     // Run task
 
-    // registerWidget({
-    //     id: 'run-task',
-    //     title: 'dashboard.widgets.run-task.title',
-    //     description: 'dashboard.widgets.run-task.description',
-    //     icon: 'schedule',
-    //     component: 'widgets.components.run-task',
-    //     minWidth: 2,
-    //     minHeight: 1,
-    //     maxWidth: 2,
-    //     maxHeight: 1,
-    //     needsUserConfig: true,
-    //     async onConfigOpen({context}) {
-    //         const tasks = require('san-cli-ui/server/connectors/tasks');
-    //         return {
-    //             prompts: [{
-    //                 name: 'task',
-    //                 type: 'list',
-    //                 message: 'widgets.run-task.prompts.task',
-    //                 choices: (await tasks.list(undefined, context)).map(task => ({
-    //                     name: task.name,
-    //                     value: task.id
-    //                 }))
-    //             }]
-    //         };
-    //     }
-    // });
+    registerWidget({
+        id: 'run-task',
+        title: 'dashboard.widgets.run-task.title',
+        description: 'dashboard.widgets.run-task.description',
+        icon: 'schedule',
+        component: 'san.widgets.components.run-task',
+        minWidth: 2,
+        minHeight: 1,
+        maxWidth: 2,
+        maxHeight: 1,
+        needsUserConfig: true,
+        async onConfigOpen({context}) {
+            const tasks = require('san-cli-ui/server/connectors/tasks');
+            return {
+                prompts: [{
+                    name: 'task',
+                    type: 'list',
+                    message: 'dashboard.widgets.run-task.prompts.task',
+                    choices: (await tasks.getTasks(undefined, context)).map(task => ({
+                        name: task.name,
+                        value: task.id
+                    }))
+                }]
+            };
+        }
+    });
 
     // News
 
