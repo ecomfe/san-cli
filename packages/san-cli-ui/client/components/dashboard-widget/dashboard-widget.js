@@ -223,7 +223,7 @@ export default class DashboardWidget extends Component {
     //     this.removeMoveListeners();
     // }
     addChild() {
-        const {widget, text} = this.data.get();
+        const widget = this.data.get('widget');
         const addonApi = window.ClientAddonApi;
         const parentEl = this.ref('clientAddons' + widget.definition.component);
         if (!widget || !addonApi) {
@@ -235,12 +235,11 @@ export default class DashboardWidget extends Component {
             return;
         }
         let node = new Child({
-            parent: this,
-            data: {widget, text}
+            owner: this,
+            source: '<x-child widget="{=widget=}" text="{=text=}"/>'
         });
 
         node.attach(parentEl);
-        this.children.push(node);
     }
     remove() {
         const id = this.data.get('widget.id');
@@ -358,15 +357,15 @@ export default class DashboardWidget extends Component {
     async saveConfig() {
         this.data.set('loadingConfig', true);
         this.data.set('showConfig', true);
-        await this.$apollo.mutate({
+        let widgetConfig = await this.$apollo.mutate({
             mutation: WIDGET_CONFIG_SAVE,
             variables: {
                 id: this.data.get('widget.id')
             }
         });
+        this.data.set('widget', widgetConfig.data.widgetConfigSave);
         this.data.set('loadingConfig', false);
         this.closeConfig();
-        this.fire('refetch');
     }
     closeConfig() {
         this.data.set('showConfig', false);
