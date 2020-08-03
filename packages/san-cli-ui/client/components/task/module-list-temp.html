@@ -1,4 +1,5 @@
 <div class="module-list">
-    <span class="name">vue</span><span class="size">222.0kB</span>
-    <span class="name">sockjs-client</span><span class="size">180.6kB</span>
+    <fragment s-for="item in moduletList">
+        <span class="name">{{item.name}}</span><span class="size">{{item.size}}</span>
+    </fragment>
 </div>

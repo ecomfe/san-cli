@@ -1,46 +1,7 @@
 <div class="speed-stats">
     <s-row gutter="80">
-        <s-col span="8" class="item">
-            <span class="label">Global Average</span><span>2.23s</span>
-        </s-col>
-        <s-col span="8" class="item">
-            <span class="label">Mobile Edge</span><span>65.08s</span>
-        </s-col>
-        <s-col span="8" class="item">
-            <span class="label">2G</span><span>55.86s</span>
-        </s-col>
-    </s-row>
-    <s-row gutter="80">
-        <s-col span="8" class="item">
-            <span class="label">3G Slow</span><span>38.94s</span>
-        </s-col>
-        <s-col span="8" class="item">
-            <span class="label">3G Basic</span><span>9.94s</span>
-        </s-col>
-        <s-col span="8" class="item">
-            <span class="label">3G Fast</span><span>9.79s</span>
-        </s-col>
-    </s-row>
-    <s-row gutter="80">
-        <s-col span="8" class="item">
-            <span class="label">4G</span><span>1.88s</span>
-        </s-col>
-        <s-col span="8" class="item">
-            <span class="label">LTE</span><span>1.35s</span>
-        </s-col>
-        <s-col span="8" class="item">
-            <span class="label">Dial Up</span><span>308.46s</span>
-        </s-col>
-    </s-row>
-    <s-row gutter="80">
-        <s-col span="8" class="item">
-            <span class="label">DSL</span><span>10.33s</span>
-        </s-col>
-        <s-col span="8" class="item">
-            <span class="label">Cable</span><span>3.11s</span>
-        </s-col>
-        <s-col span="8" class="item">
-            <span class="label">FIOS</span><span>0.77s</span>
+        <s-col span="8" class="item" s-for="item in speedStats">
+            <span class="label">{{item.title}}</span><span>{{item.totalDownloadTime}}</span>
         </s-col>
     </s-row>
 </div>
