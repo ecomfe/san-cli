@@ -4,18 +4,15 @@
  */
 
 const path = require('path');
-const os = require('os');
 const fs = require('fs-extra');
 const Lowdb = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
-
-const LOCAL_DATA_FOLDER = '.san-cli-ui';
+const rcPath = require('../utils/rcPath');
 const DB_NAME = 'db.json';
 
-const dbDir = path.join(os.homedir(), LOCAL_DATA_FOLDER);
-fs.ensureDirSync(path.resolve(dbDir));
+fs.ensureDirSync(path.resolve(rcPath));
 
-const dbPath = path.join(dbDir, DB_NAME);
+const dbPath = path.join(rcPath, DB_NAME);
 const adapter = new FileSync(dbPath);
 const db = new Lowdb(adapter);
 

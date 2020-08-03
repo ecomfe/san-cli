@@ -13,6 +13,7 @@ import BuildProgress from './build-progress-temp';
 import SpeedStats from './speed-stats-temp';
 import AssetList from './asset-list-temp';
 import ModuletList from './module-list-temp';
+import taskDashboardData from './task-dashboard-data.json';
 
 export default class TaskDashboard extends Component {
     static template = require('./task-dashboard-temp.html');
@@ -27,4 +28,15 @@ export default class TaskDashboard extends Component {
         'c-asset-list': AssetList,
         'c-module-list': ModuletList
     };
+
+    initData() {
+        const {buildStatus, buildProgress, speedStats, assetList, moduletList} = taskDashboardData;
+        return {
+            buildStatus,
+            buildProgress,
+            speedStats,
+            assetList,
+            moduletList
+        };
+    }
 };

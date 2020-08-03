@@ -8,16 +8,12 @@ const {
     isOfficialPlugin,
     getPluginLink
 } = require('san-cli-utils/plugin');
-const {
-    PLUGIN_ACTION_CALLED,
-    PLUGIN_ACTION_RESOLVED
-} = require('../utils/channels');
 const {log, getDebugLogger} = require('san-cli-utils/ttyLogger');
 const ipc = require('../utils/ipc');
-const PluginApi = require('../api/PluginApi');
+const PluginManager = require('../api/PluginManager');
 const cwd = require('./cwd');
 const widgets = require('./widgets');
-const dependencies = require('./dependency');
+const dependencies = require('./dependencies');
 const clientAddons = require('./clientAddons');
 const {readPackage} = require('../utils/fileHelper');
 const getContext = require('../utils/context');
@@ -31,6 +27,7 @@ class Plugins {
         this.pkgStore = new Map();
         this.pluginsStore = new Map();
     }
+
     getApi(folder) {
         return this.pluginApiInstances.get(folder);
     }
@@ -102,7 +99,6 @@ class Plugins {
             let pluginApi = this.pluginApiInstances.get(file);
             let projectId;
 
-            // Clean up
             if (pluginApi) {
                 projectId = pluginApi.project.id;
                 pluginApi.ipcHandlers.forEach(fn => ipc.off(fn));
@@ -116,28 +112,33 @@ class Plugins {
                     resolve(false);
                     return;
                 }
+
                 if (project && projects.getType(project, context) !== 'san') {
                     resolve(false);
                     return;
                 }
+
                 const plugins = this.getPlugins(file);
 
-                pluginApi = new PluginApi({
+                pluginApi = new PluginManager({
                     plugins,
-                    file,
+                    cwd: file,
                     project
                 }, context);
 
                 this.pluginApiInstances.set(file, pluginApi);
 
-                // Run Plugin API
-                this.runPluginApi(path.resolve(__dirname, '../../'), pluginApi, context, 'defaults');
+                // 运行默认插件的API
+                this.runPluginApi(path.resolve(__dirname, '../../'), pluginApi, context, 'plugins');
+
+                // 运行第三方插件的API
                 plugins.forEach(plugin => this.runPluginApi(plugin.id, pluginApi, context));
 
                 // Add client addons
                 pluginApi.clientAddons && pluginApi.clientAddons.forEach(options => {
                     clientAddons.add(options, context);
                 });
+
                 // Register widgets
                 if (pluginApi.widgetDefs) {
                     for (const definition of pluginApi.widgetDefs) {
@@ -162,6 +163,7 @@ class Plugins {
                 }
 
                 widgets.load(context);
+
                 resolve(true);
             });
         });
@@ -198,10 +200,12 @@ class Plugins {
         }
         return plugin;
     }
+
     serve(req, res) {
         const {id: pluginId, 0: file} = req.params;
         this.serveFile({pluginId, file: path.join('public', file)}, res);
     }
+
     serveFile({pluginId, projectId = null, file}, res) {
         let baseFile = cwd.get();
         if (projectId) {
@@ -225,39 +229,12 @@ class Plugins {
         }
 
         res.status(404);
-        res.send(`Addon ${pluginId} not found in loaded addons. Try opening a vue-cli project first?`);
+        res.send(`Addon ${pluginId} not found in loaded addons.`);
     }
-    // pluginActionCall this.$callPluginAction
-    async callAction({id, params, file = cwd.get()}, context) {
-        const pluginApi = this.getApi(file);
 
-        context.pubsub.publish(PLUGIN_ACTION_CALLED, {
-            pluginActionCalled: {id, params}
-        });
-        log('PluginAction called', id, params);
-        const results = [];
-        const errors = [];
-        const list = pluginApi.actions.get(id);
-        if (list) {
-            for (const cb of list) {
-                let result = null;
-                let error = null;
-                try {
-                    // get every action result
-                    result = await cb(params);
-                }
-                catch (e) {
-                    error = e;
-                }
-                results.push(result);
-                errors.push(error);
-            }
-        }
-        context.pubsub.publish(PLUGIN_ACTION_RESOLVED, {
-            pluginActionResolved: {id, params, results, errors}
-        });
-        log('PluginAction resolved', id, params, 'results:', results, 'errors:', errors);
-        return {id, params, results, errors};
+    async callAction({id, params, file = cwd.get()}, context) {
+        const pluginApi = this.pluginApiInstances.get(file);
+        return pluginApi.callAction(id, params);
     }
 }
 

@@ -18,7 +18,7 @@ const fileTypes = ['js', 'json'];
 let current = {};
 
 const list = () => {
-    return plugins.getApi(cwd.get()).configurations;
+    return plugins.getApi(cwd.get()).configPlugin.configurations;
 };
 const findOne = (id, context) => {
     return list(context).find(c => c.id === id);
