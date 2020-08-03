@@ -120,7 +120,14 @@
         "output": "输出",
         "clear": "清空",
         "copy": "复制",
-        "bottom": "跳到底部"
+        "bottom": "跳到底部",
+        "status": {
+            "idle": "空闲",
+            "running": "运行中",
+            "done": "已完成",
+            "error": "错误",
+            "terminated": "已中止"
+        }
     },
     "dependency": {
         "title": "项目依赖",

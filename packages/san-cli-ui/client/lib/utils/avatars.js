@@ -42,7 +42,7 @@ const total = avatarTypes.length;
  *
  * @return {string} 头像的地址
  */
-module.exports = (id, iconType = '', remote = false) => {
+export default (id, iconType = '', remote = false) => {
     const index = id.replace('@', '').toLowerCase().charCodeAt(0);
     if (!iconType || avatarTypes.indexOf(iconType) === -1) {
         iconType = avatarTypes[index % total];

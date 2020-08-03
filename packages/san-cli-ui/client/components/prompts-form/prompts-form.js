@@ -36,7 +36,7 @@ export default class PromptsForm extends Component {
                     label="{{(prompt.label || prompt.message) | textFormat}}"
                     extra="{{prompt.description | textFormat}}">
                     <template s-if="prompt.type === 'list'">
-                        <s-select value="{=prompt.value=}">
+                        <s-select value="{=prompt.value=}" on-change="handleChange(prompt, $event)">
                             <s-selectoption s-for="choice in prompt.choices" 
                                 value="{{choice.value}}">{{choice.name}">{{choice}}</s-selectoption>
                         </s-select>

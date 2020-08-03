@@ -137,7 +137,7 @@ module.exports = api => {
                     message: 'dashboard.widgets.run-task.prompts.task',
                     choices: (await tasks.getTasks(undefined, context)).map(task => ({
                         name: task.name,
-                        value: task.id
+                        value: task.name
                     }))
                 }]
             };
