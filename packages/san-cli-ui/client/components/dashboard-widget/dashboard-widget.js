@@ -170,7 +170,7 @@ export default class DashboardWidget extends Component {
                 try {
                     p.value = JSON.parse(p.value);
                 }
-                catch (error) {}
+                catch (error) {};
                 return p.visible;
             }) : [];
         }
@@ -198,6 +198,7 @@ export default class DashboardWidget extends Component {
             widget: null,
             custom: false,
             loaded: false,
+            isAttached: false,
             customTitle: null,
             details: false,
             loadingConfig: false,
@@ -221,10 +222,12 @@ export default class DashboardWidget extends Component {
     //     this.removeMoveListeners();
     // }
     addChild() {
-        const widget = this.data.get('widget');
+        const {widget, isAttached} = this.data.get();
         const addonApi = window.ClientAddonApi;
         const parentEl = this.ref('clientAddons' + widget.definition.component);
-        if (!widget || !addonApi) {
+
+        // 禁止多次attach
+        if (isAttached || !parentEl || !widget || !addonApi) {
             return;
         }
 
@@ -238,6 +241,7 @@ export default class DashboardWidget extends Component {
         });
 
         node.attach(parentEl);
+        this.data.set('isAttached', true);
     }
     remove() {
         const id = this.data.get('widget.id');
@@ -325,7 +329,7 @@ export default class DashboardWidget extends Component {
                 id: this.data.get('widget.id')
             }
         });
-        // console.log(widgetConfig);
+
         if (widgetConfig.data) {
             this.data.set('showConfig', true);
             this.data.set('widget', widgetConfig.data.widgetConfigOpen);
@@ -365,6 +369,7 @@ export default class DashboardWidget extends Component {
         this.data.set('widget', widgetConfig.data.widgetConfigSave);
         this.data.set('loadingConfig', false);
         this.closeConfig();
+        this.nextTick(() => this.addChild());
     }
     closeConfig() {
         this.data.set('showConfig', false);
