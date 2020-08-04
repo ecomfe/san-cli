@@ -36,14 +36,19 @@ export default class PromptsForm extends Component {
                     label="{{(prompt.label || prompt.message) | textFormat}}"
                     extra="{{prompt.description | textFormat}}">
                     <template s-if="prompt.type === 'list'">
-                        <s-select value="{=prompt.value=}" on-change="handleChange(prompt, $event)">
+                        <s-select value="{=prompt.value=}"
+                            placeholder="{{prompt.placeholder | textFormat}}"
+                            on-change="handleChange(prompt, $event)">
                             <s-selectoption s-for="choice in prompt.choices" 
                                 value="{{choice.value}}">{{choice.name}">{{choice}}</s-selectoption>
                         </s-select>
                     </template>
 
                     <template s-elif="prompt.type === 'input' || prompt.type === 'string'">
-                        <s-input value="{=prompt.value=}" on-change="handleChange(prompt, $event)"></s-input>
+                        <s-input value="{=prompt.value=}"
+                            placeholder="{{prompt.placeholder | textFormat}}"
+                            on-change="handleChange(prompt, $event)"
+                        ></s-input>
                     </template>
 
                     <template s-elif="prompt.type === 'confirm'">
@@ -55,7 +60,11 @@ export default class PromptsForm extends Component {
                     </template>
 
                     <template s-elif="prompt.type === 'checkbox'">
-                        <s-select mode="multiple" value="{=prompt.value=}" on-change="handleChange(prompt, $event)">
+                        <s-select mode="multiple"
+                            value="{=prompt.value=}"
+                            placeholder="{{prompt.placeholder | textFormat}}"
+                            on-change="handleChange(prompt, $event)"
+                        >
                             <s-selectoption s-for="choice in prompt.choices" 
                                 value="{{choice.name}}}"
                             >{{choice.name}}</s-selectoption>

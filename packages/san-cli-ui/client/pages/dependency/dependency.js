@@ -29,13 +29,13 @@ export default class Dependency extends Component {
                     <div class="pkg-body" s-if="dependencies.length">
                         <h2>{{$t('dependency.dependencies')}}</h2>
                         <template s-for="item in dependencies">
-                            <c-dependency-item item="{{item}}" on-pkgDelete="onPkgDelete"/>
+                            <c-dependency-item item="{{item}}" on-updatePkgList="getDependencies"/>
                         </template>
                     </div>
                     <div class="pkg-body" s-if="devDependencies.length">
                         <h2>{{$t('dependency.devDependencies')}}</h2>
                         <template s-for="item in devDependencies">
-                            <c-dependency-item item="{{item}}" on-pkgDelete="onPkgDelete"/>
+                            <c-dependency-item item="{{item}}" on-updatePkgList="getDependencies"/>
                         </template>
                     </div>
                 </div>
@@ -86,18 +86,7 @@ export default class Dependency extends Component {
     }
 
     async attached() {
-        const dependencies = await this.getDependencies();
-        // 使用队列来优化性能，并发量3
-        const concurrency = 3;
-        const queue = fastq(this, this.getDependencyItem, concurrency);
-        dependencies.forEach(({id}, index) => {
-            queue.push({id, index}, (err, data) => {
-                if (err) {
-                    throw err;
-                }
-                this.data.set(`dependenciesList[${index}].detail`, data);
-            });
-        });
+        this.getDependencies();
     }
 
     async getDependencyItem({id, index}, callback) {
@@ -122,7 +111,18 @@ export default class Dependency extends Component {
         const query = await this.$apollo.query({query: DEPENDENCIES});
         const dependencies = query.data ? query.data.dependencies : [];
         this.data.set('dependenciesList', dependencies);
-        return dependencies;
+
+        // 使用队列来优化性能，并发量3
+        const concurrency = 3;
+        const queue = fastq(this, this.getDependencyItem, concurrency);
+        dependencies.forEach(({id}, index) => {
+            queue.push({id, index}, (err, data) => {
+                if (err) {
+                    throw err;
+                }
+                this.data.set(`dependenciesList[${index}].detail`, data);
+            });
+        });
     }
 
     // 搜索模态框取消
@@ -134,10 +134,5 @@ export default class Dependency extends Component {
     // 搜索模态框展示
     onModalShow() {
         this.data.set('modalVisible', true);
-    }
-
-    // npm列表删除依赖包
-    onPkgDelete() {
-        this.getDependencies();
     }
 }

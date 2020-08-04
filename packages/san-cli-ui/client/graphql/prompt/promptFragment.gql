@@ -8,6 +8,7 @@ fragment prompt on PromptCommon {
   enabled
   name
   message
+  placeholder
   group
   description
   link

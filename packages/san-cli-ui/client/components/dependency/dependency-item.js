@@ -36,7 +36,11 @@ export default class DependenceItem extends Component {
                         </span>
                         <s-icon class="pkg-check-ico" type="check-circle" />
                         <span class="pkg-version">{{$t('dependency.installed')}}</span>
-                        <s-icon type="download" class="pkg-download" on-click="onPkgUpdate"/>
+                        <s-icon
+                            s-if="item.detail.current !== item.detail.latest"
+                            type="arrow-up" 
+                            class="pkg-download" 
+                            on-click="onPkgUpdate"/>
                     </div>
                 </div>
             
@@ -60,14 +64,14 @@ export default class DependenceItem extends Component {
 
     initData() {
         return {
-            loadingTip: this.$t('dependency.uninstall'),
             spinning: false
         };
     }
 
+    // 卸载npm包
     async onPkgDelete() {
-        // 卸载npm包
         let {id, type} = this.data.get('item');
+        this.data.set('loadingTip', this.$t('dependency.uninstall'));
         this.data.set('spinning', true);
         await this.$apollo.mutate({
             mutation: DEPENDENCY_UNINSTALL,
@@ -76,7 +80,7 @@ export default class DependenceItem extends Component {
                 type
             }
         });
-        this.fire('pkgDelete');
+        this.fire('updatePkgList');
         this.data.set('spinning', false);
         Notification.open({
             message: this.$t('dependency.deleteDependency'),
@@ -87,12 +91,20 @@ export default class DependenceItem extends Component {
     // 更新npm包
     async onPkgUpdate() {
         let {id, type} = this.data.get('item');
+        this.data.set('loadingTip', this.$t('dependency.update'));
+        this.data.set('spinning', true);
         await this.$apollo.mutate({
             mutation: DEPENDENCY_INSTALL,
             variables: {
                 id,
                 type
             }
+        });
+        this.fire('updatePkgList');
+        this.data.set('spinning', false);
+        Notification.open({
+            message: this.$t('dependency.updateDependency'),
+            description: this.$t('dependency.updateSuccess')
         });
     }
 

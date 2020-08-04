@@ -130,6 +130,7 @@ const generatePrompt = data => {
         enabled: true,
         name: data.name || null,
         message: data.message,
+        placeholder: data.placeholder || null,
         group: data.group || null,
         description: data.description || null,
         link: data.link || null,
