@@ -134,6 +134,7 @@ module.exports = api => {
                     name: 'task',
                     type: 'list',
                     message: 'dashboard.widgets.run-task.prompts.task',
+                    placeholder: 'dashboard.widgets.run-task.prompts.placeholder',
                     choices: (await tasks.getTasks(undefined, context)).map(task => ({
                         name: task.name,
                         value: task.name

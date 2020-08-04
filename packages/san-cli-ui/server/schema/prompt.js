@@ -15,6 +15,7 @@ type PromptCommon implements DescribedEntity {
   enabled: Boolean
   name: String
   message: String
+  placeholder: String
   group: String
   description: String
   link: String

@@ -171,6 +171,9 @@ export default class DashboardWidget extends Component {
                     p.value = JSON.parse(p.value);
                 }
                 catch (error) {};
+                if (p.type === 'list' && !p.value) {
+                    p.value = [];
+                }
                 return p.visible;
             }) : [];
         }
