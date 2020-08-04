@@ -86,18 +86,7 @@ export default class Dependency extends Component {
     }
 
     async attached() {
-        const dependencies = await this.getDependencies();
-        // 使用队列来优化性能，并发量3
-        const concurrency = 3;
-        const queue = fastq(this, this.getDependencyItem, concurrency);
-        dependencies.forEach(({id}, index) => {
-            queue.push({id, index}, (err, data) => {
-                if (err) {
-                    throw err;
-                }
-                this.data.set(`dependenciesList[${index}].detail`, data);
-            });
-        });
+        this.getDependencies();
     }
 
     async getDependencyItem({id, index}, callback) {
@@ -122,7 +111,18 @@ export default class Dependency extends Component {
         const query = await this.$apollo.query({query: DEPENDENCIES});
         const dependencies = query.data ? query.data.dependencies : [];
         this.data.set('dependenciesList', dependencies);
-        return dependencies;
+
+        // 使用队列来优化性能，并发量3
+        const concurrency = 3;
+        const queue = fastq(this, this.getDependencyItem, concurrency);
+        dependencies.forEach(({id}, index) => {
+            queue.push({id, index}, (err, data) => {
+                if (err) {
+                    throw err;
+                }
+                this.data.set(`dependenciesList[${index}].detail`, data);
+            });
+        });
     }
 
     // 搜索模态框取消
