@@ -6,7 +6,8 @@
 const deepGet = (obj, ...keys) => {
     const isMap = obj instanceof Map || obj instanceof WeakMap;
     if (isMap) {
-        keys.reduce((cur, next) => (cur || new Map()).get(next), obj);
+        const Klass = obj instanceof Map ? Map : WeakMap;
+        keys.reduce((cur, next) => (cur || new Klass()).get(next), obj);
     }
     else {
         keys.reduce((cur, next) => (cur || {})[next], obj);
