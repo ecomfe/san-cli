@@ -295,8 +295,7 @@
                 "title": "运行任务",
                 "description": "快速运行任务",
                 "prompts": {
-                    "task": "任务",
-                    "placeholder": "选择一项任务"
+                    "task": "选择一项任务"
                 },
                 "page": "前往“任务”页"
             },

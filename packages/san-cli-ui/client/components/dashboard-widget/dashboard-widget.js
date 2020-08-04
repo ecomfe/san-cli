@@ -171,10 +171,6 @@ export default class DashboardWidget extends Component {
                     p.value = JSON.parse(p.value);
                 }
                 catch (error) {}
-
-                if (typeof p.value === 'object') {
-                    p.value = JSON.stringify(p.value);
-                }
                 return p.visible;
             }) : [];
         }
