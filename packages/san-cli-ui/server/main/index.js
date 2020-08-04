@@ -6,7 +6,7 @@
 const {ApolloServer} = require('apollo-server-express');
 const typeDefs = require('./schema');
 const resolvers = require('./resolves');
-const db = require('./db');
+const db = require('../models/db');
 const pubsub = require('./pubsub');
 
 module.exports = subscribtionpPath => new ApolloServer({

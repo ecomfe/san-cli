@@ -50,7 +50,7 @@ const resolvers = [{
                     const result = payload.sharedDataUpdated.id === vars.id
                         && payload.sharedDataUpdated.projectId === vars.projectId;
                     if (result) {
-                        sharedData.getStats(`shared-data_${vars.projectId}`, vars.id).value++;
+                        sharedData.addStat(vars.projectId, vars.id);
                     }
                     return result;
                 }

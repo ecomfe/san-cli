@@ -10,8 +10,7 @@ const FileSync = require('lowdb/adapters/FileSync');
 const rcPath = require('../utils/rcPath');
 const DB_NAME = 'db.json';
 
-fs.ensureDirSync(path.resolve(rcPath));
-
+fs.ensureDirSync(rcPath);
 const dbPath = path.join(rcPath, DB_NAME);
 const adapter = new FileSync(dbPath);
 const db = new Lowdb(adapter);

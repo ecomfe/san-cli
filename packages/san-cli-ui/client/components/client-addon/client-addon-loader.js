@@ -20,7 +20,7 @@ export default class clientAddonLoader extends Component {
             cur: 0
         };
     }
-    async init() {
+    async inited() {
         let clientAddons = await this.$apollo.query({
             query: CLIENT_ADDONS,
             fetchPolicy: 'no-cache',
@@ -33,7 +33,6 @@ export default class clientAddonLoader extends Component {
         }
     }
     attached() {
-        this.init();
         const observer = this.$apollo.subscribe({query: CLIENT_ADDON_ADDED});
         observer.subscribe({
             next: result => {
