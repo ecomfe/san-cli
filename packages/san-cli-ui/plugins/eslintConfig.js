@@ -1,6 +1,6 @@
 /**
  * @file eslint 的配置
- * @author Lohoyo<liuhuyue@baidu.com>
+ * @author Lohoyo
  */
 
 module.exports = api => {
