@@ -29,13 +29,13 @@ export default class Dependency extends Component {
                     <div class="pkg-body" s-if="dependencies.length">
                         <h2>{{$t('dependency.dependencies')}}</h2>
                         <template s-for="item in dependencies">
-                            <c-dependency-item item="{{item}}" on-pkgDelete="onPkgDelete"/>
+                            <c-dependency-item item="{{item}}" on-updatePkgList="getDependencies"/>
                         </template>
                     </div>
                     <div class="pkg-body" s-if="devDependencies.length">
                         <h2>{{$t('dependency.devDependencies')}}</h2>
                         <template s-for="item in devDependencies">
-                            <c-dependency-item item="{{item}}" on-pkgDelete="onPkgDelete"/>
+                            <c-dependency-item item="{{item}}" on-updatePkgList="getDependencies"/>
                         </template>
                     </div>
                 </div>
@@ -134,10 +134,5 @@ export default class Dependency extends Component {
     // 搜索模态框展示
     onModalShow() {
         this.data.set('modalVisible', true);
-    }
-
-    // npm列表删除依赖包
-    onPkgDelete() {
-        this.getDependencies();
     }
 }

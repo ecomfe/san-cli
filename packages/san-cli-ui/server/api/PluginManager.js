@@ -85,7 +85,7 @@ class PluginManager {
         return this.configPlugin;
     }
 
-    // 注册仪表盘widget插件：configPlugin
+    // 注册仪表盘widget插件：widgetPlugin
     registerWidget(...args) {
         if (!this.widgetPlugin) {
             this.widgetPlugin = new WidgetPlugin(...args);
