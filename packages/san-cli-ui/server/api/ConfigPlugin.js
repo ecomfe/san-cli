@@ -12,7 +12,7 @@ class ConfigPlugin {
         this.configurations = [];
     }
 
-    registerConfig(options) {
+    register(options) {
         try {
             // TODO: validate Configuration
             this.configurations.push({

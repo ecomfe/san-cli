@@ -12,7 +12,7 @@ class WidgetPlugin {
      *
      * @param {object} def Widget definition
      */
-    registerWidget(options) {
+    register(options) {
         try {
             // validate Widget options
             this.widgets.push({

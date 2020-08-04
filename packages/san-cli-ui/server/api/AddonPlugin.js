@@ -44,7 +44,7 @@ class AddonPlugin {
         }
     }
 
-    registerAddon(options) {
+    register(options) {
         try {
             // validateClientAddon(options);
             if (options.url && options.path) {

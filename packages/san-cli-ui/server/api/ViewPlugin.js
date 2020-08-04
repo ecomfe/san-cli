@@ -31,7 +31,7 @@ class ViewPlugin {
         this.hooks.viewOpen.push(cb);
     }
 
-    addView(options) {
+    register(options) {
         try {
             // validateView(options);
             this.views.push({

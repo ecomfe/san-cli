@@ -6,10 +6,10 @@
 const path = require('path');
 const {matchesPluginId} = require('san-cli-utils/plugin');
 const {log, error} = require('san-cli-utils/ttyLogger');
-const ipc = require('../utils/ipc');
 const notify = require('../utils/notify');
 const DB = require('./DB');
 const SharedData = require('./SharedData');
+const IpcHandler = require('./IpcHandler');
 const TaskPlugin = require('./TaskPlugin');
 const ViewPlugin = require('./ViewPlugin');
 const ConfigPlugin = require('./ConfigPlugin');
@@ -40,8 +40,6 @@ class PluginManager {
 
         // Data
         this.actions = new Map();
-        this.ipcHandlers = [];
-
         this.taskPlugin = null;
         this.viewPlugin = null;
         this.configPlugin = null;
@@ -54,7 +52,7 @@ class PluginManager {
         if (!this.taskPlugin) {
             this.taskPlugin = new TaskPlugin(...args);
         }
-        this.taskPlugin.registerTask(...args);
+        this.taskPlugin.register(...args);
         return this.taskPlugin;
     }
 
@@ -63,7 +61,7 @@ class PluginManager {
         if (!this.viewPlugin) {
             this.viewPlugin = new ViewPlugin(...args);
         }
-        this.viewPlugin.registerView(...args);
+        this.viewPlugin.register(...args);
         return this.viewPlugin;
     }
 
@@ -72,7 +70,7 @@ class PluginManager {
         if (!this.addonPlugin) {
             this.addonPlugin = new AddonPlugin(...args);
         }
-        this.addonPlugin.registerAddon(...args);
+        this.addonPlugin.register(...args);
         return this.addonPlugin;
     }
 
@@ -81,7 +79,7 @@ class PluginManager {
         if (!this.configPlugin) {
             this.configPlugin = new ConfigPlugin(...args);
         }
-        this.configPlugin.registerConfig(...args);
+        this.configPlugin.register(...args);
         return this.configPlugin;
     }
 
@@ -90,7 +88,7 @@ class PluginManager {
         if (!this.widgetPlugin) {
             this.widgetPlugin = new WidgetPlugin(...args);
         }
-        this.widgetPlugin.registerWidget(...args);
+        this.widgetPlugin.register(...args);
         return this.widgetPlugin;
     }
 
@@ -114,53 +112,6 @@ class PluginManager {
      */
     onPluginReload(callback) {
         this.hooks.pluginReload.push(callback);
-    }
-
-    /**
-     * 往IpcMessenger里面添加listener
-     *
-     * @param {Function} callback 可以带参数的回调方法
-     * @return {Function}
-     */
-    ipcOn(callback) {
-        const handler = ({data, emit}) => {
-            if (data.$projectId) {
-                if (data.$projectId !== this.project.id) {
-                    return;
-                }
-                data = data.$data;
-            }
-            callback({data, emit});
-        };
-        callback.$handler = handler;
-        this.ipcHandlers.push(handler);
-        return ipc.on(handler);
-    }
-
-    /**
-     * 清除IpcMessenger里面的listener
-     *
-     * @param {any} callback 要清除的callback，参数同ipcOn
-     */
-    ipcOff(callback) {
-        const handler = callback.$handler;
-        if (!handler) {
-            return;
-        }
-        const index = this.ipcHandlers.indexOf(handler);
-        if (index !== -1) {
-            this.ipcHandlers.splice(index, 1);
-        }
-        ipc.off(handler);
-    }
-
-    /**
-     * 向连接的所有的IPC客户端发送消息
-     *
-     * @param {any} data Message data
-     */
-    ipcSend(data) {
-        ipc.send(data);
     }
 
     // 获取当前环境路径
@@ -198,6 +149,17 @@ class PluginManager {
             namespace = '';
         }
         return new DB(this.$db, namespace);
+    }
+
+    /**
+     * 获取可以操作ipc的实例对象
+     * @return {Object}
+     */
+    getIpc() {
+        if (!this.ipcHandler) {
+            this.ipcHandler = new IpcHandler();
+        }
+        return this.ipcHandler;
     }
 
     /**

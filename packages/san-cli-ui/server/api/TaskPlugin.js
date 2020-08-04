@@ -18,7 +18,7 @@ class TaskPlugin {
      *
      * @param {object} options Task信息
      */
-    registerTask(options) {
+    register(options) {
         try {
             // TODO: to validate task
             // validate(options);
