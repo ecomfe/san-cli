@@ -159,7 +159,7 @@ module.exports = api => {
         defaultHeight: 3,
         openDetailsButton: false,
         defaultConfig: () => ({
-            url: 'https://github.com/stars'
+            url: 'https://ecomfe.github.io/atom.xml'
         }),
         async onConfigOpen() {
             return {
