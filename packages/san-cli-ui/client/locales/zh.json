@@ -172,7 +172,7 @@
         "title": "项目配置",
         "tools": "安装devtools",
         "san-cli": {
-            "description": "配置san项目",
+            "description": "配置 san 项目",
             "groups": {
                 "general": "基础设置",
                 "css": "CSS 设置"
@@ -227,6 +227,9 @@
                     "description": "启用对构建性能稍有影响。"
                 }
             }
+        },
+        "eslintrc": {
+            "description": "代码质量和纠错"
         },
         "actions": {
             "more": "查看更多",
