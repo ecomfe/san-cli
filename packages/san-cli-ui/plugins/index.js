@@ -4,5 +4,6 @@
  */
 
 module.exports = api => {
+    require('./widgets')(api);
     require('./sanConfig')(api);
 };

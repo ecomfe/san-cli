@@ -14,6 +14,7 @@ const TaskPlugin = require('./TaskPlugin');
 const ViewPlugin = require('./ViewPlugin');
 const ConfigPlugin = require('./ConfigPlugin');
 const WidgetPlugin = require('./WidgetPlugin');
+const AddonPlugin = require('./AddonPlugin');
 const {
     PLUGIN_ACTION_CALLED,
     PLUGIN_ACTION_RESOLVED
@@ -45,6 +46,7 @@ class PluginManager {
         this.viewPlugin = null;
         this.configPlugin = null;
         this.widgetPlugin = null;
+        this.addonPlugin = null;
     }
 
     // 注册任务插件：taskPlugin
@@ -63,6 +65,15 @@ class PluginManager {
         }
         this.viewPlugin.registerView(...args);
         return this.viewPlugin;
+    }
+
+    // 注册视图插件：viewPlugin
+    registerAddon(...args) {
+        if (!this.addonPlugin) {
+            this.addonPlugin = new AddonPlugin(...args);
+        }
+        this.addonPlugin.registerAddon(...args);
+        return this.addonPlugin;
     }
 
     // 注册配置插件：configPlugin

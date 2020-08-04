@@ -6,7 +6,8 @@
 const shortid = require('shortid');
 const cwd = require('./cwd');
 const prompts = require('./prompts');
-const {log} = require('san-cli-utils/ttyLogger');
+const {log, getDebugLogger} = require('san-cli-utils/ttyLogger');
+const debug = getDebugLogger('ui:widget');
 
 const getDefaultWidgets = () => (
     [
@@ -69,6 +70,11 @@ class Widgets {
     }
     findDefinition({definitionId}) {
         const def = this.widgetDefs.get(definitionId);
+        debug(`
+            definitionId: ${definitionId}, 
+            def: ${def},
+            this.widgetDefs: ${JSON.stringify(this.widgetDefs)}
+        `);
         if (!def) {
             throw new Error(`Widget definition ${definitionId} not found`);
         }
@@ -150,9 +156,7 @@ class Widgets {
         if (this.widgetCount.has(definitionId)) {
             return this.widgetCount.get(definitionId);
         }
-        else {
-            return 0;
-        }
+        return 0;
     }
     updateCount(definitionId, mod) {
         this.widgetCount.set(definitionId, this.getCount(definitionId) + mod);

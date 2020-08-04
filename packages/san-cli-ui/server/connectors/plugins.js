@@ -134,14 +134,15 @@ class Plugins {
                 // 运行第三方插件的API
                 plugins.forEach(plugin => this.runPluginApi(plugin.id, pluginApi, context));
 
-                // Add client addons
-                pluginApi.clientAddons && pluginApi.clientAddons.forEach(options => {
-                    clientAddons.add(options, context);
-                });
+                if (pluginApi.addonPlugin && pluginApi.addonPlugin.addons) {
+                    pluginApi.addonPlugin.addons.forEach(options => {
+                        clientAddons.add(options, context);
+                    });
+                }
 
-                // Register widgets
-                if (pluginApi.widgetDefs) {
-                    for (const definition of pluginApi.widgetDefs) {
+                debug('pluginApi.widgetPlugin.widgets:', pluginApi.widgetPlugin && pluginApi.widgetPlugin.widgets);
+                if (pluginApi.widgetPlugin && pluginApi.widgetPlugin.widgets) {
+                    for (const definition of pluginApi.widgetPlugin.widgets) {
                         await widgets.registerDefinition({definition, project}, context);
                     }
                 }
