@@ -36,7 +36,11 @@ export default class DependenceItem extends Component {
                         </span>
                         <s-icon class="pkg-check-ico" type="check-circle" />
                         <span class="pkg-version">{{$t('dependency.installed')}}</span>
-                        <s-icon type="download" class="pkg-download" on-click="onPkgUpdate"/>
+                        <s-icon
+                            s-if="item.detail.current !== item.detail.latest"
+                            type="arrow-up" 
+                            class="pkg-download" 
+                            on-click="onPkgUpdate"/>
                     </div>
                 </div>
             
