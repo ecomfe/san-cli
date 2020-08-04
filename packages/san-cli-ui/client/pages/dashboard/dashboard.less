@@ -10,6 +10,9 @@
     flex-direction: row;
     padding: 8px;
     box-sizing: border-box;
+    &.empty {
+        .box-center();
+    }
     .widgets {
         flex: auto 1 1;
         overflow-x: hidden;
@@ -19,7 +22,6 @@
         position: relative;
         transform-origin: top left;
         transition: transform .15s;
-        .h-box();
     }
     .icon-button {
         border: 0;

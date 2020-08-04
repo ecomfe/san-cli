@@ -5,7 +5,7 @@
 
 import {Component} from 'san';
 import {
-    // getPositionStyle,
+    getPositionStyle,
     getSizeStyle,
     GRID_SIZE
     // ZOOM
@@ -143,12 +143,12 @@ export default class DashboardWidget extends Component {
             }
             if (moveState) {
                 return {
-                    // ...getPositionStyle(moveState.pxX, moveState.pxY),
+                    ...getPositionStyle(moveState.pxX, moveState.pxY),
                     ...getSizeStyle({field, gridSize: GRID_SIZE})
                 };
             }
             return {
-                // ...getPositionStyle(GRID_SIZE * field.x, GRID_SIZE * field.y),
+                ...getPositionStyle(GRID_SIZE * field.x, GRID_SIZE * field.y),
                 ...getSizeStyle({field, gridSize: GRID_SIZE})
             };
         },
@@ -160,7 +160,7 @@ export default class DashboardWidget extends Component {
                 return {};
             }
             return {
-                // ...getPositionStyle(GRID_SIZE * moveState.x, GRID_SIZE * moveState.y),
+                ...getPositionStyle(GRID_SIZE * moveState.x, GRID_SIZE * moveState.y),
                 ...getSizeStyle({field, gridSize: GRID_SIZE})
             };
         },

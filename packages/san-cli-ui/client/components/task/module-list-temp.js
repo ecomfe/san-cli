@@ -1,6 +1,6 @@
 /**
  * @file 任务仪表盘中的依赖项模块
- * @author Lohoyo<liuhuyue@baidu.com>
+ * @author Lohoyo
  */
 
 import {Component} from 'san';

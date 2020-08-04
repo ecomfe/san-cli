@@ -15,10 +15,11 @@ import Widget from '@components/dashboard-widget';
 import WidgetList from '@components/dashboard-widget/widget-list';
 import clientAddon from '@components/client-addon/client-addon-loader';
 import {Link} from 'san-router';
-import {Icon, Button, Input} from 'santd';
+import {Icon, Button, Input, Empty} from 'santd';
 import 'santd/es/icon/style';
 import 'santd/es/button/style';
 import 'santd/es/input/style';
+import 'santd/es/empty/style';
 import './dashboard.less';
 
 export default class Dashboard extends Component {
@@ -40,8 +41,9 @@ export default class Dashboard extends Component {
                         </template>
                     </s-button>
                 </template>
-                <div slot="content" class="h1oh dashboard-content">
-                    <div class="widgets">
+                <div slot="content" class="h1oh dashboard-content {{widgets.length === 0 && !editing ? 'empty' : ''}}">
+                    <s-empty s-if="widgets.length === 0 && !editing" />
+                    <div s-else class="widgets">
                         <div class="inner">
                             <template s-for="widget in widgets">
                                 <c-widget
@@ -64,6 +66,7 @@ export default class Dashboard extends Component {
         'r-link': Link,
         's-button': Button,
         's-input-search': Input.Search,
+        's-empty': Empty,
         'c-layout': Layout,
         'c-widget': Widget,
         'c-widget-list': WidgetList,
