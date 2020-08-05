@@ -8,7 +8,7 @@ const {
     isOfficialPlugin,
     getPluginLink
 } = require('san-cli-utils/plugin');
-const {log, getDebugLogger} = require('san-cli-utils/ttyLogger');
+const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const ipc = require('../utils/ipc');
 const PluginManager = require('../api/PluginManager');
 const cwd = require('./cwd');
@@ -38,7 +38,7 @@ class Plugins {
             return;
         }
         const fns = pluginApi.hooks[id] || [];
-        log(`Hook ${id}`, fns.length, 'handlers');
+        debug(`Hook ${id}`, fns.length, 'handlers');
         fns.forEach(fn => fn(...args));
     }
 
@@ -77,16 +77,16 @@ class Plugins {
 
         if (module) {
             if (typeof module !== 'function') {
-                log('ERROR while loading plugin API: no function exported, for', name, pluginApi.cwd);
+                debug('ERROR while loading plugin API: no function exported, for', name, pluginApi.cwd);
             }
             else {
                 pluginApi.pluginId = id;
                 try {
                     module(pluginApi);
-                    log('Plugin API loaded for', name, pluginApi.cwd);
+                    debug('Plugin API loaded for', name, pluginApi.cwd);
                 }
                 catch (e) {
-                    log('ERROR while loading plugin API for ${name}:', e);
+                    debug('ERROR while loading plugin API for ${name}:', e);
                 }
                 pluginApi.pluginId = null;
             }
@@ -95,13 +95,14 @@ class Plugins {
 
     resetPluginApi({file}, context) {
         return new Promise((resolve, reject) => {
-            log('Plugin API reloading...', file);
+            debug('Reseting Plugin API...', file);
             let pluginApi = this.pluginApiInstances.get(file);
             let projectId;
 
             if (pluginApi) {
                 projectId = pluginApi.project.id;
-                pluginApi.ipcHandlers.forEach(fn => ipc.off(fn));
+                const ipc = pluginApi.getIpc();
+                ipc.handlers.forEach(fn => ipc.off(fn));
             }
 
             // Cyclic dependency with projects connector
@@ -171,7 +172,7 @@ class Plugins {
     }
 
     async list(file, context, {resetApi = true, autoLoadApi = true} = {}) {
-        let pkg = readPackage(file, context);
+        const pkg = readPackage(file, context);
         let pkgContext = cwd.get();
         this.pkgStore.set(file, {pkgContext, pkg});
         let plugins = [];
@@ -180,13 +181,20 @@ class Plugins {
 
         // cli放在最上面
         const index = plugins.findIndex(p => p.id === CLI_SAN);
+
         if (index !== -1) {
             const service = plugins.splice(index, 1);
             plugins.unshift(service[0]);
         }
 
         this.pluginsStore.set(file, plugins);
-        log('Plugins found:', plugins.length, file);
+        debug('Plugins found:', plugins.length, file);
+        debug('CLI-Plugins:', plugins);
+        debug(`
+            autoLoadApi:${autoLoadApi}
+            resetApi: ${resetApi}
+            this.pluginApiInstances.has(file):${this.pluginApiInstances.has(file)}
+        `);
         if (resetApi || (autoLoadApi && !this.pluginApiInstances.has(file))) {
             await this.resetPluginApi({file}, context);
         }
@@ -197,7 +205,7 @@ class Plugins {
         const plugins = this.getPlugins(file);
         const plugin = plugins.find(p => p.id === id);
         if (!plugin) {
-            log('Plugin Not found', id, file);
+            debug('Plugin Not found', id, file);
         }
         return plugin;
     }
