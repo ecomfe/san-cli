@@ -30,7 +30,9 @@ export default {
                             <a href="{{item.link}}"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                            >{{item.title}}</a>
+                            >
+                            {{item.title}}<s-icon type="link"/>
+                            </a>
                         </div>
                         <div class="snippet">{{item.contentSnippet | snippet}}</div>
                         <div class="date">{{item.pubDate | dateFormat}}</div>
