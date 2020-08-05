@@ -5,7 +5,7 @@
 
 const path = require('path');
 const {matchesPluginId} = require('san-cli-utils/plugin');
-const {log, error} = require('san-cli-utils/ttyLogger');
+const {getDebugLogger, error} = require('san-cli-utils/ttyLogger');
 const notify = require('../utils/notify');
 const DB = require('./DB');
 const SharedData = require('./SharedData');
@@ -20,6 +20,7 @@ const {
     PLUGIN_ACTION_RESOLVED
 } = require('../utils/channels');
 
+const debug = getDebugLogger('ui:PluginManager');
 /**
  * Plugin的基础方法，各种类型的plugin都需要的，集合到基类里面
 */
@@ -31,14 +32,10 @@ class PluginManager {
 
         this.pluginId = null;
         this.$db = this.context.db;
-
-        // Hooks
         this.hooks = {
             projectOpen: [],
             pluginReload: []
         };
-
-        // Data
         this.actions = new Map();
         this.taskPlugin = null;
         this.viewPlugin = null;
@@ -141,7 +138,7 @@ class PluginManager {
     /**
      * 获取可以操作lowdb的实例对象
      *
-     * @param {string} id key或路径
+     * @param {string} namespace db的路径，例如：test.
      * @return {DB} 能操作db的DB类的实例
      */
     getDB(namespace) {
@@ -149,6 +146,22 @@ class PluginManager {
             namespace = '';
         }
         return new DB(this.$db, namespace);
+    }
+
+    /**
+     * 获取sharedData的实例
+     *
+     * @param {string} namespace sharedData的namespace
+     */
+    getSharedData(namespace) {
+        if (typeof namespace !== 'string') {
+            namespace = '';
+        }
+        return new SharedData({
+            project: this.project,
+            context: this.context,
+            namespace
+        });
     }
 
     /**
@@ -189,7 +202,7 @@ class PluginManager {
             pluginActionCalled: {id, params}
         });
 
-        log('PluginAction Called', id, params);
+        debug('PluginAction Called', id, params);
         const results = [];
         const errors = [];
         const actions = this.actions.get(id);
@@ -219,21 +232,9 @@ class PluginManager {
             pluginActionResolved: output
         });
 
-        log('PluginAction Resolved', output);
+        debug('PluginAction Resolved', output);
 
         return output;
-    }
-
-    /**
-     * 获取sharedData中的数据
-     *
-     * @param {string} id sharedData的id
-     */
-    getSharedData() {
-        return new SharedData({
-            project: this.project,
-            context: this.context
-        });
     }
 
     /**

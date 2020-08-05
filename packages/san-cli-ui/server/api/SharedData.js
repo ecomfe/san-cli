@@ -1,15 +1,16 @@
 /**
- * @file 对sharedData的封装
+ * @file 对sharedData的封装，增加namespace的支持
  * @author jinzhan
  */
 
 const sharedData = require('../models/sharedData');
 
 class SharedData {
-    constructor({project, context}) {
+    constructor({project, context, namespace}) {
         this.sharedData = sharedData;
         this.project = project;
         this.context = context;
+        this.namespace = namespace;
     }
 
     /**
@@ -21,7 +22,7 @@ class SharedData {
      */
     async set(id, value, {disk = false} = {}) {
         return this.sharedData.set({
-            id,
+            id: this.namespace + id,
             projectId: this.project.id,
             value,
             disk
@@ -35,7 +36,7 @@ class SharedData {
      */
     get(id) {
         return this.sharedData.get({
-            id,
+            id: this.namespace + id,
             projectId: this.project.id
         }, this.context);
     }
@@ -48,7 +49,7 @@ class SharedData {
      */
     async remove(id) {
         return this.sharedData.remove({
-            id,
+            id: this.namespace + id,
             projectId: this.project.id
         }, this.context);
     }
@@ -61,7 +62,7 @@ class SharedData {
      */
     watch(id, handler) {
         this.sharedData.watch({
-            id,
+            id: this.namespace + id,
             projectId: this.project.id
         }, handler);
     }
@@ -74,7 +75,7 @@ class SharedData {
      */
     unwatch(id, handler) {
         this.sharedData.unwatch({
-            id,
+            id: this.namespace + id,
             projectId: this.project.id
         }, handler);
     }
