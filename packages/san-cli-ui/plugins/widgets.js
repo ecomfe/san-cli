@@ -202,4 +202,16 @@ module.exports = api => {
         newsCache[params.url] = result;
         return result;
     });
+    api.registerWidget({
+        id: 'san.widgets.gen-qrcode',
+        title: 'dashboard.widgets.gen-qrcode.title',
+        description: 'dashboard.widgets.gen-qrcode.description',
+        icon: 'qrcode',
+        component: 'san.widgets.components.gen-qrcode',
+        minWidth: 2,
+        minHeight: 3,
+        maxWidth: 2,
+        maxHeight: 3,
+        maxCount: 1
+    });
 };

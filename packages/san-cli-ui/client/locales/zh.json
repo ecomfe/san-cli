@@ -306,6 +306,15 @@
                 },
                 "page": "前往“任务”页"
             },
+            "gen-qrcode": {
+                "title": "生成二维码",
+                "description": "输入链接生成二维码",
+                "placeholder": "请输入url后点击生成",
+                "ok": "确认生成",
+                "url-title": "普通二维码",
+                "schema-title": "轻框架二维码",
+                "err-msg": "生成错误，请重新输入"
+            },
             "vulnerability": {
                 "title": "安全隐患检查",
                 "description": "检查项目依赖中已知的安全隐患",
