@@ -4,7 +4,7 @@
  */
 
 import {Component} from 'san';
-import {Button, Icon, Spin, Notification, Popconfirm} from 'santd';
+import {Button, Icon, Spin, Notification, Modal} from 'santd';
 import avatars from '@lib/utils/avatars';
 import DEPENDENCY_UNINSTALL from '@/graphql/dependency/dependency-uninstall.gql';
 import DEPENDENCY_INSTALL from '@graphql/dependency/dependency-install.gql';
@@ -13,7 +13,7 @@ import 'santd/es/button/style';
 import 'santd/es/icon/style';
 import 'santd/es/spin/style';
 import 'santd/es/notification/style';
-import 'santd/es/popover/style';
+import 'santd/es/modal/style';
 
 export default class DependenceItem extends Component {
     static template = /* html */`
@@ -40,17 +40,11 @@ export default class DependenceItem extends Component {
                             s-if="item.detail.current !== item.detail.latest"
                             type="arrow-up" 
                             class="pkg-download" 
-                            on-click="onPkgUpdate"/>
+                            on-click="onPkgUpdate"
+                            style="border: 1px solid #1890ff; border-radius: 50%; font-size: 10px; width: 16px; height: 16px; display: inline-flex; justify-content: center; align-items: center;"/>
                     </div>
                 </div>
-            
-                 <s-popconfirm
-                    title="{{$t('dependency.confirmUninstall') + item.id + '?'}}"
-                    okText="{{$t('confirmText')}}"
-                    cancelText="{{$t('cancelText')}}"
-                    on-confirm="onPkgDelete">
-                        <s-icon type="delete" class="highlight" />
-                 </s-popconfirm>
+                <s-icon type="delete" class="highlight" on-click="showDeleteConfirm"/>
             </div>
         </s-spin>
     `;
@@ -58,8 +52,7 @@ export default class DependenceItem extends Component {
     static components = {
         's-button': Button,
         's-icon': Icon,
-        's-spin': Spin,
-        's-popconfirm': Popconfirm
+        's-spin': Spin
     }
 
     initData() {
@@ -110,5 +103,20 @@ export default class DependenceItem extends Component {
 
     avatars(packageName) {
         return avatars(packageName);
+    }
+
+    showDeleteConfirm() {
+        Modal.confirm({
+            title: this.$t('dependency.confirmUninstall') + ' ' + this.data.get('item.id') + ' ？',
+            okText: this.$t('confirmText'),
+            okType: 'danger',
+            cancelText: this.$t('cancelText'),
+            onOk: () => this.onPkgDeleteWrap()
+        });
+    }
+
+    // 不裹一层的话，用户点击确认后模态窗不会立刻消失，体验不好
+    onPkgDeleteWrap() {
+        this.onPkgDelete();
     }
 }
