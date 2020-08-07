@@ -3,18 +3,16 @@
  * @author zttonly
  */
 
-const { cosmiconfig } = require('cosmiconfig');
-const explorer = cosmiconfig('eslint', {
+const { cosmiconfigSync } = require('cosmiconfig');
+const explorerSync = cosmiconfigSync('eslint', {
     stopDir: process.cwd()
 });
 
 module.exports = api => {
     require('./widgets')(api);
     require('./sanConfig')(api);
-    explorer.search().then(result => {
-        if (result === null) {
-            return;
-        }
+    // 如果项目没有 eslint 的相关配置，就不加载 eslint 插件
+    if (explorerSync.search() !== null) {
         require('./eslintConfig')(api);
-    });
+    }
 };
