@@ -61,7 +61,7 @@ class SharedData {
             updated: new Date()
         });
 
-        const stat = this.stats.get(projectId, id);
+        const stat = this.getStat(projectId, id);
         stat.value = 0;
         context.pubsub.publish(channels.SHARED_DATA_UPDATED, {
             sharedDataUpdated: {id, projectId, value}
