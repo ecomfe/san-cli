@@ -49,7 +49,7 @@ module.exports = api => {
                 package: 'eslintConfig'
             },
         },
-        icon: 'https://b.bdstatic.com/searchbox/icms/searchbox/img/eslint-logo.png',
+        icon: 'eslint',
         onRead: ({ data }) => ({
             prompts: getEslintPrompts(data)
         }),

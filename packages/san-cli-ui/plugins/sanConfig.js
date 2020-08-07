@@ -14,7 +14,7 @@ module.exports = api => {
                 js: ['san.config.js']
             }
         },
-        icon: 'https://baidu.github.io/san/img/logo2.png',
+        icon: 'san',
         onRead: ({data}) => ({
             prompts: [
                 {
