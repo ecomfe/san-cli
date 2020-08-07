@@ -413,6 +413,7 @@ export const functionComponents = [
     `
 ];
 
+// 非component，可能是store或者其他
 export const noComponent = [
     `
     export default san.defineComponent({});
@@ -509,6 +510,86 @@ export const noComponent = [
     conn = connect
     module.exports = conn['san']({num: 'num'})(defineComp(options));
     `
-
 ];
 
+export const hasCommentComponent = [
+    `
+        /* san-hmr components */
+        export default san.defineComponent({});
+    `,
+    `
+        // san-hmr components
+        import san from 'san';
+        const Comp = san.defineComponent({
+            template: 'Hello World'
+        });
+
+        let comp = new Comp();
+        comp.attch(document.body);
+    `,
+    `
+        export default san.defineComponent({});
+        /* san-hmr components */
+    `,
+    `
+        import san from 'san';
+        const Comp = san.defineComponent({
+            template: 'Hello World'
+        });
+
+        let comp = new Comp();
+        comp.attch(document.body);
+        // san-hmr components
+    `
+];
+
+export const hasCommentDisable = [
+    `
+        /* san-hmr disable */
+        import san from 'san';
+        function Comp(options) {
+            san.Component(this, options);
+            this.data = {
+                a: 1
+            };
+        }
+        san.inherits(Comp, san.Component);
+        export default Comp;
+    `,
+    `
+        // san-hmr disable
+        import san from 'san';
+        function Comp(options) {
+            san.Component(this, options);
+            this.data = {
+                a: 1
+            };
+        }
+        san.inherits(Comp, san.Component);
+        export default Comp;
+    `,
+    `
+        import san from 'san';
+        function Comp(options) {
+            san.Component(this, options);
+            this.data = {
+                a: 1
+            };
+        }
+        san.inherits(Comp, san.Component);
+        export default Comp;
+        /* san-hmr disable */
+    `,
+    `
+        import san from 'san';
+        function Comp(options) {
+            san.Component(this, options);
+            this.data = {
+                a: 1
+            };
+        }
+        san.inherits(Comp, san.Component);
+        export default Comp;
+        // san-hmr disable
+    `
+]
