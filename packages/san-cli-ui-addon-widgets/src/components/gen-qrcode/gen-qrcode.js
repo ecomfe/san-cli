@@ -2,15 +2,42 @@
  * @file gen-qrcode 生成二维码组件
  * @author zttonly
  */
-import QRCode from 'qrcode';
-import {Input, Alert} from 'santd';
+
+import QRCode from 'qrcodejs2';
+import {frameTypes, box} from './schema';
+import {Input, Alert, Select, Radio} from 'santd';
 import 'santd/es/input/style';
 import 'santd/es/alert/style';
+import 'santd/es/select/style';
+import 'santd/es/radio/style';
 import './gen-qrcode.less';
 
 export default {
     template: /* html */`
         <div class="gen-qrcode">
+            <div class="conditions">
+                <s-select value="{{currentType}}"
+                    placeholder="{{$('dashboard.widgets.gen-qrcode.select-type')}}"
+                    on-change="onFrameChange"
+                >
+                    <s-selectoption s-for="ft in frameTypes" value="{{ft.value}}">
+                        {{ft.text}}
+                    </s-selectoption>
+                </s-select>
+                <s-select
+                    s-if="realBox.length > 0" 
+                    value="{=currentBox=}"
+                    placeholder="{{$('dashboard.widgets.gen-qrcode.select-box')}}"
+                >
+                    <s-selectoption s-for="b in realBox" value="{{b.value}}">
+                        {{b.text}}
+                    </s-selectoption>
+                </s-select>
+                <s-group s-if="showSearchOpt" name="radiogroup" value="{{radioValue}}}" on-change="onRadioChange">
+                    <s-radio value="{{'open'}}">url</s-radio>
+                    <s-radio value="{{'search'}}">query</s-radio>
+                </s-group>
+            </div>
             <s-input-search
                 value="{=inputValue=}"
                 placeholder="{{$t('dashboard.widgets.gen-qrcode.placeholder')}}"
@@ -20,53 +47,96 @@ export default {
             ></s-input-search>
             <s-alert s-if="error" message="{{$t('dashboard.widgets.gen-qrcode.err-msg')}}" type="error"/>
             <div class="title">
-                {{$t('dashboard.widgets.gen-qrcode.url-title')}}
+                {{$t('dashboard.widgets.gen-qrcode.sec-title')}}
             </div>
-            <canvas class="qrcode" s-ref="qrcode-url"></canvas>
+            <div class="qrcode" s-ref="qrcode"></div>
             <div class="title">
-                {{$t('dashboard.widgets.gen-qrcode.schema-title')}}
+                {{$t('dashboard.widgets.gen-qrcode.schema')}}
             </div>
-            <canvas class="qrcode" s-ref="qrcode-schema"></canvas>
+            <div class="schema">{{schema}}</div>
         </div>
     `,
     components: {
         's-input-search': Input.Search,
-        's-alert': Alert
+        's-alert': Alert,
+        's-select': Select,
+        's-selectoption': Select.Option,
+        's-radio': Radio,
+        's-group': Radio.Group
+    },
+    computed: {
+        realBox() {
+            const currentType = this.data.get('currentType');
+            const box = this.data.get('box');
+            return box.filter(item => item[currentType]);
+        },
+        showSearchOpt() {
+            const currentType = this.data.get('currentType');
+            return currentType === 'search';
+        }
     },
     initData() {
         return {
             inputValue: location.href,
-            error: false
+            error: false,
+            frameTypes,
+            currentType: 'url',
+            box,
+            currentBox: ['boxapp'],
+            schema: '',
+            radioValue: 'open',
+            slog: null
         };
     },
     attached() {
-        this.timer = null;
-        if (this.data.get('inputValue')) {
-            this.gen();
+        let url = this.data.get('inputValue');
+        if (url) {
+            this.genCode(url);
         }
+        this.watch('widget.config', value => {
+            typeof value === 'object'
+                && Object.keys(value).length > 0
+                && this.data.set('slog', value);
+        });
     },
     gen() {
-        this.timer && clearTimeout(this.timer);
-        const url = this.data.get('inputValue');
-        const schema = 'baiduboxapp://v1/easybrowse/open?url=' + encodeURIComponent(url) + '&style=' + encodeURIComponent('{"menumode":2,"toolbaricons":{"toolids":["3"],"tids":["3"]}}');
-        const option = {
-            color: {
-                dark: '#1890ffff',
-                light: '#e6f7ffff'
-            },
+        const {inputValue, currentType} = this.data.get();
+
+        if (currentType === 'url') {
+            this.genCode(inputValue);
+            return;
+        }
+        let {currentBox, realBox, radioValue, slog} = this.data.get();
+
+        let current = realBox.find(item => item.value === currentBox[0] && item[currentType]);
+        let schema = current[currentType](inputValue, slog);
+        if (currentType === 'search') {
+            schema = current[currentType](inputValue, radioValue === 'search');
+        }
+        this.genCode(schema);
+    },
+    genCode(schema) {
+        this.data.set('schema', schema);
+        if (this.qrcode) {
+            this.qrcode.clear();
+            this.qrcode.makeCode(schema);
+            return;
+        }
+        this.qrcode = new QRCode(this.ref('qrcode'), {
+            text: schema,
             width: 200,
-            margin: 1,
-            scale: 2
-        };
-        const cb = err => {
-            if (err) {
-                // eslint-disable-next-line no-console
-                console.error(err);
-                this.data.set('error', true);
-                this.timer = setTimeout(() => this.data.set('error', false), 1000);
-            }
-        };
-        QRCode.toCanvas(this.ref('qrcode-url'), url, option, cb);
-        QRCode.toCanvas(this.ref('qrcode-schema'), schema, option, cb);
+            height: 200,
+            colorDark: '#1890ffff',
+            colorLight: '#e6f7ffff',
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    },
+    onFrameChange(value) {
+        this.data.set('currentType', value[0]);
+        let realBox = this.data.get('realBox');
+        this.data.set('currentBox', realBox[0] ? [realBox[0].value] : '');
+    },
+    onRadioChange(e) {
+        this.data.set('radioValue', e.target.value);
     }
 };

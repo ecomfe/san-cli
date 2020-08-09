@@ -309,11 +309,21 @@
             "gen-qrcode": {
                 "title": "生成二维码",
                 "description": "输入链接生成二维码",
+                "select-type": "选择框架类型",
+                "select-box": "选择端类型",
                 "placeholder": "请输入url后点击生成",
                 "ok": "确认生成",
-                "url-title": "普通二维码",
-                "schema-title": "轻框架二维码",
-                "err-msg": "生成错误，请重新输入"
+                "sec-title": "二维码",
+                "schema": "链接",
+                "err-msg": "生成错误，请重新输入",
+                "prompts": {
+                    "from": "slog-来源信息from",
+                    "page": "slog-页面标记page",
+                    "type": "slog-自定义类型type",
+                    "extra": "slog-json对象extra",
+                    "needless": "选填",
+                    "need": "必填"
+                }
             },
             "vulnerability": {
                 "title": "安全隐患检查",

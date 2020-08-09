@@ -212,6 +212,40 @@ module.exports = api => {
         minHeight: 3,
         maxWidth: 2,
         maxHeight: 3,
-        maxCount: 1
+        maxCount: 1,
+        async onConfigOpen() {
+            return {
+                prompts: [
+                    {
+                        name: 'from',
+                        type: 'input',
+                        message: 'dashboard.widgets.gen-qrcode.prompts.from',
+                        placeholder: 'dashboard.widgets.run-task.prompts.needless',
+                        validate: input => !!input
+                    },
+                    {
+                        name: 'page',
+                        type: 'input',
+                        message: 'dashboard.widgets.gen-qrcode.prompts.page',
+                        placeholder: 'dashboard.widgets.run-task.prompts.needless',
+                        validate: input => !!input
+                    },
+                    {
+                        name: 'type',
+                        type: 'input',
+                        message: 'dashboard.widgets.gen-qrcode.prompts.type',
+                        placeholder: 'dashboard.widgets.run-task.prompts.needless',
+                        validate: input => !!input
+                    },
+                    {
+                        name: 'extra',
+                        type: 'input',
+                        message: 'dashboard.widgets.gen-qrcode.prompts.extra',
+                        placeholder: 'dashboard.widgets.run-task.prompts.needless',
+                        validate: input => !!input
+                    }
+                ]
+            };
+        }
     });
 };

@@ -47,7 +47,7 @@
     "san-cli": "^0.1.0"
   },
   "dependencies": {
-    "qrcode": "^1.4.4",
+    "qrcodejs2": "0.0.2",
     "san-cli-ui": "^0.0.1",
     "santd": "^0.2.8"
   }
