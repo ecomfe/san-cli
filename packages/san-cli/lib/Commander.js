@@ -201,6 +201,12 @@ module.exports = class Command {
                 default: false,
                 describe: 'Show Webpack profiler log'
             })
+            .option('dashboard', {
+                hidden: true,
+                type: 'boolean',
+                default: false,
+                describe: 'To send ipc message to ui-dashboard'
+            })
             .option('log-level', {
                 alias: 'logLevel',
                 hidden: true,

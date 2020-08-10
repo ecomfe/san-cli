@@ -61,7 +61,7 @@ class SharedData {
             updated: new Date()
         });
 
-        const stat = this.getStat(projectId, id);
+        const stat = this.getStat({projectId, id});
         stat.value = 0;
         context.pubsub.publish(channels.SHARED_DATA_UPDATED, {
             sharedDataUpdated: {id, projectId, value}
@@ -136,18 +136,18 @@ class SharedData {
      * @param {string} projectId 项目名称
      * @param {Function} handler 回调方法
     */
-    unWatchAll(projectId) {
+    unwatchAll(projectId) {
         this.watchers.delete(projectId);
     }
 
-    notify({id, projectId, value}, context) {
+    fire({id, projectId, value}, context) {
         const handlers = deepGet(this.watchers, `${projectId}.${id}`) || [];
         handlers.forEach(fn => fn(value, id));
         return handlers;
     }
 
     // 增加shareData的日志统计
-    getStat(projectId, id) {
+    getStat({id, projectId}) {
         let stat = deepGet(this.stats, `${projectId}.${id}`);
         if (!stat) {
             stat = {
@@ -158,8 +158,8 @@ class SharedData {
         return stat;
     }
 
-    addStat(projectId, id) {
-        const stat = this.getStat(projectId, id);
+    addStat({id, projectId}) {
+        const stat = this.getStat({projectId, id});
         stat.value++;
     }
 };

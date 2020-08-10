@@ -50,12 +50,17 @@ module.exports = class Service extends EventEmitter {
             useBuiltInPlugin = true,
             useProgress = true,
             useProfiler = false,
+            useDashboard = false,
             projectOptions = {}
         } = {}
     ) {
         super();
         // 不使用进度条
         this.useProgress = useProgress;
+
+        // 发送CLI UI信息的IPC服务
+        this.useDashboard = useDashboard;
+
         // webpackbar 的 profiler 需要开启进度条才能使用
         this.useProfiler = useProgress && useProfiler;
         // watch模式
@@ -398,6 +403,14 @@ module.exports = class Service extends EventEmitter {
                 progressOptions.profile = true;
             }
             this.addPlugin(require('san-cli-plugin-progress'), progressOptions);
+        }
+
+        // 添加dashboard Plugin
+        if (this.useDashboard) {
+            this.addPlugin(require('san-cli-plugin-dashboard'), {
+                type: this.name,
+                keepAlive: this.watch
+            });
         }
 
         time('init');

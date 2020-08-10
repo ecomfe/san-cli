@@ -3,7 +3,7 @@
  * @author zttonly
  */
 
-const { cosmiconfigSync } = require('cosmiconfig');
+const {cosmiconfigSync} = require('cosmiconfig');
 const explorerSync = cosmiconfigSync('eslint', {
     stopDir: process.cwd()
 });
@@ -15,4 +15,5 @@ module.exports = api => {
     if (explorerSync.search() !== null) {
         require('./eslintConfig')(api);
     }
+    require('./task')(api);
 };

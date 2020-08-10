@@ -145,7 +145,6 @@ module.exports = api => {
     });
 
     // News
-
     api.registerWidget({
         id: 'san.widgets.news',
         title: 'dashboard.widgets.news.title',
@@ -202,6 +201,7 @@ module.exports = api => {
         newsCache[params.url] = result;
         return result;
     });
+
     api.registerWidget({
         id: 'san.widgets.gen-qrcode',
         title: 'dashboard.widgets.gen-qrcode.title',
