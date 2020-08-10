@@ -15,5 +15,4 @@ module.exports = api => {
     if (explorerSync.search() !== null) {
         require('./eslintConfig')(api);
     }
-    require('./task')(api);
 };
