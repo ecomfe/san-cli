@@ -51,6 +51,7 @@ export default class Dashboard extends Component {
                                     widget="{=widget=}"
                                     custom="{=editing=}"
                                     loaded="{=scriptLoaded=}"
+                                    on-updatewidgets="updateWidgets"
                                 />
                             </template>
                         </div>
@@ -145,6 +146,9 @@ export default class Dashboard extends Component {
         if (definitions.data) {
             this.data.set('definitions', definitions.data.widgetDefinitions);
         }
+    }
+    updateWidgets(e) {
+        this.data.set('widgets', e);
     }
     onScriptLoad() {
         this.data.set('scriptLoaded', true);
