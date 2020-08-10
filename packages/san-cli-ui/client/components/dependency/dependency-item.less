@@ -30,10 +30,16 @@
             min-width: 138px;
             display: inline-block;
         }
-    }
-
-    .pkg-download {
-        color: #1890ff;
+        .update-icon {
+            border: 1px solid #6a8bad;
+            border-radius: 50%;
+            font-size: 10px;
+            width: 16px;
+            height: 16px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
     }
     
     .pkg-check-ico {
@@ -41,8 +47,10 @@
     }
 
     .highlight {
-        :hover {
+        &:hover {
             color: #1890ff;
+            border-color: #1890ff !important;
+            cursor: pointer;
         }
     }
 }
