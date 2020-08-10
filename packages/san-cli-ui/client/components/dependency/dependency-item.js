@@ -4,16 +4,16 @@
  */
 
 import {Component} from 'san';
-import {Button, Icon, Spin, Notification, Modal} from 'santd';
+import {Icon, Spin, Notification, Modal, Tooltip} from 'santd';
 import avatars from '@lib/utils/avatars';
 import DEPENDENCY_UNINSTALL from '@/graphql/dependency/dependency-uninstall.gql';
 import DEPENDENCY_INSTALL from '@graphql/dependency/dependency-install.gql';
 import './dependency-item.less';
-import 'santd/es/button/style';
 import 'santd/es/icon/style';
 import 'santd/es/spin/style';
 import 'santd/es/notification/style';
 import 'santd/es/modal/style';
+import 'santd/es/tooltip/style';
 
 export default class DependenceItem extends Component {
     static template = /* html */`
@@ -36,23 +36,30 @@ export default class DependenceItem extends Component {
                         </span>
                         <s-icon class="pkg-check-ico" type="check-circle" />
                         <span class="pkg-version">{{$t('dependency.installed')}}</span>
-                        <s-icon
-                            s-if="item.detail.current !== item.detail.latest"
-                            type="arrow-up" 
-                            class="pkg-download" 
-                            on-click="onPkgUpdate"
-                            style="border: 1px solid #1890ff; border-radius: 50%; font-size: 10px; width: 16px; height: 16px; display: inline-flex; justify-content: center; align-items: center;"/>
+                        <s-tooltip
+                            title="{{$t('dependency.tooltip.update')}}"
+                            s-if="item.detail.current !== item.detail.latest">
+                            <s-icon
+                                type="arrow-up" 
+                                class="highlight"
+                                on-click="onPkgUpdate"
+                                style="border: 1px solid #6a8bad; border-radius: 50%; font-size: 10px; width: 16px;
+                                    height: 16px; display: inline-flex; justify-content: center; align-items: center;"
+                            />
+                        </s-tooltip>
                     </div>
                 </div>
-                <s-icon type="delete" class="highlight" on-click="showDeleteConfirm"/>
+                <s-tooltip title="{{$t('dependency.tooltip.del')}}">
+                    <s-icon type="delete" class="highlight" on-click="showDeleteConfirm"/>
+                </s-tooltip>
             </div>
         </s-spin>
     `;
 
     static components = {
-        's-button': Button,
         's-icon': Icon,
-        's-spin': Spin
+        's-spin': Spin,
+        's-tooltip': Tooltip
     }
 
     initData() {

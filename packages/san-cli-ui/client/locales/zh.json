@@ -142,7 +142,7 @@
         "newDependency": "安装新的依赖",
         "installing": "安装中...",
         "uninstall": "卸载中...",
-        "update": "升级中...",
+        "update": "更新中...",
         "dependencies": "运行依赖",
         "devDependencies": "开发依赖",
         "confirmUninstall": "确定卸载",
@@ -150,8 +150,12 @@
         "deleteSuccess": "卸载成功",
         "installDependency": "依赖安装",
         "installSuccess": "安装成功",
-        "updateDependency": "依赖升级",
-        "updateSuccess": "升级成功"
+        "updateDependency": "依赖更新",
+        "updateSuccess": "更新成功",
+        "tooltip": {
+            "update": "更新",
+            "del": "删除"
+        }
     },
     "connection-status": {
         "disconnected": "连接已断开",
