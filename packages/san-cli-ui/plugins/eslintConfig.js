@@ -49,7 +49,7 @@ module.exports = api => {
                 package: 'eslintConfig'
             },
         },
-        icon: 'eslint',
+        icon: require('./utils/getImageUrl')('/public/eslint.png'),
         onRead: ({ data }) => ({
             prompts: getEslintPrompts(data)
         }),

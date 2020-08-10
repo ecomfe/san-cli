@@ -18,8 +18,6 @@ import 'santd/es/spin/style';
 import 'santd/es/input/style';
 import 'santd/es/grid/style';
 import './configuration.less';
-import eslintLogo from '@assets/config-eslint-logo.png';
-import sanLogo from '@assets/config-san-logo.png';
 
 export default class Configuration extends Component {
     static template = /* html */`
@@ -44,7 +42,7 @@ export default class Configuration extends Component {
                                 class="list-item {{currentConfigId === item.id ? 'selected' : ''}}"
                                 on-click="switchConfig(item.id)"
                             >
-                                <img src="{{logos[item.icon] || item.icon}}" class="item-logo"/>
+                                <img src="{{item.icon}}" class="item-logo"/>
                                 <c-item-info
                                     name="{{item.name}}"
                                     description="{{$t(item.description)}}"
@@ -85,11 +83,7 @@ export default class Configuration extends Component {
             pageLoading: false,
             search: '',
             currentConfigId: '',
-            currentConfig: null,
-            logos: {
-                eslint: eslintLogo,
-                san: sanLogo
-            }
+            currentConfig: null
         };
     }
     static computed = {

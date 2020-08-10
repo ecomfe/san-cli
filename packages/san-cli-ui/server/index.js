@@ -59,6 +59,7 @@ module.exports = options => {
 
         const httpServer = http.createServer(app);
         apolloServer.installSubscriptionHandlers(httpServer);
+        process.env.SAN_APP_GRAPHQL_PORT = serverPort;
         httpServer.listen(
             {
                 host,
