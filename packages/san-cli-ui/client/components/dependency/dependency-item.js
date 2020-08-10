@@ -41,10 +41,8 @@ export default class DependenceItem extends Component {
                             s-if="item.detail.current !== item.detail.latest">
                             <s-icon
                                 type="arrow-up" 
-                                class="highlight"
+                                class="update-icon highlight"
                                 on-click="onPkgUpdate"
-                                style="border: 1px solid #6a8bad; border-radius: 50%; font-size: 10px; width: 16px;
-                                    height: 16px; display: inline-flex; justify-content: center; align-items: center;"
                             />
                         </s-tooltip>
                     </div>
