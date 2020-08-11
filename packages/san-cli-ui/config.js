@@ -41,7 +41,6 @@ exports.clientAddonConfig = function ({id, port = 8889}) {
                 .chunkFilename('index.js');
             config.plugins.delete('preload');
             config.plugins.delete('prefetch');
-            config.plugins.delete('html');
             config.plugins.delete('optimize-css');
 
             config.optimization.splitChunks(false);
