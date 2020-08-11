@@ -13,7 +13,7 @@ const prettyTime = require('pretty-time');
 const ConsoleTable = require('tty-table');
 
 const {chalk} = require('san-cli-utils/ttyLogger');
-const {textBold} = require('san-cli-utils/randomColor');
+const {textCommonBold} = require('san-cli-utils/color');
 
 const MAX_ITEM_TIME = 300;
 const MAX_TOTAL_TIME = 30 * 1e3;
@@ -107,7 +107,7 @@ module.exports = function formatStats(allStats) {
             }
         );
 
-        lines.push(`\n  Stats by ${textBold(startCase(category))}` + table.render());
+        lines.push(`\n  Stats by ${textCommonBold(startCase(category))}` + table.render());
     });
 
     return `${lines.join('\n')}\n`;

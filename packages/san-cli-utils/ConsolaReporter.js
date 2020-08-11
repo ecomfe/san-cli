@@ -13,7 +13,7 @@ const chalk = require('chalk');
 const stringWidth = require('string-width');
 const {FancyReporter} = require('consola');
 const {chalkColor, chalkBgColor} = require('./color');
-const randomColor = require('./randomColor').color;
+const COMMON_COLOR = require('./color').COMMON_COLOR;
 
 
 const TYPE_ICONS = {
@@ -28,8 +28,8 @@ const TYPE_ICONS = {
     log: ''
 };
 const TYPE_COLOR_MAP = {
-    success: randomColor,
-    info: randomColor,
+    success: COMMON_COLOR,
+    info: COMMON_COLOR,
     note: 'white',
     warn: 'yellow',
     warning: 'yellow',

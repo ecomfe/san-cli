@@ -11,7 +11,7 @@ module.exports = function build(argv, api, projectOptions) {
     const mode = argv.mode || process.env.NODE_ENV || 'production'; // 默认是 production
     info(`Building for docit(${mode})...`);
 
-    const {textColor} = require('san-cli-utils/randomColor');
+    const {textCommonColor} = require('san-cli-utils/color');
     const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
     // 重新赋值
     argv.mode = mode;
@@ -52,7 +52,7 @@ module.exports = function build(argv, api, projectOptions) {
 
         const {time, version} = stats;
         successLog(
-            `The ${textColor(targetDirShort)} directory is ready to be deployed. Duration ${textColor(
+            `The ${textCommonColor(targetDirShort)} directory is ready to be deployed. Duration ${textCommonColor(
                 `${duration}/${time / 1e3}s`
             )}, Webpack ${version}.`
         );

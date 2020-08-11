@@ -11,7 +11,7 @@
 module.exports = function apply(argv, api, projectOptions) {
     const path = require('path');
     const {info, success: successLog, error} = require('san-cli-utils/ttyLogger');
-    const {textColor} = require('san-cli-utils/randomColor');
+    const {textCommonColor} = require('san-cli-utils/color');
     const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
     // 开始时间
     const startTime = Date.now();
@@ -19,7 +19,7 @@ module.exports = function apply(argv, api, projectOptions) {
     // 重新赋值
     argv.mode = mode;
 
-    const {watch, analyze, verbose, dest, modern} = argv;
+    const {watch, analyze, dest, modern} = argv;
     // --modern + --analyze 应该显示 modern 的 analyze 的结果
     if (modern && analyze) {
         process.env.SAN_CLI_MODERN_BUILD = true;
@@ -74,9 +74,9 @@ module.exports = function apply(argv, api, projectOptions) {
                 }
                 const {time, version} = stats;
                 successLog(
-                    `The ${textColor(targetDirShort)} directory is ready to be deployed. Duration ${textColor(
-                        `${duration}/${time / 1e3}s`
-                    )}, Webpack ${version}.`
+                    `The ${textCommonColor(targetDirShort)} directory is ready to be deployed. Duration ${
+                        textCommonColor(`${duration}/${time / 1e3}s`)
+                    }, Webpack ${version}.`
                 );
             }
         }

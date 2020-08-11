@@ -9,7 +9,7 @@
  */
 
 const path = require('path');
-const {textColor} = require('san-cli-utils/randomColor');
+const {textCommonColor} = require('san-cli-utils/color');
 exports.command = 'command <add|ls|list|rm|remove>';
 const desc = 'Add/Manage subcommands';
 exports.description = desc;
@@ -17,7 +17,7 @@ exports.builder = yargs => {
     if (yargs.argv._.length === 1) {
         const scriptName = yargs.$0;
         console.log(
-            textColor(
+            textCommonColor(
                 `Usage: ${scriptName[0].toUpperCase()}${scriptName.slice(1)} command <add|ls|rm|list|remove> [flags]`
             )
         );
