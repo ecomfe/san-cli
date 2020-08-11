@@ -17,7 +17,11 @@ import 'santd/es/button/style';
 
 export default class Dependency extends Component {
     static template = /* html */`
-        <c-layout menu="{{$t('menu')}}" nav="{{['dependency']}}" title="{{$t('dependency.title')}}">
+        <c-layout menu="{{$t('menu')}}"
+            nav="{{['dependency']}}"
+            title="{{$t('dependency.title')}}"
+            page-loading="{=pageLoading=}"
+        >
             <template slot="right" s-if="!modalVisible">
                 <s-button type="primary" on-click="onModalShow">
                     <s-icon type="plus"/>{{$t('dependency.installDependency')}}
@@ -81,7 +85,8 @@ export default class Dependency extends Component {
         return {
             keyword: '',
             dependenciesList: [],
-            modalVisible: false
+            modalVisible: false,
+            pageLoading: true
         };
     }
 
@@ -111,7 +116,7 @@ export default class Dependency extends Component {
         const query = await this.$apollo.query({query: DEPENDENCIES});
         const dependencies = query.data ? query.data.dependencies : [];
         this.data.set('dependenciesList', dependencies);
-
+        this.data.set('pageLoading', false);
         // 使用队列来优化性能，并发量3
         const concurrency = 3;
         const queue = fastq(this, this.getDependencyItem, concurrency);

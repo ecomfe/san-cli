@@ -122,13 +122,12 @@ export default class Dashboard extends Component {
             editing: false,
             widgets: [],
             definitions: [],
-            pageLoading: false,
+            pageLoading: true,
             isReady: false,
             scriptLoaded: false
         };
     }
     async created() {
-        this.data.set('pageLoading', true);
         // init plugin todo: plugin初始化依赖集中到一处
         await this.$apollo.query({query: PLUGINS});
         this.data.set('isReady', true);

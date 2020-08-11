@@ -18,7 +18,11 @@ import './task.less';
 
 export default class Task extends createApolloComponent(Component) {
     static template = /* html */`
-        <c-layout menu="{{$t('menu')}}" nav="{{['tasks']}}" title="{{$t('task.title')}}">
+        <c-layout menu="{{$t('menu')}}"
+            nav="{{['tasks']}}"
+            title="{{$t('task.title')}}"
+            page-loading="{=pageLoading=}"
+        >
             <template slot="right"></template>
             <div slot="content" class="{{taskName ? 'task' : 'task-home'}}">
                 <c-task-nav 
@@ -67,7 +71,7 @@ export default class Task extends createApolloComponent(Component) {
         if (tasksData.data) {
             this.data.set('tasks', tasksData.data.tasks);
         }
-
+        this.data.set('pageLoading', false);
         let routePath = this.data.get('route.path');
 
         if (routePath) {

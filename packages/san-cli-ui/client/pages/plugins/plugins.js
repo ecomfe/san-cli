@@ -13,7 +13,11 @@ import './plugins.less';
 
 export default class Plugins extends Component {
     static template = /* html */`
-        <c-layout menu="{{$t('menu')}}" nav="{{['plugins']}}" title="{{$t('plugins.title')}}">
+        <c-layout menu="{{$t('menu')}}"
+            nav="{{['plugins']}}"
+            title="{{$t('plugins.title')}}"
+            page-loading="{=pageLoading=}"
+        >
             <div slot="content" class="plugins">
                 <div class="pkg-body" s-if="pluginList.length">
                     <h2>{{$t('plugins.subTitle')}}</h2>
@@ -37,7 +41,8 @@ export default class Plugins extends Component {
 
     initData() {
         return {
-            pluginList: []
+            pluginList: [],
+            pageLoading: true
         };
     }
 
@@ -45,7 +50,7 @@ export default class Plugins extends Component {
         const query = await this.$apollo.query({query: PLUGINS});
         const plugins = query.data ? query.data.plugins : [];
         this.data.set('pluginList', plugins);
-
+        this.data.set('pageLoading', false);
         // 使用队列来优化性能，并发量3
         const concurrency = 3;
         const queue = fastq(this, this.getDependencyItem, concurrency);
