@@ -16,10 +16,9 @@ import './run-task.less';
 export default {
     template: /* html */`
         <div class="run-task">
-            <template v-if="task">
-                <div class="task-nav info status-{{task.status}} {{selected ? 'selected' : ''}}"
-                >
-                    <div class="task-nav-item" s-if="task">
+            <template s-if="task">
+                <div class="task-nav info status-{{task.status}} {{selected ? 'selected' : ''}}">
+                    <div class="task-nav-item">
                         <div class="task-icon">
                             <img s-if="task.icon" src="{{task.icon}}" />
                             <img s-else src="{{avatars(task.name)}}" />

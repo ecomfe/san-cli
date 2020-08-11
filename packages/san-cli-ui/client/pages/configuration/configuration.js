@@ -80,7 +80,7 @@ export default class Configuration extends Component {
         return {
             configurations: [],
             plugins: '',
-            pageLoading: false,
+            pageLoading: true,
             search: '',
             currentConfigId: '',
             currentConfig: null
@@ -95,7 +95,6 @@ export default class Configuration extends Component {
         }
     };
     async created() {
-        this.data.set('pageLoading', true);
         // init plugin
         let plugins = await this.$apollo.query({query: PLUGINS});
         if (plugins.data) {
