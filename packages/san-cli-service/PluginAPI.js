@@ -40,9 +40,8 @@ module.exports = class PluginAPI {
         if (p) {
             argsert('<string>', [p], arguments.length);
             return path.resolve(this.service.cwd, p);
-        } else {
-            return this.service.cwd;
         }
+        return this.service.cwd;
     }
     chainWebpack(fn) {
         argsert('<function>', [fn], arguments.length);

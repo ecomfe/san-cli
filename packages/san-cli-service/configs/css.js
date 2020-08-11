@@ -68,7 +68,8 @@ module.exports = {
             );
 
             // use relative publicPath in extracted CSS based on extract location
-            const cssPublicPath = '../'.repeat(
+            // use config publicPath first
+            const cssPublicPath = rootOptions.publicPath || '../'.repeat(
                 extractOptions.filename.replace(/^\.[\/\\]/, '').split(/[\/\\]/g).length - 1
             );
             // 优先使用 san.config 定义的内容

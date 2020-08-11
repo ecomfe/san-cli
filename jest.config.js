@@ -29,6 +29,7 @@ module.exports = {
     // An array of regexp pattern strings used to skip coverage collection
     coveragePathIgnorePatterns: [
         '<rootDir>/packages/san-cli-command-init/handlerbars.js',
+        'examples',
         'node_modules'
     ],
 

@@ -9,7 +9,9 @@
  */
 
 // 引入 san 但完全不使用其 api 定义组件时，不会被识别为 san 组件
+// 加上如下注释条件，则会强制启动store HMR
 
+// san-hmr store
 var san = require('san');
 
 var App = require('./components/app');

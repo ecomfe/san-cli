@@ -9,6 +9,7 @@
  */
 
 const Service = require('../Service');
+const path = require('path');
 
 jest.unmock('fs-extra');
 // jest.unmock('cosmiconfig');
@@ -69,7 +70,7 @@ describe('e2e 测试', () => {
                 context: cwd + '',
                 devtool: 'cheap-module-eval-source-map',
                 output: {
-                    path: cwd + '/output',
+                    path: path.join(cwd, '/output'),
                     jsonpFunction: 'HK3',
                     filename: '[name].js',
                     publicPath: '/'
@@ -77,9 +78,9 @@ describe('e2e 测试', () => {
                 resolve: {
                     symlinks: false,
                     alias: {
-                        'core-js': cwd + '/packages/san-cli-service/node_modules/core-js',
-                        'regenerator-runtime': cwd + '/node_modules/regenerator-runtime',
-                        san: cwd + '/node_modules/san/dist/san.spa.dev.js',
+                        'core-js': path.join(cwd, '/packages/san-cli-service/node_modules/core-js'),
+                        'regenerator-runtime': path.join(cwd, '/node_modules/regenerator-runtime'),
+                        san: path.join(cwd, '/node_modules/san/dist/san.spa.dev.js'),
                         '@assets': cwd + '/src/assets',
                         '@components': cwd + '/src/components',
                         '@app': cwd + '/src/lib/App.js',
@@ -88,19 +89,19 @@ describe('e2e 测试', () => {
                     extensions: ['.js', '.css', '.less', '.san'],
                     modules: [
                         'node_modules',
-                        cwd + '/node_modules',
-                        cwd + '/packages/san-cli-service/node_modules'
+                        path.join(cwd, '/node_modules'),
+                        path.join(cwd, '/packages/san-cli-service/node_modules')
                     ]
                 },
                 resolveLoader: {
                     modules: [
-                        cwd + '/packages/san-cli-plugin-babel/node_modules',
+                        path.join(cwd, '/packages/san-cli-plugin-babel/node_modules'),
                         'node_modules',
-                        cwd + '/node_modules',
-                        cwd + '/packages/san-cli-service/node_modules'
+                        path.join(cwd, '/node_modules'),
+                        path.join(cwd, '/packages/san-cli-service/node_modules')
                     ]
                 },
-                entry: {index: [cwd + '/src/pages/index/index.js']},
+                entry: {index: [path.join(cwd, '/src/pages/index/index.js')]},
                 devServer: {
                     watchContentBase: false,
                     hot: true,
@@ -178,7 +179,7 @@ describe('e2e 测试', () => {
                 context: cwd + '',
                 devtool: 'source-map',
                 output: {
-                    path: cwd + '/output',
+                    path: path.join(cwd, '/output'),
                     jsonpFunction: 'HK3',
                     filename: 'static/san-cli/js/[name].[hash:8].js',
                     publicPath: 'https://s.bdstatic.com/',
@@ -187,9 +188,9 @@ describe('e2e 测试', () => {
                 resolve: {
                     symlinks: false,
                     alias: {
-                        'core-js': cwd + '/packages/san-cli-service/node_modules/core-js',
-                        'regenerator-runtime': cwd + '/node_modules/regenerator-runtime',
-                        san: cwd + '/node_modules/san/dist/san.spa.js',
+                        'core-js': path.join(cwd, '/packages/san-cli-service/node_modules/core-js'),
+                        'regenerator-runtime': path.join(cwd, '/node_modules/regenerator-runtime'),
+                        san: path.join(cwd, '/node_modules/san/dist/san.spa.js'),
                         '@assets': cwd + '/src/assets',
                         '@components': cwd + '/src/components',
                         '@app': cwd + '/src/lib/App.js',
@@ -198,19 +199,19 @@ describe('e2e 测试', () => {
                     extensions: ['.js', '.css', '.less', '.san'],
                     modules: [
                         'node_modules',
-                        cwd + '/node_modules',
-                        cwd + '/packages/san-cli-service/node_modules'
+                        path.join(cwd, '/node_modules'),
+                        path.join(cwd, '/packages/san-cli-service/node_modules')
                     ]
                 },
                 resolveLoader: {
                     modules: [
-                        cwd + '/packages/san-cli-plugin-babel/node_modules',
+                        path.join(cwd, '/packages/san-cli-plugin-babel/node_modules'),
                         'node_modules',
-                        cwd + '/node_modules',
-                        cwd + '/packages/san-cli-service/node_modules'
-                    ],
+                        path.join(cwd, '/node_modules'),
+                        path.join(cwd, '/packages/san-cli-service/node_modules')
+                    ]
                 },
-                entry: {index: [cwd + '/src/pages/index/index.js']},
+                entry: {index: [path.join(cwd, '/src/pages/index/index.js')]},
                 devServer: {
                     watchContentBase: false,
                     hot: true,

@@ -77,7 +77,7 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
         // staticDomain: 'http://test.com:8888'
         const remoteObj = {};
         const upperRemote = remote.toUpperCase();
-        ['receiver', 'templatePath', 'staticPath', 'staticDomain'].forEach(key => {
+        ['receiver', 'templatePath', 'staticPath', 'staticDomain', 'baseUrl'].forEach(key => {
             // templatePath → TEMPLATE_PATH
             const upperKey = key.replace(/[A-Z]/g, $1 => `_${$1}`).toUpperCase();
             const val = process.env[`SAN_REMOTE_${upperRemote}_${upperKey}`];

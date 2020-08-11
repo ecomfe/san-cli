@@ -147,3 +147,105 @@ export const noInstantStores = [
     `
 ];
 
+export const hasCommentStore = [
+    `
+        // san-hmr store
+        var san = require('san');
+        var App = require('./components/app');
+        App = App.__esModule ? App.default : App;
+
+        var app = new App();
+        app.attach(document.body);
+
+        console.log('Index Loaded');
+    `,
+    `
+        var san = require('san');
+        var App = require('./components/app');
+        App = App.__esModule ? App.default : App;
+
+        var app = new App();
+        app.attach(document.body);
+
+        console.log('Index Loaded');
+        /* san-hmr store */
+    `,
+    `
+        var san = require('san');
+        var App = require('./components/app');
+        App = App.__esModule ? App.default : App;
+
+        var app = new App();
+        app.attach(document.body);
+
+        console.log('Index Loaded');
+        // san-hmr store
+    `,
+    `
+        /* san-hmr store */
+        var san = require('san');
+        var App = require('./components/app');
+        App = App.__esModule ? App.default : App;
+
+        var app = new App();
+        app.attach(document.body);
+
+        console.log('Index Loaded');
+    `
+];
+
+export const hasCommentDisable = [
+    `
+        /* san-hmr disable */
+        import {store} from 'san-store';
+        import {builder} from 'san-update';
+
+        store.addAction('count', function (num) {
+            return builder().set('num', num);
+        });
+
+        store.addAction('decrease', function (num) {
+            return builder().set('num', num - 1);
+        });
+    `,
+    `
+        import {store} from 'san-store';
+        import {builder} from 'san-update';
+
+        store.addAction('count', function (num) {
+            return builder().set('num', num);
+        });
+
+        store.addAction('decrease', function (num) {
+            return builder().set('num', num - 1);
+        });
+        /* san-hmr disable */
+    `,
+    `
+        // san-hmr disable
+        import {store} from 'san-store';
+        import {builder} from 'san-update';
+
+        store.addAction('count', function (num) {
+            return builder().set('num', num);
+        });
+
+        store.addAction('decrease', function (num) {
+            return builder().set('num', num - 1);
+        });
+    `,
+    `
+        import {store} from 'san-store';
+        import {builder} from 'san-update';
+
+        store.addAction('count', function (num) {
+            return builder().set('num', num);
+        });
+
+        store.addAction('decrease', function (num) {
+            return builder().set('num', num - 1);
+        });
+        // san-hmr disable
+    `,
+]
+

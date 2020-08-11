@@ -30,6 +30,7 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     webpackConfig.devServer = Object.assign(
         {
             hot: !isProd,
+            port: 8888,
             compress: isProd,
             contentBase: projectOptions.outputDir
         },

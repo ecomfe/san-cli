@@ -17,13 +17,6 @@ const {generateScriptImport, getScriptCode} = require('./blocks/script');
 const {generateStyleImport, getStyleCode} = require('./blocks/style');
 
 /**
- * runtime 模块路径
- *
- * @type {string}
- */
-const normalizePath = require.resolve('./runtime/normalize');
-
-/**
  * San 单文件有效的标签块及其代码提取方法集合
  *
  * @const
@@ -75,14 +68,33 @@ module.exports = function (source) {
     if (query && query.san === '' && query.type) {
         let {code, map} = extract(descriptor, options);
         // 处理compileTemplate情况
-        if (query.type === 'template' && ['aPack', 'aNode'].includes(compileTemplate)) {
-            let aNode = aNodeUtils.parseTemplate(code);
-            if (compileTemplate === 'aNode') {
-                code = aNode;
+        if (query.type === 'template') {
+            let compileTpl;
+            const compileTemplateTypes = ['aPack', 'aNode'];
+            // 优先使用template上面的compileTemplate
+            if (compileTemplateTypes.includes(query.compileTemplate)) {
+                compileTpl = query.compileTemplate;
             }
-            else {
-                let aPack = aNodeUtils.pack(aNode.children[0]);
-                code = aPack;
+            else if (compileTemplateTypes.includes(compileTemplate)) {
+                compileTpl = compileTemplate;
+            }
+            if (compileTpl) {
+                let aNode = aNodeUtils.parseTemplate(code);
+                switch (compileTpl) {
+                    case 'aNode':
+                        code = aNode;
+                        break;
+                    case 'aPack':
+                        if (aNode.children.length) {
+                            let aPack = aNodeUtils.pack(aNode.children[0]);
+                            code = aPack;
+                        }
+                        else {
+                            code = [];
+                        }
+
+                        break;
+                }
             }
         }
         if (this.sourceMap) {
@@ -98,8 +110,10 @@ module.exports = function (source) {
     let styleCode = generateStyleImport(descriptor, options);
     let scriptCode = generateScriptImport(descriptor, options);
 
+    // runtime 模块路径
+    const normalizePath = loaderUtils.stringifyRequest(this, require.resolve('./runtime/normalize'));
     let codo = `
-        import normalize from '${normalizePath}';
+        import normalize from ${normalizePath};
         ${styleCode}
         ${templateCode}
         ${scriptCode}

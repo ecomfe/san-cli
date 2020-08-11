@@ -9,6 +9,7 @@
  */
 
 const PluginAPI = require('../PluginAPI');
+const path = require('path');
 
 let pluginApi = null;
 beforeEach(() => {
@@ -37,5 +38,5 @@ test('测试configWebpack', () => {
 });
 
 test('测试resolve', () => {
-    expect(pluginApi.resolve('index.js')).toMatch('user/yyt/index.js');
+    expect(pluginApi.resolve('index.js')).toMatch(path.resolve('user/yyt/index.js'));
 });

@@ -384,8 +384,8 @@ function hasComment(ast, text) {
     let comments = [];
 
     for (let node of body) {
-        if (node.headingComments) {
-            comments = comments.concat(node.headingComments);
+        if (node.leadingComments) {
+            comments = comments.concat(node.leadingComments);
         }
         if (node.trailingComments) {
             comments = comments.concat(node.trailingComments);
