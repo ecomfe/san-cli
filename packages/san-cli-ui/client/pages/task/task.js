@@ -104,4 +104,4 @@ export default class Task extends createApolloComponent(Component) {
         });
         return res.data ? res.data.task : {};
     }
-};
+}

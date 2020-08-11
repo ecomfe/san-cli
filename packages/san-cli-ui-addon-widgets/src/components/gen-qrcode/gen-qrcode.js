@@ -94,7 +94,7 @@ export default {
             this.genCode(url);
         }
         this.watch('widget.config', value => {
-            typeof value === 'object'
+            value && typeof value === 'object'
                 && Object.keys(value).length > 0
                 && this.data.set('slog', value);
         });

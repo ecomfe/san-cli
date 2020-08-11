@@ -36,7 +36,7 @@ export default class Plugins extends Component {
     static components = {
         's-icon': Icon,
         'c-layout': Layout,
-        'c-dependency-item': DependencyItem,
+        'c-dependency-item': DependencyItem
     };
 
     initData() {
