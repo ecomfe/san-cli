@@ -67,7 +67,7 @@ class SharedData {
             sharedDataUpdated: {id, projectId, value}
         });
 
-        const watchers = this.notify({id, projectId, value}, context);
+        const watchers = this.fire({id, projectId, value}, context);
 
         setTimeout(() => (
             log('SharedData set', id, projectId, value, `(${watchers.length} watchers, ${stat.value} subscriptions)`)
@@ -94,7 +94,7 @@ class SharedData {
             sharedDataUpdated: {id, projectId, value: undefined}
         });
 
-        this.notify({id, projectId, value: undefined}, context);
+        this.fire({id, projectId, value: undefined}, context);
         log('SharedData remove', id, projectId);
     }
 
