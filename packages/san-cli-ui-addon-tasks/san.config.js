@@ -3,7 +3,7 @@
  *
  */
 
-const {clientAddonConfig} = require('san-cli-ui/config');
+const clientAddonConfig = require('san-cli-ui/client-addon-config');
 
 module.exports = {
     ...clientAddonConfig({
