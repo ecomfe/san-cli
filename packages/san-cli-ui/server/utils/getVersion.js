@@ -4,11 +4,9 @@
  * Reference: https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-ui/apollo-server/connectors/dependencies.js
  */
 const path = require('path');
-const folders = require('../connectors/folders');
 const LRU = require('lru-cache');
 const fs = require('fs');
 const ini = require('ini');
-const semver = require('semver');
 
 const metadataCache = new LRU({
     max: 200,

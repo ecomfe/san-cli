@@ -3,7 +3,6 @@
  * @author zttonly
 */
 
-const cwd = require('../connectors/cwd');
 const widgets = require('../connectors/widgets');
 
 module.exports = {

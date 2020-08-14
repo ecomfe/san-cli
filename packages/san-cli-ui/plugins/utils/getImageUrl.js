@@ -5,7 +5,7 @@
 
 module.exports = url => {
     if (process.env.SAN_CLI_UI_DEV && url[0] === '/') {
-        return `http://localhost:${process.env.SAN_APP_GRAPHQL_PORT}${url}`
+        return `http://localhost:${process.env.SAN_APP_GRAPHQL_PORT}${url}`;
     }
-    return url
-}
+    return url;
+};

@@ -11,11 +11,11 @@ module.exports = async (options, cwd) => {
     cwd = cwd || process.cwd();
     let query = path.resolve(cwd, options.path);
     if (line) {
-        query += `:${line}`
+        query += `:${line}`;
         if (column) {
-          query += `:${column}`
+            query += `:${column}`;
         }
-      }
+    }
     info(`Opening [${query}] in code editor...`);
     launch(query, 'code', (fileName, errorMsg) => {
         error(`Unable to open [${fileName}]: ${errorMsg}`);

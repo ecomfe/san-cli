@@ -113,7 +113,9 @@ export default class ConfigContent extends Component {
                     list.push(prompt);
                 }
                 for (const tabId in result) {
-                    data.configuration.tabs.find(t => t.id === tabId).prompts = result[tabId];
+                    if (result.hasOwnProperty(tabId)) {
+                        data.configuration.tabs.find(t => t.id === tabId).prompts = result[tabId];
+                    }
                 }
                 store.writeQuery({query: CONFIGURATION, variables: vars, data});
             }

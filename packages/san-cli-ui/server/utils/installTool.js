@@ -19,7 +19,6 @@ const cache = {
 };
 let isHasYarnEnv = null;
 let isHasPnpmEnv = null;
-let isShouldUseTaobao = null;
 let version = null;
 // 判断文件是否存在
 function isFileExist(type, cwd, file) {

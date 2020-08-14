@@ -57,7 +57,7 @@ export default class DependenceSearchItem extends Component {
     // 点击安装
     async onInstallPlugin(e) {
         this.data.set('spinning', true);
-        let data =  await this.$apollo.mutate({
+        await this.$apollo.mutate({
             mutation: DEPENDENCY_INSTALL,
             variables: {
                 id: this.data.get('data').objectID,

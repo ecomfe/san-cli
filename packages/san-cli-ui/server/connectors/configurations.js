@@ -73,10 +73,12 @@ const readData = (config, context) => {
     config.foundFiles = {};
     if (config.files) {
         for (const fileId in config.files) {
-            const fileDescriptor = config.files[fileId];
-            const {file, fileData} = readFile(config, fileDescriptor, context);
-            config.foundFiles[fileId] = file;
-            data[fileId] = fileData;
+            if (config.files.hasOwnProperty(fileId)) {
+                const fileDescriptor = config.files[fileId];
+                const {file, fileData} = readFile(config, fileDescriptor, context);
+                config.foundFiles[fileId] = file;
+                data[fileId] = fileData;
+            }
         }
     }
     return data;
@@ -138,7 +140,9 @@ const writeFile = (config, fileId, data, changedFields, context) => {
 
 const writeData = ({config, data, changedFields}, context) => {
     for (const fileId in data) {
-        writeFile(config, fileId, data[fileId], changedFields[fileId], context);
+        if (data.hasOwnProperty(fileId)) {
+            writeFile(config, fileId, data[fileId], changedFields[fileId], context);
+        }
     }
 };
 

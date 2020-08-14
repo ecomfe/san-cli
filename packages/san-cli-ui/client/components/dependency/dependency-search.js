@@ -76,7 +76,13 @@ export default class DependencePackageSearch extends Component {
             query: encodeURIComponent(name),
             hitsPerPage: 20,
             page,
-            attributesToRetrieve: ["description","repository.url","version","owner.avatar","humanDownloadsLast30Days"],
+            attributesToRetrieve: [
+                'description',
+                'repository.url',
+                'version',
+                'owner.avatar',
+                'humanDownloadsLast30Days'
+            ],
             attributesToHighlight: []
         });
         let data = await axios({

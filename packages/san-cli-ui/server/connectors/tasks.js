@@ -12,7 +12,6 @@ const terminate = require('../utils/terminate');
 const channels = require('../utils/channels');
 const parseArgs = require('../utils/parseArgs');
 const flush = require('../utils/flush');
-const projects = require('./projects');
 const cwd = require('./cwd');
 const logs = require('./logs');
 const plugins = require('./plugins');

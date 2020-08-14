@@ -5,7 +5,7 @@
 
 import {Component} from 'san';
 import {Icon} from 'santd';
-import {router, Link} from 'san-router';
+import {Link} from 'san-router';
 import avatars from '@lib/utils/avatars';
 import 'santd/es/input/style';
 import 'santd/es/button/style';

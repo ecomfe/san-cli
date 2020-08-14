@@ -9,7 +9,6 @@ const {
     getPluginLink
 } = require('san-cli-utils/plugin');
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
-const ipc = require('../utils/ipc');
 const PluginManager = require('../api/PluginManager');
 const cwd = require('./cwd');
 const widgets = require('./widgets');

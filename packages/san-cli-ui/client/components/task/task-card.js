@@ -5,7 +5,7 @@
 
 import {Component} from 'san';
 import {Icon, Meta} from 'santd';
-import {router, Link} from 'san-router';
+import {Link} from 'san-router';
 import avatars from '@lib/utils/avatars';
 import './task-card.less';
 

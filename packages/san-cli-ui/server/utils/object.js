@@ -10,7 +10,7 @@ exports.set = function (target, path, value) {
     const l = fields.length;
     for (let i = 0; i < l - 1; i++) {
         const key = fields[i];
-        if (!obj[key]) {;
+        if (!obj[key]) {
             obj[key] = {};
         }
         obj = obj[key];

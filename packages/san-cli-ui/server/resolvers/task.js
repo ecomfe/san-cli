@@ -5,7 +5,6 @@
 
 const channels = require('../utils/channels');
 const tasks = require('../connectors/tasks');
-const projects = require('../connectors/projects');
 
 module.exports = {
     // Task: {

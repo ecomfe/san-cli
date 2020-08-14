@@ -1,4 +1,4 @@
-fragment dependency on  dependency {
+fragment dependency on dependency {
     id
     type
     website

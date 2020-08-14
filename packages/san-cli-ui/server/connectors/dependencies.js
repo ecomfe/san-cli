@@ -92,7 +92,7 @@ class Dependencies {
         let tool = installTool(cwd.get());
 
         // npm安装依赖
-        const child = await execa(tool, [
+        await execa(tool, [
             ...PACKAGE_INSTLL_CONFIG[tool][type],
             ...(args || [])
         ], {

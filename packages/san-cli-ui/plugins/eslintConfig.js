@@ -50,16 +50,18 @@ module.exports = api => {
             },
         },
         icon: require('./utils/getImageUrl')('/public/eslint.png'),
-        onRead: ({ data }) => ({
+        onRead: ({data}) => ({
             prompts: getEslintPrompts(data)
         }),
-        onWrite: async ({ api, prompts }) => {
+        onWrite: async ({api, prompts}) => {
             // 更新 ESLint 规则
-            const result = {}
+            const result = {};
             for (const prompt of prompts) {
-                result[`rules.${prompt.id.replace(/47/g, '/').replace(/45/g, '-')}`] = await api.getAnswer(prompt.id, JSON.parse)
+                result[
+                    `rules.${prompt.id.replace(/47/g, '/').replace(/45/g, '-')}`
+                ] = await api.getAnswer(prompt.id, JSON.parse);
             }
-            api.setData('eslint', result)
+            api.setData('eslint', result);
         }
     });
 };
