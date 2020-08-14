@@ -393,5 +393,13 @@
     },
     "common": {
         "back": "返回"
+    },
+    "addons": {
+        "dashboard": {
+            "title": "仪表盘"
+        },
+        "analyzer": {
+            "title": "分析"
+        }
     }
 }

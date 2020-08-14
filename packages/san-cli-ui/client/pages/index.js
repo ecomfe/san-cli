@@ -92,4 +92,3 @@ router.listen(async (e, config) => {
 
 resetStatus();
 router.start();
-export default router;

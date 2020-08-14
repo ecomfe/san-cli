@@ -38,7 +38,67 @@ import TaskDashboard from './task-dashboard-temp';
  * @param {Object} taskInfo 当前的任务信息
  */
 export default class TaskContent extends Component {
-    static template = require('./task-content.html');
+    static template = /* html */`
+    <div class="task-content">
+        <div class="task-head">
+            <span class="task-name"><s-icon type="file-text" />{{taskInfo.name}}</span>
+            <span class="task-command">{{taskInfo.command}}</span>
+        </div>
+
+        <div class="task-config">
+            <s-button type="primary" 
+                icon="{{isRunning ? 'stop' : 'caret-right'}}" 
+                loading="{{taskPending}}"
+                on-click="execute">{{isRunning ? $t('task.stop') : $t('task.run')}}</s-button>
+            <s-button type="default" icon="setting">{{$t('task.setting')}}</s-button>
+        </div>
+
+        <s-tabs defaultActiveKey="1">
+            <!---默认的命令行视图---->
+            <s-tabpane key="1">
+                <template slot="tab">
+                    <s-icon type="code" />{{$t('task.output')}}
+                </template>
+                <div class="task-output-opt">
+                    <div class="task-output-head">
+                        <span class="task-output-head-output">
+                            <s-icon type="code" />{{$t('task.output')}}
+                        </span>
+            
+                        <s-tooltip title="{{$t('task.bottom')}}">
+                            <s-icon type="enter" class="task-xterm-btn" on-click="scrollToBottom" />
+                        </s-tooltip>
+            
+                        <s-tooltip title="{{$t('task.copy')}}">
+                            <s-icon type="copy" class="task-xterm-btn" on-click="copyContent" />
+                        </s-tooltip>
+            
+                        <s-tooltip title="{{$t('task.clear')}}">
+                            <s-icon type="delete" class="task-xterm-btn" on-click="clear" />
+                        </s-tooltip>
+                    </div>
+                </div>
+                <div class="task-output-content"></div>
+            </s-tabpane>
+
+            <!---- views (TODO: s-for not supported here, Santd/tabpane bugs) ---->
+            <s-tabpane key="2" s-if="{{views[0]}}">
+                <template slot="tab">
+                    <s-icon type="dashboard" />{{$t('addons.dashboard.title')}}
+                </template>
+                <c-task-dashboard></c-task-dashboard>
+            </s-tabpane>
+
+            <!---- views (TODO: s-for not supported here, Santd/tabpane bugs) ---->
+            <s-tabpane key="3" s-if="{{views[1]}}">
+                <template slot="tab">
+                    <s-icon type="line-chart" />{{$t('addons.analyzer.title')}}
+                </template>
+                <c-task-dashboard></c-task-dashboard>
+            </s-tabpane>
+        </s-tabs>
+    </div>
+    `;
 
     static components = {
         's-icon': Icon,
@@ -53,8 +113,23 @@ export default class TaskContent extends Component {
         return {
             // 请求发送中
             taskPending: false,
+
             // 脚本执行中
-            isRunning: false
+            isRunning: false,
+
+            // TODO: 先写死测试一下，待完善
+            views: [{
+                component: 'org.webpack.components.dashboard',
+                icon: 'dashboard',
+                id: 'org.webpack.views.dashboard',
+                label: 'addons.dashboard.title',
+            },
+            {
+                component: 'org.webpack.components.analyzer',
+                icon: 'donut_large',
+                id: 'org.webpack.views.analyzer',
+                label: 'addons.analyzer.title'
+            }]
         };
     }
 
