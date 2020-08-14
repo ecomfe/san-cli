@@ -9,7 +9,7 @@
  */
 
 const path = require('path');
-const {textColor} = require('san-cli-utils/randomColor');
+const {textCommonColor} = require('san-cli-utils/color');
 exports.command = 'remote <add|ls|list|rm|remove>';
 const desc = 'Add/Manage scaffolding address';
 exports.description = desc;
@@ -17,7 +17,7 @@ exports.builder = yargs => {
     if (yargs.argv._.length === 1) {
         const scriptName = yargs.$0;
         console.log(
-            textColor(
+            textCommonColor(
                 `Usage: ${scriptName[0].toUpperCase()}${scriptName.slice(
                     1
                 )} remote <add|ls|rm|list|remove>`

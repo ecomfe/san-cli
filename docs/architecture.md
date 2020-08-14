@@ -44,7 +44,7 @@ utils 中用的最多的是`ttyLogger.js`中跟 tty 输出相关的函数，常�
 
 San CLI 中的 logger 是通过自定义的 Consola Reporter 实现的，在插件中也可以直接调用这些方法使用。
 
-> San CLI 的终端配色是随机的，如果要使用彩色突出显示终端内容，强烈建议使用`randomColor.js`中的`textColor`和`bgColor`两个方法。
+> 如果要使用彩色突出显示 San CLI 的终端内容，强烈建议使用`randomColor.js`中的`textColor`和`bgColor`两个方法。
 
 ### san-cli-webpack 模块介绍
 

@@ -47,5 +47,18 @@ function chalkBgColor(name) {
     bgColorMap.set(name, color);
     return color;
 }
-
 exports.chalkBgColor = chalkBgColor;
+
+const COMMON_COLOR = 'green';
+exports.COMMON_COLOR = COMMON_COLOR;
+
+function textCommonColor(txt) {
+    return chalkColor(COMMON_COLOR)(txt);
+}
+exports.textCommonColor = textCommonColor;
+
+
+function textCommonBold(txt) {
+    return chalk.bold(chalkColor(COMMON_COLOR)(txt));
+}
+exports.textCommonBold = textCommonBold;

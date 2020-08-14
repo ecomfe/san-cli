@@ -7,7 +7,7 @@
  * @file friendly errors plugin
  * @author ksky521
  */
-const {textColor} = require('san-cli-utils/randomColor');
+const {textCommonColor} = require('san-cli-utils/color');
 const SError = require('san-cli-utils/SError');
 const {error, chalk, warn, clearConsole} = require('san-cli-utils/ttyLogger');
 const friendlySyntaxErrorLabel = 'Syntax error:';
@@ -18,12 +18,12 @@ const lineRules = [
     ],
     [
         /Can't resolve '(.*loader)'/,
-        match => `Failed to resolve loader: ${textColor(match[1])}\n` + '  You may need to install it.\n'
+        match => `Failed to resolve loader: ${textCommonColor(match[1])}\n` + '  You may need to install it.\n'
     ],
     [
         /Can't resolve '(.*(html|htm|tpl))'/,
         match =>
-            `Failed to resolve page: ${textColor(match[1])}\n` + '  You may need to check you configuration.\n'
+            `Failed to resolve page: ${textCommonColor(match[1])}\n` + '  You may need to check you configuration.\n'
     ]
 ];
 const msgReplaces = [
@@ -33,19 +33,19 @@ const msgReplaces = [
     ],
     [
         /^.*export '(.+?)' was not found in '(.+?)'.*$/gm,
-        m => `Attempted import error: ${textColor(m[1])} is not exported from ${textColor(m[2])}.`
+        m => `Attempted import error: ${textCommonColor(m[1])} is not exported from ${textCommonColor(m[2])}.`
     ],
     [
         /^.*export 'default' \(imported as '(.+?)'\) was not found in '(.+?)'.*$/gm,
         m => `Attempted import error: ${
-            textColor(m[2])
-        } does not contain a default export (imported as ${textColor(m[1])}).`
+            textCommonColor(m[2])
+        } does not contain a default export (imported as ${textCommonColor(m[1])}).`
     ],
     [
         /^.*export '(.+?)' \(imported as '(.+?)'\) was not found in '(.+?)'.*$/gm,
         m => `Attempted import error: ${
-            textColor(m[1])
-        } is not exported from ${textColor(m[3])} (imported as ${textColor(m[2])}).`
+            textCommonColor(m[1])
+        } is not exported from ${textCommonColor(m[3])} (imported as ${textCommonColor(m[2])}).`
     ]
 ];
 

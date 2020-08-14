@@ -24,7 +24,7 @@ const dotenv = require('dotenv');
 const SError = require('san-cli-utils/SError');
 const PluginAPI = require('./PluginAPI');
 const {findExisting} = require('san-cli-utils/path');
-const {textColor} = require('san-cli-utils/randomColor');
+const {textCommonColor} = require('san-cli-utils/color');
 const argsert = require('san-cli-utils/argsert');
 const readPkg = require('san-cli-utils/readPkg');
 
@@ -311,7 +311,7 @@ module.exports = class Service extends EventEmitter {
             let configPath = result.filepath;
 
             if (!result.config || typeof result.config !== 'object') {
-                logger.error(`${textColor(configPath)}: Expected object type.`);
+                logger.error(`${textCommonColor(configPath)}: Expected object type.`);
             }
             else {
                 // 校验config.js schema 格式
@@ -319,7 +319,7 @@ module.exports = class Service extends EventEmitter {
                     await validateOptions(result.config);
                 }
                 catch (e) {
-                    logger.error(`${textColor(configPath)}: Invalid type.`);
+                    logger.error(`${textCommonColor(configPath)}: Invalid type.`);
                     throw new SError(e);
                 }
             }
@@ -335,7 +335,7 @@ module.exports = class Service extends EventEmitter {
             config = defaultsDeep(result.config, config);
         }
         else {
-            // this.logger.warn(`${textColor('san.config.js')} Cannot find! Use default configuration.`);
+            // this.logger.warn(`${textCommonColor('san.config.js')} Cannot find! Use default configuration.`);
         }
         return this.normalizeConfig(config, result.filepath);
     }

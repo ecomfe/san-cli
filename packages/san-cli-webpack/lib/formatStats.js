@@ -13,7 +13,7 @@ const path = require('path');
 const zlib = require('zlib');
 const ConsoleTable = require('tty-table');
 
-const {textColor} = require('san-cli-utils/randomColor');
+const {textCommonColor} = require('san-cli-utils/color');
 const {chalk} = require('san-cli-utils/ttyLogger');
 
 const flatten = require('san-cli-utils/utils').flatten;
@@ -194,11 +194,11 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
                 showReport = true;
                 return chalk.bgRed(formatSize(size));
             }
-            return textColor(formatSize(size));
+            return textCommonColor(formatSize(size));
         });
-        return `  Entry Points ${textColor(name)}${showReport ? chalk.yellowBright(' [big]') : ''}, Initial Size ${
-            size[0]
-        }, Gzipped ${textColor(formatSize(totalGzippedSize))}.${table.render()}`;
+        return `  Entry Points ${
+            textCommonColor(name)}${showReport ? chalk.yellowBright(' [big]') : ''
+        }, Initial Size ${size[0]}, Gzipped ${textCommonColor(formatSize(totalGzippedSize))}.${table.render()}`;
     }
 
     function getGzippedSize(asset) {
