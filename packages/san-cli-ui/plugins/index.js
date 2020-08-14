@@ -15,5 +15,6 @@ module.exports = api => {
     if (explorerSync.search() !== null) {
         require('./eslintConfig')(api);
     }
-    require('./task')(api);
+    // TODO：task.js 还没开发完，所以先把下面这行注释掉，不然页面跑起来有问题
+    // require('./task')(api);
 };
