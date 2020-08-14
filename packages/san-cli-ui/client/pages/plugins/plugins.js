@@ -2,8 +2,7 @@
  * @file 插件管理
  */
 
-import {Component} from 'san';
-import {Icon} from 'santd';
+import Component from '@lib/san-component';
 import fastq from 'fastq';
 import Layout from '@components/layout';
 import DependencyItem from '@components/dependency/dependency-item';
@@ -34,7 +33,6 @@ export default class Plugins extends Component {
     `;
 
     static components = {
-        's-icon': Icon,
         'c-layout': Layout,
         'c-dependency-item': DependencyItem
     };

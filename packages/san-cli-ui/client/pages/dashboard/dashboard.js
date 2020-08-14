@@ -3,7 +3,7 @@
  * @author zttonly
  */
 
-import {Component} from 'san';
+import Component from '@lib/san-component';
 import WIDGETS from '@graphql/widget/widgets.gql';
 import PLUGINS from '@graphql/plugin/plugins.gql';
 import WIDGET_DEFINITIONS from '@graphql/widget/widgetDefinitions.gql';
@@ -15,11 +15,6 @@ import Widget from '@components/dashboard-widget';
 import WidgetList from '@components/dashboard-widget/widget-list';
 import clientAddon from '@components/client-addon/client-addon-loader';
 import {Link} from 'san-router';
-import {Icon, Button, Input, Empty} from 'santd';
-import 'santd/es/icon/style';
-import 'santd/es/button/style';
-import 'santd/es/input/style';
-import 'santd/es/empty/style';
 import './dashboard.less';
 
 export default class Dashboard extends Component {
@@ -63,11 +58,7 @@ export default class Dashboard extends Component {
         </div>
     `;
     static components = {
-        's-icon': Icon,
         'r-link': Link,
-        's-button': Button,
-        's-input-search': Input.Search,
-        's-empty': Empty,
         'c-layout': Layout,
         'c-widget': Widget,
         'c-widget-list': WidgetList,

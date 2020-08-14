@@ -3,17 +3,7 @@
  * @author jinzhan
  */
 
-import {Component} from 'san';
-import {
-    Form,
-    Input,
-    Select,
-    Button
-} from 'santd';
-import 'santd/es/form/style';
-import 'santd/es/input/style';
-import 'santd/es/select/style';
-import 'santd/es/button/style';
+import Component from '@lib/san-component';
 
 /**
  * 选择脚手架模板
@@ -30,10 +20,10 @@ export default class ProjectList extends Component {
                     on-submit="handleSubmit">
                 <s-formitem label="{{$t('scaffold.chooseLabel')}}">
                     <s-select value="{=currentTemplate=}" placeholder="{{$('scaffold.choosePlaceholder')}}">
-                        <s-selectoption s-for="template in projectTemplateList"
-                            value="{{template.value}}">{{template.label}}</s-selectoption>
+                        <s-select-option s-for="template in projectTemplateList"
+                            value="{{template.value}}">{{template.label}}</s-select-option>
                         <!----自定义的模板项---->
-                        <s-selectoption>{{$t('scaffold.optionLabel')}}</s-selectoption>
+                        <s-select-option>{{$t('scaffold.optionLabel')}}</s-select-option>
                     </s-select>
                 </s-formitem>
 
@@ -51,15 +41,6 @@ export default class ProjectList extends Component {
             </s-form>
         </div>
     `;
-
-    static components = {
-        's-form': Form,
-        's-formitem': Form.FormItem,
-        's-input': Input,
-        's-select': Select,
-        's-button': Button,
-        's-selectoption': Select.Option
-    };
 
     initData() {
         return {

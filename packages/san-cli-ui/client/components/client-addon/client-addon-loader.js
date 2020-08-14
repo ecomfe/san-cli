@@ -3,7 +3,7 @@
  * @author zttonly
  */
 
-import {Component} from 'san';
+import Component from '@lib/san-component';
 import CLIENT_ADDONS from '@graphql/client-addon/clientAddons.gql';
 import CLIENT_ADDON_ADDED from '@graphql/client-addon/clientAddonAdded.gql';
 

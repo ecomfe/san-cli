@@ -3,20 +3,16 @@
  * @author jinzhan
  */
 
-import {Component} from 'san';
-import {Icon} from 'santd';
+import Component from '@lib/san-component';
 import {Link} from 'san-router';
 import avatars from '@lib/utils/avatars';
-import 'santd/es/input/style';
-import 'santd/es/button/style';
-import 'santd/es/spin/style';
 import './task-nav.less';
 
 export default class TaskNav extends Component {
     static template = /* html */`
         <div class="task-nav">
             <div class="task-nav-item {{task.name===queryName ? 'task-nav-item-current' : ''}}" s-for="task in tasks">
-                <s-link to="{{'/' + routePath + '/' + task.name}}">
+                <r-link to="{{'/' + routePath + '/' + task.name}}">
                     <div class="task-icon">
                         <img s-if="task.icon" src="{{task.icon}}" />
                         <img s-else src="{{avatars(task.name)}}" />
@@ -25,14 +21,13 @@ export default class TaskNav extends Component {
                         <div class="task-info-name">{{task.name}}</div>
                         <div class="task-info-description">{{task.description || task.command}}</div>
                     </div>
-                </s-link>
+                </r-link>
             </div>
         </div>
     `;
 
     static components = {
-        's-icon': Icon,
-        's-link': Link
+        'r-link': Link
     };
 
     avatars(name) {

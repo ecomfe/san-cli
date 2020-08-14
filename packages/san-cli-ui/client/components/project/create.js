@@ -3,15 +3,11 @@
  * @author jinzhan
  */
 
-import {Component} from 'san';
-import {Form, Input, Button, Spin, Icon} from 'santd';
+import Component from '@lib/san-component';
 import PromptsForm from '@components/prompts-form';
 import {createApolloComponent} from '@lib/san-apollo';
 import PROJECT_CREATION from '@graphql/project/projectCreation.gql';
 import CONSOLE_LOG_ADDED from '@graphql/console/consoleLogAdded.gql';
-import 'santd/es/input/style';
-import 'santd/es/button/style';
-import 'santd/es/spin/style';
 import './create.less';
 
 export default class ProjectCreate extends createApolloComponent(Component) {
@@ -25,11 +21,11 @@ export default class ProjectCreate extends createApolloComponent(Component) {
                 </s-formitem>
             </s-form>
 
-            <s-prompts-form s-ref="form"
+            <c-prompts-form s-ref="form"
                 prompts="{{prompts}}"
                 hide-submit-btn="true"
                 submit-text="{{$t('project.components.create.submitText')}}"
-                on-submit="onPromptsFormSubmit"></s-prompts-form>
+                on-submit="onPromptsFormSubmit"></c-prompts-form>
 
             <s-spin tip="{{loadingTip}}" 
                     spinning="{{isCreating}}"
@@ -40,13 +36,7 @@ export default class ProjectCreate extends createApolloComponent(Component) {
     `;
 
     static components = {
-        's-form': Form,
-        's-formitem': Form.FormItem,
-        's-spin': Spin,
-        's-icon': Icon,
-        's-input': Input,
-        's-button': Button,
-        's-prompts-form': PromptsForm
+        'c-prompts-form': PromptsForm
     };
 
     initData() {

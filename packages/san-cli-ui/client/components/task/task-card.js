@@ -3,8 +3,7 @@
  * @author jinzhan
  */
 
-import {Component} from 'san';
-import {Icon, Meta} from 'santd';
+import Component from '@lib/san-component';
 import {Link} from 'san-router';
 import avatars from '@lib/utils/avatars';
 import './task-card.less';
@@ -25,7 +24,7 @@ export default class TaskNav extends Component {
                         </div>
                     </div>
                     <div class="card-actions">
-                        <s-link to="{{'/' + routePath + '/' + task.name}}">{{$t('enter')}}</s-link>
+                        <r-link to="{{'/' + routePath + '/' + task.name}}">{{$t('enter')}}</r-link>
                     </div>
                 </div>
             </div>
@@ -33,9 +32,7 @@ export default class TaskNav extends Component {
     `;
 
     static components = {
-        's-icon': Icon,
-        's-link': Link,
-        's-meta': Meta
+        'r-link': Link
     };
 
     avatars(name) {

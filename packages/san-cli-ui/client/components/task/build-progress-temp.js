@@ -3,15 +3,9 @@
  * @author Lohoyo
  */
 
-import {Component} from 'san';
+import Component from '@lib/san-component';
 import './build-progress-temp.less';
-import {Icon} from 'santd';
-import 'santd/es/icon/style';
 
 export default class BuildStatus extends Component {
     static template = require('./build-progress-temp.html');
-
-    static components = {
-        's-icon': Icon
-    };
 };

@@ -3,8 +3,7 @@
  * @author zttonly
  */
 
-import {Component} from 'san';
-import {Button, Input, Dropdown, Menu, Tooltip, Icon, Modal} from 'santd';
+import Component from '@lib/san-component';
 import {isValidMultiName} from '@lib/utils/folders';
 import {logo} from '@lib/const';
 import CWD_CHANGE from '@graphql/cwd/cwdChanged.gql';
@@ -13,13 +12,6 @@ import FOLDERS_FAVORITE from '@graphql/folder/foldersFavorite.gql';
 import FOLDER_OPEN from '@graphql/folder/folderOpen.gql';
 import FOLDER_SET_FAVORITE from '@graphql/folder/folderSetFavorite.gql';
 import FOLDER_CREATE from '@graphql/folder/folderCreate.gql';
-import 'santd/es/button/style';
-import 'santd/es/input/style';
-import 'santd/es/dropdown/style';
-import 'santd/es/menu/style';
-import 'santd/es/tooltip/style';
-import 'santd/es/icon/style';
-import 'santd/es/modal/style';
 import './folder-explorer.less';
 
 export default class FolderExplorer extends Component {
@@ -72,7 +64,7 @@ export default class FolderExplorer extends Component {
                             class="contents-menu"
                             on-click="onStarMenuClick"
                         >
-                            <s-menuitem s-for="item in foldersFavorite" key="{{item.path}}">{{item.path}}</s-menuitem>
+                            <s-menu-item s-for="item in foldersFavorite" key="{{item.path}}">{{item.path}}</s-menu-item>
                         </s-menu>
                         <s-button type="primary" icon="caret-down"></s-button>
                     </s-dropdown>
@@ -83,13 +75,13 @@ export default class FolderExplorer extends Component {
                         class="contents-menu"
                         on-click="onMoreMenuClick"
                     >
-                        <s-menuitem key="showCreateModal">
+                        <s-menu-item key="showCreateModal">
                             {{$t('project.select.folderExplorer.menu.createFolder')}}
-                        </s-menuitem>
-                        <s-menuitem key="showHiddenFolder">
+                        </s-menu-item>
+                        <s-menu-item key="showHiddenFolder">
                             {{showHiddenFolder ? $t('project.select.folderExplorer.menu.hiddenFolder') 
                                 : $t('project.select.folderExplorer.menu.hiddenFolderShow')}}
-                        </s-menuitem>
+                        </s-menu-item>
                     </s-menu>
                     <s-button type="primary" icon="more"></s-button>
                 </s-dropdown>
@@ -122,16 +114,6 @@ export default class FolderExplorer extends Component {
         </div>
     `;
 
-    static components = {
-        's-button': Button,
-        's-input': Input,
-        's-dropdown': Dropdown,
-        's-menu': Menu,
-        's-menuitem': Menu.Item,
-        's-tooltip': Tooltip,
-        's-icon': Icon,
-        's-modal': Modal
-    };
     static computed = {
         // 计算路径的分割符，linux是'/'，windows是'\\'
         separator() {

@@ -3,8 +3,7 @@
  * @author sunxiaoyu333
  */
 
-import {Component} from 'san';
-import {Input, Button, Icon, Radio} from 'santd';
+import Component from '@lib/san-component';
 import './dependency-filter.less';
 
 export default class SearchBox extends Component {
@@ -17,14 +16,6 @@ export default class SearchBox extends Component {
             </s-input-search>
         </div>
     `;
-
-    static components = {
-        's-button': Button,
-        's-input-search': Input.Search,
-        's-icon': Icon,
-        's-radio': Radio,
-        's-group': Radio.Group
-    }
 
     attached() {
         this.watch('filterKeyword', value => {

@@ -2,19 +2,7 @@
  * @file 基于json动态创建一个form表单
  * @author jinzhan,zttonly
  */
-import {Component} from 'san';
-import {
-    Form,
-    Input,
-    Select,
-    Switch,
-    Button
-} from 'santd';
-import 'santd/es/form/style';
-import 'santd/es/input/style';
-import 'santd/es/select/style';
-import 'santd/es/switch/style';
-import 'santd/es/button/style';
+import Component from '@lib/san-component';
 
 /**
  * 组件props
@@ -39,8 +27,8 @@ export default class PromptsForm extends Component {
                         <s-select value="{=prompt.value=}"
                             placeholder="{{prompt.placeholder | textFormat}}"
                             on-change="handleChange(prompt, $event)">
-                            <s-selectoption s-for="choice in prompt.choices" 
-                                value="{{choice.value}}">{{choice.name}">{{choice}}</s-selectoption>
+                            <s-select-option s-for="choice in prompt.choices" 
+                                value="{{choice.value}}">{{choice.name}">{{choice}}</s-select-option>
                         </s-select>
                     </template>
 
@@ -65,9 +53,9 @@ export default class PromptsForm extends Component {
                             placeholder="{{prompt.placeholder | textFormat}}"
                             on-change="handleChange(prompt, $event)"
                         >
-                            <s-selectoption s-for="choice in prompt.choices" 
+                            <s-select-option s-for="choice in prompt.choices" 
                                 value="{{choice.name}}}"
-                            >{{choice.name}}</s-selectoption>
+                            >{{choice.name}}</s-select-option>
                         </s-select>
                     </template>
                 </s-formitem>
@@ -81,15 +69,6 @@ export default class PromptsForm extends Component {
       </div>
     `;
 
-    static components = {
-        's-form': Form,
-        's-formitem': Form.FormItem,
-        's-input': Input,
-        's-select': Select,
-        's-switch': Switch,
-        's-button': Button,
-        's-selectoption': Select.Option
-    };
     static filters = {
         textFormat(value) {
             return value && value.indexOf('.') > -1 ? this.$t(value) : value;

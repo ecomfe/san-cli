@@ -3,7 +3,7 @@
  * @author zttonly
  */
 
-import {Component} from 'san';
+import Component from '@lib/san-component';
 import {
     getPositionStyle,
     getSizeStyle,
@@ -16,11 +16,7 @@ import WIDGET_CONFIG_SAVE from '@graphql/widget/widgetConfigSave.gql';
 import PROMPT_ANSWER from '@graphql/prompt/promptAnswer.gql';
 import WIDGET_FRAGMENT from '@graphql/widget/widgetFragment.gql';
 import WIDGET_MOVE from '@graphql/widget/widgetMove.gql';
-import {Icon, Button, Modal} from 'santd';
 import PromptsList from '../prompts-form/prompts-form';
-import 'santd/es/icon/style';
-import 'santd/es/button/style';
-import 'santd/es/modal/style';
 import './dashboard-widget.less';
 
 export default class DashboardWidget extends Component {
@@ -180,9 +176,6 @@ export default class DashboardWidget extends Component {
         }
     };
     static components = {
-        's-icon': Icon,
-        's-button': Button,
-        's-modal': Modal,
         'c-prompts': PromptsList
     };
     static messages = {

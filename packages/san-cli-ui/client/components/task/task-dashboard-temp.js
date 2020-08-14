@@ -3,11 +3,8 @@
  * @author Lohoyo
  */
 
-import {Component} from 'san';
+import Component from '@lib/san-component';
 import './task-dashboard-temp.less';
-import {Grid, Card} from 'santd';
-import 'santd/es/grid/style';
-import 'santd/es/card/style';
 import BuildStatus from './build-status-temp';
 import BuildProgress from './build-progress-temp';
 import SpeedStats from './speed-stats-temp';
@@ -19,9 +16,6 @@ export default class TaskDashboard extends Component {
     static template = require('./task-dashboard-temp.html');
 
     static components = {
-        's-col': Grid.Col,
-        's-row': Grid.Row,
-        's-card': Card,
         'c-build-status': BuildStatus,
         'c-build-progress': BuildProgress,
         'c-speed-stats': SpeedStats,

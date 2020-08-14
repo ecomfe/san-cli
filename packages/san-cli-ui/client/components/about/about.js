@@ -3,7 +3,7 @@
  * @author zttonly
  */
 
-import {Component} from 'san';
+import Component from '@lib/san-component';
 
 export default class About extends Component {
     // TODO: 增加样式

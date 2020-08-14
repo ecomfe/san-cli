@@ -3,12 +3,8 @@
  * @author zttonly
  */
 
-import {Component} from 'san';
-import {Icon, Button, Input} from 'santd';
+import Component from '@lib/san-component';
 import widgetItem from './widget-item';
-import 'santd/es/icon/style';
-import 'santd/es/button/style';
-import 'santd/es/input/style';
 import './widget-list.less';
 
 export default class widgetList extends Component {
@@ -48,9 +44,6 @@ export default class widgetList extends Component {
     `;
 
     static components = {
-        's-icon': Icon,
-        's-button': Button,
-        's-input-search': Input.Search,
         'widget-item': widgetItem
     }
 

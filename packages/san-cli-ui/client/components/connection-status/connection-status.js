@@ -3,10 +3,8 @@
  * @author zttonly
  */
 
-import {Component} from 'san';
+import Component from '@lib/san-component';
 import {onReconnected, onDisconnected} from '@lib/connection';
-import {Icon} from 'santd';
-import 'santd/es/icon/style';
 import './connection-status.less';
 
 
@@ -19,9 +17,6 @@ export default class ConnectionStatus extends Component {
             </div>
         </div>
     `;
-    static components = {
-        's-icon': Icon
-    };
 
     initData() {
         return {

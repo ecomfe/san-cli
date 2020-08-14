@@ -3,14 +3,10 @@
  * @author sunxiaoyu333
  */
 
-import {Component} from 'san';
-import {Input, Button, Icon, Spin, Notification} from 'santd';
+import Component from '@lib/san-component';
+import {Notification} from 'santd';
 import './dependency-search-item.less';
 import DEPENDENCY_INSTALL from '@graphql/dependency/dependency-install.gql';
-import 'santd/es/input/style';
-import 'santd/es/button/style';
-import 'santd/es/icon/style';
-import 'santd/es/spin/style';
 import 'santd/es/notification/style';
 
 export default class DependenceSearchItem extends Component {
@@ -37,18 +33,14 @@ export default class DependenceSearchItem extends Component {
             return data.humanDownloadsLast30Days.toUpperCase();
         }
     }
+
     initData() {
         return {
             loadingTip: '',
             spinning: false
         };
     }
-    static components = {
-        's-button': Button,
-        's-input-search': Input.Search,
-        's-icon': Icon,
-        's-spin': Spin
-    }
+
     // 设置加载显示的提示条
     async inited() {
         this.data.set('loadingTip', this.$t('dependency.installing'));

@@ -3,9 +3,7 @@
  * @author zttonly
  */
 
-import {Component} from 'san';
-import {Icon} from 'santd';
-import 'santd/es/icon/style';
+import Component from '@lib/san-component';
 import './list-item-info.less';
 
 export default class ListItemInfo extends Component {
@@ -38,9 +36,6 @@ export default class ListItemInfo extends Component {
         };
     }
 
-    static components = {
-        's-icon': Icon
-    }
     handleLink(e) {
         e.stopPropagation();
     }

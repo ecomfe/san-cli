@@ -3,7 +3,7 @@
  * @author Lohoyo
  */
 
-import {Component} from 'san';
+import Component from '@lib/san-component';
 import './module-list-temp.less';
 
 export default class BuildStatus extends Component {

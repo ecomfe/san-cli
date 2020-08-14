@@ -3,12 +3,8 @@
  * @author zttonly
  */
 
-import {Component} from 'san';
-import {Icon, Button, Modal} from 'santd';
+import Component from '@lib/san-component';
 import ListItemInfo from '@components/list-item-info';
-import 'santd/es/icon/style';
-import 'santd/es/button/style';
-import 'santd/es/modal/style';
 
 export default class WidgetItem extends Component {
 
@@ -83,9 +79,6 @@ export default class WidgetItem extends Component {
     static computed = {
     };
     static components = {
-        's-icon': Icon,
-        's-button': Button,
-        's-modal': Modal,
         'c-item-info': ListItemInfo
     };
     initData() {

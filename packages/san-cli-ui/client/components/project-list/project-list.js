@@ -3,8 +3,7 @@
  * @author zttonly
  */
 
-import {Component} from 'san';
-import {Icon, Modal, Input} from 'santd';
+import Component from '@lib/san-component';
 import PROJECTS from '@graphql/project/projects.gql';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_OPEN from '@graphql/project/projectOpen.gql';
@@ -13,7 +12,6 @@ import PROJECT_RENAME from '@graphql/project/projectRename.gql';
 import PROJECT_REMOVE from '@graphql/project/projectRemove.gql';
 import PROJECT_CWD_RESET from '@graphql/project/projectCwdReset.gql';
 import List from './list';
-import 'santd/es/input/style';
 import 'animate.css';
 import './project-list.less';
 import {openInEditor} from '@lib/utils/openInEditor';
@@ -114,11 +112,7 @@ export default class ProjectList extends Component {
     }
 
     static components = {
-        's-icon': Icon,
-        'c-list': List,
-        's-modal': Modal,
-        's-input': Input,
-        's-input-search': Input.Search
+        'c-list': List
     }
     attached() {
         this.projectApollo();

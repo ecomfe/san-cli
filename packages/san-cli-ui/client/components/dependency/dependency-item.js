@@ -3,17 +3,13 @@
  * @author sunxiaoyu333
  */
 
-import {Component} from 'san';
-import {Icon, Spin, Notification, Modal, Tooltip} from 'santd';
+import Component from '@lib/san-component';
+import {Notification, Modal} from 'santd';
 import avatars from '@lib/utils/avatars';
 import DEPENDENCY_UNINSTALL from '@/graphql/dependency/dependency-uninstall.gql';
 import DEPENDENCY_INSTALL from '@graphql/dependency/dependency-install.gql';
 import './dependency-item.less';
-import 'santd/es/icon/style';
-import 'santd/es/spin/style';
 import 'santd/es/notification/style';
-import 'santd/es/modal/style';
-import 'santd/es/tooltip/style';
 
 export default class DependenceItem extends Component {
     static template = /* html */`
@@ -53,12 +49,6 @@ export default class DependenceItem extends Component {
             </div>
         </s-spin>
     `;
-
-    static components = {
-        's-icon': Icon,
-        's-spin': Spin,
-        's-tooltip': Tooltip
-    }
 
     initData() {
         return {

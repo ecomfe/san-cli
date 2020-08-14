@@ -1,7 +1,7 @@
 /**
  * @file 依赖管理
  */
-import {Component} from 'san';
+import Component from '@lib/san-component';
 import fastq from 'fastq';
 import Layout from '@components/layout';
 import DependencyFilter from '@components/dependency/dependency-filter';
@@ -10,10 +10,7 @@ import DependencySearch from '@components/dependency/dependency-search';
 import Modal from '@components/modal/modal';
 import DEPENDENCIES from '@graphql/dependency/dependencies.gql';
 import DEPENDENCY_ITEM from '@graphql/dependency/dependencyItem.gql';
-import {Button, Icon} from 'santd';
 import './dependency.less';
-import 'santd/es/button/style';
-
 
 export default class Dependency extends Component {
     static template = /* html */`
@@ -53,8 +50,6 @@ export default class Dependency extends Component {
     `;
 
     static components = {
-        's-button': Button,
-        's-icon': Icon,
         'c-layout': Layout,
         'c-dependence-filter': DependencyFilter,
         'c-dependency-item': DependencyItem,

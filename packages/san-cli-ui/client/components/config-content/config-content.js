@@ -3,17 +3,13 @@
  * @author zttonly
  */
 
-import {Component} from 'san';
+import Component from '@lib/san-component';
 import {LAYOUT_ONE_THIRD} from '@lib/const';
 import CONFIGURATION from '@graphql/configuration/configuration.gql';
 import CONFIGURATION_SAVE from '@/graphql/configuration/configurationSave.gql';
 import CONFIGURATION_CANCEL from '@/graphql/configuration/configurationCancel.gql';
 import PROMPT_ANSWER from '@/graphql/prompt/promptAnswer.gql';
 import PromptsList from '../prompts-form/prompts-form';
-import {Icon, Radio, Button} from 'santd';
-import 'santd/es/icon/style';
-import 'santd/es/radio/style';
-import 'santd/es/button/style';
 
 
 export default class ConfigContent extends Component {
@@ -21,9 +17,9 @@ export default class ConfigContent extends Component {
     static template = /* html */`
         <div class="config-content">
             <div class="tabs" s-if="config.tabs && config.tabs.length > 0">
-                <s-radiogroup s-if="config.tabs.length > 1" on-change="handleSizeChange" name="size">
-                    <s-radiobutton s-for="tab in config.tabs">{{tab.label}}</s-radiobutton>
-                </s-radiogroup>
+                <s-radio-group s-if="config.tabs.length > 1" on-change="handleSizeChange" name="size">
+                    <s-radio-button s-for="tab in config.tabs">{{tab.label}}</s-radio-button>
+                </s-radio-group>
                 <c-prompts s-ref="configForm"
                     form-item-layout="{{formItemLayout}}"
                     hide-submit-btn="{{true}}"
@@ -81,10 +77,6 @@ export default class ConfigContent extends Component {
     }
 
     static components = {
-        's-icon': Icon,
-        's-radiogroup': Radio.Group,
-        's-radiobutton': Radio.Button,
-        's-button': Button,
         'c-prompts': PromptsList
     }
 

@@ -3,7 +3,7 @@
  * @author zttonly
  */
 
-import {Component} from 'san';
+import Component from '@lib/san-component';
 import CONFIGURATIONS from '@graphql/configuration/configurations.gql';
 import CONFIGURATION from '@graphql/configuration/configuration.gql';
 import PLUGINS from '@graphql/plugin/plugins.gql';
@@ -11,12 +11,6 @@ import Layout from '@components/layout';
 import ListItemInfo from '@components/list-item-info';
 import ConfigContent from '@components/config-content';
 import {Link} from 'san-router';
-import {Icon, Button, Spin, Input, Grid} from 'santd';
-import 'santd/es/icon/style';
-import 'santd/es/button/style';
-import 'santd/es/spin/style';
-import 'santd/es/input/style';
-import 'santd/es/grid/style';
 import './configuration.less';
 
 export default class Configuration extends Component {
@@ -32,8 +26,8 @@ export default class Configuration extends Component {
                         {{$t('config.tools')}}
                     </s-button>
                 </template>
-                <s-row type="flex" slot="content" class="h1oh config-content">
-                    <s-col span="6" class="h1oh">
+                <s-grid-row type="flex" slot="content" class="h1oh config-content">
+                    <s-grid-col span="6" class="h1oh">
                         <div class="nav-list">
                             <div class="filter-input">
                                 <s-input-search value="{=search=}" />
@@ -50,8 +44,8 @@ export default class Configuration extends Component {
                                 />
                             </div>
                         </div>
-                    </s-col>
-                    <s-col span="18" class="h1oh">
+                    </s-grid-col>
+                    <s-grid-col span="18" class="h1oh">
                         <div class="nav-content {{currentConfigId && currentConfig ? 'slide' : ''}}">
                             <c-config-content s-if="currentConfigId && currentConfig"
                                 current-config-id="{=currentConfigId=}"
@@ -59,19 +53,13 @@ export default class Configuration extends Component {
                                 on-refetch="refetch"
                             />
                         </div>
-                    </s-col>
-                </s-row>
+                    </s-grid-col>
+                </s-grid-row>
             </c-layout>
         </div>
     `;
     static components = {
-        's-icon': Icon,
         'r-link': Link,
-        's-button': Button,
-        's-spin': Spin,
-        's-input-search': Input.Search,
-        's-col': Grid.Col,
-        's-row': Grid.Row,
         'c-item-info': ListItemInfo,
         'c-layout': Layout,
         'c-config-content': ConfigContent

@@ -3,28 +3,21 @@
  * @author zttonly
  */
 
-import {Component} from 'san';
+import Component from '@lib/san-component';
 import PROJECTS from '@graphql/project/projects.gql';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_OPEN from '@graphql/project/projectOpen.gql';
-import {Layout, Icon, Menu, Dropdown, Button, Spin} from 'santd';
 import {Link} from 'san-router';
-import 'santd/es/layout/style';
-import 'santd/es/menu/style';
-import 'santd/es/icon/style';
-import 'santd/es/dropdown/style';
-import 'santd/es/button/style';
-import 'santd/es/spin/style';
 import './index.less';
 import {openInEditor} from '@lib/utils/openInEditor';
 
 export default class ComponentLayout extends Component {
     static template = /* html */`
             <s-layout class="h1oh layout">
-                <s-header class="header">
-                    <s-link to="/">
+                <s-layout-header class="header">
+                    <r-link to="/">
                         <s-icon type="home" class="home-link" />
-                    </s-link>
+                    </r-link>
                     <s-dropdown trigger="click" class="project-name">
                         <s-menu slot="overlay"
                             selectable="{{false}}"
@@ -48,20 +41,20 @@ export default class ComponentLayout extends Component {
                     <div class="head-right">
                         <slot name="right"></slot>
                     </div>
-                </s-header>
+                </s-layout-header>
 
                 <s-layout class="h1oh flex-all main-wrap">
-                    <s-sider theme="light">
+                    <s-layout-sider theme="light">
                         <s-menu class="menu" mode="inline" selectedKeys="{{nav}}">
                             <s-menu-item s-for="item in $t('menu')" key="{{item.key}}">
-                                <s-link to="{{item.link}}">
+                                <r-link to="{{item.link}}">
                                     <s-icon type="{{item.icon}}"></s-icon>
                                     <span>{{item.text}}</span>
-                                </s-link>
+                                </r-link>
                             </s-menu-item>
                         </s-menu>
-                    </s-sider>
-                    <s-content class="main">
+                    </s-layout-sider>
+                    <s-layout-content class="main">
                         <s-spin s-if="pageLoading"
                             class="loading"
                             spinning="{=pageLoading=}"
@@ -70,24 +63,12 @@ export default class ComponentLayout extends Component {
                             <s-icon slot="indicator" type="loading" style="font-size: 30px;" />
                         </s-spin>
                         <slot name="content"></slot>
-                    </s-content>
+                    </s-layout-content>
                 </s-layout>
             </s-layout>
     `;
     static components = {
-        's-layout': Layout,
-        's-header': Layout.Header,
-        's-content': Layout.Content,
-        's-sider': Layout.Sider,
-        's-menu': Menu,
-        's-menu-item': Menu.Item,
-        's-dropdown': Dropdown,
-        's-button': Button,
-        's-icon': Icon,
-        's-spin': Spin,
-        's-link': Link,
-        's-menu-divider': Menu.MenuDivider,
-        's-menu-item-group': Menu.MenuItemGroup
+        'r-link': Link
     };
     initData() {
         return {

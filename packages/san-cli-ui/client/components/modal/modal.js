@@ -3,9 +3,7 @@
  * @author sunxiaoyu333
  */
 
-import {Component} from 'san';
-import {Icon} from 'santd';
-import 'santd/es/icon/style';
+import Component from '@lib/san-component';
 import './modal.less';
 
 export default class Modal extends Component {
@@ -21,10 +19,6 @@ export default class Modal extends Component {
         return {
             visible: false
         };
-    }
-
-    static components = {
-        's-icon': Icon
     }
 
     onCancel() {

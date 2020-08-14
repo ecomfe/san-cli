@@ -39,7 +39,7 @@ class Dependencies {
         id,
         file = cwd.get()
     }) {
-        // 检测每个模快的是否有package.json
+        // 检测每个模块是否有package.json
         const getfilePath = resolveModule(path.join(id, 'package.json'), file);
         if (!getfilePath) {
             return;

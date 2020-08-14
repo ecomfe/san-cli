@@ -3,9 +3,8 @@
  * @author zttonly
  */
 
-import {Component} from 'san';
+import Component from '@lib/san-component';
 import {router, Link} from 'san-router';
-import {Icon, Button} from 'santd';
 import {createApolloComponent} from '@lib/san-apollo';
 import CWD from '@graphql/cwd/cwd.gql';
 import PROJECT_INIT_TEMPLATE from '@graphql/project/projectInitTemplate.gql';
@@ -17,8 +16,6 @@ import ProjectTemplateList from '@components/project/template-list';
 import FolderExplorer from '@components/folder-explorer';
 import ProjectCreate from '@components/project/create';
 import Layout from '@components/layout/horizontal';
-import 'santd/es/icon/style';
-import 'santd/es/button/style';
 import './project.less';
 
 export default class Project extends createApolloComponent(Component) {
@@ -118,9 +115,7 @@ export default class Project extends createApolloComponent(Component) {
         </div>
     `;
     static components = {
-        's-icon': Icon,
         'r-link': Link,
-        's-button': Button,
         'c-connection-status': ConnectionStatus,
         'c-list': ProjectList,
         'c-folder-explorer': FolderExplorer,

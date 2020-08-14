@@ -3,20 +3,15 @@
  * @author zttonly
  */
 
-import {Component} from 'san';
+import Component from '@lib/san-component';
 import {router, Link} from 'san-router';
-import {Layout, Icon, Menu, Spin} from 'santd';
-import 'santd/es/layout/style';
-import 'santd/es/menu/style';
-import 'santd/es/icon/style';
-import 'santd/es/spin/style';
 import './horizontal.less';
 import logo from '@assets/logo.svg';
 
 export default class ComponentHorLayout extends Component {
     static template = /* html */`
             <s-layout class="h1oh hlayout">
-                <s-header>
+                <s-layout-header>
                     <div class="header">
                         <div class="title" on-click="logoClick">
                             <img src="{{logo}}" />
@@ -26,12 +21,12 @@ export default class ComponentHorLayout extends Component {
                             mode="horizontal"
                             selectedKeys="{{nav}}"
                         >
-                            <s-menuitem s-for="item in menu" key="{{item.key}}">
-                                <s-link to="{{item.link}}">
+                            <s-menu-item s-for="item in menu" key="{{item.key}}">
+                                <r-link to="{{item.link}}">
                                     <s-icon type="{{item.icon}}" />
                                     <span>{{item.text}}</span>
-                                </s-link>
-                            </s-menuitem>
+                                </r-link>
+                            </s-menu-item>
                         </s-menu>
                         <!---
                         <div class="head-right">
@@ -41,8 +36,8 @@ export default class ComponentHorLayout extends Component {
                         </div>
                         --->
                     </div>
-                </s-header>
-                <s-content class="flex-all">
+                </s-layout-header>
+                <s-layout-content class="flex-all">
                     <div class="h1oh main">
                         <s-spin s-if="pageLoading"
                             class="loading"
@@ -53,18 +48,11 @@ export default class ComponentHorLayout extends Component {
                         </s-spin>
                         <slot name="content"></slot>
                     </div>
-                </s-content>
+                </s-layout-content>
             </s-layout>
     `;
     static components = {
-        's-layout': Layout,
-        's-header': Layout.Header,
-        's-content': Layout.Content,
-        's-menu': Menu,
-        's-menuitem': Menu.Item,
-        's-icon': Icon,
-        's-spin': Spin,
-        's-link': Link
+        'r-link': Link
     };
     initData() {
         return {

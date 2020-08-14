@@ -3,15 +3,8 @@
  * @author sunxiaoyu333
  */
 
-import {Component} from 'san';
-import {Input, Button, Icon, Radio, Pagination, Spin} from 'santd';
+import Component from '@lib/san-component';
 import axios from 'axios';
-import 'santd/es/input/style';
-import 'santd/es/button/style';
-import 'santd/es/icon/style';
-import 'santd/es/radio/style';
-import 'santd/es/pagination/style';
-import 'santd/es/spin/style';
 import DependencySearchItem from './dependency-search-item';
 import DependencyFilter from './dependency-filter';
 import {searchParam} from '@lib/utils/searchParam';
@@ -27,10 +20,10 @@ export default class DependencePackageSearch extends Component {
         <s-spin spinning="{{loading}}" class="dependency-search-wrap">
             <div class="dependency-search" slot="content">
                 <c-dependence-filter on-keywordChange="keywordChange"/>
-                <s-group name="radiogroup" value="{{radioValue}}" on-change="onRadioChange" class="pkg-radio">
+                <s-radio-group name="radiogroup" value="{{radioValue}}" on-change="onRadioChange" class="pkg-radio">
                     <s-radio value="dependencies">{{$t('dependency.dependencies')}}</s-radio>
                     <s-radio value="devDependencies">{{$t('dependency.devDependencies')}}</s-radio>
-                </s-group>
+                </s-radio-group>
                 <div class="pkg-search-item" s-if="searchData.length">
                     <c-dependency-search-item
                         s-for="data, index in searchData"
@@ -48,15 +41,8 @@ export default class DependencePackageSearch extends Component {
         </s-spin>
     `;
     static components = {
-        's-button': Button,
-        's-input-search': Input.Search,
-        's-icon': Icon,
-        's-radio': Radio,
-        's-group': Radio.Group,
-        's-pagination': Pagination,
         'c-dependency-search-item': DependencySearchItem,
         'c-dependence-filter': DependencyFilter,
-        's-spin': Spin
     }
     initData() {
         return {
