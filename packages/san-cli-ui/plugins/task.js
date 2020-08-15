@@ -1,5 +1,6 @@
 /**
  * @file A UI Interface for CLI
+ * @author jinzhan
  */
 const path = require('path');
 const fs = require('fs-extra');
@@ -164,11 +165,18 @@ module.exports = api => {
         defaultView: 'san.san-cli.views.dashboard'
     };
 
+    /**
+     * 添加一个任务（San CLI的serve）
+     * 1. 定义的这个task没有名称，表明这个task是个装饰性task，根据match匹配；
+     *    注：装饰性的task不会出现在task的列表中，只会给要装饰的task添加额外的视图
+     * 2. 包含views属性，表明这个task会添加视图；
+     * 3. views数组size为2，表明将要添加2个视图；
+     */
     api.registerTask({
         match: /san serve(\s+--\S+(\s+\S+)?)*$/,
         description: 'san.san-cli.tasks.serve.description',
         link: 'https://ecomfe.github.io/san-cli',
-        icon: '/public/webpack-logo.png',
+        icon: '/public/san.svg',
         prompts: [
             {
                 name: 'open',
@@ -256,7 +264,11 @@ module.exports = api => {
         ...views
     });
 
-    api.registerTask({
+    /**
+     * 添加San CLI的build任务
+     * 该任务添加2个视图
+    */
+    0 && api.registerTask({
         match: /san-cli-service build(\s+--\S+(\s+\S+)?)*$/,
         description: 'san.san-cli.tasks.build.description',
         link: 'https://ecomfe.github.io/san-cli',
@@ -378,7 +390,11 @@ module.exports = api => {
         ...views
     });
 
-    api.registerTask({
+    /**
+     * 添加San CLI的inspect任务
+     * 该任务不增加视图
+    */
+    0 && api.registerTask({
         name: 'inspect',
         command: 'san-cli-service inspect',
         description: 'san.san-cli.tasks.inspect.description',
@@ -431,7 +447,7 @@ module.exports = api => {
     if (process.env.SAN_CLI_UI_DEV) {
         api.registerAddon({
             id: 'san.san-cli.client-addon.dev',
-            url: 'http://localhost:8899/index.js'
+            url: 'http://localhost:8591/index.js'
         });
     }
     else {

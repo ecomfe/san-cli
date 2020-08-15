@@ -5,9 +5,9 @@
 
 const execa = require('execa');
 const chalk = require('chalk');
-const {log, error, getDebugLogger} = require('san-cli-utils/ttyLogger');
+const {error, getDebugLogger} = require('san-cli-utils/ttyLogger');
 const notify = require('../utils/notify');
-const {readPackage} = require('../utils/fileHelper');
+const {isSanProject, readPackage} = require('../utils/fileHelper');
 const terminate = require('../utils/terminate');
 const channels = require('../utils/channels');
 const parseArgs = require('../utils/parseArgs');
@@ -40,7 +40,7 @@ class Tasks {
      *
      * @param {string} file 文件路径
     */
-    getTasks(file = cwd.get(), context) {
+    async getTasks(file = cwd.get(), context) {
         const list = this.tasks.get(file) || [];
 
         // 从当前项目的package.json中script获取信息
@@ -68,7 +68,52 @@ class Tasks {
                 }
             );
         }
+
+        // 获取第三方插件
+        if (isSanProject) {
+            // 确保插件逻辑已经执行
+            await plugins.list(file, context, {
+                resetApi: false
+            });
+        }
+
+        const pluginApi = plugins.getApi(file);
+        const pluginTasks = [];
+        if (pluginApi && pluginApi.taskPlugin) {
+            pluginApi.taskPlugin.tasks.forEach(
+                task => {
+                    // 不存在id则是一个描述性任务
+                    if (!task.name && task.match) {
+                        const index = list.findIndex(({command}) => {
+                            const match = task.match;
+                            return typeof match === 'function' ? match.call(task, command) : match.test(command);
+                        });
+                        if (~index) {
+                            Object.assign(list[index], task);
+                        }
+                    }
+                    else {
+                        const id = `${file}:${task.name}`;
+                        pluginTasks.push({
+                            id,
+                            prompts: [],
+                            views: [],
+                            path: file,
+                            uiOnly: true,
+                            ...task
+                        });
+                    }
+                }
+            );
+            debug('pluginTasks', pluginTasks);
+        }
+        else {
+            debug('No task plugin found');
+        }
+
         this.tasks.set(file, list);
+
+        debug('pluginList', list);
         return list;
     }
 
@@ -278,7 +323,7 @@ class Tasks {
 
     runTask(task, command, args, context) {
         // 开始执行任务
-        log('Task run', command, args);
+        debug('Task run', command, args);
 
         task.time = Date.now();
         const nodeEnv = process.env.NODE_ENV;
@@ -304,7 +349,7 @@ class Tasks {
             this.taskLogPipe(task, 'stdout', context).flush();
 
             // 命令行log
-            log('Task exit', command, args, 'code:', code, 'signal:', signal);
+            debug('Task exit', command, args, 'code:', code, 'signal:', signal);
 
             // Plugin API
             if (task.onExit) {
@@ -376,7 +421,7 @@ class Tasks {
                 }
             }
             catch (e) {
-                log(chalk.red(`Can't terminate process ${task.child.pid}`));
+                debug(chalk.red(`Can't terminate process ${task.child.pid}`));
                 error(e);
             }
         }

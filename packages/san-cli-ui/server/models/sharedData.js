@@ -1,13 +1,15 @@
 /**
- * @file 本地共享数据
+ * @file 存储在本地文件中的共享数据
  * @author zttonly
  */
 const path = require('path');
 const fs = require('fs-extra');
-const {log} = require('san-cli-utils/ttyLogger');
+const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const rcPath = require('../utils/rcPath');
 const channels = require('../utils/channels');
 const {deepGet, deepSet} = require('../utils/deep');
+
+const debug = getDebugLogger('ui:sharedData');
 
 const shareDataDir = 'shared-data';
 const rootFolder = path.resolve(rcPath, shareDataDir);
@@ -70,7 +72,7 @@ class SharedData {
         const watchers = this.fire({id, projectId, value}, context);
 
         setTimeout(() => (
-            log('SharedData set', id, projectId, value, `(${watchers.length} watchers, ${stat.value} subscriptions)`)
+            debug('SharedData set', id, projectId, value, `(${watchers.length} watchers, ${stat.value} subscriptions)`)
         ));
 
         return {id, value};
@@ -95,7 +97,7 @@ class SharedData {
         });
 
         this.fire({id, projectId, value: undefined}, context);
-        log('SharedData remove', id, projectId);
+        debug('SharedData remove', id, projectId);
     }
 
     /**

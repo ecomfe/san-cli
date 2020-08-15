@@ -140,7 +140,7 @@ class Plugins {
                     });
                 }
 
-                debug('pluginApi.widgetPlugin.widgets:', pluginApi.widgetPlugin && pluginApi.widgetPlugin.widgets);
+                // debug('pluginApi.widgetPlugin.widgets:', pluginApi.widgetPlugin && pluginApi.widgetPlugin.widgets);
                 if (pluginApi.widgetPlugin && pluginApi.widgetPlugin.widgets) {
                     for (const definition of pluginApi.widgetPlugin.widgets) {
                         await widgets.registerDefinition({definition, project}, context);

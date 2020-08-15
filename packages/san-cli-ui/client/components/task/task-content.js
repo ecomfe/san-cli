@@ -16,7 +16,6 @@ import TASK_CHANGED from '@graphql/task/taskChanged.gql';
 import TASK_LOG_ADDED from '@graphql/task/taskLogAdded.gql';
 import TASK_LOGS from '@graphql/task/taskLogs.gql';
 import './task-content.less';
-import TaskDashboard from './task-dashboard-temp';
 
 /**
  * 组件props
@@ -43,7 +42,7 @@ export default class TaskContent extends Component {
             <!---默认的命令行视图---->
             <s-tabpane key="1">
                 <template slot="tab">
-                    <s-icon type="code" />{{$t('task.output')}}
+                    <s-icon type="code" /> {{$t('task.output')}}
                 </template>
                 <div class="task-output-opt">
                     <div class="task-output-head">
@@ -72,7 +71,7 @@ export default class TaskContent extends Component {
                 <template slot="tab">
                     <s-icon type="dashboard" />{{$t('addons.dashboard.title')}}
                 </template>
-                <c-task-dashboard></c-task-dashboard>
+                TODO: c-task-dashboard
             </s-tabpane>
 
             <!---- views (TODO: s-for not supported here, Santd/tabpane bugs) ---->
@@ -80,7 +79,7 @@ export default class TaskContent extends Component {
                 <template slot="tab">
                     <s-icon type="line-chart" />{{$t('addons.analyzer.title')}}
                 </template>
-                <c-task-dashboard></c-task-dashboard>
+                TODO: c-task-dashboard
             </s-tabpane>
         </s-tabs>
     </div>
@@ -88,8 +87,7 @@ export default class TaskContent extends Component {
 
     static components = {
         's-tabs': Tabs,
-        's-tabpane': Tabs.TabPane,
-        'c-task-dashboard': TaskDashboard
+        's-tabpane': Tabs.TabPane
     };
 
     initData() {
