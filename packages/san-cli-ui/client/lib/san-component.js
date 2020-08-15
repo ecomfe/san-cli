@@ -6,7 +6,7 @@
 
 import {Component} from 'san';
 import defaultComponents from './components';
-import createClient from '@lib/apollo-client';
+import apolloClient from '@lib/apollo-client';
 import mixin from '@lib/san-mixin';
 import localization from '@lib/localization';
 import events from '@lib/events';
@@ -28,9 +28,6 @@ class SubComponent extends Component {
     }
 };
 
-// 调试模式使用package.json中定义的APP_GRAPHQL_ENDPOINT
-// eslint-disable-next-line no-undef
-const graphqlEndpoint = APP_GRAPHQL_ENDPOINT || `ws://${location.host}/graphql`;
 
 // 注入全局方法
 mixin(SubComponent, {
@@ -44,7 +41,7 @@ mixin(SubComponent, {
     ...pluginAction,
 
     // 导入$apollo对象
-    $apollo: createClient(graphqlEndpoint),
+    $apollo: apolloClient
 });
 
 export default SubComponent;

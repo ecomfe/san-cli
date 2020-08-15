@@ -8,7 +8,7 @@ import {InMemoryCache} from 'apollo-cache-inmemory';
 import {WebSocketLink} from 'apollo-link-ws';
 import emitter from 'tiny-emitter/instance';
 
-export default path => {
+const createClient = path => {
     const defaultOptions = {
         watchQuery: {
             fetchPolicy: 'cache-and-network',
@@ -47,3 +47,9 @@ export default path => {
 
     return apolloClient;
 };
+
+// 调试模式使用package.json中定义的APP_GRAPHQL_ENDPOINT
+// eslint-disable-next-line no-undef
+const graphqlEndpoint = APP_GRAPHQL_ENDPOINT || `ws://${location.host}/graphql`;
+
+export default createClient(graphqlEndpoint);

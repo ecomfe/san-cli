@@ -3,12 +3,9 @@
  * @author zttonly
  */
 
-import san from 'san';
 import {router} from 'san-router';
+import apolloClient from '@lib/apollo-client';
 import ClientAddonApi from '../lib/utils/ClientAddonApi';
-import createClient from '@lib/apollo-client';
-import mixin from '@lib/san-mixin';
-import localization from '@lib/localization';
 import Project from './project';
 import Task from './task';
 import About from '@components/about';
@@ -21,19 +18,6 @@ import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_CWD_RESET from '@graphql/project/projectCwdReset.gql';
 import PLUGINS from '@graphql/plugin/plugins.gql';
 import './index.less';
-
-// 调试模式使用package.json中定义的APP_GRAPHQL_ENDPOINT
-// eslint-disable-next-line no-undef
-const graphqlEndpoint = APP_GRAPHQL_ENDPOINT || `ws://${location.host}/graphql`;
-
-// 注入全局方法（在此处注入的方法如果改成在 san-component.js 里注入会有问题）
-mixin(san.Component, {
-    // 导入语言包
-    $t: localization,
-
-    // 导入$apollo对象
-    $apollo: createClient(graphqlEndpoint),
-});
 
 window.ClientAddonApi = new ClientAddonApi();
 
@@ -60,17 +44,17 @@ APP_GRAPHQL_ENDPOINT || router.setMode('html5');
 
 // 初始化时首先校正当前project路径
 const resetStatus = async () => {
-    await san.Component.prototype.$apollo.mutate({
+    await apolloClient.mutate({
         mutation: PROJECT_CWD_RESET
     });
     // plugin初始化需要尽早调用
-    await san.Component.prototype.$apollo.query({query: PLUGINS});
+    await apolloClient.query({query: PLUGINS});
 };
 
 router.listen(async (e, config) => {
     // 此处的处理属于路由切换后，有些前置的操作需要在切换的函数中处理，例如project-list
     if (config.needProject) {
-        const result = await san.Component.prototype.$apollo.query({
+        const result = await apolloClient.query({
             query: PROJECT_CURRENT,
             fetchPolicy: 'network-only'
         });
