@@ -3,25 +3,11 @@
  * @author jinzhan
  */
 
-import {
-    Component
-} from 'san';
-import {
-    Button,
-    Tooltip,
-    Icon,
-    Tabs
-} from 'santd';
-import {
-    Terminal
-} from 'xterm';
-import {
-    FitAddon
-} from 'xterm-addon-fit';
+import Component from '@lib/san-component';
+import {Tabs} from 'santd';
+import {Terminal} from 'xterm';
+import {FitAddon} from 'xterm-addon-fit';
 import 'xterm/css/xterm.css';
-import 'santd/es/tooltip/style';
-import 'santd/es/input/style';
-import 'santd/es/button/style';
 import 'santd/es/tabs/style';
 import TASK from '@graphql/task/task.gql';
 import TASK_RUN from '@graphql/task/taskRun.gql';
@@ -101,9 +87,6 @@ export default class TaskContent extends Component {
     `;
 
     static components = {
-        's-icon': Icon,
-        's-button': Button,
-        's-tooltip': Tooltip,
         's-tabs': Tabs,
         's-tabpane': Tabs.TabPane,
         'c-task-dashboard': TaskDashboard

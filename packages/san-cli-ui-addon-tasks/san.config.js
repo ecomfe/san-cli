@@ -8,6 +8,6 @@ const clientAddonConfig = require('san-cli-ui/client-addon-config');
 module.exports = {
     ...clientAddonConfig({
         id: 'san.webpack.client-addon.task',
-        port: 9999
+        port: 8951
     })
 };
