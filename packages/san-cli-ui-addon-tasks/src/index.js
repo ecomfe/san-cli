@@ -4,7 +4,7 @@
 
 import Task from './components/task';
 
+/* global ClientAddonApi */
 if (window.ClientAddonApi) {
-    window.ClientAddonApi.component('san.widgets.components.task', Task);
+    ClientAddonApi.defineComponent('san-cli.components.dashboard', Task);
 }
-

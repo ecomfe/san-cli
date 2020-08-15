@@ -1,10 +1,14 @@
 /**
  * @file 集成第三方组件
  * @author jinzhan
-*/
+ */
 import san from 'san';
 import {router} from 'san-router';
 import deepmerge from 'deepmerge';
+import loadScript from 'load-script';
+import apolloClient from '@lib/apollo-client';
+import CLIENT_ADDONS from '@graphql/client-addon/clientAddons.gql';
+import CLIENT_ADDON_ADDED from '@graphql/client-addon/clientAddonAdded.gql';
 import localization from '@locales/zh.json';
 
 export default class ClientAddon {
@@ -20,6 +24,7 @@ export default class ClientAddon {
      * @param {Object} options san.defineComponent快捷定义参数，详见：https://baidu.github.io/san/doc/main-members/#Component
      */
     defineComponent(id, options) {
+        // TODO: 此处也可以使用san-component
         const component = san.defineComponent(options);
         this.components.set(id, component);
 
@@ -31,11 +36,15 @@ export default class ClientAddon {
         }
     }
 
+    getComponent(id) {
+        return this.components.get(id);
+    }
+
     /**
      * 注册一个Promise，为后续添加的组件，注册回调方法
      *
      * @param {string} id 组件的标识
-    */
+     */
     awaitComponent(id) {
         return new Promise((resolve, reject) => {
             const component = this.getComponent(id);
@@ -46,10 +55,6 @@ export default class ClientAddon {
                 this.addListener(id, resolve);
             }
         });
-    }
-
-    getComponent(id) {
-        return this.components.get(id);
     }
 
     addListener(id, listener) {
@@ -83,4 +88,38 @@ export default class ClientAddon {
             target
         });
     }
+};
+
+/**
+ * 加载第三方组件
+ */
+export const loadClientAddons = async () => {
+    const query = await apolloClient.query({
+        query: CLIENT_ADDONS
+    });
+
+    if (query.data && query.data.clientAddons) {
+        query.data.clientAddons.forEach(addon => {
+            loadScript(addon.url);
+            console.log('Load addon:', addon);
+        });
+    }
+
+    apolloClient.subscribe({
+        query: CLIENT_ADDON_ADDED
+    }).subscribe({
+        next: result => {
+            const {data, error, errors} = result;
+            if (error || errors) {
+                console.log('client-addon error:', error || errors);
+            }
+            if (data && data.clientAddonAdded) {
+                loadScript(data.clientAddonAdded.url);
+                console.log('Load data.clientAddonAdded:', data.clientAddonAdded);
+            }
+        },
+        error: err => {
+            console.log('error', err);
+        }
+    });
 };

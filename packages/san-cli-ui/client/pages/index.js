@@ -5,7 +5,7 @@
 
 import {router} from 'san-router';
 import apolloClient from '@lib/apollo-client';
-import ClientAddonApi from '../lib/utils/ClientAddonApi';
+import ClientAddon, {loadClientAddons} from '@lib/client-addon';
 import Project from './project';
 import Task from './task';
 import About from '@components/about';
@@ -19,7 +19,11 @@ import PROJECT_CWD_RESET from '@graphql/project/projectCwdReset.gql';
 import PLUGINS from '@graphql/plugin/plugins.gql';
 import './index.less';
 
-window.ClientAddonApi = new ClientAddonApi();
+// 暴露全局API，用于集成第三方组件
+window.ClientAddonApi = new ClientAddon();
+
+// 加载第三方组件
+loadClientAddons();
 
 const routes = [
     {rule: '/', Component: Project, target: '#app'},

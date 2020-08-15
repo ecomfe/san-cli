@@ -147,13 +147,14 @@ module.exports = api => {
         }
     }
 
+    // 定义任务视图的一些信息
     const views = {
         views: [
             {
                 id: 'san.san-cli.views.dashboard',
                 label: 'san.san-cli.dashboard.title',
                 icon: 'dashboard',
-                component: 'san.san-cli.components.dashboard'
+                component: 'san-cli.components.dashboard'
             },
             {
                 id: 'san.san-cli.views.analyzer',
@@ -447,7 +448,7 @@ module.exports = api => {
     if (process.env.SAN_CLI_UI_DEV) {
         api.registerAddon({
             id: 'san.san-cli.client-addon.dev',
-            url: 'http://localhost:8591/index.js'
+            url: 'http://localhost:8951/index.js'
         });
     }
     else {

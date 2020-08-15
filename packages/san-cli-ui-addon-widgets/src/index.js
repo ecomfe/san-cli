@@ -15,11 +15,11 @@ import GenQrcode from './components/gen-qrcode/gen-qrcode';
 if (window.ClientAddonApi) {
     let ClientAddonApi = window.ClientAddonApi;
     // registry components
-    ClientAddonApi.component('san.widgets.components.welcome', Welcome);
-    ClientAddonApi.component('san.widgets.components.kill-port', KillPort);
-    ClientAddonApi.component('san.widgets.components.news', News);
-    ClientAddonApi.component('san.widgets.components.run-task', RunTask);
-    ClientAddonApi.component('san.widgets.components.gen-qrcode', GenQrcode);
+    ClientAddonApi.defineComponent('san.widgets.components.welcome', Welcome);
+    ClientAddonApi.defineComponent('san.widgets.components.kill-port', KillPort);
+    ClientAddonApi.defineComponent('san.widgets.components.news', News);
+    ClientAddonApi.defineComponent('san.widgets.components.run-task', RunTask);
+    ClientAddonApi.defineComponent('san.widgets.components.gen-qrcode', GenQrcode);
     // ClientAddonApi.component('san.widgets.components.plugin-updates', PluginUpdates);
     // ClientAddonApi.component('san.widgets.components.dependency-updates', DependencyUpdates);
 }

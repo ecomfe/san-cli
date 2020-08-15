@@ -7,6 +7,7 @@ import Component from '@lib/san-component';
 import {Tabs} from 'santd';
 import {Terminal} from 'xterm';
 import {FitAddon} from 'xterm-addon-fit';
+import ClientAddon from '../client-addon/client-addon';
 import 'xterm/css/xterm.css';
 import 'santd/es/tabs/style';
 import TASK from '@graphql/task/task.gql';
@@ -71,7 +72,7 @@ export default class TaskContent extends Component {
                 <template slot="tab">
                     <s-icon type="dashboard" />{{$t('addons.dashboard.title')}}
                 </template>
-                TODO: c-task-dashboard
+                <c-client-addon client-addon="{{views[0].component}}" />
             </s-tabpane>
 
             <!---- views (TODO: s-for not supported here, Santd/tabpane bugs) ---->
@@ -87,7 +88,8 @@ export default class TaskContent extends Component {
 
     static components = {
         's-tabs': Tabs,
-        's-tabpane': Tabs.TabPane
+        's-tabpane': Tabs.TabPane,
+        'c-client-addon': ClientAddon
     };
 
     initData() {
@@ -100,7 +102,7 @@ export default class TaskContent extends Component {
 
             // TODO: 先写死测试一下，待完善
             views: [{
-                component: 'org.webpack.components.dashboard',
+                component: 'san-cli.components.dashboard',
                 icon: 'dashboard',
                 id: 'org.webpack.views.dashboard',
                 label: 'addons.dashboard.title',
@@ -171,6 +173,17 @@ export default class TaskContent extends Component {
         if (task) {
             this.setStatu(task.status);
         }
+        const views = this.data.get('views');
+        views.forEach((view, index) => {
+            window.ClientAddonApi.awaitComponent(view.component)
+                .then(Component => {
+                    const el = this.el.querySelector(`custom-view-${index + 2}`);
+                    new Component().attach(el);
+                })
+                .catch(e => {
+                    console.log(`awaitComponent ${view.component} error: ${e}`);
+                });
+        });
     }
 
     subscribeTaskChanged(id) {
