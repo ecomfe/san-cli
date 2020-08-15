@@ -61,6 +61,9 @@ export default class ClientAddon {
         listeners.push(listener);
     }
 
+    /**
+     * @param {Object} lang JSON格式的文本
+     */
     addLocalization(lang) {
         // TODO: deepmerge localization
     }
