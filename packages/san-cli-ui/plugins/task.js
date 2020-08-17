@@ -4,7 +4,9 @@
  */
 const path = require('path');
 const fs = require('fs-extra');
+const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 
+const debug = getDebugLogger('ui:plugin-task');
 // 数据的格式化
 const processStats = val => val;
 
@@ -64,6 +66,7 @@ module.exports = api => {
     }
 
     async function onWebpackMessage({data: message}) {
+        debug('onWebpackMessage:', message);
         if (!message || !message.webpackDashboardData) {
             return;
         }
@@ -258,6 +261,7 @@ module.exports = api => {
             hadFailed = false;
         },
         onRun: () => {
+            debug('onRun handler called........');
             ipc.on(onWebpackMessage);
         },
         onExit: () => {

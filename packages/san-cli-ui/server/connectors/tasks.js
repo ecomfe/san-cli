@@ -79,9 +79,12 @@ class Tasks {
 
         const pluginApi = plugins.getApi(file);
         const pluginTasks = [];
+        debug('Task pluginApi:', pluginApi && pluginApi.taskPlugin);
         if (pluginApi && pluginApi.taskPlugin) {
             pluginApi.taskPlugin.tasks.forEach(
                 task => {
+                    debug('Task plugin:', Object.keys(task));
+
                     // 不存在id则是一个描述性任务
                     if (!task.name && task.match) {
                         const index = list.findIndex(({command}) => {
@@ -90,6 +93,7 @@ class Tasks {
                         });
                         if (~index) {
                             Object.assign(list[index], task);
+                            debug('Add describeTask plugin:', Object.keys(task));
                         }
                     }
                     else {
@@ -110,7 +114,6 @@ class Tasks {
         else {
             debug('No task plugin found');
         }
-
         this.tasks.set(file, list);
 
         debug('pluginList', list);
@@ -300,11 +303,15 @@ class Tasks {
         const child = this.runTask(task, command, args, context);
 
         if (task.onRun) {
+            debug('Call task-onRun handler');
             await task.onRun({
                 args,
                 child,
                 cwd: cwd.get()
             });
+        }
+        else {
+            debug('No task-onRun handler');
         }
 
         plugins.callHook({

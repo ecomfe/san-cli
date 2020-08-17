@@ -4,6 +4,8 @@
  * @author jinzhan
 */
 const ipc = require('../utils/ipc');
+const {getDebugLogger} = require('san-cli-utils/ttyLogger');
+const debug = getDebugLogger('ui:IpcHandler');
 
 class IpcHandler {
     constructor() {
@@ -28,6 +30,7 @@ class IpcHandler {
         };
         callback.$handler = handler;
         this.handlers.push(handler);
+        debug('Handler added!');
         return this.ipc.on(handler);
     }
 
