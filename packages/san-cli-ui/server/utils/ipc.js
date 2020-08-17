@@ -1,7 +1,12 @@
 const ipc = require('node-ipc');
-const {log} = require('san-cli-utils/ttyLogger');
+const {getDebugLogger} = require('san-cli-utils/ttyLogger');
+
+const debug = getDebugLogger('ui:ipc');
 
 ipc.config.id = process.env.SAN_CLI_IPC || 'san-cli';
+
+debug('ipc.config.id:' + ipc.config.id);
+
 ipc.config.retry = 1500;
 ipc.config.silent = true;
 
@@ -9,7 +14,8 @@ const listeners = [];
 
 ipc.serve(() => {
     ipc.server.on('message', (data, socket) => {
-        log('IPC message', data);
+        debug('IPC message', data);
+        debug('Count of Listeners:', listeners.length);
         for (const listener of listeners) {
             listener({
                 data,
@@ -21,7 +27,7 @@ ipc.serve(() => {
     });
 
     ipc.server.on('ack', (data, socket) => {
-        log('IPC ack', data);
+        debug('IPC ack', data);
         if (data.done) {
             ipc.server.emit(socket, 'ack', {
                 ok: true
@@ -45,7 +51,7 @@ function off(cb) {
 }
 
 function send(data) {
-    log('IPC send', data);
+    debug('IPC send', data);
     ipc.server.broadcast('message', data);
 }
 

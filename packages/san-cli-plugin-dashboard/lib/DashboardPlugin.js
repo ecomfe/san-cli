@@ -61,12 +61,15 @@ class DashboardPlugin {
         let assetSources = new Map();
 
         if (!sendData) {
-            sendData = data => ipc.send({
-                webpackDashboardData: {
-                    type: this.type,
-                    value: data
-                }
-            });
+            sendData = data => {
+                debug('IPC sending data:', data);
+                ipc.send({
+                    webpackDashboardData: {
+                        type: this.type,
+                        value: data
+                    }
+                });
+            };
         }
 
         // Progress status

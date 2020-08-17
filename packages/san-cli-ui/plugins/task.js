@@ -64,82 +64,84 @@ module.exports = api => {
     }
 
     async function onWebpackMessage({data: message}) {
-        if (message.webpackDashboardData) {
-            const modernMode = sharedData.get('modern-mode').value;
-            const type = message.webpackDashboardData.type;
-            for (const data of message.webpackDashboardData.value) {
-                const id = `${type}-${data.type}`;
-                if (data.type === 'stats') {
-                    // Stats are read from a file
-                    const statsFile = path.resolve(api.getCwd(), `./node_modules/.stats-${type}.json`);
-                    const value = await fs.readJson(statsFile);
-                    const {stats, analyzer} = processStats(value);
-                    sharedData.set(id, stats, {
-                        disk: true
+        if (!message || !message.webpackDashboardData) {
+            return;
+        }
+
+        const modernMode = sharedData.get('modern-mode').value;
+        const type = message.webpackDashboardData.type;
+        for (const data of message.webpackDashboardData.value) {
+            const id = `${type}-${data.type}`;
+            if (data.type === 'stats') {
+                // Stats are read from a file
+                const statsFile = path.resolve(api.getCwd(), `./node_modules/.stats-${type}.json`);
+                const value = await fs.readJson(statsFile);
+                const {stats, analyzer} = processStats(value);
+                sharedData.set(id, stats, {
+                    disk: true
+                });
+                sharedData.set(`${id}-analyzer`, analyzer, {
+                    disk: true
+                });
+                await fs.remove(statsFile);
+            }
+            else if (data.type === 'progress') {
+                if (type === 'serve' || !modernMode) {
+                    sharedData.set(id, {
+                        [type]: data.value
                     });
-                    sharedData.set(`${id}-analyzer`, analyzer, {
-                        disk: true
-                    });
-                    await fs.remove(statsFile);
                 }
-                else if (data.type === 'progress') {
-                    if (type === 'serve' || !modernMode) {
-                        sharedData.set(id, {
-                            [type]: data.value
+                else {
+                    // Display two progress bars
+                    const progress = sharedData.get(id).value;
+                    progress[type] = data.value;
+                    for (const t of ['build', 'build-modern']) {
+                        sharedData.set(`${t}-${data.type}`, {
+                            'build': progress.build || 0,
+                            'build-modern': progress['build-modern'] || 0
                         });
                     }
-                    else {
-                        // Display two progress bars
-                        const progress = sharedData.get(id).value;
-                        progress[type] = data.value;
+                }
+            }
+            else {
+                // Don't display success until both build and build-modern are done
+                if (type !== 'serve' && modernMode && data.type === 'status' && data.value === 'Success') {
+                    if (type === 'build-modern') {
                         for (const t of ['build', 'build-modern']) {
-                            sharedData.set(`${t}-${data.type}`, {
-                                'build': progress.build || 0,
-                                'build-modern': progress['build-modern'] || 0
-                            });
+                            sharedData.set(`${t}-status`, data.value);
                         }
                     }
                 }
                 else {
-                    // Don't display success until both build and build-modern are done
-                    if (type !== 'serve' && modernMode && data.type === 'status' && data.value === 'Success') {
-                        if (type === 'build-modern') {
-                            for (const t of ['build', 'build-modern']) {
-                                sharedData.set(`${t}-status`, data.value);
-                            }
-                        }
-                    }
-                    else {
-                        sharedData.set(id, data.value);
-                    }
+                    sharedData.set(id, data.value);
+                }
 
-                    // Notifications
-                    if (type === 'serve' && data.type === 'status') {
-                        if (data.value === 'Failed') {
+                // Notifications
+                if (type === 'serve' && data.type === 'status') {
+                    if (data.value === 'Failed') {
+                        api.notify({
+                            title: 'Build failed',
+                            message: 'The build has errors.',
+                            icon: 'error'
+                        });
+                        hadFailed = true;
+                    }
+                    else if (data.value === 'Success') {
+                        if (hadFailed) {
                             api.notify({
-                                title: 'Build failed',
-                                message: 'The build has errors.',
-                                icon: 'error'
+                                title: 'Build fixed',
+                                message: 'The build succeeded.',
+                                icon: 'done'
                             });
-                            hadFailed = true;
+                            hadFailed = false;
                         }
-                        else if (data.value === 'Success') {
-                            if (hadFailed) {
-                                api.notify({
-                                    title: 'Build fixed',
-                                    message: 'The build succeeded.',
-                                    icon: 'done'
-                                });
-                                hadFailed = false;
-                            }
-                            else if (firstRun) {
-                                api.notify({
-                                    title: 'App ready',
-                                    message: 'The build succeeded.',
-                                    icon: 'done'
-                                });
-                                firstRun = false;
-                            }
+                        else if (firstRun) {
+                            api.notify({
+                                title: 'App ready',
+                                message: 'The build succeeded.',
+                                icon: 'done'
+                            });
+                            firstRun = false;
                         }
                     }
                 }

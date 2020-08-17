@@ -17,6 +17,7 @@ import TASK_CHANGED from '@graphql/task/taskChanged.gql';
 import TASK_LOG_ADDED from '@graphql/task/taskLogAdded.gql';
 import TASK_LOGS from '@graphql/task/taskLogs.gql';
 import './task-content.less';
+import clientAddonData from './task-dashboard-data.json';
 
 /**
  * 组件props
@@ -72,7 +73,7 @@ export default class TaskContent extends Component {
                 <template slot="tab">
                     <s-icon type="dashboard" />{{$t('addons.dashboard.title')}}
                 </template>
-                <c-client-addon client-addon="{{views[0].component}}" />
+                <c-client-addon client-addon="{{views[0].component}}" data="{{clientAddonData}}" />
             </s-tabpane>
 
             <!---- views (TODO: s-for not supported here, Santd/tabpane bugs) ---->
@@ -94,6 +95,9 @@ export default class TaskContent extends Component {
 
     initData() {
         return {
+            // clientAddon测试数据
+            clientAddonData,
+
             // 请求发送中
             taskPending: false,
 

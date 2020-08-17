@@ -8,6 +8,7 @@ const typeDefs = require('./schema');
 const resolvers = require('./resolves');
 const db = require('../models/db');
 const pubsub = require('./pubsub');
+const ipc = require('../utils/ipc');
 
 module.exports = subscribtionpPath => new ApolloServer({
     typeDefs,
