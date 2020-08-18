@@ -7,8 +7,13 @@ import Component from '@lib/san-component';
 import axios from 'axios';
 import DependencySearchItem from './dependency-search-item';
 import DependencyFilter from './dependency-filter';
-import {searchParam} from '@lib/utils/searchParam';
-import {SEARCH_URL, SEARCH_DEBOUNCE_DELAY, MAX_SEARCH_RESULT_TOTAL} from '@lib/const';
+import {
+    SEARCH_URL,
+    SEARCH_DEBOUNCE_DELAY,
+    SEARCH_MAX_RESULT_TOTAL,
+    SEARCH_PAGE_SIZE,
+    SEARCH_DEFAULT_QUERY
+} from '@lib/const';
 import './dependency-search.less';
 
 // 和视图不直接相关的数据
@@ -34,7 +39,7 @@ export default class DependencePackageSearch extends Component {
                         class="pkg-pagination"
                         total="{{searchResultTotal}}"
                         on-change="onPagination"
-                        pageSize="20">
+                        pageSize="{{searchPageSize}}">
                     </s-pagination>
                 </div>
             </div>
@@ -49,7 +54,8 @@ export default class DependencePackageSearch extends Component {
             searchData: [],
             // 运行依赖
             radioValue: 'dependencies',
-            searchResultTotal: MAX_SEARCH_RESULT_TOTAL,
+            searchResultTotal: SEARCH_MAX_RESULT_TOTAL,
+            searchPageSize: SEARCH_PAGE_SIZE,
             loading: false
         };
     }
@@ -57,38 +63,23 @@ export default class DependencePackageSearch extends Component {
         this.search();
     }
 
-    async search(name = '', page = 0) {
-        let param = searchParam({
-            query: encodeURIComponent(name),
-            hitsPerPage: 20,
-            page,
-            attributesToRetrieve: [
-                'description',
-                'repository.url',
-                'version',
-                'owner.avatar',
-                'humanDownloadsLast30Days'
-            ],
-            attributesToHighlight: []
-        });
+    async search(name, page = 0) {
         let data = await axios({
             url: SEARCH_URL,
-            method: 'POST',
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded'
-            },
-            data: {
-                requests: [{
-                    indexName: 'npm-search',
-                    params: param
-                }]
+            params: {
+                // full-text search to apply
+                text: encodeURIComponent(name || SEARCH_DEFAULT_QUERY),
+                // how many results should be returned (default 20, max 250)
+                size: SEARCH_PAGE_SIZE,
+                // offset to return results from
+                from: page * SEARCH_PAGE_SIZE
             }
         });
-        let results = data && data.data && data.data.results;
-        if (results && results.length) {
-            const {hits, nbHits} = results[0];
-            this.data.set('searchData', hits);
-            this.data.set('searchResultTotal', nbHits > MAX_SEARCH_RESULT_TOTAL ? MAX_SEARCH_RESULT_TOTAL : nbHits);
+        let results = data && data.data;
+        if (results) {
+            const {objects, total} = results;
+            this.data.set('searchData', objects);
+            this.data.set('searchResultTotal', total > SEARCH_MAX_RESULT_TOTAL ? SEARCH_MAX_RESULT_TOTAL : total);
             // 回到搜索结果列表的顶部
             this.nextTick(() => {
                 document.querySelector('.pkg-search-item').scrollTop = 0;

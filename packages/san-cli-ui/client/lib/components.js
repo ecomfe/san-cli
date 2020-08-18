@@ -20,8 +20,8 @@ import {
     Select,
     Spin,
     Switch,
-    Tooltip,
-    Tabs
+    Tabs,
+    Tooltip
 } from 'santd';
 
 // 自动注入以下Santd组件
@@ -53,7 +53,7 @@ export default {
     's-select-option': Select.Option,
     's-spin': Spin,
     's-switch': Switch,
-    's-tooltip': Tooltip,
     's-tabs': Tabs,
-    's-tabpane': Tabs.TabPane
+    's-tabpane': Tabs.TabPane,
+    's-tooltip': Tooltip
 };

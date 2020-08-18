@@ -12,14 +12,13 @@ export default class DependenceSearchItem extends Component {
     static template = /* html */`
         <s-spin size="large" spinning="{{spinning}}" tip="{{loadingTip}}">
             <div class="dependency-search-item" slot="content">
-                <a href="{{data.repository.url}}" target="_blank" class="pkg-check">
-                    <div class="pkg-icon" style="background-image: url({{data.owner.avatar}})"></div>
+                <a href="{{data.package.links.npm}}" target="_blank" class="pkg-check">
+                    <div class="pkg-icon" style="background-image: url({{authorAvatar}})"></div>
                 </a>
                 <div class="pkg-name-wrap">
-                    <a href="{{data.repository.url}}" target="_blank" class="pkg-check">{{data.objectID}}</a>
-                    <span class="pkg-version">{{data.version}}</span>
-                    <s-icon type="download"/><span>{{downloadAmount}}</span>
-                    <div class="pkg-description">{{data.description}}</div>
+                    <a href="{{data.package.links.npm}}" target="_blank" class="pkg-check">{{data.package.name}}</a>
+                    <span class="pkg-version">{{data.package.version}}</span>
+                    <div class="pkg-description">{{data.package.description}}</div>
                 </div>
                 <s-button class="pkg-btn-operate" on-click="onInstallPlugin">{{$t('dependency.install')}}</s-button>
             </div>
@@ -27,9 +26,10 @@ export default class DependenceSearchItem extends Component {
     `;
 
     static computed = {
-        downloadAmount() {
-            let data = this.data.get('data');
-            return data.humanDownloadsLast30Days.toUpperCase();
+        authorAvatar() {
+            return `https://s.gravatar.com/avatar/${
+                require('md5')(this.data.get('data.package.publisher.email'))
+            }?default=retro`;
         }
     }
 
@@ -51,7 +51,7 @@ export default class DependenceSearchItem extends Component {
         await this.$apollo.mutate({
             mutation: DEPENDENCY_INSTALL,
             variables: {
-                id: this.data.get('data').objectID,
+                id: this.data.get('data').package.name,
                 type: this.data.get('installType')
             }
         });
