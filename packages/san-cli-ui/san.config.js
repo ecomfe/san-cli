@@ -7,7 +7,7 @@ const resolve = pathname => path.resolve(__dirname, pathname);
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 
 // 生产环境下的静态目录
-const STATIC_PRO = 'static';
+const STATIC_PRO = 'static/';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -18,23 +18,10 @@ module.exports = {
     publicPath: '/',
     outputDir: 'dist',
     filenameHashing: isProduction,
-    loaderOptions: {
-        babel: {
-            plugins: [
-                [
-                    require.resolve('babel-plugin-import'),
-                    {
-                        libraryName: 'santd',
-                        libraryDirectory: 'es',
-                        style: true
-                    }
-                ]
-            ]
-        }
-    },
     css: {
         sourceMap: isProduction,
-        cssPreprocessor: 'less'
+        cssPreprocessor: 'less',
+        extract: true
     },
 
     pages: {
@@ -79,5 +66,8 @@ module.exports = {
             }]);
         config.resolve.alias
             .set('san', isProduction ? 'san/dist/san.spa.min.js' : 'san/dist/san.spa.dev.js');
+    },
+    devServer: {
+        port: 8888
     }
 };

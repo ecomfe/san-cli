@@ -9,7 +9,6 @@ import avatars from '@lib/utils/avatars';
 import DEPENDENCY_UNINSTALL from '@/graphql/dependency/dependency-uninstall.gql';
 import DEPENDENCY_INSTALL from '@graphql/dependency/dependency-install.gql';
 import './dependency-item.less';
-import 'santd/es/notification/style';
 
 export default class DependenceItem extends Component {
     static template = /* html */`

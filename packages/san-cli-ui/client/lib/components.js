@@ -20,26 +20,9 @@ import {
     Select,
     Spin,
     Switch,
-    Tooltip
+    Tooltip,
+    Tabs
 } from 'santd';
-
-import 'santd/es/button/style';
-import 'santd/es/card/style';
-import 'santd/es/dropdown/style';
-import 'santd/es/empty/style';
-import 'santd/es/form/style';
-import 'santd/es/grid/style';
-import 'santd/es/icon/style';
-import 'santd/es/input/style';
-import 'santd/es/layout/style';
-import 'santd/es/menu/style';
-import 'santd/es/modal/style';
-import 'santd/es/pagination/style';
-import 'santd/es/radio/style';
-import 'santd/es/select/style';
-import 'santd/es/spin/style';
-import 'santd/es/switch/style';
-import 'santd/es/tooltip/style';
 
 // 自动注入以下Santd组件
 export default {
@@ -71,4 +54,6 @@ export default {
     's-spin': Spin,
     's-switch': Switch,
     's-tooltip': Tooltip,
+    's-tabs': Tabs,
+    's-tabpane': Tabs.TabPane
 };

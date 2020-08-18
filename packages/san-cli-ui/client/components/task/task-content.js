@@ -4,12 +4,10 @@
  */
 
 import Component from '@lib/san-component';
-import {Tabs} from 'santd';
 import {Terminal} from 'xterm';
 import {FitAddon} from 'xterm-addon-fit';
 import ClientAddon from '../client-addon/client-addon';
 import 'xterm/css/xterm.css';
-import 'santd/es/tabs/style';
 import TASK from '@graphql/task/task.gql';
 import TASK_RUN from '@graphql/task/taskRun.gql';
 import TASK_STOP from '@graphql/task/taskStop.gql';
@@ -88,8 +86,6 @@ export default class TaskContent extends Component {
     `;
 
     static components = {
-        's-tabs': Tabs,
-        's-tabpane': Tabs.TabPane,
         'c-client-addon': ClientAddon
     };
 

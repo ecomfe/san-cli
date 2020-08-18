@@ -7,7 +7,6 @@ import Component from '@lib/san-component';
 import {Notification} from 'santd';
 import './dependency-search-item.less';
 import DEPENDENCY_INSTALL from '@graphql/dependency/dependency-install.gql';
-import 'santd/es/notification/style';
 
 export default class DependenceSearchItem extends Component {
     static template = /* html */`
