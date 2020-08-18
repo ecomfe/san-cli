@@ -14,7 +14,7 @@ module.exports = api => {
                 js: ['san.config.js']
             }
         },
-        icon: require('./utils/getImageUrl')('/public/san.png'),
+        icon: require('./utils/getImageUrl')('/public/san.svg'),
         onRead: ({data}) => ({
             prompts: [
                 {

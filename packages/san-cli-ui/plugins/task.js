@@ -278,7 +278,7 @@ module.exports = api => {
         match: /san-cli-service build(\s+--\S+(\s+\S+)?)*$/,
         description: 'san.san-cli.tasks.build.description',
         link: 'https://ecomfe.github.io/san-cli',
-        icon: '/public/san.png',
+        icon: '/public/san.svg',
         prompts: [
             {
                 name: 'modern',

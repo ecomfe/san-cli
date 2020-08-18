@@ -12,7 +12,9 @@ import localization from '@locales/zh.json';
  * $t('san.title') => 'SAN UI'
  * */
 
-export default key => {
-    const keys = key.split('.');
-    return keys.reduce((cur, next) => (cur || {})[next], localization);
+module.exports = {
+    $t: key => {
+        const keys = key.split('.');
+        return keys.reduce((cur, next) => (cur || {})[next], localization);
+    }
 };

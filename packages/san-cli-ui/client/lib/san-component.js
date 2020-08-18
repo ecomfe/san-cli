@@ -6,11 +6,12 @@
 
 import {Component} from 'san';
 import defaultComponents from './components';
-import apolloClient from '@lib/apollo-client';
 import mixin from '@lib/san-mixin';
-import localization from '@lib/localization';
-import events from '@lib/events';
-import pluginAction from '@lib/plugin-action';
+import events from './mixins/events';
+import apollo from './mixins/apollo';
+import pluginAction from './mixins/plugin-action';
+import localization from './mixins/localization';
+
 
 class SubComponent extends Component {
     constructor(options) {
@@ -31,17 +32,26 @@ class SubComponent extends Component {
 
 // 注入全局方法
 mixin(SubComponent, {
-    // 导入语言包
-    $t: localization,
+    // 导入语言包: this.$t
+    ...localization,
 
-    // TODO: 这里可以导入事件总线
+    /**
+     * 导入事件总线:
+     *  this.$emit
+     *  this.$on
+    */
     ...events,
 
-    // 导入插件回调方法
+    /**
+     * 导入插件回调方法:
+     *  this.$callPluginAction
+     *  this.$onPluginActionCalled
+     *  this.$onPluginActionResolved
+    */
     ...pluginAction,
 
-    // 导入$apollo对象
-    $apollo: apolloClient
+    // 导入$apollo对象: this.$apollo
+    ...apollo
 });
 
 export default SubComponent;
