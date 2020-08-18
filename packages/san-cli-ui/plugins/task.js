@@ -5,10 +5,9 @@
 const path = require('path');
 const fs = require('fs-extra');
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
+const {processStats} = require('./utils/stats');
 
-const debug = getDebugLogger('ui:plugin-task');
-// 数据的格式化
-const processStats = val => val;
+const debug = getDebugLogger('ui:third-plugin-task');
 
 module.exports = api => {
     const sharedData = api.getSharedData('san.cli.');
@@ -71,7 +70,7 @@ module.exports = api => {
             return;
         }
 
-        const modernMode = sharedData.get('modern-mode').value;
+        const modernMode = sharedData.get('modern-mode') && sharedData.get('modern-mode').value;
         const type = message.webpackDashboardData.type;
         for (const data of message.webpackDashboardData.value) {
             const id = `${type}-${data.type}`;
@@ -179,7 +178,8 @@ module.exports = api => {
      * 3. views数组size为2，表明将要添加2个视图；
      */
     api.registerTask({
-        match: /san serve(\s+--\S+(\s+\S+)?)*$/,
+        // 匹配san serve 或者 测试地址：san-cli/index.js serve
+        match: /san(-cli\/index\.js)? serve(\s+--\S+(\s+\S+)?)*$/,
         description: 'san.san-cli.tasks.serve.description',
         link: 'https://ecomfe.github.io/san-cli',
         icon: '/public/san.svg',
@@ -261,7 +261,6 @@ module.exports = api => {
             hadFailed = false;
         },
         onRun: () => {
-            debug('onRun handler called........');
             ipc.on(onWebpackMessage);
         },
         onExit: () => {

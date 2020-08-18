@@ -83,8 +83,6 @@ class Tasks {
         if (pluginApi && pluginApi.taskPlugin) {
             pluginApi.taskPlugin.tasks.forEach(
                 task => {
-                    debug('Task plugin:', Object.keys(task));
-
                     // 不存在id则是一个描述性任务
                     if (!task.name && task.match) {
                         const index = list.findIndex(({command}) => {
@@ -94,6 +92,9 @@ class Tasks {
                         if (~index) {
                             Object.assign(list[index], task);
                             debug('Add describeTask plugin:', Object.keys(task));
+                        }
+                        else {
+                            debug('Not Descripting Task Found, [task.match]:', task.match);
                         }
                     }
                     else {
@@ -257,6 +258,8 @@ class Tasks {
     async run(id, context) {
         // 查找要运行的任务
         const task = this.findTask(id, context);
+
+        debug('Run Task:', task);
 
         // 如果任务已在执行或者任务不存在
         if (!task || task.status === TASK_STATUS_RUNNING) {
