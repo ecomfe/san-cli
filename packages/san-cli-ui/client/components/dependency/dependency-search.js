@@ -26,8 +26,8 @@ export default class DependencePackageSearch extends Component {
             <div class="dependency-search" slot="content">
                 <c-dependence-filter on-keywordChange="keywordChange"/>
                 <s-radio-group name="radiogroup" value="{{radioValue}}" on-change="onRadioChange" class="pkg-radio">
-                    <s-radio value="dependencies">{{$t('dependency.dependencies')}}</s-radio>
-                    <s-radio value="devDependencies">{{$t('dependency.devDependencies')}}</s-radio>
+                    <s-radio-button value="dependencies">{{$t('dependency.dependencies')}}</s-radio-button>
+                    <s-radio-button value="devDependencies">{{$t('dependency.devDependencies')}}</s-radio-button>
                 </s-radio-group>
                 <div class="pkg-search-item" s-if="searchData.length">
                     <c-dependency-search-item
