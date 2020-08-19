@@ -31,4 +31,4 @@ export const SEARCH_URL = 'https://registry.npmjs.org/-/v1/search';
 export const SEARCH_DEBOUNCE_DELAY = 1000;
 export const SEARCH_MAX_RESULT_TOTAL = 1000;
 export const SEARCH_PAGE_SIZE = 20;
-export const SEARCH_DEFAULT_QUERY = 'san-cli';
+export const SEARCH_DEFAULT_QUERY = 'san';
