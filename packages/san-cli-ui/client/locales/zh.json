@@ -155,7 +155,11 @@
         "tooltip": {
             "update": "更新",
             "del": "删除"
-        }
+        },
+        "optimal": "最优的",
+        "popularity": "最流行的",
+        "quality": "质量最高的",
+        "maintenance": "维护情况最好的"
     },
     "connection-status": {
         "disconnected": "连接已断开",
@@ -401,5 +405,9 @@
         "analyzer": {
             "title": "分析"
         }
+    },
+    "dropdown": {
+        "editor": "在编辑器中打开",
+        "recentProject": "最近打开"
     }
 }

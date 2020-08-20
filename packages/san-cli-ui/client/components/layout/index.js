@@ -25,10 +25,10 @@ export default class ComponentLayout extends Component {
                             style="box-shadow: 0 2px 20px rgba(0, 0, 0 , .1); border-radius: 5px; width: 160px;"
                         >
                             <s-menu-item key="open-in-editor">
-                                <s-icon type="codepen"></s-icon>在编辑器中打开
+                                <s-icon type="codepen"></s-icon>{{$t('dropdown.editor')}}
                             </s-menu-item>
                             <s-menu-divider></s-menu-divider>
-                            <s-menu-item-group title="最近打开">
+                            <s-menu-item-group title="{{$t('dropdown.recentProject')}}">
                                 <s-menu-item s-for="project in list" key="{{project.id}}">
                                     <s-icon type="history"></s-icon>{{project.name}}
                                 </s-menu-item>

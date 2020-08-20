@@ -12,7 +12,9 @@ import {
     SEARCH_DEBOUNCE_DELAY,
     SEARCH_MAX_RESULT_TOTAL,
     SEARCH_PAGE_SIZE,
-    SEARCH_DEFAULT_QUERY
+    SEARCH_DEFAULT_QUERY,
+    RANKING_MODES,
+    RANKING_MODE_MAP
 } from '@lib/const';
 import './dependency-search.less';
 
@@ -24,6 +26,20 @@ export default class DependencePackageSearch extends Component {
     static template = /* html */`
         <s-spin spinning="{{loading}}" class="dependency-search-wrap">
             <div class="dependency-search" slot="content">
+                <s-dropdown trigger="click" class="ranking-mode">
+                    <s-menu
+                        slot="overlay"
+                        on-click="changeRankingMode"
+                        defaultSelectedKeys="{{[rankingModes[0]]}}"
+                        style="box-shadow: 0 2px 20px rgba(0, 0, 0 , .1); border-radius: 5px; width: 160px;">
+                        <s-menu-item s-for="rankingMode in rankingModes" key="{{rankingMode}}">
+                            {{$t('dependency.' + rankingMode)}}
+                        </s-menu-item>
+                    </s-menu>
+                    <s-button class="ranking-mode-btn">
+                        {{$t('dependency.' + currentRankingMode)}} <s-icon type="down" />
+                    </s-button>
+                </s-dropdown>
                 <c-dependence-filter on-keywordChange="keywordChange"/>
                 <s-radio-group name="radiogroup" value="{{radioValue}}" on-change="onRadioChange" class="pkg-radio">
                     <s-radio-button value="dependencies">{{$t('dependency.dependencies')}}</s-radio-button>
@@ -56,7 +72,9 @@ export default class DependencePackageSearch extends Component {
             radioValue: 'dependencies',
             searchResultTotal: SEARCH_MAX_RESULT_TOTAL,
             searchPageSize: SEARCH_PAGE_SIZE,
-            loading: false
+            loading: false,
+            rankingModes: RANKING_MODES,
+            currentRankingMode: RANKING_MODES[0]
         };
     }
     inited() {
@@ -65,7 +83,7 @@ export default class DependencePackageSearch extends Component {
 
     async search(name, page = 0) {
         let data = await axios({
-            url: SEARCH_URL,
+            url: SEARCH_URL + RANKING_MODE_MAP[this.data.get('currentRankingMode')],
             params: {
                 // full-text search to apply
                 text: encodeURIComponent(name || SEARCH_DEFAULT_QUERY),
@@ -103,5 +121,9 @@ export default class DependencePackageSearch extends Component {
             searchKeyword = keyword;
             this.search(searchKeyword);
         }, SEARCH_DEBOUNCE_DELAY);
+    }
+    changeRankingMode({key}) {
+        this.data.set('currentRankingMode', key);
+        this.search(searchKeyword);
     }
 }
