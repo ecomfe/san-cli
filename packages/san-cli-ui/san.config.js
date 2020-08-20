@@ -29,7 +29,8 @@ module.exports = {
             entry: './client/pages/index.js',
             filename: 'index.html',
             template: './public/index.html',
-            title: '项目管理器 - san ui'
+            title: '项目管理器 - san ui',
+            chunks: ['index', 'vendors']
         }
     },
     alias: {
@@ -66,6 +67,19 @@ module.exports = {
             }]);
         config.resolve.alias
             .set('san', isProduction ? 'san/dist/san.spa.min.js' : 'san/dist/san.spa.dev.js');
+
+        config.optimization.splitChunks({
+            cacheGroups: {
+                // 三方库模块独立打包
+                vendors: {
+                    name: 'vendors',
+                    test: /[\\/]node_modules(?!\/santd)[\\/]/,
+                    priority: -10,
+                    chunks: 'initial'
+                },
+                default: false
+            }
+        });
     },
     devServer: {
         port: 8888
