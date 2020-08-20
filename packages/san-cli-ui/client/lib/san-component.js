@@ -13,7 +13,7 @@ import pluginAction from './mixins/plugin-action';
 import localization from './mixins/localization';
 
 
-class SubComponent extends Component {
+export default class SubComponent extends Component {
     constructor(options) {
         super(options);
         this.defaultComponents = defaultComponents;
@@ -27,7 +27,7 @@ class SubComponent extends Component {
     set components(comp) {
         this.customComponents = comp;
     }
-};
+}
 
 
 // 注入全局方法
@@ -53,5 +53,3 @@ mixin(SubComponent, {
     // 导入$apollo对象: this.$apollo
     ...apollo
 });
-
-export default SubComponent;

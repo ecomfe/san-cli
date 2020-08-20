@@ -105,7 +105,7 @@ export default class TaskContent extends Component {
                 component: 'san-cli.components.dashboard',
                 icon: 'dashboard',
                 id: 'org.webpack.views.dashboard',
-                label: 'addons.dashboard.title',
+                label: 'addons.dashboard.title'
             },
             {
                 component: 'org.webpack.components.analyzer',
@@ -272,7 +272,7 @@ export default class TaskContent extends Component {
             foreground: '#2c3e50',
             background: '#fff',
             cursor: '#fff',
-            selection: '#e6f7ff',
+            selection: '#e6f7ff'
         };
 
         const terminal = new Terminal({
@@ -290,8 +290,9 @@ export default class TaskContent extends Component {
     /**
      * 这里的setContent是增量添加log的
      *
-     * @param {string} value
+     * @param {string} value 值
      * @param {boolean} ln 是否换行
+     * @return {undefined}
     */
     setContent(value, ln = true) {
         if (value.indexOf('\n') !== -1) {
@@ -345,4 +346,4 @@ export default class TaskContent extends Component {
             }
         }
     }
-};
+}

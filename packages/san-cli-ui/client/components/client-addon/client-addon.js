@@ -28,4 +28,4 @@ export default class ClientAddon extends Component {
             addonComponent && addonComponent.data.set('data', data);
         });
     }
-};
+}

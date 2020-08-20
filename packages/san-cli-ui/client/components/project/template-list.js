@@ -8,7 +8,7 @@ import Component from '@lib/san-component';
 /**
  * 选择脚手架模板
  *
- * @param {Array} projectTemplateList
+ * @param {Array} projectTemplateList 模板列表
  * @param {Function} on-submit fire('submit')的回调
  * @param {boolean} hideSubmitBtn 隐藏提交按钮
 */

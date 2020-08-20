@@ -38,4 +38,4 @@ export default class TaskNav extends Component {
     avatars(name) {
         return avatars(name, 'initials');
     }
-};
+}

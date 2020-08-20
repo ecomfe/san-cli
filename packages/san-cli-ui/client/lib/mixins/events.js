@@ -38,6 +38,7 @@ const $eventBus = {
 // @发布事件
 // this.$emit('hello', {someData});
 module.exports = {
+
     /**
      * 注入到san的声明周期inited方法中，这样方便跨组件拿到数据
      * TODO: 静态方法无法获取到，只能弄成函数的形式，类似这样
@@ -53,6 +54,7 @@ module.exports = {
             }
         }
     },
+
     /**
      * 用于发布事件，注意不要和san的emit方法混淆了
      *

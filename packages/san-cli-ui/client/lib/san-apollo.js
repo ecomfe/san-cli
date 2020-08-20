@@ -32,8 +32,11 @@ const apolloClient = client => ({
 });
 
 /**
- *  Add a global $apolloClient
- * */
+ * Add a global $apolloClient
+ *
+ * @param {Object} san san对象
+ * @param {Object} apolloClient apolloClient实例
+ */
 export const register = (san, apolloClient) => {
     if (register.isRegistered) {
         return;
@@ -43,11 +46,14 @@ export const register = (san, apolloClient) => {
 
     global.san = san;
 
-    Object.defineProperty(san.Component.prototype, '$apollo', {
-        get() {
-            return apolloClient;
+    Object.defineProperty(san.Component.prototype, '$apollo',
+        /** @lends san */
+        {
+            get() {
+                return apolloClient;
+            }
         }
-    });
+    );
 };
 
 
