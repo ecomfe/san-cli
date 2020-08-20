@@ -55,7 +55,8 @@ export default class DependencePackageSearch extends Component {
                         class="pkg-pagination"
                         total="{{searchResultTotal}}"
                         on-change="onPagination"
-                        pageSize="{{searchPageSize}}">
+                        pageSize="{{searchPageSize}}"
+                        current="{{currentPage}}">
                     </s-pagination>
                 </div>
             </div>
@@ -74,14 +75,15 @@ export default class DependencePackageSearch extends Component {
             searchPageSize: SEARCH_PAGE_SIZE,
             loading: false,
             rankingModes: RANKING_MODES,
-            currentRankingMode: RANKING_MODES[0]
+            currentRankingMode: RANKING_MODES[0],
+            currentPage: 1
         };
     }
     inited() {
         this.search();
     }
 
-    async search(name, page = 0) {
+    async search(name, page = 1) {
         let data = await axios({
             url: SEARCH_URL + RANKING_MODE_MAP[this.data.get('currentRankingMode')],
             params: {
@@ -90,7 +92,7 @@ export default class DependencePackageSearch extends Component {
                 // how many results should be returned (default 20, max 250)
                 size: SEARCH_PAGE_SIZE,
                 // offset to return results from
-                from: page * SEARCH_PAGE_SIZE
+                from: (page - 1) * SEARCH_PAGE_SIZE
             }
         });
         let results = data && data.data;
@@ -102,6 +104,7 @@ export default class DependencePackageSearch extends Component {
             this.nextTick(() => {
                 document.querySelector('.pkg-search-item').scrollTop = 0;
             });
+            this.data.set('currentPage', page);
 
             this.data.set('loading', false);
         }
@@ -112,7 +115,7 @@ export default class DependencePackageSearch extends Component {
     }
     onPagination(event) {
         this.data.set('loading', true);
-        this.search(searchKeyword, event.page - 1);
+        this.search(searchKeyword, event.page);
     }
     keywordChange(keyword) {
         keyword = keyword.trim();
