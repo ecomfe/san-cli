@@ -2,10 +2,7 @@
  * @file kill端口组件
  * @author zttonly
  */
-import {Icon, Button, InputNumber} from 'santd';
-import 'santd/es/icon/style';
-import 'santd/es/button/style';
-import 'santd/es/input-number/style';
+
 import './kill-port.less';
 
 export default {
@@ -32,11 +29,6 @@ export default {
             </div>
         </div>
     `,
-    components: {
-        's-icon': Icon,
-        's-button': Button,
-        's-input-number': InputNumber
-    },
     initData() {
         return {
             status: 'idle',

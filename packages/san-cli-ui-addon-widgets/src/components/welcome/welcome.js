@@ -2,9 +2,7 @@
  * @file 欢迎组件
  * @author zttonly
  */
-import {Icon, Button} from 'santd';
-import 'santd/es/icon/style';
-import 'santd/es/button/style';
+
 import './welcome.less';
 
 export default {
@@ -36,10 +34,6 @@ export default {
             </div>
         </div>
     `,
-    components: {
-        's-icon': Icon,
-        's-button': Button
-    },
     initData() {
         return {
             num: [1, 2, 3],

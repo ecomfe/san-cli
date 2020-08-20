@@ -19,32 +19,35 @@ module.exports = function ({id, port = 8889}) {
         // transpileDependencies:['@baidu/nano'],
         css: {
             sourceMap: isProduction,
-            cssPreprocessor: 'less'
+            cssPreprocessor: 'less',
+            extract: false
         },
-        loaderOptions: {
-            babel: {
-                plugins: [
-                    [
-                        require.resolve('babel-plugin-import'),
-                        {
-                            libraryName: 'santd',
-                            libraryDirectory: 'es',
-                            style: true
-                        }
-                    ]
-                ]
+        pages: {
+            index: {
+                entry: './src/index.js',
+                filename: 'index.html',
+                title: 'san ui addon'
+                // chunks: ['index', 'vendors']
             }
         },
         chainWebpack: config => {
-            config.output
-                .filename('index.js')
-                .chunkFilename('index.js');
+
             config.plugins.delete('preload');
             config.plugins.delete('prefetch');
-            config.plugins.delete('optimize-css');
+            // config.plugins.delete('optimize-css');
 
-            config.optimization.splitChunks(false);
-
+            config.optimization.splitChunks({
+                cacheGroups: {
+                    // 三方库模块独立打包
+                    vendors: {
+                        name: 'vendors',
+                        test: /[\\/]node_modules\/santd[\\/]/,
+                        priority: -10,
+                        chunks: 'initial'
+                    },
+                    default: false
+                }
+            });
             config.module
                 .rule('gql')
                 .test(/\.(gql|graphql)$/)

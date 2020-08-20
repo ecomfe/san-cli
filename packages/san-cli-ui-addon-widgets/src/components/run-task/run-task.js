@@ -8,9 +8,6 @@ import TASK_RUN from 'san-cli-ui/client/graphql/task/taskRun.gql';
 import TASK_STOP from 'san-cli-ui/client/graphql/task/taskStop.gql';
 import TASK_CHANGED from 'san-cli-ui/client/graphql/task/taskChanged.gql';
 import avatars from 'san-cli-ui/client/lib/utils/avatars';
-import {Icon, Button} from 'santd';
-import 'santd/es/icon/style';
-import 'santd/es/button/style';
 import './run-task.less';
 
 export default {
@@ -52,10 +49,6 @@ export default {
             </template>
         </div>
     `,
-    components: {
-        's-icon': Icon,
-        's-button': Button
-    },
     computed: {
         taskId() {
             const task = this.data.get('widget.config.task');

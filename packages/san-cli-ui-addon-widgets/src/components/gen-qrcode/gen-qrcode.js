@@ -5,11 +5,6 @@
 
 import QRCode from 'qrcodejs2';
 import {frameTypes, box} from './schema';
-import {Input, Alert, Select, Radio} from 'santd';
-import 'santd/es/input/style';
-import 'santd/es/alert/style';
-import 'santd/es/select/style';
-import 'santd/es/radio/style';
 import './gen-qrcode.less';
 
 export default {
@@ -20,23 +15,23 @@ export default {
                     placeholder="{{$('dashboard.widgets.gen-qrcode.select-type')}}"
                     on-change="onFrameChange"
                 >
-                    <s-selectoption s-for="ft in frameTypes" value="{{ft.value}}">
+                    <s-select-option s-for="ft in frameTypes" value="{{ft.value}}">
                         {{ft.text}}
-                    </s-selectoption>
+                    </s-select-option>
                 </s-select>
                 <s-select
                     s-if="realBox.length > 0" 
                     value="{=currentBox=}"
                     placeholder="{{$('dashboard.widgets.gen-qrcode.select-box')}}"
                 >
-                    <s-selectoption s-for="b in realBox" value="{{b.value}}">
+                    <s-select-option s-for="b in realBox" value="{{b.value}}">
                         {{b.text}}
-                    </s-selectoption>
+                    </s-select-option>
                 </s-select>
-                <s-group s-if="showSearchOpt" name="radiogroup" value="{{radioValue}}}" on-change="onRadioChange">
+                <s-radio-group s-if="showSearchOpt" name="radiogroup" value="{{radioValue}}}" on-change="onRadioChange">
                     <s-radio value="{{'open'}}">url</s-radio>
                     <s-radio value="{{'search'}}">query</s-radio>
-                </s-group>
+                </s-radio-group>
             </div>
             <s-input-search
                 value="{=inputValue=}"
@@ -56,14 +51,6 @@ export default {
             <div class="schema">{{schema}}</div>
         </div>
     `,
-    components: {
-        's-input-search': Input.Search,
-        's-alert': Alert,
-        's-select': Select,
-        's-selectoption': Select.Option,
-        's-radio': Radio,
-        's-group': Radio.Group
-    },
     computed: {
         realBox() {
             const currentType = this.data.get('currentType');

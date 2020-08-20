@@ -2,10 +2,7 @@
  * @file 新闻组件
  * @author zttonly
  */
-import {Icon, Button, Spin} from 'santd';
-import 'santd/es/icon/style';
-import 'santd/es/button/style';
-import 'santd/es/spin/style';
+
 import './news.less';
 
 export default {
@@ -87,11 +84,6 @@ export default {
             </div>
         </div>
     `,
-    components: {
-        's-icon': Icon,
-        's-spin': Spin,
-        's-button': Button
-    },
     computed: {
         isImg() {
             const selectedItem = this.data.get('selectedItem');
