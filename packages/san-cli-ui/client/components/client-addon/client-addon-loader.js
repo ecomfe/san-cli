@@ -16,8 +16,7 @@ export default class clientAddonLoader extends Component {
     initData() {
         return {
             lastRead: null,
-            all: 0,
-            cur: 0
+            loadMap: {}
         };
     }
     async inited() {
@@ -26,8 +25,8 @@ export default class clientAddonLoader extends Component {
             fetchPolicy: 'no-cache',
             manual: true
         });
+
         if (!clientAddons.stale && clientAddons.data) {
-            this.data.set('all', clientAddons.data.clientAddons.length);
             clientAddons.data.clientAddons.forEach(addon => this.loadAddon(addon));
             this.data.set('lastRead', Date.now());
         }
@@ -56,6 +55,11 @@ export default class clientAddonLoader extends Component {
         });
     }
     loadAddon(addon) {
+        const loadMap = this.data.get('loadMap');
+        const key = addon.id.replace(/\./g, '_');
+        if (loadMap && loadMap[key]) {
+            return;
+        }
         // eslint-disable-next-line no-console
         console.log(`[UI] Loading client addon ${addon.id} (${addon.url})...`);
         const that = this;
@@ -63,17 +67,11 @@ export default class clientAddonLoader extends Component {
         script.setAttribute('src', addon.url);
         script.onload = function () {
             if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
-                that.addCur();
+                loadMap[key] = true;
+                that.data.set('loadMap', loadMap);
+                that.fire('scriptloaded', addon.id);
             }
         };
         document.body.appendChild(script);
     }
-    addCur() {
-        let {all, cur} = this.data.get();
-        this.data.set('cur', cur + 1);
-        if (all === cur + 1) {
-            this.fire('scriptloaded');
-        }
-    }
-
 }

@@ -140,8 +140,10 @@ export default class Dashboard extends Component {
     updateWidgets(e) {
         this.data.set('widgets', e);
     }
-    onScriptLoad() {
-        this.data.set('scriptLoaded', true);
+    onScriptLoad(id) {
+        if (/^san\.widgets\.client-addon/i.test(id)) {
+            this.data.set('scriptLoaded', true);
+        }
     }
     showCustom() {
         let editing = this.data.get('editing');

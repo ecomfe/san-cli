@@ -3,6 +3,7 @@
  * @author jinzhan
  */
 import san from 'san';
+import Component from '@lib/san-component';
 import {router} from 'san-router';
 import deepmerge from 'deepmerge';
 import loadScript from 'load-script';
@@ -10,6 +11,7 @@ import apolloClient from '@lib/apollo-client';
 import CLIENT_ADDONS from '@graphql/client-addon/clientAddons.gql';
 import CLIENT_ADDON_ADDED from '@graphql/client-addon/clientAddonAdded.gql';
 import localization from '@locales/zh.json';
+import uiComponents from './components';
 
 export default class ClientAddon {
     constructor() {
@@ -25,7 +27,10 @@ export default class ClientAddon {
      */
     defineComponent(id, options) {
         // TODO: 此处也可以使用san-component
-        const component = san.defineComponent(options);
+        const component = san.defineComponent({
+            ...options,
+            components: Object.assign({}, uiComponents, options.components || {})
+        }, Component);
         this.components.set(id, component);
 
         // 调用组件相应的回调方法，这里可以配合awaitComponent添加回调

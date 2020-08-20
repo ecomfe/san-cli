@@ -21,7 +21,9 @@ import {
     Spin,
     Switch,
     Tabs,
-    Tooltip
+    Tooltip,
+    InputNumber,
+    Alert
 } from 'santd';
 
 // 自动注入以下Santd组件
@@ -47,6 +49,7 @@ export default {
     's-menu-item-group': Menu.MenuItemGroup,
     's-modal': Modal,
     's-pagination': Pagination,
+    's-radio': Radio,
     's-radio-button': Radio.Button,
     's-radio-group': Radio.Group,
     's-select': Select,
@@ -55,5 +58,7 @@ export default {
     's-switch': Switch,
     's-tabs': Tabs,
     's-tabpane': Tabs.TabPane,
-    's-tooltip': Tooltip
+    's-tooltip': Tooltip,
+    's-input-number': InputNumber,
+    's-alert': Alert
 };
