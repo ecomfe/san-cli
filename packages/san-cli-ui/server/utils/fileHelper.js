@@ -117,21 +117,19 @@ const isPackage = file => {
  * @param {boolean} force 是否走缓存中读，force为true代表不走
  */
 const readPackage = (file, force = false) => {
-    try {
-        if (!force) {
-            const cachedValue = pkgCache.get(file);
-            if (cachedValue) {
-                return cachedValue;
-            }
+    if (!force) {
+        const cachedValue = pkgCache.get(file);
+        if (cachedValue) {
+            return cachedValue;
         }
+    }
+    if (fs.existsSync(file)) {
         const pkgFile = path.join(file, 'package.json');
         if (fs.existsSync(pkgFile)) {
             const pkg = fs.readJsonSync(pkgFile);
             pkgCache.set(file, pkg);
             return pkg;
         }
-    } catch (e) {
-        console.log(e);
     }
     return {};
 };
