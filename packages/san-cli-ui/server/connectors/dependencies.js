@@ -55,7 +55,7 @@ class Dependencies {
 
     getLink(id) {
         let idPath = this.getPath({id});
-        const pkg = readPackage(idPath) || {};
+        const pkg = readPackage(idPath);
         return pkg.homepage || (pkg.repository && pkg.repository.url)
             || `https://www.npmjs.com/package/${id.replace('/', '%2F')}`;
     }

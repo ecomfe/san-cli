@@ -19,6 +19,7 @@ module.exports = gql`
         id: String!
         type: String!
         website: String
+        installed: Boolean
     }
     type version {
         current: String

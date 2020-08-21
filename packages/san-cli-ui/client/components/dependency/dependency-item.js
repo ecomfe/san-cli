@@ -29,17 +29,26 @@ export default class DependenceItem extends Component {
                         <span class="pkg-version">
                             {{$t('dependency.currentVersion')}}{{item.detail.latest || ' ...'}}
                         </span>
-                        <s-icon class="pkg-check-ico" type="check-circle" />
-                        <span class="pkg-version">{{$t('dependency.installed')}}</span>
-                        <s-tooltip
-                            title="{{$t('dependency.tooltip.update')}}"
-                            s-if="item.detail.current !== item.detail.latest">
-                            <s-icon
-                                type="arrow-up" 
-                                class="update-icon highlight"
-                                on-click="onPkgUpdate"
-                            />
-                        </s-tooltip>
+                        <fragment s-if="item.installed">
+                            <s-icon class="pkg-check-ico" type="check-circle" />
+                            <span class="pkg-version">{{$t('dependency.installed')}}</span>
+                            <s-tooltip
+                                title="{{$t('dependency.tooltip.update')}}"
+                                s-if="item.detail.current !== item.detail.latest">
+                                <s-icon
+                                    type="arrow-up"
+                                    class="update-icon highlight"
+                                    on-click="onPkgUpdate"
+                                />
+                            </s-tooltip>
+                        </fragment>
+                        <fragment s-else>
+                            <s-icon class="pkg-check-ico warn" type="close-circle" />
+                            <span class="pkg-version warn">{{$t('dependency.uninstalled')}}</span>
+                            <s-tooltip title="{{$t('dependency.tooltip.install')}}">
+                                <s-icon type="download" class="highlight" on-click="onPkgUpdate" />
+                            </s-tooltip>
+                        </fragment>
                     </div>
                 </div>
                 <s-tooltip title="{{$t('dependency.tooltip.del')}}">
