@@ -63,7 +63,7 @@
                 "cancelCollect": "取消收藏",
                 "editor": "在编辑器中打开",
                 "rename": "修改项目显示名称",
-                "del": "删除"
+                "del": "从列表中移除"
             }
         },
         "components": {

@@ -3,8 +3,8 @@
  * @author zttonly
  */
 
-// 第一个例子：使用san-component
 import Component from '@lib/san-component';
+import avatars from '@lib/utils/avatars';
 
 export default class ProjectList extends Component {
     static template = /* html */`
@@ -13,6 +13,14 @@ export default class ProjectList extends Component {
                 class="list-item{{lastOpenProject === item.id ? ' last-clicked-item' : ''}}"
                 s-for="item, index in list"
                 on-click="handleClick(item, index)">
+                
+                <div class="icon" style="background-image: url({{avatars(item.name)}})"></div>
+
+                <div class="content">
+                    <div class="name">{{item.name}}</div>
+                    <div>{{item.path}}</div>
+                </div>
+
                 <s-tooltip 
                     title="{{item.favorite
                         ? $t('project.list.tooltip.cancelCollect')
@@ -22,11 +30,6 @@ export default class ProjectList extends Component {
                         <s-icon type="star" theme="{{item.favorite ? 'filled' : 'outlined'}}"></s-icon>
                     </s-button>
                 </s-tooltip>
-
-                <div class="content">
-                    <div class="name">{{item.name}}</div>
-                    <div>{{item.path}}</div>
-                </div>
 
                 <s-tooltip title="{{$t('project.list.tooltip.editor')}}">
                     <s-button type="primary" icon="codepen" on-click="openInEditor(item, index, $event)"></s-button>
@@ -47,6 +50,10 @@ export default class ProjectList extends Component {
         return {
             loading: false
         };
+    }
+
+    avatars(name) {
+        return avatars(name.charAt(0), 'initials');
     }
 
     openInEditor(item, index, e) {
