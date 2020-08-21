@@ -22,6 +22,7 @@ import clientAddonData from './task-dashboard-data.json';
  *
  * @param {Object} taskInfo 当前的任务信息
  */
+
 export default class TaskContent extends Component {
     static template = /* html */`
     <div class="task-content">
@@ -40,10 +41,7 @@ export default class TaskContent extends Component {
 
         <s-tabs defaultActiveKey="1">
             <!---默认的命令行视图---->
-            <s-tabpane key="1">
-                <template slot="tab">
-                    <s-icon type="code" /> {{$t('task.output')}}
-                </template>
+            <s-tabpane key="1" tab="{{$t('task.output')}}">
                 <div class="task-output-opt">
                     <div class="task-output-head">
                         <span class="task-output-head-output">
@@ -66,20 +64,8 @@ export default class TaskContent extends Component {
                 <div class="task-output-content"></div>
             </s-tabpane>
 
-            <!---- views (TODO: s-for not supported here, Santd/tabpane bugs) ---->
-            <s-tabpane key="2" s-if="{{views[0]}}">
-                <template slot="tab">
-                    <s-icon type="dashboard" />{{$t('addons.dashboard.title')}}
-                </template>
-                <c-client-addon client-addon="{{views[0].component}}" data="{{clientAddonData}}" />
-            </s-tabpane>
-
-            <!---- views (TODO: s-for not supported here, Santd/tabpane bugs) ---->
-            <s-tabpane key="3" s-if="{{views[1]}}">
-                <template slot="tab">
-                    <s-icon type="line-chart" />{{$t('addons.analyzer.title')}}
-                </template>
-                TODO: c-task-dashboard
+            <s-tabpane key="{{'v-' + index}}" tab="{{$t(view.label)}}" s-for="view,index in views">
+                <c-client-addon client-addon="{{view.component}}" data="{{clientAddonData}}" />
             </s-tabpane>
         </s-tabs>
     </div>
@@ -117,6 +103,7 @@ export default class TaskContent extends Component {
     }
 
     async attached() {
+        console.log('this.sourceSlots:', this.sourceSlots);
         this.nextTick(() => {
             this.initTerminal();
             window.addEventListener('resize', () => {
@@ -142,6 +129,13 @@ export default class TaskContent extends Component {
             // 4. 监听命令行的变化
             this.subscribeTaskChanged(name);
         });
+
+        this.$watchSharedData('san.cli.serve', data => {
+            console.log('sharedData:', data);
+        });
+
+        const sharedData = await this.$getSharedData('san.cli.serve-stats');
+        console.log({sharedData});
     }
 
     // 设置历史log

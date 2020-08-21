@@ -2,23 +2,16 @@
  * @file 存储在本地文件中的共享数据
  * @author zttonly
  */
-const path = require('path');
-const fs = require('fs-extra');
+
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
-const rcPath = require('../utils/rcPath');
 const channels = require('../utils/channels');
+const $data = require('../models/data');
 const {deepGet, deepSet} = require('../utils/deep');
 
-const debug = getDebugLogger('ui:sharedData');
-
-const shareDataDir = 'shared-data';
-const rootFolder = path.resolve(rcPath, shareDataDir);
-fs.ensureDirSync(rcPath);
-fs.ensureDirSync(rootFolder);
+const debug = getDebugLogger('ui:connectors:sharedData');
 
 class SharedData {
     constructor() {
-        this.rootFolder = rootFolder;
         this.sharedData = new Map();
         this.watchers = new Map();
         // stats用作订阅的计数
@@ -26,13 +19,14 @@ class SharedData {
     }
 
     get({id, projectId}, context) {
+        // id: "san.cli.serve", projectId: "WbWQYW38C"
         const store = this.sharedData.get(projectId);
         if (!store) {
+            debug(`projectId(id:${id}, projectId: ${projectId}): No Data Here!`);
             return null;
         }
         let data = store.get(id);
-        const targetFile = path.resolve(this.resolve(projectId, id));
-        const hasLocalFile = fs.existsSync(targetFile);
+        const hasLocalFile = $data.hasData(projectId, id);
         if (!data && hasLocalFile) {
             data = {
                 id,
@@ -42,18 +36,17 @@ class SharedData {
         }
 
         if (data && data.disk) {
-            data.value = hasLocalFile ? fs.readJSONSync(targetFile) : null;
+            data.value = $data.getData(projectId, id);
         }
+
+        debug(`projectId(${projectId}):`, {data, id, hasLocalFile});
 
         return data;
     }
 
     async set({id, projectId, value, disk = false}, context) {
-        // 写入到文件中
         if (disk) {
-            const projectFolder = path.resolve(this.rootFolder, projectId);
-            fs.ensureDirSync(projectFolder);
-            fs.writeJsonSync(path.resolve(projectFolder, `${id}.json`), value);
+            $data.setData(projectId, id, value);
         }
 
         deepSet(this.sharedData, `${projectId}.${id}`, {
@@ -71,15 +64,11 @@ class SharedData {
 
         const watchers = this.fire({id, projectId, value}, context);
 
-        setTimeout(() => (
-            debug('SharedData set', id, projectId, value, `(${watchers.length} watchers, ${stat.value} subscriptions)`)
-        ));
+        setTimeout(() => {
+            debug('SharedData set', id, projectId, value, `(${watchers.length} watchers, ${stat.value} subscriptions)`);
+        });
 
         return {id, value};
-    }
-
-    resolve(projectId, id) {
-        return path.resolve(this.rootFolder, projectId, `${id}.json`);
     }
 
     async remove({id, projectId}, context) {
@@ -87,7 +76,7 @@ class SharedData {
         if (store) {
             const data = store.get(id);
             if (data && data.disk) {
-                fs.remove(this.resolve(projectId, id));
+                $data.remove(projectId, id);
             }
             store.delete(id);
         }

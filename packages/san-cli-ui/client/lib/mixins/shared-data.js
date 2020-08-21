@@ -5,35 +5,28 @@
 import SHARED_DATA from '@graphql/shared-data/sharedData.gql';
 import SHARED_DATA_UPDATE from '@graphql/shared-data/sharedDataUpdate.gql';
 // import SHARED_DATA_UPDATED from '@graphql/shared-data/sharedDataUpdated.gql';
-import CURRENT_PROJECT_ID from '@graphql/project/currentProjectId.gql';
+import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 
 module.exports = {
     // $sharedData: {},
-    $getProjectId() {
-        return new Promise(resolve => {
-            const subscribe = this.$apollo.subscribe({
-                query: CURRENT_PROJECT_ID
-            }).subscribe({
-                next: ({data}) => {
-                    if (data.currentProjectId) {
-                        subscribe.unsubscribe();
-                        resolve(data.currentProjectId);
-                    }
-                }
-            });
+    async $getProjectId() {
+        const query = await this.$apollo.query({
+            query: PROJECT_CURRENT
         });
+
+        return (query.data.projectCurrent || {}).id;
     },
 
     async $getSharedData(id) {
         const projectId = await this.$getProjectId();
-        const result = await this.$apollo.query({
+        const query = await this.$apollo.query({
             query: SHARED_DATA,
             variables: {
                 id,
                 projectId
             }
         });
-        return result.sharedData.value;
+        return query.data.sharedData;
     },
 
     async $watchSharedData(id, callback) {

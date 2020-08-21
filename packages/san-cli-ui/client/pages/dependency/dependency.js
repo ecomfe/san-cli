@@ -17,8 +17,7 @@ export default class Dependency extends Component {
         <c-layout menu="{{$t('menu')}}"
             nav="{{['dependency']}}"
             title="{{$t('dependency.title')}}"
-            page-loading="{=pageLoading=}"
-        >
+            page-loading="{=pageLoading=}">
             <template slot="right" s-if="!modalVisible">
                 <s-button type="primary" on-click="onModalShow">
                     <s-icon type="plus"/>{{$t('dependency.installDependency')}}

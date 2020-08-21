@@ -9,6 +9,7 @@ import defaultComponents from './components';
 import mixin from '@lib/san-mixin';
 import events from './mixins/events';
 import apollo from './mixins/apollo';
+import sharedData from './mixins/shared-data';
 import pluginAction from './mixins/plugin-action';
 import localization from './mixins/localization';
 
@@ -51,5 +52,14 @@ mixin(SubComponent, {
     ...pluginAction,
 
     // 导入$apollo对象: this.$apollo
-    ...apollo
+    ...apollo,
+
+    /**
+     * 导入sharedData相关得方法
+     *  ($getProjectId)
+     *  $getSharedData
+     *  $watchSharedData
+     *  $setSharedData
+    */
+    ...sharedData
 });

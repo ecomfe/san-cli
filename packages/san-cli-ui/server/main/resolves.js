@@ -8,7 +8,7 @@ const {GraphQLJSON} = require('graphql-type-json');
 const channels = require('../utils/channels');
 const cwd = require('../connectors/cwd');
 const clientAddons = require('../connectors/clientAddons');
-const sharedData = require('../models/sharedData');
+const sharedData = require('../connectors/sharedData');
 const {withFilter} = require('graphql-subscriptions');
 
 const resolvers = [{

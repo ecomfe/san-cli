@@ -3,7 +3,7 @@
  * @author jinzhan
  */
 
-const sharedData = require('../models/sharedData');
+const sharedData = require('../connectors/sharedData');
 
 class SharedData {
     constructor({project, context, namespace}) {
