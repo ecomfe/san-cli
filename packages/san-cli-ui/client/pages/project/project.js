@@ -3,9 +3,8 @@
  * @author zttonly
  */
 
-import Component from '@lib/san-component';
 import {router, Link} from 'san-router';
-import {createApolloComponent} from '@lib/san-apollo';
+import Component from '@lib/san-component';
 import CWD from '@graphql/cwd/cwd.gql';
 import PROJECT_INIT_TEMPLATE from '@graphql/project/projectInitTemplate.gql';
 import PROJECT_TEMPLATE_LIST from '@graphql/project/projectTemplateList.gql';
@@ -18,7 +17,7 @@ import ProjectCreate from '@components/project/create';
 import Layout from '@components/layout/horizontal';
 import './project.less';
 
-export default class Project extends createApolloComponent(Component) {
+export default class Project extends Component {
     static template = /* html */`
         <div class="h1oh project-select">
             <c-connection-status />

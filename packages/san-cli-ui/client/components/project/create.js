@@ -5,12 +5,11 @@
 
 import Component from '@lib/san-component';
 import PromptsForm from '@components/prompts-form';
-import {createApolloComponent} from '@lib/san-apollo';
 import PROJECT_CREATION from '@graphql/project/projectCreation.gql';
 import CONSOLE_LOG_ADDED from '@graphql/console/consoleLogAdded.gql';
 import './create.less';
 
-export default class ProjectCreate extends createApolloComponent(Component) {
+export default class ProjectCreate extends Component {
     static template = /* html */`
         <div class="flex-all create">
             <s-form label-col="{{formItemLayout.labelCol}}"

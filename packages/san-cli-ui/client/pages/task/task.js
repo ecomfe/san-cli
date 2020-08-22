@@ -2,7 +2,6 @@
  * @file 任务管理
  */
 import Component from '@lib/san-component';
-import {createApolloComponent} from '@lib/san-apollo';
 import TASKS from '@graphql/task/tasks.gql';
 import TASK from '@graphql/task/task.gql';
 import Layout from '@components/layout';
@@ -11,7 +10,7 @@ import TaskCard from '@components/task/task-card';
 import TaskContent from '@components/task/task-content';
 import './task.less';
 
-export default class Task extends createApolloComponent(Component) {
+export default class Task extends Component {
     static template = /* html */`
         <c-layout menu="{{$t('menu')}}"
             nav="{{['tasks']}}"
