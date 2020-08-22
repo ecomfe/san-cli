@@ -33,7 +33,7 @@ export default class TaskContent extends Component {
 
         <div class="task-config">
             <s-button type="primary" 
-                icon="{{isRunning ? 'stop' : 'caret-right'}}" 
+                icon="{{isRunning ? 'loading' : 'caret-right'}}" 
                 loading="{{taskPending}}"
                 on-click="execute">{{isRunning ? $t('task.stop') : $t('task.run')}}</s-button>
             <s-button type="default" icon="setting">{{$t('task.setting')}}</s-button>

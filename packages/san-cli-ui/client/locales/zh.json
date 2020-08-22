@@ -56,7 +56,7 @@
             "modal": {
                 "tip": "输入新名称",
                 "placeholder": "请输入合法名称",
-                "oktext": "重命名"
+                "oktext": "确定"
             },
             "tooltip": {
                 "collect": "收藏",
