@@ -1,14 +1,7 @@
-/**
- * @file 任务仪表盘中的编译进度模块
- * @author Lohoyo
- */
+import './build-progress.less';
 
-import {Component} from 'san';
-import './build-progress-temp.less';
-import {Icon} from 'santd';
-import 'santd/es/icon/style';
-
-export default class BuildStatus extends Component {
+/* global SanComponent */
+export default class BuildProgress extends SanComponent {
     static template = /* html */`
     <div class="build-progress">
         <s-icon
@@ -19,8 +12,4 @@ export default class BuildStatus extends Component {
         <div class="extra-info">{{buildProgress.operations}}</div>
     </div>
     `;
-
-    static components = {
-        's-icon': Icon
-    };
 };

@@ -6,6 +6,7 @@
 import {router} from 'san-router';
 import apolloClient from '@lib/apollo-client';
 import ClientAddon, {loadClientAddons} from '@lib/client-addon';
+import Component from '@lib/san-component';
 import Project from './project';
 import Task from './task';
 import About from '@components/about';
@@ -21,6 +22,7 @@ import './index.less';
 
 // 暴露全局API，用于集成第三方组件
 window.ClientAddonApi = new ClientAddon();
+window.SanComponent = Component;
 
 // 加载第三方组件
 loadClientAddons();

@@ -65,7 +65,7 @@ export default class TaskContent extends Component {
             </s-tabpane>
 
             <s-tabpane key="{{'v-' + index}}" tab="{{$t(view.label)}}" s-for="view,index in views">
-                <c-client-addon client-addon="{{view.component}}" data="{{clientAddonData}}" />
+                <c-client-addon client-addon="{{view.component}}" data="{{view.data}}" />
             </s-tabpane>
         </s-tabs>
     </div>
@@ -103,7 +103,6 @@ export default class TaskContent extends Component {
     }
 
     async attached() {
-        console.log('this.sourceSlots:', this.sourceSlots);
         this.nextTick(() => {
             this.initTerminal();
             window.addEventListener('resize', () => {
@@ -135,6 +134,12 @@ export default class TaskContent extends Component {
         });
 
         const sharedData = await this.$getSharedData('san.cli.serve-stats');
+        this.data.get('views').some(item => {
+            if (item.id === 'org.webpack.views.dashboard') {
+                item.data = sharedData.value;
+                return true;
+            }
+        });
         console.log({sharedData});
     }
 

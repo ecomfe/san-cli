@@ -16,7 +16,7 @@ export default class ClientAddon extends Component {
             .then(Component => {
                 addonComponent = new Component({
                     data: {
-                        data
+                        ...data
                     }
                 }).attach(this.el);
             })

@@ -44,9 +44,5 @@
     "autoprefixer": "^9.7.5",
     "postcss-url": "^7.2.1",
     "san-cli": "^0.1.0"
-  },
-  "dependencies": {
-    "san-cli-ui": "^0.0.1",
-    "santd": "^0.2.8"
   }
 }
