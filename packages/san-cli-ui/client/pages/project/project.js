@@ -16,6 +16,7 @@ import FolderExplorer from '@components/folder-explorer';
 import ProjectCreate from '@components/project/create';
 import Layout from '@components/layout/horizontal';
 import './project.less';
+import {Modal} from 'santd';
 
 export default class Project extends Component {
     static template = /* html */`
@@ -218,7 +219,7 @@ export default class Project extends Component {
 
     async importProject() {
         this.data.set('isImporting', true);
-        await this.$apollo.mutate({
+        const res = await this.$apollo.mutate({
             mutation: PROJECT_IMPORT,
             variables: {
                 path: this.data.get('cwd'),
@@ -226,6 +227,13 @@ export default class Project extends Component {
             }
         });
         this.data.set('isImporting', false);
+        if (res.errors && res.errors.some(item => item.message === 'NO_MODULES')) {
+            Modal.error({
+                title: $t('project.components.import.noModulesTipsTitle'),
+                content: $t('project.components.import.noModulesTipsContent')
+            });
+            return;
+        }
         router.locator.redirect('/');
     }
 }

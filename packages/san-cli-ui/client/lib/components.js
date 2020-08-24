@@ -4,6 +4,7 @@
 */
 
 import {
+    Alert,
     Button,
     Card,
     Dropdown,
@@ -12,6 +13,7 @@ import {
     Grid,
     Icon,
     Input,
+    InputNumber,
     Layout,
     Menu,
     Modal,
@@ -21,13 +23,12 @@ import {
     Spin,
     Switch,
     Tabs,
-    Tooltip,
-    InputNumber,
-    Alert
+    Tooltip
 } from 'santd';
 
 // 自动注入以下Santd组件
 export default {
+    's-alert': Alert,
     's-button': Button,
     's-card': Card,
     's-dropdown': Dropdown,
@@ -39,6 +40,7 @@ export default {
     's-icon': Icon,
     's-input': Input,
     's-input-search': Input.Search,
+    's-input-number': InputNumber,
     's-layout': Layout,
     's-layout-content': Layout.Content,
     's-layout-header': Layout.Header,
@@ -58,7 +60,5 @@ export default {
     's-switch': Switch,
     's-tabs': Tabs,
     's-tabpane': Tabs.TabPane,
-    's-tooltip': Tooltip,
-    's-input-number': InputNumber,
-    's-alert': Alert
+    's-tooltip': Tooltip
 };

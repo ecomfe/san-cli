@@ -59,7 +59,6 @@ exports.resolveModule = function (request, context) {
             resolvedPath = resolve(request, {paths: [context]});
         }
     } catch (e) {
-        // TODO: 这里可能要进一步处理下错误，因为如果用户的项目的某个依赖存在于 package.json 里但实际上并没有安装（即不存在于 node_modules 里），resolvedPath 就为 undefined 了，从而导致之后的代码走不下去，最终的后果是依赖管理页不可用。
         console.log(e);
     }
     return resolvedPath;
