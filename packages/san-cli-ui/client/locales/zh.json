@@ -72,6 +72,10 @@
                 "submitText": "开始创建",
                 "cancelSubmitText": "取消创建",
                 "spinTip": "正在创建项目..."
+            },
+            "import": {
+                "noModulesTipsTitle": "该项目没有安装依赖",
+                "noModulesTipsContent": "请安装依赖后再尝试导入。"
             }
         }
     },
