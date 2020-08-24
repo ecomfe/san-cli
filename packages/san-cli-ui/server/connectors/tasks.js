@@ -67,57 +67,57 @@ class Tasks {
                     ~index ? Object.assign(list[index], task) : list.push(task);
                 }
             );
-        }
 
-        // 获取第三方插件
-        if (isSanProject) {
-            // 确保插件逻辑已经执行
-            await plugins.list(file, context, {
-                resetApi: false
-            });
-        }
+            // 获取第三方插件
+            if (isSanProject) {
+                // 确保插件逻辑已经执行
+                await plugins.list(file, context, {
+                    resetApi: false
+                });
+            }
 
-        const pluginApi = plugins.getApi(file);
-        const pluginTasks = [];
-        debug('Task pluginApi:', pluginApi && pluginApi.taskPlugin);
-        if (pluginApi && pluginApi.taskPlugin) {
-            pluginApi.taskPlugin.tasks.forEach(
-                task => {
-                    // 不存在id则是一个描述性任务
-                    if (!task.name && task.match) {
-                        const index = list.findIndex(({command}) => {
-                            const match = task.match;
-                            return typeof match === 'function' ? match.call(task, command) : match.test(command);
-                        });
-                        if (~index) {
-                            Object.assign(list[index], task);
-                            debug('Add describeTask plugin:', Object.keys(task));
+            const pluginApi = plugins.getApi(file);
+            debug('Task pluginApi:', pluginApi && pluginApi.taskPlugin);
+            if (pluginApi && pluginApi.taskPlugin) {
+                pluginApi.taskPlugin.tasks.forEach(
+                    task => {
+                        // 不存在id则是一个描述性任务
+                        if (!task.name && task.match) {
+                            const index = list.findIndex(({command}) => {
+                                const match = task.match;
+                                return typeof match === 'function' ? match.call(task, command) : match.test(command);
+                            });
+                            if (~index) {
+                                Object.assign(list[index], task);
+                                debug('Add describeTask plugin:', Object.keys(task));
+                            }
+                            else {
+                                debug('Not Descripting Task Found, [task.match]:', task.match);
+                            }
                         }
                         else {
-                            debug('Not Descripting Task Found, [task.match]:', task.match);
+                            const id = `${file}:${task.name}`;
+                            const index = list.findIndex(t => t.id === id);
+                            // 对插件任务进行去重
+                            ~index || list.push({
+                                id,
+                                index,
+                                prompts: [],
+                                status: TASK_STATUS_IDLE,
+                                views: [],
+                                path: file,
+                                ...task
+                            });
                         }
                     }
-                    else {
-                        const id = `${file}:${task.name}`;
-                        pluginTasks.push({
-                            id,
-                            prompts: [],
-                            views: [],
-                            path: file,
-                            uiOnly: true,
-                            ...task
-                        });
-                    }
-                }
-            );
-            debug('pluginTasks', pluginTasks);
-        }
-        else {
-            debug('No task plugin found');
+                );
+            }
+            else {
+                debug('No task plugin found');
+            }
+            debug('list', list);
         }
         this.tasks.set(file, list);
-
-        debug('pluginList', list);
         return list;
     }
 

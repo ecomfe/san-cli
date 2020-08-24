@@ -86,19 +86,8 @@ export default class TaskContent extends Component {
             // 脚本执行中
             isRunning: false,
 
-            // TODO: 先写死测试一下，待完善
-            views: [{
-                component: 'san-cli.components.dashboard',
-                icon: 'dashboard',
-                id: 'org.webpack.views.dashboard',
-                label: 'addons.dashboard.title'
-            },
-            {
-                component: 'org.webpack.components.analyzer',
-                icon: 'donut_large',
-                id: 'org.webpack.views.analyzer',
-                label: 'addons.analyzer.title'
-            }]
+            // 额外的任务视图
+            views: []
         };
     }
 
@@ -132,15 +121,6 @@ export default class TaskContent extends Component {
         this.$watchSharedData('san.cli.serve', data => {
             console.log('sharedData:', data);
         });
-
-        const sharedData = await this.$getSharedData('san.cli.serve-stats');
-        this.data.get('views').some(item => {
-            if (item.id === 'org.webpack.views.dashboard') {
-                item.data = sharedData.value;
-                return true;
-            }
-        });
-        console.log({sharedData});
     }
 
     // 设置历史log
@@ -161,28 +141,19 @@ export default class TaskContent extends Component {
     }
 
     // 获取task的状态
-    async updateTask(id) {
+    async updateTask() {
+        const id = this.data.get('taskInfo.name');
         const query = await this.$apollo.query({
             query: TASK,
-            variables: {
-                id: this.data.get('taskInfo.name')
-            }
+            variables: {id}
         });
+        let views = [];
         const task = query.data.task;
         if (task) {
             this.setStatu(task.status);
+            views = task.views || [];
         }
-        const views = this.data.get('views');
-        views.forEach((view, index) => {
-            window.ClientAddonApi.awaitComponent(view.component)
-                .then(Component => {
-                    const el = this.el.querySelector(`custom-view-${index + 2}`);
-                    new Component().attach(el);
-                })
-                .catch(e => {
-                    console.log(`awaitComponent ${view.component} error: ${e}`);
-                });
-        });
+        this.data.set('views', views);
     }
 
     subscribeTaskChanged(id) {

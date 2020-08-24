@@ -66,17 +66,26 @@ module.exports = api => {
 
     async function onWebpackMessage({data: message}) {
         debug('onWebpackMessage:', message);
+        // 获取cli-plugin-dashboard传输过来的数据
         if (!message || !message.webpackDashboardData) {
             return;
         }
 
         const modernMode = sharedData.get('modern-mode') && sharedData.get('modern-mode').value;
+
+        // 编译的类型，这里就是serve或build
         const type = message.webpackDashboardData.type;
         for (const data of message.webpackDashboardData.value) {
+            // 数据的类型：status/progress/operations/stats
             const id = `${type}-${data.type}`;
+            // 获得了stats类型数据，代表传输完成了
             if (data.type === 'stats') {
-                // Stats are read from a file
+                // 从文件中读取stats数据
                 const statsFile = path.resolve(api.getCwd(), `./node_modules/.stats-${type}.json`);
+                if (!fs.existsSync(statsFile)) {
+                    debug(`File [${statsFile}] does not exist`);
+                    return;
+                }
                 const value = await fs.readJson(statsFile);
                 const {stats, analyzer} = processStats(value);
                 sharedData.set(id, stats, {
@@ -85,6 +94,7 @@ module.exports = api => {
                 sharedData.set(`${id}-analyzer`, analyzer, {
                     disk: true
                 });
+                // 清除stats临时文件
                 await fs.remove(statsFile);
             }
             else if (data.type === 'progress') {
@@ -274,8 +284,9 @@ module.exports = api => {
      * 添加San CLI的build任务
      * 该任务添加2个视图
     */
-    0 && api.registerTask({
-        match: /san-cli-service build(\s+--\S+(\s+\S+)?)*$/,
+    api.registerTask({
+        // 匹配san build 或者 测试地址：san-cli/index.js build
+        match: /san(-cli\/index\.js)? build(\s+--\S+(\s+\S+)?)*$/,
         description: 'san.san-cli.tasks.build.description',
         link: 'https://ecomfe.github.io/san-cli',
         icon: '/public/san.svg',
@@ -383,7 +394,6 @@ module.exports = api => {
             sharedData.set('modern-mode', !!answers.modern);
             args.push('--dashboard');
 
-            // Data
             resetSharedData('build', true);
             resetSharedData('build-modern', true);
         },
@@ -397,10 +407,10 @@ module.exports = api => {
     });
 
     /**
-     * 添加San CLI的inspect任务
+     * 添加San CLI的inspect内置任务
      * 该任务不增加视图
     */
-    0 && api.registerTask({
+    api.registerTask({
         name: 'inspect',
         command: 'san-cli-service inspect',
         description: 'san.san-cli.tasks.inspect.description',
@@ -463,7 +473,7 @@ module.exports = api => {
         });
     }
 
-    // 打开本地页面链接
+    // TODO: 添加本地页面链接
     ipc.on(({data}) => {
         if (data.sanCliServe) {
             sharedData.set('serve-url', data.sanCliServe.url);

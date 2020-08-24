@@ -60,6 +60,7 @@ export default class Task extends Component {
 
         if (tasksData.data) {
             this.data.set('tasks', tasksData.data.tasks);
+            console.log('taskData:', tasksData.data.tasks);
         }
         this.data.set('pageLoading', false);
         let routePath = this.data.get('route.path');
