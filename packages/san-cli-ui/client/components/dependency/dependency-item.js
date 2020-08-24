@@ -38,7 +38,7 @@ export default class DependenceItem extends Component {
                                 <s-icon
                                     type="arrow-up"
                                     class="update-icon highlight"
-                                    on-click="onPkgUpdate"
+                                    on-click="onPkgDownload"
                                 />
                             </s-tooltip>
                         </fragment>
@@ -46,7 +46,7 @@ export default class DependenceItem extends Component {
                             <s-icon class="pkg-check-ico warn" type="close-circle" />
                             <span class="pkg-version warn">{{$t('dependency.uninstalled')}}</span>
                             <s-tooltip title="{{$t('dependency.tooltip.install')}}">
-                                <s-icon type="download" class="highlight" on-click="onPkgUpdate" />
+                                <s-icon type="download" class="highlight" on-click="onPkgDownload" />
                             </s-tooltip>
                         </fragment>
                     </div>
@@ -67,7 +67,7 @@ export default class DependenceItem extends Component {
     // 卸载npm包
     async onPkgDelete() {
         let {id, type} = this.data.get('item');
-        this.data.set('loadingTip', this.$t('dependency.uninstall'));
+        this.data.set('loadingTip', this.$t('dependency.uninstalling'));
         this.data.set('spinning', true);
         await this.$apollo.mutate({
             mutation: DEPENDENCY_UNINSTALL,
@@ -84,10 +84,10 @@ export default class DependenceItem extends Component {
         });
     }
 
-    // 更新npm包
-    async onPkgUpdate() {
-        let {id, type} = this.data.get('item');
-        this.data.set('loadingTip', this.$t('dependency.update'));
+    // 安装/更新npm包
+    async onPkgDownload() {
+        let {id, type, installed} = this.data.get('item');
+        this.data.set('loadingTip', this.$t('dependency.' + installed ? 'updating' : 'installing'));
         this.data.set('spinning', true);
         await this.$apollo.mutate({
             mutation: DEPENDENCY_INSTALL,
@@ -99,8 +99,8 @@ export default class DependenceItem extends Component {
         this.fire('updatePkgList');
         this.data.set('spinning', false);
         Notification.open({
-            message: this.$t('dependency.updateDependency'),
-            description: this.$t('dependency.updateSuccess')
+            message: this.$t('dependency.' + installed ? 'updateDependency' : 'installDependency'),
+            description: this.$t('dependency.' + installed ? 'updateSuccess' : 'installSuccess')
         });
     }
 
