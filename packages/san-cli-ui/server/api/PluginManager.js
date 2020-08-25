@@ -4,7 +4,6 @@
  */
 
 const path = require('path');
-const {matchesPluginId} = require('san-cli-utils/plugin');
 const {getDebugLogger, error} = require('san-cli-utils/ttyLogger');
 const notify = require('../utils/notify');
 const DB = require('./DB');
@@ -257,7 +256,7 @@ class PluginManager {
      * @param {string} id Plugin id or short id
      */
     hasPlugin(id) {
-        return this.plugins.some(p => matchesPluginId(id, p.id));
+        return this.plugins.some(p => id === p.id);
     }
 };
 

@@ -3,11 +3,6 @@
  * @author jinzhan
  */
 const path = require('path');
-const {
-    isPlugin,
-    isOfficialPlugin,
-    getPluginLink
-} = require('san-cli-utils/plugin');
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const PluginManager = require('../api/PluginManager');
 const cwd = require('./cwd');
@@ -16,9 +11,10 @@ const dependencies = require('./dependencies');
 const clientAddons = require('./clientAddons');
 const {readPackage} = require('../utils/fileHelper');
 const getContext = require('../utils/context');
+const {isPlugin, getPluginLink} = require('../utils/plugin');
 const debug = getDebugLogger('ui:plugins');
 
-const CLI_SAN = 'san-cli';
+const SAN_CLI = 'san-cli';
 
 class Plugins {
     constructor() {
@@ -43,14 +39,14 @@ class Plugins {
 
     findPlugins(deps, file) {
         return Object.keys(deps).filter(
-            id => isPlugin(id) || id === CLI_SAN
+            id => isPlugin(id)
         ).map(
             id => ({
                 id,
                 versionRange: deps[id],
-                official: isOfficialPlugin(id) || id === CLI_SAN,
+                official: isPlugin(id),
                 installed: false,
-                website: id === CLI_SAN ? 'https://ecomfe.github.io/san-cli' : getPluginLink(id),
+                website: getPluginLink(id),
                 baseDir: file
             })
         );
@@ -179,7 +175,7 @@ class Plugins {
         plugins = plugins.concat(this.findPlugins(pkg.dependencies || {}, file));
 
         // cli放在最上面
-        const index = plugins.findIndex(p => p.id === CLI_SAN);
+        const index = plugins.findIndex(p => p.id === SAN_CLI);
 
         if (index !== -1) {
             const service = plugins.splice(index, 1);
