@@ -4,11 +4,13 @@
 */
 
 const {ApolloServer} = require('apollo-server-express');
+const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const typeDefs = require('./schema');
 const resolvers = require('./resolves');
 const db = require('../models/db');
 const pubsub = require('./pubsub');
 const ipc = require('../utils/ipc');
+const debug = getDebugLogger('ui:ApolloServer');
 
 module.exports = subscribtionpPath => new ApolloServer({
     typeDefs,
@@ -28,5 +30,11 @@ module.exports = subscribtionpPath => new ApolloServer({
                 pubsub
             };
         }
-    }
+    },
+    formatError: err => {
+        if (err) {
+            debug('Internal Server Error:', err);
+        }
+        return err;
+    },
 });

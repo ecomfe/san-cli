@@ -15,7 +15,6 @@ import TASK_CHANGED from '@graphql/task/taskChanged.gql';
 import TASK_LOG_ADDED from '@graphql/task/taskLogAdded.gql';
 import TASK_LOGS from '@graphql/task/taskLogs.gql';
 import './task-content.less';
-import clientAddonData from './task-dashboard-data.json';
 
 /**
  * 组件props
@@ -77,9 +76,6 @@ export default class TaskContent extends Component {
 
     initData() {
         return {
-            // clientAddon测试数据
-            clientAddonData,
-
             // 请求发送中
             taskPending: false,
 
@@ -116,6 +112,9 @@ export default class TaskContent extends Component {
 
             // 4. 监听命令行的变化
             this.subscribeTaskChanged(name);
+
+            // 5. 获取编译接过
+            // TODO:this.$getSharedData();
         });
 
         this.$watchSharedData('san.cli.serve', data => {
