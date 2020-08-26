@@ -10,6 +10,7 @@ const {processStats} = require('./utils/stats');
 const debug = getDebugLogger('ui:third-plugin-task');
 
 module.exports = api => {
+    // 加了一个san.cli的命名空间
     const sharedData = api.getSharedData('san.cli.');
     const ipc = api.getIpc();
     let firstRun = true;

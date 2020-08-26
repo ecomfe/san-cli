@@ -17,7 +17,8 @@
         "prod": "cross-env DEBUG=san-cli:ui:*  SAN_CLI_UI_DEV=false node ../san-cli/index.js ui",
         "dev:san": "node ../san-cli/index.js",
         "dev:san-ui": "cross-env DEBUG=san-cli:* SAN_CLI_UI_DEV=true node ../san-cli/index.js ui",
-        "dev:san-init": "node ../san-cli/index.js init"
+        "dev:san-init": "node ../san-cli/index.js init",
+        "dev:san-remote-list": "node ../san-cli/index.js remote list"
     },
     "nodemonConfig": {
         "ignore": [

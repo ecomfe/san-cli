@@ -41,6 +41,15 @@ class Projects {
         const child = await execa('san', ['remote', 'list']);
         // 来自于san remote list的repositories
         let remoteList = child.stdout.split('\n').slice(1);
+
+        /**
+         * 如果标准输出是：List is empty，则代表remote list为空
+         * @see: san-cli/commands/remote/cmds/list.js
+         */
+        if (remoteList[0] === 'List is empty.') {
+            remoteList = [];
+        }
+
         if (remoteList.length) {
             remoteList = remoteList.map(val => {
                 const ri = val.split(/\s+/);

@@ -20,12 +20,14 @@ module.exports = {
         // 全局
         let sanrc = readRc('rc') || {};
         const templateAlias = sanrc.templateAlias;
-        if (templateAlias) {
-            // ask 替换？
-            Object.keys(templateAlias).forEach(key => {
-                log(`${key}  ${templateAlias[key]}`);
-            });
-        } else {
+        const templateAliasKeys = templateAlias ? Object.keys(templateAlias) : [];
+
+        // ask 替换？
+        templateAliasKeys.forEach(key => {
+            log(`${key}  ${templateAlias[key]}`);
+        });
+
+        if (!templateAliasKeys.length) {
             log('List is empty.');
         }
     }
