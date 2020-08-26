@@ -78,7 +78,7 @@ export default class TaskContent extends Component {
                     <div class="task-output-content"></div>
                 </div>
 
-                <!-----自定义视图：命令行输出---->
+                <!-----自定义视图：第三方组件---->
                 <fragment key="{{index}}" s-for="view,index in views">
                     <div class="task-view-content {{index + 1 !== currentIndex ? 'hidden' : ''}}">
                         <c-client-addon client-addon="{{view.component}}" data="{{view.data}}" />
