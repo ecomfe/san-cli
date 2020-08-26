@@ -46,9 +46,9 @@ class Folders {
         return generateFolder(file, context);
     }
 
-    createFolder(name, context) {
+    create(name, context) {
         const file = path.join(cwd.get(), name);
-        fs.mkdirpSync(file);
+        fs.mkdirSync(file);
         return generateFolder(file, context);
     }
 };
