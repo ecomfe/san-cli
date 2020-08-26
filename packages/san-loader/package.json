@@ -10,10 +10,11 @@
     "author": "clark-t",
     "license": "MIT",
     "dependencies": {
-        "loader-utils": "^2.0.0",
-        "san-anode-utils": "~3.9.1",
         "htmlparser2": "^4.1.0",
-        "magic-string": "^0.25.7"
+        "loader-utils": "^2.0.0",
+        "magic-string": "^0.25.7",
+        "object-assign": "^4.1.1",
+        "san-anode-utils": "~3.9.1"
     },
     "repository": {
         "type": "git",

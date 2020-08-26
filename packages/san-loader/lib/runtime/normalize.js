@@ -8,7 +8,8 @@
  * @author clark-t
  */
 
-import {defineComponent} from 'san';
+var {defineComponent} = require('san');
+var objectAssign = require('object-assign');
 
 /**
  * 处理 .san 组件 script 与 template 等部分的组合方法
@@ -18,36 +19,37 @@ import {defineComponent} from 'san';
  * @param {string} injectStyles 组件需要注入的 style 列表
  * @return {Class} 组件类
  */
-export default function (script, template, injectStyles) {
-    for (const proto of componentDefinitions(script)) {
+module.exports = function (script, template, injectStyles) {
+    var dfns = componentDefinitions(script);
+    for (var i = 0; i < dfns.length; i++) {
         if (template) {
             if (typeof template === 'string') {
-                proto.template = template;
+                dfns[i].template = template;
             }
             else if (template instanceof Array) {
-                proto.aPack = template;
+                dfns[i].aPack = template;
             }
             else {
-                proto.aNode = template;
+                dfns[i].aNode = template;
             }
         }
         if (injectStyles.length) {
-            injectStylesIntoInitData(proto, injectStyles);
+            injectStylesIntoInitData(dfns[i], injectStyles);
         }
     }
 
     return typeof script === 'object' ? defineComponent(script) : script;
-}
+};
 
 function injectStylesIntoInitData(proto, injectStyles) {
-    let style = {};
-    for (let patch of injectStyles) {
-        Object.assign(style, patch);
+    var style = {};
+    for (var i = 0; i < injectStyles.length; i++) {
+        objectAssign(style, injectStyles[i]);
     }
-    const original = proto.initData;
+    var original = proto.initData;
     proto.initData = original
         ? function () {
-            return Object.assign({}, original.call(this), {$style: style});
+            return objectAssign({}, original.call(this), {$style: style});
         }
         : function () {
             return style;
@@ -57,7 +59,7 @@ function injectStylesIntoInitData(proto, injectStyles) {
 function componentDefinitions(cmpt) {
     // 当 script 为 Function 时，等价于 class A { static template = 'xxx' }
     // 可查看 static property 的 babel 编译产物
-    let dfns = [cmpt];
+    var dfns = [cmpt];
     // 对于联合 san-store 的情况，需要同时将 template, inited 等挂到原型链上
     if (typeof cmpt === 'function') {
         dfns.push(cmpt.prototype);
