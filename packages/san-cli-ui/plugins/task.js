@@ -167,14 +167,14 @@ module.exports = api => {
         views: [
             {
                 id: 'san.san-cli.views.dashboard',
-                label: 'san.san-cli.dashboard.title',
+                label: 'addons.dashboard.title',
                 icon: 'dashboard',
                 component: 'san-cli.components.dashboard'
             },
             {
                 id: 'san.san-cli.views.analyzer',
-                label: 'san.san-cli.analyzer.title',
-                icon: 'donut_large',
+                label: 'addons.analyzer.title',
+                icon: 'radar-chart',
                 component: 'san.san-cli.components.analyzer'
             }
         ],

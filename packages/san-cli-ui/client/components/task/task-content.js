@@ -7,13 +7,13 @@ import Component from '@lib/san-component';
 import {Terminal} from 'xterm';
 import {FitAddon} from 'xterm-addon-fit';
 import ClientAddon from '../client-addon/client-addon';
-import 'xterm/css/xterm.css';
 import TASK from '@graphql/task/task.gql';
 import TASK_RUN from '@graphql/task/taskRun.gql';
 import TASK_STOP from '@graphql/task/taskStop.gql';
 import TASK_CHANGED from '@graphql/task/taskChanged.gql';
 import TASK_LOG_ADDED from '@graphql/task/taskLogAdded.gql';
 import TASK_LOGS from '@graphql/task/taskLogs.gql';
+import 'xterm/css/xterm.css';
 import './task-content.less';
 
 /**
@@ -30,43 +30,62 @@ export default class TaskContent extends Component {
             <span class="task-command">{{taskInfo.command}}</span>
         </div>
 
-        <div class="task-config">
-            <s-button type="primary" 
-                icon="{{isRunning ? 'loading' : 'caret-right'}}" 
-                loading="{{taskPending}}"
-                on-click="execute">{{isRunning ? $t('task.stop') : $t('task.run')}}</s-button>
-            <s-button type="default" icon="setting">{{$t('task.setting')}}</s-button>
-        </div>
+        <div class="task-main-views">
+            <div class="task-bar">
+                <div class="task-config">
+                    <s-button type="primary" 
+                        icon="{{isRunning ? 'loading' : 'caret-right'}}" 
+                        loading="{{taskPending}}"
+                        on-click="execute">{{isRunning ? $t('task.stop') : $t('task.run')}}</s-button>
+                    <s-button type="default" icon="setting">{{$t('task.setting')}}</s-button>
+                </div>
 
-        <s-tabs defaultActiveKey="1">
-            <!---默认的命令行视图---->
-            <s-tabpane key="1" tab="{{$t('task.output')}}">
-                <div class="task-output-opt">
-                    <div class="task-output-head">
-                        <span class="task-output-head-output">
-                            <s-icon type="code" />{{$t('task.output')}}
-                        </span>
-            
-                        <s-tooltip title="{{$t('task.bottom')}}">
-                            <s-icon type="enter" class="task-xterm-btn" on-click="scrollToBottom" />
-                        </s-tooltip>
-            
-                        <s-tooltip title="{{$t('task.copy')}}">
-                            <s-icon type="copy" class="task-xterm-btn" on-click="copyContent" />
-                        </s-tooltip>
-            
-                        <s-tooltip title="{{$t('task.clear')}}">
-                            <s-icon type="delete" class="task-xterm-btn" on-click="clear" />
-                        </s-tooltip>
+                <div class="task-view-tabs" s-if="views.length">
+                    <div on-click="setViewIndex(0)"
+                        class="task-view-tab {{currentIndex === 0 ? 'active' : ''}}">
+                        <s-icon type="code" /><span class="task-view-tab-label">{{$t('task.output')}}</span>
+                    </div>
+                    <div class="task-view-tab {{currentIndex === index + 1 ? 'active' : ''}}"
+                        on-click="setViewIndex(index + 1)"
+                        key="{{'k-' + index}}" s-for="view,index in views">
+                        <s-icon type="{{view.icon}}" /><span class="task-view-tab-label">{{$t(view.label)}}</span>
                     </div>
                 </div>
-                <div class="task-output-content"></div>
-            </s-tabpane>
+            </div>
 
-            <s-tabpane key="{{'v-' + index}}" tab="{{$t(view.label)}}" s-for="view,index in views">
-                <c-client-addon client-addon="{{view.component}}" data="{{view.data}}" />
-            </s-tabpane>
-        </s-tabs>
+            <div class="task-view-contents">
+                <!-----默认视图：命令行输出---->
+                <div class="task-view-content {{currentIndex ? 'hidden' : ''}}">
+                    <div class="task-output-opt">
+                        <div class="task-output-head">
+                            <span class="task-output-head-output">
+                                <s-icon type="code" />{{$t('task.output')}}
+                            </span>
+                
+                            <s-tooltip title="{{$t('task.bottom')}}">
+                                <s-icon type="enter" class="task-xterm-btn" on-click="scrollToBottom" />
+                            </s-tooltip>
+                
+                            <s-tooltip title="{{$t('task.copy')}}">
+                                <s-icon type="copy" class="task-xterm-btn" on-click="copyContent" />
+                            </s-tooltip>
+                
+                            <s-tooltip title="{{$t('task.clear')}}">
+                                <s-icon type="delete" class="task-xterm-btn" on-click="clear" />
+                            </s-tooltip>
+                        </div>
+                    </div>
+                    <div class="task-output-content"></div>
+                </div>
+
+                <!-----自定义视图：命令行输出---->
+                <fragment key="{{index}}" s-for="view,index in views">
+                    <div class="task-view-content {{index + 1 !== currentIndex ? 'hidden' : ''}}">
+                        <c-client-addon client-addon="{{view.component}}" data="{{view.data}}" />
+                    </div>
+                </fragment>
+            </div>
+        </div>
     </div>
     `;
 
@@ -83,8 +102,14 @@ export default class TaskContent extends Component {
             isRunning: false,
 
             // 额外的任务视图
-            views: []
+            views: [],
+
+            currentIndex: -1
         };
+    }
+
+    setViewIndex(index) {
+        this.data.set('currentIndex', index);
     }
 
     async attached() {
@@ -122,9 +147,8 @@ export default class TaskContent extends Component {
         });
     }
 
-    // 设置历史log
+    // 设置上一次产生的log
     async setConsoleLogLast(id) {
-        // TASK_LOGS
         const query = await this.$apollo.query({
             query: TASK_LOGS,
             variables: {
@@ -152,6 +176,7 @@ export default class TaskContent extends Component {
             this.setStatu(task.status);
             views = task.views || [];
         }
+        this.data.set('currentIndex', views.length ? 1 : 0);
         this.data.set('views', views);
     }
 
