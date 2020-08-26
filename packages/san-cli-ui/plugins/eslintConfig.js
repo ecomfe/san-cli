@@ -1,7 +1,9 @@
 /**
  * @file eslint 的配置
- * @author Lohoyo
+ * @author Lohoyo, zttonly
  */
+
+const {cosmiconfigSync} = require('cosmiconfig');
 
 function getEslintPrompts(data) {
     const eslintPrompts = [];
@@ -17,7 +19,7 @@ function getEslintPrompts(data) {
                 choices: [
                     {
                         name: '关闭',
-                        value: 0,
+                        value: 0
                     },
                     {
                         name: '警告',
@@ -35,6 +37,13 @@ function getEslintPrompts(data) {
 }
 
 module.exports = api => {
+    // 如果项目没有 eslint 的相关配置，就不加载 eslint 插件
+    const explorerSync = cosmiconfigSync('eslint', {
+        stopDir: api.cwd
+    });
+    if (!explorerSync.search()) {
+        return;
+    }
     api.registerConfig({
         id: 'san.eslintrc',
         name: 'ESLint configuration',
@@ -44,10 +53,11 @@ module.exports = api => {
             eslint: {
                 js: ['.eslintrc.js'],
                 json: ['.eslintrc', '.eslintrc.json'],
-                yaml: ['.eslintrc.yaml', '.eslintrc.yml'],
+                // todo: 引入yaml依赖解析npm
+                // yaml: ['.eslintrc.yaml', '.eslintrc.yml'],
                 // 会从 `package.json` 读取
                 package: 'eslintConfig'
-            },
+            }
         },
         icon: require('./utils/getImageUrl')('/public/eslint.png'),
         onRead: ({data}) => ({

@@ -67,7 +67,6 @@ export default class Configuration extends Component {
     initData() {
         return {
             configurations: [],
-            plugins: '',
             pageLoading: true,
             search: '',
             currentConfigId: '',
@@ -82,17 +81,12 @@ export default class Configuration extends Component {
                 : configurations;
         }
     };
-    async created() {
-        // init plugin
-        let plugins = await this.$apollo.query({query: PLUGINS});
-        if (plugins.data) {
-            this.data.set('plugins', plugins.data.plugins);
-        }
-    }
     attached() {
         this.init();
     }
     async init() {
+        // init plugin 依赖 todo: 优化整合到一起例如使用store
+        await this.$apollo.query({query: PLUGINS});
         // init config
         let configurations = await this.$apollo.query({query: CONFIGURATIONS});
         if (configurations.data) {
