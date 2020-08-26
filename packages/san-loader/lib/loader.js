@@ -50,7 +50,7 @@ function extract(descriptor, options) {
 
 module.exports = function (source) {
     const loaderOptions = loaderUtils.getOptions(this);
-    const {compileTemplate = 'none'} = loaderOptions;
+    const {compileTemplate = 'none', esModule} = loaderOptions;
 
     const {descriptor, ast} = parse(source, SAN_TAGNAMES);
     const rawQuery = this.resourceQuery.slice(1);
@@ -58,11 +58,12 @@ module.exports = function (source) {
 
     const options = {
         compileTemplate,
-        source: source,
+        source,
         resourcePath: this.resourcePath,
         needMap: this.sourceMap,
-        query: query,
-        ast: ast
+        query,
+        ast,
+        esModule
     };
     // 根据 type 等参数指定返回不同的代码块
     if (query && query.san === '' && query.type) {
@@ -113,11 +114,11 @@ module.exports = function (source) {
     // runtime 模块路径
     const normalizePath = loaderUtils.stringifyRequest(this, require.resolve('./runtime/normalize'));
     let codo = `
-        import normalize from ${normalizePath};
+        ${esModule ? `import normalize from ${normalizePath};` : `var normalize = require(${normalizePath})`}
         ${styleCode}
         ${templateCode}
         ${scriptCode}
-        export default normalize(script, template, injectStyles);
+        ${esModule ? 'export default' : 'module.exports ='} normalize(script, template, injectStyles);
         /* san-hmr component */
     `;
     this.callback(null, codo);
