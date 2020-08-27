@@ -12,35 +12,6 @@
 
 var {defineComponent} = require('san');
 
-// Object.assgin 的 polyfill，参考：https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Polyfill
-if (typeof Object.assign !== 'function') {
-    Object.defineProperty(Object, 'assign', {
-        value: function assign(target) {
-            'use strict';
-            if (target === null || target === undefined) {
-                throw new TypeError('Cannot convert undefined or null to object');
-            }
-
-            var to = Object(target);
-
-            for (var index = 1; index < arguments.length; index++) {
-                var nextSource = arguments[index];
-
-                if (nextSource !== null && nextSource !== undefined) {
-                    for (var nextKey in nextSource) {
-                        if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
-                            to[nextKey] = nextSource[nextKey];
-                        }
-                    }
-                }
-            }
-            return to;
-        },
-        writable: true,
-        configurable: true
-    });
-}
-
 /**
  * 处理 .san 组件 script 与 template 等部分的组合方法
  *
@@ -74,12 +45,12 @@ module.exports = function (script, template, injectStyles) {
 function injectStylesIntoInitData(proto, injectStyles) {
     var style = {};
     for (var i = 0; i < injectStyles.length; i++) {
-        Object.assign(style, injectStyles[i]);
+        objectAssign(style, injectStyles[i]);
     }
     var original = proto.initData;
     proto.initData = original
         ? function () {
-            return Object.assign({}, original.call(this), {$style: style});
+            return objectAssign({}, original.call(this), {$style: style});
         }
         : function () {
             return style;
@@ -98,4 +69,27 @@ function componentDefinitions(cmpt) {
         }
     }
     return dfns;
+}
+
+// 参考：https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Polyfill
+function objectAssign(target) {
+    'use strict';
+    if (target === null || target === undefined) {
+        throw new TypeError('Cannot convert undefined or null to object');
+    }
+
+    var to = Object(target);
+
+    for (var index = 1; index < arguments.length; index++) {
+        var nextSource = arguments[index];
+
+        if (nextSource !== null && nextSource !== undefined) {
+            for (var nextKey in nextSource) {
+                if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+                    to[nextKey] = nextSource[nextKey];
+                }
+            }
+        }
+    }
+    return to;
 }
