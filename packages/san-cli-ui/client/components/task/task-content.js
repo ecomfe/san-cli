@@ -16,6 +16,14 @@ import TASK_LOGS from '@graphql/task/taskLogs.gql';
 import 'xterm/css/xterm.css';
 import './task-content.less';
 
+const getSanCommand = command => {
+    command = command.trim();
+    if (/san(?:-cli\/index\.js)?\s+(serve|build)(?:\s+--\S+(?:\s+\S+)?)*$/.test(command)) {
+        return RegExp.$1;
+    }
+    return '';
+};
+
 /**
  * 组件props
  *
@@ -81,7 +89,7 @@ export default class TaskContent extends Component {
                 <!-----自定义视图：第三方组件---->
                 <fragment key="{{index}}" s-for="view,index in views">
                     <div class="task-view-content {{index + 1 !== currentIndex ? 'hidden' : ''}}">
-                        <c-client-addon client-addon="{{view.component}}" data="{{view.data}}" />
+                        <c-client-addon client-addon="{{view.component}}" data="{{sharedData}}" />
                     </div>
                 </fragment>
             </div>
@@ -104,7 +112,9 @@ export default class TaskContent extends Component {
             // 额外的任务视图
             views: [],
 
-            currentIndex: -1
+            currentIndex: -1,
+
+            sharedData: {}
         };
     }
 
@@ -138,13 +148,27 @@ export default class TaskContent extends Component {
             // 4. 监听命令行的变化
             this.subscribeTaskChanged(name);
 
-            // 5. 获取编译接过
-            // TODO:this.$getSharedData();
+            // 5. 获取编译结果
+            // TODO: 这个地方后续应该放到addon组件里面
+            this.getSharedData();
         });
 
         this.$watchSharedData('san.cli.serve', data => {
             console.log('sharedData:', data);
         });
+    }
+
+    async getSharedData() {
+        // 初始化sharedData
+        this.data.set('sharedData', {});
+        const command = this.data.get('taskInfo.command');
+        const sanCommandType = getSanCommand(command);
+        // 如果是san的任务，则获取san编译的数据
+        if (sanCommandType) {
+            const id = `san.cli.${sanCommandType}-stats`;
+            const data = await this.$getSharedData(id) || {};
+            this.data.set('sharedData', data.value);
+        }
     }
 
     // 设置上一次产生的log

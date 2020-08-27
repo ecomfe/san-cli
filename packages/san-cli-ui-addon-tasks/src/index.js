@@ -15,7 +15,7 @@ class TaskDashboard extends SanComponent {
         <s-grid-row class="row" gutter="16">
             <s-grid-col span="16">
                 <s-card bordered="{{false}}" class="card">
-                    <c-build-status data="{{data}}" computed="{{computed}}"></c-build-status>
+                    <c-build-status data="{{data.data}}" computed="{{data.computed}}"></c-build-status>
                 </s-card>
             </s-grid-col>
             <s-grid-col span="8">
@@ -34,12 +34,12 @@ class TaskDashboard extends SanComponent {
         <s-grid-row class="row" gutter="16">
             <s-grid-col span="16">
                 <s-card bordered="{{false}}" class="card" title="资源">
-                    <c-asset-list assetList="{{data.assets}}"></c-asset-list>
+                    <c-asset-list assetList="{{data.data.assets}}"></c-asset-list>
                 </s-card>
             </s-grid-col>
             <s-grid-col span="8">
                 <s-card bordered="{{false}}" class="card" title="依赖项">
-                    <c-module-list moduletList="{{computed.modulesPerSizeType.stats.depModules}}"></c-module-list>
+                    <c-module-list moduletList="{{data.computed.modulesPerSizeType.stats.depModules}}"></c-module-list>
                 </s-card>
             </s-grid-col>
         </s-grid-row>

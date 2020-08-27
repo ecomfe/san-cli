@@ -18,10 +18,6 @@ import {
 } from '@lib/const';
 import './dependency-search.less';
 
-// 和视图不直接相关的数据
-let searchTimeoutID;
-let searchKeyword = '';
-
 export default class DependencePackageSearch extends Component {
     static template = /* html */`
         <s-spin spinning="{{loading}}" class="dependency-search-wrap">
@@ -83,12 +79,13 @@ export default class DependencePackageSearch extends Component {
         this.search();
     }
 
-    async search(name, page = 1) {
+    async search(keyword, page = 1) {
+        keyword = keyword || this.keyword || SEARCH_DEFAULT_QUERY;
         let data = await axios({
             url: SEARCH_URL + RANKING_MODE_MAP[this.data.get('currentRankingMode')],
             params: {
                 // full-text search to apply
-                text: encodeURIComponent(name || SEARCH_DEFAULT_QUERY),
+                text: encodeURIComponent(keyword),
                 // how many results should be returned (default 20, max 250)
                 size: SEARCH_PAGE_SIZE,
                 // offset to return results from
@@ -115,18 +112,19 @@ export default class DependencePackageSearch extends Component {
     }
     onPagination(event) {
         this.data.set('loading', true);
-        this.search(searchKeyword, event.page);
+        this.search(this.keyword, event.page);
     }
     keywordChange(keyword) {
-        keyword = keyword.trim();
-        searchTimeoutID && clearTimeout(searchTimeoutID);
-        searchTimeoutID = setTimeout(() => {
-            searchKeyword = keyword;
-            this.search(searchKeyword);
+        this.keyword = keyword.trim();
+        if (this.searchTimer) {
+            clearTimeout(this.searchTimer);
+        }
+        this.searchTimer = setTimeout(() => {
+            this.search();
         }, SEARCH_DEBOUNCE_DELAY);
     }
     changeRankingMode({key}) {
         this.data.set('currentRankingMode', key);
-        this.search(searchKeyword);
+        this.search();
     }
 }

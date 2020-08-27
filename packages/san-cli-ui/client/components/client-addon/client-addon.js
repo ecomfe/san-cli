@@ -11,21 +11,27 @@ export default class ClientAddon extends Component {
     attached() {
         const clientAddon = this.data.get('clientAddon');
         const data = this.data.get('data');
-        let addonComponent = null;
+        this.addonComponent = null;
         window.ClientAddonApi.awaitComponent(clientAddon)
             .then(Component => {
-                addonComponent = new Component({
+                this.addonComponent = new Component({
                     data: {
-                        ...data
+                        data
                     }
-                }).attach(this.el);
+                });
+                this.addonComponent.attach(this.el);
             })
             .catch(e => {
                 console.log(`awaitComponent ${clientAddon} error: ${e}`);
             });
 
         this.watch('data', data => {
-            addonComponent && addonComponent.data.set('data', data);
+            if (this.addonComponent) {
+                this.addonComponent.data.set('data', data);
+            }
+            else {
+                console.log('AddonComponent is not initialized.');
+            }
         });
     }
 }
