@@ -114,7 +114,7 @@ module.exports = function (source) {
     // runtime 模块路径
     const normalizePath = loaderUtils.stringifyRequest(this, require.resolve('./runtime/normalize'));
     let codo = `
-        ${esModule ? `import normalize from ${normalizePath};` : `var normalize = require(${normalizePath})`}
+        ${esModule ? `import normalize from ${normalizePath};` : `var normalize = require(${normalizePath});`}
         ${styleCode}
         ${templateCode}
         ${scriptCode}

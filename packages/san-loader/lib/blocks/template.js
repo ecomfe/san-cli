@@ -47,7 +47,7 @@ function generateTemplateImport(descriptor, options) {
         );
         resource = `${resourcePath}?${qs.stringify(query)}`;
     }
-    return options.esModule ? `import template from '${resource}'` : `var template = require('${resource}')`;
+    return options.esModule ? `import template from '${resource}';` : `var template = require('${resource}');`;
 }
 
 /**

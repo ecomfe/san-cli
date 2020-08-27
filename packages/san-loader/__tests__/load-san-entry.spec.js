@@ -23,42 +23,59 @@ describe('.san 文件的产出', () => {
             }
         </script>
         `;
-        const ctx = webpackContext({resourcePath: '/foo.san'}).runLoader(loader, source);
+        let ctx = webpackContext({resourcePath: '/foo.san'}).runLoader(loader, source);
         expect(ctx.code).toContain('var normalize = require');
         expect(ctx.code).toContain('var template = require');
         expect(ctx.code).toContain('var script = require');
         expect(ctx.code).toContain('var style0 = require');
-        expect(ctx.code).toContain('var injectStyles = [style0]');
         expect(ctx.code).toContain('module.exports = normalize(script, template, injectStyles)');
+        ctx = webpackContext({resourcePath: '/foo.san', query: {esModule: true}}).runLoader(loader, source);
+        expect(ctx.code).toContain('import normalize from');
+        expect(ctx.code).toContain('import template from');
+        expect(ctx.code).toContain('import script from');
+        expect(ctx.code).toContain('import style0 from');
+        expect(ctx.code).toContain('export default normalize(script, template, injectStyles)');
+
+        expect(ctx.code).toContain('var injectStyles = [style0]');
     });
 
-    test('import <template> 部分', () => {
+    test('导入 <template> 部分', () => {
         const source = '<template><span>Author: harttle</span></template>';
-        const ctx = webpackContext({resourcePath: '/foo.san'}).runLoader(loader, source);
+        let ctx = webpackContext({resourcePath: '/foo.san'}).runLoader(loader, source);
         expect(ctx.code).toContain('var template = require(\'/foo.san?lang=html&san=&type=template');
+        ctx = webpackContext({resourcePath: '/foo.san', query: {esModule: true}}).runLoader(loader, source);
+        expect(ctx.code).toContain('import template from \'/foo.san?lang=html&san=&type=template');
     });
 
-    test('import <style> 部分', () => {
+    test('导入 <style> 部分', () => {
         const source = '<style>p {color: black}</style>';
-        const ctx = webpackContext({resourcePath: '/foo.san'}).runLoader(loader, source);
+        let ctx = webpackContext({resourcePath: '/foo.san'}).runLoader(loader, source);
         expect(ctx.code).toContain('require(\'/foo.san?lang=css&san=&type=style&index=0');
+        ctx = webpackContext({resourcePath: '/foo.san', query: {esModule: true}}).runLoader(loader, source);
+        expect(ctx.code).toContain('import \'/foo.san?lang=css&san=&type=style&index=0');
     });
 
-    test('import <style module>', () => {
+    test('导入 <style module>', () => {
         const source = '<style module>p {color: black}</style>';
-        const ctx = webpackContext({resourcePath: '/foo.san'}).runLoader(loader, source);
+        let ctx = webpackContext({resourcePath: '/foo.san'}).runLoader(loader, source);
         expect(ctx.code).toContain('var style0 = require(\'/foo.san?lang=css&module=&san=&type=style&index=0');
+        ctx = webpackContext({resourcePath: '/foo.san', query: {esModule: true}}).runLoader(loader, source);
+        expect(ctx.code).toContain('import style0 from \'/foo.san?lang=css&module=&san=&type=style&index=0');
     });
 
-    test('import <style module src="./s.less">', () => {
+    test('导入 <style module src="./s.less">', () => {
         const source = '<style module src="./s.less"></style>';
-        const ctx = webpackContext({resourcePath: '/foo.san'}).runLoader(loader, source);
+        let ctx = webpackContext({resourcePath: '/foo.san'}).runLoader(loader, source);
         expect(ctx.code).toContain('var style0 = require(\'./s.less?module=\'');
+        ctx = webpackContext({resourcePath: '/foo.san', query: {esModule: true}}).runLoader(loader, source);
+        expect(ctx.code).toContain('import style0 from \'./s.less?module=\'');
     });
 
-    test('import <script> 部分', () => {
+    test('导入 <script> 部分', () => {
         const source = '<script>console.log(1)</style>';
-        const ctx = webpackContext({resourcePath: '/foo.san'}).runLoader(loader, source);
+        let ctx = webpackContext({resourcePath: '/foo.san'}).runLoader(loader, source);
         expect(ctx.code).toContain('var script = require(\'/foo.san?lang=js&san=&type=script');
+        ctx = webpackContext({resourcePath: '/foo.san', query: {esModule: true}}).runLoader(loader, source);
+        expect(ctx.code).toContain('import script from \'/foo.san?lang=js&san=&type=script');
     });
 });
