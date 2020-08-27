@@ -50,7 +50,7 @@ function extract(descriptor, options) {
 
 module.exports = function (source) {
     const loaderOptions = loaderUtils.getOptions(this);
-    const {compileTemplate = 'none', esModule} = loaderOptions;
+    const {compileTemplate = 'none', esModule = false} = loaderOptions;
 
     const {descriptor, ast} = parse(source, SAN_TAGNAMES);
     const rawQuery = this.resourceQuery.slice(1);
