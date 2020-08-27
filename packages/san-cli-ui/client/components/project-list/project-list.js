@@ -23,8 +23,8 @@ export default class ProjectList extends Component {
             <!---empty tip---->
             <div class="empty-tip" s-if="!projects || projects.length <= 0">
                 <div>
-                    <s-icon type="coffee" />
-                    <p class="tip-text">{{$t('project.list.emptyTip')}}</p>
+                    <s-icon type="{{isLoaded ? 'coffee' : 'loading'}}" />
+                    <p class="tip-text">{{$t(isLoaded ? 'project.list.emptyTip' : 'loadingTip')}}</p>
                 </div>
             </div>
             <div class="input-search" s-else>
@@ -104,6 +104,7 @@ export default class ProjectList extends Component {
     };
     initData() {
         return {
+            isLoaded: false,
             showRenameModal: false,
             projectName: '',
             editProject: '',
@@ -115,10 +116,11 @@ export default class ProjectList extends Component {
         'c-list': List
     }
     attached() {
-        this.projectApollo();
+        this.getProjects();
     }
-    async projectApollo() {
+    async getProjects() {
         let projects = await this.$apollo.query({query: PROJECTS});
+        this.data.set('isLoaded', true);
         projects.data && this.data.set('projects', projects.data.projects);
         let projectCurrent = await this.$apollo.query({query: PROJECT_CURRENT});
         // 当前打开的project,记录在数据库
@@ -142,7 +144,7 @@ export default class ProjectList extends Component {
             }
         });
         this.data.set('showRenameModal', false);
-        this.projectApollo();
+        this.getProjects();
     }
     handleModalCancel() {
         this.data.set('showRenameModal', false);
@@ -160,7 +162,7 @@ export default class ProjectList extends Component {
                 cache.writeQuery({query: PROJECTS, data: {projects}});
             }
         });
-        this.projectApollo();
+        this.getProjects();
     }
     async onFavorite(e) {
         await this.$apollo.mutate({
@@ -170,7 +172,7 @@ export default class ProjectList extends Component {
                 favorite: e.item.favorite ? 0 : 1
             }
         });
-        this.projectApollo();
+        this.getProjects();
     }
     async onItemClick(e) {
         let projectCurrent = this.data.get('projectCurrent');

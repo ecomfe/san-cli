@@ -170,6 +170,7 @@
         "disconnected": "连接已断开",
         "connected": "已连接"
     },
+    "loadingTip": "正在加载……",
     "confirmText": "确定",
     "cancelText": "取消",
     "pre": "上一步",
