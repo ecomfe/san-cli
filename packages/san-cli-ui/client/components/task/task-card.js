@@ -14,7 +14,7 @@ export default class TaskNav extends Component {
             <div class="task-card-item {{task.name===queryName ? 'task-nav-item-current' : ''}}" s-for="task in tasks">
                 <div class="card-item">
                     <div class="card-heading">
-                        <span class="card-avtar">
+                        <span class="card-avatar">
                             <img s-if="task.icon" src="{{task.icon}}" />
                             <img s-else src="{{avatars(task.name)}}" />
                         </span>
