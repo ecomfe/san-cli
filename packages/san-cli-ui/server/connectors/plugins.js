@@ -1,9 +1,10 @@
 /**
  * @file plugins
- * @author jinzhan
+ * @author jinzhan, zttonly
  */
 const path = require('path');
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
+const {reloadModule} = require('san-cli-utils/module');
 const PluginManager = require('../api/PluginManager');
 const cwd = require('./cwd');
 const widgets = require('./widgets');
@@ -64,7 +65,7 @@ class Plugins {
         const name = filename !== 'ui' ? `${id}/${filename}` : id;
         let module;
         try {
-            module = require(`${id}/${filename}`);
+            module = reloadModule(`${id}/${filename}`);
         }
         catch (e) {
             // debug(e);

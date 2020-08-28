@@ -13,6 +13,7 @@ const prompts = require('./prompts');
 const {get, set, unset} = require('../utils/object');
 const extendJSConfig = require('../utils/extendJSConfig');
 const {readPackage} = require('../utils/fileHelper');
+const {reloadModule} = require('san-cli-utils/module');
 
 const fileTypes = ['js', 'json'];
 let current = {};
@@ -54,7 +55,7 @@ const readFile = (config, fileDescriptor, context) => {
             fileData = pkg[fileDescriptor.package];
         }
         else if (file.type === 'js') {
-            fileData = require(file.path);
+            fileData = reloadModule(file.path);
         }
         else {
             const rawContent = fs.readFileSync(file.path, {encoding: 'utf8'});
