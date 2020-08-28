@@ -15,7 +15,7 @@ function getEslintPrompts(data) {
                 name: ruleName.replace(/\//g, '47').replace(/-/g, '45'),
                 type: 'list',
                 message: ruleName,
-                value: '' + rules[ruleName],
+                value: rules[ruleName],
                 choices: [
                     {
                         name: '关闭',

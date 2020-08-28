@@ -61,7 +61,7 @@ module.exports = api => {
                 {
                     name: 'copy',
                     type: 'input',
-                    default: false,
+                    default: {},
                     value: data.san && data.san.copy,
                     message: 'config.san-cli.copy.label',
                     description: 'config.san-cli.copy.description',

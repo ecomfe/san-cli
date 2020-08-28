@@ -140,8 +140,23 @@ export default class PromptsForm extends Component {
             });
         });
     }
+    formateValue(item, newValue) {
+        const value = newValue || item.value;
+        if (item.type === 'string' || item.type === 'input') {
+            return value || item.default || '';
+        }
+        else if (item.type === 'list') {
+            return value && typeof value === 'string' ? value
+                : (Array.isArray(value) && value.length ? value[0]
+                    : item.choices[0].value);
+        }
+        else if (item.type === 'confirm') {
+            return !!value;
+        }
+        return value;
+    }
     handleChange(prompt, value) {
-        this.fire('valuechanged', {prompt, value});
+        this.fire('valuechanged', {prompt, value: this.formateValue(prompt, value)});
     }
     handleSubmit(e) {
         e && e.preventDefault();
@@ -154,18 +169,7 @@ export default class PromptsForm extends Component {
                     return false;
                 }
             }
-            const value = item.value;
-            if (item.type === 'string' || item.type === 'input') {
-                data[item.name] = value || item.default || '';
-            }
-            else if (item.type === 'list') {
-                data[item.name] = value && typeof value === 'string' ? value
-                    : (Array.isArray(value) && value.length ? item.value[0]
-                        : item.choices[0].value);
-            }
-            else if (item.type === 'confirm') {
-                data[item.name] = !!item.value;
-            }
+            data[item.name] = this.formateValue(item);
         });
         this.fire('submit', data);
     }

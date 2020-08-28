@@ -53,13 +53,11 @@ export default class ConfigContent extends Component {
             let currentTab = this.data.get('currentTab');
             let tabs = this.data.get('config.tabs');
             return tabs ? tabs[currentTab].prompts.filter(p => {
-                try {
-                    p.value = JSON.parse(p.value);
-                }
-                catch (error) {}
-
-                if (typeof p.value === 'object') {
-                    p.value = JSON.stringify(p.value);
+                if (p.type === 'confirm' || p.type === 'checkbox' || p.type === 'input') {
+                    try {
+                        p.value = JSON.parse(p.value);
+                    }
+                    catch (error) {}
                 }
                 return p.visible;
             }) : [];
