@@ -19,7 +19,7 @@ export default class TaskNav extends Component {
                     </div>
                     <div class="task-info">
                         <div class="task-info-name">{{task.name}}</div>
-                        <div class="task-info-description">{{task.description || task.command}}</div>
+                        <div class="task-info-description">{{$t(task.description) || task.command}}</div>
                     </div>
                 </r-link>
             </div>

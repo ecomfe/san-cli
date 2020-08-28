@@ -5,13 +5,13 @@
 import san from 'san';
 import Component from '@lib/san-component';
 import {router} from 'san-router';
-import deepmerge from 'deepmerge';
+// import deepmerge from 'deepmerge';
 import loadScript from 'load-script';
 import apolloClient from '@lib/apollo-client';
 import CLIENT_ADDONS from '@graphql/client-addon/clientAddons.gql';
 import CLIENT_ADDON_ADDED from '@graphql/client-addon/clientAddonAdded.gql';
-import localization from '@locales/zh.json';
-import uiComponents from './components';
+// import localization from '@locales/zh.json';
+import uiComponents from './default-components';
 
 export default class ClientAddon {
     constructor() {

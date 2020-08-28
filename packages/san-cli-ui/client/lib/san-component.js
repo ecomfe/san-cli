@@ -5,7 +5,7 @@
 */
 
 import {Component} from 'san';
-import defaultComponents from './components';
+import defaultComponents from './default-components';
 import mixin from '@lib/san-mixin';
 import events from './mixins/events';
 import apollo from './mixins/apollo';

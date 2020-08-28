@@ -25,7 +25,7 @@ module.exports = {
                 projectId
             }
         });
-        return query.data.sharedData;
+        return (query.data.sharedData || {}).value;
     },
 
     async $watchSharedData(id, callback) {

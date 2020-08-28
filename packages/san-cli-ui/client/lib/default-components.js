@@ -23,7 +23,8 @@ import {
     Spin,
     Switch,
     Tabs,
-    Tooltip
+    Tooltip,
+    Progress
 } from 'santd';
 
 // 自动注入以下Santd组件
@@ -60,5 +61,6 @@ export default {
     's-switch': Switch,
     's-tabs': Tabs,
     's-tabpane': Tabs.TabPane,
-    's-tooltip': Tooltip
+    's-tooltip': Tooltip,
+    's-progress': Progress
 };

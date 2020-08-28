@@ -12,16 +12,16 @@ const debug = getDebugLogger('ui:connectors:sharedData');
 
 class SharedData {
     constructor() {
-        this.sharedData = new Map();
+        this.data = new Map();
         this.watchers = new Map();
         // stats用作订阅的计数
         this.stats = new Map();
     }
 
     get({id, projectId}, context) {
-        const store = this.sharedData.get(projectId);
+        const store = this.data.get(projectId);
         if (!store) {
-            debug(`projectId(id:${id}, projectId: ${projectId}): No Data Here!`);
+            debug(`Shareddata.get: projectId(id:${id}, projectId: ${projectId}): No Data Here!`);
             return null;
         }
         let data = store.get(id);
@@ -38,7 +38,7 @@ class SharedData {
             data.value = $data.getData(projectId, id);
         }
 
-        debug(`projectId(${projectId}):`, {data, id, hasLocalFile});
+        debug(`getShareddata: projectId(${projectId}):`, {data, id, hasLocalFile});
 
         return data;
     }
@@ -48,7 +48,7 @@ class SharedData {
             $data.setData(projectId, id, value);
         }
 
-        deepSet(this.sharedData, `${projectId}.${id}`, {
+        deepSet(this.data, `${projectId}.${id}`, {
             id,
             ...(disk ? {} : {value}),
             disk,
@@ -57,6 +57,7 @@ class SharedData {
 
         const stat = this.getStat({projectId, id});
         stat.value = 0;
+
         context.pubsub.publish(channels.SHARED_DATA_UPDATED, {
             sharedDataUpdated: {id, projectId, value}
         });
@@ -64,14 +65,14 @@ class SharedData {
         const watchers = this.fire({id, projectId, value}, context);
 
         setTimeout(() => {
-            debug('SharedData set', id, projectId, value, `(${watchers.length} watchers, ${stat.value} subscriptions)`);
+            debug('setSharedData:', id, projectId, value, `(${watchers.length} watchers, ${stat.value} subscriptions)`);
         });
 
         return {id, value};
     }
 
     async remove({id, projectId}, context) {
-        const store = this.sharedData.get(projectId);
+        const store = this.data.get(projectId);
         if (store) {
             const data = store.get(id);
             if (data && data.disk) {

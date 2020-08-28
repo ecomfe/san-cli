@@ -24,6 +24,21 @@ const getSanCommand = command => {
     return '';
 };
 
+const getProgress = data => {
+    let progress = 0;
+    // 这个进度可能是多项编译的进度，这里进行简单的求算术平均值
+    const progressTypes = typeof data === 'object' ? Object.keys(data) : [];
+    const len = progressTypes.length;
+    progressTypes.forEach(item => {
+        progress += data[item] * 100;
+    });
+    if (len) {
+        progress /= len;
+        progress = ~~progress;
+    }
+    return progress;
+};
+
 /**
  * 组件props
  *
@@ -155,29 +170,34 @@ export default class TaskContent extends Component {
     }
 
     async getSharedData() {
-        // 初始化sharedData
-        this.data.set('sharedData', {});
         const command = this.data.get('taskInfo.command');
         const sanCommandType = getSanCommand(command);
         // 如果是san的任务，则获取san编译的数据
         if (sanCommandType) {
             const id = `san.cli.${sanCommandType}`;
-            const stats = `${id}-stats`;
+            const statsId = `${id}-stats`;
+            // ..............编译结果..............
             // 获取上一次san-cli编译结果进行展示
-            const data = await this.$getSharedData(stats) || {};
-            this.data.set('sharedData', data.value);
-            // console.log(JSON.stringify(data.value, null, '\t'));
-
-            // 实时更新san-cli编译状态
-            const status = `${id}-status`;
-            this.$watchSharedData(status, data => {
-                this.data.set('sharedData.status', data);
-            });
+            const sharedData = await this.$getSharedData(statsId) || {};
+            this.data.set('sharedData', sharedData);
 
             // 实时更新san-cli编译的最终结果
-            this.$watchSharedData(stats, data => {
-                // 不能直接set要merge，否则编译状态和编译进度就丢了
+            this.$watchSharedData(statsId, data => {
                 this.data.merge('sharedData', data);
+            });
+
+            // ..............编译进度..............
+            // 更新san-cli编译进度
+            const progressId = `${id}-progress`;
+            this.$watchSharedData(progressId, data => {
+                this.data.set('sharedData.progress', getProgress(data));
+            });
+
+            // ..............编译状态..............
+            // 实时更新san-cli编译状态
+            const statusId = `${id}-status`;
+            this.$watchSharedData(statusId, status => {
+                this.data.set('sharedData.status', status);
             });
         }
     }

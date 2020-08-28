@@ -24,7 +24,9 @@ class TaskDashboard extends SanComponent {
             </s-grid-col>
             <s-grid-col span="8">
                 <s-card bordered="{{false}}" class="card">
-                    <c-build-progress buildProgress="{{buildProgress}}"></c-build-progress>
+                    <c-build-progress 
+                        progress="{{data.progress}}">
+                    </c-build-progress>
                 </s-card>
             </s-grid-col>
         </s-grid-row>
