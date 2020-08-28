@@ -172,6 +172,7 @@ export default {
             }
             let feed = results[0];
             if (feed && feed.items && feed.items.length) {
+                feed.items.forEach(item => this.imgSrcReplace(item));
                 this.data.set('feed', feed);
                 this.dispatch('Widget:title', feed.title);
             }
@@ -188,5 +189,10 @@ export default {
     },
     handleClick(value) {
         this.data.set('selectedItem', value);
+    },
+    imgSrcReplace(item) {
+        let match = item.link.match(/^http(s)?:\/\/(.*?)\//);
+        let domain = match ? match[0] : '';
+        item.content = item.content.replace(/src=\"(\/[^"]*\")/g, (m, s1) => 'src="' + domain + s1);
     }
 };
