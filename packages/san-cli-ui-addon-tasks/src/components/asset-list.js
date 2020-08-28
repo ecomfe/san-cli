@@ -21,6 +21,6 @@ export default class AssetList extends SanComponent {
         </div>
         `;
     bytes2kb(size) {
-        return (size / 1024).toFixed(3) + 'kb';
+        return size ? (size / 1024).toFixed(3) + 'kb' : '';
     }
 };

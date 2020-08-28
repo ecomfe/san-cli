@@ -19,7 +19,6 @@ class SharedData {
     }
 
     get({id, projectId}, context) {
-        // id: "san.cli.serve", projectId: "WbWQYW38C"
         const store = this.sharedData.get(projectId);
         if (!store) {
             debug(`projectId(id:${id}, projectId: ${projectId}): No Data Here!`);
@@ -44,7 +43,7 @@ class SharedData {
         return data;
     }
 
-    async set({id, projectId, value, disk = false}, context) {
+    async set({id, projectId, disk = false}, value, context) {
         if (disk) {
             $data.setData(projectId, id, value);
         }

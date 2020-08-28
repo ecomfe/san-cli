@@ -152,10 +152,6 @@ export default class TaskContent extends Component {
             // TODO: 这个地方后续应该放到addon组件里面
             this.getSharedData();
         });
-
-        this.$watchSharedData('san.cli.serve', data => {
-            console.log('sharedData:', data);
-        });
     }
 
     async getSharedData() {
@@ -165,9 +161,24 @@ export default class TaskContent extends Component {
         const sanCommandType = getSanCommand(command);
         // 如果是san的任务，则获取san编译的数据
         if (sanCommandType) {
-            const id = `san.cli.${sanCommandType}-stats`;
-            const data = await this.$getSharedData(id) || {};
+            const id = `san.cli.${sanCommandType}`;
+            const stats = `${id}-stats`;
+            // 获取上一次san-cli编译结果进行展示
+            const data = await this.$getSharedData(stats) || {};
             this.data.set('sharedData', data.value);
+            // console.log(JSON.stringify(data.value, null, '\t'));
+
+            // 实时更新san-cli编译状态
+            const status = `${id}-status`;
+            this.$watchSharedData(status, data => {
+                this.data.set('sharedData.status', data);
+            });
+
+            // 实时更新san-cli编译的最终结果
+            this.$watchSharedData(stats, data => {
+                // 不能直接set要merge，否则编译状态和编译进度就丢了
+                this.data.merge('sharedData', data);
+            });
         }
     }
 

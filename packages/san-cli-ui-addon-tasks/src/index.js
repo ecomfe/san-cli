@@ -15,7 +15,11 @@ class TaskDashboard extends SanComponent {
         <s-grid-row class="row" gutter="16">
             <s-grid-col span="16">
                 <s-card bordered="{{false}}" class="card">
-                    <c-build-status data="{{data.data}}" computed="{{data.computed}}"></c-build-status>
+                    <c-build-status 
+                        data="{{data.data}}" 
+                        status="{{data.status}}" 
+                        computed="{{data.computed}}">
+                    </c-build-status>
                 </s-card>
             </s-grid-col>
             <s-grid-col span="8">

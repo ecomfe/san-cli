@@ -24,9 +24,8 @@ class SharedData {
         return this.sharedData.set({
             id: this.namespace + id,
             projectId: this.project.id,
-            value,
             disk
-        }, this.context);
+        }, value, this.context);
     }
 
     /**
