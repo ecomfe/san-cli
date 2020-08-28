@@ -5,6 +5,7 @@
 
 import Component from '@lib/san-component';
 import {LAYOUT_ONE_THIRD} from '@lib/const';
+import {getVisiblePrompts} from '@lib/utils/prompt';
 import CONFIGURATION from '@graphql/configuration/configuration.gql';
 import CONFIGURATION_SAVE from '@/graphql/configuration/configurationSave.gql';
 import CONFIGURATION_CANCEL from '@/graphql/configuration/configurationCancel.gql';
@@ -52,15 +53,7 @@ export default class ConfigContent extends Component {
         visiblePrompts() {
             let currentTab = this.data.get('currentTab');
             let tabs = this.data.get('config.tabs');
-            return tabs ? tabs[currentTab].prompts.filter(p => {
-                if (p.type === 'confirm' || p.type === 'checkbox' || p.type === 'input') {
-                    try {
-                        p.value = JSON.parse(p.value);
-                    }
-                    catch (error) {}
-                }
-                return p.visible;
-            }) : [];
+            return getVisiblePrompts(tabs ? tabs[currentTab] : null);
         }
     };
 

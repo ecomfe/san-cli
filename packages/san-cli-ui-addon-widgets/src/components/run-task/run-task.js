@@ -51,14 +51,11 @@ export default {
     `,
     computed: {
         taskId() {
-            const task = this.data.get('widget.config.task');
-            let id = '';
-            if (task && task[0]) {
-                try {
-                    id = JSON.parse(task[0]);
-                }
-                catch (error) {}
+            let id = this.data.get('widget.config.task');
+            try {
+                id = JSON.parse(id);
             }
+            catch (error) {}
             return id;
         },
         description() {

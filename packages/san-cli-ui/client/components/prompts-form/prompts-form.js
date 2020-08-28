@@ -145,12 +145,12 @@ export default class PromptsForm extends Component {
         if (item.type === 'string' || item.type === 'input') {
             return value || item.default || '';
         }
-        else if (item.type === 'list') {
+        if (item.type === 'list') {
             return value && typeof value === 'string' ? value
                 : (Array.isArray(value) && value.length ? value[0]
                     : item.choices[0].value);
         }
-        else if (item.type === 'confirm') {
+        if (item.type === 'confirm') {
             return !!value;
         }
         return value;

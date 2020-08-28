@@ -10,6 +10,7 @@ import {
     GRID_SIZE,
     ZOOM
 } from '@lib/utils/position';
+import {getVisiblePrompts} from '@lib/utils/prompt';
 import {LAYOUT_ONE_THIRD} from '@lib/const';
 import WIDGET_CONFIG_OPEN from '@graphql/widget/widgetConfigOpen.gql';
 import WIDGET_CONFIG_SAVE from '@graphql/widget/widgetConfigSave.gql';
@@ -162,17 +163,7 @@ export default class DashboardWidget extends Component {
             };
         },
         visiblePrompts() {
-            let widget = this.data.get('widget');
-            return widget && widget.prompts ? widget.prompts.filter(p => {
-                try {
-                    p.value = JSON.parse(p.value);
-                }
-                catch (error) {};
-                if (p.type === 'list' && !p.value) {
-                    p.value = [];
-                }
-                return p.visible;
-            }) : [];
+            return getVisiblePrompts(this.data.get('widget'));
         }
     };
     static components = {
@@ -355,7 +346,7 @@ export default class DashboardWidget extends Component {
             variables: {
                 input: {
                     id: prompt.id,
-                    value: JSON.stringify(value)
+                    value
                 }
             },
             update: (store, {data: {promptAnswer}}) => {

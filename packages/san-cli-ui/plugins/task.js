@@ -193,7 +193,7 @@ module.exports = api => {
         match: /san(-cli\/index\.js)? serve(\s+--\S+(\s+\S+)?)*$/,
         description: 'san.san-cli.tasks.serve.description',
         link: 'https://ecomfe.github.io/san-cli',
-        icon: '/public/san.svg',
+        icon: require('./utils/getImageUrl')('/public/san.svg'),
         prompts: [
             {
                 name: 'open',
@@ -290,7 +290,7 @@ module.exports = api => {
         match: /san(-cli\/index\.js)? build(\s+--\S+(\s+\S+)?)*$/,
         description: 'san.san-cli.tasks.build.description',
         link: 'https://ecomfe.github.io/san-cli',
-        icon: '/public/san.svg',
+        icon: require('./utils/getImageUrl')('/public/san.svg'),
         prompts: [
             {
                 name: 'modern',
@@ -416,7 +416,7 @@ module.exports = api => {
         command: 'san-cli-service inspect',
         description: 'san.san-cli.tasks.inspect.description',
         link: 'https://ecomfe.github.io/san-cli',
-        icon: '/public/san.svg',
+        icon: require('./utils/getImageUrl')('/public/san.svg'),
         prompts: [
             {
                 name: 'mode',
