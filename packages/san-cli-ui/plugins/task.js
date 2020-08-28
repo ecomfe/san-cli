@@ -1,6 +1,7 @@
 /**
  * @file A UI Interface for CLI
- * @author jinzhan
+ * Reference: https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-ui/ui-defaults/tasks.js
+ * Modified by jinzhan
  */
 const path = require('path');
 const fs = require('fs-extra');
@@ -43,7 +44,9 @@ module.exports = api => {
     function setupCommonData() {
         // eslint-disable-next-line guard-for-in
         for (const field in commonFields) {
-            sharedData.set(field, getSharedDataInitialValue(field, commonFields[field]));
+            const value = getSharedDataInitialValue(field, commonFields[field]);
+            sharedData.set(field, value);
+            debug('setupCommonData:', JSON.stringify({field, value}, null, '\t'));
         }
     }
 
@@ -51,7 +54,9 @@ module.exports = api => {
         // eslint-disable-next-line guard-for-in
         for (const field in fields) {
             const id = `${mode}-${field}`;
-            sharedData.set(id, getSharedDataInitialValue(id, fields[field], clear));
+            const value = getSharedDataInitialValue(id, fields[field], clear);
+            sharedData.set(id, value);
+            debug('resetSharedData:', JSON.stringify({id, value}, null, '\t'));
         }
     }
 
@@ -105,7 +110,7 @@ module.exports = api => {
                     });
                 }
                 else {
-                    // Display two progress bars
+                    // build的modernMode下提供2组数局
                     const progress = sharedData.get(id).value;
                     progress[type] = data.value;
                     for (const t of ['build', 'build-modern']) {

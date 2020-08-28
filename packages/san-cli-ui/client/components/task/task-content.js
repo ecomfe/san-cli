@@ -189,6 +189,8 @@ export default class TaskContent extends Component {
             // ..............编译进度..............
             // 更新san-cli编译进度
             const progressId = `${id}-progress`;
+            const progressData = await this.$getSharedData(progressId) || {};
+            console.log({progressData});
             this.$watchSharedData(progressId, data => {
                 this.data.set('sharedData.progress', getProgress(data));
             });
