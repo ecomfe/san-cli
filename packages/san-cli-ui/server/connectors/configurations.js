@@ -14,8 +14,9 @@ const {get, set, unset} = require('../utils/object');
 const extendJSConfig = require('../utils/extendJSConfig');
 const {readPackage} = require('../utils/fileHelper');
 const {reloadModule} = require('san-cli-utils/module');
+const yaml = require('js-yaml');
 
-const fileTypes = ['js', 'json'];
+const fileTypes = ['js', 'json', 'yaml'];
 let current = {};
 
 const list = () => {
@@ -61,6 +62,9 @@ const readFile = (config, fileDescriptor, context) => {
             const rawContent = fs.readFileSync(file.path, {encoding: 'utf8'});
             if (file.type === 'json') {
                 fileData = JSON.parse(rawContent);
+            }
+            else if (file.type === 'yaml') {
+                fileData = yaml.safeLoad(rawContent);
             }
         }
     }
@@ -121,6 +125,9 @@ const writeFile = (config, fileId, data, changedFields, context) => {
     else {
         if (file.type === 'json') {
             rawContent = JSON.stringify(data, null, 2);
+        }
+        else if (file.type === 'yaml') {
+            rawContent = yaml.safeDump(data);
         }
         else if (file.type === 'js') {
             const source = fs.readFileSync(file.path, {encoding: 'utf8'});

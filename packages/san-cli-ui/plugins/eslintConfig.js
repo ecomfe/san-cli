@@ -53,8 +53,7 @@ module.exports = api => {
             eslint: {
                 js: ['.eslintrc.js'],
                 json: ['.eslintrc', '.eslintrc.json'],
-                // todo: 引入yaml依赖解析npm
-                // yaml: ['.eslintrc.yaml', '.eslintrc.yml'],
+                yaml: ['.eslintrc.yaml', '.eslintrc.yml'],
                 // 会从 `package.json` 读取
                 package: 'eslintConfig'
             }
