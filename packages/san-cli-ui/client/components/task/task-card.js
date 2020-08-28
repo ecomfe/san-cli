@@ -20,7 +20,7 @@ export default class TaskNav extends Component {
                         </span>
                         <div class="card-meta">
                             <div class="card-title">{{task.name}}</div>
-                            <div class="card-subtitle">{{task.description || task.command}}</div>
+                            <div class="card-subtitle">{{$t(task.description) || task.command}}</div>
                         </div>
                     </div>
                     <div class="card-actions">

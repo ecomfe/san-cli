@@ -17,8 +17,7 @@
                 "icon": "import",
                 "key": "import",
                 "link": "/project/import"
-            }
-        ],
+            }],
             "folderExplorer": {
                 "placeholder": {
                     "edit": "请输入合法路径",
@@ -79,8 +78,7 @@
             }
         }
     },
-    "menu": [
-        {
+    "menu": [{
             "text": "仪表盘",
             "icon": "dashboard",
             "key": "dashboard",
@@ -131,6 +129,11 @@
             "done": "已完成",
             "error": "错误",
             "terminated": "已中止"
+        },
+        "description": {
+            "serve": "编译和热更新（开发环境）",
+            "build": "编译并压缩（生产环境）",
+            "inspect": "查看Webpack配置"
         }
     },
     "dependency": {

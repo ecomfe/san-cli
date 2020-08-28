@@ -191,7 +191,7 @@ module.exports = api => {
     api.registerTask({
         // 匹配san serve 或者 测试地址：san-cli/index.js serve
         match: /san(-cli\/index\.js)? serve(\s+--\S+(\s+\S+)?)*$/,
-        description: 'san.san-cli.tasks.serve.description',
+        description: 'task.description.serve',
         link: 'https://ecomfe.github.io/san-cli',
         icon: require('./utils/getImageUrl')('/public/san.svg'),
         prompts: [
@@ -288,7 +288,7 @@ module.exports = api => {
     api.registerTask({
         // 匹配san build 或者 测试地址：san-cli/index.js build
         match: /san(-cli\/index\.js)? build(\s+--\S+(\s+\S+)?)*$/,
-        description: 'san.san-cli.tasks.build.description',
+        description: 'task.description.build',
         link: 'https://ecomfe.github.io/san-cli',
         icon: require('./utils/getImageUrl')('/public/san.svg'),
         prompts: [
@@ -414,7 +414,7 @@ module.exports = api => {
     api.registerTask({
         name: 'inspect',
         command: 'san-cli-service inspect',
-        description: 'san.san-cli.tasks.inspect.description',
+        description: 'task.description.inspect',
         link: 'https://ecomfe.github.io/san-cli',
         icon: require('./utils/getImageUrl')('/public/san.svg'),
         prompts: [
