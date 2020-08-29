@@ -1,3 +1,4 @@
+# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/project/projects.gql
 #import './projectFragment.gql'
 query projects {
   projects {

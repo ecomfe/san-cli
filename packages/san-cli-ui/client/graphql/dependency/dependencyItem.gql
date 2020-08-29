@@ -1,3 +1,4 @@
+# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/dependency/dependencyItem.gql
 mutation dependencyItem ($id: String!) {
     dependencyItem (id: $id) {
         current

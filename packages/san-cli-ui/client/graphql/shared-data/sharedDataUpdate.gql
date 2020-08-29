@@ -1,3 +1,4 @@
+# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/shared-data/sharedDataUpdate.gql
 #import "./sharedDataFragment.gql"
 
 mutation sharedDataUpdate ($id: ID!, $projectId: ID!, $value: JSON!) {

@@ -1,3 +1,4 @@
+# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/plugin/pluginActionCall.gql
 #import "./pluginActionResultFragment.gql"
 
 mutation pluginActionCall ($id: ID!, $params: JSON) {

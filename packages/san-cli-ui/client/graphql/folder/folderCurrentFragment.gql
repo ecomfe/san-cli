@@ -1,3 +1,4 @@
+# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/folder/folderCurrentFragment.gql
 fragment folderCurrent on Folder {
   name
   path
