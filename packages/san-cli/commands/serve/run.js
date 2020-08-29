@@ -32,12 +32,12 @@ module.exports = function apply(argv, api, projectOptions) {
                 /* eslint-disable no-console */
                 console.log();
                 console.log(`  Application is running at: ${textColor(networkUrl)}`);
-                console.log('  URL QRCode is: ');
-                /* eslint-enable no-console */
+
                 // 打开浏览器地址
                 argv.open && require('opener')(networkUrl);
 
-                if (argv.qrcode) {
+                if (argv.qrcode && !argv.dashboard) {
+                    console.log('  URL QRCode is: ');
                     // 显示 terminal 二维码
                     require('qrcode-terminal').generate(
                         networkUrl,
@@ -51,6 +51,7 @@ module.exports = function apply(argv, api, projectOptions) {
                         }
                     );
                 }
+                /* eslint-enable no-console */
             }
         })
         .catch(({type, stats, err}) => {
