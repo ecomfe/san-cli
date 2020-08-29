@@ -13,6 +13,7 @@ const clientAddons = require('./clientAddons');
 const {readPackage} = require('../utils/fileHelper');
 const getContext = require('../utils/context');
 const {isPlugin, getPluginLink} = require('../utils/plugin');
+const projects = require('./projects');
 const debug = getDebugLogger('ui:plugins');
 
 const SAN_CLI = 'san-cli';
@@ -91,7 +92,7 @@ class Plugins {
     }
 
     resetPluginApi({file}, context) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             debug('Reseting Plugin API...', file);
             let pluginApi = this.pluginApiInstances.get(file);
             let projectId;
@@ -102,69 +103,65 @@ class Plugins {
                 ipc.handlers.forEach(fn => ipc.off(fn));
             }
 
-            // Cyclic dependency with projects connector
-            setTimeout(async () => {
-                const projects = require('./projects');
-                const project = projects.findByPath(file, context);
-                if (!project) {
-                    resolve(false);
-                    return;
+            const project = projects.findByPath(file, context);
+            if (!project) {
+                resolve(false);
+                return;
+            }
+
+            if (project && projects.getType(project, context) !== 'san') {
+                resolve(false);
+                return;
+            }
+
+            const plugins = this.getPlugins(file);
+
+            pluginApi = new PluginManager({
+                plugins,
+                cwd: file,
+                project
+            }, context);
+
+            this.pluginApiInstances.set(file, pluginApi);
+
+            // 运行默认插件的API
+            this.runPluginApi(path.resolve(__dirname, '../../'), pluginApi, context, 'plugins');
+
+            // 运行第三方插件的API
+            plugins.forEach(plugin => this.runPluginApi(plugin.id, pluginApi, context));
+
+            if (pluginApi.addonPlugin && pluginApi.addonPlugin.addons) {
+                pluginApi.addonPlugin.addons.forEach(options => {
+                    clientAddons.add(options, context);
+                });
+            }
+
+            // debug('pluginApi.widgetPlugin.widgets:', pluginApi.widgetPlugin && pluginApi.widgetPlugin.widgets);
+            if (pluginApi.widgetPlugin && pluginApi.widgetPlugin.widgets) {
+                for (const definition of pluginApi.widgetPlugin.widgets) {
+                    await widgets.registerDefinition({definition, project}, context);
                 }
+            }
 
-                if (project && projects.getType(project, context) !== 'san') {
-                    resolve(false);
-                    return;
-                }
-
-                const plugins = this.getPlugins(file);
-
-                pluginApi = new PluginManager({
-                    plugins,
-                    cwd: file,
-                    project
+            // Local plugins
+            if (projectId !== project.id) {
+                this.callHook({
+                    id: 'projectOpen',
+                    args: [project, projects.getLast(context)],
+                    file
                 }, context);
+            }
+            else {
+                this.callHook({
+                    id: 'pluginReload',
+                    args: [project],
+                    file
+                }, context);
+            }
 
-                this.pluginApiInstances.set(file, pluginApi);
+            widgets.load(context);
 
-                // 运行默认插件的API
-                this.runPluginApi(path.resolve(__dirname, '../../'), pluginApi, context, 'plugins');
-
-                // 运行第三方插件的API
-                plugins.forEach(plugin => this.runPluginApi(plugin.id, pluginApi, context));
-
-                if (pluginApi.addonPlugin && pluginApi.addonPlugin.addons) {
-                    pluginApi.addonPlugin.addons.forEach(options => {
-                        clientAddons.add(options, context);
-                    });
-                }
-
-                // debug('pluginApi.widgetPlugin.widgets:', pluginApi.widgetPlugin && pluginApi.widgetPlugin.widgets);
-                if (pluginApi.widgetPlugin && pluginApi.widgetPlugin.widgets) {
-                    for (const definition of pluginApi.widgetPlugin.widgets) {
-                        await widgets.registerDefinition({definition, project}, context);
-                    }
-                }
-
-                // Local plugins
-                if (projectId !== project.id) {
-                    this.callHook({
-                        id: 'projectOpen',
-                        args: [project, projects.getLast(context)],
-                        file
-                    }, context);
-                }
-                else {
-                    this.callHook({
-                        id: 'pluginReload',
-                        args: [project],
-                        file
-                    }, context);
-                }
-
-                widgets.load(context);
-
-                resolve(true);
-            });
+            resolve(true);
         });
     }
 
@@ -215,7 +212,6 @@ class Plugins {
     serveFile({pluginId, projectId = null, file}, res) {
         let baseFile = cwd.get();
         if (projectId) {
-            const projects = require('./projects');
             const project = projects.findOne(projectId, getContext());
             if (project) {
                 baseFile = project.path;
