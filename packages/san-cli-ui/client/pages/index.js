@@ -1,5 +1,5 @@
 /**
- * @file index
+ * @file 前端入口
  * @author zttonly
  */
 

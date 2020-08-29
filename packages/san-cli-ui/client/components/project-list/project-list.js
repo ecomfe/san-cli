@@ -20,13 +20,18 @@ export default class ProjectList extends Component {
 
     static template = /* html */`
         <div class="project-list">
+            <div s-if="!isLoaded" class="loading">
+                <s-icon type="loading" />
+            </div>
+            <fragment s-else>
             <!---empty tip---->
             <div class="empty-tip" s-if="!projects || projects.length <= 0">
                 <div>
-                    <s-icon type="{{isLoaded ? 'coffee' : 'loading'}}" />
-                    <p class="tip-text">{{$t(isLoaded ? 'project.list.emptyTip' : 'loadingTip')}}</p>
+                    <s-icon type="coffee" />
+                    <p class="tip-text">{{$t('project.list.emptyTip')}}</p>
                 </div>
             </div>
+            <!---search box---->
             <div class="input-search" s-else>
                 <s-input-search
                     placeholder="{{$t('project.list.searchPlaceholder')}}"
@@ -35,6 +40,8 @@ export default class ProjectList extends Component {
                     size="large"
                 />
             </div>
+            </fragment>
+
             <!---favorite list---->
             <template s-if="favoriteList && favoriteList.length > 0">
                 <div class="favorite">

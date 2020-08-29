@@ -4,6 +4,7 @@
  */
 
 import {router, Link} from 'san-router';
+import {Modal} from 'santd';
 import Component from '@lib/san-component';
 import CWD from '@graphql/cwd/cwd.gql';
 import PROJECT_INIT_TEMPLATE from '@graphql/project/projectInitTemplate.gql';
@@ -16,7 +17,6 @@ import FolderExplorer from '@components/folder-explorer';
 import ProjectCreate from '@components/project/create';
 import Layout from '@components/layout/horizontal';
 import './project.less';
-import {Modal} from 'santd';
 
 export default class Project extends Component {
     static template = /* html */`
@@ -229,8 +229,8 @@ export default class Project extends Component {
         this.data.set('isImporting', false);
         if (res.errors && res.errors.some(item => item.message === 'NO_MODULES')) {
             Modal.error({
-                title: $t('project.components.import.noModulesTipsTitle'),
-                content: $t('project.components.import.noModulesTipsContent')
+                title: this.$t('project.components.import.noModulesTipsTitle'),
+                content: this.$t('project.components.import.noModulesTipsContent')
             });
             return;
         }

@@ -33,6 +33,7 @@ class Plugins {
         if (!pluginApi) {
             return;
         }
+        debug('callHook:', {id, args, file});
         const fns = pluginApi.hooks[id] || [];
         debug(`Hook ${id}`, fns.length, 'handlers');
         fns.forEach(fn => fn(...args));
