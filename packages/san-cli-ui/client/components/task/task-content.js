@@ -16,12 +16,16 @@ import TASK_LOGS from '@graphql/task/taskLogs.gql';
 import 'xterm/css/xterm.css';
 import './task-content.less';
 
+/**
+ * 获取san的命令
+ * @param {string} command package中的script命令
+ * @return {string} 返回 serve|build|''
+*/
 const getSanCommand = command => {
     command = command.trim();
-    if (/san(?:-cli\/index\.js)?\s+(serve|build)(?:\s+--\S+(?:\s+\S+)?)*$/.test(command)) {
-        return RegExp.$1;
-    }
-    return '';
+    const sanCommandReg = /san(?:-cli\/index\.js)?\s+(serve|build)(?:\s+--\S+(?:\s+\S+)?)*$/;
+    const [, name] = command.match(sanCommandReg) || [];
+    return name || '';
 };
 
 const getProgress = data => {
@@ -187,19 +191,28 @@ export default class TaskContent extends Component {
             });
 
             // ..............编译进度..............
-            // 更新san-cli编译进度
             const progressId = `${id}-progress`;
             const progressData = await this.$getSharedData(progressId) || {};
-            console.log({progressData});
+            this.data.set('sharedData.progress', getProgress(progressData));
             this.$watchSharedData(progressId, data => {
                 this.data.set('sharedData.progress', getProgress(data));
             });
 
             // ..............编译状态..............
-            // 实时更新san-cli编译状态
             const statusId = `${id}-status`;
+            const statusData = await this.$getSharedData(statusId) || {};
+            this.data.set('sharedData.status', statusData);
             this.$watchSharedData(statusId, status => {
                 this.data.set('sharedData.status', status);
+            });
+
+            // ..............编译状态..............
+            const operationsId = `${id}-operations`;
+            const operationsData = await this.$getSharedData(operationsId) || {};
+            this.data.set('sharedData.operations', operationsData);
+            this.$watchSharedData(operationsId, data => {
+                console.log({'sharedData.operations': data});
+                this.data.set('sharedData.operations', data);
             });
         }
     }

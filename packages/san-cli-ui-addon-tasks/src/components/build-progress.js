@@ -6,9 +6,9 @@ export default class BuildProgress extends SanComponent {
     <div class="build-progress">
         <s-progress 
             type="circle"
-            percent="{{progress || 0}}"
+            percent="{{data.progress || 0}}"
             />
-        <div class="extra-info">{{operations}}</div>
+        <div class="extra-info">{{data.operations}}</div>
     </div>
     `;
 };
