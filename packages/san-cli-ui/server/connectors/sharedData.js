@@ -48,7 +48,7 @@ class SharedData {
             $data.setData(projectId, id, value);
         }
 
-        deepSet(this.data, `${projectId}.${id}`, {
+        deepSet(this.data, [projectId, id], {
             id,
             ...(disk ? {} : {value}),
             disk,
@@ -66,6 +66,7 @@ class SharedData {
 
         setTimeout(() => {
             debug('setSharedData:', id, projectId, value, `(${watchers.length} watchers, ${stat.value} subscriptions)`);
+            debug({id, projectId}, this.get({id, projectId}));
         });
 
         return {id, value};
@@ -89,29 +90,19 @@ class SharedData {
         debug('SharedData remove', id, projectId);
     }
 
-    /**
-     * shareData发生改变的时候触发回调
-     * @param {string} id json文件名称
-     * @param {string} projectId 项目名称
-     * @param {Function} handler 回调方法
-    */
+    // shareData发生改变的时候触发回调
     watch({id, projectId}, handler) {
-        let handlers = deepGet(this.watchers, `${projectId}.${id}`);
+        let handlers = deepGet(this.watchers, [projectId, id]);
         if (!handlers) {
             handlers = [];
-            deepSet(this.watchers, `${projectId}.${id}`, handlers);
+            deepSet(this.watchers, [projectId, id], handlers);
         }
         handlers.push(handler);
     }
 
-    /**
-     * 清除shareData回调
-     * @param {string} id json文件名称
-     * @param {string} projectId 项目名称
-     * @param {Function} handler 回调方法
-    */
+    // 清除shareData回调
     unwatch({id, projectId}, handler) {
-        const handlers = deepGet(this.watchers, `${projectId}.${id}`);
+        const handlers = deepGet(this.watchers, [projectId, id]);
         if (!handlers) {
             return;
         }
@@ -122,29 +113,25 @@ class SharedData {
         }
     }
 
-    /**
-     * 清除shareData项目的全部回调
-     * @param {string} projectId 项目名称
-     * @param {Function} handler 回调方法
-    */
+    // 清除shareData项目的全部回调
     unwatchAll(projectId) {
         this.watchers.delete(projectId);
     }
 
     fire({id, projectId, value}, context) {
-        const handlers = deepGet(this.watchers, `${projectId}.${id}`) || [];
+        const handlers = deepGet(this.watchers, [projectId, id]) || [];
         handlers.forEach(fn => fn(value, id));
         return handlers;
     }
 
     // 增加shareData的日志统计
     getStat({id, projectId}) {
-        let stat = deepGet(this.stats, `${projectId}.${id}`);
+        let stat = deepGet(this.stats, [projectId, id]);
         if (!stat) {
             stat = {
                 value: 0
             };
-            deepSet(this.stats, `${projectId}.${id}`, stat);
+            deepSet(this.stats, [projectId, id], stat);
         }
         return stat;
     }
