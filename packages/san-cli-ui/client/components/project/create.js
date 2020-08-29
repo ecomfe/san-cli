@@ -3,6 +3,7 @@
  * @author jinzhan
  */
 
+import {router} from 'san-router';
 import Component from '@lib/san-component';
 import PromptsForm from '@components/prompts-form';
 import PROJECT_CREATION from '@graphql/project/projectCreation.gql';
@@ -11,7 +12,7 @@ import './create.less';
 
 export default class ProjectCreate extends Component {
     static template = /* html */`
-        <div class="flex-all create">
+        <div class="flex-all project-create">
             <s-form label-col="{{formItemLayout.labelCol}}"
                 wrapper-col="{{formItemLayout.wrapperCol}}">
                 <s-formitem label="{{$t('project.components.create.folderName')}}">
@@ -100,6 +101,7 @@ export default class ProjectCreate extends Component {
             this.data.set('isCreating', false);
 
             // TODO: 跳转到项目页面
+            setTimeout(() => router.locator.redirect('/'));
         });
     }
 }
