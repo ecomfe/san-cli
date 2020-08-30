@@ -8,7 +8,7 @@ export default class BuildProgress extends SanComponent {
             type="circle"
             percent="{{data.progress || 0}}"
             />
-        <div class="extra-info">{{data.operations}}</div>
+        <div class="extra-info">{{data.operations || 'idle'}}</div>
     </div>
     `;
 };

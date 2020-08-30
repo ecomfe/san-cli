@@ -200,7 +200,7 @@ export default class TaskContent extends Component {
 
             // ..............编译状态..............
             const statusId = `${id}-status`;
-            const statusData = await this.$getSharedData(statusId) || {};
+            const statusData = await this.$getSharedData(statusId);
             this.data.set('sharedData.status', statusData);
             this.$watchSharedData(statusId, status => {
                 this.data.set('sharedData.status', status);
@@ -208,7 +208,7 @@ export default class TaskContent extends Component {
 
             // ..............编译状态..............
             const operationsId = `${id}-operations`;
-            const operationsData = await this.$getSharedData(operationsId) || {};
+            const operationsData = await this.$getSharedData(operationsId);
             this.data.set('sharedData.operations', operationsData);
             this.$watchSharedData(operationsId, data => {
                 this.data.set('sharedData.operations', data);
