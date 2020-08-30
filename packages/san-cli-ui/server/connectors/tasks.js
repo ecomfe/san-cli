@@ -57,15 +57,15 @@ class Tasks {
                         name,
                         command,
                         index,
-                        prompts: [],
-                        views: [],
-                        path: file,
-                        logs: []
+                        path: file
                     };
                     // 如果任务已存在，更新list数据，否则添加到任务list中
                     ~index ? Object.assign(list[index], task) : list.push({
                         status: TASK_STATUS_IDLE,
-                        ...task
+                        ...task,
+                        prompts: [],
+                        views: [],
+                        logs: []
                     });
                 }
             );

@@ -211,7 +211,6 @@ export default class TaskContent extends Component {
             const operationsData = await this.$getSharedData(operationsId) || {};
             this.data.set('sharedData.operations', operationsData);
             this.$watchSharedData(operationsId, data => {
-                console.log({'sharedData.operations': data});
                 this.data.set('sharedData.operations', data);
             });
         }
