@@ -253,6 +253,11 @@
             "cancel": "取消",
             "refresh": "刷新",
             "save": "保存"
+        },
+        "prompt": {
+            "edit": "编辑",
+            "title": "编辑JSON",
+            "err-msg": "JSON格式有误，请检查格式"
         }
     },
     "list-item-info": {

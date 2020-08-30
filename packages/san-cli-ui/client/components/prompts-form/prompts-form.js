@@ -1,8 +1,9 @@
 /**
  * @file 基于json动态创建一个form表单
- * @author jinzhan,zttonly
+ * @author jinzhan, zttonly
  */
 import Component from '@lib/san-component';
+import FormTree from './form-tree';
 
 /**
  * 组件props
@@ -33,7 +34,12 @@ export default class PromptsForm extends Component {
                     </template>
 
                     <template s-elif="prompt.type === 'input' || prompt.type === 'string'">
-                        <s-input value="{=prompt.value=}"
+                        <c-tree s-if="type(prompt.value)"
+                            name="{=prompt.name=}"
+                            value="{=prompt.value=}"
+                            on-change="handleChange(prompt, $event)"
+                        ></c-tree>
+                        <s-input s-else value="{=prompt.value=}"
                             placeholder="{{prompt.placeholder | textFormat}}"
                             on-change="handleChange(prompt, $event)"
                         ></s-input>
@@ -68,7 +74,9 @@ export default class PromptsForm extends Component {
           </s-form>
       </div>
     `;
-
+    static components = {
+        'c-tree': FormTree
+    }
     static filters = {
         textFormat(value) {
             return value && value.indexOf('.') > -1 ? this.$t(value) : value;
@@ -172,5 +180,8 @@ export default class PromptsForm extends Component {
             data[item.name] = this.formateValue(item);
         });
         this.fire('submit', data);
+    }
+    type(value) {
+        return typeof value === 'object';
     }
 }

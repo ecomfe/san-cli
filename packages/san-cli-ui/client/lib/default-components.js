@@ -24,7 +24,8 @@ import {
     Switch,
     Tabs,
     Tooltip,
-    Progress
+    Progress,
+    Tree
 } from 'santd';
 
 // 自动注入以下Santd组件
@@ -42,6 +43,7 @@ export default {
     's-input': Input,
     's-input-search': Input.Search,
     's-input-number': InputNumber,
+    's-textarea': Input.TextArea,
     's-layout': Layout,
     's-layout-content': Layout.Content,
     's-layout-header': Layout.Header,
@@ -62,5 +64,7 @@ export default {
     's-tabs': Tabs,
     's-tabpane': Tabs.TabPane,
     's-tooltip': Tooltip,
-    's-progress': Progress
+    's-progress': Progress,
+    's-tree': Tree,
+    's-tree-node': Tree.TreeNode
 };
