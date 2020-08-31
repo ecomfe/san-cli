@@ -11,6 +11,7 @@ export default class SpeedStatus extends SanComponent {
                 <span class="value">{{item.totalDownloadTime}}</span>
             </s-grid-col>
         </s-grid-row>
+        <div s-if="speedStats.length === 0">...</div>
     </div>
     `;
     static computed = {

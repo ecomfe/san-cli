@@ -7,6 +7,7 @@ export default class ModuletList extends SanComponent {
         <fragment s-for="item in moduletList">
             <span class="name">{{item.name}}</span><span class="size">{{item.size/1000 + 'kb'}}</span>
         </fragment>
+        <div class="empty" s-if="!moduletList || moduletList.length === 0">...</div>
     </div>
     `;
 };
