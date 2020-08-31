@@ -149,7 +149,7 @@ export default class PromptsForm extends Component {
         });
     }
     formateValue(item, newValue) {
-        const value = newValue || item.value;
+        const value = newValue === undefined ? item.value : newValue;
         if (item.type === 'string' || item.type === 'input') {
             return value || item.default || '';
         }
