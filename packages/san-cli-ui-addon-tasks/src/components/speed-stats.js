@@ -5,17 +5,18 @@ import './speed-stats.less';
 export default class SpeedStatus extends SanComponent {
     static template = /* html */`
     <div class="speed-stats">
-        <s-grid-row gutter="80">
+        <s-grid-row>
             <s-grid-col span="8" class="item" s-for="item in speedStats">
-                <span class="label">{{item.title}}</span><span>{{item.totalDownloadTime}}s</span>
+                <span class="label">{{item.title}}</span>
+                <span class="value">{{item.totalDownloadTime}}</span>
             </s-grid-col>
         </s-grid-row>
     </div>
     `;
     static computed = {
         speedStats() {
-            const data = this.data.get('modulesPerSizeType.gzip.modulesTotalSize') || [];
-            return getSpeeds(data);
+            const size = this.data.get('computed.modulesPerSizeType.gzip.modulesTotalSize');
+            return size ? getSpeeds(size) : [];
         }
     };
 };

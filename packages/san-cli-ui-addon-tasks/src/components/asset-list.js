@@ -30,9 +30,9 @@ export default class AssetList extends SanComponent {
                 return {
                     name: asset.name,
                     size: bytes2kb(asset.size.gzip),
-                    globalSpeed: speeds.global.totalDownloadTime.toFixed(3) + 's',
-                    '3gsSpeed': speeds['3gs'].totalDownloadTime.toFixed(3) + 's',
-                    '3gfSpeed': speeds['3gf'].totalDownloadTime.toFixed(3) + 's'
+                    globalSpeed: speeds.global.totalDownloadTime,
+                    '3gsSpeed': speeds['3gs'].totalDownloadTime,
+                    '3gfSpeed': speeds['3gf'].totalDownloadTime
                 };
             });
         }
