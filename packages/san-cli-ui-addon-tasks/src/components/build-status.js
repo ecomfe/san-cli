@@ -1,3 +1,4 @@
+import {bytes2kb} from '../utils/util';
 import './build-status.less';
 
 /* global SanComponent */
@@ -39,6 +40,6 @@ export default class BuildStatus extends SanComponent {
     `;
 
     bytes2kb(size) {
-        return size ? (size / 1024).toFixed(3) + 'kb (gizp)' : '...';
+        return bytes2kb(size);
     }
 };

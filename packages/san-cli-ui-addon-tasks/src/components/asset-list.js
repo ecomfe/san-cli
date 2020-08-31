@@ -1,3 +1,5 @@
+import {bytes2kb} from '../utils/util';
+import {getSpeeds} from '../utils/assets';
 import './asset-list.less';
 
 /* global SanComponent */
@@ -11,16 +13,28 @@ export default class AssetList extends SanComponent {
                 <s-grid-col span="4">3G Slow</s-grid-col>
                 <s-grid-col span="4">3G Fast</s-grid-col>
             </s-grid-row>
-            <s-grid-row s-for="item in assetList">
+            <s-grid-row s-for="item in assets">
                 <s-grid-col span="8" class="first-col">{{item.name}}</s-grid-col>
-                <s-grid-col span="4">{{bytes2kb(item.size.gzip)}}</s-grid-col>
-                <s-grid-col span="4">{{item.size.gzip}}</s-grid-col>
-                <s-grid-col span="4">{{item.size.gzip}}</s-grid-col>
-                <s-grid-col span="4">{{item.size.gzip}}</s-grid-col>
+                <s-grid-col span="4">{{item.size}}</s-grid-col>
+                <s-grid-col span="4">{{item.globalSpeed}}</s-grid-col>
+                <s-grid-col span="4">{{item['3gsSpeed']}}</s-grid-col>
+                <s-grid-col span="4">{{item['3gfSpeed']}}</s-grid-col>
             </s-grid-row>
         </div>
         `;
-    bytes2kb(size) {
-        return size ? (size / 1024).toFixed(3) + 'kb' : '';
+    static computed = {
+        assets() {
+            const assetList = this.data.get('assetList') || [];
+            return assetList.map(asset => {
+                const speeds = getSpeeds(asset.size.gzip);
+                return {
+                    name: asset.name,
+                    size: bytes2kb(asset.size.gzip),
+                    globalSpeed: speeds.global.totalDownloadTime.toFixed(3) + 's',
+                    '3gsSpeed': speeds['3gs'].totalDownloadTime.toFixed(3) + 's',
+                    '3gfSpeed': speeds['3gf'].totalDownloadTime.toFixed(3) + 's'
+                };
+            });
+        }
     }
 };
