@@ -193,6 +193,6 @@ export default {
     imgSrcReplace(item) {
         let match = item.link.match(/^http(s)?:\/\/(.*?)\//);
         let domain = match ? match[0] : '';
-        item.content = item.content.replace(/src=\"(\/[^"]*\")/g, (m, s1) => 'src="' + domain + s1);
+        item.content = item.content.replace(/src=\"\/([^"]*\")/g, (m, s1) => 'src="' + domain + s1);
     }
 };
