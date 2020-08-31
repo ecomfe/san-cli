@@ -8,7 +8,7 @@ export function getSpeedData(datapoint, size) {
     const bandwidthInMBps = bandwidthInMbps / 8;
     const rttInSeconds = datapoint.rtt / 1000;
 
-    const totalDownloadTime = assetsSizeInMB / bandwidthInMBps + rttInSeconds;
+    const totalDownloadTime = (assetsSizeInMB / bandwidthInMBps + rttInSeconds).toFixed(3) + 's';
 
     const isDownloadTimeOverThreshold = totalDownloadTime > DOWNLOAD_TIME_THRESHOLD_SECONDS;
     const timeDifferenceToThreshold = (isDownloadTimeOverThreshold ? '+' : '-')

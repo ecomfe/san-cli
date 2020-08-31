@@ -31,7 +31,7 @@ class TaskDashboard extends SanComponent {
         <s-grid-row class="row">
             <s-grid-col span="24">
                 <s-card bordered="{{false}}" class="card" title="速度统计">
-                    <c-speed-stats data="{{data.computed}}"></c-speed-stats>
+                    <c-speed-stats computed="{{data.computed}}"></c-speed-stats>
                 </s-card>
             </s-grid-col>
         </s-grid-row>
