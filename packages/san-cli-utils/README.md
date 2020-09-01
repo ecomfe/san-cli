@@ -8,7 +8,7 @@ San CLI 中所用到的工具类函数：
 -   ConsolaReporter.js：格式化输出报告工具
 -   env.js：环境相关的函数，判断当前环境是否安装 yarn；获取当前环境的 git user 信息
 -   path.js：路径相关的函数
--   radomColor.js：随机生成颜色
+-   randomColor.js：随机生成颜色
 -   readPkg.js：读取 package.json 中的数据，输出 Object 返回
 -   readRc.js：读取 .rc 或者 .sanrc 文件，输出 Object 返回
 -   SError.js：Error 继承类

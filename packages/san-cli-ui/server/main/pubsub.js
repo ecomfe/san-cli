@@ -5,4 +5,7 @@
 
 const {PubSub} = require('graphql-subscriptions');
 
-module.exports = new PubSub();
+const pubSub = new PubSub();
+// Increase limit
+pubSub.ee.setMaxListeners(Infinity);
+module.exports = pubSub;

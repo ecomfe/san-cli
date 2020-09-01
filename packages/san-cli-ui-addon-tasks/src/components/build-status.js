@@ -12,11 +12,11 @@ export default class BuildStatus extends SanComponent {
                 </s-grid-col>
                 <s-grid-col span="8" class="info-block">
                     <div class="label">错误</div>
-                    <div class="value">{{data.errors.length}}</div>
+                    <div class="value">{{data.errors ? data.errors.length : '...'}}</div>
                 </s-grid-col>
                 <s-grid-col span="8" class="info-block">
                     <div class="label">警告</div>
-                    <div class="value">{{data.warnings.length}}</div>
+                    <div class="value">{{data.warnings ? data.warnings.length : '...'}}</div>
                 </s-grid-col>
             </s-grid-row>
             <s-grid-row gutter="16">

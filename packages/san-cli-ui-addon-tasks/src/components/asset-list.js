@@ -6,7 +6,7 @@ import './asset-list.less';
 export default class AssetList extends SanComponent {
     static template = /* html */`
         <div class="asset-list">
-            <s-grid-row class="first-row">
+            <s-grid-row class="first-row" s-if="assets.length">
                 <s-grid-col span="8"></s-grid-col>
                 <s-grid-col span="4">Parsed</s-grid-col>
                 <s-grid-col span="4">Global</s-grid-col>
@@ -20,6 +20,7 @@ export default class AssetList extends SanComponent {
                 <s-grid-col span="4">{{item['3gsSpeed']}}</s-grid-col>
                 <s-grid-col span="4">{{item['3gfSpeed']}}</s-grid-col>
             </s-grid-row>
+            <div s-if="!assets.length" class="empty">...</div>
         </div>
         `;
     static computed = {
