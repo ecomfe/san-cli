@@ -9,7 +9,7 @@
  */
 
 const path = require('path');
-const {textColor} = require('san-cli-utils/randomColor');
+const {textCommonColor} = require('san-cli-utils/color');
 exports.command = 'plugin <add|ls|list|rm|remove>';
 // exports.aliases = ['plugin'];
 const desc = 'Add/Manage Service Plugin';
@@ -18,7 +18,7 @@ exports.builder = yargs => {
     if (yargs.argv._.length === 1) {
         const scriptName = yargs.$0;
         console.log(
-            textColor(
+            textCommonColor(
                 `Usage: ${scriptName[0].toUpperCase()}${scriptName.slice(
                     1
                 )} service-plugin <add|ls|rm|list|remove> [flags]`

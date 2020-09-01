@@ -16,13 +16,14 @@ const lMerge = require('lodash.merge');
 const {getGlobalSanRcFilePath, findExisting} = require('san-cli-utils/path');
 const readPkg = require('san-cli-utils/readPkg');
 const {chalk, time, timeEnd, error, getDebugLogger, warn} = require('san-cli-utils/ttyLogger');
-const {textColor, textBold} = require('san-cli-utils/randomColor');
+const {textCommonColor, textCommonBold} = require('san-cli-utils/color');
 
 const {scriptName, version: pkgVersion} = require('../package.json');
 const CommanderAPI = require('./CommanderAPI');
 const {getCommandName} = require('./utils');
+
 const buildinCmds = ['build', 'serve', 'init', 'inspect', 'command', 'plugin', 'remote', 'docit', 'ui'];
-const linkText = `For more information, visit ${textColor('https://ecomfe.github.io/san-cli')}`;
+const linkText = `For more information, visit ${textCommonColor('https://ecomfe.github.io/san-cli')}`;
 
 const globalDebug = getDebugLogger();
 const debug = getDebugLogger('command');
@@ -144,7 +145,7 @@ module.exports = class Command {
                     console.log(chalk.bold(getCmdLogInfo(cmd)));
                 }
                 else {
-                    console.log(chalk.bold(textColor(getCmdLogInfo(cmd))));
+                    console.log(textCommonBold(getCmdLogInfo(cmd)));
                 }
             }
             // 利用中间件机制，增加公共参数处理和函数等
@@ -224,7 +225,7 @@ module.exports = class Command {
                     return true;
                 }
                 else if (cmdName) {
-                    return textColor(`Unknown command ${textBold(cmdName)}.`);
+                    return textCommonColor(`Unknown command ${chalk.bold(cmdName)}.`);
                 }
                 return '';
             })

@@ -28,10 +28,11 @@ module.exports = function apply(argv, api, projectOptions) {
     })
         .then(({isFirstCompile, networkUrl}) => {
             if (isFirstCompile) {
-                const {textColor} = require('san-cli-utils/randomColor');
+                const {textCommonColor} = require('san-cli-utils/color');
                 /* eslint-disable no-console */
                 console.log();
-                console.log(`  Application is running at: ${textColor(networkUrl)}`);
+
+                console.log(`  Application is running at: ${textCommonColor(networkUrl)}`);
 
                 // 打开浏览器地址
                 argv.open && require('opener')(networkUrl);
