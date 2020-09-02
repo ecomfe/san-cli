@@ -36,5 +36,5 @@ module.exports = subscribtionpPath => new ApolloServer({
             debug('Internal Server Error:', err);
         }
         return err;
-    },
+    }
 });
