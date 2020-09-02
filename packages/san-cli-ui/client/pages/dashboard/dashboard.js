@@ -37,12 +37,12 @@ export default class Dashboard extends Component {
                     </s-button>
                 </template>
                 <div slot="content" class="h1oh dashboard-content {{widgets.length === 0 && !editing ? 'empty' : ''}}">
-                    <s-empty s-if="widgets.length === 0 && !editing" />
-                    <div s-else class="widgets">
-                        <div class="inner" s-if="scriptLoaded">
+                    <div class="widgets">
+                        <s-empty s-if="widgets.length === 0 && !editing" />
+                        <div s-else class="inner">
                             <template s-for="widget,index in widgets">
                                 <c-widget
-                                    s-if="widget"
+                                    s-if="scriptLoaded && widget"
                                     widget="{=widget=}"
                                     index="{{index}}"
                                     custom="{=editing=}"
