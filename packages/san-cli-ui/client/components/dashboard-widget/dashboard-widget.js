@@ -65,7 +65,7 @@ export default class DashboardWidget extends Component {
                         ></s-button>
                     </div>
                     <div s-if="widget.configured"
-                        s-ref="{{'clientAddons' + widget.definition.component}}"
+                        id="{{'clientAddons' + widget.definition.component + index}}"
                         class="flex-all content"
                     >
                     </div>
@@ -99,7 +99,7 @@ export default class DashboardWidget extends Component {
                             type="primary"
                             icon="close"
                             shape="circle"
-                            on-click="remove"
+                            on-click="remove(widget.id)"
                         ></s-button>
                     </div>
                 </div>
@@ -185,8 +185,6 @@ export default class DashboardWidget extends Component {
             headerActions: [],
             widget: null,
             custom: false,
-            loaded: false,
-            isAttached: false,
             customTitle: null,
             details: false,
             loadingConfig: false,
@@ -195,16 +193,7 @@ export default class DashboardWidget extends Component {
         };
     }
     attached() {
-        if (this.data.get('loaded')) {
-            this.nextTick(() => this.addChild());
-        }
-        else {
-            this.watch('loaded', function (value) {
-                if (value) {
-                    this.nextTick(() => this.addChild());
-                }
-            });
-        }
+        this.nextTick(() => this.addChild());
         this.ev1 = e => this.onMoveUpdate(e);
         this.ev2 = e => this.onMoveEnd(e);
     }
@@ -212,12 +201,11 @@ export default class DashboardWidget extends Component {
         this.removeMoveListeners();
     }
     addChild() {
-        const {widget, isAttached} = this.data.get();
+        const {widget, index} = this.data.get();
         const addonApi = window.ClientAddonApi;
-        const parentEl = this.ref('clientAddons' + widget.definition.component);
+        const parentEl = document.getElementById('clientAddons' + widget.definition.component + index);
 
-        // 禁止多次attach
-        if (isAttached || !parentEl || !widget || !addonApi) {
+        if (!parentEl || !widget || !addonApi) {
             return;
         }
 
@@ -231,10 +219,8 @@ export default class DashboardWidget extends Component {
         });
 
         node.attach(parentEl);
-        this.data.set('isAttached', true);
     }
-    remove() {
-        const id = this.data.get('widget.id');
+    remove(id) {
         this.dispatch('Widget:remove', id);
     }
     removeMoveListeners() {

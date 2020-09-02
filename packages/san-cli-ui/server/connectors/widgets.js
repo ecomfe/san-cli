@@ -99,7 +99,8 @@ class Widgets {
         }
 
         this.widgets.forEach(widget => {
-            this.updateCount(widget.definitionId, 1);
+            // 防止多次重复加载的问题
+            !this.widgetCount.has(widget.definitionId) && this.updateCount(widget.definitionId, 1);
         });
 
         log('Widgets loaded', this.widgets.length);
@@ -285,7 +286,7 @@ class Widgets {
                 context
             });
             await prompts.reset(widget.config || {});
-            result.prompts.forEach(prompts.add);
+            result.prompts.forEach(item => prompts.add(item));
             await prompts.start();
             this.currentWidget = widget;
         }
