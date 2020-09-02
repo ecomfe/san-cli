@@ -7,7 +7,6 @@
  * @file 将 build 的 webpackConfig 处理拆出来
  * @author ksky521
  */
-
 const fse = require('fs-extra');
 const {resolveEntry} = require('san-cli-webpack/utils');
 const {error, chalk} = require('san-cli-utils/ttyLogger');
@@ -52,16 +51,18 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     }
     else if (report || statsJson) {
         const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
+        const {getReportFileName} = require('../../lib/utils');
         // 单独标示 modern 打包
         const bundleName = modern ? (modernBuild ? 'modern-' : 'legacy-') : '';
-
+        const reportFilename = getReportFileName(report, bundleName, 'report.html');
+        const statsFilename = getReportFileName(statsJson, bundleName, 'stats.json');
         chainConfig.plugin('bundle-analyzer').use(
             new BundleAnalyzerPlugin({
                 logLevel: 'warn',
                 openAnalyzer: false,
-                analyzerMode: report ? 'static' : 'disabled',
-                reportFilename: `${bundleName}report.html`,
-                statsFilename: `${bundleName}stats.json`,
+                analyzerMode: 'static',
+                reportFilename,
+                statsFilename,
                 generateStatsFile: !!statsJson
             })
         );
