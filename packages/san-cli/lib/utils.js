@@ -20,14 +20,15 @@ exports.requireFromLocal = cmd => {
             filepath = path.resolve(cmd);
             localModule = require(filepath);
             return filepath;
-        } catch (e) {
+        }
+        catch (e) {
             if (/Cannot find module/.test(e)) {
                 // 没有找到
                 return null;
-            } else {
-                localModule = undefined;
-                filepath = undefined;
             }
+            localModule = undefined;
+            filepath = undefined;
+
         }
     }
     if (localModule) {
@@ -49,3 +50,24 @@ function getCommandName(command) {
 exports.getCommandName = getCommandName;
 
 
+exports.getReportFileName = function getReportFileName(optFilename, prefixer = '', defaultFilename = 'report.html') {
+    let reportFileName = defaultFilename;
+    let defaultExtName = path.extname(defaultFilename);
+
+    if (typeof optFilename === 'string' && optFilename.length > 0) {
+        // 只支持json html htm
+        if (/\.(html?|json)$/.test(optFilename)) {
+            reportFileName = optFilename;
+        }
+        else {
+            reportFileName = optFilename + defaultExtName;
+        }
+    }
+    if (prefixer.length > 0) {
+        const baseName = path.basename(reportFileName);
+        const dirName = path.dirname(reportFileName);
+
+        reportFileName = `${dirName}/${prefixer}${baseName}`;
+    }
+    return reportFileName;
+};

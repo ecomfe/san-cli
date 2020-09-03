@@ -24,7 +24,7 @@ const DEFAULT_STYLE_ATTR = {
  */
 function generateStyleImport(descriptor, options) {
     if (!descriptor.style || !descriptor.style.length) {
-        return 'let injectStyles = [];\n';
+        return 'var injectStyles = [];\n';
     }
 
     let injectStyles = [];
@@ -66,7 +66,7 @@ function generateStyleImport(descriptor, options) {
             code += `import '${resource}';\n`;
         }
     }
-    code += `let injectStyles = [${injectStyles.join(', ')}];\n`;
+    code += `var injectStyles = [${injectStyles.join(', ')}];\n`;
 
     return code;
 }
