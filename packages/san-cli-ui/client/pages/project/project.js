@@ -10,7 +10,6 @@ import CWD from '@graphql/cwd/cwd.gql';
 import PROJECT_INIT_TEMPLATE from '@graphql/project/projectInitTemplate.gql';
 import PROJECT_TEMPLATE_LIST from '@graphql/project/projectTemplateList.gql';
 import PROJECT_IMPORT from '@graphql/project/projectImport.gql';
-import ConnectionStatus from '@components/connection-status';
 import ProjectList from '@components/project-list';
 import ProjectTemplateList from '@components/project/template-list';
 import FolderExplorer from '@components/folder-explorer';
@@ -21,7 +20,6 @@ import './project.less';
 export default class Project extends Component {
     static template = /* html */`
         <div class="h1oh project-select">
-            <c-connection-status />
             <c-layout menu="{{$t('project.select.menu')}}"
                 nav="{=nav=}"
                 page-loading="{=pageLoading=}"
@@ -116,7 +114,6 @@ export default class Project extends Component {
     `;
     static components = {
         'r-link': Link,
-        'c-connection-status': ConnectionStatus,
         'c-list': ProjectList,
         'c-folder-explorer': FolderExplorer,
         'c-create': ProjectCreate,

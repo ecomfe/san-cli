@@ -5,12 +5,14 @@
 
 import Component from '@lib/san-component';
 import {router, Link} from 'san-router';
+import ConnectionStatus from '@components/connection-status';
 import './horizontal.less';
 import logo from '@assets/logo.svg';
 
 export default class ComponentHorLayout extends Component {
     static template = /* html */`
             <s-layout class="h1oh hlayout">
+                <c-connection-status />
                 <s-layout-header>
                     <div class="header">
                         <div class="title" on-click="logoClick">
@@ -52,6 +54,7 @@ export default class ComponentHorLayout extends Component {
             </s-layout>
     `;
     static components = {
+        'c-connection-status': ConnectionStatus,
         'r-link': Link
     };
     initData() {

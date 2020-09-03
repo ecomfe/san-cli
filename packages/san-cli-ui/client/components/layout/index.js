@@ -4,6 +4,7 @@
  */
 
 import Component from '@lib/san-component';
+import ConnectionStatus from '@components/connection-status';
 import PROJECTS from '@graphql/project/projects.gql';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_OPEN from '@graphql/project/projectOpen.gql';
@@ -14,6 +15,7 @@ import {openInEditor} from '@lib/utils/openInEditor';
 export default class ComponentLayout extends Component {
     static template = /* html */`
             <s-layout class="h1oh layout">
+                <c-connection-status />
                 <s-layout-header class="header">
                     <r-link to="/">
                         <s-icon type="home" class="home-link" />
@@ -68,6 +70,7 @@ export default class ComponentLayout extends Component {
             </s-layout>
     `;
     static components = {
+        'c-connection-status': ConnectionStatus,
         'r-link': Link
     };
     initData() {
