@@ -6,7 +6,7 @@
 const path = require('path');
 const {getDebugLogger, error} = require('san-cli-utils/ttyLogger');
 const notify = require('../utils/notify');
-const DB = require('./Db');
+const DB = require('./DB');
 const SharedData = require('./SharedData');
 const IpcHandler = require('./IpcHandler');
 const TaskPlugin = require('./TaskPlugin');
