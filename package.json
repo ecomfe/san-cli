@@ -22,7 +22,6 @@
         "@commitlint/travis-cli": "^8.3.5",
         "@ecomfe/eslint-config": "^3.2.0",
         "@ksky521/cz-emoji": "^1.2.1",
-        "@ls-lint/ls-lint": "^1.9.2",
         "babel-eslint": "^10.1.0",
         "commitizen": "^4.0.3",
         "commitlint-config-gitmoji": "^1.0.1",
@@ -43,7 +42,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "ls-lint && lint-staged && node scripts/test.js",
+            "pre-commit": "lint-staged && node scripts/test.js",
             "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
         }
     },
