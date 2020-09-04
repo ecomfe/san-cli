@@ -1,5 +1,5 @@
 /**
- * @file 调起编辑器中打开目标路径
+ * @file 调起编辑器，打开目标路径
 */
 
 import $apollo from '@lib/apollo-client';
