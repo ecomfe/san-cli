@@ -356,10 +356,10 @@ export default class DashboardWidget extends Component {
                 id: this.data.get('widget.id')
             }
         });
+
         this.data.set('widget', widgetConfig.data.widgetConfigSave);
         this.data.set('loadingConfig', false);
         this.closeConfig();
-        this.nextTick(() => this.addChild());
     }
     closeConfig() {
         this.data.set('showConfig', false);
