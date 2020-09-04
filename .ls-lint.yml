@@ -1,0 +1,6 @@
+ls:
+  # san-cli-ui
+    packages/san-cli-ui/client:
+      .js: kebab-case 
+    packages/san-cli-ui/{server,plugins}:  
+      .js: camelCase | PascalCase

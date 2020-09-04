@@ -4,13 +4,13 @@
  */
 
 import Component from '@lib/san-component';
+import {openInEditor} from '@lib/utils/open-in-editor';
 import ConnectionStatus from '@components/connection-status';
 import PROJECTS from '@graphql/project/projects.gql';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_OPEN from '@graphql/project/projectOpen.gql';
 import {Link} from 'san-router';
 import './index.less';
-import {openInEditor} from '@lib/utils/openInEditor';
 
 export default class ComponentLayout extends Component {
     static template = /* html */`
@@ -98,7 +98,7 @@ export default class ComponentLayout extends Component {
     }
     async handleMenuClick(e) {
         if (e.key === 'open-in-editor') {
-            openInEditor.call(this, this.data.get('projectCurrent.path'));
+            openInEditor(this.data.get('projectCurrent.path'));
             return;
         }
 

@@ -1,18 +1,15 @@
 /**
- * @file 在编辑器中打开项目
- * @author Lohoyo
- * @date 2020-7-21
+ * @file 调起编辑器中打开目标路径
 */
 
-/**
- * @example
- * openInEditor.call(this, path);
- */
-
+import $apollo from '@lib/apollo-client';
 import PROJECT_OPEN_IN_EDITOR from '@graphql/project/projectOpenInEditor.gql';
 
-export const openInEditor = function (path) {
-    this.$apollo.mutate({
+/**
+ * @param {string} 文件路径
+*/
+export const openInEditor = path => {
+    $apollo.mutate({
         mutation: PROJECT_OPEN_IN_EDITOR,
         variables: {
             path

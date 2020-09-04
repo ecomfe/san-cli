@@ -4,6 +4,7 @@
  */
 
 import Component from '@lib/san-component';
+import {openInEditor} from '@lib/utils/open-in-editor';
 import PROJECTS from '@graphql/project/projects.gql';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_OPEN from '@graphql/project/projectOpen.gql';
@@ -14,7 +15,7 @@ import PROJECT_CWD_RESET from '@graphql/project/projectCwdReset.gql';
 import List from './list';
 import 'animate.css';
 import './project-list.less';
-import {openInEditor} from '@lib/utils/openInEditor';
+
 
 export default class ProjectList extends Component {
 
@@ -134,7 +135,7 @@ export default class ProjectList extends Component {
         projectCurrent.data && this.data.set('projectCurrent', projectCurrent.data.projectCurrent);
     }
     onOpen({item}) {
-        openInEditor.call(this, item.path);
+        openInEditor(item.path);
     }
     onEdit(e) {
         this.data.set('showRenameModal', true);

@@ -11,7 +11,7 @@ const plugins = require('./plugins');
 const cwd = require('./cwd');
 const prompts = require('./prompts');
 const {get, set, unset} = require('../utils/object');
-const extendJSConfig = require('../utils/extendJSConfig');
+const extendJsConfig = require('../utils/extendJsConfig');
 const {readPackage} = require('../utils/fileHelper');
 const {reloadModule} = require('san-cli-utils/module');
 const yaml = require('js-yaml');
@@ -141,7 +141,7 @@ class Configurations {
                         obj[field] = data[field];
                         return obj;
                     }, {});
-                    rawContent = extendJSConfig(changedData, source);
+                    rawContent = extendJsConfig(changedData, source);
                 }
             }
         }

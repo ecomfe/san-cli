@@ -1,10 +1,9 @@
 /**
  * @file 对象合并
  * Reference: https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli/lib/util/extendJSConfig.js
- *  TODO:优化
  */
 
-module.exports = function extendJSConfig(value, source) {
+module.exports = function extendJsConfig(value, source) {
     const recast = require('recast');
     const stringifyJS = require('./stringifyJS');
 
