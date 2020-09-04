@@ -45,10 +45,10 @@ exports.handler = cliApi => {
     })
         .then(({host, port}) => {
             const networkUrl = `http://${host}:${port}`;
-            const {textColor} = require('san-cli-utils/randomColor');
+            const {textCommonColor} = require('san-cli-utils/color');
             /* eslint-disable no-console */
             console.log();
-            console.log(`✨ Application is running at: ${textColor(networkUrl)}`);
+            console.log(`✨ Application is running at: ${textCommonColor(networkUrl)}`);
             if (process.env.SAN_CLI_UI_DEV !== 'true') {
                 // 打开浏览器地址
                 openBrowser(networkUrl);

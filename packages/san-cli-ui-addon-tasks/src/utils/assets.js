@@ -1,6 +1,7 @@
 import speedsData from './speeds';
 
 const DOWNLOAD_TIME_THRESHOLD_SECONDS = 5;
+const BIG_FILE_SIZE = 250000;
 
 export function getSpeedData(datapoint, size) {
     const assetsSizeInMB = size / 1024 / 1024;
@@ -41,7 +42,7 @@ export function buildSortedAssets(assets, sizeField) {
             return {
                 name: asset.name,
                 size,
-                big: size > 250000,
+                big: size > BIG_FILE_SIZE,
                 ratio: size / max,
                 secondary: /\.map$/.test(asset.name),
                 speeds: getSpeeds(size)

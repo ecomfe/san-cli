@@ -67,55 +67,6 @@ module.exports = api => {
         };
     });
 
-
-    // Plugin updates
-
-    // registerWidget({
-    //     id: 'plugin-updates',
-    //     title: 'dashboard.widgets.plugin-updates.title',
-    //     description: 'dashboard.widgets.plugin-updates.description',
-    //     icon: 'build',
-    //     component: 'san.widgets.components.plugin-updates',
-    //     minWidth: 2,
-    //     minHeight: 1,
-    //     maxWidth: 2,
-    //     maxHeight: 1,
-    //     maxCount: 1
-    // });
-
-    // Dependency updates
-
-    // registerWidget({
-    //     id: 'dependency-updates',
-    //     title: 'dashboard.widgets.dependency-updates.title',
-    //     description: 'dashboard.widgets.dependency-updates.description',
-    //     icon: 'cluster',
-    //     component: 'widgets.components.dependency-updates',
-    //     minWidth: 2,
-    //     minHeight: 1,
-    //     maxWidth: 2,
-    //     maxHeight: 1,
-    //     maxCount: 1
-    // });
-
-    // Vulnerability check
-
-    // registerWidget({
-    //     id: 'vulnerability',
-    //     title: 'dashboard.widgets.vulnerability.title',
-    //     description: 'dashboard.widgets.vulnerability.description',
-    //     icon: 'safety-certificate',
-    //     component: 'san.widgets.components.vulnerability',
-    //     detailsComponent: 'san.widgets.components.vulnerability-details',
-    //     minWidth: 2,
-    //     minHeight: 1,
-    //     maxWidth: 2,
-    //     maxHeight: 1,
-    //     maxCount: 1
-    // });
-
-    // Run task
-
     api.registerWidget({
         id: 'san.widgets.run-task',
         title: 'dashboard.widgets.run-task.title',

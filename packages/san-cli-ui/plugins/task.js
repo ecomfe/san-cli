@@ -8,6 +8,7 @@ const fs = require('fs-extra');
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const {processStats} = require('./utils/stats');
 
+const sanIcon = require('./utils/getImageUrl')('/public/san.svg');
 const debug = getDebugLogger('ui:third-plugin-task');
 
 module.exports = api => {
@@ -198,7 +199,7 @@ module.exports = api => {
         match: /san(-cli\/index\.js)? serve(\s+--\S+(\s+\S+)?)*$/,
         description: 'task.description.serve',
         link: 'https://ecomfe.github.io/san-cli',
-        icon: require('./utils/getImageUrl')('/public/san.svg'),
+        icon: sanIcon,
         prompts: [
             {
                 name: 'open',
@@ -295,7 +296,7 @@ module.exports = api => {
         match: /san(-cli\/index\.js)? build(\s+--\S+(\s+\S+)?)*$/,
         description: 'task.description.build',
         link: 'https://ecomfe.github.io/san-cli',
-        icon: require('./utils/getImageUrl')('/public/san.svg'),
+        icon: sanIcon,
         prompts: [
             {
                 name: 'modern',
@@ -421,7 +422,7 @@ module.exports = api => {
         command: 'san-cli-service inspect',
         description: 'task.description.inspect',
         link: 'https://ecomfe.github.io/san-cli',
-        icon: require('./utils/getImageUrl')('/public/san.svg'),
+        icon: sanIcon,
         prompts: [
             {
                 name: 'mode',

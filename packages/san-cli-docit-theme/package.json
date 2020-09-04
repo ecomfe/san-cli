@@ -7,7 +7,7 @@
         "node": ">=8"
     },
     "dependencies": {
-        "san": "~3.8.5"
+        "san": "~3.9.0"
     },
     "author": "ksky521",
     "repository": {
