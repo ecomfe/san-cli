@@ -1,7 +1,6 @@
 {
   "name": "san-cli-ui-addon-tasks",
   "version": "0.0.1",
-  "private": true,
   "description": "san cli ui addon widgets",
   "scripts": {
     "start": "cross-env NODE_ENV=development ../san-cli/index.js serve src/index.js --config san.config.js",

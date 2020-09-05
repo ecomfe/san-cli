@@ -1,7 +1,6 @@
 const minimist = require('minimist');
-const request = require('request');
+const fetch = require('node-fetch');
 const execa = require('execa');
-const util = require('util');
 const {installTool} = require('./installTool');
 const cwd = require('../connectors/cwd');
 
@@ -31,7 +30,8 @@ async function getRegistry(tool) {
 async function getFileRegistry(tool) {
     try {
         registry = (await execa(tool, ['config', 'get', 'registry'])).stdout;
-    } catch (e) {
+    }
+    catch (e) {
         registry = (await execa(tool, ['config', 'get', 'registry'])).stdout;
     }
 }
@@ -46,9 +46,9 @@ async function ping(url) {
         timeout: 30000,
         resolveWithFullResponse: true,
         json: true,
-        uri: `${url}/vue-cli-version-marker/latest`
+        uri: `${url}/san-cli`
     };
-    await util.promisify(request)(reqOpts);
+    await fetch(reqOpts);
     return url;
 }
 

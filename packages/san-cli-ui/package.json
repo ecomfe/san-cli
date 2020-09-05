@@ -57,6 +57,7 @@
         "js-yaml": "^3.14.0",
         "launch-editor": "^2.2.1",
         "lowdb": "^1.0.0",
+        "node-fetch": "^2.6.0",
         "node-ipc": "^9.1.1",
         "node-notifier": "^7.0.0",
         "portfinder": "^1.0.25",
@@ -67,9 +68,6 @@
         "util": "^0.12.3"
     },
     "devDependencies": {
-        "san": "~3.9.0",
-        "san-router": "^1.2.2",
-        "santd": "^0.3.0",
         "@dicebear/avatars": "^4.2.1",
         "@dicebear/avatars-bottts-sprites": "^4.2.1",
         "@dicebear/avatars-gridy-sprites": "^4.2.1",
@@ -90,6 +88,9 @@
         "load-script": "^1.0.0",
         "md5": "^2.3.0",
         "nodemon": "^2.0.4",
+        "san": "~3.9.0",
+        "san-router": "^1.2.2",
+        "santd": "^0.3.0",
         "subscriptions-transport-ws": "^0.9.16",
         "tiny-emitter": "^2.1.0",
         "xterm": "^4.7.0",
