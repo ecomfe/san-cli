@@ -23,8 +23,7 @@
     "postcss-import": "^11.0.0",
     "postcss-loader": "^2.0.8",
     "autoprefixer": "^9.7.5",
-    "postcss-url": "^7.2.1",
-    "san-cli-ui": "^0.0.1"
+    "postcss-url": "^7.2.1"
   },
   "browserslist": [
     "> 1%",
