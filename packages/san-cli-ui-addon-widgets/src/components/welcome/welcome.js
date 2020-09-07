@@ -45,7 +45,7 @@ export default {
         };
     },
     remove() {
-        const id = this.data.get('data.widget.id');
+        const id = this.data.get('data.id');
         this.dispatch('Widget:remove', id);
     }
 };

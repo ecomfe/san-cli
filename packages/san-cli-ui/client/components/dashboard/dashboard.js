@@ -79,7 +79,7 @@ export default class DashboardWidget extends Component {
                     <div s-if="widget.configured" class="flex-all content">
                         <c-client-addon 
                             client-addon="{{widget.definition.component}}"
-                            data="{{widgetData}}" />
+                            data="{{widget}}" />
                     </div>
                     <div s-else class="flex-all content not-configured">
                         <s-icon
@@ -145,10 +145,6 @@ export default class DashboardWidget extends Component {
     `;
 
     static computed = {
-        widgetData() {
-            const widget = this.data.get('widget');
-            return {widget};
-        },
         mainStyle() {
             const field = this.data.get('widget');
             const moveState = this.data.get('moveState');

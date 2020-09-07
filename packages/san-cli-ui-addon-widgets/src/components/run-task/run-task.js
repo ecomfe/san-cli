@@ -51,7 +51,7 @@ export default {
     `,
     computed: {
         taskId() {
-            let id = this.data.get('data.widget.config.task');
+            let id = this.data.get('data.config.task');
             try {
                 id = JSON.parse(id);
             }
