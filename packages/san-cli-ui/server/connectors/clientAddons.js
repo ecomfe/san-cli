@@ -7,7 +7,7 @@ const channels = require('../utils/channels');
 const {resolveModuleRoot} = require('../utils/module');
 
 // eslint-disable-next-line no-undef
-let baseUrl = process.env.SAN_VAR_APP_GRAPHQL_ENDPOINT || `ws://${location.host}/graphql`;
+let baseUrl = process.env.SAN_VAR_APP_GRAPHQL_ENDPOINT || '/graphql';
 if (baseUrl) {
     baseUrl = baseUrl.replace(/ws:\/\/([a-z0-9_-]+:\d+).*/i, 'http://$1');
 }
