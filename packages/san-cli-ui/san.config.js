@@ -56,6 +56,7 @@ module.exports = {
             .test(/\.(graphql|gql)$/)
             .use('graphql-loader').loader(require.resolve('graphql-tag/loader'));
 
+        // 文件夹同名依赖文件自动引入插件
         config.resolve.plugin('directory-named-webpack-plugin')
             .use(DirectoryNamedWebpackPlugin, [{
                 honorIndex: true,

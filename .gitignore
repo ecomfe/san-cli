@@ -87,5 +87,6 @@ Thumbs.db
 /dll
 
 
-# local test
+# TODO: for local test
 /packages/my-san-project
+/packages/san-cli-plugin-tasks
