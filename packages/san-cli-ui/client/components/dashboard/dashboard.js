@@ -18,7 +18,7 @@ import PROMPT_ANSWER from '@graphql/prompt/promptAnswer.gql';
 import WIDGET_FRAGMENT from '@graphql/widget/widgetFragment.gql';
 import WIDGET_MOVE from '@graphql/widget/widgetMove.gql';
 import PromptsList from '../prompts-form/prompts-form';
-import './dashboard-widget.less';
+import './dashboard.less';
 
 export default class DashboardWidget extends Component {
 

@@ -9,7 +9,7 @@ import CONFIGURATION from '@graphql/configuration/configuration.gql';
 import PLUGINS from '@graphql/plugin/plugins.gql';
 import Layout from '@components/layout';
 import ListItemInfo from '@components/list-item-info';
-import ConfigContent from '@components/config-content';
+import ConfigContent from '@components/configuration';
 import {Link} from 'san-router';
 import './configuration.less';
 

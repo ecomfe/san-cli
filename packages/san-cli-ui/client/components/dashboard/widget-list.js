@@ -4,7 +4,7 @@
  */
 
 import Component from '@lib/san-component';
-import widgetItem from './widget-item';
+import widgetItem from './widget';
 import './widget-list.less';
 
 export default class widgetList extends Component {

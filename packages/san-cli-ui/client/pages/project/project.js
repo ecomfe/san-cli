@@ -6,15 +6,15 @@
 import {router, Link} from 'san-router';
 import {Modal} from 'santd';
 import Component from '@lib/san-component';
+import ProjectList from '@components/project/project-list';
+import ProjectTemplateList from '@components/project/template-list';
+import ProjectCreate from '@components/project/create';
+import FolderExplorer from '@components/project/folder-explorer';
+import Layout from '@components/layout/horizontal';
 import CWD from '@graphql/cwd/cwd.gql';
 import PROJECT_INIT_TEMPLATE from '@graphql/project/projectInitTemplate.gql';
 import PROJECT_TEMPLATE_LIST from '@graphql/project/projectTemplateList.gql';
 import PROJECT_IMPORT from '@graphql/project/projectImport.gql';
-import ProjectList from '@components/project-list';
-import ProjectTemplateList from '@components/project/template-list';
-import FolderExplorer from '@components/folder-explorer';
-import ProjectCreate from '@components/project/create';
-import Layout from '@components/layout/horizontal';
 import './project.less';
 
 export default class Project extends Component {

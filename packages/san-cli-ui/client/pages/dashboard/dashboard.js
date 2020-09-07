@@ -3,21 +3,21 @@
  * @author zttonly
  */
 
+import {Link} from 'san-router';
 import Component from '@lib/san-component';
+import Layout from '@components/layout';
+import Dashboard from '@components/dashboard/dashboard';
+import WidgetList from '@components/dashboard/widget-list';
+import clientAddon from '@components/client-addon/client-addon-loader';
 import WIDGETS from '@graphql/widget/widgets.gql';
 import PLUGINS from '@graphql/plugin/plugins.gql';
 import WIDGET_DEFINITIONS from '@graphql/widget/widgetDefinitions.gql';
 import WIDGET_REMOVE from '@graphql/widget/widgetRemove.gql';
 import WIDGET_ADD from '@graphql/widget/widgetAdd.gql';
 import WIDGET_DEFINITION_FRAGMENT from '@graphql/widget/widgetDefinitionFragment.gql';
-import Layout from '@components/layout';
-import Widget from '@components/dashboard-widget';
-import WidgetList from '@components/dashboard-widget/widget-list';
-import clientAddon from '@components/client-addon/client-addon-loader';
-import {Link} from 'san-router';
 import './dashboard.less';
 
-export default class Dashboard extends Component {
+export default class App extends Component {
     static template = /* html */`
         <div class="h1oh dashboard {{editing ? 'customizing' : ''}}">
             <c-layout menu="{{$t('menu')}}" 
@@ -41,7 +41,7 @@ export default class Dashboard extends Component {
                         <s-empty s-if="widgets.length === 0 && !editing" />
                         <div s-else class="inner">
                             <template s-for="widget,index in widgets">
-                                <c-widget
+                                <c-dashboard
                                     s-if="scriptLoaded && widget"
                                     widget="{=widget=}"
                                     index="{{index}}"
@@ -60,7 +60,7 @@ export default class Dashboard extends Component {
     static components = {
         'r-link': Link,
         'c-layout': Layout,
-        'c-widget': Widget,
+        'c-dashboard': Dashboard,
         'c-widget-list': WidgetList,
         'c-client-addon': clientAddon
     };
