@@ -474,7 +474,7 @@ module.exports = api => {
         });
     }
     else {
-        api.registerClientAddon({
+        api.registerAddon({
             id: 'san.san-cli.client-addon',
             path: 'san-cli-ui-addon-webpack/dist'
         });
