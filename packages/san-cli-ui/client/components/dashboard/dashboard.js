@@ -4,24 +4,36 @@
  */
 
 import Component from '@lib/san-component';
-import {
-    getPositionStyle,
-    getSizeStyle,
-    GRID_SIZE,
-    ZOOM
-} from '@lib/utils/position';
 import {getVisiblePrompts} from '@lib/utils/prompt';
+import ClientAddon from '../client-addon/client-addon';
+import PromptsList from '../prompts-form/prompts-form';
 import {LAYOUT_ONE_THIRD} from '@lib/const';
 import WIDGET_CONFIG_OPEN from '@graphql/widget/widgetConfigOpen.gql';
 import WIDGET_CONFIG_SAVE from '@graphql/widget/widgetConfigSave.gql';
 import PROMPT_ANSWER from '@graphql/prompt/promptAnswer.gql';
 import WIDGET_FRAGMENT from '@graphql/widget/widgetFragment.gql';
 import WIDGET_MOVE from '@graphql/widget/widgetMove.gql';
-import PromptsList from '../prompts-form/prompts-form';
 import './dashboard.less';
 
-export default class DashboardWidget extends Component {
+const GRID_SIZE = 200;
 
+const ZOOM = 0.7;
+
+const getPositionStyle = (x, y) => (
+    {
+        left: `${x}px`,
+        top: `${y}px`
+    }
+);
+
+const getSizeStyle = ({width, height, field, gridSize}) => (
+    {
+        width: `${width || gridSize * field.width}px`,
+        height: `${height || gridSize * field.height}px`
+    }
+);
+
+export default class DashboardWidget extends Component {
     static template = /* html */`
         <div class="dashboard-widget">
             <div class="shell" style="{{mainStyle}}">
@@ -64,10 +76,10 @@ export default class DashboardWidget extends Component {
                             on-click="openDetails"
                         ></s-button>
                     </div>
-                    <div s-if="widget.configured"
-                        id="{{'clientAddons' + widget.definition.component + index}}"
-                        class="flex-all content"
-                    >
+                    <div s-if="widget.configured" class="flex-all content">
+                        <c-client-addon 
+                            client-addon="{{widget.definition.component}}"
+                            data="{{widgetData}}" />
                     </div>
                     <div s-else class="flex-all content not-configured">
                         <s-icon
@@ -133,6 +145,10 @@ export default class DashboardWidget extends Component {
     `;
 
     static computed = {
+        widgetData() {
+            const widget = this.data.get('widget');
+            return {widget};
+        },
         mainStyle() {
             const field = this.data.get('widget');
             const moveState = this.data.get('moveState');
@@ -167,7 +183,8 @@ export default class DashboardWidget extends Component {
         }
     };
     static components = {
-        'c-prompts': PromptsList
+        'c-prompts': PromptsList,
+        'c-client-addon': ClientAddon
     };
     static messages = {
         async ['Widget:title'](arg) {
@@ -193,32 +210,11 @@ export default class DashboardWidget extends Component {
         };
     }
     attached() {
-        this.nextTick(() => this.addChild());
         this.ev1 = e => this.onMoveUpdate(e);
         this.ev2 = e => this.onMoveEnd(e);
     }
     detached() {
         this.removeMoveListeners();
-    }
-    addChild() {
-        const {widget, index} = this.data.get();
-        const addonApi = window.ClientAddonApi;
-        const parentEl = document.getElementById('clientAddons' + widget.definition.component + index);
-
-        if (!parentEl || !widget || !addonApi) {
-            return;
-        }
-
-        let Child = addonApi.getComponent(widget.definition.component);
-        if (!Child) {
-            return;
-        }
-        let node = new Child({
-            owner: this,
-            source: '<x-child widget="{=widget=}" />'
-        });
-
-        node.attach(parentEl);
     }
     remove(id) {
         this.dispatch('Widget:remove', id);

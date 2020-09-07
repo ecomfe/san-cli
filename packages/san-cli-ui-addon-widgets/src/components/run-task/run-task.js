@@ -51,7 +51,7 @@ export default {
     `,
     computed: {
         taskId() {
-            let id = this.data.get('widget.config.task');
+            let id = this.data.get('data.widget.config.task');
             try {
                 id = JSON.parse(id);
             }
@@ -65,7 +65,6 @@ export default {
     },
     initData() {
         return {
-            widget: null,
             task: null
         };
     },
