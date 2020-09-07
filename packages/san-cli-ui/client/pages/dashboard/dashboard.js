@@ -8,9 +8,7 @@ import Component from '@lib/san-component';
 import Layout from '@components/layout';
 import Dashboard from '@components/dashboard/dashboard';
 import WidgetList from '@components/dashboard/widget-list';
-import clientAddon from '@components/client-addon/client-addon-loader';
 import WIDGETS from '@graphql/widget/widgets.gql';
-import PLUGINS from '@graphql/plugin/plugins.gql';
 import WIDGET_DEFINITIONS from '@graphql/widget/widgetDefinitions.gql';
 import WIDGET_REMOVE from '@graphql/widget/widgetRemove.gql';
 import WIDGET_ADD from '@graphql/widget/widgetAdd.gql';
@@ -42,7 +40,7 @@ export default class App extends Component {
                         <div s-else class="inner">
                             <template s-for="widget,index in widgets">
                                 <c-dashboard
-                                    s-if="scriptLoaded && widget"
+                                    s-if="widget"
                                     widget="{=widget=}"
                                     index="{{index}}"
                                     custom="{=editing=}"
@@ -54,18 +52,17 @@ export default class App extends Component {
                     <c-widget-list visible="{=editing=}" definitions="{=definitions=}" on-close="showCustom"/>
                 </div>
             </c-layout>
-            <c-client-addon s-if="isReady" on-scriptloaded="onScriptLoad"/>
         </div>
     `;
     static components = {
         'r-link': Link,
         'c-layout': Layout,
         'c-dashboard': Dashboard,
-        'c-widget-list': WidgetList,
-        'c-client-addon': clientAddon
+        'c-widget-list': WidgetList
     };
     static messages = {
         async ['Widget:remove'](arg) {
+            console.log({arg});
             const id = arg.value;
             await this.$apollo.mutate({
                 mutation: WIDGET_REMOVE,
@@ -115,15 +112,8 @@ export default class App extends Component {
             editing: false,
             widgets: [],
             definitions: [],
-            pageLoading: true,
-            isReady: false,
-            scriptLoaded: false
+            pageLoading: true
         };
-    }
-    async created() {
-        // init plugin todo: plugin初始化依赖集中到一处
-        await this.$apollo.query({query: PLUGINS});
-        this.data.set('isReady', true);
     }
     async attached() {
         let widgets = await this.$apollo.query({query: WIDGETS});
@@ -141,11 +131,6 @@ export default class App extends Component {
     }
     updateWidgets(e) {
         this.data.set('widgets', e);
-    }
-    onScriptLoad(id) {
-        if (/^san\.widgets\.client-addon/i.test(id)) {
-            this.data.set('scriptLoaded', true);
-        }
     }
     showCustom() {
         let editing = this.data.get('editing');

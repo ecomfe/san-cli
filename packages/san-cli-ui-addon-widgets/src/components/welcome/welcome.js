@@ -41,12 +41,11 @@ export default {
                 'dashboard',
                 'arrow-left',
                 'home'
-            ],
-            widget: {}
+            ]
         };
     },
     remove() {
-        const id = this.data.get('widget.id');
+        const id = this.data.get('data.widget.id');
         this.dispatch('Widget:remove', id);
     }
 };

@@ -98,6 +98,25 @@ export default class ClientAddon {
 /**
  * 加载第三方组件
  */
+const addonMap = new Map();
+
+// load js，并去重
+const load = ({url, id}) => {
+    if (addonMap.get(url)) {
+        return;
+    }
+    addonMap.set(url, true);
+    loadScript(url, (err, script) => {
+        if (err) {
+            addonMap.set(url, false);
+            console.log(`[error]: load ${url} failed.`);
+        }
+        else {
+            console.log('Load addon:', {url, id});
+        }
+    });
+};
+
 export const loadClientAddons = async () => {
     const query = await apolloClient.query({
         query: CLIENT_ADDONS
@@ -105,8 +124,7 @@ export const loadClientAddons = async () => {
 
     if (query.data && query.data.clientAddons) {
         query.data.clientAddons.forEach(addon => {
-            loadScript(addon.url);
-            console.log('Load addon:', addon);
+            load(addon);
         });
     }
 
@@ -119,8 +137,7 @@ export const loadClientAddons = async () => {
                 console.log('client-addon error:', error || errors);
             }
             if (data && data.clientAddonAdded) {
-                loadScript(data.clientAddonAdded.url);
-                console.log('Load data.clientAddonAdded:', data.clientAddonAdded);
+                load(data.clientAddonAdded);
             }
         },
         error: err => {

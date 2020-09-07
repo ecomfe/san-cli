@@ -132,10 +132,10 @@ export default {
         this.addAction();
     },
     attached() {
-        if (this.data.get('widget.config.url')) {
+        if (this.data.get('data.widget.config.url')) {
             this.fetchFeed();
         }
-        this.watch('widget.config.url', value => {
+        this.watch('data.widget.config.url', value => {
             value && this.fetchFeed();
         });
         this.watch('loading', value => {
@@ -164,7 +164,7 @@ export default {
         this.dispatch('Widget:title', null);
         try {
             const {results, errors} = await this.$callPluginAction('san.widgets.actions.fetch-news', {
-                url: this.data.get('widget.config.url'),
+                url: this.data.get('data.widget.config.url'),
                 force
             });
             if (errors.length && errors[0]) {

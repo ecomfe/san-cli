@@ -15,6 +15,7 @@ export default class ClientAddon extends Component {
         window.ClientAddonApi.awaitComponent(clientAddon)
             .then(Component => {
                 this.addonComponent = new Component({
+                    owner: this,
                     data: {
                         data
                     }

@@ -4,7 +4,7 @@
  */
 
 import Component from '@lib/san-component';
-import widgetItem from './widget';
+import widget from './widget';
 import './widget-list.less';
 
 export default class widgetList extends Component {
@@ -34,7 +34,7 @@ export default class widgetList extends Component {
             </div>
             <div class="widgets">
                 <template s-for="definition in filterList">
-                    <widget-item
+                    <c-widget
                         s-if="definition.canAddMore"
                         definition="{=definition=}"
                     />
@@ -44,7 +44,7 @@ export default class widgetList extends Component {
     `;
 
     static components = {
-        'widget-item': widgetItem
+        'c-widget': widget
     }
 
     static computed = {
