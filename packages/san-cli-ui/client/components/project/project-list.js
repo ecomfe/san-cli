@@ -4,7 +4,7 @@
  */
 
 import Component from '@lib/san-component';
-import {openInEditor} from '@lib/utils/open-in-editor';
+import PROJECT_OPEN_IN_EDITOR from '@graphql/project/projectOpenInEditor.gql';
 import PROJECTS from '@graphql/project/projects.gql';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_OPEN from '@graphql/project/projectOpen.gql';
@@ -134,8 +134,14 @@ export default class ProjectList extends Component {
         // 当前打开的project,记录在数据库
         projectCurrent.data && this.data.set('projectCurrent', projectCurrent.data.projectCurrent);
     }
-    onOpen({item}) {
-        openInEditor(item.path);
+    async onOpen({item}) {
+        // todo: 与layout/index内方法整合到一起
+        await this.$apollo.mutate({
+            mutation: PROJECT_OPEN_IN_EDITOR,
+            variables: {
+                path: item.path
+            }
+        });
     }
     onEdit(e) {
         this.data.set('showRenameModal', true);

@@ -4,11 +4,11 @@
  */
 
 import Component from '@lib/san-component';
-import {openInEditor} from '@lib/utils/open-in-editor';
 import ConnectionStatus from '@components/connection-status';
 import PROJECTS from '@graphql/project/projects.gql';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_OPEN from '@graphql/project/projectOpen.gql';
+import PROJECT_OPEN_IN_EDITOR from '@graphql/project/projectOpenInEditor.gql';
 import {Link} from 'san-router';
 import './index.less';
 
@@ -98,7 +98,13 @@ export default class ComponentLayout extends Component {
     }
     async handleMenuClick(e) {
         if (e.key === 'open-in-editor') {
-            openInEditor(this.data.get('projectCurrent.path'));
+            let path = this.data.get('projectCurrent.path');
+            await this.$apollo.mutate({
+                mutation: PROJECT_OPEN_IN_EDITOR,
+                variables: {
+                    path
+                }
+            });
             return;
         }
 
