@@ -8,6 +8,7 @@ import Component from '@lib/san-component';
 import Layout from '@components/layout';
 import Dashboard from '@components/dashboard/dashboard';
 import WidgetList from '@components/dashboard/widget-list';
+import PLUGINS from '@graphql/plugin/plugins.gql';
 import WIDGETS from '@graphql/widget/widgets.gql';
 import WIDGET_DEFINITIONS from '@graphql/widget/widgetDefinitions.gql';
 import WIDGET_REMOVE from '@graphql/widget/widgetRemove.gql';
@@ -116,6 +117,8 @@ export default class App extends Component {
         };
     }
     async attached() {
+        // 重要：初始化 plugin必须先执行 todo: plugin初始化依赖集中到一处使用san-store
+        await this.$apollo.query({query: PLUGINS});
         let widgets = await this.$apollo.query({query: WIDGETS});
         if (widgets.data) {
             this.data.set('pageLoading', false);
