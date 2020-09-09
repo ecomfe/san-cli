@@ -13,7 +13,7 @@ const prompts = require('./prompts');
 const {get, set, unset} = require('san-cli-utils/object');
 const extendJsConfig = require('../utils/extendJsConfig');
 const {readPackage} = require('../utils/fileHelper');
-const {reloadModule} = require('san-cli-utils/module');
+const {reloadModule} = require('../utils/module');
 const yaml = require('js-yaml');
 
 const fileTypes = ['js', 'json', 'yaml'];

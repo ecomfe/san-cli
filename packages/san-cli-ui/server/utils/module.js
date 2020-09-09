@@ -1,13 +1,35 @@
 /**
- * @file module模块
- *
+ * @file 加载模块
  * Reference: https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-ui/apollo-server/util/resolve-path.js
  * Reference: https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-shared-utils/lib/module.js
+ * modify by zttonly
  */
+
 const path = require('path');
 const Module = require('module');
 const semver = require('semver');
-function resolveFallback(request, options) {
+
+const clearRequireCache = (id, map = new Map()) => {
+    const module = require.cache[id];
+    if (module) {
+        map.set(id, true);
+        // Clear children modules
+        module.children.forEach(child => {
+            if (!map.get(child.id)) {
+                clearRequireCache(child.id, map);
+            }
+        });
+        delete require.cache[id];
+    }
+};
+
+exports.reloadModule = path => {
+    // clear cache brefore require
+    clearRequireCache(path);
+    return require(path);
+};
+
+const resolveFallback = (request, options) => {
     const isMain = false;
     const fakeParent = new Module('', null);
 
@@ -36,7 +58,8 @@ function resolveFallback(request, options) {
         throw err;
     }
     return filename;
-}
+};
+
 const resolve = semver.satisfies(process.version, '>=10.0.0')
     ? require.resolve
     : resolveFallback;
@@ -64,7 +87,14 @@ exports.resolveModule = function (request, context) {
     return resolvedPath;
 };
 
-exports.resolveModuleRoot = function (filePath, id = null) {
+/**
+ * 返回node_modules下安装的某模块根路径
+ *
+ * @param {string} filePath 文件路径
+ * @param {string} id 文件名
+ * @return {string}
+*/
+exports.resolveModuleRoot = (filePath, id = null) => {
     const index = filePath.lastIndexOf(path.sep + 'index.js');
     if (index !== -1) {
         filePath = filePath.substr(0, index);
