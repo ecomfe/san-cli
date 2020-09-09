@@ -7,7 +7,8 @@ const path = require('path');
 const fs = require('fs-extra');
 const Lowdb = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
-const rcPath = require('../utils/rcPath');
+const {getUIRcFolder} = require('san-cli-utils/path');
+const rcPath = getUIRcFolder();
 const DB_NAME = 'db.json';
 
 fs.ensureDirSync(rcPath);

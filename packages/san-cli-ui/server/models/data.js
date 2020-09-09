@@ -4,7 +4,8 @@
  */
 const path = require('path');
 const fs = require('fs-extra');
-const rcPath = require('../utils/rcPath');
+const {getUIRcFolder} = require('san-cli-utils/path');
+const rcPath = getUIRcFolder();
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const debug = getDebugLogger('ui:models:data');
 

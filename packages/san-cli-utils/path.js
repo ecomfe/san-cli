@@ -108,8 +108,13 @@ exports.getLocalTplPath = template => {
 function getUserHomeFolder() {
     return path.join(home, '.san');
 }
-exports.getUserHƒomeFolder = getUserHomeFolder;
+exports.getUserHomeFolder = getUserHomeFolder;
 function getGlobalSanRcFilePath() {
     return path.join(home, '.san', 'sanrc.json');
 }
 exports.getGlobalSanRcFilePath = getGlobalSanRcFilePath;
+
+function getUIRcFolder() {
+    return path.join(home, '.san-cli-ui');
+}
+exports.getUIRcFolder = getUIRcFolder;
