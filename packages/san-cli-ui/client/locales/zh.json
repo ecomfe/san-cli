@@ -134,7 +134,8 @@
             "serve": "编译和热更新（开发环境）",
             "build": "编译并压缩（生产环境）",
             "inspect": "查看Webpack配置"
-        }
+        },
+        "emptyTip": "暂无可用配置"
     },
     "dependency": {
         "title": "项目依赖",

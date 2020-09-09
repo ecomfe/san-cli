@@ -15,19 +15,13 @@ const flush = require('../utils/flush');
 const cwd = require('./cwd');
 const logs = require('./logs');
 const plugins = require('./plugins');
+const prompts = require('./prompts');
 
 const MAX_LOGS = 2000;
 const WIN_ENOENT_THRESHOLD = 500;
 const TASK_STATUS_IDLE = 'idle';
 const TASK_STATUS_RUNNING  = 'running';
 const debug = getDebugLogger('ui:tasks');
-
-// TODO: 获取配置信息
-const prompts = {
-    getAnswers() {
-        return {};
-    }
-};
 
 class Tasks {
     constructor() {

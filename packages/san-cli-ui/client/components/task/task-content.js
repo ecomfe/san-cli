@@ -64,7 +64,7 @@ export default class TaskContent extends Component {
                         icon="{{isRunning ? 'loading' : 'caret-right'}}" 
                         loading="{{taskPending}}"
                         on-click="execute">{{isRunning ? $t('task.stop') : $t('task.run')}}</s-button>
-                    <s-button type="default" icon="setting">{{$t('task.setting')}}</s-button>
+                    <s-button type="default" icon="setting" on-click="showPromptForm">{{$t('task.setting')}}</s-button>
                 </div>
 
                 <div class="task-view-tabs" s-if="views.length">
@@ -111,6 +111,19 @@ export default class TaskContent extends Component {
                         <c-client-addon client-addon="{{view.component}}" data="{{sharedData}}" />
                     </div>
                 </fragment>
+
+                <s-modal title="Title"
+                    visible="{=promptsFormVisible=}"
+                    on-ok="handlePromptFormOk"
+                    on-cancel="handlePromptFormCancel"
+                    confirmLoading="{{confirmLoading}}">
+                    <div s-if="!prompts  || !prompts.length">
+                        <div class="task-qempty-tip">
+                            <s-icon type="frown" />
+                            <div class="tip-text">{{$t('task.emptyTip')}}</div>
+                        </div>
+                    </div>
+                </s-modal>
             </div>
         </div>
     </div>
@@ -133,8 +146,26 @@ export default class TaskContent extends Component {
 
             currentIndex: -1,
 
+            prompts: [],
+
             sharedData: {}
         };
+    }
+
+    showPromptForm() {
+        this.data.set('promptsFormVisible', true);
+    }
+
+    handlePromptFormOk(e) {
+        this.data.set('promptsFormVisible', false);
+    }
+
+    handlePromptFormCancel(e) {
+        this.data.set('promptsFormVisible', false);
+    }
+
+    afterPromptFormClose() {
+        console.log('afterClose');
     }
 
     setViewIndex(index) {
