@@ -114,7 +114,3 @@ function getGlobalSanRcFilePath() {
 }
 exports.getGlobalSanRcFilePath = getGlobalSanRcFilePath;
 
-function getUIRcFolder() {
-    return path.join(home, '.san-cli-ui');
-}
-exports.getUIRcFolder = getUIRcFolder;
