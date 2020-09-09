@@ -7,7 +7,7 @@ import Layout from '@components/layout';
 import DependencyFilter from '@components/dependency/dependency-filter';
 import DependencyItem from '@components/dependency/dependency-item';
 import DependencySearch from '@components/dependency/dependency-search';
-import Modal from '@components/modal/modal';
+import DependencyModal from '@components/dependency/dependency-modal';
 import DEPENDENCIES from '@graphql/dependency/dependencies.gql';
 import DEPENDENCY_ITEM from '@graphql/dependency/dependencyItem.gql';
 import './dependency.less';
@@ -39,11 +39,11 @@ export default class Dependency extends Component {
                         </template>
                     </div>
                 </div>
-                <c-modal on-cancel="onModalClose" visible="{{modalVisible}}">
+                <c-dependency-modal on-cancel="onModalClose" visible="{{modalVisible}}">
                     <template slot="content">
                         <c-dependency-search/>
                     </template>
-                </c-modal>
+                </c-dependency-modal>
             </div>
         </c-layout>
     `;
@@ -53,7 +53,7 @@ export default class Dependency extends Component {
         'c-dependence-filter': DependencyFilter,
         'c-dependency-item': DependencyItem,
         'c-dependency-search': DependencySearch,
-        'c-modal': Modal
+        'c-dependency-modal': DependencyModal
     };
 
     static computed = {

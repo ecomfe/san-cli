@@ -4,11 +4,11 @@
  */
 
 import Component from '@lib/san-component';
-import './modal.less';
+import './dependency-modal.less';
 
 export default class Modal extends Component {
     static template = /* html */`
-        <div class="modal" s-if="{{visible}}" on-click="onClickOverlay">
+        <div class="dependency-modal" s-if="{{visible}}" on-click="onClickOverlay">
             <div class="content" >
                 <s-icon type="close" class="modal-close" on-click="onCancel"/>
                 <slot name="content"></slot>
