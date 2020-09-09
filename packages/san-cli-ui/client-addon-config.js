@@ -28,6 +28,9 @@ module.exports = function ({id, port = 8889}) {
         chainWebpack: config => {
             config.plugins.delete('preload');
             config.plugins.delete('prefetch');
+            config.module.rule('gql')
+                .test(/\.(graphql|gql)$/)
+                .use('graphql-loader').loader(require.resolve('graphql-tag/loader'));
         },
         devServer: {
             headers: {

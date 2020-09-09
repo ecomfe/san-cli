@@ -63,7 +63,6 @@ export default class App extends Component {
     };
     static messages = {
         async ['Widget:remove'](arg) {
-            console.log({arg});
             const id = arg.value;
             await this.$apollo.mutate({
                 mutation: WIDGET_REMOVE,
