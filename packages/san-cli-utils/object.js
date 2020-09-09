@@ -1,5 +1,5 @@
 /**
- * @file 对象操作方法
+ * @file 对象操作方法,支持get/set a.b.c的格式
  * Reference: https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-shared-utils/object.js
  * TODO:优化
  */

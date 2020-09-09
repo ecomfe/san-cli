@@ -2,7 +2,7 @@
  * @file prompts connectors
  * @author zttonly
  */
-const {get, set, unset} = require('../utils/object');
+const {get, set, unset} = require('san-cli-utils/object');
 
 class Prompts {
     constructor() {
