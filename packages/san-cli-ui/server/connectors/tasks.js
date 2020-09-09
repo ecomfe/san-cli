@@ -13,7 +13,7 @@ const channels = require('../utils/channels');
 const parseArgs = require('../utils/parseArgs');
 const flush = require('../utils/flush');
 const cwd = require('./cwd');
-const logs = require('./logs');
+const logs = require('./console');
 const plugins = require('./plugins');
 const prompts = require('./prompts');
 
