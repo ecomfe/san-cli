@@ -6,7 +6,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 const clone = require('clone');
-const stringifyJS = require('javascript-stringify');
+const stringify = require('javascript-stringify').stringify;
 const plugins = require('./plugins');
 const cwd = require('./cwd');
 const prompts = require('./prompts');
@@ -134,7 +134,7 @@ class Configurations {
             else if (file.type === 'js') {
                 const source = fs.readFileSync(file.path, {encoding: 'utf8'});
                 if (!source.trim()) {
-                    rawContent = `module.exports = ${stringifyJS(data, null, 2)}`;
+                    rawContent = `module.exports = ${stringify(data, null, 2)}`;
                 }
                 else {
                     const changedData = changedFields.reduce((obj, field) => {

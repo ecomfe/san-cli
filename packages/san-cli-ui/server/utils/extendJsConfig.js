@@ -5,7 +5,7 @@
 
 module.exports = function extendJsConfig(value, source) {
     const recast = require('recast');
-    const stringifyJS = require('./stringifyJS');
+    const stringify = require('javascript-stringify').stringify;
 
     let exportsIdentifier = null;
 
@@ -44,7 +44,7 @@ module.exports = function extendJsConfig(value, source) {
     }
 
     function augmentExports(node) {
-        const valueAST = recast.parse(`(${stringifyJS(value, null, 2)})`);
+        const valueAST = recast.parse(`(${stringify(value, null, 2)})`);
         const props = valueAST.program.body[0].expression.properties;
         const existingProps = node.properties;
         for (const prop of props) {
