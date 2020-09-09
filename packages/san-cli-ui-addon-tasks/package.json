@@ -3,10 +3,10 @@
   "version": "0.0.1",
   "description": "san cli ui addon widgets",
   "scripts": {
-    "start": "cross-env NODE_ENV=development ../san-cli/index.js serve src/index.js --config san.config.js",
-    "build": "cross-env NODE_ENV=production ../san-cli/index.js build src/index.js --config san.config.js",
-    "analyzer": "cross-env NODE_ENV=production ../san-cli/index.js build src/index.js --config san.config.js --analyze",
-    "build:modern": "cross-env NODE_ENV=production ../san-cli/index.js build src/index.js --config san.config.js --modern",
+    "start": "cross-env NODE_ENV=development ../san-cli/index.js serve --config san.config.js",
+    "build": "cross-env NODE_ENV=production ../san-cli/index.js build --config san.config.js",
+    "analyzer": "cross-env NODE_ENV=production ../san-cli/index.js build --config san.config.js --analyze",
+    "build:modern": "cross-env NODE_ENV=production ../san-cli/index.js build --config san.config.js --modern",
     "prepublishOnly": "npm run build"
   },
   "keywords": [

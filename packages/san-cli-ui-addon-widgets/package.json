@@ -6,7 +6,8 @@
     "start": "cross-env NODE_ENV=development ../san-cli/index.js serve --config san.config.js",
     "build": "cross-env NODE_ENV=production ../san-cli/index.js build --config san.config.js",
     "analyzer": "cross-env NODE_ENV=production ../san-cli/index.js build --config san.config.js --analyze",
-    "build:modern": "cross-env NODE_ENV=production ../san-cli/index.js build --config san.config.js --modern"
+    "build:modern": "cross-env NODE_ENV=production ../san-cli/index.js build --config san.config.js --modern",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "San",

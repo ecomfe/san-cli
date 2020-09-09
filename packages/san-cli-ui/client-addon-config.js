@@ -31,6 +31,7 @@ module.exports = function ({id, port = 8889}) {
             config.module.rule('gql')
                 .test(/\.(graphql|gql)$/)
                 .use('graphql-loader').loader(require.resolve('graphql-tag/loader'));
+            config.output.filename('index.js');
         },
         devServer: {
             headers: {
