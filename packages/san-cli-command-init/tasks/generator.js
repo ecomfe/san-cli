@@ -54,18 +54,8 @@ module.exports = (name, dest, options) => {
         // 2. 请回答
         task.info();
 
-        // 在cli ui中，模板中的预设已经通过 --project-presets 参数传过来了
-        const projectPresets = options.projectPresets && JSON.parse(options.projectPresets);
-
-        if (projectPresets) {
-            if (validatePrompts(metaData.prompts, projectPresets)) {
-                debug('ProjectPresets is valid!');
-            }
-            else {
-                console.log('🌚 Project presets illegal.');
-                return;
-            }
-        }
+        // 如果在cli ui中执行，模板中的预设已经通过 --project-presets 参数传过来了
+        const projectPresets = getProjectPresets(options.projectPresets, metaData);
 
         // 预设存在，就不再询问配置项
         const answers = projectPresets || await ask(metaData.prompts || {}, metaData, options);
@@ -86,6 +76,27 @@ module.exports = (name, dest, options) => {
         await startTask(src, dest, ctx, task);
     };
 };
+
+function getProjectPresets(projectPresets, metaData) {
+    // 在cli ui中，获取模板中通过 --project-presets 参数传来了的预设
+    let data = null;
+    if (projectPresets) {
+        try {
+            data = JSON.parse(projectPresets);
+            if (validatePrompts(metaData.prompts, data)) {
+                debug('ProjectPresets is valid!');
+            }
+            else {
+                throw new Error('🌚 Project presets illegal.');
+            }
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+    return data;
+};
+
 async function startTask(src, dest, ctx, task) {
     const {metaData: opts, tplData: data} = ctx;
     // 处理过滤
