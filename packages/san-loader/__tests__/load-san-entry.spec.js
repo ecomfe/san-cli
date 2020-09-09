@@ -28,7 +28,7 @@ describe('.san 文件的产出', () => {
         expect(ctx.code).toContain('var template = require');
         expect(ctx.code).toContain('var script = require');
         expect(ctx.code).toContain('var style0 = require');
-        expect(ctx.code).toContain('module.exports = normalize(script, template, injectStyles)');
+        expect(ctx.code).toContain('module.exports.default = normalize(script, template, injectStyles)');
         ctx = webpackContext({resourcePath: '/foo.san', query: {esModule: true}}).runLoader(loader, source);
         expect(ctx.code).toContain('import normalize from');
         expect(ctx.code).toContain('import template from');
@@ -75,7 +75,9 @@ describe('.san 文件的产出', () => {
         const source = '<script>console.log(1)</style>';
         let ctx = webpackContext({resourcePath: '/foo.san'}).runLoader(loader, source);
         expect(ctx.code).toContain('var script = require(\'/foo.san?lang=js&san=&type=script');
+        expect(ctx.code).toContain('module.exports = require(\'/foo.san?lang=js&san=&type=script');
         ctx = webpackContext({resourcePath: '/foo.san', query: {esModule: true}}).runLoader(loader, source);
         expect(ctx.code).toContain('import script from \'/foo.san?lang=js&san=&type=script');
+        expect(ctx.code).toContain('export * from \'/foo.san?lang=js&san=&type=script');
     });
 });

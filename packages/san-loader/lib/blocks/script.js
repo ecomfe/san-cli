@@ -49,7 +49,7 @@ function generateScriptImport(descriptor, options) {
     }
     return `
         ${options.esModule ? `import script from '${resource}';` : `var script = require('${resource}').default;`}
-        ${options.esModule ? `export * from '${resource}';` : ''}
+        ${options.esModule ? `export * from '${resource}';` : `module.exports = require('${resource}');`}
     `;
 }
 
