@@ -1,5 +1,3 @@
-
-
 # 生产打包
 
 `san build`是生产环境打包，下面详细说下用法。
@@ -32,9 +30,8 @@ san build [entry]
 
 -   `--analyze，--analyzer`：是否使用 webpack-analyze-bunlde 输出包分析，值为 true 或 false，默认 false
 -   `--profile`：是否展示编译进度日志，值为 true 或 false，默认是 false
--   `--report-json，--reportJson`：是否输将包分析报表生成为 report.json，值为 true 或 false，默认是 false
--   `--report`：是否输将包分析报表生成为单个 HTML 文件，值为 true 或 false，默认 false，仅生成 Webpack Stats JSON 文件
--   `--stats`：美化格式化输出
+-   `--report`：是否输将包分析报表生成为单个 HTML 文件，值为 true 或 false 或者文件名，默认 false，仅生成 Webpack Stats JSON 文件
+-   `--stats-json，--statsJson`：是否输将包分析报表生成为 stats.json，值为 true 或 false 或者文件名，默认是 false
 -   `--no-colors`：是否展示无色彩 log，值为 true 或 false，默认是 false
 
 ### 其他
