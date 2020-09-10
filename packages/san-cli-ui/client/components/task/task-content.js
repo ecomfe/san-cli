@@ -118,7 +118,7 @@ export default class TaskContent extends Component {
                     on-cancel="handlePromptFormCancel"
                     confirmLoading="{{confirmLoading}}">
                     <div s-if="!prompts  || !prompts.length">
-                        <div class="task-qempty-tip">
+                        <div class="task-empty-tip">
                             <s-icon type="frown" />
                             <div class="tip-text">{{$t('task.emptyTip')}}</div>
                         </div>
@@ -211,8 +211,7 @@ export default class TaskContent extends Component {
         if (sanCommandType) {
             const id = `san.cli.${sanCommandType}`;
             const statsId = `${id}-stats`;
-            // ..............编译结果..............
-            // 获取上一次san-cli编译结果进行展示
+            // 1.编译结果详情：获取上一次san-cli编译结果进行展示
             const sharedData = await this.$getSharedData(statsId) || {};
             this.data.set('sharedData', sharedData);
 
@@ -221,7 +220,7 @@ export default class TaskContent extends Component {
                 this.data.merge('sharedData', data);
             });
 
-            // ..............编译进度..............
+            // 2.编译进度：编译的百分比展示
             const progressId = `${id}-progress`;
             const progressData = await this.$getSharedData(progressId) || {};
             this.data.set('sharedData.progress', getProgress(progressData));
@@ -229,7 +228,7 @@ export default class TaskContent extends Component {
                 this.data.set('sharedData.progress', getProgress(data));
             });
 
-            // ..............编译状态..............
+            // 3.编译状态：任务仪表盘的状态，如：闲置、building
             const statusId = `${id}-status`;
             const statusData = await this.$getSharedData(statusId);
             this.data.set('sharedData.status', statusData);
@@ -237,7 +236,7 @@ export default class TaskContent extends Component {
                 this.data.set('sharedData.status', status);
             });
 
-            // ..............编译状态..............
+            // 4.编译状态：获取编译状体的tips
             const operationsId = `${id}-operations`;
             const operationsData = await this.$getSharedData(operationsId);
             this.data.set('sharedData.operations', operationsData);
