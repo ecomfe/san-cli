@@ -2,7 +2,7 @@
  * @file prompts connectors
  * @author zttonly
  */
-const {get, set, unset} = require('san-cli-utils/object');
+const {get, set, unset} = require('lodash');
 
 class Prompts {
     constructor() {

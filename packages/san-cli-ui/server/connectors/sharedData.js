@@ -6,25 +6,25 @@
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const channels = require('../utils/channels');
 const $data = require('../models/data');
-const {deepGet, deepSet} = require('../utils/deep');
+const {get, set, unset} = require('lodash');
 
 const debug = getDebugLogger('ui:connectors:sharedData');
 
 class SharedData {
     constructor() {
-        this.data = new Map();
-        this.watchers = new Map();
+        this.data = {};
+        this.watchers = {};
         // stats用作订阅的计数
-        this.stats = new Map();
+        this.stats = {};
     }
 
     get({id, projectId}, context) {
-        const store = this.data.get(projectId);
+        const store = get(this.data, projectId);
         if (!store) {
             debug(`Shareddata.get: projectId(id:${id}, projectId: ${projectId}): No Data Here!`);
             return null;
         }
-        let data = store.get(id);
+        let data = get(store, id);
         const hasLocalFile = $data.hasData(projectId, id);
         if (!data && hasLocalFile) {
             data = {
@@ -48,7 +48,7 @@ class SharedData {
             $data.setData(projectId, id, value);
         }
 
-        deepSet(this.data, [projectId, id], {
+        set(this.data, [projectId, id], {
             id,
             ...(disk ? {} : {value}),
             disk,
@@ -73,13 +73,13 @@ class SharedData {
     }
 
     async remove({id, projectId}, context) {
-        const store = this.data.get(projectId);
+        const store = get(this.data, projectId);
         if (store) {
-            const data = store.get(id);
+            const data = get(store, id);
             if (data && data.disk) {
                 $data.remove(projectId, id);
             }
-            store.delete(id);
+            unset(store, id);
         }
 
         context.pubsub.publish(channels.SHARED_DATA_UPDATED, {
@@ -92,17 +92,17 @@ class SharedData {
 
     // shareData发生改变的时候触发回调
     watch({id, projectId}, handler) {
-        let handlers = deepGet(this.watchers, [projectId, id]);
+        let handlers = get(this.watchers, [projectId, id]);
         if (!handlers) {
             handlers = [];
-            deepSet(this.watchers, [projectId, id], handlers);
+            set(this.watchers, [projectId, id], handlers);
         }
         handlers.push(handler);
     }
 
     // 清除shareData回调
     unwatch({id, projectId}, handler) {
-        const handlers = deepGet(this.watchers, [projectId, id]);
+        const handlers = get(this.watchers, [projectId, id]);
         if (!handlers) {
             return;
         }
@@ -115,23 +115,23 @@ class SharedData {
 
     // 清除shareData项目的全部回调
     unwatchAll(projectId) {
-        this.watchers.delete(projectId);
+        unset(this.watchers, projectId);
     }
 
     fire({id, projectId, value}, context) {
-        const handlers = deepGet(this.watchers, [projectId, id]) || [];
+        const handlers = get(this.watchers, [projectId, id]) || [];
         handlers.forEach(fn => fn(value, id));
         return handlers;
     }
 
     // 增加shareData的日志统计
     getStat({id, projectId}) {
-        let stat = deepGet(this.stats, [projectId, id]);
+        let stat = set(this.stats, [projectId, id]);
         if (!stat) {
             stat = {
                 value: 0
             };
-            deepSet(this.stats, [projectId, id], stat);
+            set(this.stats, [projectId, id], stat);
         }
         return stat;
     }
