@@ -57,7 +57,6 @@ function textCommonColor(txt) {
 }
 exports.textCommonColor = textCommonColor;
 
-
 function textCommonBold(txt) {
     return chalk.bold(chalkColor(COMMON_COLOR)(txt));
 }
