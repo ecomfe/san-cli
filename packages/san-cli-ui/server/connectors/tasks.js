@@ -116,10 +116,8 @@ class Tasks {
             else {
                 debug('No task plugin found');
             }
-            debug('list', list);
         }
         this.tasks.set(file, list);
-        debug({list});
         return list;
     }
 
@@ -131,7 +129,7 @@ class Tasks {
         for (const [, list] of this.tasks) {
             const task = list.find(t => t.id === id || t.id === t.path + ':' + id);
             if (task) {
-                debug('Target task found', task);
+                // debug('Target task found', task);
                 return task;
             }
         }
@@ -476,7 +474,7 @@ class Tasks {
         return task;
     }
 
-    saveParameters({id}, context) {
+    saveParameters(id, context) {
         const answers = prompts.getAnswers();
         // 保存参数
         this.updateDbData({
@@ -484,6 +482,37 @@ class Tasks {
             answers
         }, context);
         return prompts.list();
+    }
+
+    async getPrompts(id, context) {
+        const task = this.findTask(id, context);
+
+        debug('getPrompts', task);
+
+        if (task) {
+            await prompts.reset();
+            if (task.prompts.length) {
+                prompts.add({
+                    name: '$_overrideArgs',
+                    type: 'confirm',
+                    default: false,
+                    message: 'task.override-args.message',
+                    description: 'task.override-args.description'
+                });
+            }
+            task.prompts.forEach(prompts.add.bind(prompts));
+            const data = this.getSavedData(id, context);
+            if (data) {
+                await prompts.setAnswers(data.answers);
+            }
+            await prompts.start();
+        }
+        return prompts.list();
+    }
+
+    getSavedData(id, context) {
+        const data = context.db.get('tasks').find({id}).value();
+        return data ? JSON.parse(JSON.stringify(data)) : data;
     }
 }
 

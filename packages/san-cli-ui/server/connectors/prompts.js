@@ -10,11 +10,7 @@ class Prompts {
         this.prompts = [];
     }
     generatePromptError(value) {
-        let message = 'Invalid input';
-        if (typeof value === 'string') {
-            message = value;
-        }
-
+        const message = typeof value === 'string' ? value : 'Invalid input';
         return {
             message
         };

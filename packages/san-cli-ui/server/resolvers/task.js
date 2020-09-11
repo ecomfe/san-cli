@@ -23,12 +23,8 @@ module.exports = {
         taskStop: (root, {id}, context) => tasks.stop(id, context),
         taskLogsClear: (root, {id}, context) => tasks.clearLogs(id, context),
         taskOpen: (root, {id}, context) => tasks.open(id, context),
-        taskSaveParameters: (root, {id}, context) => tasks.saveParameters({
-            id
-        }, context),
-        taskRestoreParameters: (root, {id}, context) => tasks.restoreParameters({
-            id
-        }, context)
+        taskSaveParameters: (root, {id}, context) => tasks.saveParameters(id, context),
+        taskRestoreParameters: (root, {id}, context) => tasks.getPrompts(id, context)
     },
 
     Subscription: {
