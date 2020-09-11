@@ -348,53 +348,18 @@
                     "need": "必填"
                 }
             },
-            "vulnerability": {
-                "title": "安全隐患检查",
-                "description": "检查项目依赖中已知的安全隐患",
-                "messages": {
-                    "ok": "未发现安全隐患",
-                    "loading": "正在检查项目安全性……",
-                    "attention": "发现 {n} 个安全隐患",
-                    "error": "无法检测漏洞"
+            "compress-image": {
+                "title": "压缩图片",
+                "description": "减小图片大小",
+                "prompts": {
+                    "quality": "压缩图片质量"
                 },
-                "severity": {
-                    "critical": "严重程度危险",
-                    "high": "严重程度高",
-                    "moderate": "严重程度中等",
-                    "low": "严重程度低"
+                "errors": {
+                    "fail": "压缩失败请重试",
+                    "empty": "请至少选择一个文件"
                 },
-                "direct-dep": "直接依赖",
-                "versions": {
-                    "vulnerable": "易受攻击版本",
-                    "patched": "补丁后版本"
-                },
-                "recheck": "再次检查"
-            },
-            "dependency-updates": {
-                "title": "更新依赖",
-                "description": "监控依赖更新",
-                "messages": {
-                    "ok": "所有依赖已是最新",
-                    "loading": "正在检查更新……",
-                    "attention": "有{n}个依赖可更新"
-                },
-                "page": "前往“依赖”页"
-            },
-            "plugin-updates": {
-                "title": "更新插件",
-                "description": "监控插件更新",
-                "messages": {
-                    "ok": "所有插件已是最新",
-                    "loading": "正在检查更新……",
-                    "attention": "有{n}个插件可更新"
-                },
-                "page": "前往“插件”页"
-            },
-            "status-widget": {
-                "last-updated": "更新于",
-                "never": "还未更新",
-                "check": "检查更新",
-                "more": "更多细节"
+                "upload": "点击选择图片",
+                "limit": "一次最多20张图片, 每张最大5 MB"
             }
         },
         "widgetList": {

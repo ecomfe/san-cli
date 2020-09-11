@@ -199,4 +199,41 @@ module.exports = api => {
             };
         }
     });
+
+    // Compress-image 暂时隐藏
+    // api.registerWidget({
+    //     id: 'san.widgets.compress-image',
+    //     title: 'dashboard.widgets.compress-image.title',
+    //     description: 'dashboard.widgets.compress-image.description',
+    //     icon: 'file-image',
+    //     component: 'san.widgets.components.compress-image',
+    //     minWidth: 2,
+    //     minHeight: 2,
+    //     maxWidth: 2,
+    //     maxHeight: 2,
+    //     maxCount: 1
+    //     // 增加压缩选项配置
+    //     // defaultConfig: () => ({
+    //     //     quality: 'https://ecomfe.github.io/atom.xml'
+    //     // }),
+    //     // async onConfigOpen() {
+    //     //     return {
+    //     //         prompts: [
+    //     //             {
+    //     //                 name: 'quality',
+    //     //                 type: 'input',
+    //     //                 message: 'dashboard.widgets.compress-image.prompts.quality',
+    //     //                 validate: input => !!input
+    //     //             }
+    //     //         ]
+    //     //     };
+    //     // }
+    // });
+
+
+    // api.onAction('san.widgets.actions.compress-image', async params => {
+    //     console.log(params);
+    //     let result = [];
+    //     return result;
+    // });
 };
