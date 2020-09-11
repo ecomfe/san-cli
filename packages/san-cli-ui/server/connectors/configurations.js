@@ -6,6 +6,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 const clone = require('clone');
+const yaml = require('js-yaml');
 const stringify = require('javascript-stringify').stringify;
 const plugins = require('./plugins');
 const cwd = require('./cwd');
@@ -14,7 +15,6 @@ const {get, set, unset} = require('lodash');
 const extendJsConfig = require('../utils/extendJsConfig');
 const {readPackage} = require('../utils/fileHelper');
 const {reloadModule} = require('../utils/module');
-const yaml = require('js-yaml');
 
 const fileTypes = ['js', 'json', 'yaml'];
 
@@ -116,7 +116,6 @@ class Configurations {
             return;
         }
 
-        console.log('Config write', config.id, data, changedFields, file.path);
         fs.ensureFileSync(file.path);
         let rawContent;
         if (file.type === 'package') {

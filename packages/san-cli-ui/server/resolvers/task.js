@@ -5,12 +5,13 @@
 
 const channels = require('../utils/channels');
 const tasks = require('../connectors/tasks');
+const projects = require('../connectors/projects');
 
 module.exports = {
-    // Task: {
-    //     prompts: (task, args, context) => tasks.getPrompts(task.id, context),
-    //     project: (task, args, context) => projects.findByPath(task.path, context)
-    // },
+    Task: {
+        prompts: (task, args, context) => tasks.getPrompts(task.id, context),
+        project: (task, args, context) => projects.findByPath(task.path, context)
+    },
 
     Query: {
         tasks: (root, args, context) => tasks.getTasks(undefined, context),

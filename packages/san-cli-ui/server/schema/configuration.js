@@ -29,6 +29,6 @@ type ConfigurationTab {
   id: ID!
   label: String!
   icon: String
-  prompts: [PromptCommon]
+  prompts: [Prompt]
 }
 `;

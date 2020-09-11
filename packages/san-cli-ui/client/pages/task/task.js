@@ -3,12 +3,12 @@
  * @author jinzhan
  */
 import Component from '@lib/san-component';
-import TASKS from '@graphql/task/tasks.gql';
-import TASK from '@graphql/task/task.gql';
 import Layout from '@components/layout';
 import TaskNav from '@components/task/task-nav';
 import TaskCard from '@components/task/task-card';
 import TaskContent from '@components/task/task-content';
+import TASKS from '@graphql/task/tasks.gql';
+import TASK from '@graphql/task/task.gql';
 import './task.less';
 
 export default class Task extends Component {
@@ -58,10 +58,10 @@ export default class Task extends Component {
 
     async attached() {
         const tasksData = await this.$apollo.query({query: TASKS});
-
         if (tasksData.data) {
             this.data.set('tasks', tasksData.data.tasks);
         }
+
         this.data.set('pageLoading', false);
         let routePath = this.data.get('route.path');
 

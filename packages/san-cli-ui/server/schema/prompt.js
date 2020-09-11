@@ -6,9 +6,10 @@ const gql = require('graphql-tag');
 
 module.exports = gql`
 extend type Mutation {
-  promptAnswer (input: PromptInput!): [PromptCommon]
+  promptAnswer (input: PromptInput!): [Prompt]
 }
-type PromptCommon implements DescribedEntity {
+
+type Prompt implements DescribedEntity {
   id: ID!
   type: PromptType!
   visible: Boolean!

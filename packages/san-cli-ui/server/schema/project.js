@@ -29,14 +29,14 @@ type ProjectTemplate {
 }
 
 type ProjectCreation {
-  prompts: [Prompt]
+  prompts: [ProjectPrompt]
 }
 
 type ProjectInitTemplate {
-  prompts: [Prompt]
+  prompts: [ProjectPrompt]
 }
 
-type Prompt {
+type ProjectPrompt {
   name: String
   type: String
   label: String
