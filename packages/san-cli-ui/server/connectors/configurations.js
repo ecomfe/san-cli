@@ -15,6 +15,8 @@ const extendJsConfig = require('../utils/extendJsConfig');
 const {readPackage} = require('../utils/fileHelper');
 const {reloadModule} = require('../utils/module');
 const yaml = require('js-yaml');
+const {getDebugLogger} = require('san-cli-utils/ttyLogger');
+const debug = getDebugLogger('ui:configurations');
 
 const fileTypes = ['js', 'json', 'yaml'];
 
@@ -116,7 +118,7 @@ class Configurations {
             return;
         }
 
-        console.log('Config write', config.id, data, changedFields, file.path);
+        debug('Config write', config.id, data, changedFields, file.path);
         fs.ensureFileSync(file.path);
         let rawContent;
         if (file.type === 'package') {
@@ -158,7 +160,7 @@ class Configurations {
         const config = this.findOne(id, context);
         if (config) {
             const data = this.readData(config, context);
-            console.log('Config read', config.id, data);
+            debug('Config read', config.id, data);
             this.current = {config, data};
 
             // API

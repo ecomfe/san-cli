@@ -6,7 +6,7 @@
 const shortid = require('shortid');
 const cwd = require('./cwd');
 const prompts = require('./prompts');
-const {log, getDebugLogger} = require('san-cli-utils/ttyLogger');
+const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const debug = getDebugLogger('ui:widget');
 
 const getDefaultWidgets = () => (
@@ -46,7 +46,7 @@ class Widgets {
             this.loadResolve = () => {
                 this.loadPromise = null;
                 resolve();
-                log('Load Promise resolved');
+                debug('Load Promise resolved');
             };
         });
     }
@@ -81,11 +81,11 @@ class Widgets {
         return def;
     }
     async list() {
-        log('loadPromise', this.loadPromise);
+        debug('loadPromise', this.loadPromise);
         if (this.loadPromise) {
             await this.loadPromise;
         }
-        log('widgets', this.widgets);
+        debug('widgets', this.widgets);
         return this.widgets;
     }
     load(context) {
@@ -103,7 +103,7 @@ class Widgets {
             !this.widgetCount.has(widget.definitionId) && this.updateCount(widget.definitionId, 1);
         });
 
-        log('Widgets loaded', this.widgets.length);
+        debug('Widgets loaded', this.widgets.length);
 
         this.loadResolve();
     }

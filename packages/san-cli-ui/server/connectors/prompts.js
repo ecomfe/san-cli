@@ -3,6 +3,8 @@
  * @author zttonly
  */
 const {get, set, unset} = require('lodash');
+const {getDebugLogger} = require('san-cli-utils/ttyLogger');
+const debug = getDebugLogger('ui:prompts');
 
 class Prompts {
     constructor() {
@@ -151,7 +153,6 @@ class Prompts {
 
                 if (typeof answer !== 'undefined') {
                     value = await this.getTransformedValue(prompt, answer);
-                    // console.log('---if getTransformedValue', prompt.id)
                 }
                 else if (typeof prompt.raw.value !== 'undefined') {
                     value = prompt.raw.value;
@@ -166,7 +167,7 @@ class Prompts {
             }
         }
 
-        console.log('Prompt answers', this.answers);
+        debug('Prompt answers', this.answers);
     }
     async setAnswers(newAnswers) {
         this.answers = newAnswers;
