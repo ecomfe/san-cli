@@ -22,18 +22,15 @@ export default class BuildStatus extends SanComponent {
             <s-grid-row gutter="16">
                 <s-grid-col span="8" class="info-block">
                     <div class="label">资源</div>
-                    <div class="value">{{bytes2kb(computed.modulesPerSizeType.gzip.modulesTotalSize)}}</div>
-                    <!-- <div class="extra-info">(Parsed)</div> -->
+                    <div class="value">{{bytes2kb(computed.modulesPerSizeType[sizeType].modulesTotalSize)}}</div>
                 </s-grid-col>
                 <s-grid-col span="8" class="info-block">
                     <div class="label">模块</div>
-                    <div class="value">{{bytes2kb(computed.modulesPerSizeType.gzip.modulesTotalSize)}}</div>
-                    <!-- <div class="extra-info">(Parsed)</div> -->
-                </s-grid-col>
+                    <div class="value">{{bytes2kb(computed.modulesPerSizeType[sizeType].modulesTotalSize)}}</div>
+                    </s-grid-col>
                 <s-grid-col span="8" class="info-block">
                     <div class="label">依赖项</div>
-                    <div class="value">{{bytes2kb(computed.modulesPerSizeType.gzip.depModulesTotalSize)}}</div>
-                    <!-- <div class="extra-info">92.78%</div> -->
+                    <div class="value">{{bytes2kb(computed.modulesPerSizeType[sizeType].depModulesTotalSize)}}</div>
                 </s-grid-col>
             </s-grid-row>
         </div>

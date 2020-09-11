@@ -16,7 +16,7 @@ export default class SpeedStatus extends SanComponent {
     `;
     static computed = {
         speedStats() {
-            const size = this.data.get('computed.modulesPerSizeType.gzip.modulesTotalSize');
+            const size = this.data.get('computed.modulesPerSizeType[sizeType].modulesTotalSize');
             return size ? getSpeeds(size) : [];
         }
     };

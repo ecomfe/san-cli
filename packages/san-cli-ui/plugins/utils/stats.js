@@ -44,7 +44,8 @@ exports.processStats = function (stats) {
         },
         computed: {
             modulesPerSizeType
-        }
+        },
+        sizeTypes
     };
 
     return {
