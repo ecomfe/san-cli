@@ -1,13 +1,14 @@
 # Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/task/task.gql
 #import "./taskFragment.gql"
+#import "../prompt/promptFragment.gql"
 
 query task ($id: ID!) {
   task (id: $id) {
     ...task
     link
-    # prompts {
-    #   ...prompt
-    # }
+    prompts {
+      ...prompt
+    }
     views {
       id
       label

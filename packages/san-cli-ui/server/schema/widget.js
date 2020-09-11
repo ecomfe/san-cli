@@ -47,7 +47,7 @@ type Widget {
   y: Int!
   width: Int!
   height: Int!
-  prompts: [PromptCommon]
+  prompts: [Prompt]
   config: JSON
   configured: Boolean!
 }

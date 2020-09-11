@@ -6,10 +6,10 @@ fragment task on Task {
   command
   description
   icon
-  # plugin {
-  #   id
-  #   logo
-  # }
+  plugin {
+    id
+    logo
+  }
   project {
     id
   }

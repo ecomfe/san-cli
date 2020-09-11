@@ -2,7 +2,7 @@
 #import "./promptChoiceFragment.gql"
 #import "./promptErrorFragment.gql"
 
-fragment prompt on PromptCommon {
+fragment prompt on Prompt {
   id
   type
   visible

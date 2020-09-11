@@ -6,6 +6,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 const clone = require('clone');
+const yaml = require('js-yaml');
 const stringify = require('javascript-stringify').stringify;
 const plugins = require('./plugins');
 const cwd = require('./cwd');
@@ -14,10 +15,8 @@ const {get, set, unset} = require('lodash');
 const extendJsConfig = require('../utils/extendJsConfig');
 const {readPackage} = require('../utils/fileHelper');
 const {reloadModule} = require('../utils/module');
-const yaml = require('js-yaml');
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const debug = getDebugLogger('ui:configurations');
-
 const fileTypes = ['js', 'json', 'yaml'];
 
 class Configurations {

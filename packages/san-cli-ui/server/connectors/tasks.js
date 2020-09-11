@@ -77,12 +77,17 @@ class Tasks {
             if (pluginApi && pluginApi.taskPlugin) {
                 pluginApi.taskPlugin.tasks.forEach(
                     task => {
-                        // 不存在id则是一个描述性任务
+                        /**
+                         * 1. 当task的name不存在时，表明是一个描述性任务
+                         * 2. 通过match找到找到相应的本地任务，对其进行增强（如：添加视图）
+                        */
                         if (!task.name && task.match) {
                             const index = list.findIndex(({command}) => {
                                 const match = task.match;
                                 return typeof match === 'function' ? match.call(task, command) : match.test(command);
                             });
+
+                            // 通过插件来修饰本地任务
                             if (~index) {
                                 Object.assign(list[index], task);
                                 debug('Add describeTask plugin:', Object.keys(task));
@@ -114,6 +119,7 @@ class Tasks {
             debug('list', list);
         }
         this.tasks.set(file, list);
+        debug({list});
         return list;
     }
 
@@ -125,6 +131,7 @@ class Tasks {
         for (const [, list] of this.tasks) {
             const task = list.find(t => t.id === id || t.id === t.path + ':' + id);
             if (task) {
+                debug('Target task found', task);
                 return task;
             }
         }

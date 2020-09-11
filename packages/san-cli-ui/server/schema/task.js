@@ -32,6 +32,7 @@ type Task implements DescribedEntity {
   prompts: [Prompt]
   views: [TaskView]
   defaultView: String
+  plugin: Plugin
   project: Project
 }
 
