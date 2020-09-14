@@ -183,7 +183,7 @@
     },
     "config": {
         "title": "项目配置",
-        "tools": "安装devtools",
+        "tools": "安装 devtools",
         "san-cli": {
             "description": "配置 san 项目",
             "groups": {
@@ -261,9 +261,7 @@
     },
     "dashboard": {
         "title": "项目仪表盘",
-        "tools": "安装devtools",
-        "operationOff": "自定义",
-        "operationOn": "完成",
+        "tools": "安装 devtools",
         "widget": {
             "remove": "移除部件",
             "configure": "配置部件",

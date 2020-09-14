@@ -4,21 +4,18 @@
  */
 
 import Component from '@lib/san-component';
-import {router, Link} from 'san-router';
+import {Link} from 'san-router';
 import ConnectionStatus from '@components/connection-status';
+import HeaderTitle from './header-title';
 import './horizontal.less';
-import logo from '@assets/logo.svg';
 
 export default class ComponentHorLayout extends Component {
     static template = /* html */`
             <s-layout class="h1oh hlayout">
-                <c-connection-status />
+                <c-connection-status></c-connection-status>
                 <s-layout-header>
                     <div class="header">
-                        <div class="title" on-click="logoClick">
-                            <img src="{{logo}}" />
-                            {{$t('title')}}
-                        </div>
+                        <c-header-title title="{{$t('title')}}"></c-header-title>
                         <div class="head-right">
                             <s-input-search
                                 s-if="isList"
@@ -46,7 +43,7 @@ export default class ComponentHorLayout extends Component {
                                         </s-menu-item>
                                     </fragment>
                                 </s-menu>
-                                <s-icon type="plus-circle" style="font-size: 36px; color: #236eff;"></s-icon>
+                                <s-icon type="plus-circle" class="add-btn"></s-icon>
                             </s-dropdown>
                             <!---
                             <r-link to="/about">
@@ -72,16 +69,13 @@ export default class ComponentHorLayout extends Component {
     `;
     static components = {
         'c-connection-status': ConnectionStatus,
+        'c-header-title': HeaderTitle,
         'r-link': Link
     };
     initData() {
         return {
-            logo,
             pageLoading: false
         };
-    }
-    logoClick() {
-        router.locator.redirect('/');
     }
     filterInputChange(filterInput) {
         this.fire('filterInputChange', filterInput);

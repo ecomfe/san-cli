@@ -20,7 +20,7 @@ export default class Dependency extends Component {
             page-loading="{=pageLoading=}">
             <template slot="right" s-if="!modalVisible">
                 <s-button type="primary" on-click="onModalShow">
-                    <s-icon type="plus"/>{{$t('dependency.installDependency')}}
+                    <s-icon type="plus"/> {{$t('dependency.installDependency')}}
                 </s-button>
             </template>
             <div slot="content" class="dependency">

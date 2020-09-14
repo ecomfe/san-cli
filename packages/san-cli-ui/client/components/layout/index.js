@@ -5,6 +5,7 @@
 
 import Component from '@lib/san-component';
 import ConnectionStatus from '@components/connection-status';
+import HeaderTitle from './header-title';
 import PROJECTS from '@graphql/project/projects.gql';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_OPEN from '@graphql/project/projectOpen.gql';
@@ -15,42 +16,40 @@ import './index.less';
 export default class ComponentLayout extends Component {
     static template = /* html */`
             <s-layout class="h1oh layout">
-                <c-connection-status />
+                <c-connection-status></c-connection-status>
                 <s-layout-header class="header">
-                    <r-link to="/">
-                        <s-icon type="home" class="home-link" />
-                    </r-link>
-                    <s-dropdown trigger="click" class="project-name">
-                        <s-menu slot="overlay"
-                            selectable="{{false}}"
-                            on-click="handleMenuClick"
-                            style="box-shadow: 0 2px 20px rgba(0, 0, 0 , .1); border-radius: 5px; width: 160px;"
-                        >
-                            <s-menu-item key="open-in-editor">
-                                <s-icon type="codepen"></s-icon>{{$t('dropdown.editor')}}
-                            </s-menu-item>
-                            <s-menu-divider></s-menu-divider>
-                            <s-menu-item-group title="{{$t('dropdown.recentProject')}}">
-                                <s-menu-item s-for="project in list" key="{{project.id}}">
-                                    <s-icon type="history"></s-icon>{{project.name}}
-                                </s-menu-item>
-                            </s-menu-item-group>
-                        </s-menu>
-                        <s-button>{{projectCurrent.name}}<s-icon type="down" /></s-button>
-                    </s-dropdown>
-                    <span class="line"></span>
-                    <h1 class="title">{{title}}</h1>
+                    <c-header-title title="{{title}}"></c-header-title>
                     <div class="head-right">
                         <slot name="right"></slot>
                     </div>
                 </s-layout-header>
 
                 <s-layout class="h1oh flex-all main-wrap">
-                    <s-layout-sider theme="light">
-                        <s-menu class="menu" mode="inline" selectedKeys="{{nav}}">
+                    <s-layout-sider class="sider" width="151">
+                        <s-dropdown trigger="click" class="project-name-wrap">
+                            <s-menu slot="overlay"
+                                selectable="{{false}}"
+                                on-click="handleMenuClick"
+                                style="box-shadow: 0 2px 20px rgba(0, 0, 0 , .1); border-radius: 5px; width: 160px;"
+                            >
+                                <s-menu-item key="open-in-editor">
+                                    <s-icon type="codepen"></s-icon>{{$t('dropdown.editor')}}
+                                </s-menu-item>
+                                <s-menu-divider></s-menu-divider>
+                                <s-menu-item-group title="{{$t('dropdown.recentProject')}}">
+                                    <s-menu-item s-for="project in list" key="{{project.id}}">
+                                        <s-icon type="history"></s-icon>{{project.name}}
+                                    </s-menu-item>
+                                </s-menu-item-group>
+                            </s-menu>
+                            <div class="project-name">
+                                {{projectCurrent.name}} <s-icon type="caret-down" />
+                            </div>
+                        </s-dropdown>
+                        <s-menu class="menu" mode="inline" selectedKeys="{{nav}}" theme="dark">
                             <s-menu-item s-for="item in $t('menu')" key="{{item.key}}">
                                 <r-link to="{{item.link}}">
-                                    <s-icon type="{{item.icon}}"></s-icon>
+                                    <s-icon type="{{item.icon}}" class="menu-icon"></s-icon>
                                     <span>{{item.text}}</span>
                                 </r-link>
                             </s-menu-item>
@@ -71,6 +70,7 @@ export default class ComponentLayout extends Component {
     `;
     static components = {
         'c-connection-status': ConnectionStatus,
+        'c-header-title': HeaderTitle,
         'r-link': Link
     };
     initData() {
