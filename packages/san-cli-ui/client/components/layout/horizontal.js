@@ -20,24 +20,27 @@ export default class ComponentHorLayout extends Component {
                             {{$t('title')}}
                         </div>
                         <div class="head-right">
-                            <div class="input-search" s-if="isList">
-                                <s-input-search
-                                    class="project-filter"
-                                    placeholder="{{$t('project.list.searchPlaceholder')}}"
-                                    size="large"
-                                    on-change="filterInputChange">
-                                </s-input-search>
-                            </div>
+                            <s-input-search
+                                s-if="isList"
+                                class="project-filter"
+                                placeholder="{{$t('project.list.searchPlaceholder')}}"
+                                size="large"
+                                on-change="filterInputChange">
+                            </s-input-search>
                             <s-dropdown trigger="click" class="dropdown" placement="bottomCenter">
                                 <s-menu
                                     slot="overlay"
-                                    style="box-shadow: 0 2px 10px 3px #c8dBff; border-radius: 9px; width: 160px; background-color: #236eff;"
+                                    style="box-shadow: 0 2px 10px 3px #c8dBff;
+                                        border-radius: 9px;
+                                        width: 160px;
+                                        background-color: #236eff;"
                                     selectable="{{false}}">
                                     <fragment s-for="item, index in menu">
                                         <s-menu-divider s-if="index !== 0" style="opacity: 0.3;"></s-menu-divider>
                                         <s-menu-item key="{{item.key}}">
-                                            <r-link to="{{item.link}}" style="color: #fff; text-align: center; font-size: 20px;">
-                                                <s-icon type="{{item.icon}}" style="font-size: 20px;"/>
+                                            <r-link to="{{item.link}}"
+                                                style="color: #fff; text-align: center; font-size: 20px;">
+                                                <s-icon type="{{item.icon}}" style="font-size: 20px;"></s-icon>
                                                 <span>{{item.text}}</span>
                                             </r-link>
                                         </s-menu-item>
