@@ -21,14 +21,16 @@ export default class Project extends Component {
     static template = /* html */`
         <div class="h1oh project-select">
             <c-layout menu="{{$t('project.select.menu')}}"
-                nav="{=nav=}"
-                page-loading="{=pageLoading=}"
+                page-loading="{{pageLoading}}"
+                isList="{{route.path === '/' || route.query.nav === 'list'}}"
+                on-filterInputChange="filterInputChange"
             >
                 <template slot="content">
                     <!--- 1.项目列表 -->
                     <c-list
                         s-if="route.path === '/' || route.query.nav === 'list'"
                         on-routeto="handleRouteTo"
+                        filterInput="{{filterInput}}"
                     />
 
                     <!--- 2.创建项目 -->
@@ -126,8 +128,6 @@ export default class Project extends Component {
             projectPrompts: [],
             pageLoading: false,
             current: 0,
-            menuData: [],
-            nav: [],
             isImporting: false,
             isPackage: false,
             projectTemplateList: [],
@@ -136,11 +136,6 @@ export default class Project extends Component {
     }
 
     async attached() {
-        let menuData = this.$t('project.select.menu');
-        let queryNav = this.data.get('route.query.nav');
-        this.data.set('menuData', menuData);
-        this.data.set('nav', [queryNav || menuData[0].key]);
-
         let res = await this.$apollo.query({query: CWD});
         if (res.data) {
             this.data.set('cwd', res.data.cwd);
@@ -232,5 +227,9 @@ export default class Project extends Component {
             return;
         }
         router.locator.redirect('/');
+    }
+
+    filterInputChange(filterInput) {
+        this.data.set('filterInput', filterInput);
     }
 }

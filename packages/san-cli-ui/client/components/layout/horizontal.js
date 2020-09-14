@@ -19,24 +19,38 @@ export default class ComponentHorLayout extends Component {
                             <img src="{{logo}}" />
                             {{$t('title')}}
                         </div>
-                        <s-menu theme="light"
-                            mode="horizontal"
-                            selectedKeys="{{nav}}"
-                        >
-                            <s-menu-item s-for="item in menu" key="{{item.key}}">
-                                <r-link to="{{item.link}}">
-                                    <s-icon type="{{item.icon}}" />
-                                    <span>{{item.text}}</span>
-                                </r-link>
-                            </s-menu-item>
-                        </s-menu>
-                        <!---
                         <div class="head-right">
+                            <div class="input-search" s-if="isList">
+                                <s-input-search
+                                    class="project-filter"
+                                    placeholder="{{$t('project.list.searchPlaceholder')}}"
+                                    size="large"
+                                    on-change="filterInputChange">
+                                </s-input-search>
+                            </div>
+                            <s-dropdown trigger="click" class="dropdown" placement="bottomCenter">
+                                <s-menu
+                                    slot="overlay"
+                                    style="box-shadow: 0 2px 10px 3px #c8dBff; border-radius: 9px; width: 160px; background-color: #236eff;"
+                                    selectable="{{false}}">
+                                    <fragment s-for="item, index in menu">
+                                        <s-menu-divider s-if="index !== 0" style="opacity: 0.3;"></s-menu-divider>
+                                        <s-menu-item key="{{item.key}}">
+                                            <r-link to="{{item.link}}" style="color: #fff; text-align: center; font-size: 20px;">
+                                                <s-icon type="{{item.icon}}" style="font-size: 20px;"/>
+                                                <span>{{item.text}}</span>
+                                            </r-link>
+                                        </s-menu-item>
+                                    </fragment>
+                                </s-menu>
+                                <s-icon type="plus-circle" style="font-size: 36px; color: #236eff;"></s-icon>
+                            </s-dropdown>
+                            <!---
                             <r-link to="/about">
                                 <s-icon type="question-circle"></s-icon>
                             </r-link>
+                            --->
                         </div>
-                        --->
                     </div>
                 </s-layout-header>
                 <s-layout-content class="flex-all">
@@ -65,5 +79,8 @@ export default class ComponentHorLayout extends Component {
     }
     logoClick() {
         router.locator.redirect('/');
+    }
+    filterInputChange(filterInput) {
+        this.fire('filterInputChange', filterInput);
     }
 }

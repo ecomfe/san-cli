@@ -24,24 +24,13 @@ export default class ProjectList extends Component {
             <div s-if="!isLoaded" class="loading">
                 <s-icon type="loading" />
             </div>
-            <fragment s-else>
             <!---empty tip---->
-            <div class="empty-tip" s-if="!projects || projects.length <= 0">
+            <div class="empty-tip" s-else-if="!projects || projects.length <= 0">
                 <div>
                     <s-icon type="coffee" />
                     <p class="tip-text">{{$t('project.list.emptyTip')}}</p>
                 </div>
             </div>
-            <!---search box---->
-            <div class="input-search" s-else>
-                <s-input-search
-                    placeholder="{{$t('project.list.searchPlaceholder')}}"
-                    value="{=filterInput=}"
-                    style="width: 400px;"
-                    size="large"
-                />
-            </div>
-            </fragment>
 
             <!---favorite list---->
             <template s-if="favoriteList && favoriteList.length > 0">
@@ -115,8 +104,7 @@ export default class ProjectList extends Component {
             isLoaded: false,
             showRenameModal: false,
             projectName: '',
-            editProject: '',
-            filterInput: ''
+            editProject: ''
         };
     }
 

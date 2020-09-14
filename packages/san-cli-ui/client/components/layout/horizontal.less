@@ -1,6 +1,7 @@
 .hlayout {
     .santd-layout-header {
         width: 100%;
+        height: 78px;
         background-color: #fff;
         box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
         border-bottom: 1px solid #e8e8e8;
@@ -9,22 +10,49 @@
             max-width: 1200px;
             margin: 0 auto;
             justify-content: space-between;
-        }
-        .title {
-            margin-right: 40px;
-            padding: 0 16px;
-            color: #333;
-            font-size: 18px;
-            cursor: pointer;
-            font-size: 24px;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            img {
-                width: 25px;
-                height: 40px;
-                display: block;
-                margin-right: 10px;
+            height: 100%;
+            .title {
+                margin-right: 40px;
+                padding: 0 16px;
+                color: #236eff;
+                cursor: pointer;
+                font-size: 30px;
+                white-space: nowrap;
+                display: flex;
+                align-items: center;
+                img {
+                    width: 25px;
+                    height: 40px;
+                    display: block;
+                    margin-right: 10px;
+                }
+            }
+            .head-right {
+                display: flex;
+                align-items: center;
+                padding-right: 90px;
+                .project-filter {
+                    width: 275px;
+                    opacity: 0.5;
+                    margin-right: 24px;
+                    input {
+                        border-radius: 22.11px;
+                        border-color: #377bff;
+                        color: #377bff;
+                        &::placeholder {
+                            color: #377bff;
+                        }
+                    }
+                    .santd-icon {
+                        color: #377bff;
+                    }
+                }
+                .dropdown {
+                    line-height: normal;
+                }
+                a {
+                    color: rgba(0, 0, 0, .65);
+                }
             }
         }
         .santd-menu-horizontal {
@@ -39,13 +67,6 @@
             a {
                 font-size: 18px;
                 text-decoration: none;
-            }
-        }
-        .head-right {
-            text-align: right;
-            padding-right: 16px;
-            a {
-                color: rgba(0, 0, 0, .65);
             }
         }
     }

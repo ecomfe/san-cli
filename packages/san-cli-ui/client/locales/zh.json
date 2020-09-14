@@ -3,13 +3,8 @@
     "project": {
         "select": {
             "menu": [{
-                "text": "项目管理",
-                "icon": "unordered-list",
-                "key": "list",
-                "link": "/project/list"
-            }, {
                 "text": "创建项目",
-                "icon": "plus",
+                "icon": "plus-circle",
                 "key": "create",
                 "link": "/project/create"
             }, {
@@ -48,7 +43,7 @@
             }
         },
         "list": {
-            "searchPlaceholder": "请输入项目关键字",
+            "searchPlaceholder": "筛选我的全部项目",
             "emptyTip": "暂无项目",
             "collectionTitle": "收藏的项目",
             "listTitle": "其他项目",
