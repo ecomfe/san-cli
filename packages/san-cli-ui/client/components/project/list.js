@@ -9,7 +9,7 @@ import './list.less';
 
 export default class ProjectList extends Component {
     static template = /* html */`
-        <div class="list">
+        <div class="project-list">
             <div
                 class="list-item{{lastOpenProject === item.id ? ' last-clicked-item' : ''}}"
                 s-for="item, index in list"

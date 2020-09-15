@@ -1,9 +1,8 @@
 .folder-explorer {
     height: 0;
     overflow: hidden;
-    display: flex;
     flex-direction: column;
-    .contents {
+    .folder-path {
         width: 100%;
         display: flex;
         align-items: center;
@@ -33,7 +32,10 @@
         }
     }
     .folders {
-        padding: 10px 10px 10px 32px;
+        .container {
+            padding: 10px 10px 10px 32px;
+        }
+        height: 100%;
         overflow-y: auto;
         overflow-x: hidden;
         .folder-item {

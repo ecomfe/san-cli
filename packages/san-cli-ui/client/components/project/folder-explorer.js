@@ -17,7 +17,7 @@ import './folder-explorer.less';
 export default class FolderExplorer extends Component {
     static template = /* html */`
         <div class="flex-all folder-explorer">
-            <div class="flex-none contents">
+            <div class="flex-none folder-path container">
                 <s-tooltip title="{{$t('project.select.folderExplorer.tooltip.pre')}}">
                     <s-button type="primary" icon="left" on-click="onPathChange(-2)"></s-button>
                 </s-tooltip>
@@ -87,21 +87,24 @@ export default class FolderExplorer extends Component {
                 </s-dropdown>
             </div>
             <div class="flex-all folders">
-                <s-spin spinning="{{loading}}"/>
-                <template s-if="folderCurrent && folderCurrent.children" s-for="folder in folderCurrent.children">
-                    <div s-if="showHiddenFolder || !folder.hidden"
-                        class="folder-item {{folder.hidden ? 'hidden' : ''}}"
-                        on-click="openFolder(folder.path)"
-                    >
+                <div class="container">
+                    <s-spin spinning="{{loading}}"/>
+                    <template s-if="folderCurrent && folderCurrent.children" s-for="folder in folderCurrent.children">
+                        <div s-if="showHiddenFolder || !folder.hidden"
+                            class="folder-item {{folder.hidden ? 'hidden' : ''}}"
+                            on-click="openFolder(folder.path)"
+                        >
                         <img s-if="folder.isSanProject" class="san-project-icon" src="{{logo}}" />
                         <s-icon s-else type="{{folder.isPackage ? 'folder' : 'folder-open'}}" theme="filled"></s-icon>
                         <div class="folder-name">
                             {{folder.name}}  
                         </div>
                         <s-icon s-if="folder.favorite" type="star" theme="filled"></s-icon>
-                    </div>
-                </template>
+                        </div>
+                    </template>
+                </div>
             </div>
+
             <s-modal title="{{$t('project.select.folderExplorer.modalCreateTitle')}}"
                 visible="{=showCreateModal=}"
                 on-ok="handleModalOk"

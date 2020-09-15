@@ -20,7 +20,7 @@ import './project-list.less';
 export default class ProjectList extends Component {
 
     static template = /* html */`
-        <div class="project-list">
+        <div class="project">
             <div s-if="!isLoaded" class="loading">
                 <s-icon type="loading" />
             </div>
@@ -33,23 +33,21 @@ export default class ProjectList extends Component {
             </div>
 
             <!---favorite list---->
-            <template s-if="favoriteList && favoriteList.length > 0">
-                <div class="favorite">
-                    <h3>{{$t('project.list.collectionTitle')}}</h3>
-                    <c-list
-                        list="{=favoriteList=}"
-                        on-edit="onEdit"
-                        on-open="onOpen"
-                        on-remove="onRemove"
-                        on-favorite="onFavorite"
-                        on-itemclick="onItemClick"
-                        lastOpenProject="{=lastOpenProject=}"
-                    />
-                </div>
-            </template>
+            <div class="favorite container" s-if="favoriteList && favoriteList.length > 0">
+                <h3>{{$t('project.list.collectionTitle')}}</h3>
+                <c-list
+                    list="{=favoriteList=}"
+                    on-edit="onEdit"
+                    on-open="onOpen"
+                    on-remove="onRemove"
+                    on-favorite="onFavorite"
+                    on-itemclick="onItemClick"
+                    lastOpenProject="{=lastOpenProject=}"
+                />
+            </div>
 
             <!---all list---->
-            <template s-if="nomarlList && nomarlList.length > 0">
+            <div class="container project-list-container" s-if="nomarlList && nomarlList.length > 0">
                 <h3 s-if="favoriteList && favoriteList.length > 0">{{$t('project.list.listTitle')}}</h3>
                 <c-list
                     list="{=nomarlList=}"
@@ -60,7 +58,7 @@ export default class ProjectList extends Component {
                     on-itemclick="onItemClick"
                     lastOpenProject="{=lastOpenProject=}"
                 />
-            </template>
+            </div>
 
             <s-modal wrap-class-name="rename-modal"
                 width="580"
