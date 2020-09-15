@@ -1,23 +1,44 @@
 .run-task {
-    height: 100%;
-    padding: 16px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    .task-nav {
-        border-right: 0;
+    .task-icon {
+        opacity: 0.2;
+        font-weight: 500;
+        font-size: 240px;
+        line-height: 180px;
+        position: absolute;
+        left: -30px;
+        top: -20px;
     }
-    .info {
-        padding: 8px 0;
+
+    .text {
+        font-size: 18px;
+        position: absolute;
+        left: 45px;
     }
-    .actions {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        & > :not(:last-child) {
-            margin-right: 8px;
-        }
+    .task-name {
+        font-weight: 700;
+        top: 68px;
+    }
+    .task-description {
+        color: #505b6f;
+        top: 94px;
+    }
+
+    .btn {
+        height: 36px;
+        border-radius: 18px;
+        font-size: 18px;
+        position: absolute;
+        right: 36px;
+    }
+    .task-btn {
+        width: 76px;
+        top: 71px;
+    }
+    .jump-btn {
+        width: 142px;
+        border: 2px solid rgba(35, 110, 255, 0.3);
+        font-weight: 500;
+        color: #236eff;
+        top: 128px;
     }
 }

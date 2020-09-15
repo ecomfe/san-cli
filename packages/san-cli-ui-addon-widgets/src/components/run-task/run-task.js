@@ -14,38 +14,18 @@ export default {
     template: /* html */`
         <div class="run-task">
             <template s-if="task">
-                <div class="task-nav info status-{{task.status}} {{selected ? 'selected' : ''}}">
-                    <div class="task-nav-item">
-                        <div class="task-icon">
-                            <img s-if="task.icon" src="{{task.icon}}" />
-                            <img s-else src="{{avatars(task.name)}}" />
-                        </div>
-                        <div class="task-info">
-                            <div class="task-info-name">{{task.name}}</div>
-                            <div class="task-info-description">{{description ? $t(description) : ''}}</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="actions">
-                    <s-button
-                        s-if="task.status !== 'running'"
-                        icon="caret-right"
-                        type="primary"
-                        on-click="runTask"
-                    >{{$t('task.run')}}</s-button>
-
-                    <s-button
-                        s-else
-                        icon="stop"
-                        type="primary"
-                        on-click="stopTask"
-                    >{{$t('task.stop')}}</s-button>
-
-                    <s-button
-                        icon="project"
-                        href="/#/tasks/{{taskId}}"
-                    >{{$t('dashboard.widgets.run-task.page')}}</s-button>
-                </div>
+                <div class="task-icon" style="color: {{iconColor}}">{{task.name[0] | upper}}</div>
+                <div class="task-name text" style="color: {{iconColor}}">{{task.name}}</div>
+                <div class="task-description text">{{description ? $t(description) : ''}}</div>
+                <s-button s-if="task.status !== 'running'" type="primary" on-click="runTask" class="btn task-btn">
+                    {{$t('task.run')}}
+                </s-button>
+                <s-button s-else type="primary" on-click="stopTask" class="btn task-btn">
+                    {{$t('task.stop')}}
+                </s-button>
+                <s-button href="/#/tasks/{{taskId}}" class="btn jump-btn">
+                    {{$t('dashboard.widgets.run-task.page')}}
+                </s-button>
             </template>
         </div>
     `,
@@ -61,6 +41,30 @@ export default {
         description() {
             const task = this.data.get('task');
             return task ? (task.status === 'idle' && task.description) || `task.status.${task.status}` : '';
+        },
+        iconColor() {
+            let icon = this.data.get('task.name[0]');
+            if (!icon) {
+                return '#000';
+            }
+            icon = icon.toUpperCase();
+            switch (true) {
+                case /[A-F]/.test(icon):
+                    return '#009688';
+                case /[G-L]/.test(icon):
+                    return '#673bb8';
+                case /[M-R]/.test(icon):
+                    return '#c04379';
+                case /[S-Z]/.test(icon):
+                    return '#ff8b00';
+                default:
+                    return '#000';
+            }
+        }
+    },
+    filters: {
+        upper(str) {
+            return str.toUpperCase();
         }
     },
     initData() {

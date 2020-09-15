@@ -43,7 +43,7 @@ export default class ComponentHorLayout extends Component {
                                         </s-menu-item>
                                     </fragment>
                                 </s-menu>
-                                <s-icon type="plus-circle" class="add-btn"></s-icon>
+                                <s-button size="large" type="primary" shape="circle" icon="plus" />
                             </s-dropdown>
                             <!---
                             <r-link to="/about">

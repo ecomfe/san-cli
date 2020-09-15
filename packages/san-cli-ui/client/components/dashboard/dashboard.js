@@ -54,11 +54,12 @@ export default class DashboardWidget extends Component {
 
                         <!-- Setting button -->
                         <s-button
-                                s-if="widget.definition.hasConfigPrompts"
-                                icon="setting"
-                                class="icon-button"
-                                on-click="openConfig"
-                            ></s-button>
+                            s-if="widget.definition.hasConfigPrompts"
+                            icon="setting"
+                            class="icon-button"
+                            on-click="openConfig"
+                            size="large"
+                        ></s-button>
 
                         <!-- Exit button -->
                         <s-button
@@ -66,6 +67,7 @@ export default class DashboardWidget extends Component {
                             icon="fullscreen-exit"
                             class="icon-button"
                             on-click="exitDetails"
+                            size="large"
                         ></s-button>
 
                         <!-- Open details button -->
@@ -74,6 +76,7 @@ export default class DashboardWidget extends Component {
                             icon="fullscreen"
                             class="icon-button"
                             on-click="openDetails"
+                            size="large"
                         ></s-button>
                     </div>
                     <div s-if="widget.configured" class="flex-all content">

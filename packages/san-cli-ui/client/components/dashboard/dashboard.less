@@ -18,20 +18,21 @@
         position: relative;
         background-color: #fff;
         border-radius: 18px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, .05);
+        box-shadow: 0 2px 10px 3px rgba(228, 228, 228, .3);
+        overflow: hidden;
         .content {
             overflow: hidden;
         }
     }
     .head-bar {
-        padding: 12px 12px 6px @padding16;
+        padding: 16px 12px 6px 24px;
+        position: relative;
+        z-index: 1;
         .h-box();
         .icon-button {
-            width: 24px;
-            height: 24px;
-            padding: 0 !important;
+            height: 32px;
+            box-shadow: none;
             margin-right: @padding16 / 4;
-            background-color: @light-primary-color;
         }
     }
     .head-title {
