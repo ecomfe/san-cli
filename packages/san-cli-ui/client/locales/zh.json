@@ -43,7 +43,7 @@
             }
         },
         "list": {
-            "searchPlaceholder": "筛选我的全部项目",
+            "searchPlaceholder": "按备注名筛选项目",
             "emptyTip": "暂无项目",
             "collectionTitle": "收藏的项目",
             "listTitle": "其他项目",
