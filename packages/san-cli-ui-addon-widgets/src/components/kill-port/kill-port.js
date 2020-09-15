@@ -15,15 +15,12 @@ export default {
                 </div>
             </div>
             <div class="actions">
-                <s-input-number
-                    min="0" 
-                    max="9999"
-                    value="{=port=}"
-                    size="large"
-                    on-change="onchange"
-                ></s-input-number>
-                <s-button class="huge" type="primary" value="large" on-click="kill">
-                    <s-icon type="thunderbolt" theme="filled"/>
+                <s-input
+                    value="{{port}}"
+                    placeholder="{{$t('dashboard.widgets.kill-port.placeholder')}}"
+                    on-change="onchange">
+                </s-input>
+                <s-button class="btn" type="primary" on-click="kill">
                     {{$t('dashboard.widgets.kill-port.kill')}}
                 </s-button>
             </div>

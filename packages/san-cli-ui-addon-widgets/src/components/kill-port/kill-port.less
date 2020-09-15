@@ -7,9 +7,9 @@
     justify-content: space-between;
     .status {
         display: flex;
-        flex-direction: row;
         align-items: center;
         height: 48px;
+        padding-left: 21px;
         .santd-icon {
             color: #1890ff;
             font-size: 32px;
@@ -32,26 +32,26 @@
     }
     .actions {
         display: flex;
-        flex-direction: row;
-        justify-content: center;
-        .santd-input-number {
-            margin-right: 16px;
-            flex: 1;
-        }
-        .huge {
+        padding-left: 29px;
+        padding-right: 20px;
+        justify-content: space-between;
+        input {
+            opacity: 0.5;
+            border: 1px solid #377bff;
+            border-radius: 18px;
+            height: 36px;
+            padding-left: 15px;
+            color: #377bff;
             font-size: 16px;
-            &.santd-btn:not(.santd-btn-circle):not(.santd-btn-circle-outline).santd-btn-icon-only {
-                padding: 0 18px;
-            }
-            .santd-icon {
-                margin-right: 8px;
+            &::placeholder {
+                color: #377bff;
             }
         }
-        .santd-input-number,
-        .santd-input-number-input,
-        .huge {
-            height: 44px;
-            line-height: 32px;
+        .btn {
+            width: 76px;
+            height: 36px;
+            border-radius: 18px;
+            font-size: 18px;
         }
     }
 }
