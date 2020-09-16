@@ -156,7 +156,6 @@
     },
     "dependency": {
         "title": "项目依赖",
-        "installed": "已安装",
         "uninstalled": "未安装",
         "install": "安装",
         "version": "版本",
@@ -171,11 +170,11 @@
         "dependencies": "运行依赖",
         "devDependencies": "开发依赖",
         "confirmUninstall": "确定卸载",
-        "deleteDependency": "依赖卸载",
+        "deleteDependency": "卸载依赖",
         "deleteSuccess": "卸载成功",
-        "installDependency": "依赖安装",
+        "installDependency": "安装依赖",
         "installSuccess": "安装成功",
-        "updateDependency": "依赖更新",
+        "updateDependency": "更新依赖",
         "updateSuccess": "更新成功",
         "tooltip": {
             "update": "更新",
