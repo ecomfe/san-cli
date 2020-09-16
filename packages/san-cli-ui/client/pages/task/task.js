@@ -87,12 +87,42 @@ export default class Task extends Component {
         if (!id) {
             return {};
         }
-        const res = await this.$apollo.query({
+
+        const query = await this.$apollo.query({
             query: TASK,
             variables: {
                 id
             }
         });
-        return res.data ? res.data.task : {};
+
+        const data = query.data ? query.data.task : {};
+        data.prompts && data.prompts.forEach(prompt => {
+            if (!prompt.value || typeof prompt.value !== 'string') {
+                return;
+            }
+            try {
+                prompt.value = JSON.parse(prompt.value);
+
+                if (!prompt.choices) {
+                    return;
+                }
+
+                prompt.choices.forEach(choice => {
+                    if (!choice.value || typeof choice.value !== 'string') {
+                        return;
+                    }
+                    try {
+                        choice.value = JSON.parse(choice.value);
+                    }
+                    catch (e) {
+                        console.log(`Prompt choices parse error: ${e}`);
+                    }
+                });
+            }
+            catch (e) {
+                console.log(`Prompt parse error: ${e}`);
+            }
+        });
+        return data;
     }
 }

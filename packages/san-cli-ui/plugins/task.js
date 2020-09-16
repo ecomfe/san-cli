@@ -221,10 +221,6 @@ module.exports = api => {
                         value: 'production'
                     },
                     {
-                        name: 'test',
-                        value: 'test'
-                    },
-                    {
                         name: '(unset)',
                         value: ''
                     }
@@ -318,10 +314,6 @@ module.exports = api => {
                     {
                         name: 'production',
                         value: 'production'
-                    },
-                    {
-                        name: 'test',
-                        value: 'test'
                     },
                     {
                         name: '(unset)',

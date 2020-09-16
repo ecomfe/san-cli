@@ -182,6 +182,6 @@ export default class PromptsForm extends Component {
         this.fire('submit', data);
     }
     type(value) {
-        return typeof value === 'object';
+        return typeof value === 'object' && value !== null;
     }
 }

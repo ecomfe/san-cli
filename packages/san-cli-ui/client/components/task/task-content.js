@@ -7,12 +7,17 @@ import Component from '@lib/san-component';
 import {Terminal} from 'xterm';
 import {FitAddon} from 'xterm-addon-fit';
 import ClientAddon from '../client-addon/client-addon';
+import PromptsList from '../prompts-form/prompts-form';
 import TASK from '@graphql/task/task.gql';
+// import TASKS from '@graphql/task/tasks.gql';
 import TASK_RUN from '@graphql/task/taskRun.gql';
 import TASK_STOP from '@graphql/task/taskStop.gql';
 import TASK_CHANGED from '@graphql/task/taskChanged.gql';
 import TASK_LOG_ADDED from '@graphql/task/taskLogAdded.gql';
 import TASK_LOGS from '@graphql/task/taskLogs.gql';
+import PROMPT_ANSWER from '@graphql/prompt/promptAnswer.gql';
+import TASK_SAVE_PARAMETERS from '@graphql/task/taskSaveParameters.gql';
+import TASK_RESTORE_PARAMETERS from '@graphql/task/taskRestoreParameters.gql';
 import 'xterm/css/xterm.css';
 import './task-content.less';
 
@@ -112,17 +117,25 @@ export default class TaskContent extends Component {
                     </div>
                 </fragment>
 
-                <s-modal title="Title"
+                <s-modal title="{{$t('task.setting')}}"
+                    width="800"
                     visible="{=promptsFormVisible=}"
                     on-ok="handlePromptFormOk"
                     on-cancel="handlePromptFormCancel"
                     confirmLoading="{{confirmLoading}}">
-                    <div s-if="!prompts  || !prompts.length">
+                    <div s-if="!taskInfo.prompts  || !taskInfo.prompts.length">
                         <div class="task-empty-tip">
                             <s-icon type="frown" />
                             <div class="tip-text">{{$t('task.emptyTip')}}</div>
                         </div>
                     </div>
+                    <c-prompts-list s-else
+                        s-ref="taskConfigForm"
+                        hide-submit-btn="{{true}}"
+                        prompts="{=taskInfo.prompts=}"
+                        on-submit="saveTaskConfig"
+                        on-valuechanged="onTaskConfigChange"
+                    />
                 </s-modal>
             </div>
         </div>
@@ -130,6 +143,7 @@ export default class TaskContent extends Component {
     `;
 
     static components = {
+        'c-prompts-list': PromptsList,
         'c-client-addon': ClientAddon
     };
 
@@ -154,18 +168,6 @@ export default class TaskContent extends Component {
 
     showPromptForm() {
         this.data.set('promptsFormVisible', true);
-    }
-
-    handlePromptFormOk(e) {
-        this.data.set('promptsFormVisible', false);
-    }
-
-    handlePromptFormCancel(e) {
-        this.data.set('promptsFormVisible', false);
-    }
-
-    afterPromptFormClose() {
-        console.log('afterClose');
     }
 
     setViewIndex(index) {
@@ -438,5 +440,37 @@ export default class TaskContent extends Component {
                 this.terminal.clearSelection();
             }
         }
+    }
+
+    async handlePromptFormOk(e) {
+        this.data.set('promptsFormVisible', false);
+        await this.$apollo.mutate({
+            mutation: TASK_SAVE_PARAMETERS,
+            variables: {
+                id: this.data.get('taskInfo.id')
+            }
+        });
+    }
+
+    async handlePromptFormCancel(e) {
+        this.data.set('promptsFormVisible', false);
+        await this.$apollo.mutate({
+            mutation: TASK_RESTORE_PARAMETERS,
+            variables: {
+                id: this.data.get('taskInfo.id')
+            }
+        });
+    }
+
+    async onTaskConfigChange({prompt, value}) {
+        await this.$apollo.mutate({
+            mutation: PROMPT_ANSWER,
+            variables: {
+                input: {
+                    id: prompt.id,
+                    value: JSON.stringify(value)
+                }
+            }
+        });
     }
 }
