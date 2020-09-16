@@ -1,7 +1,7 @@
 .task-cards {
     display: flex;
     flex-wrap: wrap;
-    padding: 20px 30px;
+    padding: 36px 15px;
     .task-card-item {
         flex: 0 0 25%;
         max-width: 25%;
@@ -12,78 +12,51 @@
 
     .card-item {
         background-color: #fff;
-        border: .0625rem solid #dee2e6;
-        border-radius: .142rem;
-        margin-bottom: .9375rem;
+        margin-bottom: 1.875rem;
         position: relative;
         display: flex;
         flex-direction: column;
         width: 100%;
-        color: #58666e;
-    }
-
-    .card-heading {
+        height: 143px;
+        box-shadow: 0 2px 10px 3px rgba(228, 228, 228, 0.3);
+        border-radius: 18px;
         overflow: hidden;
-        padding: .625rem .9375rem;
-        flex: 1 0 auto;
     }
 
-    .card-avatar {
-        float: left;
-        margin-right: .9375rem;
-        max-width: 12.5rem;
-        width: 50px;
-        border-width: 3px;
-        img {
-            height: auto;
-            max-width: 100%;
-            vertical-align: middle;
-            overflow: hidden;
-        }
+    .card-icon {
+        opacity: 0.2;
+        font-weight: 500;
+        font-size: 180px;
+        line-height: 180px;
+        position: absolute;
+        left: -20px;
+        top: -40px;
     }
 
     .card-meta {
         display: block;
         height: 100%;
         overflow: hidden;
-        position: relative;
         margin-right: 1.25rem;
+        padding-left: 78px;
+        padding-top: 70px;
+        position: relative;
+        z-index: 1;
     }
 
     .card-title {
-        color: #414c52;
-        font-size: 1rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-size: 18px;
+        font-weight: 700;
     }
 
     .card-subtitle {
         max-height: 2.625rem;
-        overflow: hidden;
+        color: #8c8c8c;
         text-overflow: ellipsis;
-        color: #99a6ad;
-        line-clamp: 2;
-        box-orient: vertical;
-        display: box;
-    }
-
-    .card-actions {
-        border-top: .0625rem solid #edeff1;
-        display: table;
-        width: 100%;
-        table-layout: fixed;
-        a {
-            background-color: transparent;
-            display: table-cell;
-            border-color: #edeff1;
-            border-style: solid;
-            border-width: 0;
-            color: #58666e;
-            text-align: center;
-            line-height: 2.5rem;
-            font-size: .875rem;
-        }
+        overflow: hidden;
+        white-space: nowrap;
     }
 }
-

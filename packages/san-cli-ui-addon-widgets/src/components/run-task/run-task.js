@@ -7,8 +7,8 @@ import TASK from 'san-cli-ui/client/graphql/task/task.gql';
 import TASK_RUN from 'san-cli-ui/client/graphql/task/taskRun.gql';
 import TASK_STOP from 'san-cli-ui/client/graphql/task/taskStop.gql';
 import TASK_CHANGED from 'san-cli-ui/client/graphql/task/taskChanged.gql';
-import avatars from 'san-cli-ui/client/lib/utils/avatars';
 import './run-task.less';
+import taskIconColor from 'san-cli-ui/client/lib/utils/task-icon-color';
 
 export default {
     template: /* html */`
@@ -43,23 +43,7 @@ export default {
             return task ? (task.status === 'idle' && task.description) || `task.status.${task.status}` : '';
         },
         iconColor() {
-            let icon = this.data.get('task.name[0]');
-            if (!icon) {
-                return '#000';
-            }
-            icon = icon.toUpperCase();
-            switch (true) {
-                case /[A-F]/.test(icon):
-                    return '#009688';
-                case /[G-L]/.test(icon):
-                    return '#673bb8';
-                case /[M-R]/.test(icon):
-                    return '#c04379';
-                case /[S-Z]/.test(icon):
-                    return '#ff8b00';
-                default:
-                    return '#000';
-            }
+            return taskIconColor(this.data.get('task.name'));
         }
     },
     filters: {
@@ -132,8 +116,5 @@ export default {
                 id: this.data.get('taskId')
             }
         });
-    },
-    avatars(name) {
-        return avatars(name, 'initials');
     }
 };

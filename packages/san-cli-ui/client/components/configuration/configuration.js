@@ -69,7 +69,7 @@ export default class ConfigContent extends Component {
 
     static components = {
         'c-prompts': PromptsList
-    }
+    };
 
     saveConfig() {
         this.ref('configForm').handleSubmit();

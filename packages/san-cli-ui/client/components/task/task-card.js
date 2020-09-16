@@ -1,32 +1,24 @@
 /**
  * @file 任务列表
- * @author jinzhan
+ * @author jinzhan, Lohoyo
  */
 
 import Component from '@lib/san-component';
 import {Link} from 'san-router';
-import avatars from '@lib/utils/avatars';
+import taskIconColor from '@lib/utils/task-icon-color';
 import './task-card.less';
 
 export default class TaskNav extends Component {
     static template = /* html */`
         <div class="task-cards">
             <div class="task-card-item {{task.name===queryName ? 'task-nav-item-current' : ''}}" s-for="task in tasks">
-                <div class="card-item">
-                    <div class="card-heading">
-                        <span class="card-avatar">
-                            <img s-if="task.icon" src="{{task.icon}}" />
-                            <img s-else src="{{avatars(task.name)}}" />
-                        </span>
-                        <div class="card-meta">
-                            <div class="card-title">{{task.name}}</div>
-                            <div class="card-subtitle">{{$t(task.description) || task.command}}</div>
-                        </div>
+                <r-link to="{{'/' + routePath + '/' + task.name}}" class="card-item">
+                    <div class="card-icon" style="color: {{iconColor(task.name)}}">{{task.name[0] | upper}}</div>
+                    <div class="card-meta">
+                        <div class="card-title" style="color: {{iconColor(task.name)}}">{{task.name}}</div>
+                        <div class="card-subtitle">{{$t(task.description) || task.command}}</div>
                     </div>
-                    <div class="card-actions">
-                        <r-link to="{{'/' + routePath + '/' + task.name}}">{{$t('enter')}}</r-link>
-                    </div>
-                </div>
+                </r-link>
             </div>
         </div>
     `;
@@ -35,7 +27,13 @@ export default class TaskNav extends Component {
         'r-link': Link
     };
 
-    avatars(name) {
-        return avatars(name, 'initials');
+    static filters = {
+        upper(str) {
+            return str.toUpperCase();
+        }
+    };
+
+    iconColor(taskName) {
+        return taskIconColor(taskName);
     }
 }
