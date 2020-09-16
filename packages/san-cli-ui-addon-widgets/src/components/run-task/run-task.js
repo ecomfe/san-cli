@@ -17,13 +17,17 @@ export default {
                 <div class="task-icon" style="color: {{iconColor}}">{{task.name[0] | upper}}</div>
                 <div class="task-name text" style="color: {{iconColor}}">{{task.name}}</div>
                 <div class="task-description text">{{description ? $t(description) : ''}}</div>
-                <s-button s-if="task.status !== 'running'" type="primary" on-click="runTask" class="btn task-btn">
+                <s-button
+                    s-if="task.status !== 'running'"
+                    type="primary"
+                    on-click="runTask"
+                    class="run-task-btn task-btn">
                     {{$t('task.run')}}
                 </s-button>
-                <s-button s-else type="primary" on-click="stopTask" class="btn task-btn">
+                <s-button s-else type="primary" on-click="stopTask" class="run-task-btn task-btn">
                     {{$t('task.stop')}}
                 </s-button>
-                <s-button href="/#/tasks/{{taskId}}" class="btn jump-btn">
+                <s-button href="/#/tasks/{{taskId}}" class="run-task-btn jump-btn">
                     {{$t('dashboard.widgets.run-task.page')}}
                 </s-button>
             </template>
