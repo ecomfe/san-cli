@@ -11,7 +11,6 @@ module.exports = function ({id, port = 8889}) {
         // TODO: 静态资源路径问题
         assetsDir: '',
         outputDir: 'dist',
-        // 文件名是否 hash
         filenameHashing: false,
         css: {
             sourceMap: isProduction,
@@ -32,6 +31,9 @@ module.exports = function ({id, port = 8889}) {
                 .test(/\.(graphql|gql)$/)
                 .use('graphql-loader').loader(require.resolve('graphql-tag/loader'));
             config.output.filename('index.js');
+            config.optimization.splitChunks({
+                maxSize: 1000000000
+            });
         },
         devServer: {
             headers: {
