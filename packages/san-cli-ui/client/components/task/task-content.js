@@ -1,6 +1,6 @@
 /**
  * @file 任务详情
- * @author jinzhan
+ * @author jinzhan, Lohoyo
  */
 
 import Component from '@lib/san-component';
@@ -58,29 +58,30 @@ export default class TaskContent extends Component {
     static template = /* html */`
     <div class="task-content">
         <div class="task-head">
-            <span class="task-name"><s-icon type="file-text" />{{taskInfo.name}}</span>
-            <span class="task-command">{{taskInfo.command}}</span>
+            <span class="task-name">{{taskInfo.name}}</span>
+            <div class="task-config">
+                <s-button type="primary"
+                    icon="{{isRunning ? 'loading' : ''}}" 
+                    loading="{{taskPending}}"
+                    on-click="execute">
+                    {{isRunning ? $t('task.stop') : $t('task.run')}}
+                </s-button>
+                <s-icon type="setting" on-click="showPromptForm" class="setting"></s-icon>
+            </div>
         </div>
 
         <div class="task-main-views">
             <div class="task-bar">
-                <div class="task-config">
-                    <s-button type="primary" 
-                        icon="{{isRunning ? 'loading' : 'caret-right'}}" 
-                        loading="{{taskPending}}"
-                        on-click="execute">{{isRunning ? $t('task.stop') : $t('task.run')}}</s-button>
-                    <s-button type="default" icon="setting" on-click="showPromptForm">{{$t('task.setting')}}</s-button>
-                </div>
-
+                <span title="{{taskInfo.command}}" class="task-command">{{taskInfo.command}}</span>
                 <div class="task-view-tabs" s-if="views.length">
                     <div on-click="setViewIndex(0)"
                         class="task-view-tab {{currentIndex === 0 ? 'active' : ''}}">
-                        <s-icon type="code" /><span class="task-view-tab-label">{{$t('task.output')}}</span>
+                        <span class="task-view-tab-label">{{$t('task.output')}}</span>
                     </div>
                     <div class="task-view-tab {{currentIndex === index + 1 ? 'active' : ''}}"
                         on-click="setViewIndex(index + 1)"
                         key="{{'k-' + index}}" s-for="view,index in views">
-                        <s-icon type="{{view.icon}}" /><span class="task-view-tab-label">{{$t(view.label)}}</span>
+                        <span class="task-view-tab-label">{{$t(view.label)}}</span>
                     </div>
                 </div>
             </div>

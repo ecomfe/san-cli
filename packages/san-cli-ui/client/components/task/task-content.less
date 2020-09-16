@@ -3,32 +3,53 @@
     display: flex;
     flex-direction: column;
     .task-name {
-        font-size: 24px;
-        .santd-icon {
-            margin-right: 5px;
-        }
+        font-size: 36px;
+        font-weight: 500;
+        color: #333;
+        line-height: 36px;
     }
 
     .task-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 10px;
+        margin-bottom: 18px;
     }
 
     .task-command {
-        background: #efefef;
-        color: #666;
-        display: block;
-        padding: 6px 8px;
-        border-radius: 3px;
+        background-color: rgba(204, 210, 217, .1);
+        color: rgba(102, 102, 102, .3);
+        border-radius: 15px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 12px;
+        padding: 0 15px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        margin-right: 10px;
     }
 
     .task-config {
+        display: flex;
+        align-items: center;
         .santd-btn-primary {
-            margin-right: 15px;
+            margin-right: 24px;
+            background-color: #236eff;
+            border-radius: 18px;
+            width: 76px;
+            height: 36px;
+            font-size: 18px;
+            font-weight: 500;
+            border: none;
         }
-        margin-bottom:  15px;
+        .setting {
+            font-size: 24px;
+            cursor: pointer;
+            &:hover {
+                color: #40a9ff;
+            }
+        }
     }
 
     .task-output-head {
@@ -67,19 +88,31 @@
     .task-bar {
         display: flex;
         justify-content: space-between;
+        margin-bottom: 15px;
     }
     .task-view-tabs {
         display: flex;
-        border: 1px solid rgba(0, 0, 0, 0.15);
-        border-radius: 5px;
-        height: 32px;
-        line-height: 32px;
+        border-radius: 15px;
+        height: 30px;
+        line-height: 30px;
+        background-color: rgba(204, 210, 217, 0.1);
         .task-view-tab {
-            padding: 0 15px;
+            width: 95px;
+            text-align: center;
             cursor: pointer;
+            font-size: 15px;
+            color: #666;
             &.active {
-                background-color:#40a9ff;
+                background-color:#236eff;
                 color: #fff;
+            }
+            &:first-child {
+                border-top-left-radius: 15px;
+                border-bottom-left-radius: 15px;
+            }
+            &:last-child {
+                border-top-right-radius: 15px;
+                border-bottom-right-radius: 15px;
             }
         }
         .task-view-tab-label {

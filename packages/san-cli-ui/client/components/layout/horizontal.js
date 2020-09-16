@@ -1,6 +1,6 @@
 /**
  * @file 无侧边栏布局组件
- * @author zttonly
+ * @author zttonly, Lohoyo
  */
 
 import Component from '@lib/san-component';
@@ -43,7 +43,7 @@ export default class ComponentHorLayout extends Component {
                                         </s-menu-item>
                                     </fragment>
                                 </s-menu>
-                                <s-button size="large" type="primary" shape="circle" icon="plus" />
+                                <s-button size="large" type="primary" shape="circle" icon="plus" class="btn"/>
                             </s-dropdown>
                             <!---
                             <r-link to="/about">

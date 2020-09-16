@@ -1,6 +1,6 @@
 /**
  * @file run-task运行任务组件
- * @author zttonly
+ * @author zttonly, Lohoyo
  */
 
 import TASK from 'san-cli-ui/client/graphql/task/task.gql';

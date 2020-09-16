@@ -113,7 +113,6 @@
         "title": "任务",
         "run": "运行",
         "stop": "停止",
-        "setting": "配置",
         "output": "输出",
         "clear": "清空",
         "copy": "复制",

@@ -1,6 +1,6 @@
 /**
  * @file kill端口组件
- * @author zttonly
+ * @author zttonly, Lohoyo
  */
 
 import './kill-port.less';
