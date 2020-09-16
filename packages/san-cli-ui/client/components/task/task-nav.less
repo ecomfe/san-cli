@@ -2,10 +2,12 @@
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
-    padding: 0 20px;
-    border-right: 1px solid #e8e8e8;
+    background-color: #fff;
     .task-nav-item {
+        position: relative;
         display: flex;
+        height: 100px;
+        overflow: hidden;
         a {
             display: flex;
             flex-direction: row;
@@ -19,40 +21,43 @@
         }
     }
 
-    .task-nav-item-current a {
-        text-decoration: none;
-        color: #1890ff;
+    .task-nav-item-current {
+        a {
+            text-decoration: none;
+        }
+        .task-info-description {
+            color: #8c8c8c;
+        }
     }
 
     .task-icon {
-        margin-right: 16px;
-        position: relative;
-        width: 44px;
-        height: 44px;
-        overflow: hidden;
-        img {
-            width: 44px;
-            height: 44px;
-            display: block;
-        }
-        .santd-icon {
-            font-size: 44px;
-        }
+        opacity: 0.2;
+        font-weight: 500;
+        font-size: 120px;
+        line-height: 120px;
+        position: absolute;
+        left: -15px;
+        top: -28px;
     }
 
     .task-info {
-        width: 240px;
-        padding-right: 15px;
+        box-sizing: content-box;
+        width: 200px;
+        padding-left: 66px;
         overflow: hidden;
+        position: relative;
+        z-index: 1;
     }
 
     .task-info-name {
         font-size: 18px;
+        font-weight: 700;
     }
 
     .task-info-description {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        color: #cdcdcd;
     }
 }

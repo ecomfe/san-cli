@@ -5,7 +5,7 @@
 
 export default taskName => {
     if (!taskName) {
-        return '#000';
+        return '#1890ff';
     }
     const icon = taskName[0].toUpperCase();
     switch (true) {
@@ -18,6 +18,6 @@ export default taskName => {
         case /[S-Z]/.test(icon):
             return '#ff8b00';
         default:
-            return '#000';
+            return '#1890ff';
     }
 };
