@@ -7,8 +7,10 @@ export default class SpeedStatus extends SanComponent {
     <div class="speed-stats">
         <s-grid-row>
             <s-grid-col span="8" class="item" s-for="item in speedStats">
-                <span class="label">{{item.title}}</span>
-                <span class="value">{{item.totalDownloadTime}}</span>
+                <div class="pair">
+                    <span class="label">{{item.title}}</span>
+                    <span class="value">{{item.totalDownloadTime}}</span>
+                </div>
             </s-grid-col>
         </s-grid-row>
         <div s-if="speedStats.length === 0">...</div>
