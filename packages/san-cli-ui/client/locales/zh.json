@@ -130,7 +130,30 @@
             "build": "编译并压缩（生产环境）",
             "inspect": "查看Webpack配置"
         },
-        "emptyTip": "暂无可用配置"
+        "emptyTip": "暂无可用配置",
+        "override-args": {
+            "description": "若启用，硬编码在 package.json 文件中的命令行参数会被下方的配置覆盖",
+            "message": "覆盖硬编码参数"
+        },
+        "serve": {
+            "open": "在浏览器中打开",
+            "mode": "环境",
+            "host": "域名",
+            "port": "端口",
+            "https": "启用HTTPS"
+        },
+        "inspect": {
+            "mode": "环境"
+        },
+        "build": {
+            "mode": "环境",
+            "watch": "监听变更",
+            "modern": {
+                "label": "Modern mode",
+                "description": "针对现代浏览器构建应用，自动向后兼容"
+            },
+            "dest": "输出目录"
+        }
     },
     "dependency": {
         "title": "项目依赖",

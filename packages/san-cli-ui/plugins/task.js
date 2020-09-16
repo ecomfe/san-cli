@@ -205,7 +205,7 @@ module.exports = api => {
                 name: 'open',
                 type: 'confirm',
                 default: false,
-                description: 'san.san-cli.tasks.serve.open'
+                message: 'task.serve.open'
             },
             {
                 name: 'mode',
@@ -229,25 +229,25 @@ module.exports = api => {
                         value: ''
                     }
                 ],
-                description: 'san.san-cli.tasks.serve.mode'
+                message: 'task.serve.mode'
             },
             {
                 name: 'host',
                 type: 'input',
-                default: '',
-                description: 'san.san-cli.tasks.serve.host'
+                default: '0.0.0.0',
+                message: 'task.serve.host'
             },
             {
                 name: 'port',
                 type: 'input',
                 default: undefined,
-                description: 'san.san-cli.tasks.serve.port'
+                message: 'task.serve.port'
             },
             {
                 name: 'https',
                 type: 'confirm',
                 default: false,
-                description: 'san.san-cli.tasks.serve.https'
+                message: 'task.serve.https'
             }
         ],
         onBeforeRun: ({answers, args}) => {
@@ -302,8 +302,8 @@ module.exports = api => {
                 name: 'modern',
                 type: 'confirm',
                 default: false,
-                message: 'san.san-cli.tasks.build.modern.label',
-                description: 'san.san-cli.tasks.build.modern.description',
+                message: 'task.build.modern.label',
+                description: 'task.build.modern.description',
                 link: 'https://ecomfe.github.io/san-cli'
             },
             {
@@ -328,49 +328,19 @@ module.exports = api => {
                         value: ''
                     }
                 ],
-                description: 'san.san-cli.tasks.build.mode'
+                message: 'task.build.mode'
             },
             {
                 name: 'dest',
                 type: 'input',
                 default: 'dist',
-                description: 'san.san-cli.tasks.build.dest'
-            },
-            {
-                name: 'target',
-                type: 'list',
-                default: 'app',
-                choices: [
-                    {
-                        name: 'san.san-cli.tasks.build.target.app',
-                        value: 'app'
-                    },
-                    {
-                        name: 'san.san-cli.tasks.build.target.lib',
-                        value: 'lib'
-                    },
-                    {
-                        name: 'san.san-cli.tasks.build.target.wc',
-                        value: 'wc'
-                    },
-                    {
-                        name: 'san.san-cli.tasks.build.target.wc-async',
-                        value: 'wc-async'
-                    }
-                ],
-                description: 'san.san-cli.tasks.build.target.description'
-            },
-            {
-                name: 'name',
-                type: 'input',
-                default: '',
-                description: 'san.san-cli.tasks.build.name'
+                message: 'task.build.dest'
             },
             {
                 name: 'watch',
                 type: 'confirm',
                 default: false,
-                description: 'san.san-cli.tasks.build.watch'
+                message: 'task.build.watch'
             }
         ],
         onBeforeRun: ({answers, args}) => {
@@ -446,13 +416,13 @@ module.exports = api => {
                         value: ''
                     }
                 ],
-                description: 'san.san-cli.tasks.inspect.mode'
+                description: 'task.inspect.mode'
             },
             {
                 name: 'verbose',
                 type: 'confirm',
                 default: false,
-                description: 'san.san-cli.tasks.inspect.verbose'
+                description: 'task.inspect.verbose'
             }
         ],
         onBeforeRun: ({answers, args}) => {
