@@ -81,7 +81,7 @@ export default class DependenceItem extends Component {
 
     // 安装/更新npm包
     async onPkgDownload() {
-        let {id, type, installed} = this.data.get('item');
+        const {id, type = 'devDependencies', installed} = this.data.get('item');
         this.data.set('loadingTip', this.$t('dependency.' + installed ? 'updating' : 'installing'));
         this.data.set('spinning', true);
         await this.$apollo.mutate({
@@ -94,8 +94,8 @@ export default class DependenceItem extends Component {
         this.fire('updatePkgList');
         this.data.set('spinning', false);
         Notification.open({
-            message: this.$t('dependency.' + installed ? 'updateDependency' : 'installDependency'),
-            description: this.$t('dependency.' + installed ? 'updateSuccess' : 'installSuccess')
+            message: this.$t('dependency.' + (installed ? 'updateDependency' : 'installDependency')),
+            description: this.$t('dependency.' + (installed ? 'updateSuccess' : 'installSuccess'))
         });
     }
 
