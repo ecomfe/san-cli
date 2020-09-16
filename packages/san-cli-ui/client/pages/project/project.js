@@ -1,6 +1,6 @@
 /**
  * @file 项目管理容器
- * @author zttonly
+ * @author zttonly, Lohoyo
  */
 
 import {router, Link} from 'san-router';

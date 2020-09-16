@@ -19,12 +19,12 @@ export default class Dependency extends Component {
             title="{{$t('dependency.title')}}"
             page-loading="{=pageLoading=}">
             <template slot="right" s-if="!modalVisible">
-                <s-button type="primary" on-click="onModalShow">
-                    <s-icon type="plus"/> {{$t('dependency.installDependency')}}
+                <c-dependence-filter on-keywordChange="keywordChange" />
+                <s-button type="primary" on-click="onModalShow" class="dependency-btn">
+                    {{$t('dependency.installDependency')}} <s-icon type="plus"/>
                 </s-button>
             </template>
             <div slot="content" class="dependency">
-                <c-dependence-filter on-keywordChange="keywordChange" />
                 <div class="dependency-wrapper">
                     <div class="pkg-body" s-if="dependencies.length">
                         <h2>{{$t('dependency.dependencies')}}</h2>
@@ -32,7 +32,7 @@ export default class Dependency extends Component {
                             <c-dependency-item item="{{item}}" on-updatePkgList="getDependencies"/>
                         </template>
                     </div>
-                    <div class="pkg-body" s-if="devDependencies.length">
+                    <div class="pkg-body dev-pkg-body" s-if="devDependencies.length">
                         <h2>{{$t('dependency.devDependencies')}}</h2>
                         <template s-for="item in devDependencies">
                             <c-dependency-item item="{{item}}" on-updatePkgList="getDependencies"/>

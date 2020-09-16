@@ -1,6 +1,6 @@
 /**
  * @file 仪表盘
- * @author zttonly
+ * @author zttonly, Lohoyo
  */
 
 import {Link} from 'san-router';

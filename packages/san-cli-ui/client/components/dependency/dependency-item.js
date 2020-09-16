@@ -1,6 +1,6 @@
 /**
  * @file 已安装依赖列表
- * @author sunxiaoyu333
+ * @author sunxiaoyu333, Lohoyo
  */
 
 import Component from '@lib/san-component';
@@ -21,38 +21,33 @@ export default class DependenceItem extends Component {
                     <a href="{{item.website}}" target="_blank">{{item.id}}</a>
                     <div class="pkg-detail">
                         <span class="pkg-version">
-                            {{$t('dependency.version')}}{{item.detail.current || ' ...'}}
+                            {{$t('dependency.version')}} {{item.detail.current || ' ...'}}
                         </span>
                         <span class="pkg-version">
-                            {{$t('dependency.lowVersion')}}{{item.detail.wanted || ' ...'}}
+                            {{$t('dependency.lowVersion')}} {{item.detail.wanted || ' ...'}}
                         </span>
                         <span class="pkg-version">
-                            {{$t('dependency.currentVersion')}}{{item.detail.latest || ' ...'}}
+                            {{$t('dependency.currentVersion')}} {{item.detail.latest || ' ...'}}
                         </span>
-                        <fragment s-if="item.installed">
-                            <s-icon class="pkg-check-ico" type="check-circle" />
-                            <span class="pkg-version">{{$t('dependency.installed')}}</span>
-                            <s-tooltip
-                                title="{{$t('dependency.tooltip.update')}}"
-                                s-if="item.detail.current !== item.detail.latest">
-                                <s-icon
-                                    type="arrow-up"
-                                    class="update-icon highlight"
-                                    on-click="onPkgDownload"
-                                />
-                            </s-tooltip>
-                        </fragment>
-                        <fragment s-else>
-                            <s-icon class="pkg-check-ico warn" type="close-circle" />
-                            <span class="pkg-version warn">{{$t('dependency.uninstalled')}}</span>
-                            <s-tooltip title="{{$t('dependency.tooltip.install')}}">
-                                <s-icon type="download" class="highlight" on-click="onPkgDownload" />
-                            </s-tooltip>
-                        </fragment>
                     </div>
                 </div>
-                <s-tooltip title="{{$t('dependency.tooltip.del')}}">
-                    <s-icon type="delete" class="highlight" on-click="showDeleteConfirm"/>
+                <fragment s-if="{{item.installed}}">
+                    <s-tooltip
+                        s-if="item.detail.current !== item.detail.latest"
+                        title="{{$t('dependency.tooltip.update')}}">
+                        <s-button type="primary" class="update-btn" icon="arrow-up" on-click="onPkgDownload"/>
+                    </s-tooltip>
+                </fragment>
+                <fragment s-else>
+                    <s-tooltip title="{{$t('dependency.tooltip.install')}}">
+                        <s-icon type="download" class="download-icon" on-click="onPkgDownload" />
+                    </s-tooltip>
+                    <div class="uninstalled-label">
+                        <div class="uninstalled-label-text">{{$t('dependency.uninstalled')}}</div>
+                    </div>
+                </fragment>
+                <s-tooltip title="{{$t('dependency.tooltip.del')}}" class="delete-tooltip">
+                    <s-icon type="delete" class="delete-icon" on-click="showDeleteConfirm"/>
                 </s-tooltip>
             </div>
         </s-spin>

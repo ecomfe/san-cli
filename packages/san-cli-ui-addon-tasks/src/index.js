@@ -47,13 +47,15 @@ const TaskDashboard = {
                     </s-card>
                 </s-grid-col>
             </s-grid-row>
-            <s-grid-row class="row" gutter="16">
-                <s-grid-col span="16">
+            <s-grid-row class="row">
+                <s-grid-col span="24">
                     <s-card bordered="{{false}}" class="card" title="资源">
                         <c-asset-list assetList="{{data.data.assets}}" sizeType="{{currentSizeType}}"></c-asset-list>
                     </s-card>
                 </s-grid-col>
-                <s-grid-col span="8">
+            </s-grid-row>
+            <s-grid-row class="row">
+                <s-grid-col span="12">
                     <s-card bordered="{{false}}" class="card" title="依赖项">
                         <c-module-list moduletList="{{data.computed.modulesPerSizeType[currentSizeType].depModules}}">
                         </c-module-list>

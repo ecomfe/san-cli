@@ -1,6 +1,6 @@
 /**
  * @file List组件
- * @author zttonly
+ * @author zttonly, Lohoyo
  */
 
 import Component from '@lib/san-component';
