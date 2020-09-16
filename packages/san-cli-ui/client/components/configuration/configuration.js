@@ -7,9 +7,9 @@ import Component from '@lib/san-component';
 import {LAYOUT_ONE_THIRD} from '@lib/const';
 import {getVisiblePrompts} from '@lib/utils/prompt';
 import CONFIGURATION from '@graphql/configuration/configuration.gql';
-import CONFIGURATION_SAVE from '@/graphql/configuration/configurationSave.gql';
-import CONFIGURATION_CANCEL from '@/graphql/configuration/configurationCancel.gql';
-import PROMPT_ANSWER from '@/graphql/prompt/promptAnswer.gql';
+import CONFIGURATION_SAVE from '@graphql/configuration/configurationSave.gql';
+import CONFIGURATION_CANCEL from '@graphql/configuration/configurationCancel.gql';
+import PROMPT_ANSWER from '@graphql/prompt/promptAnswer.gql';
 import PromptsList from '../prompts-form/prompts-form';
 
 
