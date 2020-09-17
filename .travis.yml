@@ -6,3 +6,4 @@ install: yarn
 script:
   - yarn test
   - commitlint-travis
+  - yarn es-check

@@ -58,7 +58,8 @@
         "doc": "cd docs && node ../packages/san-cli/index.js docit .",
         "build:doc": "cd docs && node ../packages/san-cli/index.js docit . --output",
         "lint": "eslint --ignore-path .eslintignore ./",
-        "test": "node scripts/test.js"
+        "test": "node scripts/test.js",
+        "es-check": "es-check es5 'packages/san-loader/lib/runtime/*.js'"
     },
     "commitlint": {
         "extends": [
