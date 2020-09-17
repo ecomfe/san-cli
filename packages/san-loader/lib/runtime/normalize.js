@@ -10,7 +10,7 @@
 
 /* eslint-disable prefer-rest-params */
 
-var {defineComponent} = require('san');
+var defineComponent = require('san').defineComponent;
 
 /**
  * 处理 .san 组件 script 与 template 等部分的组合方法

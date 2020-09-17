@@ -1,6 +1,6 @@
 {
     "name": "san-loader",
-    "version": "0.1.3",
+    "version": "0.2.0",
     "description": "San single-file loader for Webpack",
     "main": "index.js",
     "scripts": {
