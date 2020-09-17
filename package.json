@@ -39,11 +39,14 @@
     "lint-staged": {
         "!(example|dist|output|__mocks__)/**/*.js": [
             "eslint"
+        ],
+        "packages/san-loader/lib/runtime/*.js" : [
+            "es-check es5"
         ]
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lint-staged && node scripts/test.js && es-check es5 'packages/san-loader/lib/runtime/*.js'",
+            "pre-commit": "lint-staged && node scripts/test.js",
             "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
         }
     },
