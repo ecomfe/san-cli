@@ -43,7 +43,7 @@ export default class ComponentLayout extends Component {
                                 </s-menu-item-group>
                             </s-menu>
                             <div class="project-name">
-                                {{projectCurrent.name}} <s-icon type="caret-down" />
+                                {{projectCurrent.name}}<s-icon class="caret-down" type="caret-down" />
                             </div>
                         </s-dropdown>
                         <s-menu class="menu" mode="inline" selectedKeys="{{nav}}" theme="dark">
