@@ -29,10 +29,7 @@ export default class Configuration extends Component {
                 <s-grid-row type="flex" slot="content" class="h1oh config-content">
                     <s-grid-col span="6" class="h1oh">
                         <div class="nav-list">
-                            <div class="filter-input">
-                                <s-input-search value="{=search=}" />
-                            </div>
-                            <div s-for="item in filterList"
+                            <div s-for="item in configurations"
                                 class="list-item {{currentConfigId === item.id ? 'selected' : ''}}"
                                 on-click="switchConfig(item.id)"
                             >
@@ -68,19 +65,10 @@ export default class Configuration extends Component {
         return {
             configurations: [],
             pageLoading: true,
-            search: '',
             currentConfigId: '',
             currentConfig: null
         };
     }
-    static computed = {
-        filterList() {
-            let configurations = this.data.get('configurations');
-            let search = this.data.get('search');
-            return search ? configurations.filter(item => item.name.toLowerCase().indexOf(search) >= 0)
-                : configurations;
-        }
-    };
     attached() {
         this.init();
     }

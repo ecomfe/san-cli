@@ -1,12 +1,19 @@
 @import '../../assets/vars.less';
 .head-right {
-    .custom-btn {
+    .icon {
+        width: 36px;
+        height: 36px;
         cursor: pointer;
-        color: #236eff;
-        font-size: 36px;
         &:hover {
-            color: #40a9ff;
+            opacity: 0.8;
         }
+    }
+    .custom-icon {
+        background-image: url(../../assets/custom-icon.svg);
+    }
+    .check-icon {
+        // TODO 让视觉提供切图
+        background-image: url(../../assets/custom-icon.svg);
     }
 }
 .dashboard-content {

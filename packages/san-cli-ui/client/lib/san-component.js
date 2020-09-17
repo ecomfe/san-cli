@@ -12,6 +12,7 @@ import apollo from './mixins/apollo';
 import sharedData from './mixins/shared-data';
 import pluginAction from './mixins/plugin-action';
 import localization from './mixins/localization';
+import './san-component.less';
 
 
 export default class SubComponent extends Component {

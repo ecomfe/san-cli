@@ -35,17 +35,22 @@
         }
     }
 
-    .update-btn {
+    .update-icon, .delete-icon {
+        cursor: pointer;
         width: 20px;
         height: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #236eff;
-        border: none;
+        &:hover {
+            opacity: .8;
+        }
+    }
+    .update-icon {
+        background-image: url(../../assets/update-icon.svg);
+    }
+    .delete-icon {
+        background-image: url(../../assets/delete-icon.svg);
     }
 
-    .download-icon, .delete-icon {
+    .download-icon {
         font-size: 20px;
         display: flex;
         align-items: center;

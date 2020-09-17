@@ -29,10 +29,22 @@
                 }
                 .project-name {
                     width: 151px;
+                    padding-left: 3px;
+                    padding-right: 13px;
                     height: 60px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
+                    line-height: 60px;
+                    text-align: center;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    position: relative;
+                    font-size: 16px;
+                    .caret-down {
+                        position: absolute;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        right: 3px;
+                    }
                 }
             }
             .menu {
