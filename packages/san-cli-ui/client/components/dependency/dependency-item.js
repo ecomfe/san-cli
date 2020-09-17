@@ -35,7 +35,7 @@ export default class DependenceItem extends Component {
                     <s-tooltip
                         s-if="item.detail.current !== item.detail.latest"
                         title="{{$t('dependency.tooltip.update')}}">
-                        <s-button type="primary" class="update-btn" icon="arrow-up" on-click="onPkgDownload"/>
+                        <div class="update-icon" on-click="onPkgDownload"></div>
                     </s-tooltip>
                 </fragment>
                 <fragment s-else>
@@ -47,7 +47,7 @@ export default class DependenceItem extends Component {
                     </div>
                 </fragment>
                 <s-tooltip title="{{$t('dependency.tooltip.del')}}" class="delete-tooltip">
-                    <s-icon type="delete" class="delete-icon" on-click="showDeleteConfirm"/>
+                    <div class="delete-icon" on-click="showDeleteConfirm"></div>
                 </s-tooltip>
             </div>
         </s-spin>

@@ -26,7 +26,7 @@ export default class App extends Component {
             >
                 <template slot="right">
                     <s-button disabled="{{true}}">{{$t('dashboard.tools')}}</s-button>
-                    <s-icon type="{{editing ? 'check' : 'setting'}}" on-click="showCustom" class="custom-btn"></s-icon>
+                    <div on-click="showCustom" class="icon {{editing ? 'check-icon' : 'custom-icon'}}"></div>
                 </template>
                 <div slot="content" class="h1oh dashboard-content {{widgets.length === 0 && !editing ? 'empty' : ''}}">
                     <div class="widgets">
