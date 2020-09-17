@@ -20,7 +20,7 @@ export default class Dependency extends Component {
             page-loading="{=pageLoading=}">
             <template slot="right" s-if="!modalVisible">
                 <c-dependence-filter on-keywordChange="keywordChange" />
-                <s-button type="primary" on-click="onModalShow" class="dependency-btn">
+                <s-button type="primary" on-click="onModalShow">
                     {{$t('dependency.installDependency')}} <s-icon type="plus"/>
                 </s-button>
             </template>
