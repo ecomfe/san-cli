@@ -7,15 +7,15 @@ export default class AssetList extends SanComponent {
     static template = /* html */`
         <div class="asset-list">
             <s-grid-row class="first-row" s-if="assets.length">
-                <s-grid-col span="12"></s-grid-col>
-                <s-grid-col span="3">{{sizeType}}</s-grid-col>
+                <s-grid-col span="11"></s-grid-col>
+                <s-grid-col span="4">{{sizeType}}</s-grid-col>
                 <s-grid-col span="3">Global</s-grid-col>
                 <s-grid-col span="3">3G Slow</s-grid-col>
                 <s-grid-col span="3">3G Fast</s-grid-col>
             </s-grid-row>
             <s-grid-row s-for="item in assets">
-                <s-grid-col span="12" class="first-col">{{item.name}}</s-grid-col>
-                <s-grid-col span="3">{{item.size}}</s-grid-col>
+                <s-grid-col span="11" class="first-col">{{item.name}}</s-grid-col>
+                <s-grid-col span="4">{{item.size}}</s-grid-col>
                 <s-grid-col span="3">{{item.globalSpeed}}</s-grid-col>
                 <s-grid-col span="3">{{item['3gsSpeed']}}</s-grid-col>
                 <s-grid-col span="3">{{item['3gfSpeed']}}</s-grid-col>
