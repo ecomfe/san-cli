@@ -247,5 +247,4 @@ export const hasCommentDisable = [
         });
         // san-hmr disable
     `,
-]
-
+];
