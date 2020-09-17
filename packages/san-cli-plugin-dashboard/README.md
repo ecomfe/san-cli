@@ -1,4 +1,4 @@
-# san-cli-plugin-task
+# san-cli-plugin-service
 
 San CLI执行编译任务（build/serve）时，透传可视化数据的插件，是一个 [Service 插件](https://ecomfe.github.io/san-cli/#/srv-plugin)
 

@@ -6,10 +6,13 @@
 const path = require('path');
 const fs = require('fs-extra');
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
-const {processStats} = require('./utils/stats');
+const {processStats} = require('./lib/stats');
 
-const sanIcon = require('./utils/getImageUrl')('/public/san.svg');
-const debug = getDebugLogger('ui:third-plugin-task');
+let sanIcon = '/public/san.svg';
+if (process.env.SAN_CLI_UI_DEV) {
+    sanIcon = `http://localhost:${process.env.SAN_APP_GRAPHQL_PORT}` + sanIcon;
+}
+const debug = getDebugLogger('ui:third-plugin-dashboard');
 
 module.exports = api => {
     // 加了一个san.cli的命名空间
@@ -436,7 +439,7 @@ module.exports = api => {
     else {
         api.registerAddon({
             id: 'san.san-cli.client-addon',
-            path: 'san-cli-ui-addon-webpack/dist'
+            path: 'san-cli-plugin-dashboard/dist'
         });
     }
 

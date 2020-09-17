@@ -1,7 +1,6 @@
 /**
- * @file 对cli-plugin-dashboard返回的数据进行格式化
- *  From https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-ui/ui-defaults/utils/modules.js
- *  Modified by jinzhan
+ * @file 对plugin返回的数据进行格式化
+ * Inspired by https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-ui/ui-defaults/utils/modules.js
  */
 
 const getModulePath = function (identifier) {

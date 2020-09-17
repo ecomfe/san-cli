@@ -6,6 +6,6 @@
 module.exports = api => {
     require('./widgets')(api);
     require('./sanConfig')(api);
-    require('./task')(api);
+    require('san-cli-plugin-dashboard/ui')(api);
     require('./eslintConfig')(api);
 };
