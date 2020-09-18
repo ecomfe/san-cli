@@ -41,18 +41,21 @@ export default class FolderExplorer extends Component {
                     </template>
                 </div>
                 <s-tooltip title="{{$t('project.select.folderExplorer.tooltip.edit')}}" class="operate-btn">
-                    <s-button type="primary" icon="form" on-click="onEdit"></s-button>
+                    <s-icon type="edit" on-click="onEdit"></s-icon>
                 </s-tooltip>
                 <s-tooltip title="{{$t('project.select.folderExplorer.tooltip.star')}}"
                     s-if="folderCurrent"
                     class="operate-btn"
                 >
-                    <s-button type="primary" on-click="onFavorite">
-                        <s-icon type="star" theme="{{folderCurrent.favorite ? 'filled' : 'outlined'}}"></s-icon>
-                    </s-button>
+                    <s-icon
+                        type="star"
+                        theme="{{folderCurrent.favorite ? 'filled' : 'outlined'}}"
+                        on-click="onFavorite"
+                        class="{{folderCurrent.favorite ? 'yellow-star' : ''}}">
+                    </s-icon>
                 </s-tooltip>
                 <s-tooltip title="{{$t('project.select.folderExplorer.tooltip.refresh')}}" class="operate-btn">
-                    <s-button type="primary" icon="redo" on-click="openFolder(folderCurrent.path)"></s-button>
+                    <s-icon type="redo" on-click="openFolder(folderCurrent.path)"></s-icon>
                 </s-tooltip>
                 <s-tooltip s-if="foldersFavorite && foldersFavorite.length > 0"
                     title="{{$t('project.select.folderExplorer.tooltip.starDirs')}}"
@@ -66,27 +69,29 @@ export default class FolderExplorer extends Component {
                         >
                             <s-menu-item s-for="item in foldersFavorite" key="{{item.path}}">{{item.path}}</s-menu-item>
                         </s-menu>
-                        <s-button type="primary" icon="caret-down"></s-button>
+                        <s-icon type="caret-down"></s-icon>
                     </s-dropdown>
                 </s-tooltip>
-                <s-dropdown trigger="click"  placement="bottomRight">
-                    <s-menu slot="overlay"
-                        selectable="{{false}}"
-                        class="contents-menu"
-                        on-click="onMoreMenuClick"
-                    >
-                        <s-menu-item key="showCreateModal">
-                            {{$t('project.select.folderExplorer.menu.createFolder')}}
-                        </s-menu-item>
-                        <s-menu-item key="showHiddenFolder">
-                            {{showHiddenFolder ? $t('project.select.folderExplorer.menu.hiddenFolder') 
-                                : $t('project.select.folderExplorer.menu.hiddenFolderShow')}}
-                        </s-menu-item>
-                    </s-menu>
-                    <s-button type="primary" icon="more"></s-button>
-                </s-dropdown>
+                <s-tooltip title="{{$t('project.select.folderExplorer.tooltip.more')}}" class="operate-btn">
+                    <s-dropdown trigger="click" placement="bottomRight">
+                        <s-menu slot="overlay"
+                            selectable="{{false}}"
+                            class="contents-menu"
+                            on-click="onMoreMenuClick"
+                        >
+                            <s-menu-item key="showCreateModal">
+                                {{$t('project.select.folderExplorer.menu.createFolder')}}
+                            </s-menu-item>
+                            <s-menu-item key="showHiddenFolder">
+                                {{showHiddenFolder ? $t('project.select.folderExplorer.menu.hiddenFolder')
+                                    : $t('project.select.folderExplorer.menu.hiddenFolderShow')}}
+                            </s-menu-item>
+                        </s-menu>
+                        <s-icon type="more"></s-icon>
+                    </s-dropdown>
+                </s-tooltip>
             </div>
-            <div class="flex-all folders">
+            <div class="folders">
                 <div class="container">
                     <s-spin spinning="{{loading}}"/>
                     <template s-if="folderCurrent && folderCurrent.children" s-for="folder in folderCurrent.children">
@@ -94,12 +99,12 @@ export default class FolderExplorer extends Component {
                             class="folder-item {{folder.hidden ? 'hidden' : ''}}"
                             on-click="openFolder(folder.path)"
                         >
-                        <img s-if="folder.isSanProject" class="san-project-icon" src="{{logo}}" />
-                        <s-icon s-else type="{{folder.isPackage ? 'folder' : 'folder-open'}}" theme="filled"></s-icon>
-                        <div class="folder-name">
-                            {{folder.name}}  
-                        </div>
-                        <s-icon s-if="folder.favorite" type="star" theme="filled"></s-icon>
+                            <img s-if="folder.isSanProject" class="san-project-icon" src="{{logo}}" />
+                            <div s-else class="folder-icon"></div>
+                            <div class="folder-name">
+                                {{folder.name}}
+                            </div>
+                            <s-icon s-if="folder.favorite" type="star" theme="filled" class="yellow-star"></s-icon>
                         </div>
                     </template>
                 </div>

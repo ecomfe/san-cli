@@ -1,5 +1,9 @@
 {
-    "title": "项目管理器",
+    "title": {
+        "list": "项目管理器",
+        "create": "创建项目",
+        "import": "导入项目"
+    },
     "project": {
         "select": {
             "menu": [{
@@ -23,7 +27,8 @@
                     "edit": "编辑",
                     "refresh": "刷新",
                     "star": "添加/取消收藏",
-                    "starDirs": "收藏的文件夹"
+                    "starDirs": "收藏的文件夹",
+                    "more": "更多操作"
                 },
                 "menu": {
                     "createFolder": "新建文件夹",
@@ -34,7 +39,7 @@
                 "modalCreateTitle": "输入文件夹名称"
             },
             "create": {
-                "initProject": "在此创建工程",
+                "initProject": "在此创建项目",
                 "prev": "上一步",
                 "createProject": "确认创建"
             },

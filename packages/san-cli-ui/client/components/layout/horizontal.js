@@ -15,7 +15,7 @@ export default class ComponentHorLayout extends Component {
                 <c-connection-status></c-connection-status>
                 <s-layout-header>
                     <div class="header">
-                        <c-header-title title="{{$t('title')}}"></c-header-title>
+                        <c-header-title title="{{title}}"></c-header-title>
                         <div class="head-right">
                             <s-input-search
                                 s-if="isList"

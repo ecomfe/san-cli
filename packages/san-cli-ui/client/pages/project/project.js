@@ -24,6 +24,7 @@ export default class Project extends Component {
                 page-loading="{{pageLoading}}"
                 isList="{{route.path === '/' || route.query.nav === 'list'}}"
                 on-filterInputChange="filterInputChange"
+                title="{{$t('title.' + route.query.nav) || $t('title.list')}}"
             >
                 <template slot="content">
                     <!--- 1.项目列表 -->
@@ -62,7 +63,6 @@ export default class Project extends Component {
                                 s-if="current === 0"
                                 type="primary"
                                 on-click="getProjectTemplateList"
-                                icon="plus"
                             >{{$t('project.select.create.initProject')}}</s-button>
                             
                             <s-button
