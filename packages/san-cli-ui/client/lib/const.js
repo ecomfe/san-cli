@@ -1,8 +1,8 @@
 /**
  * @file 静态常量
- * @author zttonly
+ * @author zttonly, Lohoyo
 */
-import logo from '@assets/logo.svg';
+import logo from '@assets/san.svg';
 
 export const LAYOUT_ONE_THIRD = {
     labelCol: {
