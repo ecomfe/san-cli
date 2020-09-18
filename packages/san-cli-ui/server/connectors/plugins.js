@@ -48,7 +48,7 @@ class Plugins {
                 id,
                 versionRange: deps[id],
                 official: isPlugin(id),
-                installed: false,
+                installed: dependencies.isInstalled(id),
                 website: getPluginLink(id),
                 baseDir: file
             })
