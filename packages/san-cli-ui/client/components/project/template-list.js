@@ -1,9 +1,10 @@
 /**
  * @file 脚手架模板组件
- * @author jinzhan
+ * @author jinzhan, Lohoyo
  */
 
 import Component from '@lib/san-component';
+import './template-list.less';
 
 /**
  * 选择脚手架模板
@@ -14,14 +15,13 @@ import Component from '@lib/san-component';
 */
 export default class ProjectList extends Component {
     static template = /* html */`
-        <div class="flex-all project-template-list" style="padding: 50px">
-            <s-form label-col="{{formItemLayout.labelCol}}" 
-                    wrapper-col="{{formItemLayout.wrapperCol}}"
-                    on-submit="handleSubmit">
+        <div class="flex-all project-template-list">
+            <s-form on-submit="handleSubmit" colon="{{false}}">
                 <s-formitem label="{{$t('scaffold.chooseLabel')}}">
                     <s-select value="{=currentTemplate=}" placeholder="{{$('scaffold.choosePlaceholder')}}">
-                        <s-select-option s-for="template in projectTemplateList"
-                            value="{{template.value}}">{{template.label}}</s-select-option>
+                        <s-select-option s-for="template in projectTemplateList" value="{{template.value}}">
+                            {{template.label}}
+                        </s-select-option>
                         <!----自定义的模板项---->
                         <s-select-option value="{{$t('scaffold.optionLabel')}}">
                             {{$t('scaffold.optionLabel')}}
@@ -49,22 +49,6 @@ export default class ProjectList extends Component {
             customTemplate: '',
             currentTemplate: '',
             formItemLayout: {
-                labelCol: {
-                    xs: {
-                        span: 12
-                    },
-                    sm: {
-                        span: 4
-                    }
-                },
-                wrapperCol: {
-                    xs: {
-                        span: 24
-                    },
-                    sm: {
-                        span: 16
-                    }
-                },
                 tailWrapperCol: {
                     xs: {
                         span: 12,

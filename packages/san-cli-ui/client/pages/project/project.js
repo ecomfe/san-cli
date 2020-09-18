@@ -65,6 +65,15 @@ export default class Project extends Component {
                                 on-click="getProjectTemplateList"
                             >{{$t('project.select.create.initProject')}}</s-button>
                             
+                            <!----上一步---->
+                            <s-button s-if="current > 0"
+                                type="link"
+                                size="large"
+                                class="cancel-submit"
+                                on-click="cancelSubmit"
+                            >{{$t('pre')}}</s-button>
+
+                            <!----下一步---->
                             <s-button
                                 class="custom-santd-btn"
                                 s-if="current === 1"
@@ -80,14 +89,6 @@ export default class Project extends Component {
                                 on-click="createProject"
                                 type="primary"
                             >{{$t('project.components.create.submitText')}}</s-button>
-
-                            <!----上一步---->
-                            <s-button s-if="current > 0"
-                                type="link"
-                                size="large"
-                                class="cancel-submit"
-                                on-click="cancelSubmit"
-                            >{{$t('pre')}}</s-button>
                         </div>
                     </div>
 
