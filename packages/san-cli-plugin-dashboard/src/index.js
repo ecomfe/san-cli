@@ -11,18 +11,21 @@ import './index.less';
 const TaskDashboard = {
     template: /* html */`
         <div class="task-dashboard">
-            <s-dropdown trigger="click" class="size-type">
-                <s-menu
-                    slot="overlay"
-                    on-click="changeSizeType"
-                    defaultSelectedKeys="{{['stats']}}"
-                    style="box-shadow: 0 2px 20px rgba(0, 0, 0 , .1); border-radius: 5px; width: 80px;">
-                    <s-menu-item s-for="sizeType in data.sizeTypes"  key="{{sizeType}}">{{sizeType}}</s-menu-item>
-                </s-menu>
-                <s-button class="size-type-btn">
-                    {{currentSizeType}} <s-icon type="down" />
-                </s-button>
-            </s-dropdown>
+            <div class="header">
+                <div class="header-title">{{$t('addons.dashboard.title')}}</div>
+                <s-dropdown trigger="click">
+                    <s-menu
+                        slot="overlay"
+                        on-click="changeSizeType"
+                        defaultSelectedKeys="{{['stats']}}"
+                        style="box-shadow: 0 2px 20px rgba(0, 0, 0 , .1); border-radius: 5px; width: 101px;">
+                        <s-menu-item s-for="sizeType in data.sizeTypes"  key="{{sizeType}}">{{sizeType}}</s-menu-item>
+                    </s-menu>
+                    <s-button class="size-type-btn" type="primary">
+                        {{currentSizeType}} <s-icon type="down" />
+                    </s-button>
+                </s-dropdown>
+            </div>
             <s-grid-row class="row" gutter="16">
                 <s-grid-col span="16">
                     <s-card bordered="{{false}}" class="card">
