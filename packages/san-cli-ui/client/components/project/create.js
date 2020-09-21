@@ -12,20 +12,26 @@ import './create.less';
 
 export default class ProjectCreate extends Component {
     static template = /* html */`
-        <div class="flex-all project-create">
-            <s-form label-col="{{formItemLayout.labelCol}}"
-                wrapper-col="{{formItemLayout.wrapperCol}}">
+        <div class="flex-all project-options">
+            <s-form
+                label-col="{{formItemLayout.labelCol}}"
+                wrapper-col="{{formItemLayout.wrapperCol}}"
+                colon="{{false}}">
                 <s-formitem label="{{$t('project.components.create.folderName')}}">
                     <s-input value="{=app.name=}"></s-input>
                     <div class="grey">{{cwd}}/{{app.name}}</div>
                 </s-formitem>
             </s-form>
 
-            <c-prompts-form s-ref="form"
+            <c-prompts-form
+                s-ref="form"
                 prompts="{{prompts}}"
                 hide-submit-btn="true"
                 submit-text="{{$t('project.components.create.submitText')}}"
-                on-submit="onPromptsFormSubmit"></c-prompts-form>
+                on-submit="onPromptsFormSubmit"
+                dropdownClassName="create-dropdown"
+                dropdownStyle="{{{'border-radius': '21px'}}}">
+            </c-prompts-form>
 
             <div s-if="isCreating" class="loading">
                 <s-spin tip="{{loadingTip}}" 

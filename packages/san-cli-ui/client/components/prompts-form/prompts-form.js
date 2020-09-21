@@ -16,18 +16,23 @@ import FormTree from './form-tree';
 export default class PromptsForm extends Component {
     static template = /* html */ `
       <div>
-        <s-form label-col="{{formItemLayout.labelCol}}" 
+        <s-form
+            label-col="{{formItemLayout.labelCol}}" 
             wrapper-col="{{formItemLayout.wrapperCol}}"
-            on-submit="handleSubmit">
+            on-submit="handleSubmit"
+            colon="{{false}}">
             <template s-for="prompt in prompts">
                 <s-formitem s-if="!prompt.when || condition[prompt.when]" 
                     title="{{prompt.name}}" 
                     label="{{(prompt.label || prompt.message) | textFormat}}"
                     extra="{{prompt.description | textFormat}}">
                     <template s-if="prompt.type === 'list'">
-                        <s-select value="{=prompt.value=}"
+                        <s-select
+                            value="{=prompt.value=}"
                             placeholder="{{prompt.placeholder | textFormat}}"
-                            on-change="handleChange(prompt, $event)">
+                            on-change="handleChange(prompt, $event)"
+                            dropdownClassName={{dropdownClassName}}
+                            dropdownStyle="{{dropdownStyle}}">
                             <s-select-option s-for="choice in prompt.choices" 
                                 value="{{choice.value}}">{{choice.name}">{{choice}}</s-select-option>
                         </s-select>
@@ -48,17 +53,18 @@ export default class PromptsForm extends Component {
                     <template s-elif="prompt.type === 'confirm'">
                         <s-switch checked="{=prompt.value=}"
                             default-checked="{{prompt.value}}"
-                            on-change="handleChange(prompt, $event)"
-                        >
+                            on-change="handleChange(prompt, $event)">
                         </s-switch>
                     </template>
 
                     <template s-elif="prompt.type === 'checkbox'">
-                        <s-select mode="multiple"
+                        <s-select
+                            mode="multiple"
                             value="{=prompt.value=}"
                             placeholder="{{prompt.placeholder | textFormat}}"
                             on-change="handleChange(prompt, $event)"
-                        >
+                            dropdownClassName={{dropdownClassName}}
+                            dropdownStyle="{{dropdownStyle}}">
                             <s-select-option s-for="choice in prompt.choices" 
                                 value="{{choice.name}}}"
                             >{{choice.name}}</s-select-option>
