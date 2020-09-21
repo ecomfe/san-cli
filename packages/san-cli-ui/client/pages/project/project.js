@@ -36,7 +36,8 @@ export default class Project extends Component {
 
                     <!--- 2.创建项目 -->
                     <div class="h1oh project-create" s-if="route.query.nav === 'create'">
-                        <c-folder-explorer s-if="current === 0"
+                        <c-folder-explorer
+                            s-if="current === 0"
                             current-path="{{cwd}}"
                             on-change="handleCwdChange"
                         />
@@ -66,7 +67,8 @@ export default class Project extends Component {
                             >{{$t('project.select.create.initProject')}}</s-button>
                             
                             <!----上一步---->
-                            <s-button s-if="current > 0"
+                            <s-button
+                                s-if="current > 0"
                                 type="link"
                                 size="large"
                                 class="cancel-submit"
@@ -98,13 +100,12 @@ export default class Project extends Component {
                             current-path="{{cwd}}"
                             on-change="handleCwdChange"
                         />
-                        <div class="footer-wrapper">
+                        <div class="flex-none footer-wrapper">
                             <s-button
                                 class="custom-santd-btn"
                                 disabled="{{!isPackage}}"
                                 loading="{{isImporting}}"
                                 size="large"
-                                icon="import"
                                 s-if="current === 0"
                                 type="primary"
                                 on-click="importProject"
