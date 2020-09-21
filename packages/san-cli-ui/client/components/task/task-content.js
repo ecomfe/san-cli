@@ -108,7 +108,9 @@ export default class TaskContent extends Component {
                             </s-tooltip>
                         </div>
                     </div>
-                    <div class="task-output-content"></div>
+                    <div class="task-output-content-wrap">
+                        <div class="task-output-content"></div>
+                    </div>
                 </div>
 
                 <!-----自定义视图：第三方组件---->
