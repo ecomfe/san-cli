@@ -4,52 +4,83 @@
     position: relative;
     z-index: 1;
     .v-box();
-    box-shadow: 0 0 10px rgba(black, .1);
-    .title-bar {
-        .h-box();
-        .box-center();
-        padding: 6px 6px 6px @padding16;
-        .title {
-            flex: 100% 1 1;
-            width: 0;
-            margin-left: @padding16 / 2;
-        }
-    }
-    .toolbar {
-        margin: @padding16;
-        .search-input {
-            width: 100%;
-        }
-    }
-    .widgets {
-        flex: 1;
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-    .widget-item {
-        &,
-        .actions,
-        .info {
+    .widget-list-content {
+        box-shadow: 0 2px 10px 3px rgba(228, 228, 228, .3);
+        width: calc(100% + 12px);
+        height: calc(100% + 24px);
+        position: absolute;
+        top: -12px;
+        background-color: #fff;
+        padding: 0 24px;
+        .title-bar {
             .h-box();
             .box-center();
+            padding: 12px 0 6px 0;
+            .title {
+                flex: 100% 1 1;
+                width: 0;
+                font-size: 20px;
+                color: #446ffd;
+                font-weight: 500;
+            }
+            .icon-button {
+                background-color: transparent;
+                box-shadow: none;
+                position: relative;
+                right: -4px;
+            }
         }
-        &:hover {
-            background-color: @light-primary-color;
+        .toolbar {
+            margin: 16px 0;
+            .santd-input-search {
+                height: 42px;
+                opacity: .5;
+                input {
+                    border-radius: 21px;
+                    border: 1px solid #377bff;
+                    font-size: 16px;
+                    color: #377bff;
+                    padding-left: 14px;
+                    &::placeholder {
+                        color: #377bff;
+                    }
+                }
+                .santd-icon {
+                    font-size: 16px;
+                    color: #377bff;
+                    display: flex;
+                    align-items: center;
+                    margin-right: 3px;
+                }
+            }
         }
-        .actions {
-            margin-right: @padding16;
-        }
-        .info {
+        .widgets {
             flex: 1;
-            overflow: hidden;
-            padding: @padding16;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
-
-        .list-item-info {
-            flex: 1;
-            overflow: hidden;
-            .description {
+        .widget-item {
+            &,
+            .actions,
+            .info {
+                .h-box();
+                .box-center();
+            }
+            &:hover {
+                background-color: @light-primary-color;
+            }
+            .info {
                 flex: 1;
+                overflow: hidden;
+                padding: 16px 0;
+            }
+    
+            .list-item-info {
+                flex: 1;
+                overflow: hidden;
+                .description {
+                    flex: 1;
+                }
             }
         }
     }

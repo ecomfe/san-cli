@@ -1,6 +1,6 @@
 /**
  * @file san项目创建
- * @author jinzhan
+ * @author jinzhan, Lohoyo
  */
 
 import {router} from 'san-router';

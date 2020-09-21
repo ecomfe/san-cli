@@ -1,6 +1,6 @@
 /**
  * @file 仪表盘小部件列表
- * @author zttonly
+ * @author zttonly, Lohoyo
  */
 
 import Component from '@lib/san-component';
@@ -10,35 +10,37 @@ import './widget-list.less';
 export default class widgetList extends Component {
 
     static template = /* html */`
-        <div s-if="realVisible"
+        <div
+            s-if="realVisible"
             class="widget-list {{actived ? 'actived' : ''}} {{visible ? 'show' : 'hide'}}"
             on-transitionstart="onTransitionstart"
             on-transitionend="onTransitionend">
-            <div class="title-bar flex-none">
-                <s-icon type="file-add" />
-                <div class="title">
-                    {{$t('dashboard.widgetList.title')}}
+            <div class="widget-list-content">
+                <div class="title-bar flex-none">
+                    <div class="title">
+                        {{$t('dashboard.widgetList.title')}}
+                    </div>
+                    <s-button
+                        class="icon-button"
+                        icon="close"
+                        on-click="close"
+                    ></s-button>
                 </div>
-                <s-button
-                    class="icon-button"
-                    icon="close"
-                    on-click="close"
-                ></s-button>
-            </div>
 
-            <div class="toolbar flex-none">
-                <s-input-search
-                    placeholder="{{$t('dashboard.widgetList.searchPlaceholder')}}"
-                    value="{=search=}"
-                ></s-input-search>
-            </div>
-            <div class="widgets">
-                <template s-for="definition in filterList">
-                    <c-widget
-                        s-if="definition.canAddMore"
-                        definition="{=definition=}"
-                    />
-                </template>
+                <div class="toolbar flex-none">
+                    <s-input-search
+                        placeholder="{{$t('dashboard.widgetList.searchPlaceholder')}}"
+                        value="{=search=}"
+                    ></s-input-search>
+                </div>
+                <div class="widgets">
+                    <template s-for="definition in filterList">
+                        <c-widget
+                            s-if="definition.canAddMore"
+                            definition="{=definition=}"
+                        />
+                    </template>
+                </div>
             </div>
         </div>
     `;

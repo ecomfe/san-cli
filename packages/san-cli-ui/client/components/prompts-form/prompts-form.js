@@ -1,6 +1,6 @@
 /**
  * @file 基于json动态创建一个form表单
- * @author jinzhan, zttonly
+ * @author jinzhan, zttonly, Lohoyo
  */
 import Component from '@lib/san-component';
 import FormTree from './form-tree';

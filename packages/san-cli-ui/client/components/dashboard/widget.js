@@ -1,10 +1,11 @@
 /**
  * @file 仪表盘-增加部件详情组件
- * @author zttonly
+ * @author zttonly, Lohoyo
  */
 
 import Component from '@lib/san-component';
 import ListItemInfo from '@components/list-item-info';
+import './widget.less';
 
 export default class WidgetItem extends Component {
 
@@ -28,6 +29,7 @@ export default class WidgetItem extends Component {
                     type="primary"
                     icon="plus"
                     on-click="add"
+                    shape="circle"
                 ></s-button>
             </div>
             <s-modal 
