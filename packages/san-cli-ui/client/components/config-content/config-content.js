@@ -1,6 +1,6 @@
 /**
  * @file 配置详情组件
- * @author zttonly
+ * @author zttonly, Lohoyo
  */
 
 import Component from '@lib/san-component';
@@ -11,6 +11,7 @@ import CONFIGURATION_SAVE from '@graphql/configuration/configurationSave.gql';
 import CONFIGURATION_CANCEL from '@graphql/configuration/configurationCancel.gql';
 import PROMPT_ANSWER from '@graphql/prompt/promptAnswer.gql';
 import PromptsList from '../prompts-form/prompts-form';
+import './config-content.less';
 
 
 export default class ConfigContent extends Component {
@@ -21,12 +22,15 @@ export default class ConfigContent extends Component {
                 <s-radio-group s-if="config.tabs.length > 1" on-change="handleSizeChange" name="size">
                     <s-radio-button s-for="tab in config.tabs">{{tab.label}}</s-radio-button>
                 </s-radio-group>
-                <c-prompts s-ref="configForm"
+                <c-prompts
+                    s-ref="configForm"
                     form-item-layout="{{formItemLayout}}"
                     hide-submit-btn="{{true}}"
                     prompts="{=visiblePrompts=}"
                     on-submit="save"
                     on-valuechanged="onConfigChange"
+                    dropdownClassName="config-content-dropdown"
+                    dropdownStyle="{{{'border-radius': '15px'}}}"
                 />
             </div>
             <div class="actions-bar" s-if="config">

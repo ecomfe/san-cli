@@ -9,7 +9,7 @@ import CONFIGURATION from '@graphql/configuration/configuration.gql';
 import PLUGINS from '@graphql/plugin/plugins.gql';
 import Layout from '@components/layout';
 import ListItemInfo from '@components/list-item-info';
-import ConfigContent from '@components/configuration';
+import ConfigContent from '@components/config-content';
 import {Link} from 'san-router';
 import './configuration.less';
 import taskIconColor from '@lib/utils/task-icon-color';
@@ -27,7 +27,7 @@ export default class Configuration extends Component {
                         {{$t('config.tools')}}
                     </s-button>
                 </template>
-                <s-grid-row type="flex" slot="content" class="h1oh config-content">
+                <s-grid-row type="flex" slot="content" class="h1oh configuration">
                     <s-grid-col span="6" class="h1oh">
                         <div class="nav-list">
                             <div s-for="item in configurations"
@@ -52,7 +52,8 @@ export default class Configuration extends Component {
                     </s-grid-col>
                     <s-grid-col span="18" class="h1oh">
                         <div class="nav-content {{currentConfigId && currentConfig ? 'slide' : ''}}">
-                            <c-config-content s-if="currentConfigId && currentConfig"
+                            <c-config-content
+                                s-if="currentConfigId && currentConfig"
                                 current-config-id="{=currentConfigId=}"
                                 config="{=currentConfig=}"
                                 on-refetch="updateCurrentConfig"
