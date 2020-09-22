@@ -18,7 +18,7 @@ import {
 } from '@lib/const';
 import './dependency-search.less';
 
-export default class DependencePackageSearch extends Component {
+export default class DependencyPackageSearch extends Component {
     static template = /* html */`
         <s-spin spinning="{{loading}}" class="dependency-search-wrap">
             <div class="dependency-search" slot="content">
@@ -36,7 +36,7 @@ export default class DependencePackageSearch extends Component {
                         {{$t('dependency.' + currentRankingMode)}} <s-icon type="down" />
                     </s-button>
                 </s-dropdown>
-                <c-dependence-filter on-keywordChange="keywordChange"/>
+                <c-dependency-filter class="dependency-search-dependency-filter" on-keywordChange="keywordChange"/>
                 <s-radio-group name="radiogroup" value="{{radioValue}}" on-change="onRadioChange" class="pkg-radio">
                     <s-radio-button value="dependencies">{{$t('dependency.dependencies')}}</s-radio-button>
                     <s-radio-button value="devDependencies">{{$t('dependency.devDependencies')}}</s-radio-button>
@@ -60,7 +60,7 @@ export default class DependencePackageSearch extends Component {
     `;
     static components = {
         'c-dependency-search-item': DependencySearchItem,
-        'c-dependence-filter': DependencyFilter,
+        'c-dependency-filter': DependencyFilter,
     }
     initData() {
         return {
