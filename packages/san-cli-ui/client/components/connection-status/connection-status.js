@@ -12,7 +12,6 @@ export default class ConnectionStatus extends Component {
     static template = /* html */`
         <div class="connection-status {{showStatus ? '' : 'connection-animation'}}">
             <div class="content {{connected ? 'connected' : 'disconnected'}}">
-                <s-icon type="{{connected ? 'wifi' : 'disconnect'}}"/>
                 <span>{{$t(connected ? 'connection-status.connected' : 'connection-status.disconnected')}}</span>
             </div>
         </div>
