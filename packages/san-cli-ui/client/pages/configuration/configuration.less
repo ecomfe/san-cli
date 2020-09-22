@@ -1,29 +1,39 @@
 .config-content {
     .nav-list {
         height: 100%;
-        padding: 12px 0;
-        border-right: 1px solid #e8e8e8;
+        background-color: #fff;
     }
     .filter-input {
         padding: 12px;
     }
     .item-logo {
-        margin-right: 16px;
+        margin-left: 25px;
+        margin-right: 10px;
         position: relative;
-        width: 42px;
-        height: 42px;
-        border-radius: 5px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
     }
     .list-item {
-        padding: 12px;
         display: flex;
-        flex-direction: row;
         user-select: none;
         cursor: pointer;
-        &:hover,
+        height: 100px;
+        align-items: center;
+        &:hover {
+            background-color: rgba(35, 110, 255, .1);
+        }
         &.selected {
-            color: #1890ff;
-            background-color: #ccedfd;
+            background-color: rgba(35, 110, 255, .1);
+            .description {
+                color: #8c8c8c;
+            }
+        }
+        .name {
+            font-weight: 500;
+        }
+        .description {
+            color: #cdcdcd;
         }
     }
     .config-content {

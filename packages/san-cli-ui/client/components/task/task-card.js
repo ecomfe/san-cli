@@ -11,7 +11,9 @@ import './task-card.less';
 export default class TaskNav extends Component {
     static template = /* html */`
         <div class="task-cards">
-            <div class="task-card-item {{task.name===queryName ? 'task-nav-item-current' : ''}}" s-for="task in tasks">
+            <div
+                class="task-card-item {{task.name === queryName ? 'task-nav-item-current' : ''}}"
+                s-for="task in tasks">
                 <r-link to="{{'/' + routePath + '/' + task.name}}" class="card-item">
                     <div class="card-icon" style="color: {{iconColor(task.name)}}">{{task.name[0] | upper}}</div>
                     <div class="card-meta">

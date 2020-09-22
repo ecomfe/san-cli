@@ -10,7 +10,7 @@ export default class ListItemInfo extends Component {
 
     static template = /* html */`
         <div class="list-item-info">
-            <div class="name">
+            <div class="name" style="{{nameColor ? 'color: ' + nameColor : ''}}">
                 <span>{{name}}</span>
             </div>
             <div class="description">

@@ -1,6 +1,6 @@
 /**
  * @file 项目配置页面
- * @author zttonly
+ * @author zttonly, Lohoyo
  */
 
 import Component from '@lib/san-component';
@@ -12,6 +12,7 @@ import ListItemInfo from '@components/list-item-info';
 import ConfigContent from '@components/configuration';
 import {Link} from 'san-router';
 import './configuration.less';
+import taskIconColor from '@lib/utils/task-icon-color';
 
 export default class Configuration extends Component {
     static template = /* html */`
@@ -33,11 +34,18 @@ export default class Configuration extends Component {
                                 class="list-item {{currentConfigId === item.id ? 'selected' : ''}}"
                                 on-click="switchConfig(item.id)"
                             >
-                                <img src="{{item.icon}}" class="item-logo"/>
+                                <img
+                                    src="{{item.icon}}"
+                                    class="item-logo"
+                                    style="background-color: {{
+                                        currentConfigId === item.id ? highlightColor(item.name) : '#999'
+                                    }}"
+                                />
                                 <c-item-info
                                     name="{{item.name}}"
                                     description="{{$t(item.description)}}"
                                     selected="{{currentConfigId === item.id}}"
+                                    nameColor="{{currentConfigId === item.id ? highlightColor(item.name) : '#999'}}"
                                 />
                             </div>
                         </div>
@@ -97,5 +105,8 @@ export default class Configuration extends Component {
             this.data.set('currentConfigId', id);
             this.updateCurrentConfig();
         }
+    }
+    highlightColor(taskName) {
+        return taskIconColor(taskName);
     }
 }
