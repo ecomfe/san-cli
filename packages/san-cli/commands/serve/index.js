@@ -32,6 +32,9 @@ exports.builder = {
         default: false,
         describe: 'Open Browser after the build is complete'
     },
+    mode: {
+        default: 'development'
+    },
     host: {
         alias: 'H',
         type: 'string',

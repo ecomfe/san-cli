@@ -65,6 +65,9 @@ exports.builder = {
         alias: 'r',
         describe: 'Send compiled output to the remote target machine'
     },
+    mode: {
+        default: 'production'
+    },
     dest: {
         alias: 'd',
         type: 'string',
