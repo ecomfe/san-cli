@@ -53,7 +53,7 @@ export default class ComponentHorLayout extends Component {
                         </div>
                     </div>
                 </s-layout-header>
-                <s-layout-content class="flex-all">
+                <s-layout-content>
                     <div class="h1oh main">
                         <s-spin s-if="pageLoading"
                             class="loading"

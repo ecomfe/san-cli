@@ -24,7 +24,7 @@ export default class ComponentLayout extends Component {
                     </div>
                 </s-layout-header>
 
-                <s-layout class="h1oh flex-all main-wrap">
+                <s-layout class="h1oh main-wrap">
                     <s-layout-sider class="sider" width="151">
                         <s-dropdown trigger="click" class="project-name-wrap">
                             <s-menu slot="overlay"
