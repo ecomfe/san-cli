@@ -46,7 +46,7 @@ export default class ProjectList extends Component {
                 />
             </div>
 
-            <!---all list---->
+            <!---Total list---->
             <div class="container project-list-container" s-if="nomarlList && nomarlList.length > 0">
                 <h3 s-if="favoriteList && favoriteList.length > 0">{{$t('project.list.listTitle')}}</h3>
                 <c-list
@@ -78,25 +78,25 @@ export default class ProjectList extends Component {
             </s-modal>
         </div>
     `;
+
     static computed = {
         filterList() {
-            let projects = this.data.get('projects');
-            let filterInput = this.data.get('filterInput');
+            const projects = this.data.get('projects');
+            const filterInput = this.data.get('filterInput');
             return filterInput ? projects.filter(item => item.name.indexOf(filterInput) >= 0) : projects;
         },
         favoriteList() {
-            let filterList = this.data.get('filterList');
-            return filterList && filterList.filter(item => item.favorite);
+            return (this.data.get('filterList') || []).filter(item => item && item.favorite);
         },
         nomarlList() {
-            let filterList = this.data.get('filterList');
-            return filterList && filterList.filter(item => !item.favorite);
+            return (this.data.get('filterList') || []).filter(item => item && !item.favorite);
         },
         lastOpenProject() {
-            const projectCurrent = this.data.get('projectCurrent');
-            return projectCurrent && projectCurrent.id;
+            const {id} = this.data.get('projectCurrent') || {};
+            return id;
         }
     };
+
     initData() {
         return {
             isLoaded: false,
@@ -109,17 +109,19 @@ export default class ProjectList extends Component {
     static components = {
         'c-list': List
     }
+
     attached() {
         this.getProjects();
     }
+
     async getProjects() {
-        let projects = await this.$apollo.query({query: PROJECTS});
+        const projects = await this.$apollo.query({query: PROJECTS});
         this.data.set('isLoaded', true);
         projects.data && this.data.set('projects', projects.data.projects);
-        let projectCurrent = await this.$apollo.query({query: PROJECT_CURRENT});
-        // 当前打开的project,记录在数据库
+        const projectCurrent = await this.$apollo.query({query: PROJECT_CURRENT});
         projectCurrent.data && this.data.set('projectCurrent', projectCurrent.data.projectCurrent);
     }
+
     async onOpen({item}) {
         // todo: 与layout/index内方法整合到一起
         await this.$apollo.mutate({
@@ -129,11 +131,13 @@ export default class ProjectList extends Component {
             }
         });
     }
+
     onEdit(e) {
         this.data.set('showRenameModal', true);
         this.data.set('editProject', e.item);
         this.data.set('projectName', e.item.name);
     }
+
     async handleModalOk() {
         const {editProject, projectName} = this.data.get();
         await this.$apollo.mutate({
@@ -146,24 +150,27 @@ export default class ProjectList extends Component {
         this.data.set('showRenameModal', false);
         this.getProjects();
     }
+
     handleModalCancel() {
         this.data.set('showRenameModal', false);
     }
+
     async onRemove(e) {
-        let project = e.item;
+        const {id} = e.item;
         await this.$apollo.mutate({
             mutation: PROJECT_REMOVE,
             variables: {
-                id: project.id
+                id
             },
             update: cache => {
                 const data = cache.readQuery({query: PROJECTS});
-                let projects = data.projects.filter(p => p.id === project.id);
+                const projects = data.projects.filter(p => p.id === id);
                 cache.writeQuery({query: PROJECTS, data: {projects}});
             }
         });
         this.getProjects();
     }
+
     async onFavorite(e) {
         await this.$apollo.mutate({
             mutation: PROJECT_SET_FAVORITE,
@@ -174,10 +181,11 @@ export default class ProjectList extends Component {
         });
         this.getProjects();
     }
+
     async onItemClick(e) {
-        let projectCurrent = this.data.get('projectCurrent');
+        const projectCurrent = this.data.get('projectCurrent');
         if (!projectCurrent || projectCurrent.id !== e.item.id) {
-            let res = await this.$apollo.mutate({
+            const res = await this.$apollo.mutate({
                 mutation: PROJECT_OPEN,
                 variables: {
                     id: e.item.id
@@ -185,10 +193,12 @@ export default class ProjectList extends Component {
             });
             res.data && this.data.set('projectCurrent', res.data.projectOpen);
         }
+
         await this.$apollo.mutate({
             mutation: PROJECT_CWD_RESET
         });
-        let r = this.$t('menu') ? this.$t('menu')[0].link : '';
-        this.fire('routeto', r);
+
+        const link = this.$t('menu.0.link');
+        this.fire('routeto', link);
     }
 }
