@@ -26,10 +26,7 @@ export default class ProjectList extends Component {
             </div>
             <!---empty tip---->
             <div class="empty-tip" s-else-if="!projects || projects.length <= 0">
-                <div>
-                    <s-icon type="coffee" />
-                    <p class="tip-text">{{$t('project.list.emptyTip')}}</p>
-                </div>
+                {{$t('project.list.emptyTip')}}
             </div>
 
             <!---favorite list---->
