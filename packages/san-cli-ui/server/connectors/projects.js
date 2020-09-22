@@ -180,7 +180,7 @@ class Projects {
         };
 
         const packageData = readPackage(project.path, context);
-        project.name = packageData.name;
+        project.name = packageData.name || params.path.split('/').pop();
         context.db.get('projects').push(project).write();
 
         return {
