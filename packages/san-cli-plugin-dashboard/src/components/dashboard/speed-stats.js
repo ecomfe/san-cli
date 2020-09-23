@@ -1,4 +1,4 @@
-import {getSpeeds} from '../utils/assets';
+import {getSpeeds} from '../../utils/assets';
 import './speed-stats.less';
 
 /* global SanComponent */

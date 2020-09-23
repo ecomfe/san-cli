@@ -1,4 +1,4 @@
-import {bytes2kb} from '../utils/util';
+import {bytes2kb} from '../../utils/util';
 import './build-status.less';
 
 /* global SanComponent */

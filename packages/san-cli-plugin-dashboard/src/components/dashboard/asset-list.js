@@ -1,5 +1,5 @@
-import {bytes2kb} from '../utils/util';
-import {getSpeeds} from '../utils/assets';
+import {bytes2kb} from '../../utils/util';
+import {getSpeeds} from '../../utils/assets';
 import './asset-list.less';
 
 /* global SanComponent */

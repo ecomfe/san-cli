@@ -204,7 +204,6 @@ export default class TaskContent extends Component {
             this.subscribeTaskChanged(name);
 
             // 5. 获取编译结果
-            // TODO: 这个地方后续应该放到addon组件里面
             this.getSharedData();
         });
     }
