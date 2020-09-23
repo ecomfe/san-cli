@@ -1,4 +1,4 @@
-export default function buildHierarchy(modules) {
+export default function buildHierarchy(modules = []) {
     let maxDepth = 1;
 
     const root = {

@@ -175,17 +175,17 @@ module.exports = api => {
     const views = {
         views: [
             {
-                id: 'san.san-cli.views.dashboard',
+                id: 'san.cli-ui.views.dashboard',
                 label: 'addons.dashboard.title',
-                component: 'san-cli.components.dashboard'
+                component: 'san.cli-ui.components.dashboard'
             },
             {
-                id: 'san.san-cli.views.analyzer',
+                id: 'san.cli-ui.views.analyzer',
                 label: 'addons.analyzer.title',
-                component: 'san.san-cli.components.analyzer'
+                component: 'san.cli-ui.components.analyzer'
             }
         ],
-        defaultView: 'san.san-cli.views.dashboard'
+        defaultView: 'san.cli-ui.views.dashboard'
     };
 
     /**

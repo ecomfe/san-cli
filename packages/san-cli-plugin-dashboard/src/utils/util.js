@@ -1,4 +1,4 @@
-export function getAssetsData(assets, chunks) {
+export function getAssetsData(assets, chunks = []) {
     let chunksMap = {};
     chunks.forEach(chunk => {
         chunksMap[chunk.id] = chunk;

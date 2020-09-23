@@ -215,13 +215,23 @@ export default class TaskContent extends Component {
         if (sanCommandType) {
             const id = `san.cli.${sanCommandType}`;
             const statsId = `${id}-stats`;
-            // 1.编译结果详情：获取上一次san-cli编译结果进行展示
-            const sharedData = await this.$getSharedData(statsId) || {};
-            this.data.set('sharedData', sharedData);
+            // 0.编译结果详情：获取上一次san-cli编译结果进行展示
+            const statsData = await this.$getSharedData(statsId) || {};
+            this.data.set('sharedData', statsData);
 
             // 实时更新san-cli编译的最终结果
             this.$watchSharedData(statsId, data => {
                 this.data.merge('sharedData', data);
+            });
+
+            const analyzerId = `${id}-stats-analyzer`;
+            // 1.编译结果详情：获取上一次san-cli编译结果进行展示
+            const analyzerData = await this.$getSharedData(analyzerId) || {};
+            this.data.set('sharedData.analyzerData', analyzerData);
+
+            // 实时更新san-cli编译的最终结果
+            this.$watchSharedData(analyzerId, analyzerData => {
+                this.data.set('sharedData.analyzerData', analyzerData);
             });
 
             // 2.编译进度：编译的百分比展示
