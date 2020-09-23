@@ -32,9 +32,6 @@ exports.builder = {
         default: false,
         describe: 'Open Browser after the build is complete'
     },
-    mode: {
-        default: 'development'
-    },
     host: {
         alias: 'H',
         type: 'string',
@@ -48,6 +45,14 @@ exports.builder = {
 };
 
 exports.handler = cliApi => {
+    if (!cliApi.mode) {
+        if (['development', 'production'].includes(process.env.NODE_ENV)) {
+            cliApi.mode = process.env.NODE_ENV;
+        }
+        else {
+            cliApi.mode = 'development';
+        }
+    }
     const callback = run.bind(run, cliApi);
 
     require('../../lib/service')('serve', cliApi, callback);
