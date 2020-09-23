@@ -48,10 +48,7 @@ export default class ComponentLayout extends Component {
                         </s-dropdown>
                         <s-menu class="menu" mode="inline" selectedKeys="{{nav}}" theme="dark">
                             <s-menu-item s-for="item in $t('menu')" key="{{item.key}}">
-                                <r-link to="{{item.link}}">
-                                    <s-icon type="{{item.icon}}" class="menu-icon"></s-icon>
-                                    <span>{{item.text}}</span>
-                                </r-link>
+                                <r-link to="{{item.link}}" class="{{item.key}}-icon">{{item.text}}</r-link>
                             </s-menu-item>
                         </s-menu>
                     </s-layout-sider>

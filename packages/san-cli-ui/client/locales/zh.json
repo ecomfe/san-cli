@@ -80,31 +80,26 @@
     },
     "menu": [{
             "text": "仪表盘",
-            "icon": "dashboard",
             "key": "dashboard",
             "link": "/dashboard"
         },
         {
             "text": "插件",
-            "icon": "build",
             "key": "plugins",
             "link": "/plugins"
         },
         {
             "text": "依赖",
-            "icon": "cluster",
             "key": "dependency",
             "link": "/dependency"
         },
         {
             "text": "配置",
-            "icon": "setting",
             "key": "configuration",
             "link": "/configuration"
         },
         {
             "text": "任务",
-            "icon": "schedule",
             "key": "tasks",
             "link": "/tasks"
         }

@@ -54,16 +54,36 @@
                 border-right: none;
                 .santd-menu-item {
                     font-size: 16px;
+                    opacity: .65;
+                    transition: opacity 0.3s;
+                    &:hover {
+                        opacity: 1;
+                    }
                     & > a {
                         text-decoration: none;
+                        background-repeat: no-repeat;
+                        background-position: 16px center;
+                        padding-left: 54px;
                     }
-                    .menu-icon {
-                        margin-left: 19px;
-                        font-size: 16px;
+                    .dashboard-icon {
+                        background-image: url(../../assets/dashboard-icon.svg);
+                    }
+                    .plugins-icon {
+                        background-image: url(../../assets/plugins-icon.svg);
+                    }
+                    .dependency-icon {
+                        background-image: url(../../assets/dependency-icon.svg);
+                    }
+                    .configuration-icon {
+                        background-image: url(../../assets/configuration-icon.svg);
+                    }
+                    .tasks-icon {
+                        background-image: url(../../assets/tasks-icon.svg);
                     }
                 }
                 .santd-menu-item-selected {
                     background-color: #0051ec;
+                    opacity: 1;
                     &::before {
                         content: '';
                         width: 6px;
