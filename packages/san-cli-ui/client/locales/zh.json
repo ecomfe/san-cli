@@ -338,7 +338,8 @@
                     "fetch": "无法获取新闻流",
                     "offline": "你已离线",
                     "empty": "没有新闻"
-                }
+                },
+                "origin": "阅读原文"
             },
             "run-task": {
                 "title": "运行任务",

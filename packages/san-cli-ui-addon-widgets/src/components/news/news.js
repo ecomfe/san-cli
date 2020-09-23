@@ -1,87 +1,45 @@
 /**
  * @file 新闻组件
- * @author zttonly
+ * @author zttonly, Lohoyo
  */
 
 import './news.less';
 
 export default {
     template: /* html */`
-        <div class="news small {{selectedItem ? 'has-item-selected' : ''}}">
+        <div class="news">
             <div s-if="loading" class="widget-loading">
                 <s-spin spinning="{=loading=}">
                     <s-icon slot="indicator" type="loading" style="font-size: 24px;" />
                 </s-spin>
             </div>
             <div s-elif="error" class="error">
-                <s-icon type="{{errIcons[error]}}" class="huge"/>
+                <s-icon type="{{errIcons[error]}}"/>
                 <div>{{$t('dashboard.widgets.news.errors.' + error)}}</div>
             </div>
-            <div s-else class="panes">
-                <div class="feed">
-                    <div s-for="item in feed.items"
-                        class="news-item {{ selectedItem === item ? 'selected' : ''}}"
-                        on-click="handleClick(item)"
-                    >
-                        <div class="title">
-                            <a href="{{item.link}}"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                            {{item.title}}<s-icon type="link"/>
+            <fragment s-else>
+                <nav>
+                    <article
+                        s-for="item in feed.items"
+                        class="news-item {{selectedItem === item ? 'news-item-selected' : ''}}"
+                        on-click="handleClick(item)">
+                        <div>
+                            <div class="title" title={{item.title}}>{{item.title}}</div>
+                            <div class="snippet">{{item.contentSnippet}}</div>
+                            <span class="date">{{item.pubDate | dateFormat}}</span>
+                            <a href="{{item.link}}" target="_blank" rel="noopener noreferrer">
+                                {{$t('dashboard.widgets.news.origin')}}
                             </a>
                         </div>
-                        <div class="snippet">{{item.contentSnippet | snippet}}</div>
-                        <div class="date">{{item.pubDate | dateFormat}}</div>
-                    </div>
+                    </article>
+                </nav>
+                <main s-html="selectedItem['content:encoded'] || selectedItem.content"></main>
+                <div s-if="selectedItem.enclosure" class="media">
+                    <img s-if="isImg" src="{{selectedItem.enclosure.url}}"/>
+                    <audio s-if="isAudio" src="{{selectedItem.enclosure.url}}" controls></audio>
+                    <video s-if="isVideo" src="{{selectedItem.enclosure.url}}" controls></video>
                 </div>
-
-                <div s-if="selectedItem" class="item-details" >
-                    <div class="back">
-                        <s-button
-                            type="primary"
-                            ghost="{{true}}"
-                            icon="arrow-left"
-                            on-click="handleClick(null)"
-                        >{{$t('common.back')}}</s-button>
-                    </div>
-                    <div  s-if="selectedItem" class="news-item-details">
-                        <div class="head">
-                            <div class="title">
-                                <a href="{{selectedItem.link}}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >{{selectedItem.title}}</a>
-                            </div>
-                            <div class="date">{{selectedItem.pubDate | dateFormat}}</div>
-                        </div>
-
-                        <div class="content"
-                            s-html="selectedItem['content:encoded'] || selectedItem.content"
-                        ></div>
-
-                        <div s-if="selectedItem.enclosure" class="media" >
-                            <img
-                                s-if="isImg"
-                                src="{{selectedItem.enclosure.url}}"
-                                class="image media-content"
-                            />
-
-                            <audio
-                                s-if="isAudio"
-                                src="{{selectedItem.enclosure.url}}"
-                                controls
-                            ></audio>
-
-                            <video
-                                s-if="isVideo"
-                                src="{{selectedItem.enclosure.url}}"
-                                controls
-                            ></video>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </fragment>
         </div>
     `,
     computed: {
@@ -107,12 +65,6 @@ export default {
     filters: {
         dateFormat(d) {
             return new Date(d).toLocaleString();
-        },
-        snippet(text) {
-            if (text.length > 200) {
-                return text.substr(0, 197) + '...';
-            }
-            return text;
         }
     },
     initData() {
@@ -174,6 +126,7 @@ export default {
             if (feed && feed.items && feed.items.length) {
                 feed.items.forEach(item => this.imgSrcReplace(item));
                 this.data.set('feed', feed);
+                this.data.set('selectedItem', feed.items[0]);
                 this.dispatch('Widget:title', feed.title);
             }
             else {

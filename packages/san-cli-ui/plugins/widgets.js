@@ -107,7 +107,7 @@ module.exports = api => {
         maxWidth: 6,
         maxHeight: 6,
         defaultWidth: 5,
-        defaultHeight: 2,
+        defaultHeight: 4,
         openDetailsButton: false,
         defaultConfig: () => ({
             url: 'https://ecomfe.github.io/atom.xml'
