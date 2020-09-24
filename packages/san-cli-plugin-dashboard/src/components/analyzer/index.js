@@ -6,7 +6,7 @@ import './index.less';
 export default {
     template: /* html */`
         <div class="{{chartAreaClass}}" s-if="!disabled">
-            <fragment s-if="assetsData && assetsData.length">
+            <fragment s-if="assetsData && assetsData.length && assetsData.length > 1">
                 <select on-change="onAssetChange" value="{{selectedAssetIndex}}">
                     <option value="0">All Chunks</option>
                     <option s-for="asset,index in assetsData" key="{{index}}" value="{{index + 1}}">
@@ -38,7 +38,11 @@ export default {
         });
     },
 
-    formatData({assets, chunks, modules}) {
+    formatData({analyzerData}) {
+        if (!analyzerData) {
+            return;
+        }
+        const {assets, chunks, modules} = analyzerData;
         const chartData = buildHierarchy(modules);
 
         const assetsData = getAssetsData(assets, chunks);

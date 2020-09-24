@@ -196,7 +196,11 @@ class DashboardPlugin {
                 }
             ]);
 
+            const statsRawFile = path.resolve(process.cwd(), `./node_modules/.stats-${this.type}-raw.json`);
+            fs.writeJson(statsRawFile, stats.toJson());
+
             const statsFile = path.resolve(process.cwd(), `./node_modules/.stats-${this.type}.json`);
+
             fs.writeJson(statsFile, {
                 errors: hasErrors,
                 warnings: stats.hasWarnings(),

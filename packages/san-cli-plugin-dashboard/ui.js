@@ -98,14 +98,25 @@ module.exports = api => {
                 }
                 const value = await fs.readJson(statsFile);
                 const {stats, analyzer} = processStats(value);
+                // TODO: 优化analyzer数据的处理
                 sharedData.set(id, stats, {
                     disk: true
                 });
-                sharedData.set(`${id}-analyzer`, analyzer, {
-                    disk: true
-                });
+
                 // 清除stats临时文件
                 await fs.remove(statsFile);
+
+                const statsRawFile = path.resolve(api.getCwd(), `./node_modules/.stats-${type}-raw.json`);
+                if (!fs.existsSync(statsRawFile)) {
+                    debug(`Raw file [${statsRawFile}] does not exist`);
+                }
+                else {
+                    const analyzerData = await fs.readJson(statsRawFile);
+                    sharedData.set(`${id}-analyzer`, analyzerData, {
+                        disk: true
+                    });
+                    await fs.remove(statsRawFile);
+                }
             }
             else if (data.type === 'progress') {
                 if (type === 'serve' || !modernMode) {
