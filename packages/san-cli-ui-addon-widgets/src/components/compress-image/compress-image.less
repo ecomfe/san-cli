@@ -2,20 +2,25 @@
     display: flex;
     justify-content: center;
     margin-top: 4px;
-    .santd-upload {
+    .san-upload {
         width: 240px;
-        height: 80px;
+        height: 90px;
         border-radius: 12px;
         border: 2px dashed #616778;
         background-color: transparent;
-        p {
-            color: #40444f;
-            font-size: 16px;
-            margin-top: 4px;
-            &.small {
-                font-size: 12px;
-                font-weight: normal;
-                opacity: .7;
+        position: relative;
+        text-align: center;
+        .san-upload-text {
+            p {
+                color: #40444f;
+                font-size: 16px;
+                margin-top: 4px;
+                margin-bottom: 0;
+                &.small {
+                    font-size: 12px;
+                    font-weight: normal;
+                    opacity: .7;
+                }
             }
         }
         &:hover {
@@ -23,6 +28,14 @@
             p {
                 color: #616778;
             }
+        }
+        input[type=file] {
+            position: absolute;
+            opacity: 0;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
         }
     }
 }
