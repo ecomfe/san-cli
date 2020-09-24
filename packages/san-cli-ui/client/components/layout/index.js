@@ -35,12 +35,14 @@ export default class ComponentLayout extends Component {
                                 <s-menu-item key="open-in-editor">
                                     <s-icon type="codepen"></s-icon>{{$t('dropdown.editor')}}
                                 </s-menu-item>
-                                <s-menu-divider></s-menu-divider>
-                                <s-menu-item-group title="{{$t('dropdown.recentProject')}}">
-                                    <s-menu-item s-for="project in list" key="{{project.id}}">
-                                        <s-icon type="history"></s-icon>{{project.name}}
-                                    </s-menu-item>
-                                </s-menu-item-group>
+                                <fragment s-if="list.length">
+                                    <s-menu-divider></s-menu-divider>
+                                    <s-menu-item-group title="{{$t('dropdown.recentProject')}}">
+                                        <s-menu-item s-for="project in list" key="{{project.id}}">
+                                            <s-icon type="history"></s-icon>{{project.name}}
+                                        </s-menu-item>
+                                    </s-menu-item-group>
+                                </fragment>
                             </s-menu>
                             <div class="project-name">
                                 {{projectCurrent.name}}<s-icon class="caret-down" type="caret-down" />
