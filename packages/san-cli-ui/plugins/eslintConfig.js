@@ -44,6 +44,8 @@ module.exports = api => {
     if (!explorerSync.search()) {
         return;
     }
+    const iconUrl = (process.env.SAN_CLI_UI_DEV ? `http://localhost:${process.env.SAN_APP_GRAPHQL_PORT}` : '')
+        + '/public/eslint.png';
     api.registerConfig({
         id: 'san.eslintrc',
         name: 'ESLint configuration',
@@ -58,7 +60,7 @@ module.exports = api => {
                 package: 'eslintConfig'
             }
         },
-        icon: require('./utils/getImageUrl')('/public/eslint.png'),
+        icon: iconUrl,
         onRead: ({data}) => ({
             prompts: getEslintPrompts(data)
         }),

@@ -4,6 +4,8 @@
  */
 
 module.exports = api => {
+    const iconUrl = (process.env.SAN_CLI_UI_DEV ? `http://localhost:${process.env.SAN_APP_GRAPHQL_PORT}` : '')
+        + '/public/san.svg';
     api.registerConfig({
         id: 'san.san-cli',
         name: 'San CLI',
@@ -14,7 +16,7 @@ module.exports = api => {
                 js: ['san.config.js']
             }
         },
-        icon: require('./utils/getImageUrl')('/public/san.svg'),
+        icon: iconUrl,
         onRead: ({data}) => ({
             prompts: [
                 {
