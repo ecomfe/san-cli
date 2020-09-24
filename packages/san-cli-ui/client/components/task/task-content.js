@@ -127,10 +127,7 @@ export default class TaskContent extends Component {
                     on-cancel="handlePromptFormCancel"
                     confirmLoading="{{confirmLoading}}">
                     <div s-if="!taskInfo.prompts  || !taskInfo.prompts.length">
-                        <div class="task-empty-tip">
-                            <s-icon type="frown" />
-                            <div class="tip-text">{{$t('task.emptyTip')}}</div>
-                        </div>
+                        <div class="empty-tip">{{$t('task.emptyTip')}}</div>
                     </div>
                     <c-prompts-list s-else
                         s-ref="taskConfigForm"

@@ -22,12 +22,7 @@ export default class Plugins extends Component {
                     <h2>{{$t('plugins.subTitle')}}</h2>
                     <c-dependency-item s-for="item in pluginList" item="{{item}}"/>
                 </div>
-                <div s-else class="empty-tip">
-                    <div>
-                        <s-icon type="api" />
-                        <p class="tip-text">{{$t('plugins.emptyTip')}}</p>
-                    </div>
-                </div>
+                <div s-else class="empty-tip">{{$t('plugins.emptyTip')}}</div>
             </div>
         </c-layout>
     `;
