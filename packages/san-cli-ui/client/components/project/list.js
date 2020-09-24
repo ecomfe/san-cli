@@ -22,28 +22,27 @@ export default class ProjectList extends Component {
                     <div>{{item.path}}</div>
                 </div>
 
-                <s-tooltip class="operation-btn" 
+                <s-tooltip
+                    class="operation-btn-wrap"
                     title="{{item.favorite
                         ? $t('project.list.tooltip.cancelCollect')
                         : $t('project.list.tooltip.collect')}}">
-                    <s-icon
-                        type="star"
-                        theme="{{item.favorite ? 'filled' : 'outlined'}}"
-                        class="{{item.favorite ? 'yellow-star' : ''}}"
+                    <div
+                        class="operation-btn star-icon {{item.favorite ? 'favorited' : ''}}"
                         on-click="favorite(item, index, $event)">
-                    </s-icon>
+                    </div>
                 </s-tooltip>
 
-                <s-tooltip class="operation-btn" title="{{$t('project.list.tooltip.editor')}}">
-                    <s-icon type="code" on-click="openInEditor(item, index, $event)"></s-icon>
+                <s-tooltip title="{{$t('project.list.tooltip.editor')}}" class="operation-btn-wrap">
+                    <div class="operation-btn code-icon" on-click="openInEditor(item, index, $event)"></div>
                 </s-tooltip>
 
-                <s-tooltip class="operation-btn" title="{{$t('project.list.tooltip.rename')}}">
-                    <s-icon type="edit" on-click="edit(item, index, $event)"></s-icon>
+                <s-tooltip title="{{$t('project.list.tooltip.rename')}}" class="operation-btn-wrap">
+                    <div class="operation-btn edit-icon" on-click="edit(item, index, $event)"></div>
                 </s-tooltip>
 
-                <s-tooltip class="operation-btn" title="{{$t('project.list.tooltip.del')}}">
-                    <s-icon type="close" on-click="remove(item, index, $event)"></s-icon>
+                <s-tooltip title="{{$t('project.list.tooltip.del')}}" class="operation-btn-wrap">
+                    <div class="operation-btn close-icon" on-click="remove(item, index, $event)"></div>
                 </s-tooltip> 
             </div>
         </div>

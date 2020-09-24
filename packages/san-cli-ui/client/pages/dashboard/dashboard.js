@@ -19,11 +19,11 @@ import './dashboard.less';
 export default class App extends Component {
     static template = /* html */`
         <div class="h1oh dashboard {{editing ? 'customizing' : ''}}">
-            <c-layout menu="{{$t('menu')}}" 
+            <c-layout
+                menu="{{$t('menu')}}" 
                 nav="{{['dashboard']}}" 
                 title="{{$t('dashboard.title')}}"
-                page-loading="{=pageLoading=}"
-            >
+                page-loading="{=pageLoading=}">
                 <template slot="right">
                     <s-button disabled="{{true}}">{{$t('dashboard.tools')}}</s-button>
                     <div on-click="showCustom" class="icon {{editing ? 'check-icon' : 'custom-icon'}}"></div>
@@ -38,8 +38,8 @@ export default class App extends Component {
                                     widget="{=widget=}"
                                     index="{{index}}"
                                     custom="{=editing=}"
-                                    on-updatewidgets="updateWidgets"
-                                />
+                                    on-updatewidgets="updateWidgets">
+                                </c-dashboard>
                             </template>
                         </div>
                     </div>

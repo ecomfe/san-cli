@@ -10,7 +10,7 @@ export default class Modal extends Component {
     static template = /* html */`
         <div class="dependency-modal" s-if="{{visible}}" on-click="onClickOverlay">
             <div class="content" >
-                <s-icon type="close" class="modal-close" on-click="onCancel"/>
+                <div class="modal-close" on-click="onCancel"></div>
                 <slot name="content"></slot>
             </div>
         </div>

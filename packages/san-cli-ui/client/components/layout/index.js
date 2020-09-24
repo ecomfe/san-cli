@@ -27,11 +27,11 @@ export default class ComponentLayout extends Component {
                 <s-layout class="h1oh main-wrap">
                     <s-layout-sider class="sider" width="151">
                         <s-dropdown trigger="click" class="project-name-wrap">
-                            <s-menu slot="overlay"
+                            <s-menu
+                                slot="overlay"
                                 selectable="{{false}}"
                                 on-click="handleMenuClick"
-                                style="box-shadow: 0 2px 20px rgba(0, 0, 0 , .1); border-radius: 5px; width: 160px;"
-                            >
+                                style="box-shadow: 0 2px 20px rgba(0, 0, 0 , .1); border-radius: 5px; width: 160px;">
                                 <s-menu-item key="open-in-editor">
                                     <s-icon type="codepen"></s-icon>{{$t('dropdown.editor')}}
                                 </s-menu-item>
