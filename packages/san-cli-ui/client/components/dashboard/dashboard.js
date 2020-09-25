@@ -85,14 +85,10 @@ export default class DashboardWidget extends Component {
                             data="{{widget}}" />
                     </div>
                     <div s-else class="flex-all content not-configured">
-                        <s-icon
-                            type="setting"
-                            class="icon huge"
-                        />
-                        <s-button type="primary"
-                            ghost="{{true}}"
-                            on-click="openConfig"
-                        >{{$t('dashboard.widgets.widget.configure')}}</s-button>
+                        <s-icon type="setting" class="icon huge"></s-icon>
+                        <s-button type="primary" on-click="openConfig">
+                            {{$t('dashboard.widgets.widget.configure')}}
+                        </s-button>
                     </div>
                     <div
                         s-if="moveState"

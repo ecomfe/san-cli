@@ -313,7 +313,6 @@
                 "title": "终止端口",
                 "description": "终止占用指定端口的进程",
                 "kill": "终止",
-                "placeholder": "请输入端口号",
                 "status": {
                     "idle": "准备好终止",
                     "killing": "运行中...",
