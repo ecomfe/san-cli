@@ -6,13 +6,6 @@ const path = require('path');
 const channels = require('../utils/channels');
 const {resolveModuleRoot} = require('../utils/module');
 
-// eslint-disable-next-line no-undef
-let baseUrl = process.env.SAN_VAR_APP_GRAPHQL_ENDPOINT || '/graphql';
-if (baseUrl) {
-    baseUrl = baseUrl.replace(/ws:\/\/([a-z0-9_-]+:\d+).*/i, 'http://$1');
-}
-
-
 class ClientAddons {
     constructor() {
         this.addons = [];
@@ -45,6 +38,9 @@ class ClientAddons {
         }
     }
     getUrl(addon) {
+        // eslint-disable-next-line no-undef
+        const endpoint = process.env.SAN_VAR_APP_GRAPHQL_ENDPOINT;
+        const baseUrl = endpoint ? endpoint.replace(/ws:\/\/([a-z0-9_-]+:\d+).*/i, 'http://$1') : '';
         return addon.url || `${baseUrl}/_addon/${addon.id}/index.js`;
     }
     serve(req, res) {
