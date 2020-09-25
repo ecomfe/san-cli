@@ -60,15 +60,30 @@
             }
         }
 
-        .operation-btn {
-            margin-left: 24px;
-            font-size: 18px;
-            :hover {
-                color: #40a9ff;
+        .operation-btn-wrap {
+            margin-left: 14.4px;
+            .operation-btn {
+                width: 27px;
+                height: 27px;
+                &:hover {
+                    opacity: .65;
+                }
             }
-        }
-        .yellow-star {
-            color: #ffc003;
+            .star-icon {
+                background-image: url(../../assets/star-icon.svg);
+                &.favorited {
+                    background-image: url(../../assets/yellow-star-icon.svg);
+                }
+            }
+            .code-icon {
+                background-image: url(../../assets/code-icon.svg);
+            }
+            .edit-icon {
+                background-image: url(../../assets/edit-icon.svg);
+            }
+            .close-icon {
+                background-image: url(../../assets/close-icon.svg);
+            }
         }
     }
     .last-clicked-item {

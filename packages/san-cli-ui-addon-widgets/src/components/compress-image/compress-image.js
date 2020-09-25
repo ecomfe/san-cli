@@ -9,13 +9,13 @@ export default {
     template: /* html */`
         <div class="compress-image">
             <s-alert s-if="error" message="{{errorTip}}" type="error"/>
-            <div class="san-upload">
+            <div class="san-upload" on-click="upload">
                 <s-icon type="{{loading ? 'loading' : 'download'}}" style="font-size: 32px"/>
                 <div class="san-upload-text">
                     <p>{{$t('dashboard.widgets.compress-image.upload')}}</p>
                     <p class="small">{{$t('dashboard.widgets.compress-image.limit')}}</p>
                 </div>
-                <input type="file" multiple="multiple" accept="image/png,image/jpeg,image/gif">
+                <input type="file" multiple="multiple" accept="image/png,image/jpeg,image/gif" s-ref="inputup">
             </div>
         </div>
     `,
@@ -42,5 +42,8 @@ export default {
         }
         catch (e) {
         }
+    },
+    upload(e) {
+        console.log(e, this.ref('inputup'));
     }
 };

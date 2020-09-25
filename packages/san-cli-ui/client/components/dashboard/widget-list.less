@@ -11,11 +11,10 @@
         position: absolute;
         top: -12px;
         background-color: #fff;
-        padding: 0 24px;
         .title-bar {
             .h-box();
             .box-center();
-            padding: 12px 0 6px 0;
+            padding: 12px 24px 6px;
             .title {
                 flex: 100% 1 1;
                 width: 0;
@@ -31,7 +30,7 @@
             }
         }
         .toolbar {
-            margin: 16px 0;
+            margin: 16px 24px;
             .santd-input-search {
                 height: 42px;
                 opacity: .5;
@@ -60,6 +59,7 @@
             overflow-y: auto;
         }
         .widget-item {
+            padding: 0 24px;
             &,
             .actions,
             .info {
@@ -98,5 +98,5 @@
 .item-icon {
     font-size: 32px;
     margin-right: @padding16;
-    color: @primary-color;
+    color: #236eff;
 }
