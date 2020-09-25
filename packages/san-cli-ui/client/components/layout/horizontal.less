@@ -1,3 +1,4 @@
+@import '../../assets/vars.less';
 .hlayout {
     .santd-layout-header {
         width: 100%;
@@ -11,7 +12,7 @@
             justify-content: space-between;
             height: 100%;
             .title {
-                color: #236eff;
+                color: @primary-color;
                 cursor: pointer;
                 font-size: 30px;
                 white-space: nowrap;
@@ -30,19 +31,19 @@
                 padding-right: 30px;
                 .project-filter {
                     width: 275px;
-                    opacity: 0.5;
+                    opacity: .5;
                     margin-right: 24px;
                     input {
                         border-radius: 20px;
-                        border-color: #377bff;
-                        color: #377bff;
+                        border-color: @border-color;
+                        color: @border-color;
                         padding-left: 15px;
                         &::placeholder {
-                            color: #377bff;
+                            color: @border-color;
                         }
                     }
                     .santd-icon {
-                        color: #377bff;
+                        color: @border-color;
                     }
                 }
                 .dropdown {
