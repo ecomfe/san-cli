@@ -1,0 +1,126 @@
+.layout {
+    position: relative;
+    background-color: #fff;
+    .header {
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        height: 78px;
+        background-color: #fff;
+        box-shadow: 0 2px 10px 3px rgba(210, 210, 210, .3);
+        padding: 0;
+        display: flex;
+        align-items: center;
+        line-height: normal;
+    }
+    .main-wrap {
+        flex: 1;
+        .sider {
+            padding-top: 60px;
+            .project-name-wrap {
+                position: absolute;
+                left: 0;
+                top: 0;
+                background-color: #236eff;
+                z-index: 11;
+                cursor: pointer;
+                color: #fff;
+                &:hover {
+                    background-color: #0051ec;
+                }
+                .project-name {
+                    width: 151px;
+                    padding-left: 3px;
+                    padding-right: 13px;
+                    height: 60px;
+                    line-height: 60px;
+                    text-align: center;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    position: relative;
+                    font-size: 16px;
+                    .caret-down {
+                        position: absolute;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        right: 3px;
+                    }
+                }
+            }
+            .menu {
+                height: 100%;
+                background-color: #236eff;
+                border-right: none;
+                .santd-menu-item {
+                    font-size: 16px;
+                    opacity: .65;
+                    transition: opacity 0.3s;
+                    &:hover {
+                        opacity: 1;
+                    }
+                    & > a {
+                        text-decoration: none;
+                        background-repeat: no-repeat;
+                        background-position: 16px center;
+                        padding-left: 54px;
+                    }
+                    .dashboard-icon {
+                        background-image: url(../../assets/dashboard-icon.svg);
+                    }
+                    .plugins-icon {
+                        background-image: url(../../assets/plugins-icon.svg);
+                    }
+                    .dependency-icon {
+                        background-image: url(../../assets/dependency-icon.svg);
+                    }
+                    .configuration-icon {
+                        background-image: url(../../assets/configuration-icon.svg);
+                    }
+                    .tasks-icon {
+                        background-image: url(../../assets/tasks-icon.svg);
+                    }
+                }
+                .santd-menu-item-selected {
+                    background-color: #0051ec;
+                    opacity: 1;
+                    &::before {
+                        content: '';
+                        width: 6px;
+                        height: 100%;
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        background-color: #fff;
+                        border-radius: 3px;
+                    }
+                }
+            }
+        }
+    }
+    .head-right {
+        position: absolute;
+        right: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        .santd-btn {
+            width: 130px;
+            height: 36px;
+            border-radius: 24px;
+            font-size: 16px;
+            margin-right: 30px;
+        }
+    }
+
+    h1 {
+        font-size: 20px;
+        color: #333;
+    }
+
+    h2 {
+        font-size: 18px;
+        color: #333;
+    }
+}

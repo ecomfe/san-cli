@@ -1,0 +1,107 @@
+
+@import '../../assets/vars.less';
+.dashboard-widget {
+    flex: auto 1 1;
+    .shell,
+    .wrap {
+        height: 100%;
+        width: 100%;
+    }
+    .shell {
+        position: absolute;
+        margin: 0 auto;
+        padding: 12px;
+        box-sizing: border-box;
+    }
+    .wrap {
+        .v-box();
+        position: relative;
+        background-color: #fff;
+        border-radius: 18px;
+        box-shadow: 0 2px 10px 3px rgba(228, 228, 228, .3);
+        overflow: hidden;
+        .content {
+            overflow: hidden;
+        }
+    }
+    .head-bar {
+        padding: 16px 12px 6px 24px;
+        position: relative;
+        z-index: 1;
+        .h-box();
+        .icon-button {
+            height: 32px;
+            box-shadow: none;
+            margin-right: @padding16 / 4;
+        }
+    }
+    .head-title {
+        flex: 1;
+        opacity: .6;
+        color: #666;
+        font-size: 20px;
+    }
+    .not-configured {
+        .v-box();
+        .box-center();
+        .icon {
+            margin-bottom: @padding16;
+
+        }
+    }
+    .santd-icon.huge {
+        width: 42px;
+        height: 42px;
+        font-size: 40px;
+        color: rgba(0, 0, 0, .4);
+    }
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        .v-box();
+        .box-center();
+        cursor: move;
+        user-select: none;
+        box-sizing: border-box;
+        border: transparent 1px solid;
+        .definition-chip {
+            background: @primary-color;
+            color: @light-primary-color;
+            border-radius: @br6;
+            user-select: none;
+            .h-box();
+            .box-center();
+            .title {
+                padding: @padding16 / 2 @padding16 @padding16 / 2 0;
+                font-size: 16px;
+            }
+            .santd-icon {
+                margin: @padding16 / 4 @padding16;
+                font-size: 24px;
+            }
+        }
+    }
+    .overlay:hover,
+    .selected .overlay {
+        background: @primary-color-rgba2;
+    }
+
+    .remove-button {
+        position: absolute;
+        top: @padding16;
+        right: @padding16;
+    }
+}
+.customizing {
+    .wrap {
+        border-radius: 18px;
+    }
+    .content,
+    .head-bar {
+        opacity: .15;
+    }
+}

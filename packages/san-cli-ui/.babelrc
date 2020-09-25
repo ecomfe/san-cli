@@ -1,0 +1,13 @@
+{
+    "plugins": [
+        [
+            "import",
+            {
+                "libraryName": "santd",
+                "libraryDirectory": "es",
+                "style": true
+            },
+            "santd"
+        ]
+    ]
+}

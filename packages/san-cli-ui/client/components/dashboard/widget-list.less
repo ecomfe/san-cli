@@ -1,0 +1,102 @@
+
+@import '../../assets/vars.less';
+.widget-list {
+    position: relative;
+    z-index: 1;
+    .v-box();
+    .widget-list-content {
+        box-shadow: 0 2px 10px 3px rgba(228, 228, 228, .3);
+        width: calc(100% + 12px);
+        height: calc(100% + 24px);
+        position: absolute;
+        top: -12px;
+        background-color: #fff;
+        .title-bar {
+            .h-box();
+            .box-center();
+            padding: 12px 24px 6px;
+            .title {
+                flex: 100% 1 1;
+                width: 0;
+                font-size: 20px;
+                color: #446ffd;
+                font-weight: 500;
+            }
+            .icon-button {
+                background-color: transparent;
+                box-shadow: none;
+                position: relative;
+                right: -4px;
+            }
+        }
+        .toolbar {
+            margin: 16px 24px;
+            .santd-input-search {
+                height: 42px;
+                opacity: .5;
+                input {
+                    border-radius: 21px;
+                    border: 1px solid #377bff;
+                    font-size: 16px;
+                    color: #377bff;
+                    padding-left: 14px;
+                    &::placeholder {
+                        color: #377bff;
+                    }
+                }
+                .santd-icon {
+                    font-size: 16px;
+                    color: #377bff;
+                    display: flex;
+                    align-items: center;
+                    margin-right: 3px;
+                }
+            }
+        }
+        .widgets {
+            flex: 1;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        .widget-item {
+            padding: 0 24px;
+            &,
+            .actions,
+            .info {
+                .h-box();
+                .box-center();
+            }
+            &:hover {
+                background-color: @light-primary-color;
+            }
+            .info {
+                flex: 1;
+                overflow: hidden;
+                padding: 16px 0;
+            }
+    
+            .list-item-info {
+                flex: 1;
+                overflow: hidden;
+                .description {
+                    flex: 1;
+                }
+            }
+        }
+    }
+}
+.custom-body {
+    padding: 0 24px @padding16;
+    .details {
+        display: flex;
+        margin-bottom: @padding16;
+    }
+    .instances {
+        font-size: 16px;
+    }
+}
+.item-icon {
+    font-size: 32px;
+    margin-right: @padding16;
+    color: #236eff;
+}

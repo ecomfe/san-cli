@@ -1,0 +1,4 @@
+# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/cwd/cwdChanged.gql
+subscription cwdChanged {
+  cwd: cwdChanged
+}

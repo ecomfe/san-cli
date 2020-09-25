@@ -19,7 +19,7 @@ module.exports = (template, dest, options) => {
         task.info('Start checking target directory status');
         // 处理目标目录存在的情况，显示 loading 啊~
         if (fs.existsSync(dest)) {
-            // 如果强制带--force，那就删了这个目录，流程终止
+            // 如果强制带--force，那就删了这个目录
             if (options.force) {
                 task.info('--force delete target directory');
                 fs.remove(dest);

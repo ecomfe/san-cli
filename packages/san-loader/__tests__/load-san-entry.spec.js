@@ -28,7 +28,7 @@ describe('.san 文件的产出', () => {
         expect(ctx.code).toContain('import template from');
         expect(ctx.code).toContain('import script from');
         expect(ctx.code).toContain('import style0 from');
-        expect(ctx.code).toContain('let injectStyles = [style0]');
+        expect(ctx.code).toContain('var injectStyles = [style0]');
         expect(ctx.code).toContain('export default normalize(script, template, injectStyles)');
     });
 

@@ -85,3 +85,7 @@ Thumbs.db
 /output
 /dist
 /dll
+
+
+# TODO: for local test
+/packages/my-san-project

@@ -1,0 +1,5 @@
+# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/client-addon/clientAddonFragment.gql
+fragment clientAddon on ClientAddon {
+  id
+  url
+}

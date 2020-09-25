@@ -8,6 +8,7 @@
  * @author yanyiting
  */
 
+const hash = require('hash-sum');
 const download = require('../tasks/download');
 
 function Task() {
@@ -54,12 +55,13 @@ test('使用本地缓存&&发现本地缓存', async () => {
 
 test('远程拉取成功', async () => {
     let ctx = {};
+    const template = 'github:yyt/HelloWorld';
     await download(
-        'github:yyt/HelloWorld',
+        template,
         'none',
         {}
     )(ctx, task).then(() => {
-        expect(ctx.localTemplatePath).toMatch('.san/templates/HelloWorld');
+        expect(ctx.localTemplatePath).toMatch(`.san/templates/${hash(template)}/HelloWorld`);
         expect(task.nextInfo).toEqual(['Pulling template from the remote repository...']);
         expect(task.res).toBe('done');
     });

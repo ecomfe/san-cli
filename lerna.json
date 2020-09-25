@@ -1,6 +1,7 @@
 {
     "packages": [
         "packages/san-cli",
+        "packages/san-cli-ui-addon-widgets",
         "packages/san-cli-service",
         "packages/san-cli-webpack",
         "packages/san-cli-command-init",

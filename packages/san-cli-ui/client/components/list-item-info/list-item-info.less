@@ -1,0 +1,24 @@
+.list-item-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    .name {
+        margin-right: 4px;
+        font-size: 18px;
+        color: #333;
+    }
+    .description {
+        font-size: 14px;
+        color: #8c8c8c;
+    }
+    .more-info {
+        color: #1890ff;
+        padding: 0 4px 0 2px;
+        display: inline-block;
+    }
+    &.selected {
+        .name {
+            color: #1890ff;
+        }
+    }
+}

@@ -1,0 +1,409 @@
+{
+    "title": {
+        "list": "项目管理器",
+        "create": "创建项目",
+        "import": "导入项目"
+    },
+    "project": {
+        "select": {
+            "menu": [{
+                "text": "创建项目",
+                "icon": "plus-circle",
+                "key": "create",
+                "link": "/project/create"
+            }, {
+                "text": "导入项目",
+                "icon": "import",
+                "key": "import",
+                "link": "/project/import"
+            }],
+            "folderExplorer": {
+                "placeholder": {
+                    "edit": "请输入合法路径",
+                    "create": "请输入合法文件夹名称"
+                },
+                "tooltip": {
+                    "pre": "上一页面",
+                    "edit": "编辑",
+                    "refresh": "刷新",
+                    "star": "添加/取消收藏",
+                    "starDirs": "收藏的文件夹",
+                    "more": "更多操作"
+                },
+                "menu": {
+                    "createFolder": "新建文件夹",
+                    "hiddenFolderShow": "显示隐藏文件夹",
+                    "hiddenFolder": "不显示隐藏文件夹",
+                    "createTitle": "输入文件夹名称"
+                },
+                "modalCreateTitle": "输入文件夹名称"
+            },
+            "create": {
+                "initProject": "在此创建项目",
+                "prev": "上一步",
+                "createProject": "确认创建"
+            },
+            "import": {
+                "importBtnText": "导入此文件夹"
+            }
+        },
+        "list": {
+            "searchPlaceholder": "按备注名筛选项目",
+            "emptyTip": "暂无项目",
+            "collectionTitle": "收藏的项目",
+            "listTitle": "其他项目",
+            "modal": {
+                "tip": "输入新名称",
+                "placeholder": "请输入合法名称",
+                "oktext": "确定"
+            },
+            "tooltip": {
+                "collect": "收藏",
+                "cancelCollect": "取消收藏",
+                "editor": "在编辑器中打开",
+                "rename": "修改备注名",
+                "del": "从列表中移除"
+            }
+        },
+        "components": {
+            "create": {
+                "folderName": "项目文件夹",
+                "submitText": "开始创建",
+                "cancelSubmitText": "取消创建",
+                "spinTip": "正在创建项目..."
+            },
+            "import": {
+                "noModulesTipsTitle": "该项目没有安装依赖",
+                "noModulesTipsContent": "请安装依赖后再尝试导入。"
+            }
+        }
+    },
+    "menu": [{
+            "text": "仪表盘",
+            "key": "dashboard",
+            "link": "/dashboard"
+        },
+        {
+            "text": "插件",
+            "key": "plugins",
+            "link": "/plugins"
+        },
+        {
+            "text": "依赖",
+            "key": "dependency",
+            "link": "/dependency"
+        },
+        {
+            "text": "配置",
+            "key": "configuration",
+            "link": "/configuration"
+        },
+        {
+            "text": "任务",
+            "key": "tasks",
+            "link": "/tasks"
+        }
+    ],
+    "plugins": {
+        "title": "插件",
+        "subTitle": "已安装的插件",
+        "emptyTip": "没有安装任何插件"
+    },
+    "task": {
+        "title": "任务",
+        "run": "运行",
+        "stop": "停止",
+        "output": "输出",
+        "clear": "清空",
+        "copy": "复制",
+        "bottom": "跳到底部",
+        "status": {
+            "idle": "空闲",
+            "running": "运行中",
+            "done": "已完成",
+            "error": "错误",
+            "terminated": "已中止"
+        },
+        "description": {
+            "serve": "编译和热更新（开发环境）",
+            "build": "编译并压缩（生产环境）",
+            "inspect": "查看Webpack配置"
+        },
+        "emptyTip": "暂无可用配置",
+        "override-args": {
+            "description": "若启用，硬编码在 package.json 文件中的命令行参数会被下方的配置覆盖",
+            "message": "覆盖硬编码参数"
+        },
+        "serve": {
+            "open": "在浏览器中打开",
+            "mode": "环境",
+            "host": "域名",
+            "port": "端口",
+            "https": "启用HTTPS"
+        },
+        "inspect": {
+            "mode": "环境"
+        },
+        "build": {
+            "mode": "环境",
+            "watch": "监听变更",
+            "modern": {
+                "label": "Modern mode",
+                "description": "针对现代浏览器构建应用，自动向后兼容"
+            },
+            "dest": "输出目录"
+        }
+    },
+    "dependency": {
+        "title": "项目依赖",
+        "uninstalled": "未安装",
+        "install": "安装",
+        "version": "版本",
+        "lowVersion": "最低",
+        "currentVersion": "最新",
+        "searchDependency": "搜索依赖",
+        "searchPlaceholder": "请输入Package关键字",
+        "newDependency": "安装新的依赖",
+        "installing": "安装中...",
+        "uninstalling": "卸载中...",
+        "updating": "更新中...",
+        "dependencies": "运行依赖",
+        "devDependencies": "开发依赖",
+        "confirmUninstall": "确定卸载",
+        "deleteDependency": "卸载依赖",
+        "deleteSuccess": "卸载成功",
+        "installDependency": "安装依赖",
+        "installSuccess": "安装成功",
+        "updateDependency": "更新依赖",
+        "updateSuccess": "更新成功",
+        "tooltip": {
+            "update": "更新",
+            "del": "卸载",
+            "install": "安装"
+        },
+        "optimal": "最优的",
+        "popularity": "最流行的",
+        "quality": "质量最高的",
+        "maintenance": "维护情况最好的"
+    },
+    "connection-status": {
+        "disconnected": "连接已断开",
+        "connected": "已连接"
+    },
+    "loadingTip": "正在加载……",
+    "confirmText": "确定",
+    "cancelText": "取消",
+    "pre": "上一步",
+    "next": "下一步",
+    "enter": "进入",
+    "scaffold": {
+        "chooseLabel": "选择脚手架模板",
+        "choosePlaceholder": "请选择脚手架模板",
+        "customLabel": "自定义模板地址",
+        "optionLabel": "自定义脚手架模板"
+    },
+    "config": {
+        "title": "项目配置",
+        "tools": "安装 devtools",
+        "san-cli": {
+            "description": "配置 san 项目",
+            "groups": {
+                "general": "基础设置",
+                "css": "CSS 设置"
+            },
+            "publicPath": {
+                "label": "公共路径",
+                "description": "应用的部署地址，如 '/my-app/'。如果留空，所有资源将使用相对路径。"
+            },
+            "outputDir": {
+                "label": "输出目录",
+                "description": "构建产生的文件将会生成在这里。"
+            },
+            "assetsDir": {
+                "label": "资源目录",
+                "description": "静态资源(js, css, img, fonts)会生成在这里。"
+            },
+            "pages": {
+                "label": "多页面配置",
+                "description": "对应html-webpack-plugin中的相应配置项"
+            },
+            "copy": {
+                "label": "模板拷贝",
+                "description": "对应copy-webpack-plugin中的相应配置项"
+            },
+            "sourceMap": {
+                "label": "在生产环境启用 Source Map",
+                "description": "如果你不需要生产环境下的 source map，禁用此项可以加速生产环境构建。"
+            },
+            "filenameHashing": {
+                "label": "给文件路径添加hash值",
+                "description": "文件路径添加hash值"
+            },
+            "largeAssetSize": {
+                "label": "资源编译大小上限",
+                "description": "小于这个配置的图片和文件会被编译成 base64 放到 css 中"
+            },
+            "css": {
+                "cssPreprocessor": {
+                    "label": "css 预处理器白名单",
+                    "description": "默认值只能为'less', 'sass', 'styl', 'stylus', 'scss'，例如写了 less，那么只编译 less、css 代码，默认全编译。"
+                },
+                "requireModuleExtension": {
+                    "label": "启用 CSS Modules",
+                    "description": "默认只有 *.module.[ext] 文件名被视为 CSS modules 文件。启用后将所有样式文件视为 CSS modules。"
+                },
+                "extract": {
+                    "label": "抽取 CSS",
+                    "description": "将组件中的样式抽取为单独的样式文件（不开启则使用 JavaScript 动态注入样式）。"
+                },
+                "sourceMap": {
+                    "label": "启用 CSS Source Map",
+                    "description": "启用对构建性能稍有影响。"
+                }
+            }
+        },
+        "eslint": {
+            "description": "代码质量和纠错"
+        },
+        "actions": {
+            "more": "查看更多",
+            "cancel": "取消",
+            "refresh": "刷新",
+            "save": "保存"
+        },
+        "prompt": {
+            "edit": "编辑",
+            "title": "编辑JSON",
+            "err-msg": "JSON格式有误，请检查格式"
+        }
+    },
+    "list-item-info": {
+        "more": "更多信息"
+    },
+    "dashboard": {
+        "title": "项目仪表盘",
+        "tools": "安装 devtools",
+        "widget": {
+            "remove": "移除部件",
+            "configure": "配置部件",
+            "save": "保存",
+            "reset-config": "重置设定",
+            "open-details": "显示更多"
+        },
+        "widgets": {
+            "widget": {
+                "configure": "配置部件",
+                "remove": "移除部件",
+                "save": "保存",
+                "reset-config": "重置配置",
+                "open-details": "显示更多"
+            },
+            "welcome": {
+                "title": "欢迎",
+                "description": "快速上手tips",
+                "content": {
+                    "title": "欢迎来到新项目",
+                    "tips1": "这里是项目仪表盘，点击右上方的“自定义”按钮可以添加部件，改动将会自动保存。",
+                    "tips2": "左侧是各个管理页面：<br>【插件】页面可以添加新的 San CLI 插件；<br>【依赖】页面用于管理项目的依赖包；<br>【配置】页面用于配置各种工具；<br>【任务】页面用于运行各个脚本（比如 webpack 打包）。",
+                    "tips3": "点击左上方的 Logo 可以返回到项目管理器。",
+                    "ok": "了解了"
+                }
+            },
+            "kill-port": {
+                "title": "终止端口",
+                "description": "终止占用指定端口的进程",
+                "kill": "终止",
+                "placeholder": "请输入端口号",
+                "status": {
+                    "idle": "准备好终止",
+                    "killing": "运行中...",
+                    "killed": "成功终止!",
+                    "error": "无法终止进程"
+                }
+            },
+            "news": {
+                "title": "新闻",
+                "description": "阅读新闻流",
+                "refresh": "强制刷新",
+                "select-tip": "从左侧选择新闻",
+                "prompts": {
+                    "url": "RSS 源/GitHub 仓库地址"
+                },
+                "errors": {
+                    "fetch": "无法获取新闻流",
+                    "offline": "你已离线",
+                    "empty": "没有新闻"
+                },
+                "origin": "阅读原文"
+            },
+            "run-task": {
+                "title": "运行任务",
+                "description": "快速运行任务",
+                "prompts": {
+                    "task": "任务",
+                    "placeholder": "选择一项任务"
+                },
+                "page": "前往“任务”页"
+            },
+            "gen-qrcode": {
+                "title": "生成二维码",
+                "description": "输入链接生成二维码",
+                "select-type": "选择框架类型",
+                "select-box": "选择端类型",
+                "placeholder": "请输入url后点击生成",
+                "ok": "确认生成",
+                "sec-title": "二维码",
+                "schema": "链接",
+                "err-msg": "生成错误，请重新输入",
+                "prompts": {
+                    "from": "slog-来源信息from",
+                    "page": "slog-页面标记page",
+                    "type": "slog-自定义类型type",
+                    "extra": "slog-json对象extra",
+                    "needless": "选填",
+                    "need": "必填"
+                }
+            },
+            "compress-image": {
+                "title": "压缩图片",
+                "description": "减小图片大小",
+                "prompts": {
+                    "quality": "压缩图片质量"
+                },
+                "errors": {
+                    "fail": "压缩失败请重试",
+                    "empty": "请至少选择一个文件"
+                },
+                "upload": "点击选择图片",
+                "limit": "一次最多20张图片, 每张最大5 MB"
+            }
+        },
+        "widgetList": {
+            "title": "添加部件",
+            "searchPlaceholder": "输入待搜索部件"
+        },
+        "widgetAddItem": {
+            "add": "添加部件",
+            "details": {
+                "title": "部件详情",
+                "maxInstances": "最大实例数量:",
+                "unlimited": "unlimited"
+            }
+        }
+    },
+    "common": {
+        "back": "返回"
+    },
+    "addons": {
+        "dashboard": {
+            "title": "仪表盘"
+        },
+        "analyzer": {
+            "title": "分析"
+        }
+    },
+    "dropdown": {
+        "editor": "在编辑器中打开",
+        "recentProject": "最近打开"
+    }
+}

@@ -13,7 +13,7 @@ module.exports = (name, api, callback) => {
     const flatten = require('san-cli-utils/utils').flatten;
     const cwd = api.getCwd();
 
-    const {configFile, noProgress, profile, mode = process.env.NODE_ENV, watch} = api;
+    const {configFile, noProgress, profile, mode = process.env.NODE_ENV, watch, dashboard} = api;
 
     // 处理 rc 文件传入的 Service Class arguments
     let {servicePlugins: plugins, useBuiltInPlugin = true, projectOptions} = api.getPresets() || {};
@@ -27,7 +27,8 @@ module.exports = (name, api, callback) => {
         projectOptions,
         plugins: flatten(plugins),
         useProgress: !noProgress,
-        useProfiler: profile
+        useProfiler: profile,
+        useDashboard: dashboard
     });
     service.run(callback);
     return service;

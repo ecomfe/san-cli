@@ -21,7 +21,8 @@ const {textCommonColor, textCommonBold} = require('san-cli-utils/color');
 const {scriptName, version: pkgVersion} = require('../package.json');
 const CommanderAPI = require('./CommanderAPI');
 const {getCommandName} = require('./utils');
-const buildinCmds = ['build', 'serve', 'init', 'inspect', 'command', 'plugin', 'remote', 'docit'];
+
+const buildinCmds = ['build', 'serve', 'init', 'inspect', 'command', 'plugin', 'remote', 'docit', 'ui'];
 const linkText = `For more information, visit ${textCommonColor('https://ecomfe.github.io/san-cli')}`;
 
 const globalDebug = getDebugLogger();
@@ -200,6 +201,12 @@ module.exports = class Command {
                 type: 'boolean',
                 default: false,
                 describe: 'Show Webpack profiler log'
+            })
+            .option('dashboard', {
+                hidden: true,
+                type: 'boolean',
+                default: false,
+                describe: 'To send ipc message to ui-dashboard'
             })
             .option('log-level', {
                 alias: 'logLevel',

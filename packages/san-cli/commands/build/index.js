@@ -47,12 +47,10 @@ exports.builder = {
     },
     'stats-json': {
         alias: 'stats',
-        type: 'boolean',
         default: false,
         describe: 'Generate webpack stats JSON file'
     },
     'report': {
-        type: 'boolean',
         default: false,
         describe: 'Generate bundle report HTML file'
     },

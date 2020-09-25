@@ -1,0 +1,44 @@
+html,
+body,
+.h1oh {
+    height: 100%;
+    overflow: hidden;
+}
+.flex-none {
+    flex: 0 0 auto;
+}
+.flex-all {
+    flex: 1 1 100%;
+}
+.loading {
+    position: fixed !important;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, .9);
+    height: 100%;
+    z-index: 1000;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+}
+.widget-loading {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #b4c7d0;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    border-radius: 5px;
+}
+::-webkit-scrollbar-track-piece {
+    background: 0 0;
+}
