@@ -1,7 +1,7 @@
 {
     "name": "san-cli",
     "description": "San.js 定制化的前端工程构建工具",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "scriptName": "san",
     "main": "index.js",
     "bin": {
