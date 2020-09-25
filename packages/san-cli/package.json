@@ -1,7 +1,7 @@
 {
     "name": "san-cli",
     "description": "San.js 定制化的前端工程构建工具",
-    "version": "0.1.5",
+    "version": "3.0.0",
     "scriptName": "san",
     "main": "index.js",
     "bin": {
@@ -37,10 +37,10 @@
         "opener": "^1.5.1",
         "qrcode-terminal": "^0.12.0",
         "resolve-cwd": "^3.0.0",
-        "san-cli-command-init": "^0.1.1",
+        "san-cli-command-init": "^1.0.0",
         "san-cli-docit": "^0.1.0",
-        "san-cli-service": "^0.1.5",
-        "san-cli-utils": "^0.1.0",
+        "san-cli-service": "^1.0.0",
+        "san-cli-utils": "^1.0.0",
         "san-cli-ui": "^0.1.0",
         "semver": "^7.1.1",
         "update-notifier": "^4.0.0",
