@@ -72,13 +72,22 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
         const DeployPlugin = require('deploy-files/webpack-plugin');
         // 从 env 文件中读取 remote 配置，这样可以将 env.local 加到 .gitignore 中防止提交
         // 详细配置：https://github.com/jinzhan/deploy-files
+        // host: 'http://YOUR_HOST'
         // receiver: 'http://YOUR_HOST/receiver',
         // templatePath: '/home/work/nginx_static/html/test/template',
         // staticPath: '//home/work/nginx_static/html/test/static',
         // staticDomain: 'http://test.com:8888'
-        const remoteObj = {};
+        // baseUrl: 'https://s.bdstatic.com/'
         const upperRemote = remote.toUpperCase();
-        ['receiver', 'templatePath', 'staticPath', 'staticDomain', 'baseUrl'].forEach(key => {
+        const requiredParam = ['templatePath', 'staticPath', 'staticDomain', 'baseUrl'];
+        const remoteObj = {
+            // 1. 默认取false;
+            // 2. process.env读取的内容为string，需转boolean
+            disableFsr: JSON.parse(process.env[`SAN_REMOTE_${upperRemote}_DISABLE_FSR`] || false)
+        };
+        requiredParam.push(remoteObj.disableFsr ? 'receiver' : 'host');
+
+        requiredParam.forEach(key => {
             // templatePath → TEMPLATE_PATH
             const upperKey = key.replace(/[A-Z]/g, $1 => `_${$1}`).toUpperCase();
             const val = process.env[`SAN_REMOTE_${upperRemote}_${upperKey}`];
