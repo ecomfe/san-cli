@@ -29,7 +29,7 @@ export default class App extends Component {
                     <div on-click="showCustom" class="icon {{editing ? 'check-icon' : 'custom-icon'}}"></div>
                 </template>
                 <div slot="content" class="h1oh dashboard-content {{widgets.length === 0 && !editing ? 'empty' : ''}}">
-                    <div class="widgets">
+                    <div class="widgets {{isHideOtherWidgets ? 'details-widget' : ''}}">
                         <s-empty s-if="widgets.length === 0 && !editing" />
                         <div s-else class="inner">
                             <template s-for="widget,index in widgets">
@@ -38,7 +38,8 @@ export default class App extends Component {
                                     widget="{=widget=}"
                                     index="{{index}}"
                                     custom="{=editing=}"
-                                    on-updatewidgets="updateWidgets">
+                                    on-updatewidgets="updateWidgets"
+                                    on-hideOtherWidgets="hideOtherWidgets">
                                 </c-dashboard>
                             </template>
                         </div>
@@ -105,7 +106,8 @@ export default class App extends Component {
             editing: false,
             widgets: [],
             definitions: [],
-            pageLoading: true
+            pageLoading: true,
+            isHideOtherWidgets: false
         };
     }
     async attached() {
@@ -130,5 +132,8 @@ export default class App extends Component {
     showCustom() {
         let editing = this.data.get('editing');
         this.data.set('editing', !editing);
+    }
+    hideOtherWidgets(e) {
+        this.data.set('isHideOtherWidgets', e);
     }
 }

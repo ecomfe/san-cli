@@ -36,7 +36,7 @@ const getSizeStyle = ({width, height, field, gridSize}) => (
 export default class DashboardWidget extends Component {
     static template = /* html */`
         <div class="dashboard-widget">
-            <div class="shell" style="{{mainStyle}}">
+            <div class="shell {{isOpenDetails ? 'details-shell' : ''}}" style="{{mainStyle}}">
                 <div class="wrap">
                     <div class="flex-none head-bar">
                         <div class="head-title">{{customTitle || $t(widget.definition.title)}}</div>
@@ -63,10 +63,10 @@ export default class DashboardWidget extends Component {
 
                         <!-- Exit button -->
                         <s-button
-                            s-if="details"
+                            s-if="isOpenDetails"
                             icon="fullscreen-exit"
                             class="icon-button"
-                            on-click="exitDetails"
+                            on-click="changeDetailsStatus(false)"
                             size="large"
                         ></s-button>
 
@@ -75,7 +75,7 @@ export default class DashboardWidget extends Component {
                             s-elif="widget.definition.openDetailsButton"
                             icon="fullscreen"
                             class="icon-button"
-                            on-click="openDetails"
+                            on-click="changeDetailsStatus(true)"
                             size="large"
                         ></s-button>
                     </div>
@@ -202,7 +202,7 @@ export default class DashboardWidget extends Component {
             widget: null,
             custom: false,
             customTitle: null,
-            details: false,
+            isOpenDetails: false,
             loadingConfig: false,
             showConfig: false,
             formItemLayout: LAYOUT_ONE_THIRD
@@ -360,11 +360,9 @@ export default class DashboardWidget extends Component {
         this.data.set('showConfig', false);
     }
 
-    openDetails() {
-        this.data.set('details', true);
-    }
-    exitDetails() {
-        this.data.set('details', true);
+    changeDetailsStatus(detailsStatus) {
+        this.data.set('isOpenDetails', detailsStatus);
+        this.fire('hideOtherWidgets', detailsStatus);
     }
     onCustomAction(action) {
         return action.onCalled();
