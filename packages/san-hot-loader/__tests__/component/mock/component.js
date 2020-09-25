@@ -592,4 +592,4 @@ export const hasCommentDisable = [
         export default Comp;
         // san-hmr disable
     `
-]
+];

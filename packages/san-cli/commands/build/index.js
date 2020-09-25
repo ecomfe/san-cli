@@ -73,6 +73,14 @@ exports.builder = {
 };
 
 exports.handler = cliApi => {
+    if (!cliApi.mode) {
+        if (['development', 'production'].includes(process.env.NODE_ENV)) {
+            cliApi.mode = process.env.NODE_ENV;
+        }
+        else {
+            cliApi.mode = 'production';
+        }
+    }
     const callback = run.bind(run, cliApi);
     require('../../lib/service')('build', cliApi, callback);
 };

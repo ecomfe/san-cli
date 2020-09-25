@@ -189,7 +189,6 @@ module.exports = class Command {
                 describe: 'Project config file'
             })
             .option('mode', {
-                alias: 'm',
                 hidden: true,
                 type: 'string',
                 choices: ['development', 'production'],

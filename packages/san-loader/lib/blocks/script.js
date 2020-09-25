@@ -48,8 +48,8 @@ function generateScriptImport(descriptor, options) {
 
     }
     return `
-    import script from '${resource}';
-    export * from '${resource}';
+        ${options.esModule ? `import script from '${resource}';` : `var script = require('${resource}').default;`}
+        ${options.esModule ? `export * from '${resource}';` : `module.exports = require('${resource}');`}
     `;
 }
 
@@ -77,4 +77,3 @@ module.exports = {
     generateScriptImport,
     getScriptCode
 };
-
