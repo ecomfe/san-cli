@@ -15,9 +15,7 @@ module.exports = function apply(argv, api, projectOptions) {
     const getNormalizeWebpackConfig = require('./getNormalizeWebpackConfig');
     // 开始时间
     const startTime = Date.now();
-    const mode = argv.mode || process.env.NODE_ENV || 'production'; // 默认是 production
-    // 重新赋值
-    argv.mode = mode;
+    const mode = argv.mode; // 默认是 production
 
     const {watch, analyze, dest, modern} = argv;
     // --modern + --analyze 应该显示 modern 的 analyze 的结果

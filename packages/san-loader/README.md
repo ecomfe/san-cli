@@ -132,6 +132,7 @@ module.exports = {
 |       Name        |            Type            | Default  | Description                                                               |
 | :---------------: | :------------------------: | :------: | :------------------------------------------------------------------------ |
 | `compileTemplate` | <code>{'none'&#124;'aPack'&#124;'aNode'}</code> | `'none'` | 将组件的`template` 编译成`aPack`、`aNode`，**默认不编译**，详细见下面说明 |
+| `esModule` | `{Boolean}` | `false` | san-loader 默认使用 CommonJS 模块语法来生成 JS 模块，将该参数设为 true 可以改用 ES 模块语法 |
 
 **特殊说明：**
 

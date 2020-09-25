@@ -15,6 +15,7 @@ const {
     findExisting,
     prepareUrls
 } = require('../path');
+const path = require('path');
 
 describe('测试isLocalPath', () => {
     test('本地绝对路径', () => {
@@ -52,7 +53,7 @@ describe('测试getTemplatePath', () => {
 describe('测试findExisting', () => {
     test('', () => {
         expect(findExisting(['scripts', 'test.js'], process.cwd()))
-            .toMatch('san-cli/scripts');
+            .toMatch(path.join(process.cwd(), 'scripts'));
     });
 });
 

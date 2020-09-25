@@ -59,11 +59,12 @@ function generateStyleImport(descriptor, options) {
         resourcePath = resourcePath.replace(/\\/g, '/');
         let resource = `${resourcePath}?${qs.stringify(resourceQuery)}`;
         if (isCSSModule) {
-            code += `import style${i} from '${resource}';\n`;
+            code += options.esModule
+                ? `import style${i} from '${resource}';\n` : `var style${i} = require('${resource}');\n`;
             injectStyles.push(`style${i}`);
         }
         else {
-            code += `import '${resource}';\n`;
+            code += options.esModule ? `import '${resource}';\n` : `require('${resource}');\n`;
         }
     }
     code += `var injectStyles = [${injectStyles.join(', ')}];\n`;
