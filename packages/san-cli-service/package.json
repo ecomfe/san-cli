@@ -59,6 +59,7 @@
         "html-webpack-harddisk-plugin": "^1.0.2",
         "san-cli-plugin-babel": "^0.1.0",
         "san-cli-plugin-progress": "^0.1.0",
+        "san-cli-plugin-dashboard": "^0.1.0",
         "san-cli-utils": "^0.1.0",
         "san-cli-webpack": "^0.1.0",
         "san-hot-loader": "^0.1.2",

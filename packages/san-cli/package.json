@@ -41,7 +41,7 @@
         "san-cli-docit": "^0.1.0",
         "san-cli-service": "^0.1.5",
         "san-cli-utils": "^0.1.0",
-        "san-cli-ui": "~0.0.1",
+        "san-cli-ui": "^0.1.0",
         "semver": "^7.1.1",
         "update-notifier": "^4.0.0",
         "yargs": "~15.0.2"
