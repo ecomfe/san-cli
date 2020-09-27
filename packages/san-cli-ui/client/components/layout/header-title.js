@@ -11,7 +11,9 @@ import logo from '@assets/logo.svg';
 export default class HeaderTitle extends Component {
     static template = /* html */`
         <div class="header-title">
-            <div class="logo"><img src="{{logo}}" on-click="logoClick"/></div>
+            <div class="logo" on-click="logoClick">
+                <img src="{{logo}}">
+            </div>
             {{title}}
         </div>
     `;
