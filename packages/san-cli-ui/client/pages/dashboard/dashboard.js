@@ -31,7 +31,7 @@ export default class App extends Component {
                 <div slot="content" class="h1oh dashboard-content {{widgets.length === 0 && !editing ? 'empty' : ''}}">
                     <div class="widgets {{isHideOtherWidgets ? 'details-widget' : ''}}">
                         <div s-if="widgets.length === 0 && !editing" class="empty-tip">
-                            {{$t('dashboard.empty-tip')}}
+                            {{$t('dashboard.emptyTip')}}
                         </div>
                         <div s-else class="inner">
                             <template s-for="widget,index in widgets">

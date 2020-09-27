@@ -94,7 +94,9 @@ export default class FolderExplorer extends Component {
             <div class="folders">
                 <div class="container">
                     <s-spin spinning="{{loading}}"/>
-                    <template s-if="folderCurrent && folderCurrent.children" s-for="folder in folderCurrent.children">
+                    <template
+                        s-if="folderCurrent && folderCurrent.children && folderCurrent.children.length"
+                        s-for="folder in folderCurrent.children">
                         <div s-if="showHiddenFolder || !folder.hidden"
                             class="folder-item {{folder.hidden ? 'hidden' : ''}}"
                             on-click="openFolder(folder.path)"
@@ -107,6 +109,7 @@ export default class FolderExplorer extends Component {
                             <s-icon s-if="folder.favorite" type="star" theme="filled" class="yellow-star"></s-icon>
                         </div>
                     </template>
+                    <div class="empty-tip" s-else-if="!loading">{{$t('project.select.folderExplorer.emptyTip')}}</div>
                 </div>
             </div>
 
@@ -185,8 +188,8 @@ export default class FolderExplorer extends Component {
         });
     }
     async folderApollo() {
-        this.data.set('loading', false);
         let folder = await this.$apollo.query({query: FOLDER_CURRENT});
+        this.data.set('loading', false);
         if (folder.data) {
             this.data.set('folderCurrent', folder.data.folderCurrent);
             this.fire('change', folder.data.folderCurrent);

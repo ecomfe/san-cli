@@ -18,6 +18,8 @@
                 "link": "/project/import"
             }],
             "folderExplorer": {
+                "modalCreateTitle": "输入文件夹名称",
+                "emptyTip": "没有文件夹",
                 "placeholder": {
                     "edit": "请输入合法路径",
                     "create": "请输入合法文件夹名称"
@@ -35,8 +37,7 @@
                     "hiddenFolderShow": "显示隐藏文件夹",
                     "hiddenFolder": "不显示隐藏文件夹",
                     "createTitle": "输入文件夹名称"
-                },
-                "modalCreateTitle": "输入文件夹名称"
+                }
             },
             "create": {
                 "initProject": "在此创建项目",
@@ -283,7 +284,7 @@
     "dashboard": {
         "title": "项目仪表盘",
         "tools": "安装 devtools",
-        "empty-tip": "暂无部件",
+        "emptyTip": "暂无部件",
         "widget": {
             "remove": "移除部件",
             "configure": "配置部件",
