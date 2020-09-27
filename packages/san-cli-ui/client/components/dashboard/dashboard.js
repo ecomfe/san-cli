@@ -36,7 +36,9 @@ const getSizeStyle = ({width, height, field, gridSize}) => (
 export default class DashboardWidget extends Component {
     static template = /* html */`
         <div class="dashboard-widget">
-            <div class="shell {{isOpenDetails ? 'details-shell' : ''}}" style="{{mainStyle}}">
+            <div
+                class="shell {{isOpenDetails ? 'details-shell' : ''}} {{detailsAnimation ? 'details-animation' : ''}}"
+                style="{{mainStyle}}">
                 <div class="wrap">
                     <div class="flex-none head-bar">
                         <div class="head-title">{{customTitle || $t(widget.definition.title)}}</div>
@@ -201,7 +203,8 @@ export default class DashboardWidget extends Component {
             isOpenDetails: false,
             loadingConfig: false,
             showConfig: false,
-            formItemLayout: LAYOUT_ONE_THIRD
+            formItemLayout: LAYOUT_ONE_THIRD,
+            detailsAnimation: false
         };
     }
     attached() {
@@ -358,6 +361,14 @@ export default class DashboardWidget extends Component {
 
     changeDetailsStatus(detailsStatus) {
         this.data.set('isOpenDetails', detailsStatus);
+        if (detailsStatus) {
+            this.data.set('detailsAnimation', detailsStatus);
+        } else {
+            const ANIMATION_DURATION = 500;
+            setTimeout(() => {
+                this.data.set('detailsAnimation', detailsStatus);
+            }, ANIMATION_DURATION);
+        }
         this.fire('hideOtherWidgets', detailsStatus);
     }
     onCustomAction(action) {
