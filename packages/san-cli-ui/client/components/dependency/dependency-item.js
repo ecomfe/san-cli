@@ -46,7 +46,7 @@ export default class DependencyItem extends Component {
                         <div class="uninstalled-label-text">{{$t('dependency.uninstalled')}}</div>
                     </div>
                 </fragment>
-                <s-tooltip title="{{$t('dependency.tooltip.del')}}" class="delete-tooltip">
+                <s-tooltip title="{{$t('dependency.tooltip.del')}}" class="delete-tooltip" s-if="!hideDeleteBtn">
                     <div class="delete-icon" on-click="showDeleteConfirm"></div>
                 </s-tooltip>
             </div>
