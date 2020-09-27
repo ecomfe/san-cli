@@ -10,6 +10,12 @@ import DEPENDENCY_UNINSTALL from '@/graphql/dependency/dependency-uninstall.gql'
 import DEPENDENCY_INSTALL from '@graphql/dependency/dependency-install.gql';
 import './dependency-item.less';
 
+/**
+ * 组件props
+ *
+ * @param {Object} item 当前的依赖信息
+ * @param {Boolean} hideDeleteBtn 隐藏删除按钮
+ */
 export default class DependencyItem extends Component {
     static template = /* html */`
         <s-spin size="large" spinning="{{spinning}}" tip="{{loadingTip}}">
