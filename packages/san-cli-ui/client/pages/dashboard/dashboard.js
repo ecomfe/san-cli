@@ -30,7 +30,9 @@ export default class App extends Component {
                 </template>
                 <div slot="content" class="h1oh dashboard-content {{widgets.length === 0 && !editing ? 'empty' : ''}}">
                     <div class="widgets {{isHideOtherWidgets ? 'details-widget' : ''}}">
-                        <s-empty s-if="widgets.length === 0 && !editing" />
+                        <div s-if="widgets.length === 0 && !editing" class="empty-tip">
+                            {{$t('dashboard.empty-tip')}}
+                        </div>
                         <div s-else class="inner">
                             <template s-for="widget,index in widgets">
                                 <c-dashboard

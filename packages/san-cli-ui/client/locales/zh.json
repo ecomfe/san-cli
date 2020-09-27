@@ -283,6 +283,7 @@
     "dashboard": {
         "title": "项目仪表盘",
         "tools": "安装 devtools",
+        "empty-tip": "暂无部件",
         "widget": {
             "remove": "移除部件",
             "configure": "配置部件",
