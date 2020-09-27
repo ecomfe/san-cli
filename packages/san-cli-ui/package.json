@@ -65,9 +65,9 @@
         "portfinder": "^1.0.25",
         "recast": "^0.19.1",
         "rss-parser": "^3.9.0",
-        "san-cli-utils": "^0.1.0",
         "shortid": "^2.2.15",
         "util": "^0.12.3",
+        "san-cli-utils": "^1.0.0-beta.0",
         "san-cli-plugin-dashboard": "^0.1.0",
         "san-cli-ui-addon-widgets": "^0.1.0"
     },
