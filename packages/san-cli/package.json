@@ -40,10 +40,11 @@
         "san-cli-command-init": "^1.0.0",
         "san-cli-docit": "^0.1.0",
         "san-cli-service": "^1.0.0",
-        "san-cli-utils": "^1.0.0",
         "san-cli-ui": "^0.1.0",
+        "san-cli-utils": "^1.0.0",
         "semver": "^7.1.1",
         "update-notifier": "^4.0.0",
+        "write-pkg": "^4.0.0",
         "yargs": "~15.0.2"
     },
     "gitHead": "402d813859ac219434712fa2063e5f724819004a"
