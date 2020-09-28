@@ -27,9 +27,12 @@ export default class ProjectList extends Component {
                             {{template.label}}
                         </s-select-option>
                         <!----自定义的模板项---->
-                        <s-select-option value="{{$t('scaffold.optionLabel')}}">
-                            {{$t('scaffold.optionLabel')}}
-                        </s-select-option>
+                        <!-- TODO 无法使用自定义的模板创建项目，先注释掉 -->
+                        <!--
+                            <s-select-option value="{{$t('scaffold.optionLabel')}}">
+                                {{$t('scaffold.optionLabel')}}
+                            </s-select-option>
+                        -->
                     </s-select>
                 </s-formitem>
 
