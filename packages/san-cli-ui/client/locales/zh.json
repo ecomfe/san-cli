@@ -74,8 +74,14 @@
                 "spinTip": "正在创建项目..."
             },
             "import": {
-                "noModulesTipsTitle": "该项目没有安装依赖",
-                "noModulesTipsContent": "请安装依赖后再尝试导入。"
+                "noModulesTips": {
+                    "title": "该项目没有安装依赖",
+                    "content": "请安装依赖后再尝试导入。"
+                },
+                "hasBeenImportedTips": {
+                    "title": "该项目已存在",
+                    "content": "请导入其它项目或返回首页确认。"
+                }
             }
         }
     },

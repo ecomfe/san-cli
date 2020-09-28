@@ -171,7 +171,9 @@ class Projects {
         if (!params.force && !fs.existsSync(path.join(params.path, 'node_modules'))) {
             throw new Error('NO_MODULES');
         }
-
+        if (this.findByPath(params.path, context)) {
+            throw new Error('PROJECT_HAS_BEEN_IMPORTED');
+        }
         const project = {
             id: shortId.generate(),
             path: params.path,

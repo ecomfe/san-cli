@@ -223,8 +223,15 @@ export default class Project extends Component {
         this.data.set('isImporting', false);
         if (res.errors && res.errors.some(item => item.message === 'NO_MODULES')) {
             Modal.error({
-                title: this.$t('project.components.import.noModulesTipsTitle'),
-                content: this.$t('project.components.import.noModulesTipsContent')
+                title: this.$t('project.components.import.noModulesTips.title'),
+                content: this.$t('project.components.import.noModulesTips.content')
+            });
+            return;
+        }
+        if (res.errors && res.errors.some(item => item.message === 'PROJECT_HAS_BEEN_IMPORTED')) {
+            Modal.error({
+                title: this.$t('project.components.import.hasBeenImportedTips.title'),
+                content: this.$t('project.components.import.hasBeenImportedTips.content')
             });
             return;
         }
