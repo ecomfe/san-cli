@@ -4,7 +4,7 @@ export function getAssetsData(assets, chunks = []) {
         chunksMap[chunk.id] = chunk;
     });
 
-    return assets
+    return assets && assets
         .filter(asset => asset.name.indexOf('.js') === asset.name.length - 3)
         .map(asset => {
             const chunkIndex = asset.chunks[0];
@@ -17,7 +17,7 @@ export function getAssetsData(assets, chunks = []) {
 
 export function getBundleDetails({assets, selectedAssetIndex}) {
     if (selectedAssetIndex === 0) {
-        return assets.length === 1 ? {
+        return (assets && assets.length === 1) ? {
             type: 'normal',
             assetName: assets[0].name,
             actual: assets[0].size,
