@@ -46,7 +46,12 @@ export default class App extends Component {
                             </template>
                         </div>
                     </div>
-                    <c-widget-list visible="{=editing=}" definitions="{=definitions=}" on-close="showCustom"/>
+                    <c-widget-list
+                        visible="{=editing=}"
+                        definitions="{=definitions=}"
+                        on-close="showCustom"
+                        s-if="definitions.length">
+                    </c-widget-list>
                 </div>
             </c-layout>
         </div>
