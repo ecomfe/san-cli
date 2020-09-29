@@ -24,7 +24,7 @@ export default {
                     class="run-task-btn task-btn">
                     {{$t('task.run')}}
                 </s-button>
-                <s-button s-else type="primary" on-click="stopTask" class="run-task-btn task-btn">
+                <s-button s-else type="primary" on-click="stopTask" class="run-task-btn task-btn" icon="loading">
                     {{$t('task.stop')}}
                 </s-button>
                 <s-button href="/#/tasks/{{taskId}}" class="run-task-btn jump-btn">
