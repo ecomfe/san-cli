@@ -76,7 +76,7 @@ export default {
         observer.subscribe({
             next: result => {
                 const {data, error, errors} = result;
-                if (data && data.taskChanged && data.taskChanged.name !== taskId) {
+                if (data && data.taskChanged && data.taskChanged.name !== this.data.get('taskId')) {
                     return;
                 }
                 /* eslint-disable no-console */
