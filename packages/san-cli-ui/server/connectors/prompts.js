@@ -213,7 +213,12 @@ class Prompts {
         return prompt;
     }
     async answerPrompt({id, value}, context) {
-        await this.setValue({id, value: JSON.parse(value)});
+        try {
+            value = JSON.parse(value);
+        } catch (e) {
+            // 报错就说明value的值不是JSON，于是不需要做任何处理
+        }
+        await this.setValue({id, value});
         return this.list();
     }
 }

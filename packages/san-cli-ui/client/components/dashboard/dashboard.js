@@ -124,22 +124,22 @@ export default class DashboardWidget extends Component {
                 visible="{=showConfig=}"
                 okText="{{$t('dashboard.widget.save')}}"
                 on-ok="save"
-                on-cancel="closeConfig"
-            >
+                on-cancel="closeConfig">
                 <div class="default-body">
                     <div s-if="loadingConfig" class="widget-loading">
                         <s-spin spinning="{=loadingConfig=}">
                             <s-icon slot="indicator" type="loading" style="font-size: 24px;" />
                         </s-spin>
                     </div>
-                    <c-prompts s-else
+                    <c-prompts
+                        s-else
                         s-ref="widgetConfigForm"
                         form-item-layout="{{formItemLayout}}"
                         hide-submit-btn="{{true}}"
                         prompts="{=visiblePrompts=}"
                         on-submit="saveConfig"
-                        on-valuechanged="onConfigChange"
-                    />
+                        on-valuechanged="onConfigChange">
+                    </c-prompts>
                 </div>
             </s-modal>
         </div>
@@ -343,8 +343,7 @@ export default class DashboardWidget extends Component {
     }
     async saveConfig() {
         this.data.set('loadingConfig', true);
-        this.data.set('showConfig', true);
-        let widgetConfig = await this.$apollo.mutate({
+        const widgetConfig = await this.$apollo.mutate({
             mutation: WIDGET_CONFIG_SAVE,
             variables: {
                 id: this.data.get('widget.id')
