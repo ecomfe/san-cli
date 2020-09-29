@@ -76,6 +76,9 @@ export default {
         observer.subscribe({
             next: result => {
                 const {data, error, errors} = result;
+                if (data && data.taskChanged && data.taskChanged.name !== taskId) {
+                    return;
+                }
                 /* eslint-disable no-console */
                 if (error || errors) {
                     console.log('err');
