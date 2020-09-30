@@ -351,38 +351,6 @@
                     "placeholder": "选择一项任务"
                 },
                 "page": "前往“任务”页"
-            },
-            "gen-qrcode": {
-                "title": "生成二维码",
-                "description": "输入链接生成二维码",
-                "select-type": "选择框架类型",
-                "select-box": "选择端类型",
-                "placeholder": "请输入url后点击生成",
-                "ok": "确认生成",
-                "sec-title": "二维码",
-                "schema": "链接",
-                "err-msg": "生成错误，请重新输入",
-                "prompts": {
-                    "from": "slog-来源信息from",
-                    "page": "slog-页面标记page",
-                    "type": "slog-自定义类型type",
-                    "extra": "slog-json对象extra",
-                    "needless": "选填",
-                    "need": "必填"
-                }
-            },
-            "compress-image": {
-                "title": "压缩图片",
-                "description": "减小图片大小",
-                "prompts": {
-                    "quality": "压缩图片质量"
-                },
-                "errors": {
-                    "fail": "压缩失败请重试",
-                    "empty": "请至少选择一个文件"
-                },
-                "upload": "点击选择图片",
-                "limit": "一次最多20张图片, 每张最大5 MB"
             }
         },
         "widgetList": {
