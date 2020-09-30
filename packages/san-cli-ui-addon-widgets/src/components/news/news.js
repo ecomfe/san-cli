@@ -84,11 +84,18 @@ export default {
         this.addAction();
     },
     attached() {
-        if (this.data.get('data.config.url')) {
+        const url = this.data.get('data.config.url');
+        if (url) {
             this.fetchFeed();
+            this.currentUrl = url;
         }
         this.watch('data.config.url', value => {
+            const url = this.data.get('data.config.url');
+            if (url === this.currentUrl) {
+                return;
+            }
             value && this.fetchFeed();
+            this.currentUrl = url;
         });
         this.watch('loading', value => {
             !value && this.addAction();
