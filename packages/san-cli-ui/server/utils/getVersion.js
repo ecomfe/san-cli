@@ -27,10 +27,10 @@ function request(uri, opts) {
 }
 
 async function getMetadata(args, full = false) {
-    let {id, tool, registry, filePath} = args;
+    let {id, pm, registry, filePath} = args;
     const authToken = await getAuthToken(registry, filePath);
 
-    const metadataKey = `${tool}-${registry}-${id}`;
+    const metadataKey = `${pm}-${registry}-${id}`;
     let metadata = metadataCache.get(metadataKey);
 
     if (metadata) {
@@ -46,6 +46,7 @@ async function getMetadata(args, full = false) {
         headers.Authorization = `Bearer ${authToken}`;
     }
 
+    registry = registry || '';
     const url = `${registry.replace(/\/$/g, '')}/${id}`;
     try {
         metadata = (await request(url, {headers})).body;
@@ -55,7 +56,8 @@ async function getMetadata(args, full = false) {
         }
         metadataCache.set(metadataKey, metadata);
         return metadata;
-    } catch (e) {
+    }
+    catch (e) {
         throw e;
     }
 }
