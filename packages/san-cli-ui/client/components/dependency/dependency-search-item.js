@@ -26,7 +26,7 @@ export default class DependencySearchItem extends Component {
                     <span class="pkg-version">{{data.package.version}}</span>
                     <div class="pkg-description">{{data.package.description}}</div>
                 </div>
-                <s-button class="pkg-btn-operate" on-click="onInstallPlugin" type="primary">
+                <s-button class="pkg-btn-operate" on-click="installPlugin" type="primary">
                     {{$t('dependency.install')}}
                 </s-button>
             </div>
@@ -58,21 +58,23 @@ export default class DependencySearchItem extends Component {
         });
     }
 
-    // 点击安装
-    async onInstallPlugin(e) {
+    // 安装插件
+    async installPlugin(e) {
         this.data.set('spinning', true);
-        const packageName = this.data.get('data').package.name;
+        const {name, version} = this.data.get('data.package');
         await this.$apollo.mutate({
             mutation: DEPENDENCY_INSTALL,
             variables: {
-                id: packageName,
-                type: this.data.get('installType')
+                input: {
+                    id: name,
+                    type: this.data.get('installType'),
+                    range: version
+                }
             }
         });
-        // 暂停加载状态
         this.data.set('spinning', false);
         Notification.open({
-            message: this.$t('dependency.installDependency') + ' ' + packageName,
+            message: this.$t('dependency.installDependency') + ' ' + name,
             description: this.$t('dependency.installSuccess')
         });
     }

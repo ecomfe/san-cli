@@ -38,6 +38,7 @@ async function getMetadata(args, full = false) {
     }
 
     const headers = {};
+
     if (!full) {
         headers.Accept = 'application/vnd.npm.install-v1+json;q=1.0, application/json;q=0.9, */*;q=0.8';
     }
@@ -47,7 +48,6 @@ async function getMetadata(args, full = false) {
     }
 
     registry = registry || '';
-    console.log({registryDebug: registry});
 
     const url = `${registry.replace(/\/$/g, '')}/${id}`;
     try {
