@@ -26,7 +26,7 @@ export default class DependencySearchItem extends Component {
                     <span class="pkg-version">{{data.package.version}}</span>
                     <div class="pkg-description">{{data.package.description}}</div>
                 </div>
-                <s-button class="pkg-btn-operate" on-click="installPlugin" type="primary">
+                <s-button class="pkg-btn-operate" on-click="installDependency" type="primary">
                     {{$t('dependency.install')}}
                 </s-button>
             </div>
@@ -58,8 +58,8 @@ export default class DependencySearchItem extends Component {
         });
     }
 
-    // 安装插件
-    async installPlugin(e) {
+    // 安装依赖
+    async installDependency() {
         this.data.set('spinning', true);
         const {name, version} = this.data.get('data.package');
         await this.$apollo.mutate({
