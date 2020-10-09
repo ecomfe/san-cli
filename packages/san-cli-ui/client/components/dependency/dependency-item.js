@@ -80,7 +80,7 @@ export default class DependencyItem extends Component {
         this.fire('updatePkgList');
         this.data.set('spinning', false);
         Notification.open({
-            message: this.$t('dependency.deleteDependency'),
+            message: this.$t('dependency.deleteDependency') + ' ' + id,
             description: this.$t('dependency.deleteSuccess')
         });
     }
@@ -100,7 +100,7 @@ export default class DependencyItem extends Component {
         this.fire('updatePkgList');
         this.data.set('spinning', false);
         Notification.open({
-            message: this.$t('dependency.' + (installed ? 'updateDependency' : 'installDependency')),
+            message: this.$t('dependency.' + (installed ? 'updateDependency' : 'installDependency')) + ' ' + id,
             description: this.$t('dependency.' + (installed ? 'updateSuccess' : 'installSuccess'))
         });
     }

@@ -60,7 +60,7 @@ export default class DependencySearchItem extends Component {
         // 暂停加载状态
         this.data.set('spinning', false);
         Notification.open({
-            message: this.$t('dependency.installDependency'),
+            message: this.$t('dependency.installDependency') + ' ' + this.data.get('data').package.name,
             description: this.$t('dependency.installSuccess')
         });
     }
