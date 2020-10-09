@@ -1,6 +1,6 @@
 /**
  * @file 搜索依赖模态框的item
- * @author sunxiaoyu333
+ * @author sunxiaoyu333, Lohoyo
  */
 
 import Component from '@lib/san-component';
@@ -8,6 +8,12 @@ import {Notification} from 'santd';
 import './dependency-search-item.less';
 import DEPENDENCY_INSTALL from '@graphql/dependency/dependency-install.gql';
 
+/**
+ * 组件props
+ *
+ * @param {Object} data 依赖的信息
+ * @param {String} installType 运行依赖还是开发依赖
+ */
 export default class DependencySearchItem extends Component {
     static template = /* html */`
         <s-spin size="large" spinning="{{spinning}}" tip="{{loadingTip}}">

@@ -1,6 +1,6 @@
 /**
  * @file 搜索依赖模态框
- * @author sunxiaoyu333
+ * @author sunxiaoyu333, Lohoyo
  */
 
 import Component from '@lib/san-component';
@@ -37,7 +37,11 @@ export default class DependencyPackageSearch extends Component {
                     </s-button>
                 </s-dropdown>
                 <c-dependency-filter class="dependency-search-dependency-filter" on-keywordChange="keywordChange"/>
-                <s-radio-group name="radiogroup" value="{{radioValue}}" on-change="onRadioChange" class="pkg-radio">
+                <s-radio-group
+                    name="radiogroup"
+                    defaultValue="dependencies"
+                    on-change="onRadioChange"
+                    class="pkg-radio">
                     <s-radio-button value="dependencies">{{$t('dependency.dependencies')}}</s-radio-button>
                     <s-radio-button value="devDependencies">{{$t('dependency.devDependencies')}}</s-radio-button>
                 </s-radio-group>
@@ -108,7 +112,7 @@ export default class DependencyPackageSearch extends Component {
     }
 
     onRadioChange(event) {
-        this.data.set('radioChange', event.target.value);
+        this.data.set('radioValue', event.target.value);
     }
     onPagination(event) {
         this.data.set('loading', true);
