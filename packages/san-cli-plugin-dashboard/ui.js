@@ -393,7 +393,7 @@ module.exports = api => {
     */
     api.registerTask({
         name: 'inspect',
-        command: 'san-cli-service inspect',
+        command: 'san inspect',
         description: 'task.description.inspect',
         link: 'https://ecomfe.github.io/san-cli',
         icon: sanIcon,
@@ -438,7 +438,8 @@ module.exports = api => {
                 args.push('--verbose');
             }
 
-        }
+        },
+        logs: []
     });
 
     if (process.env.SAN_CLI_UI_DEV) {
