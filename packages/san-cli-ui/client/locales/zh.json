@@ -191,7 +191,8 @@
         "optimal": "最优的",
         "popularity": "最流行的",
         "quality": "质量最高的",
-        "maintenance": "维护情况最好的"
+        "maintenance": "维护情况最好的",
+        "emptyTip": "搜索结果为空"
     },
     "connection-status": {
         "disconnected": "连接已断开",

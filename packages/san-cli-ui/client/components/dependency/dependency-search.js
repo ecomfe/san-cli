@@ -45,16 +45,22 @@ export default class DependencyPackageSearch extends Component {
                     <s-radio-button value="dependencies">{{$t('dependency.dependencies')}}</s-radio-button>
                     <s-radio-button value="devDependencies">{{$t('dependency.devDependencies')}}</s-radio-button>
                 </s-radio-group>
-                <div class="pkg-search-item" s-if="searchData.length">
-                    <c-dependency-search-item s-for="data in searchData" data="{{data}}" installType="{{radioValue}}">
-                    </c-dependency-search-item>
-                    <s-pagination
-                        class="pkg-pagination"
-                        total="{{searchResultTotal}}"
-                        on-change="onPagination"
-                        pageSize="{{searchPageSize}}"
-                        current="{{currentPage}}">
-                    </s-pagination>
+                <div class="pkg-search-item">
+                    <fragment s-if="searchData.length">
+                        <c-dependency-search-item
+                            s-for="data in searchData"
+                            data="{{data}}"
+                            installType="{{radioValue}}">
+                        </c-dependency-search-item>
+                        <s-pagination
+                            class="pkg-pagination"
+                            total="{{searchResultTotal}}"
+                            on-change="onPagination"
+                            pageSize="{{searchPageSize}}"
+                            current="{{currentPage}}">
+                        </s-pagination>
+                    </fragment>
+                    <div s-else-if="!loading" class="empty-tip">{{$t('dependency.emptyTip')}}</div>
                 </div>
             </div>
         </s-spin>
