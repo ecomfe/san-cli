@@ -69,7 +69,7 @@ export default class DependencyPackageSearch extends Component {
             radioValue: 'dependencies',
             searchResultTotal: SEARCH_MAX_RESULT_TOTAL,
             searchPageSize: SEARCH_PAGE_SIZE,
-            loading: false,
+            loading: true,
             rankingModes: RANKING_MODES,
             currentRankingMode: RANKING_MODES[0],
             currentPage: 1
