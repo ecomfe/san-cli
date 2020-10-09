@@ -81,6 +81,7 @@ export default class DependencyPackageSearch extends Component {
     }
 
     async search(keyword, page = 1) {
+        this.data.set('loading', true);
         keyword = keyword || this.keyword || SEARCH_DEFAULT_QUERY;
         let data = await axios({
             url: SEARCH_URL + RANKING_MODE_MAP[this.data.get('currentRankingMode')],
@@ -100,7 +101,10 @@ export default class DependencyPackageSearch extends Component {
             this.data.set('searchResultTotal', total > SEARCH_MAX_RESULT_TOTAL ? SEARCH_MAX_RESULT_TOTAL : total);
             // 回到搜索结果列表的顶部
             this.nextTick(() => {
-                document.querySelector('.pkg-search-item').scrollTop = 0;
+                const element = document.querySelector('.pkg-search-item');
+                if (element) {
+                    element.scrollTop = 0;
+                }
             });
             this.data.set('currentPage', page);
 
@@ -112,7 +116,6 @@ export default class DependencyPackageSearch extends Component {
         this.data.set('radioValue', event.target.value);
     }
     onPagination(event) {
-        this.data.set('loading', true);
         this.search(this.keyword, event.page);
     }
     keywordChange(keyword) {
