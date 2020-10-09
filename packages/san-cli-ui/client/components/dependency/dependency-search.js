@@ -46,10 +46,7 @@ export default class DependencyPackageSearch extends Component {
                     <s-radio-button value="devDependencies">{{$t('dependency.devDependencies')}}</s-radio-button>
                 </s-radio-group>
                 <div class="pkg-search-item" s-if="searchData.length">
-                    <c-dependency-search-item
-                        s-for="data, index in searchData"
-                        data="{{data}}"
-                        installType="{{radioValue}}">
+                    <c-dependency-search-item s-for="data in searchData" data="{{data}}" installType="{{radioValue}}">
                     </c-dependency-search-item>
                     <s-pagination
                         class="pkg-pagination"

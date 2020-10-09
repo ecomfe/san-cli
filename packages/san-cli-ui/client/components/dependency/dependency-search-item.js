@@ -51,22 +51,28 @@ export default class DependencySearchItem extends Component {
     // 设置加载显示的提示条
     async inited() {
         this.data.set('loadingTip', this.$t('dependency.installing'));
+        this.watch('data', () => {
+            if (this.data.get('spinning')) {
+                this.data.set('spinning', false);
+            }
+        });
     }
 
     // 点击安装
     async onInstallPlugin(e) {
         this.data.set('spinning', true);
+        const packageName = this.data.get('data').package.name;
         await this.$apollo.mutate({
             mutation: DEPENDENCY_INSTALL,
             variables: {
-                id: this.data.get('data').package.name,
+                id: packageName,
                 type: this.data.get('installType')
             }
         });
         // 暂停加载状态
         this.data.set('spinning', false);
         Notification.open({
-            message: this.$t('dependency.installDependency') + ' ' + this.data.get('data').package.name,
+            message: this.$t('dependency.installDependency') + ' ' + packageName,
             description: this.$t('dependency.installSuccess')
         });
     }
