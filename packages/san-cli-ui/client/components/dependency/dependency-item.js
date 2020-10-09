@@ -6,8 +6,8 @@
 import Component from '@lib/san-component';
 import {Notification, Modal} from 'santd';
 import avatars from '@lib/utils/avatars';
-import DEPENDENCY_UNINSTALL from '@/graphql/dependency/dependency-uninstall.gql';
-import DEPENDENCY_INSTALL from '@graphql/dependency/dependency-install.gql';
+import DEPENDENCY_UNINSTALL from '@/graphql/dependency/dependencyUninstall.gql';
+import DEPENDENCY_INSTALL from '@graphql/dependency/dependencyInstall.gql';
 import './dependency-item.less';
 
 /**
@@ -30,16 +30,16 @@ export default class DependencyItem extends Component {
                             {{$t('dependency.version')}} {{item.detail.current || ' ...'}}
                         </span>
                         <span class="pkg-version">
-                            {{$t('dependency.lowVersion')}} {{item.detail.wanted || ' ...'}}
+                            {{$t('dependency.wanted')}} {{item.detail.wanted || ' ...'}}
                         </span>
                         <span class="pkg-version">
-                            {{$t('dependency.currentVersion')}} {{item.detail.latest || ' ...'}}
+                            {{$t('dependency.latest')}} {{item.detail.latest || ' ...'}}
                         </span>
                     </div>
                 </div>
                 <fragment s-if="{{item.installed}}">
                     <s-tooltip
-                        s-if="item.detail.current !== item.detail.latest"
+                        s-if="item.detail.current !== item.detail.wanted"
                         title="{{$t('dependency.tooltip.update')}}">
                         <div class="update-icon" on-click="onPkgDownload"></div>
                     </s-tooltip>
@@ -87,14 +87,17 @@ export default class DependencyItem extends Component {
 
     // 安装/更新npm包
     async onPkgDownload() {
-        const {id, type = 'devDependencies', installed} = this.data.get('item');
+        const {id, type = 'devDependencies', installed, detail} = this.data.get('item');
         this.data.set('loadingTip', this.$t('dependency.' + installed ? 'updating' : 'installing'));
         this.data.set('spinning', true);
         await this.$apollo.mutate({
             mutation: DEPENDENCY_INSTALL,
             variables: {
-                id,
-                type
+                input: {
+                    id,
+                    type,
+                    range: detail.range
+                }
             }
         });
         this.fire('updatePkgList');

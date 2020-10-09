@@ -47,6 +47,8 @@ async function getMetadata(args, full = false) {
     }
 
     registry = registry || '';
+    console.log({registryDebug: registry});
+
     const url = `${registry.replace(/\/$/g, '')}/${id}`;
     try {
         metadata = (await request(url, {headers})).body;

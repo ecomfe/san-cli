@@ -7,13 +7,15 @@ const fs = require('fs');
 const path = require('path');
 const execa = require('execa');
 const semver = require('semver');
+const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const {isPlugin} = require('../utils/plugin');
 const {packageManager} = require('../utils/packageManager');
 const {getRegistry} = require('../utils/getRegistry');
 const cwd = require('./cwd');
 const {readPackage} = require('../utils/fileHelper');
 const {resolveModule, resolveModuleRoot} = require('../utils/module');
-const {getMetadata} = require('../utils/getVersion');
+const {getMetadata} = require('../utils/getMetadata');
+const debug = getDebugLogger('ui:dependencies');
 
 const PACKAGE_INSTALL_CONFIG = {
     npm: {
@@ -89,29 +91,31 @@ class Dependencies {
     }
 
     async runCommand(type, args) {
-        let pm = packageManager(cwd.get());
+        const $cwd = cwd.get();
+
+        debug('runCommand:', {
+            type,
+            args,
+            cwd: $cwd
+        });
+
+        const pm = packageManager($cwd);
 
         // npm安装依赖
-        await execa(pm, [
+        return await execa(pm, [
             ...PACKAGE_INSTALL_CONFIG[pm][type],
             ...(args || [])
         ], {
-            filePath: cwd.get(),
+            cwd: $cwd,
             stdio: ['inherit', 'inherit', 'inherit']
-        }).then(result => {
-            return '';
         });
     }
 
-    async install(args) {
-        const {
-            id,
-            type
-        } = args;
-        // 工具太多选 npm - yarn- pnpm - 先走通功能
+    async install({id, type, range}) {
+        const pkg = range ? `${id}@${range}` : id;
         const dev = type === 'devDependencies' ? ['-D'] : [];
         // npm安装依赖
-        await this.runCommand('add', [id, ...dev]);
+        await this.runCommand('add', [pkg, ...dev]);
         return this.findOne(id);
     }
 
@@ -125,9 +129,12 @@ class Dependencies {
         return deleteData;
     }
 
-    async getVersion({
-        id
-    }) {
+    async getDescription({id}, context) {
+        const metadata = await getMetadata(id, context) || {};
+        return metadata.description;
+    }
+
+    async getVersion({id}) {
         let current;
         let pm = packageManager(cwd.get());
         const registry = await getRegistry(pm);

@@ -6,7 +6,7 @@
 import Component from '@lib/san-component';
 import {Notification} from 'santd';
 import './dependency-search-item.less';
-import DEPENDENCY_INSTALL from '@graphql/dependency/dependency-install.gql';
+import DEPENDENCY_INSTALL from '@graphql/dependency/dependencyInstall.gql';
 
 /**
  * 组件props

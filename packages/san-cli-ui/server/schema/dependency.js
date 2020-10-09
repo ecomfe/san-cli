@@ -6,25 +6,42 @@ const gql = require('graphql-tag');
 
 module.exports = gql`
     extend type Mutation {
-        dependencyInstall (id: String!, type: String!): dependency,
-        dependencyUninstall (id: String!, type: String!): dependency,
-        dependencyItem (id: String!): version
+        dependencyInstall (input: DependencyInstall!): Dependency
+        dependencyUninstall (id: String!, type: String!): Dependency
+        dependencyItem (id: String!): Version
+        dependencyUpdate (input: DependencyUpdate!): Dependency
+        dependenciesUpdate: [Dependency]
     }
 
     extend type Query {
-        dependencies: [dependency]
+        dependencies: [Dependency]
     }
 
-    type dependency {
-        id: String!
-        type: String!
-        website: String
-        installed: Boolean
+    enum DependencyType {
+        dependencies
+        devDependencies
     }
-    type version {
-        current: String
-        latest: String
-        wanted: String
+
+    input DependencyInstall {
+        id: ID!
+        type: DependencyType!
         range: String
+    }
+
+    input DependencyUninstall {
+        id: ID!
+    }
+
+    input DependencyUpdate {
+        id: ID!
+    }
+
+    type Dependency {
+        id: ID!
+        type: DependencyType!
+        version: Version!
+        installed: Boolean
+        website: String
+        description: String
     }
 `;

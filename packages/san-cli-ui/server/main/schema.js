@@ -28,7 +28,6 @@ type Version {
   localPath: String
 }
 
-
 type GitHubStats {
   stars: Int
 }
