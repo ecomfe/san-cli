@@ -44,7 +44,8 @@ export default class DependencyPackageSearch extends Component {
                     radio-value="{{radioValue}}"
                     current-ranking-mode="{{currentRankingMode}}"
                     on-loading="onLoadingChange"
-                ></c-pkg-search-item>
+                    loading="{{loading}}">
+                </c-pkg-search-item>
             </div>
         </s-spin>
     `;
