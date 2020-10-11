@@ -5,7 +5,7 @@
 
 import Component from '@lib/san-component';
 import {router} from 'san-router';
-import './header-title.less';
+import './header.less';
 import logo from '@assets/logo.svg';
 
 export default class HeaderTitle extends Component {

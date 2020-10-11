@@ -14,6 +14,8 @@ const ViewPlugin = require('./ViewPlugin');
 const ConfigPlugin = require('./ConfigPlugin');
 const WidgetPlugin = require('./WidgetPlugin');
 const AddonPlugin = require('./AddonPlugin');
+const projects = require('../connectors/projects');
+
 const {
     PLUGIN_ACTION_CALLED,
     PLUGIN_ACTION_RESOLVED
@@ -52,7 +54,7 @@ class PluginManager {
         return this.taskPlugin;
     }
 
-    // 注册视图插件：viewPlugin
+    // 注册自定义视图插件：viewPlugin
     registerView(...args) {
         if (!this.viewPlugin) {
             this.viewPlugin = new ViewPlugin(...args);
@@ -61,7 +63,7 @@ class PluginManager {
         return this.viewPlugin;
     }
 
-    // 注册视图插件：viewPlugin
+    // 注册视图组件插件：viewPlugin
     registerAddon(...args) {
         if (!this.addonPlugin) {
             this.addonPlugin = new AddonPlugin(...args);
@@ -86,6 +88,13 @@ class PluginManager {
         }
         this.widgetPlugin.register(...args);
         return this.widgetPlugin;
+    }
+
+    /**
+     * 注册一个自定义的路由
+    */
+    registerRoute(route) {
+        projects.addRoute(route, this.context);
     }
 
     /**

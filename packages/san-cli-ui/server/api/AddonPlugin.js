@@ -1,5 +1,5 @@
 /**
- * @file 视图类插件
+ * @file 视图组件类插件
  * @author jinzhan
  */
 
@@ -12,12 +12,7 @@ class AddonPlugin {
         this.addons = [];
         this.views = [];
     }
-    /**
-     * 注册一个自定义的路由
-    */
-    requestRoute(route) {
-        // TODO: requestRoute(route, this.context);
-    }
+
     /**
      * 打开视图时候的回调
      *

@@ -1,11 +1,11 @@
 /**
- * @file 带侧边栏布局组件
+ * @file 项目详情页布局
  * @author zttonly, Lohoyo
  */
 
 import Component from '@lib/san-component';
 import ConnectionStatus from '@components/connection-status';
-import HeaderTitle from './header-title';
+import HeaderTitle from './header';
 import PROJECTS from '@graphql/project/projects.gql';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_OPEN from '@graphql/project/projectOpen.gql';
@@ -86,6 +86,7 @@ export default class ComponentLayout extends Component {
         // 当前打开的project,记录在数据库
         projectCurrent.data && this.data.set('projectCurrent', projectCurrent.data.projectCurrent);
     }
+
     async getRecentProjectList() {
         const projects = await this.$apollo.query({query: PROJECTS});
         if (projects.data) {
@@ -95,6 +96,7 @@ export default class ComponentLayout extends Component {
             this.data.set('list', projectsDuplicate.slice(1, 4));
         }
     }
+
     async handleMenuClick(e) {
         if (e.key === 'open-in-editor') {
             let path = this.data.get('projectCurrent.path');
@@ -113,6 +115,7 @@ export default class ComponentLayout extends Component {
                 id: e.key
             }
         });
+
         res.data && this.data.set('projectCurrent', res.data.projectOpen);
 
         this.getRecentProjectList();
