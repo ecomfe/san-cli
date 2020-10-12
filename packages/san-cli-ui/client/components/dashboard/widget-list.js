@@ -87,6 +87,7 @@ export default class widgetList extends Component {
 
     filterList(searchInput) {
         const list = this.data.get('definitions');
-        this.data.set('searchResult', list.filter(item => this.$t(item.title).indexOf(searchInput) > -1));
+        this.data.set('searchResult', list.filter(item => this.$t(item.title)
+            && this.$t(item.title).indexOf(searchInput) > -1));
     }
 }
