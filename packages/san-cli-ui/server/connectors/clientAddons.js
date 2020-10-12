@@ -3,6 +3,7 @@
  * @author zttonly
  */
 const path = require('path');
+const cwd = require('./cwd');
 const channels = require('../utils/channels');
 const {resolveModuleRoot} = require('../utils/module');
 
@@ -47,7 +48,13 @@ class ClientAddons {
         const {id, 0: file} = req.params;
         const addon = this.findOne(decodeURIComponent(id));
         if (addon && addon.path) {
-            const resolvedPath = require.resolve(addon.path);
+            let resolvedPath = '';
+            // 尝试寻找两次
+            try {
+                resolvedPath = require.resolve(addon.path);
+            } catch (error) {
+                resolvedPath = require.resolve(cwd.get() + '/node_modules/' + addon.path);
+            }
             const basePath = resolveModuleRoot(resolvedPath);
             if (basePath) {
                 res.sendFile(path.join(basePath, file), {maxAge: 0});

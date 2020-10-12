@@ -67,7 +67,8 @@ class Plugins {
         const name = filename !== 'ui' ? `${id}/${filename}` : id;
         let module;
         try {
-            module = reloadModule(`${id}/${filename}`);
+            let p = id.indexOf('/') === 0 ? `${id}/${filename}` : `${pluginApi.cwd}/node_modules/${id}/${filename}`;
+            module = reloadModule(p);
         }
         catch (e) {
             // debug(e);
