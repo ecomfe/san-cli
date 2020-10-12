@@ -420,13 +420,13 @@ module.exports = api => {
                         value: ''
                     }
                 ],
-                description: 'task.inspect.mode'
+                message: 'task.inspect.mode'
             },
             {
                 name: 'verbose',
                 type: 'confirm',
                 default: false,
-                description: 'task.inspect.verbose'
+                message: 'task.inspect.verbose'
             }
         ],
         onBeforeRun: ({answers, args}) => {

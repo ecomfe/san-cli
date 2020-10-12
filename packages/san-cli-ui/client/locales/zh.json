@@ -149,7 +149,8 @@
             "https": "启用HTTPS"
         },
         "inspect": {
-            "mode": "环境"
+            "mode": "环境",
+            "verbose": "调试日志"
         },
         "build": {
             "mode": "环境",
