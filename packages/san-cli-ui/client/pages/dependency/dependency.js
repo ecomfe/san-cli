@@ -14,7 +14,7 @@ import './dependency.less';
 
 export default class Dependency extends Component {
     static template = /* html */`
-        <c-layout menu="{{$t('menu')}}"
+        <c-layout
             nav="{{['dependency']}}"
             title="{{$t('dependency.title')}}"
             page-loading="{=pageLoading=}">

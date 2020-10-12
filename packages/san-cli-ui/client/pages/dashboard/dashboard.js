@@ -20,7 +20,6 @@ export default class App extends Component {
     static template = /* html */`
         <div class="h1oh dashboard {{editing ? 'customizing' : ''}}">
             <c-layout
-                menu="{{$t('menu')}}" 
                 nav="{{['dashboard']}}" 
                 title="{{$t('dashboard.title')}}"
                 page-loading="{=pageLoading=}">

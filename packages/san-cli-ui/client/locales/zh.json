@@ -98,7 +98,8 @@
         {
             "text": "依赖",
             "key": "dependency",
-            "link": "/dependency"
+            "link": "/dependency",
+            "type": "common"
         },
         {
             "text": "配置",
@@ -108,7 +109,8 @@
         {
             "text": "任务",
             "key": "tasks",
-            "link": "/tasks"
+            "link": "/tasks",
+            "type": "common"
         }
     ],
     "plugins": {

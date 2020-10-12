@@ -13,7 +13,7 @@ import './task.less';
 
 export default class Task extends Component {
     static template = /* html */`
-        <c-layout menu="{{$t('menu')}}"
+        <c-layout
             nav="{{['tasks']}}"
             title="{{$t('task.title')}}"
             page-loading="{=pageLoading=}"

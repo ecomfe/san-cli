@@ -15,7 +15,7 @@ import './plugins.less';
 
 export default class Plugins extends Component {
     static template = /* html */`
-        <c-layout menu="{{$t('menu')}}"
+        <c-layout
             nav="{{['plugins']}}"
             title="{{$t('plugins.title')}}"
             page-loading="{=pageLoading=}"

@@ -17,7 +17,7 @@ import taskIconColor from '@lib/utils/task-icon-color';
 export default class Configuration extends Component {
     static template = /* html */`
         <div class="h1oh">
-            <c-layout menu="{{$t('menu')}}"
+            <c-layout
                 nav="{{['configuration']}}"
                 title="{{$t('config.title')}}"
                 page-loading="{=pageLoading=}"
