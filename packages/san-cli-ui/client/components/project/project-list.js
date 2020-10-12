@@ -199,13 +199,7 @@ export default class ProjectList extends Component {
         if (this.data.get('projectCurrent.type') === 'san') {
             link = this.$t('menu.0.link');
         } else {
-            const menu = this.$t('menu');
-            for (let i = 0; i < menu.length; i++) {
-                if (menu[i].type === 'common') {
-                    link = menu[i].link;
-                    break;
-                }
-            }
+            link = this.$t('menu').find(menuItem => menuItem.type === 'common').link;
         }
         this.fire('routeto', link);
     }
