@@ -95,13 +95,15 @@ function hasYarn(cwd) {
     return result && hasYarnEnv();
 }
 
-function installTool(cwd) {
+function packageManager(cwd) {
     let tool = '';
     if (hasYarn(cwd)) {
         tool = 'yarn';
-    } else if (hasPnpm(cwd)) {
+    }
+    else if (hasPnpm(cwd)) {
         tool = 'pnpm';
-    } else if (hasNpm(cwd)) {
+    }
+    else if (hasNpm(cwd)) {
         tool = 'npm';
     }
     return !tool || hasYarnEnv() ? 'yarn' : hasPnpmEnv() ? 'pnpm' : 'npm';
@@ -113,5 +115,5 @@ module.exports = {
     hasPnpm,
     hasPnpmEnv,
     hasNpm,
-    installTool
+    packageManager
 };

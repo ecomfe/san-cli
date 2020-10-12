@@ -1,17 +1,16 @@
 const minimist = require('minimist');
 const fetch = require('node-fetch');
 const execa = require('execa');
-const {installTool} = require('./installTool');
+const {packageManager} = require('./packageManager');
 const cwd = require('../connectors/cwd');
 
-
-let isChecked = false;
 const registries = {
     npm: 'https://registry.npmjs.org',
     yarn: 'https://registry.yarnpkg.com',
     taobao: 'https://registry.npm.taobao.org',
     pnpm: 'https://registry.npmjs.org'
 };
+
 let registry = '';
 
 async function getRegistry(tool) {
@@ -41,34 +40,40 @@ function removeSlash(url) {
 }
 
 async function ping(url) {
-    const reqOpts = {
+    const opts = {
         method: 'GET',
         timeout: 30000,
-        resolveWithFullResponse: true,
-        json: true,
-        uri: `${url}/san-cli`
+        json: true
     };
-    await fetch(reqOpts);
+    await fetch(`${url}/san-cli`, opts);
     return url;
 }
 
 // 判断淘宝源
+let isChecked = false;
+let checkedResult = false;
+
 async function shouldUseTaobao(command) {
     const defaultRegistry = registries[command];
     let faster = '';
 
     if (!command) {
-        command = installTool(cwd.get());
+        command = packageManager(cwd.get());
     }
+
     if (isChecked) {
-        return registry;
+        return checkedResult;
     }
+
+    isChecked = true;
+
     // 获取文件源
     await getFileRegistry(command);
 
     if (removeSlash(defaultRegistry) !== removeSlash(registry)) {
         return false;
     }
+
     try {
         faster = await Promise.race([
             ping(defaultRegistry),
@@ -78,11 +83,11 @@ async function shouldUseTaobao(command) {
     catch (e) {
         return false;
     }
-    if (faster !== registries.taobao) {
-        return false;
-    }
-    return true;
+
+    checkedResult = faster === registries.taobao;
+    return checkedResult;
 }
+
 module.exports = {
     shouldUseTaobao,
     getRegistry

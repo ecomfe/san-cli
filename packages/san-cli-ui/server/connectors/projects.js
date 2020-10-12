@@ -12,6 +12,7 @@ const {getGitUser} = require('san-cli-utils/env');
 const {tmpl} = require('san-cli-utils/utils');
 const downloadRepo = require('san-cli-utils/downloadRepo');
 const {getLocalTplPath} = require('san-cli-utils/path');
+const channels = require('../utils/channels');
 const notify = require('../utils/notify');
 const cwd = require('./cwd');
 const events = require('../utils/events');
@@ -171,7 +172,9 @@ class Projects {
         if (!params.force && !fs.existsSync(path.join(params.path, 'node_modules'))) {
             throw new Error('NO_MODULES');
         }
-
+        if (this.findByPath(params.path, context)) {
+            throw new Error('PROJECT_HAS_BEEN_IMPORTED');
+        }
         const project = {
             id: shortId.generate(),
             path: params.path,
@@ -289,6 +292,12 @@ class Projects {
     getLast(context) {
         let id = context.db.get('config.lastOpenProject').value();
         return this.findOne(id, context);
+    }
+
+    addRoute(route, context) {
+        context.pubsub.publish(channels.ROUTE_REQUESTED, {
+            routeRequested: route
+        });
     }
 };
 

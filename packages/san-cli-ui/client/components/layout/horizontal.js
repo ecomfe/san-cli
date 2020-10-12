@@ -1,12 +1,12 @@
 /**
- * @file 无侧边栏布局组件
+ * @file 项目管理器布局
  * @author zttonly, Lohoyo
  */
 
 import Component from '@lib/san-component';
 import {Link} from 'san-router';
 import ConnectionStatus from '@components/connection-status';
-import HeaderTitle from './header-title';
+import HeaderTitle from './header';
 import './horizontal.less';
 
 export default class ComponentHorLayout extends Component {

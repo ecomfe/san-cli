@@ -18,6 +18,8 @@
                 "link": "/project/import"
             }],
             "folderExplorer": {
+                "modalCreateTitle": "输入文件夹名称",
+                "emptyTip": "没有文件夹",
                 "placeholder": {
                     "edit": "请输入合法路径",
                     "create": "请输入合法文件夹名称"
@@ -35,8 +37,7 @@
                     "hiddenFolderShow": "显示隐藏文件夹",
                     "hiddenFolder": "不显示隐藏文件夹",
                     "createTitle": "输入文件夹名称"
-                },
-                "modalCreateTitle": "输入文件夹名称"
+                }
             },
             "create": {
                 "initProject": "在此创建项目",
@@ -73,8 +74,14 @@
                 "spinTip": "正在创建项目..."
             },
             "import": {
-                "noModulesTipsTitle": "该项目没有安装依赖",
-                "noModulesTipsContent": "请安装依赖后再尝试导入。"
+                "noModulesTips": {
+                    "title": "该项目没有安装依赖",
+                    "content": "请安装依赖后再尝试导入。"
+                },
+                "hasBeenImportedTips": {
+                    "title": "该项目已存在",
+                    "content": "请导入其它项目或返回首页确认。"
+                }
             }
         }
     },
@@ -159,8 +166,8 @@
         "uninstalled": "未安装",
         "install": "安装",
         "version": "版本",
-        "lowVersion": "最低",
-        "currentVersion": "最新",
+        "wanted": "要求",
+        "latest": "最新",
         "searchDependency": "搜索依赖",
         "searchPlaceholder": "请输入Package关键字",
         "newDependency": "安装新的依赖",
@@ -184,7 +191,8 @@
         "optimal": "最优的",
         "popularity": "最流行的",
         "quality": "质量最高的",
-        "maintenance": "维护情况最好的"
+        "maintenance": "维护情况最好的",
+        "emptyTip": "搜索结果为空"
     },
     "connection-status": {
         "disconnected": "连接已断开",
@@ -283,6 +291,7 @@
     "dashboard": {
         "title": "项目仪表盘",
         "tools": "安装 devtools",
+        "emptyTip": "暂无部件",
         "widget": {
             "remove": "移除部件",
             "configure": "配置部件",
@@ -313,7 +322,6 @@
                 "title": "终止端口",
                 "description": "终止占用指定端口的进程",
                 "kill": "终止",
-                "placeholder": "请输入端口号",
                 "status": {
                     "idle": "准备好终止",
                     "killing": "运行中...",
@@ -344,38 +352,6 @@
                     "placeholder": "选择一项任务"
                 },
                 "page": "前往“任务”页"
-            },
-            "gen-qrcode": {
-                "title": "生成二维码",
-                "description": "输入链接生成二维码",
-                "select-type": "选择框架类型",
-                "select-box": "选择端类型",
-                "placeholder": "请输入url后点击生成",
-                "ok": "确认生成",
-                "sec-title": "二维码",
-                "schema": "链接",
-                "err-msg": "生成错误，请重新输入",
-                "prompts": {
-                    "from": "slog-来源信息from",
-                    "page": "slog-页面标记page",
-                    "type": "slog-自定义类型type",
-                    "extra": "slog-json对象extra",
-                    "needless": "选填",
-                    "need": "必填"
-                }
-            },
-            "compress-image": {
-                "title": "压缩图片",
-                "description": "减小图片大小",
-                "prompts": {
-                    "quality": "压缩图片质量"
-                },
-                "errors": {
-                    "fail": "压缩失败请重试",
-                    "empty": "请至少选择一个文件"
-                },
-                "upload": "点击选择图片",
-                "limit": "一次最多20张图片, 每张最大5 MB"
             }
         },
         "widgetList": {

@@ -1,6 +1,6 @@
 {
   "name": "san-cli-ui-addon-widgets",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "san cli ui addon widgets",
   "scripts": {
     "start": "cross-env NODE_ENV=development ../san-cli/index.js serve --config san.config.js",
@@ -25,9 +25,6 @@
     "postcss-loader": "^2.0.8",
     "autoprefixer": "^9.7.5",
     "postcss-url": "^7.2.1"
-  },
-  "dependencies": {
-    "qrcodejs2": "0.0.2"
   },
   "browserslist": [
     "> 1%",

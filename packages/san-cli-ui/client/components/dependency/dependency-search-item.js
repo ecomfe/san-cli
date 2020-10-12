@@ -1,13 +1,19 @@
 /**
  * @file 搜索依赖模态框的item
- * @author sunxiaoyu333
+ * @author sunxiaoyu333, Lohoyo
  */
 
 import Component from '@lib/san-component';
 import {Notification} from 'santd';
 import './dependency-search-item.less';
-import DEPENDENCY_INSTALL from '@graphql/dependency/dependency-install.gql';
+import DEPENDENCY_INSTALL from '@graphql/dependency/dependencyInstall.gql';
 
+/**
+ * 组件props
+ *
+ * @param {Object} data 依赖的信息
+ * @param {String} installType 运行依赖还是开发依赖
+ */
 export default class DependencySearchItem extends Component {
     static template = /* html */`
         <s-spin size="large" spinning="{{spinning}}" tip="{{loadingTip}}">
@@ -20,7 +26,7 @@ export default class DependencySearchItem extends Component {
                     <span class="pkg-version">{{data.package.version}}</span>
                     <div class="pkg-description">{{data.package.description}}</div>
                 </div>
-                <s-button class="pkg-btn-operate" on-click="onInstallPlugin" type="primary">
+                <s-button class="pkg-btn-operate" on-click="installDependency" type="primary">
                     {{$t('dependency.install')}}
                 </s-button>
             </div>
@@ -45,22 +51,30 @@ export default class DependencySearchItem extends Component {
     // 设置加载显示的提示条
     async inited() {
         this.data.set('loadingTip', this.$t('dependency.installing'));
+        this.watch('data', () => {
+            if (this.data.get('spinning')) {
+                this.data.set('spinning', false);
+            }
+        });
     }
 
-    // 点击安装
-    async onInstallPlugin(e) {
+    // 安装依赖
+    async installDependency() {
         this.data.set('spinning', true);
+        const {name, version} = this.data.get('data.package');
         await this.$apollo.mutate({
             mutation: DEPENDENCY_INSTALL,
             variables: {
-                id: this.data.get('data').package.name,
-                type: this.data.get('installType')
+                input: {
+                    id: name,
+                    type: this.data.get('installType'),
+                    range: version
+                }
             }
         });
-        // 暂停加载状态
         this.data.set('spinning', false);
         Notification.open({
-            message: this.$t('dependency.installDependency'),
+            message: this.$t('dependency.installDependency') + ' ' + name,
             description: this.$t('dependency.installSuccess')
         });
     }

@@ -44,8 +44,8 @@ exports.getGitUser = () => {
     }
 };
 
-exports.currentOS = () => ({
+exports.currentOS = {
     isWindows: process.platform === 'win32',
     isMacintosh: process.platform === 'darwin',
     isLinux: process.platform === 'linux'
-});
+};

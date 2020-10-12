@@ -102,13 +102,13 @@ module.exports = api => {
         description: 'dashboard.widgets.news.description',
         icon: 'info-circle',
         component: 'san.widgets.components.news',
-        minWidth: 6,
+        minWidth: 5,
         minHeight: 1,
-        maxWidth: 6,
+        maxWidth: 5,
         maxHeight: 6,
         defaultWidth: 5,
         defaultHeight: 4,
-        openDetailsButton: false,
+        openDetailsButton: true,
         defaultConfig: () => ({
             url: 'https://ecomfe.github.io/atom.xml'
         }),

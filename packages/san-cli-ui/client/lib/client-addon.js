@@ -5,12 +5,12 @@
 import san from 'san';
 import Component from '@lib/san-component';
 import {router} from 'san-router';
-// import deepmerge from 'deepmerge';
+import merge from 'deepmerge';
 import loadScript from 'load-script';
 import apolloClient from '@lib/apollo-client';
 import CLIENT_ADDONS from '@graphql/client-addon/clientAddons.gql';
 import CLIENT_ADDON_ADDED from '@graphql/client-addon/clientAddonAdded.gql';
-// import localization from '@locales/zh.json';
+import localization from '@locales/zh.json';
 import uiComponents from './default-components';
 
 export default class ClientAddon {
@@ -41,6 +41,12 @@ export default class ClientAddon {
         }
     }
 
+    /**
+     * 获取id对应组件
+     *
+     * @param {string} id 组件的标识
+     * @return {Object}
+     */
     getComponent(id) {
         return this.components.get(id);
     }
@@ -49,6 +55,7 @@ export default class ClientAddon {
      * 注册一个Promise，为后续添加的组件，注册回调方法
      *
      * @param {string} id 组件的标识
+     * @return {Promise}
      */
     awaitComponent(id) {
         return new Promise((resolve, reject) => {
@@ -72,10 +79,13 @@ export default class ClientAddon {
     }
 
     /**
+     * 增加第三方描述文本对象
+     *
      * @param {Object} lang JSON格式的文本
      */
     addLocalization(lang) {
-        // TODO: deepmerge localization
+        let newLocale = merge(localization, lang);
+        Object.assign(localization, newLocale);
     }
 
     /**

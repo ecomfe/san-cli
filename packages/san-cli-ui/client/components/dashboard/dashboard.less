@@ -12,6 +12,19 @@
         margin: 0 auto;
         padding: 12px;
         box-sizing: border-box;
+        transition-property: opacity;
+        transition-duration: .5s;
+    }
+    .details-shell {
+        position: fixed;
+        left: 163px !important;
+        top: 90px !important;
+        width: calc(100% - 175px) !important;
+        height: calc(100% - 102px) !important;
+        opacity: 1 !important;
+    }
+    .details-animation {
+        transition-property: opacity, position, top, width, height;
     }
     .wrap {
         .v-box();
@@ -47,6 +60,12 @@
         .icon {
             margin-bottom: @padding16;
 
+        }
+        .santd-btn {
+            height: 36px;
+            border-radius: 18px;
+            padding: 0 15px !important;
+            font-size: 18px;
         }
     }
     .santd-icon.huge {

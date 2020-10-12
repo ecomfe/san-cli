@@ -36,7 +36,9 @@ const getSizeStyle = ({width, height, field, gridSize}) => (
 export default class DashboardWidget extends Component {
     static template = /* html */`
         <div class="dashboard-widget">
-            <div class="shell" style="{{mainStyle}}">
+            <div
+                class="shell {{isOpenDetails ? 'details-shell' : ''}} {{detailsAnimation ? 'details-animation' : ''}}"
+                style="{{mainStyle}}">
                 <div class="wrap">
                     <div class="flex-none head-bar">
                         <div class="head-title">{{customTitle || $t(widget.definition.title)}}</div>
@@ -63,10 +65,10 @@ export default class DashboardWidget extends Component {
 
                         <!-- Exit button -->
                         <s-button
-                            s-if="details"
+                            s-if="isOpenDetails"
                             icon="fullscreen-exit"
                             class="icon-button"
-                            on-click="exitDetails"
+                            on-click="changeDetailsStatus(false)"
                             size="large"
                         ></s-button>
 
@@ -75,7 +77,7 @@ export default class DashboardWidget extends Component {
                             s-elif="widget.definition.openDetailsButton"
                             icon="fullscreen"
                             class="icon-button"
-                            on-click="openDetails"
+                            on-click="changeDetailsStatus(true)"
                             size="large"
                         ></s-button>
                     </div>
@@ -85,14 +87,10 @@ export default class DashboardWidget extends Component {
                             data="{{widget}}" />
                     </div>
                     <div s-else class="flex-all content not-configured">
-                        <s-icon
-                            type="setting"
-                            class="icon huge"
-                        />
-                        <s-button type="primary"
-                            ghost="{{true}}"
-                            on-click="openConfig"
-                        >{{$t('dashboard.widgets.widget.configure')}}</s-button>
+                        <s-icon type="setting" class="icon huge"></s-icon>
+                        <s-button type="primary" on-click="openConfig">
+                            {{$t('dashboard.widgets.widget.configure')}}
+                        </s-button>
                     </div>
                     <div
                         s-if="moveState"
@@ -126,22 +124,22 @@ export default class DashboardWidget extends Component {
                 visible="{=showConfig=}"
                 okText="{{$t('dashboard.widget.save')}}"
                 on-ok="save"
-                on-cancel="closeConfig"
-            >
+                on-cancel="closeConfig">
                 <div class="default-body">
                     <div s-if="loadingConfig" class="widget-loading">
                         <s-spin spinning="{=loadingConfig=}">
                             <s-icon slot="indicator" type="loading" style="font-size: 24px;" />
                         </s-spin>
                     </div>
-                    <c-prompts s-else
+                    <c-prompts
+                        s-else
                         s-ref="widgetConfigForm"
                         form-item-layout="{{formItemLayout}}"
                         hide-submit-btn="{{true}}"
                         prompts="{=visiblePrompts=}"
                         on-submit="saveConfig"
-                        on-valuechanged="onConfigChange"
-                    />
+                        on-valuechanged="onConfigChange">
+                    </c-prompts>
                 </div>
             </s-modal>
         </div>
@@ -202,10 +200,11 @@ export default class DashboardWidget extends Component {
             widget: null,
             custom: false,
             customTitle: null,
-            details: false,
+            isOpenDetails: false,
             loadingConfig: false,
             showConfig: false,
-            formItemLayout: LAYOUT_ONE_THIRD
+            formItemLayout: LAYOUT_ONE_THIRD,
+            detailsAnimation: false
         };
     }
     attached() {
@@ -344,8 +343,7 @@ export default class DashboardWidget extends Component {
     }
     async saveConfig() {
         this.data.set('loadingConfig', true);
-        this.data.set('showConfig', true);
-        let widgetConfig = await this.$apollo.mutate({
+        const widgetConfig = await this.$apollo.mutate({
             mutation: WIDGET_CONFIG_SAVE,
             variables: {
                 id: this.data.get('widget.id')
@@ -360,11 +358,17 @@ export default class DashboardWidget extends Component {
         this.data.set('showConfig', false);
     }
 
-    openDetails() {
-        this.data.set('details', true);
-    }
-    exitDetails() {
-        this.data.set('details', true);
+    changeDetailsStatus(detailsStatus) {
+        this.data.set('isOpenDetails', detailsStatus);
+        if (detailsStatus) {
+            this.data.set('detailsAnimation', detailsStatus);
+        } else {
+            const ANIMATION_DURATION = 500;
+            setTimeout(() => {
+                this.data.set('detailsAnimation', detailsStatus);
+            }, ANIMATION_DURATION);
+        }
+        this.fire('hideOtherWidgets', detailsStatus);
     }
     onCustomAction(action) {
         return action.onCalled();

@@ -7,6 +7,12 @@ import Component from '@lib/san-component';
 import widget from './widget';
 import './widget-list.less';
 
+/**
+ * 组件props
+ *
+ * @param {Array} definitions 部件列表
+ * @param {Boolean} visible 部件列表是否可见
+ */
 export default class widgetList extends Component {
 
     static template = /* html */`
@@ -23,23 +29,20 @@ export default class widgetList extends Component {
                     <s-button
                         class="icon-button"
                         icon="close"
-                        on-click="close"
-                    ></s-button>
+                        on-click="close">
+                    </s-button>
                 </div>
 
                 <div class="toolbar flex-none">
                     <s-input-search
                         placeholder="{{$t('dashboard.widgetList.searchPlaceholder')}}"
-                        value="{=search=}"
-                    ></s-input-search>
+                        on-change="filterList">
+                    </s-input-search>
                 </div>
                 <div class="widgets">
-                    <template s-for="definition in filterList">
-                        <c-widget
-                            s-if="definition.canAddMore"
-                            definition="{=definition=}"
-                        />
-                    </template>
+                    <fragment s-for="definition in searchResult">
+                        <c-widget s-if="definition.canAddMore" definition="{=definition=}"></c-widget>
+                    </fragment>
                 </div>
             </div>
         </div>
@@ -54,33 +57,36 @@ export default class widgetList extends Component {
             const visible = this.data.get('visible');
             const isTransitionend = this.data.get('isTransitionend');
             return visible || isTransitionend;
-        },
-        filterList() {
-            const search = this.data.get('search');
-            const list = this.data.get('definitions');
-            return search ? list.filter(item => item.title.indexOf(search) > -1) : list;
         }
     };
 
     initData() {
         return {
-            visible: false,
             isTransitionend: false,
-            actived: false,
-            search: '',
-            definitions: []
+            actived: false
         };
+    }
+
+    inited() {
+        this.filterList('');
     }
 
     onTransitionstart() {
         this.data.set('isTransitionend', false);
     }
+
     onTransitionend() {
         const visible = this.data.get('visible');
         this.data.set('actived', visible);
         this.data.set('isTransitionend', true);
     }
+
     close() {
         this.fire('close');
+    }
+
+    filterList(searchInput) {
+        const list = this.data.get('definitions');
+        this.data.set('searchResult', list.filter(item => this.$t(item.title).indexOf(searchInput) > -1));
     }
 }

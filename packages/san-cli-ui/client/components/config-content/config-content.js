@@ -34,13 +34,13 @@ export default class ConfigContent extends Component {
                 />
             </div>
             <div class="actions-bar" s-if="config">
-                <s-button s-if="config.link" class="more" size="large" href="{{config.link}}">
+                <s-button s-if="config.link" class="more" size="large" href="{{config.link}}" target="_blank">
                     {{$t('config.actions.more')}}
                 </s-button>
-                <s-button class="cancel" size="large" disabled="{=!hasPromptsChanged=}">
+                <s-button class="cancel" size="large" disabled="{=!hasPromptsChanged=}" on-click="cancel">
                     {{$t('config.actions.cancel')}}
                 </s-button>
-                <s-button s-if="!hasPromptsChanged" type="primary" class="refresh" size="large">
+                <s-button s-if="!hasPromptsChanged" type="primary" class="refresh" size="large" on-click="refetch">
                     {{$t('config.actions.refresh')}}
                 </s-button>
                 <s-button s-else 
@@ -115,7 +115,7 @@ export default class ConfigContent extends Component {
                 id: this.data.get('config.id')
             }
         });
-        this.fire('refetch');
+        this.refetch();
     }
     async cancel() {
         await this.$apollo.mutate({
@@ -125,6 +125,10 @@ export default class ConfigContent extends Component {
             }
         });
 
+        this.refetch();
+        this.data.set('hasPromptsChanged', false);
+    }
+    refetch() {
         this.fire('refetch');
     }
 }

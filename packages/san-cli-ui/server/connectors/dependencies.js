@@ -7,15 +7,17 @@ const fs = require('fs');
 const path = require('path');
 const execa = require('execa');
 const semver = require('semver');
+const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const {isPlugin} = require('../utils/plugin');
-const {installTool} = require('../utils/installTool');
+const {packageManager} = require('../utils/packageManager');
 const {getRegistry} = require('../utils/getRegistry');
 const cwd = require('./cwd');
 const {readPackage} = require('../utils/fileHelper');
 const {resolveModule, resolveModuleRoot} = require('../utils/module');
-const {getMetadata} = require('../utils/getVersion');
+const {getMetadata} = require('../utils/getMetadata');
+const debug = getDebugLogger('ui:dependencies');
 
-const PACKAGE_INSTLL_CONFIG = {
+const PACKAGE_INSTALL_CONFIG = {
     npm: {
         install: ['install', '--loglevel', 'error'],
         add: ['install', '--loglevel', 'error'],
@@ -89,29 +91,31 @@ class Dependencies {
     }
 
     async runCommand(type, args) {
-        let tool = installTool(cwd.get());
+        const $cwd = cwd.get();
+
+        debug('runCommand:', {
+            type,
+            args,
+            cwd: $cwd
+        });
+
+        const pm = packageManager($cwd);
 
         // npm安装依赖
-        await execa(tool, [
-            ...PACKAGE_INSTLL_CONFIG[tool][type],
+        return await execa(pm, [
+            ...PACKAGE_INSTALL_CONFIG[pm][type],
             ...(args || [])
         ], {
-            filePath: cwd.get(),
+            cwd: $cwd,
             stdio: ['inherit', 'inherit', 'inherit']
-        }).then(result => {
-            return '';
         });
     }
 
-    async install(args) {
-        let {
-            id,
-            type
-        } = args;
-        // 工具太多选 npm - yarn- pnpm - 先走通功能
-        let dev = type === 'devDependencies' ? ['-D'] : [];
+    async install({id, type, range}) {
+        const pkg = range ? `${id}@${range}` : id;
+        const dev = type === 'devDependencies' ? ['-D'] : [];
         // npm安装依赖
-        await this.runCommand('add', [id, ...(dev || [])]);
+        await this.runCommand('add', [pkg, ...dev]);
         return this.findOne(id);
     }
 
@@ -125,12 +129,15 @@ class Dependencies {
         return deleteData;
     }
 
-    async getVersion({
-        id
-    }) {
+    async getDescription({id}, context) {
+        const metadata = await getMetadata(id, context) || {};
+        return metadata.description;
+    }
+
+    async getVersion({id}) {
         let current;
-        let tool = installTool(cwd.get());
-        const registry = await getRegistry(tool);
+        let pm = packageManager(cwd.get());
+        const registry = await getRegistry(pm);
 
         let idPath = this.getPath({
             id
@@ -144,10 +151,11 @@ class Dependencies {
 
         const metadata = await getMetadata({
             id,
-            tool,
+            pm,
             registry,
             filePath: cwd.get()
         });
+
         if (metadata) {
             latest = metadata['dist-tags'].latest;
 
@@ -158,10 +166,11 @@ class Dependencies {
 
         if (!latest) {
             latest = current;
-        };
+        }
+
         if (!wanted) {
             wanted = current;
-        };
+        }
 
         return {
             current,

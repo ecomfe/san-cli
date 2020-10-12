@@ -84,11 +84,19 @@ export default {
         this.addAction();
     },
     attached() {
-        if (this.data.get('data.config.url')) {
+        const url = this.data.get('data.config.url');
+        if (url) {
             this.fetchFeed();
+            this.currentUrl = url;
         }
         this.watch('data.config.url', value => {
+            const url = this.data.get('data.config.url');
+            // 有时data.config.url明明没有变化，却监听到了变化，所以这里做了下判断，判断到底有没有变化
+            if (url === this.currentUrl) {
+                return;
+            }
             value && this.fetchFeed();
+            this.currentUrl = url;
         });
         this.watch('loading', value => {
             !value && this.addAction();

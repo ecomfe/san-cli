@@ -9,16 +9,30 @@
         height: 64px;
         .santd-btn {
             border-radius: 9px;
-            .santd-icon {
-                font-size: 16px;
-            }
         }
         .operate-btn {
-            margin-left: 24px;
-            font-size: 18px;
+            margin-left: 14px;
             cursor: pointer;
-            :hover {
-                color: #40a9ff;
+            &:hover {
+                opacity: .65;
+            }
+            .edit-icon {
+                background-image: url(../../assets/edit-icon.svg);
+            }
+            .star-icon {
+                background-image: url(../../assets/star-icon.svg);
+                &.favorited {
+                    background-image: url(../../assets/yellow-star-icon.svg);
+                }
+            }
+            .redo-icon {
+                background-image: url(../../assets/redo-icon.svg);
+            }
+            .caret-down-icon {
+                background-image: url(../../assets/caret-down-icon.svg);
+            }
+            .more-icon {
+                background-image: url(../../assets/more-icon.svg);
             }
         }
         .santd-dropdown-trigger {
@@ -65,16 +79,21 @@
                 &.hidden {
                     opacity: .5;
                 }
-                .santd-icon {
-                    font-size: 18px;
-                    margin: 0 8px;
-                }
                 .folder-name {
                     margin-left: 16px;
                     overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
                 }
+                .yellow-star-icon {
+                    background-image: url(../../assets/yellow-star-icon.svg);
+                }
+            }
+            .empty-tip {
+                position: static;
+                transform: none;
+                margin: auto;
+                margin-bottom: 40px;
             }
         }
     }
@@ -92,8 +111,9 @@
         background-size: contain;
         background-repeat: no-repeat;
     }
-    .yellow-star {
-        color: #ffc003;
+    .icon {
+        width: 27px;
+        height: 27px;
     }
 }
 .contents-menu {

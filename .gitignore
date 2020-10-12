@@ -87,5 +87,6 @@ Thumbs.db
 /dll
 
 
-# TODO: for local test
+# TODO: for local test, to be removed...
 /packages/my-san-project
+/packages/san-cli-plugin-ocr

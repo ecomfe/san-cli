@@ -27,10 +27,10 @@ function request(uri, opts) {
 }
 
 async function getMetadata(args, full = false) {
-    let {id, tool, registry, filePath} = args;
+    let {id, pm, registry, filePath} = args;
     const authToken = await getAuthToken(registry, filePath);
 
-    const metadataKey = `${tool}-${registry}-${id}`;
+    const metadataKey = `${pm}-${registry}-${id}`;
     let metadata = metadataCache.get(metadataKey);
 
     if (metadata) {
@@ -38,6 +38,7 @@ async function getMetadata(args, full = false) {
     }
 
     const headers = {};
+
     if (!full) {
         headers.Accept = 'application/vnd.npm.install-v1+json;q=1.0, application/json;q=0.9, */*;q=0.8';
     }
@@ -45,6 +46,8 @@ async function getMetadata(args, full = false) {
     if (authToken) {
         headers.Authorization = `Bearer ${authToken}`;
     }
+
+    registry = registry || '';
 
     const url = `${registry.replace(/\/$/g, '')}/${id}`;
     try {
@@ -55,7 +58,8 @@ async function getMetadata(args, full = false) {
         }
         metadataCache.set(metadataKey, metadata);
         return metadata;
-    } catch (e) {
+    }
+    catch (e) {
         throw e;
     }
 }

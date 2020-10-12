@@ -1,6 +1,7 @@
 @import '../../assets/vars.less';
 .head-right {
     .icon {
+        margin-left: 30px;
         width: 36px;
         height: 36px;
         cursor: pointer;
@@ -21,12 +22,19 @@
     padding: 12px;
     box-sizing: border-box;
     &.empty {
+        position: relative;
         .box-center();
     }
     .widgets {
         flex: auto 1 1;
         overflow-x: hidden;
         overflow-y: auto;
+    }
+    .details-widget {
+        overflow-y: hidden;
+        .shell {
+            opacity: 0;
+        }
     }
     .inner {
         position: relative;
