@@ -11,7 +11,8 @@ import {
     SEARCH_MAX_RESULT_TOTAL,
     SEARCH_PAGE_SIZE,
     SEARCH_DEFAULT_QUERY,
-    RANKING_MODE_MAP
+    RANKING_MODE_MAP,
+    RANKING_MODES
 } from '@lib/const';
 import './pkg-search-item.less';
 
@@ -22,7 +23,8 @@ export default class PackageSearchItem extends Component {
                 <c-dependency-search-item
                     s-for="data in searchData"
                     data="{{data}}"
-                    installType="{{radioValue}}">
+                    load-meta="{{loadMeta}}"
+                    install-type="{{installType}}">
                 </c-dependency-search-item>
                 <s-pagination
                     class="pkg-pagination"
@@ -44,7 +46,9 @@ export default class PackageSearchItem extends Component {
             // 运行依赖
             searchResultTotal: SEARCH_MAX_RESULT_TOTAL,
             searchPageSize: SEARCH_PAGE_SIZE,
-            currentPage: 1
+            currentPage: 1,
+            currentRankingMode: RANKING_MODES[0],
+            installType: 'devDependencies'
         };
     }
     inited() {

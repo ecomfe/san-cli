@@ -1,6 +1,6 @@
 /**
  * @file 搜索依赖模态框
- * @author sunxiaoyu333, Lohoyo
+ * @author sunxiaoyu333, Lohoyo, zttonly
  */
 
 import Component from '@lib/san-component';
@@ -41,7 +41,7 @@ export default class DependencyPackageSearch extends Component {
                 </s-radio-group>
                 <c-pkg-search-item
                     keyword="{{keyword}}"
-                    radio-value="{{radioValue}}"
+                    install-type="{{radioValue}}"
                     current-ranking-mode="{{currentRankingMode}}"
                     on-loading="onLoadingChange"
                     loading="{{loading}}">
