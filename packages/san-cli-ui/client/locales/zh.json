@@ -114,7 +114,10 @@
     "plugins": {
         "title": "插件",
         "subTitle": "已安装的插件",
-        "emptyTip": "没有安装任何插件"
+        "emptyTip": "没有安装任何插件",
+        "installPlugin": "安装插件",
+        "generator": "这个插件带有一个生成器，可以在项目中修改或新增文件。",
+        "ui-integration": "这个插件包含额外的 UI 功能，比如加强的任务界面、配置页面、仪表盘部件……"
     },
     "task": {
         "title": "任务",

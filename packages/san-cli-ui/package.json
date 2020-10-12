@@ -15,7 +15,7 @@
         "start": "cross-env DEBUG=san-cli:ui:* SAN_CLI_UI_DEV=true SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql nodemon ../san-cli/index.js ui",
         "debug:task": "cross-env DEBUG=san-cli:ui:tasks:connectors* SAN_CLI_UI_DEV=true SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql nodemon ../san-cli/index.js ui",
         "debug:plugins": "cross-env DEBUG=san-cli:ui:plugins* SAN_CLI_UI_DEV=true SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql nodemon ../san-cli/index.js ui",
-        "prod": "cross-env DEBUG=san-cli:ui:*  SAN_CLI_UI_DEV=false node ../san-cli/index.js ui",
+        "prod": "cross-env DEBUG=san-cli:ui:* node ../san-cli/index.js ui",
         "dev:san": "node ../san-cli/index.js",
         "dev:san-ui": "cross-env DEBUG=san-cli:* SAN_CLI_UI_DEV=true node ../san-cli/index.js ui",
         "dev:san-init": "node ../san-cli/index.js init",
