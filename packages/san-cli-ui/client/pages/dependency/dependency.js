@@ -27,13 +27,13 @@ export default class Dependency extends Component {
             <div slot="content" class="dependency">
                 <div class="dependency-wrapper">
                     <div class="pkg-body" s-if="dependencies.length">
-                        <h2>{{$t('dependency.dependencies')}}</h2>
+                        <h2 class="pkg-body-title">{{$t('dependency.dependencies')}}</h2>
                         <template s-for="item in dependencies">
                             <c-dependency-item item="{{item}}" on-updatePkgList="getDependencies"/>
                         </template>
                     </div>
                     <div class="pkg-body dev-pkg-body" s-if="devDependencies.length">
-                        <h2>{{$t('dependency.devDependencies')}}</h2>
+                        <h2 class="pkg-body-title">{{$t('dependency.devDependencies')}}</h2>
                         <template s-for="item in devDependencies">
                             <c-dependency-item item="{{item}}" on-updatePkgList="getDependencies"/>
                         </template>

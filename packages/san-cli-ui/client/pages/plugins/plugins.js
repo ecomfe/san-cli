@@ -28,7 +28,7 @@ export default class Plugins extends Component {
             </template>
             <div slot="content" class="plugins">
                 <div class="pkg-body" s-if="plugins.length">
-                    <h2>{{$t('plugins.subTitle')}}</h2>
+                    <h2 class="pkg-body-title">{{$t('plugins.subTitle')}}</h2>
                     <c-dependency-item s-for="item in plugins" item="{{item}}" hideDeleteBtn></c-dependency-item>
                 </div>
                 <div s-else class="empty-tip">{{$t('plugins.emptyTip')}}</div>
