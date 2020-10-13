@@ -84,21 +84,24 @@ export default class ComponentLayout extends Component {
         };
     }
     async inited() {
-        this.getRecentProjectList();
-
-        let projectCurrent = await this.$apollo.query({query: PROJECT_CURRENT});
-        // 当前打开的project,记录在数据库
-        projectCurrent.data && this.data.set('projectCurrent', projectCurrent.data.projectCurrent);
+        this.getRecentProjects();
+        this.getCurrentProject();
     }
 
-    async getRecentProjectList() {
-        const projects = await this.$apollo.query({query: PROJECTS});
-        if (projects.data) {
-            const projectsDuplicate = projects.data.projects.slice();
-            // 之所以不直接对 projects.data.projects 进行 sort，是因为如果这里改了 projects.data.projects，还会影响其它用到了 projects.data.projects 的地方
-            projectsDuplicate.sort((project1, project2) => project2.openDate - project1.openDate);
-            this.data.set('list', projectsDuplicate.slice(1, 4));
-        }
+    async getCurrentProject() {
+        const {data} = await this.$apollo.query({query: PROJECT_CURRENT});
+        const projectCurrent = (data && data.projectCurrent) || {};
+        this.data.set('projectCurrent', projectCurrent);
+    }
+
+    async getRecentProjects() {
+        const {data} = await this.$apollo.query({query: PROJECTS});
+        const projects = (data && data.projects) || [];
+        // 获取排序后的项目
+        const sortedProjects = [...projects].sort((p1, p2) => p2.openDate - p1.openDate);
+
+        // 获取最近3个项目，不包括当前项目
+        this.data.set('list', sortedProjects.slice(1, 4));
     }
 
     async handleMenuClick(e) {
