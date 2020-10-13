@@ -3,55 +3,37 @@
  * @author jinzhan
  */
 import Component from '@lib/san-component';
-import Layout from '@components/layout';
 import TaskNav from '@components/task/task-nav';
 import TaskCard from '@components/task/task-card';
 import TaskContent from '@components/task/task-content';
 import TASKS from '@graphql/task/tasks.gql';
 import TASK from '@graphql/task/task.gql';
-import './task.less';
+import './content.less';
 
 export default class Task extends Component {
     static template = /* html */`
-        <c-layout
-            nav="{{['tasks']}}"
-            title="{{$t('task.title')}}"
-            page-loading="{=pageLoading=}"
-        >
-            <template slot="right"></template>
-            <div slot="content" class="{{taskName ? 'task' : 'task-home'}}">
-                <c-task-nav 
-                    tasks="{{tasks}}" 
-                    queryName="{{taskName}}" 
-                    routePath="{{routePath}}"
-                    s-if="{{taskName}}" />
-                <c-task-card
-                    s-else
-                    tasks="{{tasks}}" 
-                    queryName="{{taskName}}" 
-                    routePath="{{routePath}}" />
-
-                <c-task-content s-if="{{taskName}}" taskInfo="{{taskInfo}}" ></c-task-content>
-            </div>
-        </c-layout>
+    <div class="{{taskName ? 'task' : 'task-home'}}">
+        <c-task-nav 
+            tasks="{{tasks}}" 
+            queryName="{{taskName}}" 
+            s-if="{{taskName}}"
+        />
+        <c-task-card
+            s-else
+            tasks="{{tasks}}" 
+        />
+        <c-task-content s-if="{{taskName}}" taskInfo="{{taskInfo}}" ></c-task-content>
+    </div>
     `;
     static components = {
-        'c-layout': Layout,
         'c-task-nav': TaskNav,
         'c-task-card': TaskCard,
         'c-task-content': TaskContent
     };
 
-    static computed = {
-        taskName() {
-            return this.data.get('route.query.task');
-        }
-    };
-
     initData() {
         return {
             tasks: [],
-            routePath: '',
             pageLoading: true
         };
     }
@@ -63,12 +45,6 @@ export default class Task extends Component {
         }
 
         this.data.set('pageLoading', false);
-        let routePath = this.data.get('route.path');
-
-        if (routePath) {
-            routePath = routePath.split('/')[1];
-            this.data.set('routePath', routePath);
-        }
 
         const taskName = this.data.get('taskName');
 
@@ -77,7 +53,10 @@ export default class Task extends Component {
             this.data.set('taskInfo', taskInfo);
         }
 
-        this.watch('route.query.task', async task => {
+        this.watch('taskName', async task => {
+            if (!task) {
+                return;
+            }
             const taskInfo = await this.getTaskInfo(task);
             this.data.set('taskInfo', taskInfo);
         });

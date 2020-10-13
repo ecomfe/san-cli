@@ -12,7 +12,7 @@ export default class TaskNav extends Component {
     static template = /* html */`
         <div class="task-nav">
             <div class="task-nav-item {{task.name === queryName ? 'task-nav-item-current' : ''}}" s-for="task in tasks">
-                <r-link to="{{'/' + routePath + '/' + task.name}}">
+                <r-link to="{{$t('nav.task.link') + '/' + task.name}}">
                     <div class="task-icon" style="color: {{task.name === queryName ? iconColor(task.name) : '#999'}}">
                         {{task.name[0] | upper}}
                     </div>

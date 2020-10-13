@@ -24,8 +24,8 @@ const createViewsSet = () => {
         name: 'configuration'
     },
     {
-        id: 'nav.tasks',
-        name: 'tasks'
+        id: 'nav.task',
+        name: 'task'
     }];
 };
 

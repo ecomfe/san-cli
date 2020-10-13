@@ -85,37 +85,53 @@
             }
         }
     },
+    "connection-status": {
+        "disconnected": "连接已断开",
+        "connected": "已连接"
+    },
+    "loadingTip": "正在加载……",
+    "confirmText": "确定",
+    "cancelText": "取消",
+    "pre": "上一步",
+    "next": "下一步",
+    "enter": "进入",
+    "scaffold": {
+        "chooseLabel": "选择脚手架模板",
+        "choosePlaceholder": "请选择脚手架模板",
+        "customLabel": "自定义模板地址",
+        "optionLabel": "自定义脚手架模板"
+    },
     "nav": {
         "dashboard": {
             "name": "dashboard",
             "text": "仪表盘",
             "key": "dashboard",
-            "link": "/dashboard"
+            "link": "/ui/dashboard"
         },
         "plugins": {
             "name": "plugins",
             "text": "插件",
             "key": "plugins",
-            "link": "/plugins"
+            "link": "/ui/plugins"
         },
         "dependency": {
             "name": "dependency",
             "text": "依赖",
             "key": "dependency",
-            "link": "/dependency",
+            "link": "/ui/dependency",
             "type": "common"
         },
         "configuration": {
             "name": "configuration",
             "text": "配置",
             "key": "configuration",
-            "link": "/configuration"
+            "link": "/ui/configuration"
         },
-        "tasks": {
-            "name": "tasks",
+        "task": {
+            "name": "task",
             "text": "任务",
-            "key": "tasks",
-            "link": "/tasks",
+            "key": "task",
+            "link": "/ui/task",
             "type": "common"
         }
     },
@@ -206,24 +222,10 @@
         "maintenance": "维护情况最好的",
         "emptyTip": "搜索结果为空"
     },
-    "connection-status": {
-        "disconnected": "连接已断开",
-        "connected": "已连接"
-    },
-    "loadingTip": "正在加载……",
-    "confirmText": "确定",
-    "cancelText": "取消",
-    "pre": "上一步",
-    "next": "下一步",
-    "enter": "进入",
-    "scaffold": {
-        "chooseLabel": "选择脚手架模板",
-        "choosePlaceholder": "请选择脚手架模板",
-        "customLabel": "自定义模板地址",
-        "optionLabel": "自定义脚手架模板"
+    "configuration": {
+        "title": "项目配置"
     },
     "config": {
-        "title": "项目配置",
         "tools": "安装 devtools",
         "san-cli": {
             "description": "配置 san 项目",

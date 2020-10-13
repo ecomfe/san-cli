@@ -3,54 +3,39 @@
  */
 import Component from '@lib/san-component';
 import fastq from 'fastq';
-import Layout from '@components/layout';
-import DependencyFilter from '@components/dependency/dependency-filter';
 import DependencyItem from '@components/dependency/dependency-item';
 import DependencySearch from '@components/dependency/dependency-search';
 import DependencyModal from '@components/dependency/dependency-modal';
 import DEPENDENCIES from '@graphql/dependency/dependencies.gql';
 import DEPENDENCY_ITEM from '@graphql/dependency/dependencyItem.gql';
-import './dependency.less';
+import './content.less';
 
 export default class Dependency extends Component {
     static template = /* html */`
-        <c-layout
-            nav="{{['dependency']}}"
-            title="{{$t('dependency.title')}}"
-            page-loading="{=pageLoading=}">
-            <template slot="right" s-if="!modalVisible">
-                <c-dependency-filter on-keywordChange="keywordChange" />
-                <s-button type="primary" on-click="onModalShow">
-                    {{$t('dependency.installDependency')}} <s-icon type="plus"/>
-                </s-button>
-            </template>
-            <div slot="content" class="dependency">
-                <div class="dependency-wrapper">
-                    <div class="pkg-body" s-if="dependencies.length">
-                        <h2 class="pkg-body-title">{{$t('dependency.dependencies')}}</h2>
-                        <template s-for="item in dependencies">
-                            <c-dependency-item item="{{item}}" on-updatePkgList="getDependencies"/>
-                        </template>
-                    </div>
-                    <div class="pkg-body dev-pkg-body" s-if="devDependencies.length">
-                        <h2 class="pkg-body-title">{{$t('dependency.devDependencies')}}</h2>
-                        <template s-for="item in devDependencies">
-                            <c-dependency-item item="{{item}}" on-updatePkgList="getDependencies"/>
-                        </template>
-                    </div>
-                </div>
-                <c-dependency-modal on-cancel="onModalClose" visible="{{modalVisible}}">
-                    <template slot="content">
-                        <c-dependency-search/>
+        <div class="dependency">
+            <div class="dependency-wrapper">
+                <div class="pkg-body" s-if="dependencies.length">
+                    <h2 class="pkg-body-title">{{$t('dependency.dependencies')}}</h2>
+                    <template s-for="item in dependencies">
+                        <c-dependency-item item="{{item}}" on-updatePkgList="getDependencies"/>
                     </template>
-                </c-dependency-modal>
+                </div>
+                <div class="pkg-body dev-pkg-body" s-if="devDependencies.length">
+                    <h2 class="pkg-body-title">{{$t('dependency.devDependencies')}}</h2>
+                    <template s-for="item in devDependencies">
+                        <c-dependency-item item="{{item}}" on-updatePkgList="getDependencies"/>
+                    </template>
+                </div>
             </div>
-        </c-layout>
+            <c-dependency-modal on-cancel="onModalClose" visible="{{modalVisible}}">
+                <template slot="content">
+                    <c-dependency-search/>
+                </template>
+            </c-dependency-modal>
+        </div>
     `;
 
     static components = {
-        'c-layout': Layout,
-        'c-dependency-filter': DependencyFilter,
         'c-dependency-item': DependencyItem,
         'c-dependency-search': DependencySearch,
         'c-dependency-modal': DependencyModal
@@ -84,6 +69,17 @@ export default class Dependency extends Component {
         };
     }
 
+    $events() {
+        return {
+            keywordChange(data) {
+                this.data.set('keyword', data);
+            },
+            showModal(data) {
+                this.data.set('modalVisible', data);
+            }
+        };
+    }
+
     async attached() {
         this.getDependencies();
     }
@@ -98,11 +94,6 @@ export default class Dependency extends Component {
         if (dependencyItem) {
             callback && callback(null, dependencyItem);
         }
-    }
-
-    keywordChange(keyword) {
-        keyword = keyword.trim();
-        this.data.set('keyword', keyword);
     }
 
     // 初始化获取数据列表

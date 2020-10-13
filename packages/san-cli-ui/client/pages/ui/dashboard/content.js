@@ -14,45 +14,34 @@ import WIDGET_DEFINITIONS from '@graphql/widget/widgetDefinitions.gql';
 import WIDGET_REMOVE from '@graphql/widget/widgetRemove.gql';
 import WIDGET_ADD from '@graphql/widget/widgetAdd.gql';
 import WIDGET_DEFINITION_FRAGMENT from '@graphql/widget/widgetDefinitionFragment.gql';
-import './dashboard.less';
+import './content.less';
 
 export default class App extends Component {
     static template = /* html */`
-        <div class="h1oh dashboard {{editing ? 'customizing' : ''}}">
-            <c-layout
-                nav="{{['dashboard']}}" 
-                title="{{$t('dashboard.title')}}"
-                page-loading="{=pageLoading=}">
-                <template slot="right">
-                    <s-button disabled="{{true}}">{{$t('dashboard.tools')}}</s-button>
-                    <div on-click="showCustom" class="icon {{editing ? 'check-icon' : 'custom-icon'}}"></div>
-                </template>
-                <div slot="content" class="h1oh dashboard-content {{widgets.length === 0 && !editing ? 'empty' : ''}}">
-                    <div class="widgets {{isHideOtherWidgets ? 'details-widget' : ''}}">
-                        <div s-if="widgets.length === 0 && !editing" class="empty-tip">
-                            {{$t('dashboard.emptyTip')}}
-                        </div>
-                        <div s-else class="inner">
-                            <template s-for="widget,index in widgets">
-                                <c-dashboard
-                                    s-if="widget"
-                                    widget="{=widget=}"
-                                    index="{{index}}"
-                                    custom="{=editing=}"
-                                    on-updatewidgets="updateWidgets"
-                                    on-hideOtherWidgets="hideOtherWidgets">
-                                </c-dashboard>
-                            </template>
-                        </div>
-                    </div>
-                    <c-widget-list
-                        visible="{=editing=}"
-                        definitions="{=definitions=}"
-                        on-close="showCustom"
-                        s-if="definitions.length">
-                    </c-widget-list>
+        <div class="h1oh dashboard-content {{editing ? 'customizing' : (!widgets.length ? 'empty' : '')}}">
+            <div class="widgets {{isHideOtherWidgets ? 'details-widget' : ''}}">
+                <div s-if="widgets.length === 0 && !editing" class="empty-tip">
+                    {{$t('dashboard.emptyTip')}}
                 </div>
-            </c-layout>
+                <div s-else class="inner">
+                    <template s-for="widget,index in widgets">
+                        <c-dashboard
+                            s-if="widget"
+                            widget="{=widget=}"
+                            index="{{index}}"
+                            custom="{=editing=}"
+                            on-updatewidgets="updateWidgets"
+                            on-hideOtherWidgets="hideOtherWidgets">
+                        </c-dashboard>
+                    </template>
+                </div>
+            </div>
+            <c-widget-list
+                visible="{=editing=}"
+                definitions="{=definitions=}"
+                on-close="showCustom"
+                s-if="definitions.length">
+            </c-widget-list>
         </div>
     `;
     static components = {
@@ -107,6 +96,16 @@ export default class App extends Component {
             this.init();
         }
     };
+
+    $events() {
+        return {
+            showCustom() {
+                const editing = this.data.get('editing');
+                this.data.set('editing', !editing);
+            }
+        };
+    }
+
     initData() {
         return {
             editing: false,
@@ -135,10 +134,7 @@ export default class App extends Component {
     updateWidgets(e) {
         this.data.set('widgets', e);
     }
-    showCustom() {
-        let editing = this.data.get('editing');
-        this.data.set('editing', !editing);
-    }
+
     hideOtherWidgets(e) {
         this.data.set('isHideOtherWidgets', e);
     }
