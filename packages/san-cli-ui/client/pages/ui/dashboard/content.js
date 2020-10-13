@@ -39,7 +39,7 @@ export default class App extends Component {
             <c-widget-list
                 visible="{=editing=}"
                 definitions="{=definitions=}"
-                on-close="showCustom"
+                on-close="toggleStatus"
                 s-if="definitions.length">
             </c-widget-list>
         </div>
@@ -99,9 +99,8 @@ export default class App extends Component {
 
     $events() {
         return {
-            showCustom() {
-                const editing = this.data.get('editing');
-                this.data.set('editing', !editing);
+            toggleStatus() {
+                this.toggleStatus();
             }
         };
     }
@@ -115,6 +114,7 @@ export default class App extends Component {
             isHideOtherWidgets: false
         };
     }
+
     async attached() {
         // 重要：初始化 plugin必须先执行 todo: plugin初始化依赖集中到一处使用san-store
         await this.$apollo.query({query: PLUGINS});
@@ -125,17 +125,24 @@ export default class App extends Component {
         }
         this.init();
     }
+
     async init() {
         let definitions = await this.$apollo.query({query: WIDGET_DEFINITIONS});
         if (definitions.data) {
             this.data.set('definitions', [...definitions.data.widgetDefinitions]);
         }
     }
+
     updateWidgets(e) {
         this.data.set('widgets', e);
     }
 
     hideOtherWidgets(e) {
         this.data.set('isHideOtherWidgets', e);
+    }
+
+    toggleStatus() {
+        const editing = this.data.get('editing');
+        this.data.set('editing', !editing);
     }
 }

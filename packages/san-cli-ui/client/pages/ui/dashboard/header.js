@@ -10,10 +10,10 @@ export default class App extends Component {
     static template = /* html */`
         <div class="dashboard-header">
             <s-button disabled="{{true}}">{{$t('dashboard.tools')}}</s-button>
-            <div on-click="showCustom" class="icon {{editing ? 'check-icon' : 'custom-icon'}}"></div>
+            <div on-click="toggleStatus" class="icon {{editing ? 'check-icon' : 'custom-icon'}}"></div>
         </div>
     `;
-    showCustom() {
-        this.$emit('showCustom');
+    toggleStatus() {
+        this.$emit('toggleStatus');
     }
 }
