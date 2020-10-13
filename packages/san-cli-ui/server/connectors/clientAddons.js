@@ -52,8 +52,13 @@ class ClientAddons {
             // 尝试寻找两次
             try {
                 resolvedPath = require.resolve(addon.path);
-            } catch (error) {
-                resolvedPath = require.resolve(cwd.get() + '/node_modules/' + addon.path);
+            }
+            catch (error) {
+                try {
+                    resolvedPath = require.resolve(cwd.get() + '/node_modules/' + addon.path);
+                }
+                catch (e) {
+                }
             }
             const basePath = resolveModuleRoot(resolvedPath);
             if (basePath) {
