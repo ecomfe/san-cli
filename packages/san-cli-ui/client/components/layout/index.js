@@ -10,6 +10,7 @@ import PROJECTS from '@graphql/project/projects.gql';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_OPEN from '@graphql/project/projectOpen.gql';
 import PROJECT_OPEN_IN_EDITOR from '@graphql/project/projectOpenInEditor.gql';
+import VIEWS from '@graphql/view/views.gql';
 import {Link} from 'san-router';
 import './index.less';
 
@@ -48,12 +49,17 @@ export default class ComponentLayout extends Component {
                                 {{projectCurrent.name}}<s-icon class="caret-down" type="caret-down" />
                             </div>
                         </s-dropdown>
+                        <!---左侧导航--->
                         <s-menu class="menu" mode="inline" selectedKeys="{{nav}}" theme="dark">
-                            <fragment s-for="item in $t('menu')">
+                            <fragment s-for="item in projectNav">
                                 <s-menu-item
                                     s-if="projectCurrent.type !== 'unknown' || item.type === 'common')"
-                                    key="{{item.key}}">
-                                    <r-link to="{{item.link}}" class="{{item.key}}-icon">{{item.text}}</r-link>
+                                    key="{{item.name}}"
+                                >
+                                    <r-link to="{{item.link}}" class="{{item.name}}-icon">
+                                        <s-icon s-if="item.icon" type="{{item.icon}}"></s-icon>
+                                        {{item.text}}
+                                    </r-link>
                                 </s-menu-item>
                             </fragment>
                         </s-menu>
@@ -78,23 +84,25 @@ export default class ComponentLayout extends Component {
     };
     initData() {
         return {
+            projectNav: [],
             list: [],
             projectCurrent: {},
             pageLoading: false
         };
     }
     async inited() {
-        this.getRecentProjects();
-        this.getCurrentProject();
+        this.setProjectNav();
+        this.setRecentProjects();
+        this.setCurrentProject();
     }
 
-    async getCurrentProject() {
+    async setCurrentProject() {
         const {data} = await this.$apollo.query({query: PROJECT_CURRENT});
         const projectCurrent = (data && data.projectCurrent) || {};
         this.data.set('projectCurrent', projectCurrent);
     }
 
-    async getRecentProjects() {
+    async setRecentProjects() {
         const {data} = await this.$apollo.query({query: PROJECTS});
         const projects = (data && data.projects) || [];
         // 获取排序后的项目
@@ -102,6 +110,25 @@ export default class ComponentLayout extends Component {
 
         // 获取最近3个项目，不包括当前项目
         this.data.set('list', sortedProjects.slice(1, 4));
+    }
+
+    async setProjectNav() {
+        const {data} = await this.$apollo.query({query: VIEWS});
+
+        const projectNav = (data.views || []).map(({id, name, icon}) => {
+            const {text, type, link} = this.$t(id) || {};
+            return {
+                text,
+                type,
+                link,
+                name,
+                icon
+            };
+        });
+
+        this.data.set('projectNav', projectNav);
+        // wtf
+        this.data.set('nav', [...this.data.get('nav')]);
     }
 
     async handleMenuClick(e) {

@@ -195,12 +195,9 @@ export default class ProjectList extends Component {
             mutation: PROJECT_CWD_RESET
         });
 
-        let link;
-        if (this.data.get('projectCurrent.type') === 'san') {
-            link = this.$t('menu.0.link');
-        } else {
-            link = this.$t('menu').find(menuItem => menuItem.type === 'common').link;
-        }
+
+        const isSanProject = this.data.get('projectCurrent.type') === 'san';
+        const link = isSanProject ? this.$t('nav.dashboard.link') : this.$t('nav.dependency.link');
         this.fire('routeto', link);
     }
 }

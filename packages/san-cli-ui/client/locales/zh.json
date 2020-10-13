@@ -85,34 +85,40 @@
             }
         }
     },
-    "menu": [{
+    "nav": {
+        "dashboard": {
+            "name": "dashboard",
             "text": "仪表盘",
             "key": "dashboard",
             "link": "/dashboard"
         },
-        {
+        "plugins": {
+            "name": "plugins",
             "text": "插件",
             "key": "plugins",
             "link": "/plugins"
         },
-        {
+        "dependency": {
+            "name": "dependency",
             "text": "依赖",
             "key": "dependency",
             "link": "/dependency",
             "type": "common"
         },
-        {
+        "configuration": {
+            "name": "configuration",
             "text": "配置",
             "key": "configuration",
             "link": "/configuration"
         },
-        {
+        "tasks": {
+            "name": "tasks",
             "text": "任务",
             "key": "tasks",
             "link": "/tasks",
             "type": "common"
         }
-    ],
+    },
     "plugins": {
         "title": "插件",
         "subTitle": "已安装的插件",
