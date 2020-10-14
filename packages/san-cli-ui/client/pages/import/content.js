@@ -20,7 +20,7 @@ export default class Project extends Component {
         />
         <div class="flex-none footer-wrapper">
             <s-button
-                class="custom-santd-btn"
+                class="com-santd-btn-large"
                 disabled="{{!isPackage}}"
                 loading="{{isImporting}}"
                 size="large"

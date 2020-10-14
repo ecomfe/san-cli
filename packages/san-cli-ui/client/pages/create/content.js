@@ -37,7 +37,7 @@ export default class Project extends Component {
         <!---底部按钮--->
         <div class="flex-none footer-wrapper">
             <s-button
-                class="custom-santd-btn"
+                class="com-santd-btn-large"
                 size="large"
                 s-if="current === 0"
                 type="primary"
@@ -55,7 +55,7 @@ export default class Project extends Component {
 
             <!----下一步---->
             <s-button
-                class="custom-santd-btn"
+                class="com-santd-btn-large"
                 s-if="current === 1"
                 size="large"
                 on-click="handleInitProject"
@@ -63,7 +63,7 @@ export default class Project extends Component {
             >{{$t('next')}}</s-button>
 
             <s-button
-                class="custom-santd-btn"
+                class="com-santd-btn-large"
                 s-if="current === 2"
                 size="large"
                 on-click="createProject"
