@@ -16,7 +16,7 @@ export default class Plugins extends Component {
         <div class="plugins">
             <div class="pkg-body" s-if="plugins.length">
                 <h2 class="pkg-body-title">{{$t('plugins.subTitle')}}</h2>
-                <c-dependency-item s-for="item in plugins" item="{{item}}" hideDeleteBtn></c-dependency-item>
+                <c-dependency-item s-for="item in plugins" item="{{item}}" on-updatePkgList="init"></c-dependency-item>
             </div>
             <div s-else-if="!pageLoading" class="empty-tip">{{$t('plugins.emptyTip')}}</div>
             <c-dependency-modal on-cancel="onModalClose" visible="{{addPlugin}}">
