@@ -20,7 +20,7 @@ export default class App extends Component {
     static template = /* html */`
         <div class="h1oh dashboard-content {{editing ? 'customizing' : (!widgets.length ? 'empty' : '')}}">
             <div class="widgets {{isHideOtherWidgets ? 'details-widget' : ''}}">
-                <div s-if="widgets.length === 0 && !editing" class="empty-tip">
+                <div s-if="widgets.length === 0 && !editing && !pageLoading" class="empty-tip">
                     {{$t('dashboard.emptyTip')}}
                 </div>
                 <div s-else class="inner">
