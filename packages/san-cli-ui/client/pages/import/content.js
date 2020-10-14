@@ -13,7 +13,7 @@ import './content.less';
 
 export default class Project extends Component {
     static template = /* html */`
-    <div class="h1oh project-import">
+    <div class="h1oh project-container project-import">
         <c-folder-explorer
             current-path="{{cwd}}"
             on-change="handleCwdChange"
@@ -59,22 +59,6 @@ export default class Project extends Component {
     handleCwdChange({path, isPackage}) {
         path && this.data.set('cwd', path);
         this.data.set('isPackage', isPackage);
-    }
-
-    formatPrompts(data) {
-        data.forEach(item => {
-            // cli中的name是默认文件夹名称，web里面不能使用，故设置为空
-            if (item.name === 'name') {
-                item.default = '';
-            }
-
-            // 把default赋值给value
-            item.default && (item.value = item.default);
-
-            // 给select赋初始值
-            item.choices && (item.value = item.choices[0].value);
-        });
-        return data;
     }
 
     async importProject() {

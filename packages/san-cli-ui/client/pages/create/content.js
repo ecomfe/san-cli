@@ -13,7 +13,7 @@ import './content.less';
 
 export default class Project extends Component {
     static template = /* html */`
-    <div class="h1oh project-create">
+    <div class="h1oh project-container project-create">
         <c-folder-explorer
             s-if="current === 0"
             current-path="{{cwd}}"
