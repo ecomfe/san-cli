@@ -18,16 +18,15 @@ export default class Plugins extends Component {
                 <h2 class="pkg-body-title">{{$t('plugins.subTitle')}}</h2>
                 <c-dependency-item s-for="item in plugins" item="{{item}}" hideDeleteBtn></c-dependency-item>
             </div>
-            <div s-else class="empty-tip">{{$t('plugins.emptyTip')}}</div>
+            <div s-else-if="!pageLoading" class="empty-tip">{{$t('plugins.emptyTip')}}</div>
             <c-dependency-modal on-cancel="onModalClose" visible="{{addPlugin}}">
-                <template slot="content">
-                    <s-spin spinning="{{loading}}" class="plugin-item">
-                        <c-pkg-search-item slot="content"
-                            keyword="{{'san-cli-plugin'}}"
-                            load-meta="{{true}}"
-                            on-loading="onLoadingChange"/>
-                    </s-spin>
-                </template>
+                <s-spin spinning="{{loading}}" class="plugin-item" slot="content">
+                    <c-pkg-search-item slot="content"
+                        keyword="{{'san-cli-plugin'}}"
+                        load-meta="{{true}}"
+                        on-loading="onLoadingChange"
+                        loading="{{loading}}"/>
+                </s-spin>
             </c-dependency-modal>
         </div>
     `;
@@ -65,7 +64,7 @@ export default class Plugins extends Component {
             pageLoading: true,
             addPlugin: false,
             searchKey: '',
-            loading: false
+            loading: true
         };
     }
 
