@@ -15,7 +15,7 @@ export default class Plugins extends Component {
     static template = /* html */`
         <div class="plugins">
             <div class="pkg-body" s-if="plugins.length">
-                <h2 class="pkg-body-title">{{$t('plugins.subTitle')}}</h2>
+                <h2 class="com-sub-title">{{$t('plugins.subTitle')}}</h2>
                 <c-dependency-item s-for="item in plugins" item="{{item}}" on-updatePkgList="init"></c-dependency-item>
             </div>
             <div s-else-if="!pageLoading" class="empty-tip">{{$t('plugins.emptyTip')}}</div>

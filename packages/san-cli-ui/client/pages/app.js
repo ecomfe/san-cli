@@ -52,13 +52,13 @@ export default class App extends Component {
                 </div>
             </s-layout-header>
 
-            <s-layout class="h1oh main-wrap">
+            <s-layout class="page-content h1oh">
                 <c-sidebar 
                     nav="{{routeNav}}" 
                     s-if="route.query.nav !=='list' && route.query.nav !=='create' && route.query.nav !=='import'"
                 />
 
-                <s-layout-content class="main">
+                <s-layout-content class="page-content-main">
                     <s-spin s-if="pageLoading"
                         class="loading"
                         spinning="{=pageLoading=}"
