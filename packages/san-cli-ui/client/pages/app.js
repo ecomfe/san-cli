@@ -29,25 +29,25 @@ export default class App extends Component {
             <c-connection-status></c-connection-status>
 
             <s-layout-header class="page-header">
-                <c-header-title title="{{$t(route.query.nav + '.title')}}"></c-header-title>
+                <c-header-title title="{{$t(routeNav+ '.title')}}"></c-header-title>
                 <div class="header-aside">
                     <c-dashboard-header
-                        s-if="route.query.nav === 'dashboard'"
+                        s-if="routeNav === 'dashboard'"
                     />
                     <c-dependency-header
-                        s-else-if="route.query.nav === 'dependency'"
+                        s-else-if="routeNav === 'dependency'"
                     />
                     <c-plugins-header
-                        s-else-if="route.query.nav === 'plugins'"
+                        s-else-if="routeNav === 'plugins'"
                     />
                     <c-list-header
-                        s-else-if="route.query.nav === 'list'"
+                        s-else-if="routeNav === 'list'"
                     />
                     <c-create-header
-                        s-else-if="route.query.nav === 'create'"
+                        s-else-if="routeNav === 'create'"
                     />
                     <c-import-header
-                        s-else-if="route.query.nav === 'import'"
+                        s-else-if="routeNav === 'import'"
                     />
                 </div>
             </s-layout-header>
@@ -55,7 +55,7 @@ export default class App extends Component {
             <s-layout class="page-content h1oh">
                 <c-sidebar 
                     nav="{{routeNav}}" 
-                    s-if="route.query.nav !=='list' && route.query.nav !=='create' && route.query.nav !=='import'"
+                    s-if="routeNav!=='list' && routeNav!=='create' && routeNav!=='import'"
                 />
 
                 <s-layout-content class="page-content-main">
@@ -68,29 +68,29 @@ export default class App extends Component {
                     </s-spin>
 
                     <c-dashboard-content
-                        s-if="route.query.nav === 'dashboard'"
+                        s-if="routeNav === 'dashboard'"
                     />
                     <c-plugins-content
-                        s-else-if="route.query.nav === 'plugins'"
+                        s-else-if="routeNav === 'plugins'"
                     />
                     <c-dependency-content
-                        s-else-if="route.query.nav === 'dependency'"
+                        s-else-if="routeNav === 'dependency'"
                     />
                     <c-configuration-content
-                        s-else-if="route.query.nav === 'configuration'"
+                        s-else-if="routeNav === 'configuration'"
                     />
                     <c-task-content
                         taskName="{{routeTask}}"
-                        s-else-if="route.query.nav === 'task' || route.query.task"
+                        s-else-if="routeNav === 'task' || route.query.task"
                     />
                     <c-list-content
-                        s-if="route.query.nav === 'list'"
+                        s-if="routeNav === 'list'"
                     />
                     <c-create-content
-                        s-else-if="route.query.nav === 'create'"
+                        s-else-if="routeNav === 'create'"
                     />
                     <c-import-content
-                        s-else-if="route.query.nav === 'import'"
+                        s-else-if="routeNav === 'import'"
                     />
                 </s-layout-content>
             </s-layout>
@@ -119,6 +119,11 @@ export default class App extends Component {
 
     static computed = {
         routeNav() {
+            const routePath = this.data.get('route.path');
+            if (routePath === '/' || routePath === '/project') {
+                // 默认项目列表页面为首页
+                return 'list';
+            }
             return this.data.get('route.query.nav');
         },
         routeTask() {
