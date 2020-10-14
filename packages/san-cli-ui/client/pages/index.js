@@ -7,14 +7,12 @@ import {router} from 'san-router';
 import apolloClient from '@lib/apollo-client';
 import ClientAddon, {loadClientAddons} from '@lib/client-addon';
 import Component from '@lib/san-component';
-import Project from './project';
 import About from '@components/about';
 import NotFound from '@components/not-found';
-import Ui from './ui';
+import App from './app';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_CWD_RESET from '@graphql/project/projectCwdReset.gql';
 import PLUGINS from '@graphql/plugin/plugins.gql';
-import './index.less';
 
 // 暴露全局API，用于集成第三方组件
 window.ClientAddonApi = new ClientAddon();
@@ -24,13 +22,12 @@ window.SanComponent = Component;
 loadClientAddons();
 
 const routes = [
-    {rule: '/', Component: Project, target: '#app'},
-    {rule: '/project', Component: Project, target: '#app'},
-    {rule: '/project/:nav', Component: Project, target: '#app'},
-    {rule: '/about', Component: About, target: '#app'},
-    {rule: '/ui/:nav', Component: Ui, target: '#app'},
+    {rule: '/', Component: App, target: '#app'},
+    {rule: '/project', Component: App, target: '#app'},
+    {rule: '/project/:nav', Component: App, target: '#app'},
     // TODO: 待优化
-    {rule: '/ui/:nav/:task', Component: Ui, target: '#app'},
+    {rule: '/project/:nav/:task', Component: App, target: '#app'},
+    {rule: '/about', Component: About, target: '#app'},
     {rule: '/:func', Component: NotFound, target: '#app'}
 ];
 

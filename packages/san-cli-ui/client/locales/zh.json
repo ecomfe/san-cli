@@ -1,8 +1,12 @@
 {
-    "title": {
-        "list": "项目管理器",
-        "create": "创建项目",
-        "import": "导入项目"
+    "list": {
+        "title": "项目管理器"
+    },
+    "create": {
+        "title": "创建项目"
+    },
+    "import": {
+        "title": "导入项目"
     },
     "project": {
         "select": {
@@ -106,32 +110,32 @@
             "name": "dashboard",
             "text": "仪表盘",
             "key": "dashboard",
-            "link": "/ui/dashboard"
+            "link": "/project/dashboard"
         },
         "plugins": {
             "name": "plugins",
             "text": "插件",
             "key": "plugins",
-            "link": "/ui/plugins"
+            "link": "/project/plugins"
         },
         "dependency": {
             "name": "dependency",
             "text": "依赖",
             "key": "dependency",
-            "link": "/ui/dependency",
+            "link": "/project/dependency",
             "type": "common"
         },
         "configuration": {
             "name": "configuration",
             "text": "配置",
             "key": "configuration",
-            "link": "/ui/configuration"
+            "link": "/project/configuration"
         },
         "task": {
             "name": "task",
             "text": "任务",
             "key": "task",
-            "link": "/ui/task",
+            "link": "/project/task",
             "type": "common"
         }
     },

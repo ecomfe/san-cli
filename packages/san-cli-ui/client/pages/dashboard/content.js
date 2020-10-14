@@ -5,7 +5,6 @@
 
 import {Link} from 'san-router';
 import Component from '@lib/san-component';
-import Layout from '@components/layout';
 import Dashboard from '@components/dashboard/dashboard';
 import WidgetList from '@components/dashboard/widget-list';
 import PLUGINS from '@graphql/plugin/plugins.gql';
@@ -46,7 +45,6 @@ export default class App extends Component {
     `;
     static components = {
         'r-link': Link,
-        'c-layout': Layout,
         'c-dashboard': Dashboard,
         'c-widget-list': WidgetList
     };

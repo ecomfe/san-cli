@@ -9,11 +9,12 @@ import PROJECT_OPEN from '@graphql/project/projectOpen.gql';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_OPEN_IN_EDITOR from '@graphql/project/projectOpenInEditor.gql';
 import VIEWS from '@graphql/view/views.gql';
+import './sidebar.less';
 
 export default class App extends Component {
     static template = /* html */`
-        <s-layout-sider class="sider" width="151">
-            <s-dropdown trigger="click" class="project-name-wrap">
+        <s-layout-sider class="page-sidebar" width="151">
+            <s-dropdown trigger="click" class="sidebar-dropdown">
                 <s-menu
                     slot="overlay"
                     selectable="{{false}}"
@@ -37,7 +38,7 @@ export default class App extends Component {
             </s-dropdown>
 
             <!---导航--->
-            <s-menu class="menu" mode="inline" selectedKeys="{{selectedKeys}}" theme="dark">
+            <s-menu class="sidebar-menu" mode="inline" selectedKeys="{{selectedKeys}}" theme="dark">
                 <fragment s-for="item in projectNav">
                     <s-menu-item
                         s-if="projectCurrent.type !== 'unknown' || item.type === 'common')"
