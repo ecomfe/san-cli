@@ -30,7 +30,7 @@ export default class App extends Component {
 
             <s-layout-header class="page-header">
                 <c-header-title title="{{$t(route.query.nav + '.title')}}"></c-header-title>
-                <div class="head-right">
+                <div class="header-aside">
                     <c-dashboard-header
                         s-if="route.query.nav === 'dashboard'"
                     />

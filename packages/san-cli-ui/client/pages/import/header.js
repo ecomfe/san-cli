@@ -4,7 +4,6 @@
 
 import Component from '@lib/san-component';
 import Menu from '@components/layout/menu';
-import './header.less';
 
 export default class Project extends Component {
     static template = /* html */`
