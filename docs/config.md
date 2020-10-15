@@ -209,19 +209,17 @@ module.exports = {
 module.exports = {
     //...
     loaderOptions: {
-        babel: {
-            plugins: [
-                [
-                    // @baidu/nano的按需引入
-                    require.resolve('babel-plugin-import'),
-                    {
-                        libraryName: '@baidu/nano',
-                        libraryDirectory: 'es',
-                        style: true
-                    }
-                ]
+        plugins: [
+            [
+                // @baidu/nano的按需引入
+                require.resolve('babel-plugin-import'),
+                {
+                    libraryName: '@baidu/nano',
+                    libraryDirectory: 'es',
+                    style: true
+                }
             ]
-        }
+        ]
     }
 };
 ```
