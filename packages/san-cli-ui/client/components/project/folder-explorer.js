@@ -200,7 +200,6 @@ export default class FolderExplorer extends Component {
         }
         let {data} = await this.$apollo.query({query: FOLDERS_FAVORITE});
         if (data) {
-            console.log('data.foldersFavorite:', data.foldersFavorite);
             this.data.set('foldersFavorite', data.foldersFavorite);
         }
     }

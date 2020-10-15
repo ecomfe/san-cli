@@ -154,7 +154,11 @@ const isSanProject = (file, context) => {
     try {
         const pkg = readPackage(file, context);
         const devDependencies = Object.keys(pkg.devDependencies || {});
-        return devDependencies.includes('san-cli') || devDependencies.includes('@baidu/san-cli');
+        const hasSanDependency = devDependencies.includes('san-cli') || devDependencies.includes('@baidu/san-cli');
+        const hasSanConfig = fs.existsSync(path.join(file, 'san.config.js'));
+        const scripts = Object.values(pkg.scripts || {});
+        const hasSanScript = scripts.find(script => /(^|\s)san\s|\/san-cli\/|san\.config\.js/.test(script));
+        return hasSanDependency || (hasSanScript && hasSanConfig);
     }
     catch (e) {
         debug(e);
