@@ -7,24 +7,24 @@ const debug = getDebugLogger('ui:views');
 
 const createViewsSet = () => {
     return [{
-        id: 'nav.dashboard',
+        id: 'dashboard',
         // icon: 'dashboard',
         name: 'dashboard'
     },
     {
-        id: 'nav.plugins',
+        id: 'plugins',
         name: 'plugins'
     },
     {
-        id: 'nav.dependency',
+        id: 'dependency',
         name: 'dependency'
     },
     {
-        id: 'nav.configuration',
+        id: 'configuration',
         name: 'configuration'
     },
     {
-        id: 'nav.task',
+        id: 'task',
         name: 'task'
     }];
 };
@@ -41,6 +41,7 @@ class Views {
             list = createViewsSet();
             this.viewsMap.set(file, list);
         }
+        debug('Views', list);
         return list;
     }
 
@@ -49,14 +50,14 @@ class Views {
         return views.find(view => view.id === id);
     }
 
-    async add(view, context) {
+    async add({view, project}, context) {
+        debug('add', view);
         this.remove(view.id, context);
         const views = this.getViews();
         views.push(view);
         context.pubsub.publish(channels.VIEW_ADDED, {
             viewAdded: view
         });
-        debug('View added', view.id);
     }
 
     remove(id, context) {
@@ -83,8 +84,8 @@ class Views {
 
     open(id, context) {
         const view = this.findOne(id);
+        debug('Open View:', view);
         this.currentView = view;
-        const plugins = require('./plugins');
         plugins.callHook({
             id: 'viewOpen',
             args: [{

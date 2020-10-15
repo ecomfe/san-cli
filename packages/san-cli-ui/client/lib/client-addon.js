@@ -94,12 +94,16 @@ export default class ClientAddon {
      * @param {sanComponent} Component san component
      * @param {string} target 组件渲染容器
      */
-    addRoutes(id, Component, target) {
-        router.add({
-            path: `/addon/${id}`,
-            Component,
-            target
-        });
+    // addRoutes(id, Component, target) {
+    //     router.add({
+    //         rule: `/addon/${id}`,
+    //         Component,
+    //         target
+    //     });
+    // }
+
+    addRoutes(id, component) {
+        this.defineComponent(id, component);
     }
 };
 

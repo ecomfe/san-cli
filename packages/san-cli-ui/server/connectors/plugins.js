@@ -14,6 +14,7 @@ const {readPackage} = require('../utils/fileHelper');
 const getContext = require('../utils/context');
 const {isPlugin, getPluginLink} = require('../utils/plugin');
 const projects = require('./projects');
+const views = require('./views');
 const debug = getDebugLogger('ui:plugins');
 
 const SAN_CLI = 'san-cli';
@@ -131,13 +132,23 @@ class Plugins {
             // 运行第三方插件的API
             plugins.forEach(plugin => this.runPluginApi(plugin.id, pluginApi, context));
 
+            // 添加addons
             if (pluginApi.addonPlugin && pluginApi.addonPlugin.addons) {
                 pluginApi.addonPlugin.addons.forEach(options => {
                     clientAddons.add(options, context);
                 });
             }
 
-            // debug('pluginApi.widgetPlugin.widgets:', pluginApi.widgetPlugin && pluginApi.widgetPlugin.widgets);
+            // 添加视图
+            getDebugLogger('ui:views')('pluginApi.viewPlugin', pluginApi.viewPlugin);
+
+            if (pluginApi.viewPlugin && pluginApi.viewPlugin.views) {
+                for (const view of pluginApi.viewPlugin.views) {
+                    await views.add({view, project}, context);
+                }
+            }
+
+            // 添加仪表盘插件
             if (pluginApi.widgetPlugin && pluginApi.widgetPlugin.widgets) {
                 for (const definition of pluginApi.widgetPlugin.widgets) {
                     await widgets.registerDefinition({definition, project}, context);
@@ -158,6 +169,15 @@ class Plugins {
                     args: [project],
                     file
                 }, context);
+            }
+
+            // call view open hook
+            const currentView = views.getCurrent();
+
+            debug('currentView', currentView);
+
+            if (currentView) {
+                views.open(currentView.id);
             }
 
             widgets.load(context);

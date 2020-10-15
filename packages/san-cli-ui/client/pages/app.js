@@ -6,6 +6,7 @@ import Component from '@lib/san-component';
 import ConnectionStatus from '@components/connection-status';
 import HeaderTitle from '@components/layout/header';
 import Sidebar from '@components/layout/sidebar';
+import ClientAddon from '@components/client-addon';
 import DashboardHeader from './dashboard/header';
 import DashboardContent from './dashboard/content';
 import DependencyHeader from './dependency/header';
@@ -92,6 +93,10 @@ export default class App extends Component {
                     <c-import-content
                         s-else-if="routeNav === 'import'"
                     />
+                    <c-client-addon
+                        s-else-if="routeClientAddon"
+                        clientAddon="{{routeClientAddon}}"
+                    />
                 </s-layout-content>
             </s-layout>
         </s-layout>
@@ -114,7 +119,8 @@ export default class App extends Component {
         'c-dependency-header': DependencyHeader,
         'c-dependency-content': DependencyContent,
         'c-configuration-content': ConfigurationContent,
-        'c-task-content': TaskContent
+        'c-task-content': TaskContent,
+        'c-client-addon': ClientAddon
     };
 
     static computed = {
@@ -128,6 +134,10 @@ export default class App extends Component {
         },
         routeTask() {
             return this.data.get('route.query.task');
+        },
+        routeClientAddon() {
+            const nav = this.data.get('route.query.nav') || '';
+            return nav && /^addon_/.test(nav) && nav.replace(/^addon_/, '');
         }
     };
 

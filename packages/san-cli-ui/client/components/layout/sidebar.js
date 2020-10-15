@@ -14,6 +14,7 @@ import './sidebar.less';
 export default class App extends Component {
     static template = /* html */`
         <s-layout-sider class="page-sidebar" width="151">
+            <!---顶部下拉菜单--->
             <s-dropdown trigger="click" class="sidebar-dropdown">
                 <s-menu
                     slot="overlay"
@@ -37,14 +38,14 @@ export default class App extends Component {
                 </div>
             </s-dropdown>
 
-            <!---导航--->
+            <!---详情页导航--->
             <s-menu class="sidebar-menu" mode="inline" selectedKeys="{{selectedKeys}}" theme="dark">
                 <fragment s-for="item in projectNav">
                     <s-menu-item
                         s-if="projectCurrent.type !== 'unknown' || item.type === 'common')"
                         key="{{item.name}}"
                     >
-                        <r-link to="{{item.link}}" class="{{item.name}}-icon">
+                        <r-link to="{{item.link}}" class="{{item.icon ? 'default' : item.name}}-icon">
                             <s-icon s-if="item.icon" type="{{item.icon}}"></s-icon>
                             {{item.text}}
                         </r-link>
@@ -93,16 +94,13 @@ export default class App extends Component {
 
     async setProjectNav() {
         const {data} = await this.$apollo.query({query: VIEWS});
-
         const projectNav = (data.views || []).map(({id, name, icon}) => {
-            const {text, type, link} = this.$t(id) || {};
-            return {
-                text,
+            const {
+                text = name,
                 type,
-                link,
-                name,
-                icon
-            };
+                link = `/project/addon_${id}`
+            } = this.$t(`nav.${id}`) || {};
+            return {text, type, link, name, icon};
         });
 
         this.data.set('projectNav', projectNav);
@@ -120,14 +118,14 @@ export default class App extends Component {
             return;
         }
 
-        let res = await this.$apollo.mutate({
+        const {data} = await this.$apollo.mutate({
             mutation: PROJECT_OPEN,
             variables: {
                 id: e.key
             }
         });
 
-        res.data && this.data.set('projectCurrent', res.data.projectOpen);
+        this.data.set('projectCurrent', data ? data.projectOpen : {});
 
         this.setRecentProjects();
 
