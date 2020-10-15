@@ -21,6 +21,7 @@ export default class FolderExplorer extends Component {
                 <s-tooltip title="{{$t('project.select.folderExplorer.tooltip.pre')}}">
                     <s-button type="primary" icon="left" on-click="onPathChange(-2)"></s-button>
                 </s-tooltip>
+
                 <div class="path-guide">
                     <s-input s-if="editing"
                         placeholder="{{$t('project.select.folderExplorer.placeholder.edit')}}"
@@ -40,9 +41,11 @@ export default class FolderExplorer extends Component {
                         >{{p}}</s-button>
                     </template>
                 </div>
+
                 <s-tooltip title="{{$t('project.select.folderExplorer.tooltip.edit')}}" class="operate-btn">
                     <div on-click="onEdit" class="icon edit-icon"></div>
                 </s-tooltip>
+
                 <s-tooltip title="{{$t('project.select.folderExplorer.tooltip.star')}}"
                     s-if="folderCurrent"
                     class="operate-btn"
@@ -52,9 +55,11 @@ export default class FolderExplorer extends Component {
                         class="icon star-icon {{folderCurrent.favorite ? 'favorited' : ''}}">
                     </div>
                 </s-tooltip>
+
                 <s-tooltip title="{{$t('project.select.folderExplorer.tooltip.refresh')}}" class="operate-btn">
                     <div on-click="openFolder(folderCurrent.path)" class="icon redo-icon"></div>
                 </s-tooltip>
+
                 <s-tooltip s-if="foldersFavorite && foldersFavorite.length > 0"
                     title="{{$t('project.select.folderExplorer.tooltip.starDirs')}}"
                     class="operate-btn"
@@ -70,6 +75,7 @@ export default class FolderExplorer extends Component {
                         <div class="icon caret-down-icon"></div>
                     </s-dropdown>
                 </s-tooltip>
+
                 <s-tooltip title="{{$t('project.select.folderExplorer.tooltip.more')}}" class="operate-btn">
                     <s-dropdown trigger="click" placement="bottomRight">
                         <s-menu slot="overlay"
@@ -151,7 +157,7 @@ export default class FolderExplorer extends Component {
             editing: false,
             loading: true,
             folderCurrent: {},
-            foldersFavorite: '',
+            foldersFavorite: [],
             showHiddenFolder: false,
             newFolderName: '',
             showCreateModal: false
@@ -192,9 +198,10 @@ export default class FolderExplorer extends Component {
             this.data.set('folderCurrent', folder.data.folderCurrent);
             this.fire('change', folder.data.folderCurrent);
         }
-        let star = await this.$apollo.query({query: FOLDERS_FAVORITE});
-        if (star.data) {
-            this.data.set('foldersFavorite', star.data.foldersFavorite);
+        let {data} = await this.$apollo.query({query: FOLDERS_FAVORITE});
+        if (data) {
+            console.log('data.foldersFavorite:', data.foldersFavorite);
+            this.data.set('foldersFavorite', data.foldersFavorite);
         }
     }
     onEdit() {
