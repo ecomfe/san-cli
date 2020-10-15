@@ -11,12 +11,13 @@ const $eventBus = {
         const callbacks = listeners.get(event) || [];
         callbacks.push(callback);
         listeners.set(event, callbacks);
-        return () => this.off(callback);
+        return () => this.off(event, callback);
     },
-    off(callback) {
-        const index = listeners.indexOf(callback);
+    off(event, callback) {
+        const callbacks = listeners.get(event) || [];
+        const index = callbacks.indexOf(callback);
         if (index !== -1) {
-            listeners.splice(index, 1);
+            callbacks.splice(index, 1);
         }
     }
 };
