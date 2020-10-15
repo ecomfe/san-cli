@@ -26,11 +26,6 @@ export default class widgetList extends Component {
                     <div class="title">
                         {{$t('dashboard.widgetList.title')}}
                     </div>
-                    <s-button
-                        class="icon-button"
-                        icon="close"
-                        on-click="close">
-                    </s-button>
                 </div>
 
                 <div class="toolbar flex-none">
@@ -79,10 +74,6 @@ export default class widgetList extends Component {
         const visible = this.data.get('visible');
         this.data.set('actived', visible);
         this.data.set('isTransitionend', true);
-    }
-
-    close() {
-        this.fire('close');
     }
 
     filterList(searchInput) {

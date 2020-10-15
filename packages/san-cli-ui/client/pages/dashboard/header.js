@@ -13,7 +13,16 @@ export default class App extends Component {
             <div on-click="toggleStatus" class="icon {{editing ? 'check-icon' : 'custom-icon'}}"></div>
         </div>
     `;
+
+    initData() {
+        return {
+            editing: false
+        };
+    }
+
     toggleStatus() {
-        this.$emit('toggleStatus');
+        const editingNew = !this.data.get('editing');
+        this.data.set('editing', editingNew);
+        this.$emit('toggleContentStatus', editingNew);
     }
 }

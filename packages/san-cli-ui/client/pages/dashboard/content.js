@@ -38,7 +38,6 @@ export default class App extends Component {
             <c-widget-list
                 visible="{=editing=}"
                 definitions="{=definitions=}"
-                on-close="toggleStatus"
                 s-if="definitions.length">
             </c-widget-list>
         </div>
@@ -97,8 +96,8 @@ export default class App extends Component {
 
     $events() {
         return {
-            toggleStatus() {
-                this.toggleStatus();
+            toggleContentStatus(e) {
+                this.data.set('editing', e);
             }
         };
     }
@@ -137,10 +136,5 @@ export default class App extends Component {
 
     hideOtherWidgets(e) {
         this.data.set('isHideOtherWidgets', e);
-    }
-
-    toggleStatus() {
-        const editing = this.data.get('editing');
-        this.data.set('editing', !editing);
     }
 }

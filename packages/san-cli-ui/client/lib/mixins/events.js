@@ -40,7 +40,7 @@ const $eventBus = {
 module.exports = {
 
     /**
-     * 注入到san的声明周期inited方法中，这样方便跨组件拿到数据
+     * 注入到san的生命周期inited方法中，这样方便跨组件拿到数据
      * TODO: 静态方法无法获取到，只能弄成函数的形式，类似这样
     */
     inited() {
