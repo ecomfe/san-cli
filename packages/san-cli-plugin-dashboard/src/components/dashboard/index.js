@@ -13,18 +13,31 @@ export default {
         <div class="task-dashboard">
             <div class="header">
                 <div class="header-title">{{$t('addons.dashboard.title')}}</div>
-                <s-dropdown trigger="click">
-                    <s-menu
-                        slot="overlay"
-                        on-click="changeSizeType"
-                        defaultSelectedKeys="{{['stats']}}"
-                        style="box-shadow: 0 2px 20px rgba(0, 0, 0 , .1); border-radius: 5px; width: 101px;">
-                        <s-menu-item s-for="sizeType in data.sizeTypes"  key="{{sizeType}}">{{sizeType}}</s-menu-item>
-                    </s-menu>
-                    <s-button class="size-type-btn" type="primary">
-                        {{currentSizeType}} <s-icon type="down" />
+                <div>
+                    <s-button
+                        s-if="data.taskName === 'start'"
+                        class="header-btn open-app-btn"
+                        type="primary"
+                        href="{{data.serveUrl}}"
+                        target="_blank"
+                        disabled="{{!data.serveUrl}}">
+                        {{$t('addons.dashboard.openApp')}}
                     </s-button>
-                </s-dropdown>
+                    <s-dropdown trigger="click">
+                        <s-menu
+                            slot="overlay"
+                            on-click="changeSizeType"
+                            defaultSelectedKeys="{{['stats']}}"
+                            style="box-shadow: 0 2px 20px rgba(0, 0, 0 , .1); border-radius: 5px; width: 101px;">
+                            <s-menu-item s-for="sizeType in data.sizeTypes" key="{{sizeType}}">
+                                {{sizeType}}
+                            </s-menu-item>
+                        </s-menu>
+                        <s-button class="header-btn size-type-btn" type="primary">
+                            {{currentSizeType}} <s-icon type="down" />
+                        </s-button>
+                    </s-dropdown>
+                </div>
             </div>
             <s-grid-row class="row" gutter="16">
                 <s-grid-col span="16">

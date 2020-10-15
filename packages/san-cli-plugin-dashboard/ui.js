@@ -455,7 +455,6 @@ module.exports = api => {
         });
     }
 
-    // TODO: 添加本地页面链接
     ipc.on(({data}) => {
         if (data.sanCliServe) {
             sharedData.set('serve-url', data.sanCliServe.url);

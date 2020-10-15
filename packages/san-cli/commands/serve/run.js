@@ -52,6 +52,16 @@ module.exports = function apply(argv, api, projectOptions) {
                         }
                     );
                 }
+
+                if (argv.dashboard) {
+                    const {IpcMessenger} = require('san-cli-utils/ipc');
+                    const ipc = new IpcMessenger();
+                    ipc.send({
+                        sanCliServe: {
+                            url: networkUrl
+                        }
+                    });
+                }
                 /* eslint-enable no-console */
             }
         })

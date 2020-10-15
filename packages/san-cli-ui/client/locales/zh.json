@@ -390,7 +390,8 @@
     },
     "addons": {
         "dashboard": {
-            "title": "仪表盘"
+            "title": "仪表盘",
+            "openApp": "启动 App"
         },
         "analyzer": {
             "title": "分析"

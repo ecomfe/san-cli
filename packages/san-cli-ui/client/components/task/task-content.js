@@ -116,7 +116,7 @@ export default class TaskContent extends Component {
                 <!-----自定义视图：第三方组件---->
                 <fragment key="{{index}}" s-for="view,index in views">
                     <div class="task-view-content {{index + 1 !== currentIndex ? 'hidden' : ''}}">
-                        <c-client-addon client-addon="{{view.component}}" data="{{sharedData}}" />
+                        <c-client-addon client-addon="{{view.component}}" data="{{clientAddonData}}" />
                     </div>
                 </fragment>
 
@@ -165,6 +165,14 @@ export default class TaskContent extends Component {
             sharedData: {}
         };
     }
+
+    static computed = {
+        clientAddonData() {
+            const taskName = this.data.get('taskInfo.name');
+            const sharedData = this.data.get('sharedData');
+            return {taskName, ...sharedData};
+        }
+    };
 
     showPromptForm() {
         this.data.set('promptsFormVisible', true);
@@ -254,6 +262,16 @@ export default class TaskContent extends Component {
             this.$watchSharedData(operationsId, data => {
                 this.data.set('sharedData.operations', data);
             });
+
+            if (sanCommandType === 'serve') {
+                // 5. App的本地服务地址
+                const urlId = `${id}-url`;
+                const serveUrl = await this.$getSharedData(urlId);
+                this.data.set('sharedData.serveUrl', serveUrl);
+                this.$watchSharedData(`${id}-url`, serveUrl => {
+                    this.data.set('sharedData.serveUrl', serveUrl);
+                });
+            }
         }
     }
 
