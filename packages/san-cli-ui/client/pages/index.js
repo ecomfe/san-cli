@@ -24,7 +24,11 @@ loadClientAddons();
 const routes = [
     {rule: '/', Component: App, target: '#app'},
     {rule: '/project', Component: App, target: '#app'},
-    {rule: /^\/project\/(dashboard|plugins|dependency|configuration|task)$/, Component: App, target: '#app'},
+    {
+        rule: /^\/project\/(dashboard|plugins|dependency|configuration|task|import|create|list)$/,
+        Component: App,
+        target: '#app'
+    },
     // TODO: 待优化
     {rule: /^\/project\/(task)\/(.+)$/, Component: App, target: '#app'},
     {rule: '/addon/:addon', Component: App, target: '#app'},
