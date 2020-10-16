@@ -1,6 +1,6 @@
 /**
  * @file 前端入口
- * @author zttonly
+ * @author zttonly, Lohoyo
  */
 
 import {router} from 'san-router';

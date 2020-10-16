@@ -400,5 +400,9 @@
     "dropdown": {
         "editor": "在编辑器中打开",
         "recentProject": "最近打开"
+    },
+    "notFound": {
+        "tips": "没有这个页面",
+        "btnText": "返回首页"
     }
 }
