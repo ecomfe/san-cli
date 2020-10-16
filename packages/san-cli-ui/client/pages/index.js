@@ -29,7 +29,7 @@ const routes = [
     {rule: '/project/:nav/:task', Component: App, target: '#app'},
     {rule: '/addon/:addon', Component: App, target: '#app'},
     {rule: '/about', Component: About, target: '#app'},
-    {rule: '/:func', Component: NotFound, target: '#app'}
+    {rule: /.*/, Component: NotFound, target: '#app'}
 ];
 
 routes.forEach(option => router.add(option));
