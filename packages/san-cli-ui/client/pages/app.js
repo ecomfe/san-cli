@@ -55,8 +55,12 @@ export default class App extends Component {
 
             <s-layout class="page-content h1oh">
                 <c-sidebar 
-                    nav="{{routeNav}}" 
-                    s-if="routeNav!=='list' && routeNav!=='create' && routeNav!=='import'"
+                    selectedMenu="{{routeNav || routeAddon}}"
+                    s-if="
+                        routeNav!=='list' 
+                        && routeNav!=='create' 
+                        && routeNav!=='import'
+                    "
                 />
 
                 <s-layout-content class="page-content-main">
@@ -94,8 +98,9 @@ export default class App extends Component {
                         s-else-if="routeNav === 'import'"
                     />
                     <c-client-addon
-                        s-else-if="routeClientAddon"
-                        clientAddon="{{routeClientAddon}}"
+                        s-else-if="routeAddon"
+                        class="client-addon-view"
+                        clientAddon="{{routeAddon}}"
                     />
                 </s-layout-content>
             </s-layout>
@@ -135,9 +140,8 @@ export default class App extends Component {
         routeTask() {
             return this.data.get('route.query.task');
         },
-        routeClientAddon() {
-            const nav = this.data.get('route.query.nav') || '';
-            return nav && /^addon_/.test(nav) && nav.replace(/^addon_/, '');
+        routeAddon() {
+            return this.data.get('route.query.addon');
         }
     };
 

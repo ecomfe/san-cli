@@ -7,7 +7,9 @@ import Component from '@lib/san-component';
 import './client-addon.less';
 
 export default class ClientAddon extends Component {
-    static template = '<div class="client-addon"></div>';
+    static template = `
+        <div class="client-addon"></div>
+    `;
 
     attached() {
         const clientAddon = this.data.get('clientAddon');

@@ -43,9 +43,9 @@ export default class App extends Component {
                 <fragment s-for="item in projectNav">
                     <s-menu-item
                         s-if="projectCurrent.type !== 'unknown' || item.type === 'common')"
-                        key="{{item.name}}"
+                        key="{{item.id}}"
                     >
-                        <r-link to="{{item.link}}" class="{{item.icon ? 'default' : item.name}}-icon">
+                        <r-link to="{{item.link}}" class="{{item.icon ? 'default' : item.id}}-icon">
                             <s-icon s-if="item.icon" type="{{item.icon}}"></s-icon>
                             {{item.text}}
                         </r-link>
@@ -89,7 +89,7 @@ export default class App extends Component {
         // 获取最近3个项目，不包括当前项目
         this.data.set('list', sortedProjects.slice(1, 4));
 
-        this.data.set('selectedKeys', [this.data.get('nav')]);
+        this.data.set('selectedKeys', [this.data.get('selectedMenu')]);
     }
 
     async setProjectNav() {
@@ -98,11 +98,11 @@ export default class App extends Component {
             const {
                 text = name,
                 type,
-                link = `/project/addon_${id}`
+                // 如果link不存在，则表明是自定义视图
+                link = `/addon/${id}`
             } = this.$t(`nav.${id}`) || {};
-            return {text, type, link, name, icon};
+            return {id, text, type, link, name, icon};
         });
-
         this.data.set('projectNav', projectNav);
     }
 

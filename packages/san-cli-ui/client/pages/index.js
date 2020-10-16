@@ -27,6 +27,7 @@ const routes = [
     {rule: '/project/:nav', Component: App, target: '#app'},
     // TODO: 待优化
     {rule: '/project/:nav/:task', Component: App, target: '#app'},
+    {rule: '/addon/:addon', Component: App, target: '#app'},
     {rule: '/about', Component: About, target: '#app'},
     {rule: '/:func', Component: NotFound, target: '#app'}
 ];
