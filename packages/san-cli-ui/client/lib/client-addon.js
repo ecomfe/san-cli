@@ -5,12 +5,11 @@
 import san from 'san';
 import Component from '@lib/san-component';
 import {router} from 'san-router';
-import merge from 'deepmerge';
 import loadScript from 'load-script';
 import apolloClient from '@lib/apollo-client';
 import CLIENT_ADDONS from '@graphql/client-addon/clientAddons.gql';
 import CLIENT_ADDON_ADDED from '@graphql/client-addon/clientAddonAdded.gql';
-import localization from '@locales/zh.json';
+import {addLocalization} from './mixins/localization';
 import uiComponents from './default-components';
 
 export default class ClientAddon {
@@ -83,9 +82,8 @@ export default class ClientAddon {
      *
      * @param {Object} lang JSON格式的文本
      */
-    addLocalization(lang) {
-        let newLocale = merge(localization, lang);
-        Object.assign(localization, newLocale);
+    addLocales(lang) {
+        addLocalization(lang);
     }
 
     /**
@@ -96,12 +94,16 @@ export default class ClientAddon {
      * @param {sanComponent} Component san component
      * @param {string} target 组件渲染容器
      */
-    addRoutes(id, Component, target) {
-        router.add({
-            path: `/addon/${id}`,
-            Component,
-            target
-        });
+    // addRoutes(id, Component, target) {
+    //     router.add({
+    //         rule: `/addon/${id}`,
+    //         Component,
+    //         target
+    //     });
+    // }
+
+    addRoutes(id, component) {
+        this.defineComponent(id, component);
     }
 };
 

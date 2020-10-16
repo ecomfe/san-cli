@@ -6,4 +6,5 @@ fragment project on Project {
   favorite
   homepage
   openDate
+  type
 }

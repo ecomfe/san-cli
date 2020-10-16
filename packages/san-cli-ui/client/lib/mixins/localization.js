@@ -3,8 +3,10 @@
  * @author jinzhan
  * */
 
-import localization from '@locales/zh.json';
+import merge from 'deepmerge';
+import locales from '@locales/zh.json';
 
+let localization = locales || {};
 /**
  * san-mix的组件
  *
@@ -13,6 +15,10 @@ import localization from '@locales/zh.json';
  * */
 
 module.exports = {
+    addLocalization(lang) {
+        let newLocale = merge(localization, lang);
+        Object.assign(localization, newLocale);
+    },
     $t: key => {
         if (!key || typeof key !== 'string') {
             return '';

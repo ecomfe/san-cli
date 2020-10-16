@@ -19,7 +19,7 @@ const resolve = (projectId, id) => {
 
 const hasData = (projectId, id) => {
     const file = resolve(projectId, id);
-    debug(file);
+    // debug(file);
     return fs.existsSync(file);
 };
 

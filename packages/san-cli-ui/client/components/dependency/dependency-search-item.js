@@ -1,9 +1,10 @@
 /**
  * @file 搜索依赖模态框的item
- * @author sunxiaoyu333, Lohoyo
+ * @author sunxiaoyu333, Lohoyo, zttonly
  */
 
 import Component from '@lib/san-component';
+import axios from 'axios';
 import {Notification} from 'santd';
 import './dependency-search-item.less';
 import DEPENDENCY_INSTALL from '@graphql/dependency/dependencyInstall.gql';
@@ -24,6 +25,14 @@ export default class DependencySearchItem extends Component {
                 <div class="pkg-name-wrap">
                     <a href="{{data.package.links.npm}}" target="_blank" class="pkg-name">{{data.package.name}}</a>
                     <span class="pkg-version">{{data.package.version}}</span>
+                    <s-tooltip s-if="hasGenerator"
+                        title="{{$t('plugins.generator')}}">
+                        <s-icon type="file-add" style="font-size: 16px"/>
+                    </s-tooltip>
+                    <s-tooltip s-if="hasUiIntegration"
+                        title="{{$t('plugins.ui-integration')}}">
+                        <s-icon type="bg-colors" style="font-size: 16px"/>
+                    </s-tooltip>
                     <div class="pkg-description">{{data.package.description}}</div>
                 </div>
                 <s-button class="pkg-btn-operate" on-click="installDependency" type="primary">
@@ -44,7 +53,10 @@ export default class DependencySearchItem extends Component {
     initData() {
         return {
             loadingTip: '',
-            spinning: false
+            spinning: false,
+            loadMeta: false,
+            hasGenerator: false,
+            hasUiIntegration: false
         };
     }
 
@@ -55,9 +67,10 @@ export default class DependencySearchItem extends Component {
             if (this.data.get('spinning')) {
                 this.data.set('spinning', false);
             }
+            this.updateMetadata();
         });
+        this.updateMetadata();
     }
-
     // 安装依赖
     async installDependency() {
         this.data.set('spinning', true);
@@ -77,5 +90,31 @@ export default class DependencySearchItem extends Component {
             message: this.$t('dependency.installDependency') + ' ' + name,
             description: this.$t('dependency.installSuccess')
         });
+    }
+
+    updateMetadata() {
+        const name = this.data.get('data.package.name');
+        this.data.set('hasUiIntegration', false);
+        this.data.set('hasGenerator', false);
+
+        if (this.data.get('loadMeta')) {
+            axios.get(`https://unpkg.com/${name}/ui`).then(response => {
+                if (name !== this.data.get('data.package.name')) {
+                    return;
+                }
+                this.data.set('hasUiIntegration', response.status === 200);
+            }).catch(err => {
+                // console.log(err);
+            });
+
+            axios.get(`https://unpkg.com/${name}/generator`).then(response => {
+                if (name !== this.data.get('data.package.name')) {
+                    return;
+                }
+                this.data.set('hasGenerator', response.status === 200);
+            }).catch(err => {
+                // console.log(err);
+            });
+        }
     }
 }

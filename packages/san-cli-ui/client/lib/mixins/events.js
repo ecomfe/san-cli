@@ -11,12 +11,13 @@ const $eventBus = {
         const callbacks = listeners.get(event) || [];
         callbacks.push(callback);
         listeners.set(event, callbacks);
-        return () => this.off(callback);
+        return () => this.off(event, callback);
     },
-    off(callback) {
-        const index = listeners.indexOf(callback);
+    off(event, callback) {
+        const callbacks = listeners.get(event) || [];
+        const index = callbacks.indexOf(callback);
         if (index !== -1) {
-            listeners.splice(index, 1);
+            callbacks.splice(index, 1);
         }
     }
 };
@@ -40,7 +41,7 @@ const $eventBus = {
 module.exports = {
 
     /**
-     * 注入到san的声明周期inited方法中，这样方便跨组件拿到数据
+     * 注入到san的生命周期inited方法中，这样方便跨组件拿到数据
      * TODO: 静态方法无法获取到，只能弄成函数的形式，类似这样
     */
     inited() {

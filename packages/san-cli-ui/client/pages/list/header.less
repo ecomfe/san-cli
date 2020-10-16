@@ -1,0 +1,45 @@
+@import '../../assets/vars.less';
+.list-head-right {
+    height: 100%;
+    align-items: center;
+    display: flex;
+    .project-filter {
+        width: 275px;
+        opacity: .5;
+        margin-right: 24px;
+        input {
+            border-radius: 20px;
+            border-color: @border-color;
+            color: @border-color;
+            padding-left: 15px;
+            &::placeholder {
+                color: @border-color;
+            }
+        }
+        .santd-icon {
+            color: @border-color;
+        }
+    }
+    .dropdown {
+        line-height: normal;
+    }
+    a {
+        color: rgba(0, 0, 0, .65);
+    }
+
+    .santd-menu-horizontal {
+        width: 600px;
+        flex-grow: 1;
+        height: 62px;
+        line-height: 62px;
+        border-bottom: 0;
+        li {
+            margin-left: 50px;
+        }
+        a {
+            font-size: 18px;
+            text-decoration: none;
+        }
+    }
+}
+   

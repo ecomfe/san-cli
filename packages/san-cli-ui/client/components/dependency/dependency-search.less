@@ -6,6 +6,7 @@
 
         .dependency-search-dependency-filter {
             width: calc(100% - 504px);
+            margin-right: 0;
             margin-top: 36px;
             position: relative;
             left: 50%;
@@ -55,8 +56,18 @@
                 background-color: #236eff;
             }
         }
+        .pkg-search-item {
+            height: calc(100% - 140px);
+        }
     }
 }
 .santd-spin-container {
     height: 100%;
+}
+.dependency-search-dropdown {
+    .santd-menu {
+        box-shadow: 0 2px 20px rgba(0, 0, 0 , .1);
+        border-radius: 5px;
+        width: 160px;
+    }
 }

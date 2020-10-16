@@ -7,18 +7,12 @@ import {router} from 'san-router';
 import apolloClient from '@lib/apollo-client';
 import ClientAddon, {loadClientAddons} from '@lib/client-addon';
 import Component from '@lib/san-component';
-import Project from './project';
-import Task from './task';
 import About from '@components/about';
 import NotFound from '@components/not-found';
-import Dependency from './dependency';
-import Configuration from './configuration';
-import Plugins from './plugins';
-import Dashboard from './dashboard';
+import App from './app';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_CWD_RESET from '@graphql/project/projectCwdReset.gql';
 import PLUGINS from '@graphql/plugin/plugins.gql';
-import './index.less';
 
 // 暴露全局API，用于集成第三方组件
 window.ClientAddonApi = new ClientAddon();
@@ -28,17 +22,14 @@ window.SanComponent = Component;
 loadClientAddons();
 
 const routes = [
-    {rule: '/', Component: Project, target: '#app'},
-    {rule: '/project', Component: Project, target: '#app'},
-    {rule: '/project/:nav', Component: Project, target: '#app'},
-    {rule: '/plugins', Component: Plugins, target: '#app'},
-    {rule: '/dependency', Component: Dependency, target: '#app'},
-    {rule: '/dashboard', Component: Dashboard, target: '#app', needProject: true},
-    {rule: '/configuration', Component: Configuration, target: '#app', needProject: true},
-    {rule: '/tasks', Component: Task, target: '#app'},
-    {rule: '/tasks/:task', Component: Task, target: '#app'},
+    {rule: '/', Component: App, target: '#app'},
+    {rule: '/project', Component: App, target: '#app'},
+    {rule: '/project/:nav', Component: App, target: '#app'},
+    // TODO: 待优化
+    {rule: '/project/:nav/:task', Component: App, target: '#app'},
+    {rule: '/addon/:addon', Component: App, target: '#app'},
     {rule: '/about', Component: About, target: '#app'},
-    {rule: '/:func', Component: NotFound, target: '#app'}
+    {rule: /.*/, Component: NotFound, target: '#app'}
 ];
 
 routes.forEach(option => router.add(option));

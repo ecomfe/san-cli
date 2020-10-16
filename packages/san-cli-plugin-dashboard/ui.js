@@ -420,13 +420,13 @@ module.exports = api => {
                         value: ''
                     }
                 ],
-                description: 'task.inspect.mode'
+                message: 'task.inspect.mode'
             },
             {
                 name: 'verbose',
                 type: 'confirm',
                 default: false,
-                description: 'task.inspect.verbose'
+                message: 'task.inspect.verbose'
             }
         ],
         onBeforeRun: ({answers, args}) => {
@@ -455,7 +455,6 @@ module.exports = api => {
         });
     }
 
-    // TODO: 添加本地页面链接
     ipc.on(({data}) => {
         if (data.sanCliServe) {
             sharedData.set('serve-url', data.sanCliServe.url);

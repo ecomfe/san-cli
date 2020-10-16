@@ -14,7 +14,6 @@ import './dependency-item.less';
  * 组件props
  *
  * @param {Object} item 当前的依赖信息
- * @param {Boolean} hideDeleteBtn 隐藏删除按钮
  */
 export default class DependencyItem extends Component {
     static template = /* html */`
@@ -52,7 +51,7 @@ export default class DependencyItem extends Component {
                         <div class="uninstalled-label-text">{{$t('dependency.uninstalled')}}</div>
                     </div>
                 </fragment>
-                <s-tooltip title="{{$t('dependency.tooltip.del')}}" class="delete-tooltip" s-if="!hideDeleteBtn">
+                <s-tooltip title="{{$t('dependency.tooltip.del')}}" class="delete-tooltip">
                     <div class="delete-icon" on-click="showDeleteConfirm"></div>
                 </s-tooltip>
             </div>
@@ -67,7 +66,7 @@ export default class DependencyItem extends Component {
 
     // 卸载npm包
     async onPkgDelete() {
-        let {id, type} = this.data.get('item');
+        let {id, type = 'devDependencies'} = this.data.get('item');
         this.data.set('loadingTip', this.$t('dependency.uninstalling'));
         this.data.set('spinning', true);
         await this.$apollo.mutate({

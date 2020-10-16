@@ -27,7 +27,7 @@ export default {
                 <s-button s-else type="primary" on-click="stopTask" class="run-task-btn task-btn" icon="loading">
                     {{$t('task.stop')}}
                 </s-button>
-                <s-button href="/#/tasks/{{taskId}}" class="run-task-btn jump-btn">
+                <s-button href="/#/project/task/{{taskId}}" class="run-task-btn jump-btn">
                     {{$t('dashboard.widgets.run-task.page')}}
                 </s-button>
             </template>
