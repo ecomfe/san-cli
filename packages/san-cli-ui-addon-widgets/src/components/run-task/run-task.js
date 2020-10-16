@@ -21,10 +21,14 @@ export default {
                     s-if="task.status !== 'running'"
                     type="primary"
                     on-click="runTask"
-                    class="run-task-btn task-btn">
+                    class="run-task-btn task-btn stopped">
                     {{$t('task.run')}}
                 </s-button>
-                <s-button s-else type="primary" on-click="stopTask" class="run-task-btn task-btn" icon="loading">
+                <s-button
+                    s-else
+                    type="primary"
+                    on-click="stopTask"
+                    class="run-task-btn task-btn running">
                     {{$t('task.stop')}}
                 </s-button>
                 <s-router-link to="/project/task/{{taskId}}">

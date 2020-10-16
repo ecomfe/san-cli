@@ -31,8 +31,18 @@
         right: 36px;
     }
     .task-btn {
-        width: 76px;
+        width: 90px;
         top: 71px;
+        background-repeat: no-repeat;
+        background-position: 13px center;
+        padding-left: 20px !important;
+        &.stopped {
+            background-image: url(../../assets/run-icon.svg);
+        }
+        &.running {
+            background-image: url(../../assets/stop-icon.svg);
+            background-color: #dd0929;
+        }
     }
     .jump-btn {
         padding: 0 15px !important;

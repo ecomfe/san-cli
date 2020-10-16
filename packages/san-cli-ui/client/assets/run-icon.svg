@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>运行</title>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="2.项目仪表盘备份-5" transform="translate(-1137.000000, -445.000000)">
+            <g id="编组-17" transform="translate(791.000000, 344.000000)">
+                <g id="编组-2备份" transform="translate(333.000000, 91.000000)">
+                    <g id="运行" transform="translate(13.000000, 10.000000)">
+                        <rect id="矩形" fill-opacity="0" fill="#D8D8D8" x="0" y="0" width="16" height="16"></rect>
+                        <path d="M3,3.54770391 L3,12.4488248 C3,13.6528157 4.26914405,14.3967665 5.26669127,13.7763694 L12.427202,9.32712336 C12.8779678,9.04741065 13.1538462,8.54314445 13.1538462,7.99892155 C13.1538462,7.45469865 12.8779678,6.95043245 12.427202,6.67071974 L5.26669127,2.2201593 C4.8044752,1.93364889 4.22929432,1.92630432 3.760398,2.20092522 C3.29150168,2.47554611 3.00114229,2.98981605 3,3.54770391" id="路径" fill="#FFFFFF" fill-rule="nonzero"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
