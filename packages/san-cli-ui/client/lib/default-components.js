@@ -27,7 +27,7 @@ import {
     Tree
 } from 'santd';
 
-import RouterLink from './mixins/router-link';
+import {Link} from 'san-router';
 
 // 自动注入以下Santd组件
 export default {
@@ -67,5 +67,5 @@ export default {
     's-progress': Progress,
     's-tree': Tree,
     's-tree-node': Tree.TreeNode,
-    's-router-link': RouterLink
+    's-router-link': Link
 };
