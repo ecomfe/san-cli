@@ -7,9 +7,8 @@ import TASK from 'san-cli-ui/client/graphql/task/task.gql';
 import TASK_RUN from 'san-cli-ui/client/graphql/task/taskRun.gql';
 import TASK_STOP from 'san-cli-ui/client/graphql/task/taskStop.gql';
 import TASK_CHANGED from 'san-cli-ui/client/graphql/task/taskChanged.gql';
-import './run-task.less';
 import taskIconColor from 'san-cli-ui/client/lib/utils/task-icon-color';
-import {Link} from 'san-router';
+import './run-task.less';
 
 export default {
     template: /* html */`
@@ -28,17 +27,14 @@ export default {
                 <s-button s-else type="primary" on-click="stopTask" class="run-task-btn task-btn" icon="loading">
                     {{$t('task.stop')}}
                 </s-button>
-                <r-link to="/project/task/{{taskId}}">
+                <s-router-link to="/project/task/{{taskId}}">
                     <s-button class="run-task-btn jump-btn">
                         {{$t('dashboard.widgets.run-task.page')}}
                     </s-button>
-                </r-link>
+                </s-router-link>
             </template>
         </div>
     `,
-    components: {
-        'r-link': Link
-    },
     computed: {
         taskId() {
             let id = this.data.get('data.config.task');
