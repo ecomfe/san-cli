@@ -25,7 +25,7 @@ const routes = [
     {rule: '/', Component: App, target: '#app'},
     {rule: '/project', Component: App, target: '#app'},
     {
-        rule: /^\/project\/(dashboard|plugins|dependency|configuration|task|import|create|list)$/,
+        rule: /^\/project\/(dashboard|plugins|dependency|configuration|task|import|create|list|create|import)$/,
         Component: App,
         target: '#app'
     },
