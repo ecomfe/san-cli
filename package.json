@@ -25,7 +25,6 @@
         "babel-eslint": "^10.1.0",
         "commitizen": "^4.0.3",
         "commitlint-config-gitmoji": "^1.0.1",
-        "es-check": "^5.1.0",
         "eslint": "^6.8.0",
         "eslint-plugin-babel": "^5.3.0",
         "eslint-plugin-jest": "^23.8.2",
@@ -39,9 +38,6 @@
     "lint-staged": {
         "!(example|dist|output|__mocks__)/**/*.js": [
             "eslint"
-        ],
-        "packages/san-loader/lib/runtime/*.js" : [
-            "es-check es5"
         ]
     },
     "husky": {
@@ -58,8 +54,7 @@
         "doc": "cd docs && node ../packages/san-cli/index.js docit .",
         "build:doc": "cd docs && node ../packages/san-cli/index.js docit . --output",
         "lint": "eslint --ignore-path .eslintignore ./",
-        "test": "node scripts/test.js",
-        "es-check": "es-check es5 'packages/san-loader/lib/runtime/*.js'"
+        "test": "node scripts/test.js"
     },
     "commitlint": {
         "extends": [
