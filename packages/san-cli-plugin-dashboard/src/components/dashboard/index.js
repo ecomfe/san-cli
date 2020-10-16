@@ -23,12 +23,11 @@ export default {
                         disabled="{{!data.serveUrl}}">
                         {{$t('addons.dashboard.openApp')}}
                     </s-button>
-                    <s-dropdown trigger="click">
+                    <s-dropdown trigger="click" overlayClassName="task-dashboard-dropdown">
                         <s-menu
                             slot="overlay"
                             on-click="changeSizeType"
-                            defaultSelectedKeys="{{['stats']}}"
-                            style="box-shadow: 0 2px 20px rgba(0, 0, 0 , .1); border-radius: 5px; width: 101px;">
+                            defaultSelectedKeys="{{['stats']}}">
                             <s-menu-item s-for="sizeType in data.sizeTypes" key="{{sizeType}}">
                                 {{sizeType}}
                             </s-menu-item>

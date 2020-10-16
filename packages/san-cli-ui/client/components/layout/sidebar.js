@@ -15,12 +15,11 @@ export default class App extends Component {
     static template = /* html */`
         <s-layout-sider class="page-sidebar" width="151">
             <!---顶部下拉菜单--->
-            <s-dropdown trigger="click" class="sidebar-dropdown">
+            <s-dropdown trigger="click" class="sidebar-dropdown" overlayClassName="sidebar-dropdown-overlay">
                 <s-menu
                     slot="overlay"
                     selectable="{{false}}"
-                    on-click="handleMenuClick"
-                    style="box-shadow: 0 2px 20px rgba(0, 0, 0 , .1); border-radius: 5px; width: 160px;">
+                    on-click="handleMenuClick">
                     <s-menu-item key="open-in-editor">
                         <s-icon type="codepen"></s-icon>{{$t('dropdown.editor')}}
                     </s-menu-item>

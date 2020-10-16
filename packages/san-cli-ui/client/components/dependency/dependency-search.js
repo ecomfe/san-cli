@@ -16,12 +16,11 @@ export default class DependencyPackageSearch extends Component {
     static template = /* html */`
         <s-spin spinning="{{loading}}" class="dependency-search-wrap">
             <div class="dependency-search" slot="content">
-                <s-dropdown trigger="click" class="ranking-mode">
+                <s-dropdown trigger="click" class="ranking-mode" overlayClassName="dependency-search-dropdown">
                     <s-menu
                         slot="overlay"
                         on-click="changeRankingMode"
-                        defaultSelectedKeys="{{[rankingModes[0]]}}"
-                        style="box-shadow: 0 2px 20px rgba(0, 0, 0 , .1); border-radius: 5px; width: 160px;">
+                        defaultSelectedKeys="{{[rankingModes[0]]}}">
                         <s-menu-item s-for="rankingMode in rankingModes" key="{{rankingMode}}">
                             {{$t('dependency.' + rankingMode)}}
                         </s-menu-item>
