@@ -26,7 +26,7 @@ import './task-content.less';
  * @param {string} command package中的script命令
  * @return {string} 返回 serve|build|''
 */
-const getSanCommand = command => {
+const getSanCommand = (command = '') => {
     command = command.trim();
     const sanCommandReg = /san(?:-cli\/index\.js)?\s+(serve|build)(?:\s+--\S+(?:\s+\S+)?)*$/;
     const [, name] = command.match(sanCommandReg) || [];
@@ -165,9 +165,9 @@ export default class TaskContent extends Component {
 
     static computed = {
         clientAddonData() {
-            const taskName = this.data.get('taskInfo.name');
+            const sanCommandType = getSanCommand(this.data.get('taskInfo.command'));
             const sharedData = this.data.get('sharedData');
-            return {taskName, ...sharedData};
+            return {sanCommandType, ...sharedData};
         }
     };
 
