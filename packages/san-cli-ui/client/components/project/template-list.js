@@ -3,6 +3,7 @@
  * @author jinzhan, Lohoyo
  */
 
+import {message} from 'santd';
 import Component from '@lib/san-component';
 import './template-list.less';
 
@@ -27,18 +28,16 @@ export default class ProjectList extends Component {
                             {{template.label}}
                         </s-select-option>
                         <!----自定义的模板项---->
-                        <!-- TODO 无法使用自定义的模板创建项目，先注释掉 -->
-                        <!--
-                            <s-select-option value="{{$t('scaffold.optionLabel')}}">
-                                {{$t('scaffold.optionLabel')}}
-                            </s-select-option>
-                        -->
+                        <s-select-option>
+                            {{$t('scaffold.optionLabel')}}
+                        </s-select-option>
                     </s-select>
                 </s-formitem>
 
                 <s-formitem label="{{$t('scaffold.customLabel')}}" 
                     s-if="projectTemplateList.length && !currentTemplate[0]">
                     <s-input 
+                        class="com-santd-input-normal"
                         placeholder="{{$t('scaffold.customLabel')}}"
                         value="{=customTemplate=}"></s-input>
                 </s-formitem>
@@ -73,6 +72,7 @@ export default class ProjectList extends Component {
     handleSubmit(e) {
         e && e.preventDefault();
         let template = this.data.get('currentTemplate');
+
         if (Array.isArray(template)) {
             template = template[0];
         }
@@ -83,11 +83,10 @@ export default class ProjectList extends Component {
             if (/.+:\/\/.+\w+.+\//.test(customTemplate)) {
                 template = customTemplate;
             }
-        }
-
-        if (!template) {
-            console.warn('No template available.');
-            return;
+            else {
+                message.warn('No template available.');
+                return;
+            }
         }
 
         this.fire('submit', template);
