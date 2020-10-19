@@ -71,3 +71,28 @@ body,
 ::-webkit-scrollbar-track-piece {
     background: 0 0;
 }
+
+.santd-btn-primary {
+    background-color: #236eff;
+    border: none;
+}
+
+.santd-btn-primary[disabled], .santd-btn-primary[disabled]:hover {
+    color: #fff;
+    background-color: #236eff;
+    opacity: .3;
+}
+
+.empty-tip {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-image: url(../../assets/empty-tip.svg);
+    background-repeat: no-repeat;
+    width: 272px;
+    padding-top: 292px;
+    text-align: center;
+    font-size: 20px;
+    color: #989898;
+}
