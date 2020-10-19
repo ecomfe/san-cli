@@ -65,10 +65,10 @@ async function shouldUseTaobao(command) {
         return checkedResult;
     }
 
-    isChecked = true;
-
     // 获取文件源
     await getFileRegistry(command);
+
+    isChecked = true;
 
     if (removeSlash(defaultRegistry) !== removeSlash(registry)) {
         return false;
