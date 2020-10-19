@@ -44,42 +44,54 @@ export default class DashboardWidget extends Component {
                         <div class="head-title">{{customTitle || $t(widget.definition.title)}}</div>
 
                         <!-- Custom actions -->
-                        <template s-if="widget.configured && headerActions.length > 0" s-for="action in headerActions">
-                           <s-button
-                                s-if="!action.hidden"
-                                icon="{=action.icon=}"
-                                disabled="{=action.disabled=}"
-                                class="icon-button"
-                                on-click="onCustomAction(action)"
-                            ></s-button>
-                        </template>
+                        <fragment s-if="widget.configured && headerActions.length > 0" s-for="action in headerActions">
+                            <fragment s-if="!action.hidden">
+                                <s-tooltip s-if="action.tooltip" title="{{action.tooltip}}">
+                                    <s-button
+                                        icon="{=action.icon=}"
+                                        disabled="{=action.disabled=}"
+                                        class="icon-button"
+                                        on-click="onCustomAction(action)">
+                                    </s-button>
+                                </s-tooltip>
+                                <s-button
+                                    s-else
+                                    icon="{=action.icon=}"
+                                    disabled="{=action.disabled=}"
+                                    class="icon-button"
+                                    on-click="onCustomAction(action)">
+                                </s-button>
+                            </fragment>
+                        </fragment>
 
                         <!-- Setting button -->
-                        <s-button
+                        <s-tooltip
                             s-if="widget.definition.hasConfigPrompts"
-                            icon="setting"
-                            class="icon-button"
-                            on-click="openConfig"
-                            size="large"
-                        ></s-button>
+                            title="{{$t('dashboard.widgets.widget.actionTooltip.setting')}}">
+                            <s-button icon="setting" class="icon-button" on-click="openConfig" size="large"></s-button>
+                        </s-tooltip>
 
                         <!-- Exit button -->
-                        <s-button
-                            s-if="isOpenDetails"
-                            icon="fullscreen-exit"
-                            class="icon-button"
-                            on-click="changeDetailsStatus(false)"
-                            size="large"
-                        ></s-button>
+                        <s-tooltip s-if="isOpenDetails" title="{{$t('dashboard.widgets.widget.actionTooltip.exit')}}">
+                            <s-button
+                                icon="fullscreen-exit"
+                                class="icon-button"
+                                on-click="changeDetailsStatus(false)"
+                                size="large">
+                            </s-button>
+                        </s-tooltip>
 
                         <!-- Open details button -->
-                        <s-button
+                        <s-tooltip
                             s-elif="widget.definition.openDetailsButton"
-                            icon="fullscreen"
-                            class="icon-button"
-                            on-click="changeDetailsStatus(true)"
-                            size="large"
-                        ></s-button>
+                            title="{{$t('dashboard.widgets.widget.actionTooltip.openDetails')}}">
+                            <s-button
+                                icon="fullscreen"
+                                class="icon-button"
+                                on-click="changeDetailsStatus(true)"
+                                size="large">
+                            </s-button>
+                        </s-tooltip>
                     </div>
                     <div s-if="widget.configured" class="flex-all content">
                         <c-client-addon 
