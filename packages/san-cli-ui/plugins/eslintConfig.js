@@ -49,7 +49,7 @@ module.exports = api => {
     api.registerConfig({
         id: 'san.eslintrc',
         name: 'ESLint configuration',
-        description: 'config.eslint.description',
+        description: 'configuration.eslint.description',
         link: 'https://eslint.org',
         files: {
             eslint: {

@@ -227,9 +227,7 @@
         "emptyTip": "搜索结果为空"
     },
     "configuration": {
-        "title": "项目配置"
-    },
-    "config": {
+        "title": "项目配置",
         "tools": "安装 devtools",
         "san-cli": {
             "description": "配置 san 项目",
