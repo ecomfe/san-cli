@@ -12,6 +12,7 @@ extend type Query {
 
 extend type Mutation {
   pluginActionCall (id: ID!, params: JSON): PluginActionResult
+  pluginItem (id: String!): Version
 }
 
 extend type Subscription {

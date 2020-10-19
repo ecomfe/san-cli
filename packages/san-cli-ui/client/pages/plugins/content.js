@@ -7,7 +7,7 @@ import fastq from 'fastq';
 import DependencyItem from '@components/dependency/dependency-item';
 import DependencyModal from '@components/dependency/dependency-modal';
 import PkgSearchItem from '@components/dependency/pkg-search-item';
-import DEPENDENCY_ITEM from '@graphql/dependency/dependencyItem.gql';
+import PLUGIN_ITEM from '@graphql/plugin/pluginItem.gql';
 import PLUGINS from '@graphql/plugin/plugins.gql';
 import './content.less';
 
@@ -79,7 +79,7 @@ export default class Plugins extends Component {
         this.data.set('pageLoading', false);
         // 使用队列来优化性能，并发量3
         const concurrency = 3;
-        const queue = fastq(this, this.getDependencyItem, concurrency);
+        const queue = fastq(this, this.getPluginItem, concurrency);
         plugins.forEach(({id}, index) => {
             queue.push({id, index}, (err, data) => {
                 if (err) {
@@ -90,15 +90,15 @@ export default class Plugins extends Component {
         });
     }
 
-    async getDependencyItem({id, index}, callback) {
+    async getPluginItem({id, index}, callback) {
         const mutation = await this.$apollo.mutate({
-            mutation: DEPENDENCY_ITEM,
+            mutation: PLUGIN_ITEM,
             variables: {id}
         });
 
-        const dependencyItem = mutation.data && mutation.data.dependencyItem;
-        if (dependencyItem) {
-            callback && callback(null, dependencyItem);
+        const pluginItem = mutation.data && mutation.data.pluginItem;
+        if (pluginItem) {
+            callback && callback(null, pluginItem);
         }
     }
 
