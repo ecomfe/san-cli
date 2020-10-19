@@ -96,7 +96,7 @@ class Projects {
 
         // 3. 替换default字段中的占位符
         const templateData = {
-            name: path.basename(process.cwd()),
+            name: path.basename(cwd.get()),
             author: getGitUser().name
         };
 
@@ -132,7 +132,7 @@ class Projects {
         debug(`${SAN_COMMAND_NAME} ${cmdArgs.join(' ')}`);
 
         const child = execa(SAN_COMMAND_NAME, cmdArgs, {
-            cwd: process.cwd(),
+            cwd: cwd.get(),
             stdio: ['inherit', 'pipe', 'inherit']
         });
 
@@ -146,6 +146,11 @@ class Projects {
         });
 
         await child;
+
+        // 导入刚刚创建的项目到项目列表中
+        this.importProject({
+            path: path.join(cwd.get(), params.name)
+        }, context);
 
         notify({
             title: 'San Project Created',
