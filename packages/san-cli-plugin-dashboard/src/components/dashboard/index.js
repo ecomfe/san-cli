@@ -15,7 +15,7 @@ export default {
                 <div class="header-title">{{$t('addons.dashboard.title')}}</div>
                 <div>
                     <s-button
-                        s-if="data.taskName === 'start'"
+                        s-if="data.sanCommandType === 'serve'"
                         class="header-btn open-app-btn"
                         type="primary"
                         href="{{data.serveUrl}}"

@@ -60,10 +60,7 @@ export default class TaskContent extends Component {
         <div class="task-head">
             <span class="task-name">{{taskInfo.name}}</span>
             <div class="task-config">
-                <s-button type="primary"
-                    icon="{{isRunning ? 'loading' : ''}}" 
-                    loading="{{taskPending}}"
-                    on-click="execute">
+                <s-button type="primary" class="{{isRunning ? 'running' : 'stopped'}}" on-click="execute">
                     {{isRunning ? $t('task.stop') : $t('task.run')}}
                 </s-button>
                 <s-icon type="setting" on-click="showPromptForm" class="setting"></s-icon>
@@ -168,9 +165,12 @@ export default class TaskContent extends Component {
 
     static computed = {
         clientAddonData() {
-            const taskName = this.data.get('taskInfo.name');
-            const sharedData = this.data.get('sharedData');
-            return {taskName, ...sharedData};
+            const taskCommand = this.data.get('taskInfo.command');
+            if (taskCommand) {
+                const sanCommandType = getSanCommand(taskCommand);
+                const sharedData = this.data.get('sharedData');
+                return {sanCommandType, ...sharedData};
+            }
         }
     };
 

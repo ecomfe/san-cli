@@ -10,7 +10,7 @@
 
 const path = require('path');
 const consolidate = require('consolidate');
-const timeCost = require('san-cli-utils/utils');
+const {timeCost} = require('san-cli-utils/utils');
 const TaskList = require('./TaskList');
 const checkStatus = require('./tasks/checkStatus');
 const download = require('./tasks/download');

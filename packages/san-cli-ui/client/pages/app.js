@@ -135,10 +135,10 @@ export default class App extends Component {
                 // 默认项目列表页面为首页
                 return 'list';
             }
-            return this.data.get('route.query.nav');
+            return this.data.get('route.query.1');
         },
         routeTask() {
-            return this.data.get('route.query.task');
+            return this.data.get('route.query.2');
         },
         routeAddon() {
             return this.data.get('route.query.addon');

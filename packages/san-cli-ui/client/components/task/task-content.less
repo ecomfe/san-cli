@@ -38,10 +38,20 @@
         .santd-btn-primary {
             margin-right: 24px;
             border-radius: 18px;
-            width: 76px;
+            width: 90px;
             height: 36px;
             font-size: 18px;
             font-weight: 500;
+            background-repeat: no-repeat;
+            background-position: 13px center;
+            padding-left: 20px !important;
+            &.stopped {
+                background-image: url(../../assets/run-icon.svg);
+            }
+            &.running {
+                background-image: url(../../assets/stop-icon.svg);
+                background-color: #dd0929;
+            }
         }
         .setting {
             font-size: 24px;

@@ -7,8 +7,8 @@ import TASK from 'san-cli-ui/client/graphql/task/task.gql';
 import TASK_RUN from 'san-cli-ui/client/graphql/task/taskRun.gql';
 import TASK_STOP from 'san-cli-ui/client/graphql/task/taskStop.gql';
 import TASK_CHANGED from 'san-cli-ui/client/graphql/task/taskChanged.gql';
-import './run-task.less';
 import taskIconColor from 'san-cli-ui/client/lib/utils/task-icon-color';
+import './run-task.less';
 
 export default {
     template: /* html */`
@@ -21,15 +21,21 @@ export default {
                     s-if="task.status !== 'running'"
                     type="primary"
                     on-click="runTask"
-                    class="run-task-btn task-btn">
+                    class="run-task-btn task-btn stopped">
                     {{$t('task.run')}}
                 </s-button>
-                <s-button s-else type="primary" on-click="stopTask" class="run-task-btn task-btn" icon="loading">
+                <s-button
+                    s-else
+                    type="primary"
+                    on-click="stopTask"
+                    class="run-task-btn task-btn running">
                     {{$t('task.stop')}}
                 </s-button>
-                <s-button href="/#/project/task/{{taskId}}" class="run-task-btn jump-btn">
-                    {{$t('dashboard.widgets.run-task.page')}}
-                </s-button>
+                <s-router-link to="/project/task/{{taskId}}">
+                    <s-button class="run-task-btn jump-btn">
+                        {{$t('dashboard.widgets.run-task.page')}}
+                    </s-button>
+                </s-router-link>
             </template>
         </div>
     `,

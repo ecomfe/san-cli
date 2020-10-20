@@ -39,7 +39,8 @@ function getTimeMessage(timer) {
 class DashboardPlugin {
     constructor(options) {
         this.type = options.type;
-        if (this.type === 'build' && options.modernBuild) {
+        const modernBuild = options.modernBuild || process.env.SAN_CLI_MODERN_BUILD;
+        if (this.type === 'build' && modernBuild) {
             this.type = 'build-modern';
         }
 

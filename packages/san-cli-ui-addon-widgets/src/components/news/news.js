@@ -107,7 +107,8 @@ export default {
             id: 'reload',
             icon: 'reload',
             disabled: this.data.get('loading'),
-            onCalled: () => this.fetchFeed(true)
+            onCalled: () => this.fetchFeed(true),
+            tooltip: this.$t('dashboard.widgets.news.actionTooltip.reload')
         });
     },
     async fetchFeed(force = false) {

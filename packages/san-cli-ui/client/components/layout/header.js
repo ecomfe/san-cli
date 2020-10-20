@@ -23,6 +23,6 @@ export default class HeaderTitle extends Component {
         };
     }
     logoClick() {
-        router.locator.redirect('/project/list');
+        router.locator.redirect('/');
     }
 }

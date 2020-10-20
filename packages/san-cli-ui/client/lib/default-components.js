@@ -27,6 +27,8 @@ import {
     Tree
 } from 'santd';
 
+import {Link} from 'san-router';
+
 // 自动注入以下Santd组件
 export default {
     's-alert': Alert,
@@ -64,5 +66,6 @@ export default {
     's-tooltip': Tooltip,
     's-progress': Progress,
     's-tree': Tree,
-    's-tree-node': Tree.TreeNode
+    's-tree-node': Tree.TreeNode,
+    's-router-link': Link
 };

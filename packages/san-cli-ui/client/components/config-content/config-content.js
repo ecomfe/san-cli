@@ -4,6 +4,7 @@
  */
 
 import Component from '@lib/san-component';
+import {message} from 'santd';
 import {LAYOUT_ONE_THIRD} from '@lib/const';
 import {getVisiblePrompts} from '@lib/utils/prompt';
 import CONFIGURATION from '@graphql/configuration/configuration.gql';
@@ -35,20 +36,20 @@ export default class ConfigContent extends Component {
             </div>
             <div class="actions-bar" s-if="config">
                 <s-button s-if="config.link" class="more" size="large" href="{{config.link}}" target="_blank">
-                    {{$t('config.actions.more')}}
+                    {{$t('configuration.actions.more')}}
                 </s-button>
                 <s-button class="cancel" size="large" disabled="{=!hasPromptsChanged=}" on-click="cancel">
-                    {{$t('config.actions.cancel')}}
+                    {{$t('configuration.actions.cancel')}}
                 </s-button>
                 <s-button s-if="!hasPromptsChanged" type="primary" class="refresh" size="large" on-click="refetch">
-                    {{$t('config.actions.refresh')}}
+                    {{$t('configuration.actions.refresh')}}
                 </s-button>
                 <s-button s-else 
                     type="primary"
                     class="save"
                     size="large"
                     on-click="saveConfig"
-                >{{$t('config.actions.save')}}</s-button>
+                >{{$t('configuration.actions.save')}}</s-button>
             </div>
         </div>
     `;
@@ -109,12 +110,18 @@ export default class ConfigContent extends Component {
         });
     }
     async save() {
-        await this.$apollo.mutate({
+        let res = await this.$apollo.mutate({
             mutation: CONFIGURATION_SAVE,
             variables: {
                 id: this.data.get('config.id')
             }
         });
+        if (res && res.data && res.data.configurationSave) {
+            message.success('配置修改成功！');
+        }
+        else {
+            message.error('配置操作失败,请检查！');
+        }
         this.refetch();
     }
     async cancel() {

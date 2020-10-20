@@ -35,7 +35,11 @@ export default class FolderExplorer extends Component {
                             icon="folder"
                             on-click="onPathChange(index)"
                         ></s-button>
-                        <s-button s-elif="p"
+                        <s-button s-elif="paths.length - index === PATH_DISPLAY_LENGTH"
+                            type="primary"
+                            on-click="onPathChange(index)"
+                        >...</s-button>
+                        <s-button s-elif="p && (paths.length - index < PATH_DISPLAY_LENGTH)"
                             type="primary"
                             on-click="onPathChange(index)"
                         >{{p}}</s-button>
@@ -96,11 +100,9 @@ export default class FolderExplorer extends Component {
                 </s-tooltip>
             </div>
             <div class="folders">
-                <div class="container">
+                <div class="container" s-if="folderCurrent && folderCurrent.children && folderCurrent.children.length">
                     <s-spin spinning="{{loading}}"/>
-                    <template
-                        s-if="folderCurrent && folderCurrent.children && folderCurrent.children.length"
-                        s-for="folder in folderCurrent.children">
+                    <template s-for="folder in folderCurrent.children">
                         <div s-if="showHiddenFolder || !folder.hidden"
                             class="folder-item {{folder.hidden ? 'hidden' : ''}}"
                             on-click="openFolder(folder.path)"
@@ -113,7 +115,6 @@ export default class FolderExplorer extends Component {
                             <div s-if="folder.favorite" class="icon yellow-star-icon"></div>
                         </div>
                     </template>
-                    <div class="empty-tip" s-else-if="!loading">{{$t('project.select.folderExplorer.emptyTip')}}</div>
                 </div>
             </div>
 
@@ -160,7 +161,8 @@ export default class FolderExplorer extends Component {
             foldersFavorite: [],
             showHiddenFolder: false,
             newFolderName: '',
-            showCreateModal: false
+            showCreateModal: false,
+            PATH_DISPLAY_LENGTH: 9
         };
     }
 

@@ -16,7 +16,7 @@ export default class FormTree extends Component {
     static template = /* html */ `
         <div>
             <s-button on-click="edit">
-                {{$t('config.prompt.edit')}}{{name}}
+                {{$t('configuration.prompt.edit')}}{{name}}
             </s-button>
             <s-tree
                 s-if="treeData.length"
@@ -27,13 +27,13 @@ export default class FormTree extends Component {
             <s-modal 
                 s-if="showEdit"
                 width="950"
-                title="{{$t('config.prompt.title')}}"
+                title="{{$t('configuration.prompt.title')}}"
                 visible="{=showEdit=}"
                 on-ok="saveEdit"
                 on-cancel="closeEdit"
             >
                 <div class="default-body">
-                    <s-alert s-if="error" message="{{$t('config.prompt.err-msg')}}" type="error"/>
+                    <s-alert s-if="error" message="{{$t('configuration.prompt.err-msg')}}" type="error"/>
                     <div style="height: 320px;overflow-y: auto;display: flex;margin-top: 8px;">
                         <s-textarea
                             style="width: 48%;"

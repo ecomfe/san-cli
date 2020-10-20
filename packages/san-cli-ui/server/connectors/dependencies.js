@@ -134,7 +134,7 @@ class Dependencies {
         return metadata.description;
     }
 
-    async getVersion({id}) {
+    async getVersion({id, versionRange}) {
         let current;
         let pm = packageManager(cwd.get());
         const registry = await getRegistry(pm);
@@ -147,7 +147,6 @@ class Dependencies {
 
         let latest = '';
         let wanted = '';
-        let versionRange = '';
 
         const metadata = await getMetadata({
             id,
@@ -160,8 +159,7 @@ class Dependencies {
             latest = metadata['dist-tags'].latest;
 
             const versions = Array.isArray(metadata.versions) ? metadata.versions : Object.keys(metadata.versions);
-            versionRange = (this.findOne(id) || {}).versionRange;
-            wanted = semver.maxSatisfying(versions, versionRange);
+            wanted = semver.maxSatisfying(versions, versionRange || (this.findOne(id) || {}).versionRange);
         }
 
         if (!latest) {

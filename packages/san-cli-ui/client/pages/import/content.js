@@ -85,6 +85,6 @@ export default class Project extends Component {
             });
             return;
         }
-        router.locator.redirect('/project/list');
+        router.locator.redirect('/');
     }
 }

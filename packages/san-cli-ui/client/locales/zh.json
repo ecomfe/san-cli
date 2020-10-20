@@ -227,9 +227,7 @@
         "emptyTip": "搜索结果为空"
     },
     "configuration": {
-        "title": "项目配置"
-    },
-    "config": {
+        "title": "项目配置",
         "tools": "安装 devtools",
         "san-cli": {
             "description": "配置 san 项目",
@@ -320,10 +318,12 @@
         "widgets": {
             "widget": {
                 "configure": "配置部件",
-                "remove": "移除部件",
                 "save": "保存",
-                "reset-config": "重置配置",
-                "open-details": "显示更多"
+                "actionTooltip": {
+                    "setting": "配置部件",
+                    "openDetails": "显示更多",
+                    "exit": "结束显示更多"
+                }
             },
             "welcome": {
                 "title": "欢迎",
@@ -360,7 +360,10 @@
                     "offline": "你已离线",
                     "empty": "没有新闻"
                 },
-                "origin": "阅读原文"
+                "origin": "阅读原文",
+                "actionTooltip": {
+                    "reload": "刷新"
+                }
             },
             "run-task": {
                 "title": "运行任务",
@@ -400,5 +403,9 @@
     "dropdown": {
         "editor": "在编辑器中打开",
         "recentProject": "最近打开"
+    },
+    "notFound": {
+        "tips": "没有这个页面",
+        "btnText": "返回首页"
     }
 }

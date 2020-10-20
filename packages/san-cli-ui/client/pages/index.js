@@ -1,6 +1,6 @@
 /**
  * @file 前端入口
- * @author zttonly
+ * @author zttonly, Lohoyo
  */
 
 import {router} from 'san-router';
@@ -24,9 +24,13 @@ loadClientAddons();
 const routes = [
     {rule: '/', Component: App, target: '#app'},
     {rule: '/project', Component: App, target: '#app'},
-    {rule: '/project/:nav', Component: App, target: '#app'},
+    {
+        rule: /^\/project\/(dashboard|plugins|dependency|configuration|task|import|create|list)$/,
+        Component: App,
+        target: '#app'
+    },
     // TODO: 待优化
-    {rule: '/project/:nav/:task', Component: App, target: '#app'},
+    {rule: /^\/project\/(task)\/(.+)$/, Component: App, target: '#app'},
     {rule: '/addon/:addon', Component: App, target: '#app'},
     {rule: '/about', Component: About, target: '#app'},
     {rule: /.*/, Component: NotFound, target: '#app'}

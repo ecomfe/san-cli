@@ -7,24 +7,12 @@ const path = require('path');
 const LRU = require('lru-cache');
 const fs = require('fs');
 const ini = require('ini');
+const fetch = require('node-fetch');
 
 const metadataCache = new LRU({
     max: 200,
     maxAge: 1000 * 60 * 30
 });
-
-function request(uri, opts) {
-    const request = require('util').promisify(require('request'));
-    const reqOpts = {
-        method: 'GET',
-        timeout: 30000,
-        resolveWithFullResponse: true,
-        json: true,
-        uri,
-        ...opts
-    };
-    return request(reqOpts);
-}
 
 async function getMetadata(args, full = false) {
     let {id, pm, registry, filePath} = args;
@@ -37,9 +25,12 @@ async function getMetadata(args, full = false) {
         return metadata;
     }
 
-    const headers = {};
+    const headers = {
+        'Content-Type': 'application/json'
+    };
 
     if (!full) {
+        // 通过Accept头部过滤返回的数据字段
         headers.Accept = 'application/vnd.npm.install-v1+json;q=1.0, application/json;q=0.9, */*;q=0.8';
     }
 
@@ -51,7 +42,17 @@ async function getMetadata(args, full = false) {
 
     const url = `${registry.replace(/\/$/g, '')}/${id}`;
     try {
-        metadata = (await request(url, {headers})).body;
+        const opts = {
+            method: 'GET',
+            timeout: 30000,
+            resolveWithFullResponse: true,
+            json: true
+        };
+
+        metadata = await fetch(url, {
+            ...opts,
+            headers
+        }).then(res => res.json());
 
         if (metadata.error) {
             throw new Error(metadata.error);
@@ -63,6 +64,7 @@ async function getMetadata(args, full = false) {
         throw e;
     }
 }
+
 async function getAuthToken(registry, filePath) {
     const possibleRcPaths = [
         path.resolve(filePath, '.npmrc'),
@@ -74,7 +76,8 @@ async function getAuthToken(registry, filePath) {
         if (fs.existsSync(loc)) {
             try {
                 npmConfig = Object.assign({}, ini.parse(fs.readFileSync(loc, 'utf-8')), npmConfig);
-            } catch (e) {
+            }
+            catch (e) {
             }
         }
     }
