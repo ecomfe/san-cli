@@ -9,7 +9,6 @@ import './header.less';
 export default class App extends Component {
     static template = /* html */`
         <div class="dashboard-header">
-            <s-button disabled="{{true}}" class="com-santd-btn-medium">{{$t('dashboard.tools')}}</s-button>
             <div on-click="toggleStatus" class="icon {{editing ? 'check-icon' : 'custom-icon'}}"></div>
         </div>
     `;

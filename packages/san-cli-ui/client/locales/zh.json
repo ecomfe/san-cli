@@ -307,6 +307,16 @@
     "dashboard": {
         "title": "项目仪表盘",
         "tools": "安装 devtools",
+        "devtools": {
+            "title": "安装 devtools",
+            "content": "调试san.js应用的开发工具。",
+            "more": "查看更多",
+            "cancel": "取消",
+            "confirm": "确认",
+            "image": "https://raw.githubusercontent.com/baidu/san-devtools/master/docs/images/san-panel.png",
+            "link": "https://github.com/baidu/san-devtools",
+            "chromeLink": "https://chrome.google.com/webstore/detail/san-devtool/pjnngoafflflkagpebgfifjejlnfhahc"
+        },
         "emptyTip": "暂无部件",
         "widget": {
             "remove": "移除部件",
