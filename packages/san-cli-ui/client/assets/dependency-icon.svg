@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>依赖icon</title>
-    <g id="依赖icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g transform="translate(0.000000, 2.000000)">
-            <path d="M18.9966087,1 L9.99810575,1 C9.445821,1 8.99810575,1.44771525 8.99810575,2 C8.99810575,2.00049866 8.99810612,2.00099732 8.99810687,2.00149597 L9.02204245,18.001496 C9.02286777,18.553196 9.4703407,19 10.0220413,19 L18.9966087,19 L18.9966087,19" id="路径-16" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-            <line x1="18.9504265" y1="10" x2="4" y2="10" id="路径-17" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></line>
-            <circle id="椭圆形" fill="#FFFFFF" cx="22" cy="10" r="1"></circle>
-            <circle id="椭圆形备份-3" fill="#FFFFFF" cx="1" cy="10" r="1"></circle>
-            <circle id="椭圆形备份" fill="#FFFFFF" cx="22" cy="19" r="1"></circle>
-            <circle id="椭圆形备份-2" fill="#FFFFFF" cx="22" cy="1" r="1"></circle>
-        </g>
-    </g>
-</svg>
+<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><g transform="translate(0 2)" fill="none" fill-rule="evenodd"><path d="M18.997 1H9.998a1 1 0 00-1 1.001l.024 16a1 1 0 001 .999h8.975M18.95 10H4" stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle fill="#FFF" cx="22" cy="10" r="1"/><circle fill="#FFF" cx="1" cy="10" r="1"/><circle fill="#FFF" cx="22" cy="19" r="1"/><circle fill="#FFF" cx="22" cy="1" r="1"/></g></svg>

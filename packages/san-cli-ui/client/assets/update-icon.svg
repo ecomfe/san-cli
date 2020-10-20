@@ -1,11 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>升级icon</title>
-    <g id="升级icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="编组-2">
-            <rect id="矩形" fill="#236EFF" x="0" y="0" width="20" height="20" rx="4"></rect>
-            <line x1="10" y1="6.85432184" x2="10" y2="13.8883651" id="路径-2" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"></line>
-            <polyline id="路径-3" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="translate(9.979845, 8.998665) rotate(-45.000000) translate(-9.979845, -8.998665) " points="8 7 11.9596893 7 11.9596893 10.9973291"></polyline>
-        </g>
-    </g>
-</svg>
+<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><rect fill="#236EFF" width="20" height="20" rx="4"/><path stroke="#FFF" stroke-width="2" stroke-linecap="round" d="M10 6.854v7.034"/><path stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M7.167 8.985l2.8-2.8 2.826 2.827"/></g></svg>

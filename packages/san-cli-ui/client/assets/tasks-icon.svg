@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>任务icon</title>
-    <g id="任务icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="编组-9" stroke="#FFFFFF" stroke-width="2">
-            <g id="任务icon" transform="translate(1.000000, 1.000000)">
-                <rect id="矩形" x="1" y="3.2" width="20" height="17.8" rx="2"></rect>
-                <line x1="5.5" y1="0" x2="5.5" y2="5.5" id="路径-2" stroke-linecap="round"></line>
-                <line x1="16.5" y1="0" x2="16.5" y2="5.5" id="路径-2备份" stroke-linecap="round"></line>
-                <polyline id="路径-3" stroke-linecap="round" stroke-linejoin="round" transform="translate(11.000000, 11.000000) rotate(-45.000000) translate(-11.000000, -11.000000) " points="7.7 8.8 7.7 13.2 14.3 13.2"></polyline>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"><g transform="translate(1 1)" stroke="#FFF" stroke-width="2" fill="none" fill-rule="evenodd"><rect x="1" y="3.2" width="20" height="17.8" rx="2"/><path stroke-linecap="round" d="M5.5 0v5.5M16.5 0v5.5"/><path stroke-linecap="round" stroke-linejoin="round" d="M7.11 11.778l3.112 3.111 4.667-4.667"/></g></svg>

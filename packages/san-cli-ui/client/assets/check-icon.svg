@@ -1,12 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>自定义icon</title>
-    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="3.仪表盘-自定义" transform="translate(-1314.000000, -21.000000)">
-            <g id="编组-2" transform="translate(1314.000000, 21.000000)">
-                <rect id="矩形" fill="#236EFF" x="0" y="0" width="36" height="36" rx="18"></rect>
-                <polyline id="路径-3" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="translate(18.500000, 15.501984) rotate(-315.000000) translate(-18.500000, -15.501984) " points="14.9630635 22.5716488 22.0369365 22.5744539 22.0341313 8.42951316"></polyline>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="36" height="36" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><rect fill="#236EFF" width="36" height="36" rx="18"/><path stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M11 18l5 5.004L26 13"/></g></svg>
