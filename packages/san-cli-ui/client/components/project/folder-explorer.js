@@ -35,11 +35,11 @@ export default class FolderExplorer extends Component {
                             icon="folder"
                             on-click="onPathChange(index)"
                         ></s-button>
-                        <s-button s-elif="paths.length - index === 9"
+                        <s-button s-elif="paths.length - index === PATH_DISPLAY_LENGTH"
                             type="primary"
                             on-click="onPathChange(index)"
                         >...</s-button>
-                        <s-button s-elif="p && (paths.length - index < 9)"
+                        <s-button s-elif="p && (paths.length - index < PATH_DISPLAY_LENGTH)"
                             type="primary"
                             on-click="onPathChange(index)"
                         >{{p}}</s-button>
@@ -161,7 +161,8 @@ export default class FolderExplorer extends Component {
             foldersFavorite: [],
             showHiddenFolder: false,
             newFolderName: '',
-            showCreateModal: false
+            showCreateModal: false,
+            PATH_DISPLAY_LENGTH: 9
         };
     }
 
