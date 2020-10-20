@@ -35,7 +35,11 @@ export default class FolderExplorer extends Component {
                             icon="folder"
                             on-click="onPathChange(index)"
                         ></s-button>
-                        <s-button s-elif="p"
+                        <s-button s-elif="paths.length - index === 9"
+                            type="primary"
+                            on-click="onPathChange(index)"
+                        >...</s-button>
+                        <s-button s-elif="p && (paths.length - index < 9)"
                             type="primary"
                             on-click="onPathChange(index)"
                         >{{p}}</s-button>
