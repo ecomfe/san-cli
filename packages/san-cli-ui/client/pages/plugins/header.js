@@ -11,17 +11,17 @@ export default class App extends Component {
             <c-dependency-filter on-keywordChange="keywordChange" />
              <s-dropdown s-if="showDevTools"
                 trigger="click"
-                overlayClassName="tip-overlay"
+                overlayClassName="header-tip-overlay"
                 placement="bottomRight"
-                class="tip-trigger"
+                class="header-tip-trigger"
             >
-                <div class="tip" slot="overlay">
-                    <div class="tip-header">{{$t('dashboard.devtools.title')}}</div>
-                    <div class="tip-content">
+                <div class="header-tip" slot="overlay">
+                    <div class="header-tip-header">{{$t('dashboard.devtools.title')}}</div>
+                    <div class="header-tip-content">
                         <p>{{$t('dashboard.devtools.content')}}</p>
                         <p><img src="{{$t('dashboard.devtools.image')}}" alt="default image"/></p>
                     </div>
-                    <div class="tip-footer">
+                    <div class="header-tip-footer">
                         <s-button
                             class="com-santd-btn-medium" 
                             href="{{$t('dashboard.devtools.link')}}"
