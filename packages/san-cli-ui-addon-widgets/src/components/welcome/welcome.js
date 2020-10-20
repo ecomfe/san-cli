@@ -4,12 +4,13 @@
  */
 
 import './welcome.less';
+import sanLogo from '../../assets/san-white.svg';
 
 export default {
     template: /* html */`
         <div class="welcome">
             <div class="logo-wrapper">
-                <img src="https://baidu.github.io/san/img/logo-colorful.svg" class="logo"/>
+                <img src="{{sanLogo}}" class="logo"/>
             </div>
             <div class="title">
                 {{$t('dashboard.widgets.welcome.content.title')}}
@@ -41,7 +42,8 @@ export default {
                 'dashboard',
                 'arrow-left',
                 'home'
-            ]
+            ],
+            sanLogo
         };
     },
     remove() {
