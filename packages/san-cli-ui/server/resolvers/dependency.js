@@ -13,7 +13,7 @@ module.exports = {
     Mutation: {
         dependencyInstall: (root, {input}, context) => dependencies.install(input, context),
         dependencyUninstall: (root, args, context) => dependencies.unInstall(args, context),
-        dependencyItem: (root, {id}, context) => dependencies.getVersion(dependencies.findOne(id) || {}, context)
+        dependencyItem: (root, args, context) => dependencies.getVersion(args, context)
     },
     Query: {
         dependencies: (root, args, context) => dependencies.list(args, context)

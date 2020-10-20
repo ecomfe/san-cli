@@ -159,7 +159,7 @@ class Dependencies {
             latest = metadata['dist-tags'].latest;
 
             const versions = Array.isArray(metadata.versions) ? metadata.versions : Object.keys(metadata.versions);
-            wanted = semver.maxSatisfying(versions, versionRange);
+            wanted = semver.maxSatisfying(versions, versionRange || (this.findOne(id) || {}).versionRange);
         }
 
         if (!latest) {
