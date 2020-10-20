@@ -82,14 +82,18 @@ class Tasks {
                          * 2. 通过match找到找到相应的本地任务，对其进行增强（如：添加视图）
                         */
                         if (!task.name && task.match) {
-                            const index = list.findIndex(({command}) => {
+                            // 匹配的任务可能不止一个
+                            const taskIndexs = [];
+                            list.forEach(({command}, index) => {
                                 const match = task.match;
-                                return typeof match === 'function' ? match.call(task, command) : match.test(command);
+                                if (typeof match === 'function' ? match.call(task, command) : match.test(command)) {
+                                    taskIndexs.push(index);
+                                };
                             });
 
                             // 通过插件来修饰本地任务
-                            if (~index) {
-                                Object.assign(list[index], task);
+                            if (taskIndexs.length) {
+                                taskIndexs.forEach(taskIndex => Object.assign(list[taskIndex], task));
                                 debug('Add describeTask plugin:', Object.keys(task));
                             }
                             else {
