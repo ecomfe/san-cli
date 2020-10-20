@@ -88,7 +88,7 @@ For detailed documentation, please check the [San CLI docs](./docs/README.md).
 
 ## 🍻 Companions
 
--   [san-devtool](https://github.com/baidu/san-devtool/blob/master/docs/user_guide.md) - Chrome DevTool extension
+-   [san-devtools](https://github.com/baidu/san-devtools/blob/master/docs/user_guide.md) - Chrome DevTools extension
 -   [san-router](https://github.com/baidu/san-router) - SPA Router
 -   [san-store](https://github.com/baidu/san-store) - Application States Management
 -   [san-update](https://github.com/baidu/san-update) - Immutable Data Update
@@ -99,7 +99,8 @@ For detailed documentation, please check the [San CLI docs](./docs/README.md).
 -   [drei](https://github.com/ssddi456/drei/) - VSCode extension for SAN
 -   [san-cli](https://github.com/ecomfe/san-cli) - A CLI tooling based on SAN for rapid development
 -   [san-test-utils](https://github.com/ecomfe/san-test-utils) - The unit testing utility library for SAN
--   [san-loader](https://github.com/ecomfe/san-cli/tree/master/packages/san-loader) - Webpack loader for single-file SAN components
+-   [san-loader](https://github.com/ecomfe/san-loader) - Webpack loader for single-file SAN components
+-   [san-hot-loader](https://github.com/ecomfe/san-hot-loader) - Webpack loader for SAN components HMR
 
 ## ☀️ License
 
