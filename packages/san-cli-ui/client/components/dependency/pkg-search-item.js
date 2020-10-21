@@ -94,7 +94,11 @@ export default class PackageSearchItem extends Component {
         });
         const results = data && data.data;
         if (results) {
-            const {objects, total} = results;
+            let {objects, total} = results;
+
+            if (this.data.get('type') === 'plugins') {
+                objects = objects.filter(item => item.package.name.indexOf('san-cli-plugin') !== -1);
+            }
 
             // 标记搜索结果中那些已安装的包
             const hash = this.data.get('installedPackages').reduce((accumulator, currentItem) => {
