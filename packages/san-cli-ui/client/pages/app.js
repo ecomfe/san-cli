@@ -15,12 +15,6 @@ import PluginsHeader from './plugins/header';
 import PluginsContent from './plugins/content';
 import ConfigurationContent from './configuration/content';
 import TaskContent from './task/content';
-import ListHeader from './list/header';
-import ListContent from './list/content';
-import CreateHeader from './create/header';
-import CreateContent from './create/content';
-import ImportHeader from './import/header';
-import ImportContent from './import/content';
 import '@components/layout/layout.less';
 import './app.less';
 
@@ -41,27 +35,11 @@ export default class App extends Component {
                     <c-plugins-header
                         s-else-if="routeNav === 'plugins'"
                     />
-                    <c-list-header
-                        s-else-if="routeNav === 'list'"
-                    />
-                    <c-create-header
-                        s-else-if="routeNav === 'create'"
-                    />
-                    <c-import-header
-                        s-else-if="routeNav === 'import'"
-                    />
                 </div>
             </s-layout-header>
 
             <s-layout class="page-content h1oh">
-                <c-sidebar 
-                    selectedMenu="{{routeNav || routeAddon}}"
-                    s-if="
-                        routeNav!=='list' 
-                        && routeNav!=='create' 
-                        && routeNav!=='import'
-                    "
-                />
+                <c-sidebar selectedMenu="{{routeNav || routeAddon}}" />
 
                 <s-layout-content class="page-content-main">
                     <s-spin s-if="pageLoading"
@@ -88,15 +66,6 @@ export default class App extends Component {
                         taskName="{{routeTask}}"
                         s-else-if="routeNav === 'task' || route.query.task"
                     />
-                    <c-list-content
-                        s-if="routeNav === 'list'"
-                    />
-                    <c-create-content
-                        s-else-if="routeNav === 'create'"
-                    />
-                    <c-import-content
-                        s-else-if="routeNav === 'import'"
-                    />
                     <c-client-addon
                         s-else-if="routeAddon"
                         class="client-addon-view"
@@ -111,12 +80,6 @@ export default class App extends Component {
         'c-connection-status': ConnectionStatus,
         'c-header-title': HeaderTitle,
         'c-sidebar': Sidebar,
-        'c-list-header': ListHeader,
-        'c-list-content': ListContent,
-        'c-create-header': CreateHeader,
-        'c-create-content': CreateContent,
-        'c-import-header': ImportHeader,
-        'c-import-content': ImportContent,
         'c-dashboard-header': DashboardHeader,
         'c-dashboard-content': DashboardContent,
         'c-plugins-header': PluginsHeader,

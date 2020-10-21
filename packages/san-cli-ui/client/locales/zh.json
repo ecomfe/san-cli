@@ -14,12 +14,12 @@
                 "text": "创建项目",
                 "icon": "plus-circle",
                 "key": "create",
-                "link": "/project/create"
+                "link": "/home/create"
             }, {
                 "text": "导入项目",
                 "icon": "import",
                 "key": "import",
-                "link": "/project/import"
+                "link": "/home/import"
             }],
             "folderExplorer": {
                 "modalCreateTitle": "输入文件夹名称",
