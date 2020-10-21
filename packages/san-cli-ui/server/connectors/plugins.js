@@ -10,6 +10,7 @@ const cwd = require('./cwd');
 const widgets = require('./widgets');
 const dependencies = require('./dependencies');
 const clientAddons = require('./clientAddons');
+const sharedData = require('./sharedData');
 const {readPackage} = require('../utils/fileHelper');
 const getContext = require('../utils/context');
 const {isPlugin, getPluginLink} = require('../utils/plugin');
@@ -104,6 +105,13 @@ class Plugins {
                 const ipc = pluginApi.getIpc();
                 ipc.handlers.forEach(fn => ipc.off(fn));
             }
+
+            if (projectId) {
+                sharedData.unwatchAll(projectId);
+            }
+
+            // 清空上一个项目的插件
+            clientAddons.clear(context);
 
             const project = projects.findByPath(file, context);
             if (!project) {
