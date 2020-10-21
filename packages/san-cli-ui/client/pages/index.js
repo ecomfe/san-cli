@@ -21,15 +21,28 @@ window.SanComponent = Component;
 // 加载第三方组件
 loadClientAddons();
 
+// project页面下路由：/project/(dashboard|plugins|...)
+const projectRoutes = [
+    'dashboard',
+    'plugins',
+    'dependency',
+    'configuration',
+    'task',
+    'import',
+    'create',
+    'list'
+];
+
+const projectRule = new RegExp(`^/project/(${projectRoutes.join('|')})$`);
+
 const routes = [
     {rule: '/', Component: App, target: '#app'},
     {rule: '/project', Component: App, target: '#app'},
     {
-        rule: /^\/project\/(dashboard|plugins|dependency|configuration|task|import|create|list)$/,
+        rule: projectRule,
         Component: App,
         target: '#app'
     },
-    // TODO: 待优化
     {rule: /^\/project\/(task)\/(.+)$/, Component: App, target: '#app'},
     {rule: '/addon/:addon', Component: App, target: '#app'},
     {rule: '/about', Component: About, target: '#app'},
