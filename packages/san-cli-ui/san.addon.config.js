@@ -13,7 +13,7 @@ module.exports = function ({id, port = 8889}) {
         outputDir: 'dist',
         filenameHashing: false,
         css: {
-            sourceMap: isProduction,
+            sourceMap: false,
             cssPreprocessor: 'less',
             extract: false
         },
