@@ -14,6 +14,7 @@ import DEPENDENCY_INSTALL from '@graphql/dependency/dependencyInstall.gql';
  *
  * @param {Object} data 依赖的信息
  * @param {String} installType 运行依赖还是开发依赖
+ * @param {String} type 依赖类型还是插件类型
  */
 export default class DependencySearchItem extends Component {
     static template = /* html */`
@@ -58,7 +59,6 @@ export default class DependencySearchItem extends Component {
         return {
             loadingTip: '',
             spinning: false,
-            loadMeta: false,
             hasGenerator: false,
             hasUiIntegration: false
         };
@@ -103,7 +103,7 @@ export default class DependencySearchItem extends Component {
         this.data.set('hasUiIntegration', false);
         this.data.set('hasGenerator', false);
 
-        if (this.data.get('loadMeta')) {
+        if (this.data.get('type') === 'plugin') {
             axios.get(`https://unpkg.com/${name}/ui`).then(response => {
                 if (name !== this.data.get('data.package.name')) {
                     return;

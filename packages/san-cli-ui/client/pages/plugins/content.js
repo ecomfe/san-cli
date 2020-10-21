@@ -24,7 +24,7 @@ export default class Plugins extends Component {
                     <c-pkg-search-item
                         slot="content"
                         keyword="{{'san-cli-plugin'}}"
-                        load-meta="{{true}}"
+                        type="plugin"
                         on-loading="onLoadingChange"
                         loading="{{loading}}"
                         installedPackages="{{plugins}}">

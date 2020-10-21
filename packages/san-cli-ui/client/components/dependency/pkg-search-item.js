@@ -16,6 +16,16 @@ import {
 } from '@lib/const';
 import './pkg-search-item.less';
 
+/**
+ * 组件props
+ *
+ * @param {Array} installedPackages 已安装的包
+ * @param {Boolean} loading 是否展示loading态
+ * @param {String} currentRankingMode 搜索结果的排序模式
+ * @param {String} installType 安装类型
+ * @param {String} keyword 搜索关键字
+ * @param {String} type 依赖类型还是插件类型
+ */
 export default class PackageSearchItem extends Component {
     static template = /* html */`
         <div class="pkg-search-item">
@@ -23,7 +33,7 @@ export default class PackageSearchItem extends Component {
                 <c-dependency-search-item
                     s-for="data in searchData"
                     data="{{data}}"
-                    load-meta="{{loadMeta}}"
+                    type="{{type}}"
                     install-type="{{installType}}">
                 </c-dependency-search-item>
                 <s-pagination
