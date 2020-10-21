@@ -197,6 +197,7 @@
         "title": "项目依赖",
         "uninstalled": "未安装",
         "install": "安装",
+        "installed": "已安装",
         "version": "版本",
         "wanted": "要求",
         "latest": "最新",
@@ -215,16 +216,16 @@
         "installSuccess": "安装成功",
         "updateDependency": "更新依赖",
         "updateSuccess": "更新成功",
-        "tooltip": {
-            "update": "更新",
-            "del": "卸载",
-            "install": "安装"
-        },
         "optimal": "最优的",
         "popularity": "最流行的",
         "quality": "质量最高的",
         "maintenance": "维护情况最好的",
-        "emptyTip": "搜索结果为空"
+        "emptyTip": "搜索结果为空",
+        "tooltip": {
+            "update": "更新",
+            "del": "卸载",
+            "install": "安装"
+        }
     },
     "configuration": {
         "title": "项目配置",

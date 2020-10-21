@@ -29,7 +29,7 @@ export default class Dependency extends Component {
             </div>
             <c-dependency-modal on-cancel="onModalClose" visible="{{modalVisible}}">
                 <template slot="content">
-                    <c-dependency-search/>
+                    <c-dependency-search dependencies={{dependenciesList}}></c-dependency-search>
                 </template>
             </c-dependency-modal>
         </div>
@@ -76,6 +76,9 @@ export default class Dependency extends Component {
             },
             showModal(data) {
                 this.data.set('modalVisible', data);
+            },
+            refreshPackages() {
+                this.getDependencies();
             }
         };
     }
@@ -118,7 +121,6 @@ export default class Dependency extends Component {
     // 搜索模态框取消
     onModalClose() {
         this.data.set('modalVisible', false);
-        this.getDependencies();
     }
 
     // 搜索模态框展示

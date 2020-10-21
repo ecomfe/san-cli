@@ -35,8 +35,12 @@ export default class DependencySearchItem extends Component {
                     </s-tooltip>
                     <div class="pkg-description">{{data.package.description}}</div>
                 </div>
-                <s-button class="pkg-btn-operate" on-click="installDependency" type="primary">
-                    {{$t('dependency.install')}}
+                <s-button
+                    class="pkg-btn-operate"
+                    on-click="installDependency"
+                    type="primary"
+                    disabled="{{data.isInstalled}}">
+                    {{data.isInstalled ? $t('dependency.installed') : $t('dependency.install')}}
                 </s-button>
             </div>
         </s-spin>
@@ -90,6 +94,8 @@ export default class DependencySearchItem extends Component {
             message: this.$t('dependency.installDependency') + ' ' + name,
             description: this.$t('dependency.installSuccess')
         });
+        this.$emit('refreshPackages');
+        this.data.set('data.isInstalled', true);
     }
 
     updateMetadata() {

@@ -15,6 +15,7 @@ export default class Modal extends Component {
             </div>
         </div>
     `;
+
     initData() {
         return {
             visible: false

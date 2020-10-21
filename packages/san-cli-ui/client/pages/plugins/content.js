@@ -21,11 +21,14 @@ export default class Plugins extends Component {
             <div s-else-if="!pageLoading" class="empty-tip">{{$t('plugins.emptyTip')}}</div>
             <c-dependency-modal on-cancel="onModalClose" visible="{{addPlugin}}">
                 <s-spin spinning="{{loading}}" class="plugin-item" slot="content">
-                    <c-pkg-search-item slot="content"
+                    <c-pkg-search-item
+                        slot="content"
                         keyword="{{'san-cli-plugin'}}"
                         load-meta="{{true}}"
                         on-loading="onLoadingChange"
-                        loading="{{loading}}"/>
+                        loading="{{loading}}"
+                        installedPackages="{{plugins}}">
+                    </c-pkg-search-item>
                 </s-spin>
             </c-dependency-modal>
         </div>
@@ -54,6 +57,9 @@ export default class Plugins extends Component {
             },
             showModal(data) {
                 this.data.set('addPlugin', data);
+            },
+            refreshPackages() {
+                this.init();
             }
         };
     }
@@ -108,6 +114,5 @@ export default class Plugins extends Component {
 
     onModalClose() {
         this.data.set('addPlugin', false);
-        this.init();
     }
 }

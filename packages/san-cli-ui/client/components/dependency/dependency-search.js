@@ -43,7 +43,8 @@ export default class DependencyPackageSearch extends Component {
                     install-type="{{radioValue}}"
                     current-ranking-mode="{{currentRankingMode}}"
                     on-loading="onLoadingChange"
-                    loading="{{loading}}">
+                    loading="{{loading}}"
+                    installedPackages="{{dependencies}}">
                 </c-pkg-search-item>
             </div>
         </s-spin>
@@ -54,7 +55,6 @@ export default class DependencyPackageSearch extends Component {
     };
     initData() {
         return {
-            searchData: [],
             // 运行依赖
             radioValue: 'dependencies',
             loading: true,

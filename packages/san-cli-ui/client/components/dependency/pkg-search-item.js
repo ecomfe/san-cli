@@ -37,9 +37,11 @@ export default class PackageSearchItem extends Component {
             <div s-elif="!loading" class="empty-tip">{{$t('dependency.emptyTip')}}</div>
         </div>
     `;
+
     static components = {
         'c-dependency-search-item': DependencySearchItem
-    }
+    };
+
     initData() {
         return {
             searchData: [],
@@ -51,9 +53,11 @@ export default class PackageSearchItem extends Component {
             installType: 'devDependencies'
         };
     }
+
     inited() {
         this.search();
     }
+
     attached() {
         this.watch('currentRankingMode', value => {
             this.search();
@@ -67,7 +71,7 @@ export default class PackageSearchItem extends Component {
         this.fire('loading', true);
         let {keyword, currentRankingMode} = this.data.get();
         keyword = keyword || SEARCH_DEFAULT_QUERY;
-        let data = await axios({
+        const data = await axios({
             url: SEARCH_URL + RANKING_MODE_MAP[currentRankingMode],
             params: {
                 // full-text search to apply
@@ -78,11 +82,24 @@ export default class PackageSearchItem extends Component {
                 from: (page - 1) * SEARCH_PAGE_SIZE
             }
         });
-        let results = data && data.data;
+        const results = data && data.data;
         if (results) {
             const {objects, total} = results;
+
+            // 标记搜索结果中那些已安装的包
+            const hash = this.data.get('installedPackages').reduce((accumulator, currentItem) => {
+                accumulator[currentItem.id] = true;
+                return accumulator;
+            }, {});
+            objects.forEach(item => {
+                if (hash[item.package.name]) {
+                    item.isInstalled = true;
+                }
+            });
+
             this.data.set('searchData', objects);
             this.data.set('searchResultTotal', total > SEARCH_MAX_RESULT_TOTAL ? SEARCH_MAX_RESULT_TOTAL : total);
+
             // 回到搜索结果列表的顶部
             this.nextTick(() => {
                 const element = document.querySelector('.pkg-search-item');
