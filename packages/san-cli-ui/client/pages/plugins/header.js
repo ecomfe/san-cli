@@ -40,7 +40,7 @@ export default class App extends Component {
                 <s-button type="primary" class="com-santd-btn-medium">{{$t('dashboard.tools')}}</s-button>
             </s-dropdown>
             <s-button type="primary" class="com-santd-btn-medium" on-click="showModal">
-                {{$t('plugins.installPlugin')}} <s-icon type="plus"/>
+                {{$t('plugins.installPackage')}} <s-icon type="plus"/>
             </s-button>
         </div>
     `;

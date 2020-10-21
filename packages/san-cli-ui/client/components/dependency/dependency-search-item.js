@@ -91,7 +91,7 @@ export default class DependencySearchItem extends Component {
         });
         this.data.set('spinning', false);
         Notification.open({
-            message: this.$t('dependency.installDependency') + ' ' + name,
+            message: this.$t(this.data.get('type') + '.installPackage') + ' ' + name,
             description: this.$t('dependency.installSuccess')
         });
         this.$emit('refreshPackages');
@@ -103,7 +103,7 @@ export default class DependencySearchItem extends Component {
         this.data.set('hasUiIntegration', false);
         this.data.set('hasGenerator', false);
 
-        if (this.data.get('type') === 'plugin') {
+        if (this.data.get('type') === 'plugins') {
             axios.get(`https://unpkg.com/${name}/ui`).then(response => {
                 if (name !== this.data.get('data.package.name')) {
                     return;

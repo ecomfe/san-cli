@@ -16,7 +16,12 @@ export default class Plugins extends Component {
         <div class="plugins">
             <div class="pkg-body" s-if="plugins.length">
                 <h2 class="com-sub-title">{{$t('plugins.subTitle')}}</h2>
-                <c-dependency-item s-for="item in plugins" item="{{item}}" on-updatePkgList="init"></c-dependency-item>
+                <c-dependency-item
+                    s-for="item in plugins"
+                    item="{{item}}"
+                    on-updatePkgList="init"
+                    type="plugins">
+                </c-dependency-item>
             </div>
             <div s-else-if="!pageLoading" class="empty-tip">{{$t('plugins.emptyTip')}}</div>
             <c-dependency-modal on-cancel="onModalClose" visible="{{addPlugin}}">
@@ -24,7 +29,7 @@ export default class Plugins extends Component {
                     <c-pkg-search-item
                         slot="content"
                         keyword="{{'san-cli-plugin'}}"
-                        type="plugin"
+                        type="plugins"
                         on-loading="onLoadingChange"
                         loading="{{loading}}"
                         installedPackages="{{plugins}}">
