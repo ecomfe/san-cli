@@ -13,7 +13,7 @@ import './content.less';
 
 export default class Plugins extends Component {
     static template = /* html */`
-        <div class="plugins">
+        <div class="plugins-list">
             <div class="pkg-body" s-if="plugins.length">
                 <h2 class="com-sub-title">{{$t('plugins.subTitle')}}</h2>
                 <c-dependency-item
