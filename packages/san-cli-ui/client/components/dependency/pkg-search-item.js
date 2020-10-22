@@ -97,7 +97,7 @@ export default class PackageSearchItem extends Component {
             let {objects, total} = results;
 
             if (this.data.get('type') === 'plugins') {
-                objects = objects.filter(item => item.package.name.indexOf('san-cli-plugin') !== -1);
+                objects = objects.filter(item => item.package.name.indexOf('san-cli-plugin') === 0);
             }
 
             // 标记搜索结果中那些已安装的包
