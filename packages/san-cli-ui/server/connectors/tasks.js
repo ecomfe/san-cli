@@ -130,8 +130,13 @@ class Tasks {
      * @param {string} id 任务id或者任务path
     */
     findTask(id, context) {
+        // 把任务id转换为一个完整路径
+        if (id.indexOf('/') === -1 || id.indexOf(':') === -1) {
+            id = cwd.get() + ':' + id;
+        }
+
         for (const [, list] of this.tasks) {
-            const task = list.find(t => t.id === id || t.id === t.path + ':' + id);
+            const task = list.find(t => t.id === id);
             if (task) {
                 // debug('Target task found', task);
                 return task;
