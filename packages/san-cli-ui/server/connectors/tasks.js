@@ -346,6 +346,7 @@ class Tasks {
 
         const child = execa(command, args, {
             cwd: cwd.get(),
+            preferLocal: true,
             stdio: ['inherit', 'pipe', 'pipe'],
             shell: true
         });
