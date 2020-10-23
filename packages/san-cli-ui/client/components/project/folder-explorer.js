@@ -171,15 +171,10 @@ export default class FolderExplorer extends Component {
         const observer = this.$apollo.subscribe({query: CWD_CHANGE});
         observer.subscribe({
             next: result => {
-                const {data, loading, error, errors} = result;
+                const {data, error, errors} = result;
                 /* eslint-disable no-console */
                 if (error || errors) {
                     console.log('err');
-                }
-
-                if (loading) {
-                    // TODO: 测试loading态可见时长后决定页面增加显示效果
-                    console.log('loading');
                 }
 
                 if (data && data.cwd) {
