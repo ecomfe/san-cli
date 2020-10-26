@@ -56,13 +56,12 @@ class DashboardPlugin {
     }
 
     apply(compiler) {
-        let sendData = this.sendData;
         let timer;
 
         let assetSources = new Map();
 
-        if (!sendData) {
-            sendData = data => {
+        if (!this.sendData) {
+            this.sendData = data => {
                 debug('IPC sending data:', data);
                 ipc.send({
                     webpackDashboardData: {
@@ -72,6 +71,8 @@ class DashboardPlugin {
                 });
             };
         }
+
+        let sendData = this.sendData;
 
         // Progress status
         let progressTime = Date.now();

@@ -195,7 +195,6 @@ export default class ProjectList extends Component {
             mutation: PROJECT_CWD_RESET
         });
 
-
         const isSanProject = this.data.get('projectCurrent.type') === 'san';
         const link = isSanProject ? this.$t('nav.dashboard.link') : this.$t('nav.dependency.link');
         this.fire('routeto', link);

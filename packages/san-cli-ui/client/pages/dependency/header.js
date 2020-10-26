@@ -10,7 +10,7 @@ export default class App extends Component {
         <div class="dependency-header">
             <c-dependency-filter on-keywordChange="keywordChange" />
             <s-button type="primary" class="com-santd-btn-medium" on-click="showModal">
-                {{$t('dependency.installDependency')}} <s-icon type="plus"/>
+                {{$t('dependency.installPackage')}} <s-icon type="plus"/>
             </s-button>
         </div>
     `;

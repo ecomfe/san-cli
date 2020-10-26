@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="27px" height="27px" viewBox="0 0 27 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>代码编辑icon</title>
-    <g id="代码编辑icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g>
-            <path d="M13.5,27 C6.04414285,27 0,20.9558572 0,13.5 C0,6.04414285 6.04414285,0 13.5,0 C20.9558572,0 27,6.04414285 27,13.5 C27,20.9558572 20.9558572,27 13.5,27 Z" id="形状备份-2" fill-opacity="0" fill="#888D98" fill-rule="nonzero"></path>
-            <g id="代码" transform="translate(3.800000, 8.400000)" stroke="#666666" stroke-linecap="round" stroke-width="2">
-                <line x1="11.1945888" y1="0.6" x2="7.60759246" y2="9.65263815" id="路径-10"></line>
-                <polyline id="路径-11" stroke-linejoin="round" transform="translate(4.300000, 5.100000) rotate(45.000000) translate(-4.300000, -5.100000) " points="1.8 2.6 1.8 7.6 6.8 7.6"></polyline>
-                <polyline id="路径-11备份" stroke-linejoin="round" transform="translate(14.300000, 5.100000) scale(-1, 1) rotate(45.000000) translate(-14.300000, -5.100000) " points="11.8 2.6 11.8 7.6 16.8 7.6"></polyline>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="27" height="27" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M13.5 27C6.044 27 0 20.956 0 13.5S6.044 0 13.5 0 27 6.044 27 13.5 20.956 27 13.5 27z" fill="none"/><g stroke="#666" stroke-linecap="round" stroke-width="2"><path d="M14.995 9l-3.587 9.053"/><path stroke-linejoin="round" d="M8.1 9.964L4.564 13.5 8.1 17.036M18.1 9.964l3.536 3.536-3.536 3.536"/></g></g></svg>

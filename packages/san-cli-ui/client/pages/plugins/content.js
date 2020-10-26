@@ -13,19 +13,27 @@ import './content.less';
 
 export default class Plugins extends Component {
     static template = /* html */`
-        <div class="plugins">
+        <div class="plugins-list">
             <div class="pkg-body" s-if="plugins.length">
                 <h2 class="com-sub-title">{{$t('plugins.subTitle')}}</h2>
-                <c-dependency-item s-for="item in plugins" item="{{item}}" on-updatePkgList="init"></c-dependency-item>
+                <c-dependency-item
+                    s-for="item in plugins"
+                    item="{{item}}"
+                    on-updatePkgList="init"
+                    type="plugins">
+                </c-dependency-item>
             </div>
             <div s-else-if="!pageLoading" class="empty-tip">{{$t('plugins.emptyTip')}}</div>
             <c-dependency-modal on-cancel="onModalClose" visible="{{addPlugin}}">
                 <s-spin spinning="{{loading}}" class="plugin-item" slot="content">
-                    <c-pkg-search-item slot="content"
+                    <c-pkg-search-item
+                        slot="content"
                         keyword="{{'san-cli-plugin'}}"
-                        load-meta="{{true}}"
+                        type="plugins"
                         on-loading="onLoadingChange"
-                        loading="{{loading}}"/>
+                        loading="{{loading}}"
+                        installedPackages="{{plugins}}">
+                    </c-pkg-search-item>
                 </s-spin>
             </c-dependency-modal>
         </div>
@@ -54,6 +62,9 @@ export default class Plugins extends Component {
             },
             showModal(data) {
                 this.data.set('addPlugin', data);
+            },
+            refreshPackages() {
+                this.init();
             }
         };
     }
@@ -108,6 +119,5 @@ export default class Plugins extends Component {
 
     onModalClose() {
         this.data.set('addPlugin', false);
-        this.init();
     }
 }

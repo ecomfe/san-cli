@@ -14,6 +14,7 @@ import './dependency-item.less';
  * 组件props
  *
  * @param {Object} item 当前的依赖信息
+ * @param {String} type 依赖类型还是插件类型
  */
 export default class DependencyItem extends Component {
     static template = /* html */`
@@ -79,7 +80,7 @@ export default class DependencyItem extends Component {
         this.fire('updatePkgList');
         this.data.set('spinning', false);
         Notification.open({
-            message: this.$t('dependency.deleteDependency') + ' ' + id,
+            message: this.$t(this.data.get('type') + '.deletePackage') + ' ' + id,
             description: this.$t('dependency.deleteSuccess')
         });
     }
@@ -102,7 +103,8 @@ export default class DependencyItem extends Component {
         this.fire('updatePkgList');
         this.data.set('spinning', false);
         Notification.open({
-            message: this.$t('dependency.' + (installed ? 'updateDependency' : 'installDependency')) + ' ' + id,
+            message: this.$t(this.data.get('type') + '.' + (installed ? 'updatePackage' : 'installPackage')) + ' '
+                + id,
             description: this.$t('dependency.' + (installed ? 'updateSuccess' : 'installSuccess'))
         });
     }

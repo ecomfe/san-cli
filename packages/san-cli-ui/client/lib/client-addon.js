@@ -3,8 +3,8 @@
  * @author jinzhan
  */
 import san from 'san';
-import Component from '@lib/san-component';
 import {router} from 'san-router';
+import Component from '@lib/san-component';
 import loadScript from 'load-script';
 import apolloClient from '@lib/apollo-client';
 import CLIENT_ADDONS from '@graphql/client-addon/clientAddons.gql';
@@ -102,6 +102,7 @@ export default class ClientAddon {
     //     });
     // }
 
+    // TODO: 由于目前路由组件的一些局限性，先弄个简版的
     addRoutes(id, component) {
         this.defineComponent(id, component);
     }

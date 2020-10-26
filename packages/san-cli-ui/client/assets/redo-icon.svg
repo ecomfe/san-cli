@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="27px" height="27px" viewBox="0 0 27 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>代码编辑icon</title>
-    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="1.1创建项目-目录" transform="translate(-1222.000000, -118.000000)">
-            <g id="编组-10备份-6" transform="translate(1140.000000, 118.000000)">
-                <g id="代码编辑icon" transform="translate(82.000000, 0.000000)">
-                    <path d="M13.5,27 C6.04414285,27 0,20.9558572 0,13.5 C0,6.04414285 6.04414285,0 13.5,0 C20.9558572,0 27,6.04414285 27,13.5 C27,20.9558572 20.9558572,27 13.5,27 Z" id="形状备份-2" fill-opacity="0" fill="#888D98" fill-rule="nonzero"></path>
-                    <path d="M15.4596407,21.4363284 L13.5,19.8825011 C15.2949254,19.8825011 16.9199254,19.1859584 18.0961941,18.0598013 C19.2724627,16.9336442 20,15.3778726 20,13.6594147 C20,10.222499 17.0898509,7.43632838 13.5,7.43632838 C9.91014913,7.43632838 7,10.222499 7,13.6594147 C7,15.3778726 7.72753728,16.9336442 8.90380592,18.0598013" id="路径" stroke="#666666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="27" height="27" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M13.5 27C6.044 27 0 20.956 0 13.5S6.044 0 13.5 0 27 6.044 27 13.5 20.956 27 13.5 27z" fill="none"/><path d="M15.46 21.436l-1.96-1.553c1.795 0 3.42-.697 4.596-1.823C19.272 16.934 20 15.378 20 13.66c0-3.438-2.91-6.224-6.5-6.224S7 10.222 7 13.66c0 1.719.728 3.275 1.904 4.4" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g></svg>

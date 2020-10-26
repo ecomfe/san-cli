@@ -14,6 +14,7 @@ import DEPENDENCY_INSTALL from '@graphql/dependency/dependencyInstall.gql';
  *
  * @param {Object} data 依赖的信息
  * @param {String} installType 运行依赖还是开发依赖
+ * @param {String} type 依赖类型还是插件类型
  */
 export default class DependencySearchItem extends Component {
     static template = /* html */`
@@ -35,8 +36,12 @@ export default class DependencySearchItem extends Component {
                     </s-tooltip>
                     <div class="pkg-description">{{data.package.description}}</div>
                 </div>
-                <s-button class="pkg-btn-operate" on-click="installDependency" type="primary">
-                    {{$t('dependency.install')}}
+                <s-button
+                    class="pkg-btn-operate"
+                    on-click="installDependency"
+                    type="primary"
+                    disabled="{{data.isInstalled}}">
+                    {{data.isInstalled ? $t('dependency.installed') : $t('dependency.install')}}
                 </s-button>
             </div>
         </s-spin>
@@ -54,7 +59,6 @@ export default class DependencySearchItem extends Component {
         return {
             loadingTip: '',
             spinning: false,
-            loadMeta: false,
             hasGenerator: false,
             hasUiIntegration: false
         };
@@ -87,9 +91,11 @@ export default class DependencySearchItem extends Component {
         });
         this.data.set('spinning', false);
         Notification.open({
-            message: this.$t('dependency.installDependency') + ' ' + name,
+            message: this.$t(this.data.get('type') + '.installPackage') + ' ' + name,
             description: this.$t('dependency.installSuccess')
         });
+        this.$emit('refreshPackages');
+        this.data.set('data.isInstalled', true);
     }
 
     updateMetadata() {
@@ -97,7 +103,7 @@ export default class DependencySearchItem extends Component {
         this.data.set('hasUiIntegration', false);
         this.data.set('hasGenerator', false);
 
-        if (this.data.get('loadMeta')) {
+        if (this.data.get('type') === 'plugins') {
             axios.get(`https://unpkg.com/${name}/ui`).then(response => {
                 if (name !== this.data.get('data.package.name')) {
                     return;

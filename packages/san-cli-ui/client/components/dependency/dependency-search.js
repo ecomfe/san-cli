@@ -12,6 +12,11 @@ import {
 } from '@lib/const';
 import './dependency-search.less';
 
+/**
+ * 组件props
+ *
+ * @param {Array} dependencies 本地依赖列表
+ */
 export default class DependencyPackageSearch extends Component {
     static template = /* html */`
         <s-spin spinning="{{loading}}" class="dependency-search-wrap">
@@ -43,7 +48,9 @@ export default class DependencyPackageSearch extends Component {
                     install-type="{{radioValue}}"
                     current-ranking-mode="{{currentRankingMode}}"
                     on-loading="onLoadingChange"
-                    loading="{{loading}}">
+                    loading="{{loading}}"
+                    installedPackages="{{dependencies}}"
+                    type="dependency">
                 </c-pkg-search-item>
             </div>
         </s-spin>
@@ -54,7 +61,6 @@ export default class DependencyPackageSearch extends Component {
     };
     initData() {
         return {
-            searchData: [],
             // 运行依赖
             radioValue: 'dependencies',
             loading: true,

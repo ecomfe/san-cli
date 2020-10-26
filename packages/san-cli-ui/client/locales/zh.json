@@ -14,12 +14,12 @@
                 "text": "创建项目",
                 "icon": "plus-circle",
                 "key": "create",
-                "link": "/project/create"
+                "link": "/home/create"
             }, {
                 "text": "导入项目",
                 "icon": "import",
                 "key": "import",
-                "link": "/project/import"
+                "link": "/home/import"
             }],
             "folderExplorer": {
                 "modalCreateTitle": "输入文件夹名称",
@@ -143,7 +143,9 @@
         "title": "插件",
         "subTitle": "已安装的插件",
         "emptyTip": "没有安装任何插件",
-        "installPlugin": "安装插件",
+        "installPackage": "安装插件",
+        "deletePackage": "卸载插件",
+        "updatePackage": "更新插件",
         "generator": "这个插件带有一个生成器，可以在项目中修改或新增文件。",
         "ui-integration": "这个插件包含额外的 UI 功能，比如加强的任务界面、配置页面、仪表盘部件……"
     },
@@ -197,6 +199,7 @@
         "title": "项目依赖",
         "uninstalled": "未安装",
         "install": "安装",
+        "installed": "已安装",
         "version": "版本",
         "wanted": "要求",
         "latest": "最新",
@@ -209,22 +212,22 @@
         "dependencies": "运行依赖",
         "devDependencies": "开发依赖",
         "confirmUninstall": "确定卸载",
-        "deleteDependency": "卸载依赖",
+        "deletePackage": "卸载依赖",
         "deleteSuccess": "卸载成功",
-        "installDependency": "安装依赖",
+        "installPackage": "安装依赖",
         "installSuccess": "安装成功",
-        "updateDependency": "更新依赖",
+        "updatePackage": "更新依赖",
         "updateSuccess": "更新成功",
-        "tooltip": {
-            "update": "更新",
-            "del": "卸载",
-            "install": "安装"
-        },
         "optimal": "最优的",
         "popularity": "最流行的",
         "quality": "质量最高的",
         "maintenance": "维护情况最好的",
-        "emptyTip": "搜索结果为空"
+        "emptyTip": "搜索结果为空",
+        "tooltip": {
+            "update": "更新",
+            "del": "卸载",
+            "install": "安装"
+        }
     },
     "configuration": {
         "title": "项目配置",
@@ -307,6 +310,16 @@
     "dashboard": {
         "title": "项目仪表盘",
         "tools": "安装 devtools",
+        "devtools": {
+            "title": "安装 devtools",
+            "content": "调试san.js应用的开发工具。",
+            "more": "查看更多",
+            "cancel": "取消",
+            "confirm": "确认",
+            "image": "https://raw.githubusercontent.com/baidu/san-devtools/master/docs/images/san-panel.png",
+            "link": "https://github.com/baidu/san-devtools",
+            "chromeLink": "https://chrome.google.com/webstore/detail/san-devtool/pjnngoafflflkagpebgfifjejlnfhahc"
+        },
         "emptyTip": "暂无部件",
         "widget": {
             "remove": "移除部件",

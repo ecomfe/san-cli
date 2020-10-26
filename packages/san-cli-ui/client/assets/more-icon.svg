@@ -1,15 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="27px" height="27px" viewBox="0 0 27 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>关闭icon</title>
-    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="1.1创建项目-目录" transform="translate(-1263.000000, -118.000000)" fill="#666666">
-            <g id="编组-10备份-6" transform="translate(1140.000000, 118.000000)">
-                <g id="关闭icon" transform="translate(123.000000, 0.000000)">
-                    <circle id="椭圆形" cx="13.5" cy="7.5" r="1.5"></circle>
-                    <circle id="椭圆形备份" cx="13.5" cy="13.5" r="1.5"></circle>
-                    <circle id="椭圆形备份-2" cx="13.5" cy="19.5" r="1.5"></circle>
-                </g>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="27" height="27" xmlns="http://www.w3.org/2000/svg"><g fill="#666" fill-rule="evenodd"><circle cx="13.5" cy="7.5" r="1.5"/><circle cx="13.5" cy="13.5" r="1.5"/><circle cx="13.5" cy="19.5" r="1.5"/></g></svg>
