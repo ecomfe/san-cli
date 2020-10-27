@@ -92,7 +92,8 @@ export default class PackageSearchItem extends Component {
         }
         const data = await this.$apollo.query({
             query: DEPENDENCIES_SEARCH,
-            variables: {input}
+            variables: {input},
+            fetchPolicy: 'cache-first'
         });
 
         const {dependenciesSearch} = data ? data.data : {};
