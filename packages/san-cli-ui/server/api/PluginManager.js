@@ -1,5 +1,8 @@
 /**
  * @file CLI UI插件是一个庞大的类，这里将通过职责不同进行拆分
+ * Inspired by
+ * https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-ui/apollo-server/api/PluginApi.js
+ *
  * @author jinzhan
  */
 
