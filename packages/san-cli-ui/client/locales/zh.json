@@ -397,7 +397,7 @@
             "details": {
                 "title": "部件详情",
                 "maxInstances": "最大实例数量:",
-                "unlimited": "unlimited"
+                "unlimited": "无限"
             }
         }
     },

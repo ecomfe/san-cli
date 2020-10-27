@@ -160,7 +160,8 @@ class Widgets {
         return 0;
     }
     updateCount(definitionId, mod) {
-        this.widgetCount.set(definitionId, this.getCount(definitionId) + mod);
+        let count = this.getCount(definitionId) + mod;
+        this.widgetCount.set(definitionId, count >= 0 ? count : 0);
     }
     findValidPosition(definition, currentWidget = null) {
         // Find next available space

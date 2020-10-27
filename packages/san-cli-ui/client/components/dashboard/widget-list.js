@@ -65,6 +65,9 @@ export default class widgetList extends Component {
     inited() {
         this.filterList('');
     }
+    attached() {
+        this.watch('definitions', value => this.filterList(''));
+    }
 
     onTransitionstart() {
         this.data.set('isTransitionend', false);
