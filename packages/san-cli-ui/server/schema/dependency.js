@@ -15,6 +15,7 @@ module.exports = gql`
 
     extend type Query {
         dependencies: [Dependency]
+        dependenciesSearch (input: DependenciesSearch!): DependencySearch
     }
 
     enum DependencyType {
@@ -36,6 +37,16 @@ module.exports = gql`
         id: ID!
     }
 
+    input DependenciesSearch {
+        text: String!
+        optimal: String
+        quality: String
+        maintenance: String
+        popularity: String
+        size: Int
+        from: Int
+    }
+
     type Dependency {
         id: ID!
         type: DependencyType!
@@ -43,5 +54,22 @@ module.exports = gql`
         installed: Boolean
         website: String
         description: String
+    }
+
+    type DependencySearch {
+        total: Int
+        list: [DependencySearchItem]
+    }
+
+    type DependencySearchItem {
+        name: String!
+        version: String!
+        link: String!
+        email: String
+        description: String
+        author: JSON
+        links: JSON
+        publisher: JSON
+        date: String
     }
 `;

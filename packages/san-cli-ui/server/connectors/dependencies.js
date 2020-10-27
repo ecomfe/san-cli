@@ -5,8 +5,10 @@
 
 const fs = require('fs');
 const path = require('path');
+const querystring = require('querystring');
 const execa = require('execa');
 const semver = require('semver');
+const fetch = require('node-fetch');
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const {isPlugin} = require('../utils/plugin');
 const {packageManager} = require('../utils/packageManager');
@@ -31,6 +33,8 @@ const PACKAGE_INSTALL_CONFIG = {
         remove: ['remove']
     }
 };
+
+const SEARCH_URL = 'https://registry.npmjs.org/-/v1/search';
 
 class Dependencies {
     constructor() {
@@ -109,6 +113,55 @@ class Dependencies {
             cwd: $cwd,
             stdio: ['inherit', 'inherit', 'inherit']
         });
+    }
+
+    /**
+     * 从npm源中搜索包
+     * demo: https://registry.npmjs.org/-/v1/search?quality=0.0&maintenance=0.0&popularity=1.0&size=20&from=20&text=san
+    */
+    async search({
+        optimal,
+        quality = '0.0',
+        maintenance = '0.0',
+        popularity = '0.0',
+        size = 20,
+        from = 0,
+        text = 'san'
+    }) {
+        const extraParams = optimal ? {} : {
+            quality,
+            maintenance,
+            popularity
+        };
+
+        const url = SEARCH_URL + '?' + querystring.stringify({
+            text,
+            size,
+            from,
+            ...extraParams
+        });
+
+        debug('fetch url:', url);
+
+        const opts = {
+            method: 'GET',
+            timeout: 10000,
+            resolveWithFullResponse: true,
+            json: true
+        };
+
+        const {objects, total} = await fetch(url, opts).then(res => res.json());
+
+        debug('package objects:', objects);
+
+        const list = objects.map(obj => {
+            return {
+                ...obj.package,
+                link: obj.package.links.npm,
+                email: obj.package.publisher.email
+            };
+        });
+        return {list, total};
     }
 
     async install({id, type, range}) {

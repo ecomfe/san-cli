@@ -16,6 +16,7 @@ module.exports = {
         dependencyItem: (root, args, context) => dependencies.getVersion(args, context)
     },
     Query: {
-        dependencies: (root, args, context) => dependencies.list(args, context)
+        dependencies: (root, args, context) => dependencies.list(args, context),
+        dependenciesSearch: (root, {input}, context) => dependencies.search(input, context)
     }
 };

@@ -4,7 +4,6 @@
  */
 
 import Component from '@lib/san-component';
-import axios from 'axios';
 import {Notification} from 'santd';
 import './dependency-search-item.less';
 import DEPENDENCY_INSTALL from '@graphql/dependency/dependencyInstall.gql';
@@ -20,12 +19,12 @@ export default class DependencySearchItem extends Component {
     static template = /* html */`
         <s-spin size="large" spinning="{{spinning}}" tip="{{loadingTip}}">
             <div class="dependency-search-item" slot="content">
-                <a href="{{data.package.links.npm}}" target="_blank" class="pkg-check">
+                <a href="{{data.link}}" target="_blank" class="pkg-check">
                     <div class="pkg-icon" style="background-image: url({{authorAvatar}})"></div>
                 </a>
                 <div class="pkg-name-wrap">
-                    <a href="{{data.package.links.npm}}" target="_blank" class="pkg-name">{{data.package.name}}</a>
-                    <span class="pkg-version">{{data.package.version}}</span>
+                    <a href="{{data.link}}" target="_blank" class="pkg-name">{{data.name}}</a>
+                    <span class="pkg-version">{{data.version}}</span>
                     <s-tooltip s-if="hasGenerator"
                         title="{{$t('plugins.generator')}}">
                         <s-icon type="file-add" style="font-size: 16px"/>
@@ -34,7 +33,7 @@ export default class DependencySearchItem extends Component {
                         title="{{$t('plugins.ui-integration')}}">
                         <s-icon type="bg-colors" style="font-size: 16px"/>
                     </s-tooltip>
-                    <div class="pkg-description">{{data.package.description}}</div>
+                    <div class="pkg-description">{{data.description}}</div>
                 </div>
                 <s-button
                     class="pkg-btn-operate"
@@ -50,7 +49,7 @@ export default class DependencySearchItem extends Component {
     static computed = {
         authorAvatar() {
             return `https://s.gravatar.com/avatar/${
-                require('md5')(this.data.get('data.package.publisher.email'))
+                require('md5')(this.data.get('data.email'))
             }?default=retro`;
         }
     }
@@ -78,7 +77,7 @@ export default class DependencySearchItem extends Component {
     // 安装依赖
     async installDependency() {
         this.data.set('spinning', true);
-        const {name, version} = this.data.get('data.package');
+        const {name, version} = this.data.get('data');
         await this.$apollo.mutate({
             mutation: DEPENDENCY_INSTALL,
             variables: {
@@ -99,27 +98,20 @@ export default class DependencySearchItem extends Component {
     }
 
     updateMetadata() {
-        const name = this.data.get('data.package.name');
-        this.data.set('hasUiIntegration', false);
-        this.data.set('hasGenerator', false);
-
+        const name = this.data.get('data.name');
         if (this.data.get('type') === 'plugins') {
-            axios.get(`https://unpkg.com/${name}/ui`).then(response => {
-                if (name !== this.data.get('data.package.name')) {
+            fetch(`https://unpkg.com/${name}/ui`).then(response => {
+                if (name !== this.data.get('data.name')) {
                     return;
                 }
-                this.data.set('hasUiIntegration', response.status === 200);
-            }).catch(err => {
-                // console.log(err);
+                this.data.set('hasUiIntegration', response.ok);
             });
 
-            axios.get(`https://unpkg.com/${name}/generator`).then(response => {
-                if (name !== this.data.get('data.package.name')) {
+            fetch(`https://unpkg.com/${name}/generator`).then(response => {
+                if (name !== this.data.get('data.name')) {
                     return;
                 }
-                this.data.set('hasGenerator', response.status === 200);
-            }).catch(err => {
-                // console.log(err);
+                this.data.set('hasGenerator', response.ok);
             });
         }
     }
