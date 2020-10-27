@@ -3,7 +3,7 @@ import {formatSize} from '../../utils/util';
 /* global SanComponent */
 export default class App extends SanComponent {
     static template = /* html */ `
-    <div class="details"
+    <div class="chart-details"
          style="margin-top:-{{topMargin}}"
          s-if="title || bigText || sizeText">
         <span class="details-name">{{title}}</span>
