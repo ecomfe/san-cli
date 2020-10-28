@@ -1,5 +1,5 @@
 
-## CLI UI安装
+# CLI UI安装
 作为san-cli的可视化命令，安装san-cli即可尽情享用。
 
 
