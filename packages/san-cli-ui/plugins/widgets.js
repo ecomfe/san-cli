@@ -119,7 +119,25 @@ module.exports = api => {
                         name: 'url',
                         type: 'input',
                         message: 'dashboard.widgets.news.prompts.url',
-                        validate: input => !!input
+                        validate: input => !!input,
+                        formItemLayout: {
+                            labelCol: {
+                                xs: {
+                                    span: 12
+                                },
+                                sm: {
+                                    span: 10
+                                }
+                            },
+                            wrapperCol: {
+                                xs: {
+                                    span: 8
+                                },
+                                sm: {
+                                    span: 14
+                                }
+                            }
+                        }
                     }
                 ]
             };
@@ -130,11 +148,6 @@ module.exports = api => {
     let parser;
 
     api.onAction('san.widgets.actions.fetch-news', async params => {
-        if (!parser) {
-            const Parser = require('rss-parser');
-            parser = new Parser();
-        }
-
         if (!params.force) {
             const cached = newsCache[params.url];
             if (cached) {
@@ -142,13 +155,38 @@ module.exports = api => {
             }
         }
 
-        let url = params.url;
-        // GitHub repo
-        if (url.match(/^[\w_.-]+\/[\w_.-]+$/)) {
-            url = `https://github.com/${url}/releases.atom`;
+        let result;
+        if (params.url.indexOf('zhuanlan.zhihu.com') !== -1) {
+            const {data = []} = await require('node-fetch')(
+                params.url.replace('zhuanlan.zhihu.com', 'www.zhihu.com/api/v4/columns') + '/items'
+            ).then(res => res.json());
+            result = {
+                items: data.map(item => {
+                    const {title, content, excerpt, created, url, created_time, question, id} = item;
+                    return {
+                        title: title || question.title,
+                        content,
+                        contentSnippet: excerpt,
+                        pubDate: created || created_time,
+                        link: url || `https://www.zhihu.com/question/${question.id}/answer/${id}`
+                    };
+                })
+            };
+        } else {
+            if (!parser) {
+                const Parser = require('rss-parser');
+                parser = new Parser();
+            }
+
+            let url = params.url;
+            // GitHub repo
+            if (url.match(/^[\w_.-]+\/[\w_.-]+$/)) {
+                url = `https://github.com/${url}/releases.atom`;
+            }
+
+            result = await parser.parseURL(url);
         }
 
-        const result = await parser.parseURL(url);
         newsCache[params.url] = result;
         return result;
     });

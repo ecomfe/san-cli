@@ -366,7 +366,7 @@
                 "refresh": "强制刷新",
                 "select-tip": "从左侧选择新闻",
                 "prompts": {
-                    "url": "RSS 源/GitHub 仓库地址"
+                    "url": "RSS 源/GitHub 仓库地址/知乎专栏"
                 },
                 "errors": {
                     "fetch": "无法获取新闻流",
