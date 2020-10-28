@@ -16,7 +16,6 @@ import List from './list';
 import 'animate.css';
 import './project-list.less';
 
-
 export default class ProjectList extends Component {
 
     static template = /* html */`
@@ -24,9 +23,13 @@ export default class ProjectList extends Component {
             <div s-if="!isLoaded" class="loading">
                 <s-icon type="loading" />
             </div>
+
             <!---empty tip---->
             <div class="empty-tip" s-else-if="!projects || projects.length <= 0">
                 {{$t('project.list.emptyTip')}}
+                <s-router-link s-for="item, index in $t('project.select.menu')" to="{{item.link}}">
+                    <s-button type="primary" ghost="{{index !== 0}}">{{item.text}}</s-button>
+                </s-router-link>
             </div>
 
             <!---favorite list---->

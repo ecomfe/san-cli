@@ -129,6 +129,7 @@ class Prompts {
             valueChanged: false,
             error: null,
             tabId: data.tabId || null,
+            formItemLayout: data.formItemLayout || {},
             raw: data
         };
     }

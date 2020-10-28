@@ -9,6 +9,7 @@
     "scripts": {
         "ui": "cross-env DEBUG=san-cli:* node ../san-cli/index.js ui",
         "build": "cross-env NODE_ENV=production node ../san-cli/index.js build --config ./client/san.config.js",
+        "prebuild": "rm -rf dist",
         "prepublishOnly": "npm run build",
         "analyze": "cross-env NODE_ENV=production node ../san-cli/index.js build --config ./client/san.config.js --analyze",
         "serve": "cross-env SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql node ../san-cli/index.js serve --config ./client/san.config.js",
@@ -70,7 +71,7 @@
         "util": "^0.12.3",
         "san-cli-utils": "^1.0.0",
         "san-cli-plugin-dashboard": "^1.0.0",
-        "san-cli-ui-addon-widgets": "^0.1.0"
+        "san-cli-ui-widgets": "^1.0.0"
     },
     "devDependencies": {
         "@dicebear/avatars": "^4.2.1",
@@ -95,7 +96,7 @@
         "nodemon": "^2.0.4",
         "san": "~3.9.0",
         "san-router": "^1.2.2",
-        "santd": "^0.3.0",
+        "santd": "^0.3.1",
         "subscriptions-transport-ws": "^0.9.16",
         "tiny-emitter": "^2.1.0",
         "xterm": "^4.7.0",
