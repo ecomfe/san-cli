@@ -1,7 +1,7 @@
 {
     "name": "san-cli-plugin-dashboard",
     "description": "Service plugin for san cli",
-    "version": "0.1.5",
+    "version": "1.0.0",
     "main": "index.js",
     "license": "MIT",
     "engines": {
@@ -37,7 +37,7 @@
         "fs-extra": "^8.1.0",
         "lodash.mapvalues": "^4.6.0",
         "lodash.transform": "^4.6.0",
-        "san-cli-utils": "^1.0.0-beta.0",
+        "san-cli-utils": "^1.0.0",
         "webpack": "~4.41.2"
     },
     "devDependencies": {
