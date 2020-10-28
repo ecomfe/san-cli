@@ -42,6 +42,7 @@ module.exports = {
         '@components': resolve('components')
     },
     chainWebpack: config => {
+        // 这里可以用来扩展 webpack 的配置，使用的是 webpack-chain 语法
         config.module.rule('html')
             .use('html-loader')
             .tap(options => {
@@ -49,12 +50,11 @@ module.exports = {
                 return options;
             });
 
-        // 这里可以用来扩展 webpack 的配置，使用的是 webpack-chain 语法
         config.module.rule('img')
             .test(/\.(png|jpe?g|gif)(\?.*)?$/)
             .use('url-loader').loader(require.resolve('url-loader'))
             .options({
-                limit: false,
+                limit: 1000,
                 name: STATIC_PRO + '/img/[name].[hash:7].[ext]',
                 publicPath: '/'
             });
