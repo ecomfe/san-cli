@@ -1,6 +1,7 @@
 # Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/prompt/promptFragment.gql
 #import "./promptChoiceFragment.gql"
 #import "./promptErrorFragment.gql"
+#import "./promptLayoutFragment.gql"
 
 fragment prompt on Prompt {
   id
@@ -22,4 +23,7 @@ fragment prompt on Prompt {
     ...promptError
   }
   tabId
+  formItemLayout {
+    ...promptLayout
+  }
 }
