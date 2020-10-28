@@ -21,3 +21,20 @@
     -   [插件机制](/plugin.md)
         -   [Command 插件](/cmd-plugin.md)
         -   [Service 插件](/srv-plugin.md)
+-   CLI UI
+    -   [开始使用](/ui/start.md)
+    -   功能简介
+        -   [项目列表](/ui/project-list.md)
+        -   [仪表盘](/ui/dashboard.md)
+        -   [插件管理](/ui/plugin.md)
+        -   [依赖管理](/ui/dependency.md)
+        -   [配置管理](/ui/configuration.md)
+        -   [任务管理](/ui/task.md)
+    -   插件开发
+        -   [插件基本结构](/ui/structure.md)
+        -   [插件对象](/ui/plugin-object.md)
+        -   [添加addon组件](/ui/add-addon.md)
+        -   [添加项目配置](/ui/add-config.md)
+        -   [更改项目任务](/ui/cover-task.md)
+        -   [添加自定义视图](/add-view.md)
+        -   [公共静态文件](/ui/static.md)
