@@ -182,6 +182,20 @@ module.exports = api => {
         }
     }
 
+    function getExitMessage(type) {
+        return {
+            webpackDashboardData: {
+                type,
+                value: [
+                    {
+                        type: 'status',
+                        value: 'Terminated'
+                    }
+                ]
+            }
+        };
+    }
+
     // 定义任务视图的一些信息
     const views = {
         views: [
@@ -289,6 +303,8 @@ module.exports = api => {
             ipc.on(onWebpackMessage);
         },
         onExit: () => {
+            const data = getExitMessage('serve');
+            onWebpackMessage({data});
             ipc.off(onWebpackMessage);
             sharedData.remove('serve-url');
         },
@@ -381,7 +397,12 @@ module.exports = api => {
         onRun: () => {
             ipc.on(onWebpackMessage);
         },
-        onExit: () => {
+        onExit: args => {
+            // 任务非正常退出
+            if (args.code !== 0) {
+                const data = getExitMessage('build');
+                onWebpackMessage({data});
+            }
             ipc.off(onWebpackMessage);
         },
         ...views

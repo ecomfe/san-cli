@@ -6,10 +6,10 @@
 import Component from '@lib/san-component';
 import {Terminal} from 'xterm';
 import {FitAddon} from 'xterm-addon-fit';
+import {WebLinksAddon} from 'xterm-addon-web-links';
 import ClientAddon from '../client-addon/client-addon';
 import PromptsList from '../prompts-form/prompts-form';
 import TASK from '@graphql/task/task.gql';
-// import TASKS from '@graphql/task/tasks.gql';
 import TASK_RUN from '@graphql/task/taskRun.gql';
 import TASK_STOP from '@graphql/task/taskStop.gql';
 import TASK_CHANGED from '@graphql/task/taskChanged.gql';
@@ -390,17 +390,15 @@ export default class TaskContent extends Component {
     }
 
     initTerminal() {
-        const theme = {
-            foreground: '#2c3e50',
-            background: '#fff',
-            cursor: '#fff',
-            selection: '#e6f7ff'
-        };
-
         const terminal = new Terminal({
-            theme
+            theme: {
+                foreground: '#2c3e50',
+                background: '#fff',
+                cursor: '#fff',
+                selection: '#e6f7ff'
+            }
         });
-
+        terminal.loadAddon(new WebLinksAddon());
         const fitAddon = new FitAddon();
         terminal.loadAddon(fitAddon);
         terminal.open(document.querySelector('.task-output-content'));

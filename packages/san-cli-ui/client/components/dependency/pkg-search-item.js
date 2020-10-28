@@ -4,16 +4,14 @@
  */
 
 import Component from '@lib/san-component';
-import axios from 'axios';
 import DependencySearchItem from './dependency-search-item';
 import {
-    SEARCH_URL,
     SEARCH_MAX_RESULT_TOTAL,
     SEARCH_PAGE_SIZE,
     SEARCH_DEFAULT_QUERY,
-    RANKING_MODE_MAP,
     RANKING_MODES
 } from '@lib/const';
+import DEPENDENCIES_SEARCH from '@/graphql/dependency/dependenciesSearch.gql';
 import './pkg-search-item.less';
 
 /**
@@ -81,23 +79,29 @@ export default class PackageSearchItem extends Component {
         this.fire('loading', true);
         let {keyword, currentRankingMode} = this.data.get();
         keyword = keyword || SEARCH_DEFAULT_QUERY;
-        const data = await axios({
-            url: SEARCH_URL + RANKING_MODE_MAP[currentRankingMode],
-            params: {
-                // full-text search to apply
-                text: encodeURIComponent(keyword),
-                // how many results should be returned (default 20, max 250)
-                size: SEARCH_PAGE_SIZE,
-                // offset to return results from
-                from: (page - 1) * SEARCH_PAGE_SIZE
-            }
+        const input = {
+            text: keyword,
+            // how many results should be returned (default 20, max 250)
+            size: SEARCH_PAGE_SIZE,
+            // offset to return results from
+            from: (page - 1) * SEARCH_PAGE_SIZE
+        };
+        // quality / maintenance / popularity
+        if (currentRankingMode) {
+            input[currentRankingMode] = '1.0';
+        }
+        const data = await this.$apollo.query({
+            query: DEPENDENCIES_SEARCH,
+            variables: {input},
+            fetchPolicy: 'cache-first'
         });
-        const results = data && data.data;
-        if (results) {
-            let {objects, total} = results;
+
+        const {dependenciesSearch} = data ? data.data : {};
+        if (dependenciesSearch) {
+            let {list, total} = dependenciesSearch;
 
             if (this.data.get('type') === 'plugins') {
-                objects = objects.filter(item => item.package.name.indexOf('san-cli-plugin') === 0);
+                list = list.filter(item => item.name.indexOf('san-cli-plugin') === 0);
             }
 
             // 标记搜索结果中那些已安装的包
@@ -105,13 +109,14 @@ export default class PackageSearchItem extends Component {
                 accumulator[currentItem.id] = true;
                 return accumulator;
             }, {});
-            objects.forEach(item => {
-                if (hash[item.package.name]) {
+
+            list.forEach(item => {
+                if (hash[item.name]) {
                     item.isInstalled = true;
                 }
             });
 
-            this.data.set('searchData', objects);
+            this.data.set('searchData', list);
             this.data.set('searchResultTotal', total > SEARCH_MAX_RESULT_TOTAL ? SEARCH_MAX_RESULT_TOTAL : total);
 
             // 回到搜索结果列表的顶部

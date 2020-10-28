@@ -57,7 +57,10 @@ export default class WidgetItem extends Component {
                     </div>
 
                     <div class="instances">
-                        {{$t('dashboard.widgetAddItem.details.maxInstances')}} {{count}}/{{total}}
+                        {{$t('dashboard.widgetAddItem.details.maxInstances')}} {{definition.count}}/{{
+                            definition.maxCount == null 
+                            ? $t('dashboard.widgetAddItem.details.unlimited')
+                            : definition.maxCount}}
                     </div>
                 </div>
 
@@ -78,8 +81,6 @@ export default class WidgetItem extends Component {
         </div>
     `;
 
-    static computed = {
-    };
     static components = {
         'c-item-info': ListItemInfo
     };

@@ -1,6 +1,6 @@
 {
     "name": "san-cli-ui",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "main": "commander.js",
     "license": "MIT",
     "engines": {
@@ -8,10 +8,10 @@
     },
     "scripts": {
         "ui": "cross-env DEBUG=san-cli:* node ../san-cli/index.js ui",
-        "build": "cross-env NODE_ENV=production node ../san-cli/index.js build --config san.config.js",
+        "build": "cross-env NODE_ENV=production node ../san-cli/index.js build --config ./client/san.config.js",
         "prepublishOnly": "npm run build",
-        "analyze": "cross-env NODE_ENV=production node ../san-cli/index.js build --config san.config.js --analyze",
-        "serve": "cross-env SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql node ../san-cli/index.js serve --config san.config.js",
+        "analyze": "cross-env NODE_ENV=production node ../san-cli/index.js build --config ./client/san.config.js --analyze",
+        "serve": "cross-env SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql node ../san-cli/index.js serve --config ./client/san.config.js",
         "start": "cross-env DEBUG=san-cli:ui:* SAN_CLI_UI_DEV=true SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql nodemon ../san-cli/index.js ui",
         "start:noDebug": "cross-env SAN_CLI_UI_DEV=true SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql nodemon ../san-cli/index.js ui",
         "debug:task": "cross-env DEBUG=san-cli:ui:tasks:connectors* SAN_CLI_UI_DEV=true SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql nodemon ../san-cli/index.js ui",
