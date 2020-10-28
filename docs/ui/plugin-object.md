@@ -23,7 +23,7 @@ addon插件是一个动态加载到cli ui中的JS包，用于加载各类自定�
     }
 ```
 #### API 说明
-*registerAddon*
+**registerAddon**
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -70,7 +70,7 @@ api.registerWidget({
 ```
 
 #### API 说明
-*registerWidget*
+**registerWidget**
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -222,7 +222,7 @@ api.registerConfig({
 ```
 
 #### API 说明
-*registerConfig*
+**registerConfig**
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -235,7 +235,7 @@ api.registerConfig({
 | onRead | 配置详情页面显示的表单对象，对于每个配置项都包含一个描述，整体格式符合inquirer.prompts对象 | onRead: ({data}) => ({prompts: [...]}) | 无 |
 | onWrite | 数据写入配置文件触发的钩子，可在此执行node.js的代码 | onWrite: ({ prompts, answers, data, files, cwd, api }) => {...}) | 无 |
 
-*onRead*
+**onRead**
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | id | 必选，配置项的唯一id | string | 无 |
@@ -276,7 +276,7 @@ api.registerConfig({
 })
 ```
 
-*onWrite*
+**onWrite**
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | prompts | 运行时表单对象 | string | 无 |
@@ -286,7 +286,7 @@ api.registerConfig({
 | cwd |  当前工作目录 | string | 无 |
 | api | 写入api辅助函数 | object | 无 |
 
-*onWrite.api*
+**onWrite.api**
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | assignData(fileId, newData) | 在写入前使用 Object.assign 来更新配置文件 | function | 无 |
@@ -360,7 +360,7 @@ cli ui默认为`san serve`、`san build`、`san inspect`三个命令实现了增
 
 ```
 #### API 说明
-*registerTask*
+**registerTask**
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
