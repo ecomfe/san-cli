@@ -26,28 +26,35 @@ module.exports = {
 
     pages: {
         index: {
-            entry: './client/pages/index.js',
+            entry: './pages/index.js',
             filename: 'index.html',
-            template: './public/index.html',
+            template: './assets/index.html',
             title: '项目管理器 - san ui',
             chunks: ['index', 'vendors']
         }
     },
     alias: {
-        '@': resolve('client'),
-        '@lib': resolve('client/lib'),
-        '@assets': resolve('client/assets'),
-        '@locales': resolve('client/locales'),
-        '@graphql': resolve('client/graphql'),
-        '@components': resolve('client/components')
+        '@': resolve('.'),
+        '@lib': resolve('lib'),
+        '@assets': resolve('assets'),
+        '@locales': resolve('locales'),
+        '@graphql': resolve('graphql'),
+        '@components': resolve('components')
     },
     chainWebpack: config => {
+        config.module.rule('html')
+            .use('html-loader')
+            .tap(options => {
+                options.attrs.push('link:href');
+                return options;
+            });
+
         // 这里可以用来扩展 webpack 的配置，使用的是 webpack-chain 语法
         config.module.rule('img')
             .test(/\.(png|jpe?g|gif)(\?.*)?$/)
             .use('url-loader').loader(require.resolve('url-loader'))
             .options({
-                limit: 1000,
+                limit: false,
                 name: STATIC_PRO + '/img/[name].[hash:7].[ext]',
                 publicPath: '/'
             });
@@ -62,8 +69,8 @@ module.exports = {
                 honorIndex: true,
                 exclude: /node_modules/,
                 include: [
-                    resolve('client/components'),
-                    resolve('client/pages')
+                    resolve('components'),
+                    resolve('pages')
                 ]
             }]);
         config.resolve.alias
