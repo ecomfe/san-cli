@@ -1,7 +1,7 @@
 {
     "name": "san-cli-plugin-progress",
     "description": "san-cli进度条插件",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "scriptName": "san",
     "main": "index.js",
     "license": "MIT",
@@ -28,7 +28,7 @@
     "dependencies": {
         "figures": "^3.1.0",
         "pretty-time": "^1.1.0",
-        "san-cli-utils": "^0.1.0",
+        "san-cli-utils": "^1.0.0",
         "tty-table": "^2.8.2",
         "webpackbar": "^4.0.0"
     },
