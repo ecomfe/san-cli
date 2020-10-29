@@ -95,7 +95,7 @@
         "nodemon": "^2.0.4",
         "san": "~3.9.0",
         "san-router": "^1.2.2",
-        "santd": "^0.3.0",
+        "santd": "^0.3.1",
         "subscriptions-transport-ws": "^0.9.16",
         "tiny-emitter": "^2.1.0",
         "xterm": "^4.7.0",
