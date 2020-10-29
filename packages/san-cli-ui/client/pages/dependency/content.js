@@ -23,7 +23,7 @@ export default class Dependency extends Component {
                 <div class="pkg-body dev-pkg-body" s-if="devDependencies.length">
                     <h2 class="com-sub-title">{{$t('dependency.devDependencies')}}</h2>
                     <template s-for="item in devDependencies">
-                        <c-dependency-item item="{{item}}" on-updatePkgList="getDependencies"/>
+                        <c-dependency-item item="{{item}}" on-updatePkgList="getDependencies" type="dependency"/>
                     </template>
                 </div>
             </div>
