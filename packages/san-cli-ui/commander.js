@@ -11,12 +11,6 @@ exports.builder = {
         type: 'number',
         describe: 'Port number of the URL'
     },
-    open: {
-        alias: 'O',
-        type: 'boolean',
-        default: false,
-        describe: 'Open Browser after the build is complete'
-    },
     host: {
         alias: 'H',
         type: 'string',
