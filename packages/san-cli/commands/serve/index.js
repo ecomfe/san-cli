@@ -19,7 +19,7 @@ exports.builder = {
     },
     public: {
         type: 'string',
-        describe: 'specify the public network URL for the HMR client'
+        describe: 'Specify the public network URL for the HMR client'
     },
     port: {
         alias: 'p',
@@ -30,7 +30,7 @@ exports.builder = {
         alias: 'O',
         type: 'boolean',
         default: false,
-        describe: 'Open Browser after the build is complete'
+        describe: 'Open Browser'
     },
     host: {
         alias: 'H',
