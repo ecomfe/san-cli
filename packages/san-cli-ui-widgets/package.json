@@ -1,6 +1,6 @@
 {
-  "name": "san-cli-ui-addon-widgets",
-  "version": "0.1.2",
+  "name": "san-cli-ui-widgets",
+  "version": "0.1.0",
   "description": "san cli ui addon widgets",
   "scripts": {
     "start": "cross-env NODE_ENV=development ../san-cli/index.js serve --config san.config.js",

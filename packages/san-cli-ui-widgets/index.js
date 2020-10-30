@@ -13,7 +13,7 @@ module.exports = api => {
     else {
         api.registerAddon({
             id: 'san.widgets.client-addon',
-            path: 'san-cli-ui-addon-widgets/dist'
+            path: 'san-cli-ui-widgets/dist'
         });
     }
 
@@ -79,7 +79,7 @@ module.exports = api => {
         maxHeight: 1,
         needsUserConfig: true,
         async onConfigOpen({context}) {
-            const tasks = require('../server/connectors/tasks');
+            const tasks = require('san-cli-ui/server/connectors/tasks');
             return {
                 prompts: [{
                     name: 'task',
