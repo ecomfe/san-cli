@@ -17,7 +17,6 @@ const ViewPlugin = require('./ViewPlugin');
 const ConfigPlugin = require('./ConfigPlugin');
 const WidgetPlugin = require('./WidgetPlugin');
 const AddonPlugin = require('./AddonPlugin');
-const projects = require('../connectors/projects');
 
 const {
     PLUGIN_ACTION_CALLED,
@@ -97,7 +96,7 @@ class PluginManager {
      * 注册一个自定义的路由
     */
     registerRoute(route) {
-        projects.addRoute(route, this.context);
+        require('../connectors/projects').addRoute(route, this.context);
     }
 
     /**
@@ -184,6 +183,11 @@ class PluginManager {
             this.ipcHandler = new IpcHandler();
         }
         return this.ipcHandler;
+    }
+
+    async getTasks() {
+        const tasks = require('../connectors/tasks');
+        return await tasks.getTasks(undefined, this.context);
     }
 
     /**
