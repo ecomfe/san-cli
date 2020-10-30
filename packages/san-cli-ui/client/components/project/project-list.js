@@ -28,8 +28,8 @@ export default class ProjectList extends Component {
             <!---empty tip---->
             <div class="empty-tip" s-else-if="!projects || projects.length <= 0">
                 {{$t('project.list.emptyTip')}}
-                <r-link s-for="item in $t('project.select.menu')" to="{{item.link}}">
-                    <s-button type="primary">{{item.text}}</s-button>
+                <r-link s-for="item, index in $t('project.select.menu')" to="{{item.link}}">
+                    <s-button type="primary" ghost="{{index !== 0}}">{{item.text}}</s-button>
                 </r-link>
             </div>
 
