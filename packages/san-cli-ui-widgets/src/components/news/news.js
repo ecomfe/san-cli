@@ -64,7 +64,7 @@ export default {
     },
     filters: {
         dateFormat(d) {
-            return new Date(typeof d === 'number' ? d * 1000 : d).toLocaleString();
+            return new Date(d).toLocaleString();
         }
     },
     initData() {
