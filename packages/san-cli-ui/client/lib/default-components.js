@@ -2,7 +2,7 @@
  * @file 默认注入的组件
  * @author jinzhan
 */
-
+import {defineComponent} from 'san';
 import {
     Alert,
     Button,
@@ -56,7 +56,7 @@ export default {
     's-radio': Radio,
     's-radio-button': Radio.Button,
     's-radio-group': Radio.Group,
-    's-router-link': Link,
+    's-router-link': defineComponent(Link),
     's-select': Select,
     's-select-option': Select.Option,
     's-spin': Spin,
