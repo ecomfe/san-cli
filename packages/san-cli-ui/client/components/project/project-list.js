@@ -15,6 +15,7 @@ import PROJECT_CWD_RESET from '@graphql/project/projectCwdReset.gql';
 import List from './list';
 import 'animate.css';
 import './project-list.less';
+import {Link} from 'san-router';
 
 
 export default class ProjectList extends Component {
@@ -27,6 +28,9 @@ export default class ProjectList extends Component {
             <!---empty tip---->
             <div class="empty-tip" s-else-if="!projects || projects.length <= 0">
                 {{$t('project.list.emptyTip')}}
+                <r-link s-for="item in $t('project.select.menu')" to="{{item.link}}">
+                    <s-button type="primary">{{item.text}}</s-button>
+                </r-link>
             </div>
 
             <!---favorite list---->
@@ -104,7 +108,8 @@ export default class ProjectList extends Component {
     }
 
     static components = {
-        'c-list': List
+        'c-list': List,
+        'r-link': Link
     }
 
     attached() {
