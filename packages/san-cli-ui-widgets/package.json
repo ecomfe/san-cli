@@ -1,12 +1,13 @@
 {
-  "name": "san-cli-ui-addon-widgets",
-  "version": "0.1.2",
+  "name": "san-cli-ui-widgets",
+  "version": "1.0.0",
   "description": "san cli ui addon widgets",
   "scripts": {
     "start": "cross-env NODE_ENV=development ../san-cli/index.js serve --config san.config.js",
     "build": "cross-env NODE_ENV=production ../san-cli/index.js build --config san.config.js",
     "analyzer": "cross-env NODE_ENV=production ../san-cli/index.js build --config san.config.js --analyze",
     "build:modern": "cross-env NODE_ENV=production ../san-cli/index.js build --config san.config.js --modern",
+    "prebuild": "rm -rf dist",
     "prepublishOnly": "npm run build"
   },
   "keywords": [

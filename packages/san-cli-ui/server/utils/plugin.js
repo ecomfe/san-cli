@@ -2,16 +2,18 @@
  * @file plugin utils
  */
 const pluginRE = /^san-cli-plugin-/;
+const widgetRE = /^san-cli-ui-widget-/;
 const SAN_CLI = 'san-cli';
 
 exports.isPlugin = id => {
-    return id === SAN_CLI || pluginRE.test(id);
+    return id === SAN_CLI || pluginRE.test(id) || widgetRE.test(id);
+};
+
+exports.isWidget = id => {
+    return widgetRE.test(id);
 };
 
 exports.getPluginLink = id => {
-    if (id === SAN_CLI) {
-        return 'https://ecomfe.github.io/san-cli';
-    }
     let pkg = {};
     try {
         pkg = require(`${id}/package.json`);

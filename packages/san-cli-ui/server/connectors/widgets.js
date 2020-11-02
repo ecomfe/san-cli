@@ -227,8 +227,8 @@ class Widgets {
             this.save(context);
 
             const definition = this.findDefinition(widget, context);
-            if (definition.onAdded) {
-                definition.onAdded({widget, definition});
+            if (definition.onRemoved) {
+                definition.onRemoved({widget, definition});
             }
 
             return widget;
@@ -308,8 +308,6 @@ class Widgets {
         return widget;
     }
 
-    resetConfig({id}, context) {
-    }
 }
 
 module.exports = new Widgets();

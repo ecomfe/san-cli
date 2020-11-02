@@ -11,6 +11,7 @@ import FormTree from './form-tree';
  * @param {Object} prompts inquirer的prompts配置
  * @param {Function} on-submit fire('submit')的回调
  * @param {string} submit-text 提交按钮的文字
+ * @param {Object} form-item-layout 表格布局
  */
 
 export default class PromptsForm extends Component {
@@ -22,10 +23,13 @@ export default class PromptsForm extends Component {
             on-submit="handleSubmit"
             colon="{{false}}">
             <template s-for="prompt in prompts">
-                <s-formitem s-if="!prompt.when || condition[prompt.when]" 
+                <s-formitem
+                    s-if="!prompt.when || condition[prompt.when]" 
                     title="{{prompt.name}}" 
                     label="{{(prompt.label || prompt.message) | textFormat}}"
-                    extra="{{prompt.description | textFormat}}">
+                    extra="{{prompt.description | textFormat}}"
+                    labelCol="{{prompt.formItemLayout.labelCol}}"
+                    wrapperCol="{{prompt.formItemLayout.wrapperCol}}">
                     <template s-if="prompt.type === 'list'">
                         <s-select
                             value="{=prompt.value=}"

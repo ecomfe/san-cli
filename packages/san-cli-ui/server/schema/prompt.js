@@ -25,6 +25,7 @@ type Prompt implements DescribedEntity {
   valueChanged: Boolean
   error: PromptError
   tabId: String
+  formItemLayout: PromptLayout
 }
 
 input PromptInput {
@@ -55,5 +56,19 @@ enum PromptType {
   password
   editor
   color
+}
+
+type PromptLayout {
+  labelCol: ColLayout
+  wrapperCol: ColLayout
+}
+
+type ColLayout {
+  xs: SpanNumber,
+  sm: SpanNumber
+}
+
+type SpanNumber {
+  span: Int
 }
 `;

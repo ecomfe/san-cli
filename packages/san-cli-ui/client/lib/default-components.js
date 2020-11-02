@@ -1,8 +1,8 @@
 /**
- * @file 默认注入的Santd组件
+ * @file 默认注入的组件
  * @author jinzhan
 */
-
+import {defineComponent} from 'san';
 import {
     Alert,
     Button,
@@ -26,7 +26,6 @@ import {
     Progress,
     Tree
 } from 'santd';
-
 import {Link} from 'san-router';
 
 // 自动注入以下Santd组件
@@ -57,6 +56,7 @@ export default {
     's-radio': Radio,
     's-radio-button': Radio.Button,
     's-radio-group': Radio.Group,
+    's-router-link': defineComponent(Link),
     's-select': Select,
     's-select-option': Select.Option,
     's-spin': Spin,
@@ -66,6 +66,5 @@ export default {
     's-tooltip': Tooltip,
     's-progress': Progress,
     's-tree': Tree,
-    's-tree-node': Tree.TreeNode,
-    's-router-link': Link
+    's-tree-node': Tree.TreeNode
 };
