@@ -3,7 +3,6 @@
  * @author zttonly, Lohoyo
  */
 
-import {Link} from 'san-router';
 import Component from '@lib/san-component';
 import Dashboard from '@components/dashboard/dashboard';
 import WidgetList from '@components/dashboard/widget-list';
@@ -44,7 +43,6 @@ export default class App extends Component {
         </div>
     `;
     static components = {
-        'r-link': Link,
         'c-dashboard': Dashboard,
         'c-widget-list': WidgetList
     };

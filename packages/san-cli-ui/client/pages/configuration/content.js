@@ -3,7 +3,6 @@
  * @author zttonly, Lohoyo
  */
 
-import {Link} from 'san-router';
 import Component from '@lib/san-component';
 import CONFIGURATIONS from '@graphql/configuration/configurations.gql';
 import CONFIGURATION from '@graphql/configuration/configuration.gql';
@@ -51,7 +50,6 @@ export default class Configuration extends Component {
         </s-grid-row>
     `;
     static components = {
-        'r-link': Link,
         'c-item-info': ListItemInfo,
         'c-config-content': ConfigContent
     };
