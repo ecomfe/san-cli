@@ -147,7 +147,11 @@
         "deletePackage": "卸载插件",
         "updatePackage": "更新插件",
         "generator": "这个插件带有一个生成器，可以在项目中修改或新增文件。",
-        "ui-integration": "这个插件包含额外的 UI 功能，比如加强的任务界面、配置页面、仪表盘部件……"
+        "ui-integration": "这个插件包含额外的 UI 功能，比如加强的任务界面、配置页面、仪表盘部件……",
+        "plugin": "CLI 插件",
+        "widget": "UI 部件",
+        "pluginTip": "CLI 插件可以增强 San CLI，可能也包含 UI 功能",
+        "widgetTip": "UI 部件只包含 UI 功能"
     },
     "task": {
         "title": "任务",

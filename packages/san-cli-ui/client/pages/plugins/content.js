@@ -26,14 +26,27 @@ export default class Plugins extends Component {
             <div s-else-if="!pageLoading" class="empty-tip">{{$t('plugins.emptyTip')}}</div>
             <c-dependency-modal on-cancel="onModalClose" visible="{{addPlugin}}">
                 <s-spin spinning="{{loading}}" class="plugin-item" slot="content">
-                    <c-pkg-search-item
-                        slot="content"
-                        keyword="{{'san-cli-plugin'}}"
-                        type="plugins"
-                        on-loading="onLoadingChange"
-                        loading="{{loading}}"
-                        installedPackages="{{plugins}}">
-                    </c-pkg-search-item>
+                    <fragment slot="content">
+                        <s-radio-group
+                            name="radiogroup"
+                            defaultValue="plugin"
+                            on-change="onRadioChange"
+                            class="pkg-radio">
+                            <s-radio-button value="plugin">
+                                <s-tooltip title="{{$t('plugins.pluginTip')}}">{{$t('plugins.plugin')}}</s-tooltip>
+                            </s-radio-button>
+                            <s-radio-button value="widget">
+                                <s-tooltip title="{{$t('plugins.widgetTip')}}">{{$t('plugins.widget')}}</s-tooltip>
+                            </s-radio-button>
+                        </s-radio-group>
+                        <c-pkg-search-item
+                            keyword="{{radioValue === 'plugin' ? 'san-cli-plugin' : 'san-cli-ui-widget'}}"
+                            type="plugins"
+                            on-loading="onLoadingChange"
+                            loading="{{loading}}"
+                            installedPackages="{{plugins}}">
+                        </c-pkg-search-item>
+                    </fragment>
                 </s-spin>
             </c-dependency-modal>
         </div>
@@ -75,7 +88,8 @@ export default class Plugins extends Component {
             pageLoading: true,
             addPlugin: false,
             searchKey: '',
-            loading: true
+            loading: true,
+            radioValue: 'plugin'
         };
     }
 
@@ -119,5 +133,9 @@ export default class Plugins extends Component {
 
     onModalClose() {
         this.data.set('addPlugin', false);
+    }
+
+    onRadioChange(event) {
+        this.data.set('radioValue', event.target.value);
     }
 }
