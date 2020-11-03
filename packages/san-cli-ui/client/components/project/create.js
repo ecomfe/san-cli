@@ -18,7 +18,10 @@ export default class ProjectCreate extends Component {
                     label-col="{{formItemLayout.labelCol}}"
                     wrapper-col="{{formItemLayout.wrapperCol}}"
                     colon="{{false}}">
-                    <s-formitem label="{{$t('project.components.create.folderName')}}">
+                    <s-formitem
+                        required
+                        validateStatus="{{isAppNameValidated ? '' : 'error'}}"
+                        label="{{$t('project.components.create.folderName')}}">
                         <s-input value="{=app.name=}"></s-input>
                         <div class="grey">{{cwd}}/{{app.name}}</div>
                     </s-formitem>
@@ -73,7 +76,8 @@ export default class ProjectCreate extends Component {
                         span: 16
                     }
                 }
-            }
+            },
+            isAppNameValidated: true
         };
     }
 
@@ -98,11 +102,19 @@ export default class ProjectCreate extends Component {
     }
 
     onPromptsFormSubmit(presets) {
+        const name = this.data.get('app.name');
+        if (!name) {
+            this.data.set('isAppNameValidated', false);
+            document.querySelector('.project-options').scrollTop = 0;
+            return;
+        }
+        this.data.set('isAppNameValidated', true);
+
         this.data.set('isCreating', true);
         this.$apollo.mutate({
             mutation: PROJECT_CREATION,
             variables: {
-                name: this.data.get('app').name || '',
+                name,
                 presets,
                 ...this.formData
             }
