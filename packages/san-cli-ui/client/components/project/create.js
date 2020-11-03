@@ -111,6 +111,9 @@ export default class ProjectCreate extends Component {
         this.data.set('isAppNameValidated', true);
 
         this.data.set('isCreating', true);
+        if (!presets.name) {
+            presets.name = name;
+        }
         this.$apollo.mutate({
             mutation: PROJECT_CREATION,
             variables: {
