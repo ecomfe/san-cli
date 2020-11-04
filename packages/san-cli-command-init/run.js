@@ -26,7 +26,7 @@ module.exports = (template, appName, options = {}) => {
     // inPlace：是否在当前目录
     options._inPlace = inPlace;
     // dest：新建工程的目录
-    const dest = path.resolve(appName || '.');
+    const dest = path.resolve((appName + '') || '.');
     // 记录一下开始新建工程时的起始时间
     const startTime = Date.now();
     const taskList = [
