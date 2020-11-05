@@ -330,9 +330,9 @@ describe('loadProjectOptions', () => {
         cwd: __dirname + '/mock'
     });
     test('可查到的文件路径', async () => {
-        const config = await service.loadProjectOptions('./mock/san.config.js');
+        const config = await service.loadProjectOptions('san.config.js');
         // 检测san.config.js中的配置项是否保留还在
-        expect(config.templateDir).toBe('template');
+        expect(config.templateDir).toBe('the-template-dir');
         // 检测与./options中的默认配置项做merge的情况是否符合预期
         expect(config.devServer).toEqual({
             contentBase: 'output',
@@ -359,7 +359,7 @@ describe('loadProjectOptions', () => {
     test('不可查到的文件路径，但是工程中存在san.config.js', async () => {
         const config = await service.loadProjectOptions();
         // 会去自动查找项目中的san.config.js，查验一下是否找到了并返回正确的配置项
-        expect(config.templateDir).toBe('template');
+        expect(config.templateDir).toBe('the-template-dir');
     });
 
 });
