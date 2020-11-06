@@ -46,7 +46,12 @@ htmlWebpackPlugin.options.scripts = htmlWebpackPlugin.options.scripts || []
     <%= htmlWebpackPlugin.options.bodyHtmlSnippet %><%
     } %>
 
-    <div id="app"></div>
+    <div id="app">
+        <%
+        if (htmlWebpackPlugin.options.ssrHtmlSnippet) { %>
+        <%= htmlWebpackPlugin.options.ssrHtmlSnippet %><%
+        } %>
+    </div>
 
     <%
     if (htmlWebpackPlugin.options.window) { %>

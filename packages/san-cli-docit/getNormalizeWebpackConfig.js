@@ -118,6 +118,7 @@ module.exports = function getNormalizeWebpackConfig(
         mdOptions = Object.assign(mdOptions, {
             cwd: docContext,
             rootUrl: publicPath,
+            siteName: docit.siteName,
             codebox
         });
 
@@ -129,11 +130,14 @@ module.exports = function getNormalizeWebpackConfig(
             .loader('san-cli-markdown-loader')
             .options(mdOptions);
         // 添加插件
-        webpackConfig.plugin('san-cli-markdown-loader-plugin').use(require('san-cli-markdown-loader/plugin'));
+        webpackConfig
+            .plugin('san-cli-markdown-loader-plugin')
+            .use(require('san-cli-markdown-loader/plugin'));
     });
 
     // 开始正式的操作
     let webpackConfig = api.getWebpackConfig();
+    webpackConfig.devtool = false;
     debug('webpack config %O', webpackConfig);
     if (argv.output) {
         // build 模式，删掉 webpack devServer；

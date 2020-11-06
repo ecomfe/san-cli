@@ -12,6 +12,16 @@ const parseHeader = require('./lib/parseHeader');
 const parseList = require('./lib/parseList');
 const {mdLink2Html} = require('./lib/utils');
 
+function updateSanDocit(filename, info) {
+    global.SAN_DOCIT = global.SAN_DOCIT || {};
+
+    let sandocit = global.SAN_DOCIT[filename] || {};
+    sandocit = Object.assign(sandocit, info);
+
+    // 记录数据
+    global.SAN_DOCIT[filename] = sandocit;
+}
+
 // eslint-disable-next-line
 module.exports = function(content) {
     this.cacheable && this.cacheable();
@@ -24,6 +34,8 @@ module.exports = function(content) {
         // 需要跳过，让给picker处理
         return content;
     }
+
+    const options = loaderUtils.getOptions(loaderContext);
     let {
         codebox = '',
         cwd = query.cwd || process.cwd(),
@@ -39,7 +51,7 @@ module.exports = function(content) {
         markdownIt,
         rootUrl = '/',
         extractHeaders = ['H2', 'H3']
-    } = loaderUtils.getOptions(loaderContext) || query;
+    } = options || query;
 
     if (!loaderContext['thread-loader'] && !loaderContext[NS]) {
         loaderContext.emitError(
@@ -97,6 +109,9 @@ module.exports = function(content) {
                 context: cwd,
                 rootUrl
             });
+            const key = /sidebar.md$/.test(resourcePath) ? 'sidebar' : 'navbar';
+            updateSanDocit(query.relativeTo, {[key]: listHtml});
+
             return `
                 /**
                  * markdown with exportType=list
@@ -108,7 +123,11 @@ module.exports = function(content) {
         }
         // 这是返回 html，不处理 san box
         case 'html':
-            return getTemplate(compiler(content, markdownIt), false);
+            const html = getTemplate(compiler(content, markdownIt), false);
+
+            updateSanDocit(resourcePath, {content: html});
+
+            return html;
 
         case 'matter':
             // 返回 matter 对象
@@ -197,5 +216,17 @@ module.exports = function(content) {
             export default Content;
         `;
     }
+
+    let info = {
+        toc,
+        link,
+        matter
+    };
+
+    options && (info.config = options);
+
+    // 记录数据
+    updateSanDocit(resourcePath, info);
+
     return code;
 };

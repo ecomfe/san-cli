@@ -5,6 +5,8 @@
 const qs = require('querystring');
 
 const RuleSet = require('webpack/lib/RuleSet');
+const HTMLPlugin = require('html-webpack-plugin');
+const {SanProject} = require('san-ssr');
 const id = 'san-cli-markdown-loader-plugin';
 const {NS, isSanLoader} = require('./const');
 
@@ -99,6 +101,82 @@ class LoaderPlugin {
         // 2. md-loader 会放行 san-md-picker，md-loader保证出来的是html（html-loader）和 js
 
         compiler.options.module.rules = [...rules, mdLoader, clonedRule, picker];
+
+        this.compiler = compiler;
+
+        // this.addHook('afterCompile', this.injectGlobalVaribal.bind(this));
+        this.addHook('afterCompile', this.ssrRender.bind(this));
+    }
+
+    addHook(hook, cb) {
+        // webpack 4+
+        if (this.compiler.hooks) {
+            this.compiler.hooks[hook].tap(id, cb);
+        }
+        else {
+            // webpack < 4
+            this.compiler.plugin(hook, cb);
+        }
+    }
+
+    injectGlobalVaribal() {
+        const plugins = this.getHTMLPlugin();
+        if (!global.SAN_DOCIT || !plugins) {
+            return;
+        }
+
+        const SAN_DOCIT = global.SAN_DOCIT;
+        plugins.forEach(plugin => {
+            const filepath = plugin.options.filepath;
+            const varibal = SAN_DOCIT[filepath];
+            if (!filepath || !varibal) {
+                return;
+            }
+
+            plugin.options.window = plugin.options.window || {};
+            plugin.options.window.SAN_DOCIT = varibal;
+        });
+    }
+
+    ssrRender() {
+        const plugins = this.getHTMLPlugin();
+        if (!global.SAN_DOCIT || !plugins) {
+            return;
+        }
+
+        plugins.forEach(plugin => {
+            const varibal = this.getVaribal(plugin.options);
+            if (!varibal) {
+                return;
+            }
+
+            const project = new SanProject();
+
+            const entry = require('../san-cli-docit-theme/server-entry');
+
+            const render = project.compileToRenderer(entry);
+            const html = render(varibal);
+
+            plugin.options.ssrHtmlSnippet = html;
+        });
+    }
+
+    getHTMLPlugin() {
+        const plugins = this.compiler.options.plugins;
+        if (!plugins) {
+            return;
+        }
+
+        return plugins.filter(plugin => plugin instanceof HTMLPlugin);
+    }
+
+    getVaribal(options) {
+        const SAN_DOCIT = global.SAN_DOCIT;
+        if (!SAN_DOCIT || !options.filepath) {
+            return;
+        }
+
+        return SAN_DOCIT[options.filepath] || {};
     }
 }
 LoaderPlugin.NS = NS;
