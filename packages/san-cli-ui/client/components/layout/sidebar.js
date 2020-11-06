@@ -2,7 +2,6 @@
  * @file 项目详情页侧边栏
  */
 
-import {Link} from 'san-router';
 import Component from '@lib/san-component';
 import PROJECTS from '@graphql/project/projects.gql';
 import PROJECT_OPEN from '@graphql/project/projectOpen.gql';
@@ -44,19 +43,15 @@ export default class App extends Component {
                         s-if="projectCurrent.type !== 'unknown' || item.type === 'common')"
                         key="{{item.id}}"
                     >
-                        <r-link to="{{item.link}}" class="{{item.icon ? 'default' : item.id}}-icon">
+                        <s-router-link to="{{item.link}}" class="{{item.icon ? 'default' : item.id}}-icon">
                             <s-icon s-if="item.icon" type="{{item.icon}}"></s-icon>
                             {{item.text}}
-                        </r-link>
+                        </s-router-link>
                     </s-menu-item>
                 </fragment>
             </s-menu>
         </s-layout-sider>
     `;
-
-    static components = {
-        'r-link': Link
-    };
 
     initData() {
         return {

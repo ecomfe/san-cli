@@ -105,9 +105,11 @@ export default class Project extends Component {
 
     formatPrompts(data) {
         data.forEach(item => {
-            // cli中的name是默认文件夹名称，web里面不能使用，故设置为空
             if (item.name === 'name') {
+                // cli中的name是默认文件夹名称，web里面不能使用，故设置为空
                 item.default = '';
+
+                item.placeholder = this.$t('project.components.create.prompts.projectNamePlaceholder');
             }
 
             // 把default赋值给value
