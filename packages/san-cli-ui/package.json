@@ -1,6 +1,6 @@
 {
     "name": "san-cli-ui",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "main": "commander.js",
     "license": "MIT",
     "engines": {
@@ -9,7 +9,6 @@
     "scripts": {
         "ui": "cross-env DEBUG=san-cli:* node ../san-cli/index.js ui",
         "build": "cross-env NODE_ENV=production node ../san-cli/index.js build --config ./client/san.config.js",
-        "prebuild": "rm -rf dist",
         "prepublishOnly": "npm run build",
         "analyze": "cross-env NODE_ENV=production node ../san-cli/index.js build --config ./client/san.config.js --analyze",
         "serve": "cross-env SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql node ../san-cli/index.js serve --config ./client/san.config.js",
@@ -68,11 +67,11 @@
         "portfinder": "^1.0.25",
         "recast": "^0.19.1",
         "rss-parser": "^3.9.0",
-       "shortid": "^2.2.15",
-        "util": "^0.12.3",
-        "san-cli-utils": "^1.0.0",
         "san-cli-plugin-dashboard": "^1.0.0",
-        "san-cli-ui-widgets": "^1.0.0"
+        "san-cli-ui-widgets": "^1.0.0",
+        "san-cli-utils": "^1.0.0",
+        "shortid": "^2.2.15",
+        "util": "^0.12.3"
     },
     "devDependencies": {
         "@dicebear/avatars": "^4.2.1",
@@ -86,6 +85,7 @@
         "apollo-client": "^2.6.8",
         "apollo-link-ws": "^1.0.20",
         "babel-plugin-import": "^1.13.0",
+        "clean-webpack-plugin": "^3.0.0",
         "cross-env": "^7.0.2",
         "deepmerge": "^4.2.2",
         "directory-named-webpack-plugin": "^4.0.1",

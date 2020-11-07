@@ -7,7 +7,6 @@
     "build": "cross-env NODE_ENV=production ../san-cli/index.js build --config san.config.js",
     "analyzer": "cross-env NODE_ENV=production ../san-cli/index.js build --config san.config.js --analyze",
     "build:modern": "cross-env NODE_ENV=production ../san-cli/index.js build --config san.config.js --modern",
-    "prebuild": "rm -rf dist",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
