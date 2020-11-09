@@ -25,10 +25,14 @@ module.exports = function (source) {
         }
         return `const $${key} = '';`;
     }).join('\n');
-    return `
-    import $content, {toc as $toc, matter as $matter, link as $link} from '${md}';
-    ${importString}
-    const $config = ${JSON.stringify(siteData)};
-    ${source}
+
+    let code = `
+        import '${md}';
+        ${importString}
+        ${source}
     `;
+
+    const isProd = this.mode === 'production';
+    code = code + (isProd ? '' : '\nimport "../san-cli-docit/client-entry.js"');
+    return code;
 };
