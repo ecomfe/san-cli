@@ -56,7 +56,8 @@
         "markdown-it-task-lists": "^2.1.1",
         "posthtml": "^0.12.0",
         "posthtml-render": "^1.1.5",
-        "prismjs": "^1.18.0"
+        "prismjs": "^1.18.0",
+        "san-ssr": "^3.0.1"
     },
     "gitHead": "402d813859ac219434712fa2063e5f724819004a"
 }

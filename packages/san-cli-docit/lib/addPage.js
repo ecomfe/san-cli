@@ -86,36 +86,39 @@ module.exports = (files, {layouts, output, context, webpackConfig, siteData}) =>
                 }
             }
             // 读取下 matter 信息，传入进去，替换 title 等
-            siteData = Object.assign(
-                {
-                    title: 'San Docit'
-                },
+            const newSiteData = Object.assign(
+                {},
                 siteData,
                 matter
             );
-            const pageHtmlOptions = Object.assign(siteData, {
-                compile: false,
-                rootUrl: siteData.rootUrl,
-                chunks: ['common', 'vendors', chunkname],
-                template: templatePath,
-                filename
-            });
+            const pageHtmlOptions = Object.assign(
+                newSiteData,
+                {
+                    compile: false,
+                    rootUrl: siteData.rootUrl,
+                    chunks: ['common', 'vendors', chunkname],
+                    template: templatePath,
+                    filepath: absoluteFile,
+                    filename,
+                    minify: true
+                });
             // 删除没用的
             delete pageHtmlOptions.layouts;
 
             const query = qs.stringify({
-                md: absoluteFile
+                md: absoluteFile,
+                filename
             });
             // 添加个 query，然后在 resolve plugin 获取它
             webpackConfig.entry(chunkname).add(`${entry}?${query}`);
             webpackConfig.plugin(`html-${chunkname}`).use(HTMLPlugin, [pageHtmlOptions]);
-            const baseRule = webpackConfig.module.rule('entry-loader').test(a => {
-                return new RegExp(entry).test(a);
-            });
-            baseRule
+
+            webpackConfig.module
+                .rule('entry-loader')
+                .test(a => new RegExp(entry).test(a))
                 .use('entry-loader')
                 .loader(require.resolve('../loaders/entryLoader'))
-                .options(siteData);
+                .options(newSiteData);
         });
 };
 function ensureRelative(outputDir, p) {

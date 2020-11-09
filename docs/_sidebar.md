@@ -36,5 +36,5 @@
         -   [添加addon组件](/ui/add-addon.md)
         -   [添加项目配置](/ui/add-config.md)
         -   [更改项目任务](/ui/cover-task.md)
-        -   [添加自定义视图](/add-view.md)
+        -   [添加自定义视图](/ui/add-view.md)
         -   [公共静态文件](/ui/static.md)
