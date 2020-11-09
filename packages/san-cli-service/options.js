@@ -8,7 +8,7 @@
  * @author ksky521
  */
 
-const joi = require('@hapi/joi');
+const joi = require('joi');
 
 const schema = joi
     .object({

@@ -10,6 +10,7 @@
 
 jest.mock('inquirer');
 
+const fs = require('fs');
 const inquirer = require('inquirer');
 const installDep = require('../tasks/installDep');
 
@@ -49,9 +50,22 @@ test('不安装依赖', async () => {
 test('用户选择安装依赖', async () => {
     inquirer.prompt.mockResolvedValueOnce({install: true});
 
-    await installDep('https://github.com/yyt/HelloWorld.git', 'none', {})({}, task)
+    // package.json无法mock，这里手动创建下临时文件
+    const tempDir = '___temp___' + Date.now();
+    const tempPkg = tempDir + '/package.json';
+    fs.mkdirSync(tempDir);
+    fs.writeFileSync(tempPkg, '{"name": "test"}');
+
+    await installDep('https://github.com/yyt/HelloWorld.git', tempDir, {})({
+        metaData: {
+            installDeps: true
+        }
+    }, task)
         .then(() => {
             expect(task.nextInfo).toEqual([undefined, 'Installing dependencies...']);
             expect(task.res).toBe('done');
+            // 清除临时文件
+            fs.unlinkSync(tempPkg);
+            fs.rmdirSync(tempDir);
         });
 });

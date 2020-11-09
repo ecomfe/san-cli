@@ -17,7 +17,7 @@ const {hasYarn} = require('san-cli-utils/env');
 
 module.exports = (template, dest, options) => {
     return async (ctx, task) => {
-        const hasPackage = fs.exists(path.join(dest, 'package.json'));
+        const hasPackage = fs.existsSync(path.join(dest, 'package.json'));
         let install = hasPackage && options.install;
         let askInstall = !install;
         if (ctx.metaData && typeof ctx.metaData === 'object') {
@@ -44,10 +44,6 @@ module.exports = (template, dest, options) => {
             ]);
             if (answers[name]) {
                 install = true;
-            } else {
-                task.skip('Not install dependencies');
-                task.complete();
-                return;
             }
         }
 
@@ -57,9 +53,14 @@ module.exports = (template, dest, options) => {
                 task.info('Installing dependencies...');
                 await installDeps(dest, options);
                 task.complete();
-            } catch (e) {
+            }
+            catch (e) {
                 task.error(e);
             }
+        }
+        else {
+            task.skip('Not install dependencies');
+            task.complete();
         }
     };
 };
@@ -69,7 +70,7 @@ function installDeps(dest, {verbose = false, registry, useYarn = true}) {
     let command;
     // 优先使用yarn
     if (useYarn && hasYarn()) {
-        registry = registry || registries.yarn;
+        registry = registry || registries.taobao;
         // args = ['--registry=' + registry];
         args = [];
         command = 'yarn';
