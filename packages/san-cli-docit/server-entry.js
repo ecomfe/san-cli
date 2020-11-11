@@ -1,19 +1,15 @@
-const {defineComponent} = require('san')
+import {Component} from 'san';
+import index from './app.san';
 
-module.exports = defineComponent({
-    // components: {content: content},
-    template: /*html*/ `
-        <div id="site">
-            <header id="header">
-                <a href="{{config.rootUrl}}" class="logo">{{config.siteName}}</a>
-                {{navbar | raw}}
-            </header>
-            <aside id="sidebar">
-                {{sidebar | raw}}
-            </aside>
-            <article id="content">
-                {{content | raw}}
-                <aside class="toc">{{toc.html | raw}}</aside>
-            </article>
-        </div>`
-});
+export default class Index extends Component {
+    static components = {
+        index: index
+    };
+    static template = '<index docit="{{docit}}"><index>';
+    static computed = {
+        docit() {
+            // `SAN_DOCIT` 通过 san-ssr 注入的变量
+            return this.data.get('SAN_DOCIT');
+        }
+    }
+};

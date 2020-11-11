@@ -119,6 +119,8 @@ module.exports = function getNormalizeWebpackConfig(
             cwd: docContext,
             rootUrl: publicPath,
             siteName: docit.siteName,
+            sidebar,
+            navbar,
             codebox
         });
 
@@ -138,6 +140,8 @@ module.exports = function getNormalizeWebpackConfig(
     // 开始正式的操作
     let webpackConfig = api.getWebpackConfig();
     webpackConfig.devtool = false;
+    // 默认san的spa版本，不支持组件反解
+    delete webpackConfig.resolve.alias.san;
     debug('webpack config %O', webpackConfig);
     if (argv.output) {
         // build 模式，删掉 webpack devServer；
