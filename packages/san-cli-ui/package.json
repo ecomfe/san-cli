@@ -9,11 +9,12 @@
     "scripts": {
         "ui": "cross-env DEBUG=san-cli:* node ../san-cli/index.js ui",
         "build": "cross-env NODE_ENV=production node ../san-cli/index.js build --config ./client/san.config.js",
-        "prepublishOnly": "npm run build",
+        "prepublishOnly": "yarn run build",
         "analyze": "cross-env NODE_ENV=production node ../san-cli/index.js build --config ./client/san.config.js --analyze",
         "serve": "cross-env SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql node ../san-cli/index.js serve --config ./client/san.config.js",
         "start": "cross-env DEBUG=san-cli:ui:* SAN_CLI_UI_DEV=true SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql nodemon ../san-cli/index.js ui",
         "start:noDebug": "cross-env SAN_CLI_UI_DEV=true SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql nodemon ../san-cli/index.js ui",
+        "start:test": "cross-env DEBUG=san-cli:ui:* SAN_CLI_UI_TEST=true node ../san-cli/index.js ui -p 3338",
         "debug:task": "cross-env DEBUG=san-cli:ui:tasks:connectors* SAN_CLI_UI_DEV=true SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql nodemon ../san-cli/index.js ui",
         "debug:plugins": "cross-env DEBUG=san-cli:ui:plugins* SAN_CLI_UI_DEV=true SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql nodemon ../san-cli/index.js ui",
         "debug:views": "cross-env DEBUG=san-cli:ui:views* SAN_CLI_UI_DEV=true SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql nodemon ../san-cli/index.js ui",
@@ -21,7 +22,11 @@
         "dev:san": "node ../san-cli/index.js",
         "dev:san-ui": "cross-env DEBUG=san-cli:* SAN_CLI_UI_DEV=true node ../san-cli/index.js ui",
         "dev:san-init": "node ../san-cli/index.js init",
-        "dev:san-remote-list": "node ../san-cli/index.js remote list"
+        "dev:san-remote-list": "node ../san-cli/index.js remote list",
+        "test": "yarn run build && cd ../san-cli-plugin-dashboard && yarn run build && cd ../san-cli-ui-widgets && yarn run build && cd ../san-cli-ui && yarn run test:start",
+        "test:start": "yarn run test:clear && start-server-and-test start:test http://localhost:3338 test:e2e:start",
+        "test:e2e:start": "cypress run",
+        "test:clear": "rimraf ./__test__/cli-ui-test"
     },
     "nodemonConfig": {
         "ignore": [
@@ -87,6 +92,7 @@
         "babel-plugin-import": "^1.13.0",
         "clean-webpack-plugin": "^3.0.0",
         "cross-env": "^7.0.2",
+        "cypress": "^5.6.0",
         "deepmerge": "^4.2.2",
         "directory-named-webpack-plugin": "^4.0.1",
         "fastq": "^1.8.0",
@@ -94,10 +100,12 @@
         "load-script": "^1.0.0",
         "md5": "^2.3.0",
         "nodemon": "^2.0.4",
+        "rimraf": "^3.0.2",
         "san": "~3.9.0",
         "san-component": "0.1.4",
         "san-router": "^1.2.2",
         "santd": "^0.3.1",
+        "start-server-and-test": "^1.11.5",
         "subscriptions-transport-ws": "^0.9.16",
         "tiny-emitter": "^2.1.0",
         "xterm": "^4.7.0",
