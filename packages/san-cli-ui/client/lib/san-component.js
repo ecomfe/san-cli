@@ -4,34 +4,19 @@
  * @author jinzhan
 */
 
-import {Component} from 'san';
+import {SanComponent, registerComponents, registerMixins} from 'san-component';
 import defaultComponents from './default-components';
-import mixin from '@lib/san-mixin';
 import events from './mixins/events';
 import apollo from './mixins/apollo';
 import sharedData from './mixins/shared-data';
 import pluginAction from './mixins/plugin-action';
 import localization from './mixins/localization';
 
-export default class SubComponent extends Component {
-    constructor(options) {
-        super(options);
-        this.defaultComponents = defaultComponents;
-    }
 
-    get components() {
-        const components = this.customComponents || {};
-        return Object.assign(components, this.defaultComponents);
-    }
-
-    set components(comp) {
-        this.customComponents = comp;
-    }
-}
-
+registerComponents(defaultComponents);
 
 // 注入全局方法
-mixin(SubComponent, {
+registerMixins({
     // 导入语言包: this.$t
     ...localization,
 
@@ -62,3 +47,5 @@ mixin(SubComponent, {
     */
     ...sharedData
 });
+
+export default SanComponent;

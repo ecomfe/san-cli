@@ -95,6 +95,7 @@
         "md5": "^2.3.0",
         "nodemon": "^2.0.4",
         "san": "~3.9.0",
+        "san-component": "0.1.4",
         "san-router": "^1.2.2",
         "santd": "^0.3.1",
         "subscriptions-transport-ws": "^0.9.16",
