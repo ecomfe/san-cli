@@ -52,7 +52,7 @@
         "publish:alpha": "lerna publish --registry https://registry.npmjs.org --no-git-tag-version --no-push --dist-tag alpha",
         "commit": "git-cz",
         "doc": "cd docs && node ../packages/san-cli/index.js docit .",
-        "build:doc": "cd docs && node ../packages/san-cli/index.js docit . --output",
+        "build:doc": "yarn workspace san-cli-docit build && cd docs && node ../packages/san-cli/index.js docit . --output",
         "lint": "eslint --ignore-path .eslintignore ./",
         "test": "node scripts/test.js"
     },

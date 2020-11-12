@@ -105,9 +105,10 @@ class LoaderPlugin {
         this.compiler = compiler;
 
         const isProd = this.compiler.options.mode === 'production';
-        this.addHook('afterCompile', isProd
-            ? this.ssrRender.bind(this)
-            : this.injectGlobalVaribal.bind(this));
+        isProd && this.addHook('afterCompile', this.ssrRender.bind(this));
+        // this.addHook('afterCompile', isProd
+        //     ? this.ssrRender.bind(this)
+        //     : this.injectGlobalVaribal.bind(this));
     }
 
     addHook(hook, cb) {
@@ -154,7 +155,7 @@ class LoaderPlugin {
 
             const project = new SanProject();
 
-            const entry = require('../san-cli-docit/server-entry');
+            const {default: entry} = require('../san-cli-docit/dist/server-entry');
 
             const render = project.compileToRenderer(entry);
             const html = render(varibal);
@@ -178,7 +179,10 @@ class LoaderPlugin {
             return;
         }
 
-        return SAN_DOCIT[options.filepath] || {};
+        const varibal = SAN_DOCIT[options.filepath] || {};
+        return {
+            SAN_DOCIT: varibal
+        };
     }
 }
 LoaderPlugin.NS = NS;
