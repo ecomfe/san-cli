@@ -10,14 +10,18 @@ San CLI的可定制化，让我们和其他优秀开发者一起享受扩展插�
 
 hulk-cli升级到san-cli非常方便，无需修改业务代码，只需要修改`package.json`和`配置文件`就能轻松完成升级。
 
-### 1. 在项目目录安装依赖`san-cli`
+### 1. 在项目目录安装san-cli依赖
 
 Install with npm（当然也可以用yarn）:
 
 ```
-npm install san-component
+npm install san-cli
 ```
 
+然后，修改 package.json
+
+1. 修改scripts命令：把原来的`hulk`修改为`san`;
+2. 去掉hulk相关依赖：移除`@baidu/hulk-cli`和`@baidu/hulk-mock-server`;
 
 ### 2. 根据你的CSS预处理语言，在项目目录安装对应的loader
 
@@ -38,12 +42,6 @@ npm install sass-loader sass --save-dev
 ```
 npm install stylus stylus-loader --save-dev
 ```
-
-
-#### 修改 package.json，
-
-1. 去掉hulk相关依赖：移除`@baidu/hulk-cli`和`@baidu/hulk-mock-server`;
-2. 修改scripts命令：把原来的`hulk`修改为`san`;
 
 
 ### 3. 修改配置文件
