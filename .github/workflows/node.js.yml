@@ -26,5 +26,3 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: yarn
     - run: yarn test
-    - name: Commit Linter
-      uses: wagoid/commitlint-github-action@v2.0.3
