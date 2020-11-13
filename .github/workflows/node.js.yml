@@ -25,7 +25,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: echo "${{ toJson(github) }}"
-    - run: yarn
+#     - run: yarn
 #     - run: yarn test
     - name: commitlint push
       if: ${{ github.event_name == 'push'}}
@@ -38,7 +38,7 @@ jobs:
     - name: commitlint pr
       if: ${{ github.event_name == 'pull_request'}}
       run: |
-        for((i=0;i<$commit-amount;i++)) do
+        for((i=0;i<4;i++)) do
           echo i
         done
       env:
