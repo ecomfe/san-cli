@@ -27,6 +27,7 @@ jobs:
     - run: echo "${{ toJson(github) }}"
     - run: yarn
 #     - run: yarn test
-    - name: commitlint
+    - name: Get Commit Message
       run: |
-        echo $(git log --format=%B -n 1) | npx commitlint --verbose
+        message=$(git log --format=%B -n 1)
+        echo $message | npx commitlint --verbose
