@@ -34,10 +34,9 @@ jobs:
           # echo ${{ github.event.commits[0].message }} | npx commitlint
         # done
         echo $MESSAGES
-        for message in $(echo $MESSAGES | jq -c '.[]')
+        for message in $(echo $MESSAGES | jq '.')
         do
-            echo ${message}
-            echo 1
+            echo $message
         done
       env:
         MESSAGES: ${{ toJson(github.event.commits.*.message) }}
