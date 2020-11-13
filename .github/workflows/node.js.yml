@@ -27,4 +27,4 @@ jobs:
     # - run: yarn
     # - run: yarn test
     - run: |
-        echo '[{"username":"user1"},{"username":"user2"}]' | jq '. | length'
+        echo ${{ toJson(github.event.commits) }} | jq '. | length'
