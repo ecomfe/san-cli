@@ -34,12 +34,12 @@ jobs:
           # echo ${{ github.event.commits[0].message }} | npx commitlint
         # done
         echo $MESSAGES
-        for message in $(echo $MESSAGES | jq '.')
+        for message in $(echo $COMMITS | jq ''.[].message')
         do
             echo $message
         done
       env:
-        MESSAGES: ${{ toJson(github.event.commits.*.message) }}
+        COMMITS: ${{ toJson(github.event.commits) }}
     - name: commitlint pr
       if: ${{ github.event_name == 'pull_request'}}
       run: |
