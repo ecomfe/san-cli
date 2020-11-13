@@ -35,3 +35,4 @@ jobs:
         done
       env:
         commits: ${{ toJson(github.event.commits) }}
+
