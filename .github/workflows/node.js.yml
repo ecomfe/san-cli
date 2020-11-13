@@ -35,7 +35,7 @@ jobs:
         # done
         echo $COMMITS
         echo $COMMITS | jq -r '.[].message'
-        for message in $(echo ${{ toJson(github.event.commits) }} | jq -r '.[].message')
+        for message in $(echo ${{ toJson(github.event.commits.*.message) }} | jq '.[]')
         do
             echo $message
         done
