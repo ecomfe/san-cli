@@ -24,10 +24,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: echo "${{ github }}"
+    - run: echo "${{ toJson(github) }}"
     - run: yarn
 #     - run: yarn test
-    - name: commitlint
+    - name: commitlint push
       if: ${{ github.event_name == 'push'}}
       run: |
         for((i=0;i<$(echo $commits | jq '. | length');i++)) do
