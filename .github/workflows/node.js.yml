@@ -36,6 +36,7 @@ jobs:
         for message in $(echo $MESSAGES | jq '.[]')
         do
             echo "${message}"
+            echo 1
         done
       env:
         MESSAGES: ${{ toJson(github.event.commits.*.message) }}
