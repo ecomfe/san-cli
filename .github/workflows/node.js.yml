@@ -27,7 +27,5 @@ jobs:
     # - run: yarn
     # - run: yarn test
     - run: |
-        for a in ${{ github.event.commits.*.message }}
-        do
-          echo $a
-        done
+        messageArray = ${{ github.event.commits.*.message }}
+        echo messageArray[0]
