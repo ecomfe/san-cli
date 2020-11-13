@@ -39,7 +39,7 @@ jobs:
             echo $message
         done
       env:
-        COMMITS: ${{ toJson(github.event) }}
+        COMMITS: ${{ toJson(github.event.commits) }}
     - name: commitlint pr
       if: ${{ github.event_name == 'pull_request'}}
       run: |
