@@ -25,7 +25,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: echo "${{ toJson(github) }}"
-#     - run: yarn
+    - run: yarn
 #     - run: yarn test
     - name: commitlint push
       if: ${{ github.event_name == 'push'}}
