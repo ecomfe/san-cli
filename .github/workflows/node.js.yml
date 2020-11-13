@@ -41,4 +41,5 @@ jobs:
         for((i=1;i<=${{ github.event.pull_request.commits }};i++)) do
           echo $(eval 'git log --format=%B -n '$i' '${{ github.event.after }}) | npx commitlint --verbose
         done
+
         
