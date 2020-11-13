@@ -20,6 +20,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with: 
+        fetch-depth: 0
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
@@ -27,20 +29,6 @@ jobs:
     - run: echo "${{ toJson(github) }}"
     - run: yarn
 #     - run: yarn test
-    - name: commitlint push
-      if: ${{ github.event_name == 'push'}}
+    - name: commitlint
       run: |
-        for((i=1;i<=$(echo '${{ toJson(github.event.commits) }}' | jq '. | length');i++)) do
-          echo $i
-          echo $(eval 'git log --format=%B -n '$i' '${{ github.event.after }})
-          echo $(eval 'git log --format=%B -n '$i' '${{ github.event.after }}) | npx commitlint --verbose
-        done
-    - name: commitlint pr
-      if: ${{ github.event_name == 'pull_request'}}
-      run: |
-        for((i=1;i<=${{ github.event.pull_request.commits }};i++)) do
-          echo $(eval 'git log --format=%B -n '$i' '${{ github.event.after }}) | npx commitlint --verbose
-        done
-
-
-
+        echo $(git log --format=%B -n 1 ${{ github.event.after }}) | npx commitlint --verbose
