@@ -24,7 +24,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+      env:
+        commits: ${{ toJson(github.event.commits.*.message) }}
     # - run: yarn
     # - run: yarn test
     - run: |
-        echo "${{ toJson(github.event.commits.*.message) }}" | jq '. | length'
+        echo $commits | jq '. | length'
