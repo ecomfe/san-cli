@@ -36,10 +36,10 @@ jobs:
     - name: commitlint pr
       if: ${{ github.event_name == 'pull_request'}}
       run: |
-        for((i=1;i<=14 }};i++)) do
+        for((i=1;i<=16 }};i++)) do
           echo $i
-          echo $(eval 'git log --format=%B -n '$i' '${{ github.event.pull_request.base.head.sha }})
-          echo $(eval 'git log --format=%B -n '$i' '${{ github.event.pull_request.base.head.sha }}) | npx commitlint --verbose
+          echo $(eval 'git log --format=%B -n '$i' '${{ github.event.pull_request.head.sha }})
+          echo $(eval 'git log --format=%B -n '$i' '${{ github.event.pull_request.head.sha }}) | npx commitlint --verbose
         done
 
         
