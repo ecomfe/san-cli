@@ -29,5 +29,5 @@ jobs:
     - run: |
         for item in ${{ github.event.commits[*] }};
         do
-          echo $item
+          echo toJson($item)
         done
