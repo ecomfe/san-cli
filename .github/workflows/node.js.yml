@@ -26,9 +26,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: echo "${{ toJson(github) }}"
     - run: yarn
     # - run: yarn test
     - name: commitlint
       run: echo $(git log --format=%B -n 1) | npx commitlint --verbose
-
