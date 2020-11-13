@@ -33,7 +33,8 @@ jobs:
         # for((i=0;i<$(echo $COMMITS | jq '. | length');i++)) do
           # echo ${{ github.event.commits[0].message }} | npx commitlint
         # done
-        echo $(echo '${{ toJson(github.event.commits.*.message) }}' | jq '.[]')
+        echo '${{ toJson(github.event.commits.*.message) }}' | jq '.[]'
+        #IFS=$'\n'
         for message in $(echo '${{ toJson(github.event.commits.*.message) }}' | jq '.[]')
         do
             echo $message
