@@ -20,8 +20,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      with:
-        ref: ${{ github.event.pull_request.head.sha }}
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
@@ -29,7 +27,6 @@ jobs:
     - run: echo "${{ toJson(github) }}"
     - run: yarn
 #     - run: yarn test
-    - name: Get Commit Message
+    - name: commitlint
       run: |
-        MSG=$(git log --format=%B -n 1 ${{ github.event.after }})
-        echo ${MSG} | npx commitlint --verbose
+        echo $(git log --format=%B -n 1) | npx commitlint --verbose
