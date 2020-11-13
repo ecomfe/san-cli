@@ -29,5 +29,5 @@ jobs:
     - run: |
         for item in ${{ github.event.commits.*.message }}
         do
-          echo item
+          echo $item
         done
