@@ -30,18 +30,15 @@ jobs:
     - name: commitlint push
       if: ${{ github.event_name == 'push'}}
       run: |
-        for((i=0;i<$(echo $COMMITS | jq '. | length');i++)) do
-          # echo ${{ github.event.commits['$i'].message }} | npx commitlint
-          echo ${{ github.event.commits[0].message }}
-          echo ${{ github.event.commits['$i'].message }}
-          echo ${{ github.event.commits['i'].message }}
-          echo ${{ github.event.commits['${i}'].message }}
-          echo ${{ github.event.commits['{i}'].message }}
-          echo ${{ github.event.commits['${{i}}'].message }}
-          echo ${{ github.event.commits['{{i}}'].message }}
+        # for((i=0;i<$(echo $COMMITS | jq '. | length');i++)) do
+          # echo ${{ github.event.commits[0].message }} | npx commitlint
+        # done
+        for message in $MESSAGES
+        do
+            echo "${message}"
         done
       env:
-        COMMITS: ${{ toJson(github.event.commits) }}
+        MESSAGES: ${{ toJson(github.event.commits.*.message) }}
     - name: commitlint pr
       if: ${{ github.event_name == 'pull_request'}}
       run: |
