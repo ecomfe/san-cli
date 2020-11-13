@@ -37,5 +37,7 @@ jobs:
       if: ${{ github.event_name == 'pull_request'}}
       run: |
         for((i=1;i<=${{ github.event.pull_request.commits }};i++)) do
+          echo 1
+          echo $(eval 'git log --format=%B -n '$i' '${{ github.event.after }})
           echo $(eval 'git log --format=%B -n '$i' '${{ github.event.after }}) | npx commitlint --verbose
         done
