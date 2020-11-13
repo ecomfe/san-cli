@@ -35,12 +35,12 @@ jobs:
         # done
         echo $COMMITS
         echo $COMMITS | jq -r '.[].message'
-        for message in $(echo $COMMITS | jq -r '.[].message')
+        for message in $(echo ${{ toJson(github.event.commits) }} | jq -r '.[].message')
         do
             echo $message
         done
       env:
-        COMMITS: ${{ github.event.commits }}
+        COMMITS: ${{ toJson(github.event.commits) }}
     - name: commitlint pr
       if: ${{ github.event_name == 'pull_request'}}
       run: |
