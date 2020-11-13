@@ -30,16 +30,16 @@ jobs:
     - name: commitlint push
       if: ${{ github.event_name == 'push'}}
       run: |
-        for((i=0;i<$(echo $commits | jq '. | length');i++)) do
+        for((i=0;i<$(echo $COMMITS | jq '. | length');i++)) do
           echo ${{ github.event.commits[0].message }} | npx commitlint
         done
       env:
-        commits: ${{ toJson(github.event.commits) }}
+        COMMITS: ${{ toJson(github.event.commits) }}
     - name: commitlint pr
       if: ${{ github.event_name == 'pull_request'}}
       run: |
-        for((i=0;i<commitamount;i++)) do
+        for((i=0;i<$COMMIT_AMOUNT;i++)) do
           echo i
         done
       env:
-        commitamount: ${{ github.event.pull_request.commits }}
+        COMMIT_AMOUNT: ${{ github.event.pull_request.commits }}
