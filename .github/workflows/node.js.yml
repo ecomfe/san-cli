@@ -27,4 +27,4 @@ jobs:
     # - run: yarn
     # - run: yarn test
     - run: |
-        echo "${{ toJson(github.event.commits.*.message) }}"
+        echo "${{ toJson(github.event.commits.*.message) }} | jq '. | length'"
