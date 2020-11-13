@@ -20,16 +20,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      with: 
-        fetch-depth: 0
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
     - run: echo "${{ toJson(github) }}"
     - run: yarn
-#     - run: yarn test
+    # - run: yarn test
     - name: commitlint
-      run: |
-        echo $(git log --format=%B -n 1 ${{ github.event.after }}) | npx commitlint --verbose
-
+      run: echo $(git log --format=%B -n 1) | npx commitlint --verbose
