@@ -38,8 +38,8 @@ jobs:
       run: |
         for((i=1;i<=${{ github.event.pull_request.commits }};i++)) do
           echo $i
-          echo $(eval 'git log --format=%B -n '$i' '${{ github.event.pull_request.base.head.sha }})
-          echo $(eval 'git log --format=%B -n '$i' '${{ github.event.pull_request.base.head.sha }}) | npx commitlint --verbose
+          echo $(eval 'git log --no-merges --format=%B -n '$i' '${{ github.event.pull_request.base.head.sha }})
+          echo $(eval 'git log --no-merges --format=%B -n '$i' '${{ github.event.pull_request.base.head.sha }}) | npx commitlint --verbose
         done
 
         
