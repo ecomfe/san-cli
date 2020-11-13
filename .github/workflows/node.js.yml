@@ -35,3 +35,11 @@ jobs:
         done
       env:
         commits: ${{ toJson(github.event.commits) }}
+    - name: commitlint pr
+      if: ${{ github.event_name == 'pull_request'}}
+      run: |
+        for((i=0;i<$commit-amount;i++)) do
+          echo i
+        done
+      env:
+        commit-amount: ${{ github.event.pull_request.commits }}
