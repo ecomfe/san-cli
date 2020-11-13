@@ -21,14 +21,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: ${{ github.event.after }}
+        ref: ${{ github.event.pull_request.head.sha }}
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
     - run: echo "${{ toJson(github) }}"
-    - run: yarn
+    # - run: yarn
 #     - run: yarn test
-    - name: commitlint
+    - name: Get Commit Message
       run: |
-        echo $(git log --format=%B -n 1 ${{ github.event.after }}) | npx commitlint --verbose
+        MSG=$(git log --format=%B -n 1 ${{ github.event.after }})
+        echo "::set-env name=COMMIT_MESSAGE::${MSG}"
