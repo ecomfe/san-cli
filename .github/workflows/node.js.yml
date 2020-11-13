@@ -26,5 +26,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: yarn
     # - run: yarn test
-    - run: |
-        echo "${{ github.event.commits[0].message }}" | npx commitlint
+    - run:
+        for(( i=0;i<3;i++)) do
+        echo $i
+        done
+        # echo "${{ github.event.commits[0].message }}" | npx commitlint
