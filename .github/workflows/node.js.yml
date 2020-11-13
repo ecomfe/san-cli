@@ -30,10 +30,9 @@ jobs:
     - name: commitlint push
       if: ${{ github.event_name == 'push'}}
       run: |
-        # for((i=0;i<$(echo $COMMITS | jq '. | length');i++)) do
-          # echo ${{ github.event.commits[0].message }} | npx commitlint
-        # done
-        echo '${{ toJson(github.event.commits.*.message) }}' | jq '. | length'
+        for((i=0;i<$(echo '${{ toJson(github.event.commits) }}' | jq '. | length');i++)) do
+          echo $(git log --format=%B -n 1 ${{ github.event.after }}) | npx commitlint
+        done
     - name: commitlint pr
       if: ${{ github.event_name == 'pull_request'}}
       run: |
