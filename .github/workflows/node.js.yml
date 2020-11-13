@@ -31,6 +31,6 @@ jobs:
       run: |
         echo "$commits"
         echo $commits | jq '. | length'
-        for(( i=0;i<($commits | jq '. | length');i++)) do
+        for(( i=0;i<3;i++)) do
         echo $i
         done
