@@ -27,7 +27,4 @@ jobs:
     # - run: yarn
     # - run: yarn test
     - run: |
-        for item in ${{ github.event.commits.*.message }}
-        do
-          echo $item
-        done
+        echo ${{ toJson(github.event.commits.*.message) }}
