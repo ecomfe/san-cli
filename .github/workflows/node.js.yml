@@ -25,9 +25,12 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
       env:
-        commits: ${{ toJson(github.event.commits.*.message) }}
+        commits: ${{ toJson(github.event.commits) }}
     # - run: yarn
     # - run: yarn test
     - run: |
         echo "$commits"
         echo $commits | jq '. | length'
+        for(( i=0;i<($commits | jq '. | length');i++)) do
+        echo $i
+        done
