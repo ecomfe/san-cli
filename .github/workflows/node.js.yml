@@ -19,17 +19,17 @@ jobs:
 #         node-version: [10.x, 12.x, 14.x]
 
     steps:
-    - name: Use Node.js
-#     - name: Use Node.js ${{ matrix.node-version }}
-#       uses: actions/setup-node@v1
-#       with:
-#         node-version: ${{ matrix.node-version }}
-      env:
-        commits: ${{ toJson(github.event.commits) }}
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
 #     - run: yarn
-    # - run: yarn test
-      run: |
+#     - run: yarn test
+    - run: |
         echo "$commits"
         for((i=0;i<$(echo $commits | jq '. | length');i++)) do
           echo $i
         done
+      env:
+        commits: ${{ toJson(github.event.commits) }}
