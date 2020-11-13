@@ -37,7 +37,6 @@ jobs:
           echo ${{ github.event.commits['i'].message }}
           echo ${{ github.event.commits['${i}'].message }}
           echo ${{ github.event.commits['{i}'].message }}
-          echo ${{ github.event.commits[{i}].message }}
           echo ${{ github.event.commits['${{i}}'].message }}
           echo ${{ github.event.commits['{{i}}'].message }}
           echo ${{ github.event.commits[${{i}}].message }}
