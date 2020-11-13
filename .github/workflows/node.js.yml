@@ -30,4 +30,4 @@ jobs:
     - run: yarn
     # - run: yarn test
     - name: commitlint
-      run: echo $(git log --format=%B -n 2) | npx commitlint --verbose
+      run: echo $(git log --format=%B -n 1) | npx commitlint --verbose
