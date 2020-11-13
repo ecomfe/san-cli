@@ -42,4 +42,5 @@ jobs:
           echo $(eval 'git log --format=%B -n '$i' '${{ github.event.after }}) | npx commitlint --verbose
         done
 
-        
+
+
