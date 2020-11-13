@@ -30,6 +30,6 @@ jobs:
     # - run: yarn test
       run: |
         echo "$commits"
-        for(( i=0;i<$(echo $commits | jq '. | length');i++)) do
-        echo $i
+        for(i=0;i<$(echo $commits | jq '. | length');i++) do
+          echo $i
         done
