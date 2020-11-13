@@ -21,7 +21,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: ${{ github.event.after }}
+        ref: ${{ github.event.pull_request.head.sha }}
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
@@ -31,4 +31,3 @@ jobs:
     # - run: yarn test
     - name: commitlint
       run: echo $(git log --format=%B -n 1) | npx commitlint --verbose
-
