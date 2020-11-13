@@ -27,7 +27,7 @@ jobs:
 #     - run: yarn
     # - run: yarn test
     - run: |
-        echo "(${{ toJson(github.event.commits) }} | jq '. | length')"
+        echo (${{ toJson(github.event.commits) }} | jq '. | length')
         # for(( i=0;i<3;i++)) do
         # echo $i
         # done
