@@ -24,12 +24,12 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-#     - run: yarn
+    - run: yarn
 #     - run: yarn test
     - run: |
         echo "$commits"
         for((i=0;i<$(echo $commits | jq '. | length');i++)) do
-          echo $i
+          echo ${{ github.event.commits[0].message }} | npx commitlint
         done
       env:
         commits: ${{ toJson(github.event.commits) }}
