@@ -105,4 +105,3 @@ For detailed documentation, please check the [San CLI docs](./docs/README.md).
 ## ☀️ License
 
 MIT
-
