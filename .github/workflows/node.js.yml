@@ -27,9 +27,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: echo "${{ toJson(github) }}"
-    # - run: yarn
-#     - run: yarn test
-    - name: Get Commit Message
-      run: |
-        MSG=$(git log --format=%B -n 1)
-        echo ${MSG}
+    - run: yarn
+    # - run: yarn test
+    - name: commitlint
+      run: echo $(git log --format=%B -n 1) | npx commitlint --verbose
