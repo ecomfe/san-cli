@@ -35,7 +35,6 @@ jobs:
           echo ${{ github.event.commits[0].message }}
           echo ${{ github.event.commits['$i'].message }}
           echo ${{ github.event.commits['i'].message }}
-          echo ${{ github.event.commits["i"].message }}
         done
       env:
         COMMITS: ${{ toJson(github.event.commits) }}
