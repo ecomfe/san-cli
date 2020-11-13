@@ -31,7 +31,7 @@ jobs:
       if: ${{ github.event_name == 'push'}}
       run: |
         for((i=0;i<$(echo $COMMITS | jq '. | length');i++)) do
-          echo ${{ github.event.commits[$i].message }} | npx commitlint
+          echo ${{ github.event.commits['$i'].message }} | npx commitlint
         done
       env:
         COMMITS: ${{ toJson(github.event.commits) }}
