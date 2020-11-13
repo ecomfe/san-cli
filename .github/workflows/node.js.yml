@@ -33,9 +33,10 @@ jobs:
         # for((i=0;i<$(echo $COMMITS | jq '. | length');i++)) do
           # echo ${{ github.event.commits[0].message }} | npx commitlint
         # done
+        echo $MESSAGES
         for message in $(echo $MESSAGES | jq '.[]')
         do
-            echo "${message}"
+            echo ${message}
             echo 1
         done
       env:
