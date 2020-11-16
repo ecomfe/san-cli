@@ -21,6 +21,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
+        # 如果不加以下这行，发起 pr 后触发的 ci 拿到的 commit message 是“Merge ... into ...”而不是提交代码时输入的 commit message。
         ref: ${{ github.event.pull_request.head.sha }}
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
@@ -29,4 +30,5 @@ jobs:
     - run: yarn
     - name: commitlint
       run: echo $(git log --format=%B -n 1) | npx commitlint --verbose
+    - run: yarn lint
     - run: yarn test

@@ -34,13 +34,11 @@
         "stylelint": "^12.0.0"
     },
     "lint-staged": {
-        "!(example|dist|output|__mocks__)/**/*.js": [
-            "eslint"
-        ]
+        "!(example|dist|output|__mocks__)/**/*.js": "eslint"
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lint-staged && node scripts/test.js",
+            "pre-commit": "lint-staged && yarn test",
             "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
         }
     },
