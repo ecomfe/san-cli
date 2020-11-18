@@ -46,7 +46,7 @@
         "update-notifier": "^4.0.0",
         "write-pkg": "^4.0.0",
         "read-pkg": "^5.2.0",
-        "yargs": "~15.0.2"
+        "yargs": "~16.0.0"
     },
     "gitHead": "402d813859ac219434712fa2063e5f724819004a"
 }
