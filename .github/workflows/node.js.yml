@@ -39,8 +39,8 @@ jobs:
           ${{ runner.os }}-yarn-
     - if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: yarn
-    - if: steps.yarn-cache.outputs.cache-hit == 'true'
-      run: yarn add @commitlint/cli --ignore-workspace-root-check
+    # - if: steps.yarn-cache.outputs.cache-hit == 'true'
+    #   run: yarn add @commitlint/cli --ignore-workspace-root-check
     - name: commitlint
       run: echo $(git log --format=%B -n 1) | npx commitlint --verbose
     - run: yarn test
