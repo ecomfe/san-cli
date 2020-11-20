@@ -29,7 +29,6 @@
         "eslint-plugin-jest": "^23.8.2",
         "husky": "^4.0.0",
         "jest": "^24.8.0",
-        "lerna": "^3.19.0",
         "lint-staged": "^9.2.5",
         "memfs": "^3.0.1",
         "stylelint": "^12.0.0"
@@ -46,9 +45,6 @@
         }
     },
     "scripts": {
-        "publish": "lerna publish --registry https://registry.npmjs.org --no-git-tag-version",
-        "publish:beta": "lerna publish --registry https://registry.npmjs.org --no-git-tag-version --no-push --dist-tag beta",
-        "publish:alpha": "lerna publish --registry https://registry.npmjs.org --no-git-tag-version --no-push --dist-tag alpha",
         "commit": "git-cz",
         "doc": "cd docs && node ../packages/san-cli/index.js docit .",
         "build:doc": "cd docs && node ../packages/san-cli/index.js docit . --output",

@@ -98,7 +98,7 @@ San CLI 的命令行使用了[yargs](https://github.com/yargs/yargs/)。在`lib/
 
 ## san-cli-command-init：脚手架实现
 
-项目脚手架初始化是在`san-cli-command-init`中实现的，原理是通过 git 命令拉取对应 github/icode/gitlab 等脚手架模板的 repo 到本地，然后使用[vinyl-fs](https://github.com/gulpjs/vinyl-fs)将依次将文件进行处理后生成项目代码。
+项目脚手架初始化是在`san-cli-command-init`中实现的，原理是通过 git 命令拉取对应 github/icode/gitlab 等脚手架模板的 repo 到本地，然后使用[vinyl-fs](https://github.com/gulpjs/vinyl-fs)依次将文件进行处理后生成项目代码。
 
 `san-cli-command-init`的核心是一个`TaskList`类，通过四步串行任务完成：
 
@@ -113,7 +113,7 @@ San CLI 支持 Command 插件和 Service 插件。
 
 ### Command 插件
 
-San CLI 的命令行插件值得是通过配置`.sanrc`的`commands`字段，给 CLI 添加自定义 Command，这里添加的 Command 可以通过`san your_command_name [options]`方式使用。
+San CLI 的命令行插件指的是通过配置`.sanrc`的`commands`字段，给 CLI 添加自定义 Command，这里添加的 Command 可以通过`san your_command_name [options]`方式使用。
 
 Command 的插件需要遵循 yargs command module 规范，即按照下面的写法：
 
@@ -162,7 +162,7 @@ const service = new Service(name, {
     plugins,
     // 是否使用 progress
     useProgress,
-    // 是否使用Profiler
+    // 是否使用 Profiler
     useProfiler
 });
 // 开始执行，执行结果回调，callback 传入 PluginAPI 实例
