@@ -1,7 +1,7 @@
 {
     "name": "san-cli-service",
     "description": "定制化的前端工程构建工具",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "main": "Service.js",
     "license": "MIT",
     "engines": {
@@ -25,9 +25,7 @@
         "webpack"
     ],
     "dependencies": {
-        "@hapi/joi": "^16.1.7",
         "babel-loader": "^8.0.6",
-        "babel-plugin-dynamic-import-node": "^2.3.0",
         "case-sensitive-paths-webpack-plugin": "^2.2.0",
         "copy-webpack-plugin": "~6.0.0",
         "core-js": "^3.6.4",
@@ -40,12 +38,12 @@
         "fs-extra": "^8.1.0",
         "html-loader": "~0.5.5",
         "html-minifier-terser": "^5.0.2",
+        "html-webpack-harddisk-plugin": "^1.0.2",
         "html-webpack-plugin": "~3.2.0",
         "import-cwd": "^3.0.0",
         "import-global": "^0.1.0",
         "import-lazy": "^4.0.0",
-        "less": "^3.11.1",
-        "less-loader": "~5.0.0",
+        "joi": "^17.3.0",
         "lodash.defaultsdeep": "^4.6.1",
         "lodash.merge": "^4.6.2",
         "mini-css-extract-plugin": "~0.9.0",
@@ -56,10 +54,9 @@
         "resolve": "^1.12.0",
         "resolve-cwd": "^3.0.0",
         "san": "~3.9.0",
-        "html-webpack-harddisk-plugin": "^1.0.2",
         "san-cli-plugin-babel": "^1.0.0",
-        "san-cli-plugin-progress": "^1.0.0",
         "san-cli-plugin-dashboard": "^1.0.0",
+        "san-cli-plugin-progress": "^1.0.0",
         "san-cli-utils": "^1.0.0",
         "san-cli-webpack": "^1.0.0",
         "san-hot-loader": "^0.1.2",
@@ -75,8 +72,12 @@
         "webpack-merge": "~4.2.2"
     },
     "devDependencies": {
+        "stylus": "^0.54.8",
+        "stylus-loader": "^4.3.0",
         "sass": "^1.19.0",
-        "sass-loader": "^8.0.0"
+        "sass-loader": "^8.0.0",
+        "less": "^3.11.1",
+        "less-loader": "~5.0.0"
     },
     "gitHead": "402d813859ac219434712fa2063e5f724819004a"
 }

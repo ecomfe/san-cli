@@ -38,7 +38,6 @@
         "@babel/runtime": "^7.6.3",
         "@babel/runtime-corejs3": "^7.6.3",
         "babel-loader": "^8.0.6",
-        "babel-plugin-dynamic-import-node": "^2.3.0",
         "san-cli-utils": "^1.0.0",
         "san-hot-loader": "^0.1.1"
     },

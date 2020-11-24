@@ -1,8 +1,8 @@
 <div align="center">
     <h1>San-CLI</h1>
     <blockquote>A CLI Tooling based on <a href="https://baidu.github.io/san/">San.js</a> for rapid development</blockquote>
-    <a href="https://travis-ci.org/ecomfe/san-cli/builds">
-        <img src="https://img.shields.io/travis/ecomfe/san-cli/master.svg?style=flat-square" alt="Build Status">
+    <a href="https://github.com/ecomfe/san-cli/actions?query=workflow%3A%22Node.js+CI%22">
+        <img src="https://github.com/ecomfe/san-cli/workflows/Node.js%20CI/badge.svg">
     </a>
     <a href="https://www.npmjs.com/package/san-cli">
         <img src="http://img.shields.io/npm/v/san-cli.svg?style=flat-square" alt="NPM version">
