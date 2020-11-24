@@ -1,10 +1,8 @@
----
-title: 查看webpack内置信息
----
+# 查看webpack内置信息
 
-# 查看 webpack rule
+## 查看 webpack rule
 
-## 查看所有内置 webpack rules list
+### 查看所有内置 webpack rules list
 
 ```bash
 san inspect --rules
@@ -26,15 +24,15 @@ san inspect --rules
 ]
 ```
 
-## 查看具体内置 webpack rule 信息
+### 查看具体内置 webpack rule 信息
 
 ```bash
 san inspect --rule postcss
 ```
 
-# 查看 webpack plugin
+## 查看 webpack plugin
 
-## 查看所有内置 webpack plugins list
+### 查看所有内置 webpack plugins list
 
 ```bash
 san inspect --plugins
@@ -57,7 +55,7 @@ san inspect --plugins
 ]
 ```
 
-## 查看具体内置 webpack plugin 信息
+### 查看具体内置 webpack plugin 信息
 
 ```bash
 san inspect --plugin copy-webpack-plugin

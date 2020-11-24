@@ -15,6 +15,7 @@
     -   [San Component](/component.md)
     -   [Smarty 相关](/smarty.md)
     -   [部署](/deployment.md)
+    -   [hulk-cli升级](/hulk-cli-migration.md)
 -   二次开发
     -   [内部实现](/architecture.md)
     -   [如何创建一个脚手架项目](/create-scaffold.md)

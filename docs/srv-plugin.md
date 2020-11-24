@@ -2,7 +2,7 @@
 
 # 编写一个 Serivce 插件
 
-San CLI 在实现可扩展 Webpack 配置的设计上，借鉴了 Vue CLI 的 Service 机制。Service 主要是对 Webpack 的配置进行统一处理和封装，当 Service 实例化之时，会将依次将 Service 的插件进行注册执行，对 Webpack 的配置进行修改。
+San CLI 在实现可扩展 Webpack 配置的设计上，借鉴了 Vue CLI 的 Service 机制。Service 主要是对 Webpack 的配置进行统一处理和封装，当 Service 实例化之时，会依次将 Service 的插件进行注册执行，对 Webpack 的配置进行修改。
 
 一个 Service 插件的定义结构如下：
 
