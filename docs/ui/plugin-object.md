@@ -236,6 +236,7 @@ api.registerConfig({
 | onWrite | 数据写入配置文件触发的钩子，可在此执行node.js的代码 | onWrite: ({ prompts, answers, data, files, cwd, api }) => {...}) | 无 |
 
 **onRead**
+
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | id | 必选，配置项的唯一id | string | 无 |
@@ -277,6 +278,7 @@ api.registerConfig({
 ```
 
 **onWrite**
+
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | prompts | 运行时表单对象 | string | 无 |
@@ -287,6 +289,7 @@ api.registerConfig({
 | api | 写入api辅助函数 | object | 无 |
 
 **onWrite.api**
+
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | assignData(fileId, newData) | 在写入前使用 Object.assign 来更新配置文件 | function | 无 |
