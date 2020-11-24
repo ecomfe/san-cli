@@ -9,7 +9,9 @@
 -   全局组件：放到项目的`src/components/`，主要是全局性的，或通用性很强的组件，具备良好的封装性
 -   页面级别组件：放在页面的`pages/*/components`下面维护，仅限本页面内使用
 
-!> 百度公司内部更加详细的组件开发规范或者开发 Nano 组件，请参考 [Nano 组件库](http://hulk.baidu-int.com/docs/nano)规范！
+::: warning
+百度公司内部更加详细的组件开发规范或者开发 Nano 组件，请参考 [Nano 组件库](http://hulk.baidu-int.com/docs/nano)规范！
+:::
 
 ## 组件开发
 

@@ -107,20 +107,22 @@ module.exports = function(content) {
 
     const toc = parseHeader(content, compiler.getCompiler(markdownIt), extractHeaders);
 
-
     let codeboxSource = '';
     if (sanboxArray.length) {
-        codeboxSource = sanboxArray.map((box, idx) => {
+        codeboxSource = sanboxArray.reduce((total, currentValue, idx) => {
             const query = `?san-md-picker&get=sanbox&eq=${idx}&${contextQuery}`;
             const name = `sanbox${idx}`;
-            return `import ${name} from ${stringifyRequest(resourcePath + query)};
-                window.__sanbox = window.__sanbox || {};
+            // San 不支持全局组件，通过变量手工替换处理，另外两种办法也行不通
+            // 1. customElements.define 可以实现简单的WebComponent定义（HTML字符串）
+            // 2. san-component 支持template里的全局组件，不支持HTML字符串里的组件
+            return `${total}
+                import ${name} from ${stringifyRequest(resourcePath + query)};
                 window.__sanbox['${name}'] = {
                     el: 'san-box-${idx}',
                     comp: ${name}
                 };
             `;
-        }).join('\n');
+        }, 'window.__sanbox = {};');
     }
 
     let getSideOrNavBarHTML = filepath => {

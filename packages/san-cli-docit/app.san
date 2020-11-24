@@ -27,7 +27,7 @@ export default {
         }
     },
     attached() {
-        let sanbox = window.__sanbox;
+        let sanbox = window.__sanbox || {};
         Object.keys(sanbox).forEach(key => {
             const item = sanbox[key];
             const vm = new item.comp();

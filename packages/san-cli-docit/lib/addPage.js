@@ -62,7 +62,7 @@ module.exports = (files, {layouts, output, context, webpackConfig, siteData}) =>
             if (!filename) {
                 const parsed = path.parse(filepath);
                 parsed.ext = '.html';
-                parsed.base = parsed.base.replace(/\.(md|markdown)$/, '.html').replace('README', 'index');
+                parsed.base = parsed.base.replace(/\.(md|markdown)$/, '/index.html').replace('README\/', '');
                 filename = ensureRelative(output, path.format(parsed));
             }
             if (!chunkname) {
