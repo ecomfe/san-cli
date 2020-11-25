@@ -22,7 +22,7 @@ export default class ProjectCreate extends Component {
                         required
                         validateStatus="{{isAppNameValidated ? '' : 'error'}}"
                         label="{{$t('project.components.create.folderName')}}">
-                        <s-input value="{=app.name=}"></s-input>
+                        <s-input class="app-name" value="{=app.name=}"></s-input>
                         <div class="grey">{{cwd}}/{{app.name}}</div>
                     </s-formitem>
                 </s-form>

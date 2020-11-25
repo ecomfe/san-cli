@@ -16,7 +16,6 @@
         "prod": "cross-env DEBUG=san-cli:ui:* node ../san-cli/index.js ui",
         "analyze": "cross-env NODE_ENV=production node ../san-cli/index.js build --config ./client/san.config.js --analyze",
         "start:noDebug": "cross-env SAN_CLI_UI_DEV=true SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql nodemon ../san-cli/index.js ui",
-        "start:test": "cross-env DEBUG=san-cli:ui:* SAN_CLI_UI_TEST=true node ../san-cli/index.js ui -p 3338",
         "debug:task": "cross-env DEBUG=san-cli:ui:tasks:connectors* SAN_CLI_UI_DEV=true SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql nodemon ../san-cli/index.js ui",
         "debug:plugins": "cross-env DEBUG=san-cli:ui:plugins* SAN_CLI_UI_DEV=true SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql nodemon ../san-cli/index.js ui",
         "debug:views": "cross-env DEBUG=san-cli:ui:views* SAN_CLI_UI_DEV=true SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql nodemon ../san-cli/index.js ui",
@@ -25,9 +24,11 @@
         "dev:san-init": "node ../san-cli/index.js init",
         "dev:san-remote-list": "node ../san-cli/index.js remote list",
         "test": "yarn run build:all && yarn run test:start",
-        "test:start": "yarn run test:clear && start-server-and-test start:test http://localhost:3338 test:e2e:start",
+        "test:start": "yarn run test:clear && start-server-and-test test:ui http://localhost:3338 test:e2e:start",
         "test:e2e:start": "cypress run",
-        "test:clear": "rimraf ./__test__/cli-ui-test"
+        "test:clear": "rimraf ./__tests__/san-cli-ui-test",
+        "test:debug": "start-server-and-test test:ui http://localhost:3338 test:e2e:start",
+        "test:ui": "cross-env DEBUG=san-cli:ui:* SAN_CLI_UI_TEST=true node ../san-cli/index.js ui -p 3338"
     },
     "nodemonConfig": {
         "ignore": [
