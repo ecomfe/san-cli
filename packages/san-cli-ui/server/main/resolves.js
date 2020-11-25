@@ -9,6 +9,7 @@ const channels = require('../utils/channels');
 const cwd = require('../connectors/cwd');
 const clientAddons = require('../connectors/clientAddons');
 const sharedData = require('../connectors/sharedData');
+const theme = require('../connectors/theme');
 const {withFilter} = require('graphql-subscriptions');
 
 const resolvers = [{
@@ -27,11 +28,13 @@ const resolvers = [{
     Query: {
         cwd: () => cwd.get(),
         clientAddons: (root, args, context) => clientAddons.list(context),
-        sharedData: (root, args, context) => sharedData.get(args, context)
+        sharedData: (root, args, context) => sharedData.get(args, context),
+        theme: (root, args, context) => theme.get(context)
     },
 
     Mutation: {
-        sharedDataUpdate: (root, args, context) => sharedData.set(args, context)
+        sharedDataUpdate: (root, args, context) => sharedData.set(args, context),
+        themeChange: (root, args, context) => theme.set(args.theme, context)
     },
 
     Subscription: {

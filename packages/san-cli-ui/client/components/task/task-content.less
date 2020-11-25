@@ -1,3 +1,4 @@
+@import '../../assets/darkmode.less';
 .task-content {
     padding: 20px 20px 0 30px;
     display: flex;
@@ -7,7 +8,7 @@
     .task-name {
         font-size: 36px;
         font-weight: 500;
-        color: #333;
+        .color-4();
         line-height: 36px;
     }
 
@@ -20,7 +21,7 @@
 
     .task-command {
         background-color: rgba(204, 210, 217, .1);
-        color: rgba(102, 102, 102, .3);
+        .color-7();        
         border-radius: 15px;
         height: 30px;
         line-height: 30px;
@@ -56,6 +57,7 @@
         .setting {
             font-size: 24px;
             cursor: pointer;
+            color: #8c8c8c;
             &:hover {
                 color: #40a9ff;
             }
@@ -70,10 +72,12 @@
         font-size: 16px;
         .santd-icon {
             margin: 0 10px;
+            color: #8c8c8c;
+            cursor: pointer;
         }
         .task-xterm-btn {
             &:hover {
-                color: #1890ff;
+                .color-6();
             }
         }
         .task-output-head-output {
@@ -84,7 +88,7 @@
             color: #446ffd;
             .santd-icon {
                 margin: 0 5px 0 0;
-                color: #333;
+                color: #8c8c8c;
             }
         }
     }
@@ -92,7 +96,8 @@
         height: calc(100% - 81px);
         padding: 18px 36px;
         border-radius: 18px;
-        background-color: #fff;
+        background-color: #212226;
+        .background-color-1();
         .task-output-content {
             height: 100%;
         }
@@ -119,9 +124,9 @@
             text-align: center;
             cursor: pointer;
             font-size: 15px;
-            color: #666;
+            .color-5();
             &.active {
-                background-color:#236eff;
+                .background-color-7();
                 color: #fff;
             }
             &:first-child {

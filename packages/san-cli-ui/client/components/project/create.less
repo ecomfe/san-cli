@@ -1,7 +1,8 @@
+@import '../../assets/darkmode.less';
 .project-options {
     overflow: auto;
     .container {
-        background-color: #fff;
+        .background-color-1();
         border-radius: 18px;
         box-shadow: 0 2px 10px 3px rgba(228, 228, 228, .3);
         margin-top: 21px;
@@ -17,7 +18,7 @@
         .santd-form-item-no-colon {
             font-weight: 500;
             font-size: 18px;
-            color: #333;
+            .color-4();
         }
         .santd-form-item-label {
             margin-right: 12px;
@@ -28,6 +29,8 @@
             height: 42px;
             padding-left: 16px;
             font-size: 16px;
+            .background-color-1();
+            .color-4();
         }
         .santd-select-selection {
             height: 42px;
@@ -35,17 +38,23 @@
             display: flex;
             align-items: center;
             padding-left: 4px;
+            .background-color-1();
+            .color-4();
             .santd-icon {
                 font-size: 18px;
                 margin-right: 8px;
-                color: #666;
+                .color-5();
             }
+        }
+        .cwd {
+            color: #666;
         }
     }
 }
 .create-dropdown {
     .santd-select-dropdown-menu {
         border-radius: 21px;
+        .background-color-1();
         .santd-select-dropdown-menu-item {
             height: 41px;
             display: flex;
@@ -55,7 +64,7 @@
                 content: '';
                 width: calc(100% - 48px);
                 height: 1px;
-                background-color: #eee;
+                .background-color-6();
                 position: absolute;
                 left: 50%;
                 transform: translateX(-50%);
