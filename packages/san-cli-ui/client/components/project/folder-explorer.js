@@ -87,7 +87,9 @@ export default class FolderExplorer extends Component {
                             class="contents-menu"
                             on-click="onMoreMenuClick"
                         >
-                            <s-menu-item key="showCreateModal">
+                            <s-menu-item
+                                key="showCreateModal"
+                                disabled="{{currentPath === '/Users' || currentPath === '/'}}">
                                 {{$t('project.select.folderExplorer.menu.createFolder')}}
                             </s-menu-item>
                             <s-menu-item key="showHiddenFolder">
