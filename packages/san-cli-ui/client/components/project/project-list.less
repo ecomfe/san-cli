@@ -1,7 +1,8 @@
+@import '../../assets/darkmode.less';
 .project {
     width: 100%;
     .loading {
-        color: #1890ff;
+        .color-6();
         font-size: 32px;
     }
     .empty-tip {
@@ -22,11 +23,14 @@
                     margin-bottom: 10px;
                 }
             }
+            .santd-btn-background-ghost {
+                .color-6();
+            }
         }
     }
     h3 {
         font-weight: normal;
-        color: #446ffd;
+        .color-3();
         font-size: 20px;
     }
     .favorite {
@@ -62,5 +66,9 @@
         button + button {
             margin-left: 16px;
         }
+    }
+    .santd-icon-folder {
+        .color-6();
+        font-size:20px
     }
 }

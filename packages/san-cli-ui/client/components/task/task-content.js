@@ -18,6 +18,7 @@ import TASK_LOGS from '@graphql/task/taskLogs.gql';
 import PROMPT_ANSWER from '@graphql/prompt/promptAnswer.gql';
 import TASK_SAVE_PARAMETERS from '@graphql/task/taskSaveParameters.gql';
 import TASK_RESTORE_PARAMETERS from '@graphql/task/taskRestoreParameters.gql';
+import UI_THEME from '@graphql/theme/theme.gql';
 import 'xterm/css/xterm.css';
 import './task-content.less';
 
@@ -389,14 +390,26 @@ export default class TaskContent extends Component {
         });
     }
 
-    initTerminal() {
-        const terminal = new Terminal({
-            theme: {
+    async initTerminal() {
+        const res = await this.$apollo.query({query: UI_THEME});
+        let terminalTheme;
+        if (res && res.data && res.data.theme === 'darkmode') {
+            terminalTheme = {
+                foreground: '#fff',
+                background: '#212226',
+                cursor: '#fff',
+                selection: '#e6f7ff'
+            };
+        } else {
+            terminalTheme = {
                 foreground: '#2c3e50',
                 background: '#fff',
                 cursor: '#fff',
                 selection: '#e6f7ff'
-            }
+            };
+        }
+        const terminal = new Terminal({
+            theme: terminalTheme
         });
         terminal.loadAddon(new WebLinksAddon());
         const fitAddon = new FitAddon();

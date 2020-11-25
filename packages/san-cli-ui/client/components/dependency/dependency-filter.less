@@ -1,18 +1,19 @@
+@import '../../assets/darkmode.less';
 .dependency-filter {
     opacity: .5;
     width: 275px;
     margin-right: 24px;
     input {
         border-radius: 20px;
-        border-color: #377bff;
-        color: #377bff;
+        .border-color-1();
+        .color-6();
         padding-left: 15px;
         &::placeholder {
-            color: #377bff;
+            .color-2();
         }
     }
     .santd-icon {
-        color: #377bff;
+        .color-6();
         margin-right: 5px;
         font-size: 18px;
         display: flex;

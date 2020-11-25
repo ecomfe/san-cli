@@ -57,11 +57,13 @@ type Query {
   cwd: String!
   clientAddons: [ClientAddon]
   sharedData (id: ID!, projectId: ID!): SharedData
+  theme: String
 }
 
 type Mutation {
   fileOpenInEditor (input: OpenInEditorInput!): Boolean
   sharedDataUpdate (id: ID!, projectId: ID!, value: JSON!): SharedData
+  themeChange (theme: String!): Boolean
 }
 
 type Subscription {

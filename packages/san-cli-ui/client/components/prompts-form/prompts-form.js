@@ -4,6 +4,7 @@
  */
 import Component from '@lib/san-component';
 import FormTree from './form-tree';
+import './prompts-form.less';
 
 /**
  * 组件props

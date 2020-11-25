@@ -1,3 +1,4 @@
+@import '~san-cli-ui/client/assets/darkmode.less';
 .build-status {
     height: 208px;
     .first-row {
@@ -8,10 +9,10 @@
         .value {
             font-size: 24px;
             font-weight: 500;
-            color: #236eff;
+            .color-10();
         }
         .label {
-            color: #333;
+            .color-4();
             font-size: 16px;
             margin-top: 1px;
         }
@@ -21,7 +22,7 @@
     }
     .error, .warning {
         .value {
-            color: #333;
+            .color-4();
         }
     }
 }

@@ -1,16 +1,16 @@
-@import '../../assets/vars.less';
+@import '../../assets/darkmode.less';
 .page-sidebar {
     padding-top: 60px;
     .sidebar-dropdown {
         position: absolute;
         left: 0;
         top: 0;
-        background-color: @primary-color;
+        .background-color-9();
         z-index: 11;
         cursor: pointer;
         color: #fff;
         &:hover {
-            background-color: #0051ec;
+            .background-color-10();
         }
         .project-name {
             width: 151px;
@@ -34,7 +34,7 @@
     }
     .sidebar-menu {
         height: 100%;
-        background-color: @primary-color;
+        .background-color-9();
         border-right: none;
         .santd-menu-item {
             font-size: 16px;
@@ -45,6 +45,7 @@
             line-height: 64px;
             &:hover {
                 opacity: 1;
+                .background-color-10();
             }
             & > a {
                 text-decoration: none;
@@ -78,7 +79,7 @@
             }
         }
         .santd-menu-item-selected {
-            background-color: #0051ec;
+            .background-color-10();
             opacity: 1;
             &::before {
                 content: '';
@@ -87,7 +88,7 @@
                 position: absolute;
                 left: 0;
                 top: 0;
-                background-color: #fff;
+                .background-color-11();
                 border-radius: 3px;
             }
         }

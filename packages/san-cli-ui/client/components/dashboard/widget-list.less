@@ -1,25 +1,28 @@
 
-@import '../../assets/vars.less';
+@import '../../assets/darkmode.less';
 .widget-list {
     position: relative;
     z-index: 1;
-    .v-box();
+    display: flex;
+    flex-direction: column;
     .widget-list-content {
         box-shadow: 0 2px 10px 3px rgba(228, 228, 228, .3);
         width: calc(100% + 12px);
         height: calc(100% + 24px);
         position: absolute;
         top: -12px;
-        background-color: #fff;
+        .background-color-1();
         .title-bar {
-            .h-box();
-            .box-center();
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
             padding: 12px 24px 6px;
             .title {
                 flex: 100% 1 1;
                 width: 0;
                 font-size: 20px;
-                color: #446ffd;
+                .color-3();
                 font-weight: 500;
             }
             .icon-button {
@@ -36,17 +39,17 @@
                 opacity: .5;
                 input {
                     border-radius: 21px;
-                    border: 1px solid #377bff;
+                    .border-color-1();
                     font-size: 16px;
-                    color: #377bff;
+                    .color-6();
                     padding-left: 14px;
                     &::placeholder {
-                        color: #377bff;
+                        .color-2();
                     }
                 }
                 .santd-icon {
                     font-size: 16px;
-                    color: #377bff;
+                    .color-6();
                     display: flex;
                     align-items: center;
                     margin-right: 3px;
@@ -63,11 +66,13 @@
             &,
             .actions,
             .info {
-                .h-box();
-                .box-center();
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
             }
             &:hover {
-                background-color: @light-primary-color;
+                .background-color-14();
             }
             .info {
                 flex: 1;
@@ -85,10 +90,10 @@
     }
 }
 .custom-body {
-    padding: 0 24px @padding16;
+    padding: 0 24px 16px;
     .details {
         display: flex;
-        margin-bottom: @padding16;
+        margin-bottom: 16px;
     }
     .instances {
         font-size: 16px;
@@ -96,6 +101,6 @@
 }
 .item-icon {
     font-size: 32px;
-    margin-right: @padding16;
-    color: @primary-color;
+    margin-right: 16px;
+    .color-1();
 }
