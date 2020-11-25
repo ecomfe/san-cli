@@ -235,7 +235,7 @@ class Plugins {
 
     serve(req, res) {
         const {id: pluginId, 0: file} = req.params;
-        this.serveFile({pluginId, file: path.join('ui-public', file)}, res);
+        this.serveFile({pluginId, file: path.join('public', file)}, res);
     }
 
     serveFile({pluginId, projectId = null, file}, res) {
