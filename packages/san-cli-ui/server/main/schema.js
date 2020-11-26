@@ -53,6 +53,11 @@ input OpenInEditorInput {
   column: Int
 }
 
+type Cwd {
+  path: String!
+  isWritable: Boolean
+}
+
 type Query {
   cwd: String!
   clientAddons: [ClientAddon]
@@ -67,7 +72,7 @@ type Mutation {
 }
 
 type Subscription {
-  cwdChanged: String!
+  cwdChanged: Cwd
   clientAddonAdded: ClientAddon
   sharedDataUpdated (id: ID!, projectId: ID!): SharedData
 }
