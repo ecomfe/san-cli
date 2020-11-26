@@ -2,8 +2,8 @@
  * @file san config
  */
 const path = require('path');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const resolve = pathname => path.resolve(__dirname, pathname);
-
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 
 // 生产环境下的静态目录
@@ -42,6 +42,8 @@ module.exports = {
         '@components': resolve('components')
     },
     chainWebpack: config => {
+        config.plugin('clean-webpack-plugin').use(CleanWebpackPlugin);
+
         // 这里可以用来扩展 webpack 的配置，使用的是 webpack-chain 语法
         config.module.rule('html')
             .use('html-loader')

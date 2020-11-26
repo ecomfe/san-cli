@@ -7,7 +7,7 @@ import './news.less';
 
 export default {
     template: /* html */`
-        <div class="news">
+        <div class="dashboard-widget-news">
             <div s-if="loading" class="widget-loading">
                 <s-spin spinning="{=loading=}">
                     <s-icon slot="indicator" type="loading" style="font-size: 24px;" />

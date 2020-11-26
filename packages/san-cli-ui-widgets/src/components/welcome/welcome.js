@@ -8,7 +8,7 @@ import sanLogo from '../../assets/san-white.svg';
 
 export default {
     template: /* html */`
-        <div class="welcome">
+        <div class="dashboard-widget-welcome">
             <div class="logo-wrapper">
                 <img src="{{sanLogo}}" class="logo"/>
             </div>
