@@ -21,8 +21,18 @@ class Cwd {
             return;
         }
         this.cwd = value;
+        let isWritable;
+        try {
+            fs.accessSync(value, fs.constants.W_OK);
+            isWritable = true;
+        } catch (err) {
+            isWritable = false;
+        }
         context.pubsub.publish(CWD_CHANGED, {
-            cwdChanged: value
+            cwdChanged: {
+                path: value,
+                isWritable
+            }
         });
         try {
             process.chdir(value);

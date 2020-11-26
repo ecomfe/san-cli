@@ -87,7 +87,9 @@ export default class FolderExplorer extends Component {
                             class="contents-menu"
                             on-click="onMoreMenuClick"
                         >
-                            <s-menu-item key="showCreateModal">
+                            <s-menu-item
+                                key="showCreateModal"
+                                disabled="{{!isPathWritable}}">
                                 {{$t('project.select.folderExplorer.menu.createFolder')}}
                             </s-menu-item>
                             <s-menu-item key="showHiddenFolder">
@@ -153,6 +155,7 @@ export default class FolderExplorer extends Component {
         return {
             logo,
             currentPath: '', // 当前路径
+            isPathWritable: true,
             inputValue: '', // 输入框的值
             separator: '', // 分隔符
             editing: false,
@@ -177,8 +180,9 @@ export default class FolderExplorer extends Component {
                     console.log('err');
                 }
 
-                if (data && data.cwd) {
-                    this.data.set('currentPath', data.cwd);
+                if (data && data.cwd && data.cwd.path) {
+                    this.data.set('currentPath', data.cwd.path);
+                    this.data.set('isPathWritable', data.cwd.isWritable);
                     this.folderApollo();
                 }
             },
