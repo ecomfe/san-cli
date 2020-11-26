@@ -1,0 +1,11 @@
+{
+    "baseUrl": "http://127.0.0.1:8899",
+    "video": false,
+    "pluginsFile": false,
+    "supportFile": false,
+    "experimentalNetworkStubbing": true,
+    "fixturesFolder": "__tests__/e2e/fixtures",
+    "integrationFolder": "__tests__/e2e/specs",
+    "screenshotsFolder": "__tests__/e2e/screenshots",
+    "testFiles": ["**/*.js"]
+}

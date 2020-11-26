@@ -1,7 +1,9 @@
-.news {
+@import '~san-cli-ui/client/assets/darkmode.less';
+.dashboard-widget-news {
     height: 100%;
     display: flex;
-    border-top: 1px solid #eee;
+    border-top: 1px solid;
+    .border-color-3();
     .widget-loading {
         width: 100%;
     }
@@ -36,7 +38,7 @@
                 content: '';
                 width: calc(100% - 48px);
                 height: 1px;
-                background-color: #eee;
+                .background-color-6();
                 position: absolute;
                 bottom: 0;
                 left: 50%;
@@ -49,7 +51,7 @@
             }
             .title {
                 font-size: 18px;
-                color: #236eff;
+                .color-11();
                 font-weight: 500;
                 display: -webkit-box;
                 -webkit-box-orient: vertical;
@@ -85,6 +87,7 @@
     main {
         width: calc(100% - 320px);
         overflow: auto;
+        .color-8();
     }
     .media {
         margin-top: 16px;

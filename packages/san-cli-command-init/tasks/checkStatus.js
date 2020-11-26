@@ -80,7 +80,7 @@ module.exports = (template, dest, options) => {
             // 直接复制，不下载 icode 代码
             const templatePath = getLocalTplPath(template);
             if (fs.existsSync(templatePath)) {
-                // 添加 本地template 路径
+                // 添加本地 template 路径
                 ctx.localTemplatePath = templatePath;
             }
             else {

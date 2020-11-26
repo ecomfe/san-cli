@@ -7,7 +7,7 @@ import './kill-port.less';
 
 export default {
     template: /* html */`
-        <div class="kill-port">
+        <div class="dashboard-widget-kill-port">
             <div class="status status-{{status}}">
                 <s-icon type="{{icons[status]}}"/>
                 <div class="info">

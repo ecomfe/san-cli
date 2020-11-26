@@ -13,6 +13,7 @@ import Home from './home';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_CWD_RESET from '@graphql/project/projectCwdReset.gql';
 import PLUGINS from '@graphql/plugin/plugins.gql';
+import UI_THEME from '@graphql/theme/theme.gql';
 
 const app = {
     initClientAddons() {
@@ -145,11 +146,16 @@ const app = {
         await apolloClient.query({query: PLUGINS});
     },
 
-    init() {
+    async init() {
         this.initClientAddons();
         this.initRoutes();
         this.resetProjectCwd();
         router.start();
+
+        const res = await apolloClient.query({query: UI_THEME});
+        if (res && res.data && res.data.theme) {
+            document.body.classList.add(res.data.theme);
+        }
     }
 };
 

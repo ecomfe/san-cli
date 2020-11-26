@@ -7,6 +7,7 @@ import ConnectionStatus from '@components/connection-status';
 import HeaderTitle from '@components/layout/header';
 import Sidebar from '@components/layout/sidebar';
 import ClientAddon from '@components/client-addon';
+import MoreBtn from '@components/layout/more-btn';
 import DashboardHeader from './dashboard/header';
 import DashboardContent from './dashboard/content';
 import DependencyHeader from './dependency/header';
@@ -35,6 +36,7 @@ export default class App extends Component {
                     <c-plugins-header
                         s-else-if="routeNav === 'plugins'"
                     />
+                    <c-more-btn></c-more-btn>
                 </div>
             </s-layout-header>
 
@@ -88,7 +90,8 @@ export default class App extends Component {
         'c-dependency-content': DependencyContent,
         'c-configuration-content': ConfigurationContent,
         'c-task-content': TaskContent,
-        'c-client-addon': ClientAddon
+        'c-client-addon': ClientAddon,
+        'c-more-btn': MoreBtn
     };
 
     static computed = {

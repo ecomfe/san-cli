@@ -12,7 +12,7 @@ import './run-task.less';
 
 export default {
     template: /* html */`
-        <div class="run-task">
+        <div class="dashboard-widget-run-task">
             <template s-if="task">
                 <div class="task-icon" style="color: {{iconColor}}">{{task.name[0] | upper}}</div>
                 <div class="task-name text" style="color: {{iconColor}}">{{task.name}}</div>

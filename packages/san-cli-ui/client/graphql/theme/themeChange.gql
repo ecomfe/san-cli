@@ -1,0 +1,3 @@
+mutation themeChange ($theme: String!) {
+    themeChange (theme: $theme)
+}

@@ -1,4 +1,4 @@
-@import '../../assets/vars.less';
+@import '../../assets/darkmode.less';
 .list-head-right {
     height: 100%;
     align-items: center;
@@ -9,22 +9,22 @@
         margin-right: 24px;
         input {
             border-radius: 20px;
-            border-color: @border-color;
-            color: @border-color;
+            .border-color-1();
+            .color-6();
             padding-left: 15px;
             &::placeholder {
-                color: @border-color;
+                .color-2();
             }
         }
         .santd-icon {
-            color: @border-color;
+            .color-6();
         }
     }
     .dropdown {
         line-height: normal;
     }
     a {
-        color: rgba(0, 0, 0, .65);
+        .color-4();
     }
 
     .santd-menu-horizontal {

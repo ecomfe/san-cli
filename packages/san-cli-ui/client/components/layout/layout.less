@@ -1,3 +1,4 @@
+@import '../../assets/darkmode.less';
 html,
 body,
 .h1oh {
@@ -46,7 +47,7 @@ body,
 
 .com-sub-title {
     font-size: 20px;
-    color: #446eed;
+    .color-3();
     font-weight: 500;
 }
 
@@ -73,13 +74,13 @@ body,
 }
 
 .santd-btn-primary {
-    background-color: #236eff;
+    .background-color-7();
     border: none;
 }
 
 .santd-btn-primary[disabled], .santd-btn-primary[disabled]:hover {
     color: #fff;
-    background-color: #236eff;
+    .background-color-7();
     opacity: .3;
 }
 
@@ -88,7 +89,7 @@ body,
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    background-image: url(../../assets/empty-tip.svg);
+    .background-image-5();
     background-repeat: no-repeat;
     width: 272px;
     padding-top: 292px;
