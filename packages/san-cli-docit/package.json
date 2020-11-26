@@ -28,11 +28,11 @@
         "san-loader"
     ],
     "scripts": {
-        "dev": "cd test/cypress/docs && node ../../../../san-cli/index.js docit .",
-        "dev:e2e": "npm run dev & cypress open --project test",
+        "dev": "cd example && node ../../san-cli/index.js docit .",
+        "dev:e2e": "npm run dev & cypress open",
         "build": "webpack",
-        "build:e2e": "cd test/cypress/docs && node ../../../../san-cli/index.js docit . --output",
-        "test": "npm run build:e2e && node test/runner.js run --project test"
+        "test": "start-server-and-test dev http://localhost:8899 test:e2e",
+        "test:e2e": "cypress run"
     },
     "dependencies": {
         "fs-extra": "^8.1.0",
@@ -51,9 +51,8 @@
         "webpack-cli": "^3.3.11"
     },
     "devDependencies": {
-        "cross-spawn": "^7.0.3",
         "cypress": "5.6.0",
-        "http-server": "^0.12.3"
+        "start-server-and-test": "^1.11.5"
     },
     "gitHead": "402d813859ac219434712fa2063e5f724819004a"
 }
