@@ -52,10 +52,11 @@ SAN_REMOTE_XIAOMING_HOST=http://www.xiaoming.com:8080
 # 执行
 san build --remote xiaoming
 ```
-!> 上例解读：
-!>
-!> 1. 命名规则 **SAN_REMOTE_（ remote-name 名称大写）_ (参数名称大写，驼峰处改用下划线分割)**；<br/>2. 将 tpl、js、css 文件代码中 http://www.cdnstatic.com 替换成 http://test.bdstatic.com:8888 。
 
+::: warning 上例解读
+1. 命名规则 **SAN_REMOTE_（ remote-name 名称大写）_ (参数名称大写，驼峰处改用下划线分割)**；
+2. 将 tpl、js、css 文件代码中 http://www.cdnstatic.com 替换成 http://test.bdstatic.com:8888 。
+:::
 
 ## 简单说实现
 
@@ -87,7 +88,8 @@ plugins: [
 ]
 ```
 
-!> remoteObj 即为上方部署中的相关配置参数。
-
+::: warning
+remoteObj 即为上方部署中的相关配置参数。
+:::
 
 

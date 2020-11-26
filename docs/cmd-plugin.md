@@ -34,8 +34,9 @@ exports.handler = argv => {
 
 将 Command 插件扩展到自己的 San CLI 中有两种方式：预设文件和`package.json`两种方式。
 
-
-!> 预设文件是放到电脑的 home 目录的，而且是全局的，所以个人配置的预设只是自己本人的，而不会影响到团队/项目；如果 Command 放到`package.json`，那么可以在这里执行 San CLI 命令，则会被执行。
+::: warning
+预设文件是放到电脑的 home 目录的，而且是全局的，所以个人配置的预设只是自己本人的，而不会影响到团队/项目；如果 Command 放到`package.json`，那么可以在这里执行 San CLI 命令，则会被执行。
+:::
 
 ### 1. 预设文件
 

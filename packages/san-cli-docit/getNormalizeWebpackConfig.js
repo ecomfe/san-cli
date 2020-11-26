@@ -118,6 +118,9 @@ module.exports = function getNormalizeWebpackConfig(
         mdOptions = Object.assign(mdOptions, {
             cwd: docContext,
             rootUrl: publicPath,
+            siteName: docit.siteName,
+            sidebar,
+            navbar,
             codebox
         });
 
@@ -129,11 +132,16 @@ module.exports = function getNormalizeWebpackConfig(
             .loader('san-cli-markdown-loader')
             .options(mdOptions);
         // 添加插件
-        webpackConfig.plugin('san-cli-markdown-loader-plugin').use(require('san-cli-markdown-loader/plugin'));
+        webpackConfig
+            .plugin('san-cli-markdown-loader-plugin')
+            .use(require('san-cli-markdown-loader/plugin'));
     });
 
     // 开始正式的操作
     let webpackConfig = api.getWebpackConfig();
+    webpackConfig.devtool = false;
+    // 默认san的spa版本，不支持组件反解
+    delete webpackConfig.resolve.alias.san;
     debug('webpack config %O', webpackConfig);
     if (argv.output) {
         // build 模式，删掉 webpack devServer；

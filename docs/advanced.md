@@ -237,7 +237,9 @@ module.exports = {
 };
 ```
 
-!> 这里特殊说明下，`middleware`传入的是一个 function，并且**返回**一个中间件。
+::: warning
+这里特殊说明下，`middleware`传入的是一个 function，并且**返回**一个中间件。
+:::
 
 ## 更多
 
