@@ -4,6 +4,7 @@
  */
 import Component from '@lib/san-component';
 import FormTree from './form-tree';
+import './prompts-form.less';
 
 /**
  * 组件props
@@ -28,8 +29,8 @@ export default class PromptsForm extends Component {
                     title="{{prompt.name}}" 
                     label="{{(prompt.label || prompt.message) | textFormat}}"
                     extra="{{prompt.description | textFormat}}"
-                    labelCol="{{prompt.formItemLayout.labelCol}}"
-                    wrapperCol="{{prompt.formItemLayout.wrapperCol}}">
+                    labelCol="{{prompt.formItemLayout.labelCol || formItemLayout.labelCol}}"
+                    wrapperCol="{{prompt.formItemLayout.wrapperCol || formItemLayout.wrapperCol}}">
                     <template s-if="prompt.type === 'list'">
                         <s-select
                             value="{=prompt.value=}"

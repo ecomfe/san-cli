@@ -1,3 +1,4 @@
+@import '../../assets/darkmode.less';
 .dependency-search-wrap {
     height: 100%;
     .dependency-search {
@@ -21,8 +22,10 @@
                 width: 160px;
                 height: 40px;
                 font-size: 16px;
-                color: #333;
+                .color-8();
                 border-radius: 20px;
+                .border-color-2();
+                .background-color-1();
             }
         }
         .pkg-radio {
@@ -36,7 +39,7 @@
                 justify-content: center;
                 align-items: center;
                 font-size: 16px;
-                color: rgba(102, 102, 102, .5);
+                .color-9();
                 background-color: rgba(204, 210, 217, .2);
                 border: none;
                 &:first-child {
@@ -50,10 +53,10 @@
                 &:focus-within {
                     outline: none;
                 }
-            }
-            .santd-radio-button-wrapper-checked {
-                color: #fff;
-                background-color: #236eff;
+                &.santd-radio-button-wrapper-checked {
+                    color: #fff;
+                    .background-color-7();
+                }
             }
         }
         .pkg-search-item {

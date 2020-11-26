@@ -17,7 +17,7 @@ export default {
             </div>
             <div class="tips">
                 <div s-for="n in num" class="tip">
-                    <s-icon type="{{tipIcons[n - 1]}}" style="font-size: 26px; color: #1890ff"/>
+                    <s-icon type="{{tipIcons[n - 1]}}"/>
                     <div class="message">
                         {{$t('dashboard.widgets.welcome.content.tips' + n) | raw}}
                     </div>

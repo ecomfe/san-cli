@@ -5,6 +5,7 @@
 import Component from '@lib/san-component';
 import ConnectionStatus from '@components/connection-status';
 import HeaderTitle from '@components/layout/header';
+import MoreBtn from '@components/layout/more-btn';
 import ListHeader from './list/header';
 import ListContent from './list/content';
 import CreateHeader from './create/header';
@@ -29,6 +30,7 @@ export default class App extends Component {
                     <c-import-header
                         s-else-if="routeNav === 'import'"
                     />
+                    <c-more-btn></c-more-btn>
                 </div>
             </s-layout-header>
 
@@ -64,7 +66,8 @@ export default class App extends Component {
         'c-create-header': CreateHeader,
         'c-create-content': CreateContent,
         'c-import-header': ImportHeader,
-        'c-import-content': ImportContent
+        'c-import-content': ImportContent,
+        'c-more-btn': MoreBtn
     };
 
     static computed = {

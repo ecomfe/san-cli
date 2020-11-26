@@ -1,7 +1,8 @@
+@import '~san-cli-ui/client/assets/darkmode.less';
 .task-dashboard {
     padding-top: 20px;
     .header {
-        background-color: #fff;
+        .background-color-1();
         border-radius: 18px;
         box-shadow: 0 2px 10px 3px rgba(228, 228, 228, .3);
         height: 68px;
@@ -11,7 +12,7 @@
         padding: 0 24px;
         .header-title {
             font-size: 20px;
-            color: #333;
+            .color-4();
         }
         .header-btn {
             height: 36px;
@@ -34,11 +35,14 @@
         border-radius: 18px;
         text-align: center;
         box-shadow: 0 2px 10px 3px rgba(228, 228, 228, .3);
+        .background-color-1();
         .santd-card-head {
             height: 40px;
             display: flex;
             justify-content: center;
             align-items: center;
+            .color-4();
+            .border-color-3();
         }
     }
     .empty {
