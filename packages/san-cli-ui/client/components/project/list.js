@@ -11,7 +11,7 @@ export default class ProjectList extends Component {
     static template = /* html */`
         <div class="project-list">
             <div
-                class="list-item{{lastOpenProject === item.id ? ' last-clicked-item' : ''}}"
+                class="list-item{{lastOpenProject === item.id ? ' last-open-project' : ''}}"
                 s-for="item, index in list"
                 on-click="handleClick(item, index)">
                 

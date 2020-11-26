@@ -1,6 +1,7 @@
+@import '../../assets/darkmode.less';
 .config-content {
     margin: 24px;
-    background-color: #fff;
+    .background-color-12();
     border-radius: 18px;        
     box-shadow: 0 2px 10px 3px rgba(228, 228, 228, .3);
     padding-top: 68px;
@@ -21,7 +22,7 @@
     .santd-form-item-no-colon {
         font-weight: 500;
         font-size: 18px;
-        color: #333;
+        .color-4();
     }
     .santd-input {
         border-radius: 21px;
@@ -48,7 +49,7 @@
                 content: '';
                 width: calc(100% - 24px);
                 height: 1px;
-                background-color: #eee;
+                .background-color-6();
                 position: absolute;
                 left: 50%;
                 transform: translateX(-50%);

@@ -48,7 +48,6 @@ module.exports = class TaskList {
                     // 这几种状态不能重设了
                     throw new SError(`Error status: ${this._status} → ${status}`);
                 }
-
                 break;
             default:
                 throw new SError('Error status: ' + status);

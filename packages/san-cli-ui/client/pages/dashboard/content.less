@@ -1,4 +1,4 @@
-@import '../../assets/vars.less';
+@import '../../assets/darkmode.less';
 .dashboard-content {
     display: flex;
     flex-direction: row;
@@ -6,7 +6,8 @@
     box-sizing: border-box;
     &.empty {
         position: relative;
-        .box-center();
+        align-items: center;
+        justify-content: center;
     }
     .widgets {
         flex: auto 1 1;
@@ -26,6 +27,8 @@
     }
     .icon-button {
         border: 0;
+        .background-color-1();
+        .color-4();
     }
     .widget-list {
         height: 100%;

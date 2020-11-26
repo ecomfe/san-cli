@@ -8,6 +8,9 @@
     "import": {
         "title": "导入项目"
     },
+    "moreBtn": {
+        "darkmode": "深色模式"
+    },
     "project": {
         "select": {
             "menu": [{

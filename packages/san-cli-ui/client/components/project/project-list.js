@@ -73,7 +73,7 @@ export default class ProjectList extends Component {
                     value="{=projectName=}"
                     size="large"
                 >
-                    <s-icon type="folder" style="color: #1890ff;font-size:20px" theme="filled" slot="prefix" ></s-icon>
+                    <s-icon type="folder" theme="filled" slot="prefix"></s-icon>
                 </s-input>
             </s-modal>
         </div>
