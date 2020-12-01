@@ -43,7 +43,7 @@ exports.handler = cliApi => {
             /* eslint-disable no-console */
             console.log();
             console.log(`✨ Application is running at: ${textCommonColor(networkUrl)}`);
-            if (process.env.SAN_CLI_UI_DEV !== 'true') {
+            if (process.env.SAN_CLI_UI_DEV !== 'true' && process.env.SAN_CLI_UI_TEST !== 'true') {
                 // 打开浏览器地址
                 openBrowser(networkUrl);
             }

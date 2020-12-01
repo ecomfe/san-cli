@@ -4,6 +4,7 @@
 */
 
 const isProduction = process.env.NODE_ENV === 'production';
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 module.exports = function ({id, port = 8889}) {
     return {
@@ -25,6 +26,7 @@ module.exports = function ({id, port = 8889}) {
             }
         },
         chainWebpack: config => {
+            config.plugin('clean-webpack-plugin').use(CleanWebpackPlugin);
             config.plugins.delete('preload');
             config.plugins.delete('prefetch');
             config.module.rule('gql')

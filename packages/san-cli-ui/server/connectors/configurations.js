@@ -50,7 +50,7 @@ class Configurations {
             }
         }
     }
-    readFile(config, fileDescriptor, context) {
+    readFile(fileDescriptor, context) {
         const file = this.findFile(fileDescriptor, context);
         let fileData = {};
         if (file) {
@@ -83,7 +83,7 @@ class Configurations {
             for (const fileId in config.files) {
                 if (config.files.hasOwnProperty(fileId)) {
                     const fileDescriptor = config.files[fileId];
-                    const {file, fileData} = this.readFile(config, fileDescriptor, context);
+                    const {file, fileData} = this.readFile(fileDescriptor, context);
                     config.foundFiles[fileId] = file;
                     data[fileId] = fileData;
                 }
