@@ -150,12 +150,13 @@ export default class Project extends Component {
         this.data.set('projectTemplateList', data.projectTemplateList);
     }
 
-    async initProject(template) {
+    async initProject({template, useCache}) {
         this.setLoading(true);
         const {data} = await this.$apollo.mutate({
             mutation: PROJECT_INIT_TEMPLATE,
             variables: {
-                template
+                template,
+                useCache
             }
         });
         this.setLoading(false);

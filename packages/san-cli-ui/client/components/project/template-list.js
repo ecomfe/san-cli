@@ -34,7 +34,7 @@ export default class ProjectList extends Component {
                     </s-select>
                 </s-formitem>
 
-                <s-formitem label="{{$t('scaffold.customLabel')}}" 
+                <s-formitem label="{{$t('scaffold.customLabel')}}"
                     s-if="projectTemplateList.length && !currentTemplate[0]">
                     <s-input 
                         class="com-santd-input-normal"
@@ -42,7 +42,11 @@ export default class ProjectList extends Component {
                         value="{=customTemplate=}"></s-input>
                 </s-formitem>
 
-                <s-formitem s-if="!hideSubmitBtn" 
+                <s-formitem label="{{$t('scaffold.useCache')}}" class="cache-switch">
+                    <s-switch on-change='changeUseCache' defaultChecked="{{useCache}}"></s-switch>
+                </s-formitem>
+
+                <s-formitem s-if="!hideSubmitBtn"
                     wrapper-col="{{formItemLayout.tailWrapperCol}}">
                     <s-button type="primary" html-type="submit">{{$t('confirmText')}}</s-button>
                 </s-formitem>
@@ -65,7 +69,8 @@ export default class ProjectList extends Component {
                         offset: 4
                     }
                 }
-            }
+            },
+            useCache: true
         };
     }
 
@@ -89,6 +94,13 @@ export default class ProjectList extends Component {
             }
         }
 
-        this.fire('submit', template);
+        this.fire('submit', {
+            template,
+            useCache: this.data.get('useCache')
+        });
+    }
+
+    changeUseCache(e) {
+        this.data.set('useCache', e);
     }
 }

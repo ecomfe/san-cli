@@ -1,6 +1,6 @@
 /**
  * @file 项目相关的API
- * @author jinzhan
+ * @author jinzhan, Lohoyo
  */
 
 const path = require('path');
@@ -76,7 +76,7 @@ class Projects {
         let tmp = getLocalTplPath(template);
 
         // 1. 优先使用缓存
-        if (fs.existsSync(tmp)) {
+        if (useCache && fs.existsSync(tmp)) {
             debug(`🥰 Using local template from ${tmp}`);
         }
         else {
