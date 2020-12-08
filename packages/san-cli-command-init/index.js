@@ -65,10 +65,10 @@ exports.handler = cliApi => {
     let {template, appName} = cliApi;
     let {templateAlias: templateAliasMap} = cliApi.getPresets() || {};
     if (appName === undefined && template) {
-        // 只有一个参数，这个默认是使用当前文件夹，把 appName 当成是脚手架地址
-        appName = template;
-        template = defaultTemplate;
-        warn(`Use ${defaultTemplate} as scaffold template.`);
+        // 只有一个参数，默认使用当前文件夹
+        appName = './';
+        const folderName = process.cwd().split('/').pop();
+        warn(`Use ${folderName} as project name`);
     }
     else if (template === undefined) {
         // 两个参数都没有
