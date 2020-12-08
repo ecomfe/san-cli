@@ -1,6 +1,6 @@
 # Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/project/projectInitTemplate.gql
-mutation projectInitTemplate ($template: String) {
-  projectInitTemplate (template: $template) {
+mutation projectInitTemplate ($template: String, $useCache: Boolean) {
+  projectInitTemplate (template: $template, useCache: $useCache) {
     prompts {
       name
       type

@@ -12,7 +12,7 @@ extend type Query {
 }
 
 extend type Mutation {
-  projectInitTemplate (template: String): ProjectInitTemplate
+  projectInitTemplate (template: String, useCache: Boolean): ProjectInitTemplate
   projectCreation (name: String, template: String, presets: JSON): ProjectCreation
   projectSetFavorite(id: ID, favorite: Int): Project
   projectImport (path: String, force: Boolean): Project!
