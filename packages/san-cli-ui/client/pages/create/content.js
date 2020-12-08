@@ -9,6 +9,7 @@ import FolderExplorer from '@components/project/folder-explorer';
 import CWD from '@graphql/cwd/cwd.gql';
 import PROJECT_INIT_TEMPLATE from '@graphql/project/projectInitTemplate.gql';
 import PROJECT_TEMPLATE_LIST from '@graphql/project/projectTemplateList.gql';
+import CONSOLE_LOG_ADDED from '@graphql/console/consoleLogAdded.gql';
 import './content.less';
 
 export default class Project extends Component {
@@ -32,6 +33,7 @@ export default class Project extends Component {
             s-ref="create"
             prompts="{{projectPrompts}}"
             cwd="{{cwd}}"
+            on-setloading="setLoading"
         />
 
         <!---底部按钮--->
@@ -70,6 +72,12 @@ export default class Project extends Component {
                 type="primary"
             >{{$t('project.components.create.submitText')}}</s-button>
         </div>
+
+        <div s-if="isLoading" class="loading">
+            <s-spin tip="{{loadingTip}}" spinning="{{isLoading}}" size="large">
+                <s-icon slot="indicator" type="loading" style="font-size: 30px;"></s-icon>
+            </s-spin>
+        </div>
     </div>
     `;
 
@@ -83,11 +91,12 @@ export default class Project extends Component {
         return {
             cwd: '',
             projectPrompts: [],
-            pageLoading: false,
+            isLoading: false,
             current: 0,
             isPackage: false,
             projectTemplateList: [],
-            projectTemplate: ''
+            projectTemplate: '',
+            loadingTip: ''
         };
     }
 
@@ -96,6 +105,15 @@ export default class Project extends Component {
         if (res.data) {
             this.data.set('cwd', res.data.cwd);
         }
+        // add a subscribe for fetch the console.log from command line
+        this.observer = this.$apollo.subscribe({
+            query: CONSOLE_LOG_ADDED
+        });
+        this.observer.subscribe({
+            next: ({data}) => {
+                this.data.set('loadingTip', data.consoleLogAdded.message);
+            }
+        });
     }
 
     handleCwdChange({path, isPackage}) {
@@ -123,24 +141,24 @@ export default class Project extends Component {
 
     // 获取可选的脚手架
     async getProjectTemplateList() {
-        this.data.set('pageLoading', true);
+        this.setLoading(true);
         const {data} = await this.$apollo.query({
             query: PROJECT_TEMPLATE_LIST
         });
-        this.data.set('pageLoading', false);
+        this.setLoading(false);
         this.data.set('current', this.data.get('current') + 1);
         this.data.set('projectTemplateList', data.projectTemplateList);
     }
 
     async initProject(template) {
-        this.data.set('pageLoading', true);
+        this.setLoading(true);
         const {data} = await this.$apollo.mutate({
             mutation: PROJECT_INIT_TEMPLATE,
             variables: {
                 template
             }
         });
-        this.data.set('pageLoading', false);
+        this.setLoading(false);
         if (data.projectInitTemplate && data.projectInitTemplate.prompts) {
             // 存储起来，create项目的时候要用
             this.data.set('projectTemplate', template);
@@ -161,5 +179,12 @@ export default class Project extends Component {
 
     cancelSubmit() {
         this.data.set('current', this.data.get('current') - 1);
+    }
+
+    setLoading(isLoading) {
+        this.data.set('isLoading', isLoading);
+        if (!isLoading) {
+            this.data.set('loadingTip', '');
+        }
     }
 }

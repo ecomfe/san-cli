@@ -7,7 +7,6 @@ import {router} from 'san-router';
 import Component from '@lib/san-component';
 import PromptsForm from '@components/prompts-form';
 import PROJECT_CREATION from '@graphql/project/projectCreation.gql';
-import CONSOLE_LOG_ADDED from '@graphql/console/consoleLogAdded.gql';
 import './create.less';
 
 export default class ProjectCreate extends Component {
@@ -36,14 +35,6 @@ export default class ProjectCreate extends Component {
                     dropdownClassName="create-dropdown"
                     dropdownStyle="{{{'border-radius': '21px'}}}">
                 </c-prompts-form>
-
-                <div s-if="isCreating" class="loading">
-                    <s-spin tip="{{loadingTip}}" 
-                        spinning="{{isCreating}}"
-                        size="large">
-                        <s-icon slot="indicator" type="loading" style="font-size: 30px;" ></s-icon>
-                    </s-spin>
-                </div>
             </div>
         </div>
     `;
@@ -54,8 +45,6 @@ export default class ProjectCreate extends Component {
 
     initData() {
         return {
-            isCreating: false,
-            loadingTip: '',
             app: {
                 name: ''
             },
@@ -81,21 +70,6 @@ export default class ProjectCreate extends Component {
         };
     }
 
-    attached() {
-        this.data.set('loadingTip', this.$t('project.components.create.spinTip'));
-
-        // add a subscribe for fetch the console.log from command line
-        this.observer = this.$apollo.subscribe({
-            query: CONSOLE_LOG_ADDED
-        });
-
-        this.observer.subscribe({
-            next: ({data}) => {
-                this.data.set('loadingTip', data.consoleLogAdded.message);
-            }
-        });
-    }
-
     submit(data) {
         this.formData = data;
         this.ref('form').handleSubmit();
@@ -110,7 +84,7 @@ export default class ProjectCreate extends Component {
         }
         this.data.set('isAppNameValidated', true);
 
-        this.data.set('isCreating', true);
+        this.fire('setloading', true);
         if (!presets.name) {
             presets.name = name;
         }
@@ -123,7 +97,7 @@ export default class ProjectCreate extends Component {
             }
         }).then(({data}) => {
             // 创建完成
-            this.data.set('isCreating', false);
+            this.fire('setloading', false);
 
             // TODO: 跳转到项目页面
             setTimeout(() => router.locator.redirect('/'));
