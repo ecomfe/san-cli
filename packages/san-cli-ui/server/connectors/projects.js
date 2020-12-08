@@ -80,7 +80,12 @@ class Projects {
             debug(`🥰 Using local template from ${tmp}`);
         }
         else {
-            debug(`🥰 Downloading repository from ${template}`);
+            const message = `🥰 Downloading repository from ${template}`;
+            debug(message);
+            events.emit('log', {
+                type: 'info',
+                message
+            });
             await downloadRepo(template, tmp, {
                 template,
                 appName: 'APP_NAME_PLACEHOLDER'

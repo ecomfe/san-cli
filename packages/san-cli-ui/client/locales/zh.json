@@ -78,7 +78,6 @@
                 "folderName": "项目文件夹",
                 "submitText": "开始创建",
                 "cancelSubmitText": "取消创建",
-                "spinTip": "正在创建项目...",
                 "prompts": {
                     "projectNamePlaceholder": "默认使用项目文件夹名称作为项目名称"
                 }
