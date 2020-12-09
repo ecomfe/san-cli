@@ -13,7 +13,7 @@ const [packagename, filename] = rawArgs;
 let regx;
 if (packagename) {
     regx = `packages/(${packagename}|san-cli-(${packagename}))/`;
-    if(filename) {
+    if (filename) {
         regx += `.*${filename}\\.spec\\.js$`;
     }
     else {
