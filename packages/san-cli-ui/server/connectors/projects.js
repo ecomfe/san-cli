@@ -1,6 +1,6 @@
 /**
  * @file 项目相关的API
- * @author jinzhan
+ * @author jinzhan, Lohoyo
  */
 
 const path = require('path');
@@ -76,11 +76,16 @@ class Projects {
         let tmp = getLocalTplPath(template);
 
         // 1. 优先使用缓存
-        if (fs.existsSync(tmp)) {
+        if (useCache && fs.existsSync(tmp)) {
             debug(`🥰 Using local template from ${tmp}`);
         }
         else {
-            debug(`🥰 Downloading repository from ${template}`);
+            const message = `🥰 Downloading repository from ${template}`;
+            debug(message);
+            events.emit('log', {
+                type: 'info',
+                message
+            });
             await downloadRepo(template, tmp, {
                 template,
                 appName: 'APP_NAME_PLACEHOLDER'
