@@ -23,6 +23,10 @@ const CommanderAPI = require('./CommanderAPI');
 const {getCommandName} = require('./utils');
 
 const buildinCmds = ['build', 'serve', 'init', 'inspect', 'command', 'plugin', 'remote', 'docit', 'ui'];
+const buildinCmdPackages = {
+    init: 'san-cli-command-init',
+    ui: 'san-cli-ui'
+};
 const linkText = `For more information, visit ${textCommonColor('https://ecomfe.github.io/san-cli')}`;
 
 const globalDebug = getDebugLogger();
@@ -386,5 +390,13 @@ module.exports = class Command {
 };
 
 function getCmdLogInfo(cmd) {
-    return `${scriptName[0].toUpperCase()}${scriptName.slice(1)} ${cmd} v${pkgVersion}`;
+    let cmdVersion = '';
+    if (buildinCmdPackages[cmd]) {
+        try {
+            cmdVersion = require(`${buildinCmdPackages[cmd]}/package.json`).version;
+            cmdVersion = '/' + cmdVersion;
+        }
+        catch (e) {}
+    }
+    return `${scriptName[0].toUpperCase()}${scriptName.slice(1)} ${cmd} v${pkgVersion}${cmdVersion}`;
 }
