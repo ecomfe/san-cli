@@ -22,7 +22,7 @@ test('只传入repoName（默认走github）', async () => {
     expect(res).toEqual({
         url: 'git@github.com:ksky521/yyt.git',
         dest: 'aaa',
-        checkout: 'master'
+        checkout: ''
     });
 });
 
@@ -42,7 +42,7 @@ test('传入icode地址', async () => {
     expect(res).toEqual({
         url: `ssh://${user}@icode.baidu.com:8235/baidu/foo/bar`,
         dest: 'aaa',
-        checkout: 'master'
+        checkout: ''
     });
 });
 
@@ -62,7 +62,7 @@ test('传入coding地址', async () => {
     expect(res).toEqual({
         url: 'git@git.coding.net:yyt/HelloWorld.git',
         dest: 'aaa',
-        checkout: 'master'
+        checkout: ''
     });
 });
 
@@ -90,7 +90,7 @@ test('传入完整地址git@xxxx', async () => {
     expect(res).toEqual({
         url: 'git@github.com:ksky521/nodeppt-template-default.git',
         dest: 'aaa',
-        checkout: 'master'
+        checkout: ''
     });
 });
 
@@ -99,7 +99,7 @@ test('传入完整地址https://', async () => {
     expect(res).toEqual({
         url: 'https://git.coding.net/yyt/HelloWorld.git',
         dest: 'aaa',
-        checkout: 'master'
+        checkout: ''
     });
 });
 
@@ -108,6 +108,6 @@ test('传入完整地址ssh://', async () => {
     expect(res).toEqual({
         url: 'ssh://yanyiting@icode.baidu.com:8235/baidu/foo/bar',
         dest: 'aaa',
-        checkout: 'master'
+        checkout: ''
     });
 });
