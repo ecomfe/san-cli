@@ -16,7 +16,7 @@ module.exports = {
         const fse = require('fs-extra');
         const inquirer = require('inquirer');
         const readRc = require('san-cli-utils/readRc');
-        const {getGlobalSanRcFilePath} = require('san-cli-utils/path');
+        const {getGlobalSanRcFilePath, getUserHomeFolder} = require('san-cli-utils/path');
         const {success} = require('san-cli-utils/ttyLogger');
         const {name, url} = argv;
 
@@ -46,6 +46,9 @@ module.exports = {
         templateAlias[name] = url;
         sanrc.templateAlias = templateAlias;
         let filepath = getGlobalSanRcFilePath();
+        let homeFolder = getUserHomeFolder();
+        let desiredMode = 0o2775;
+        fse.ensureDirSync(homeFolder, desiredMode);
         fse.writeJsonSync(filepath, sanrc);
 
         success(`Add \`${name}\` success!`);
