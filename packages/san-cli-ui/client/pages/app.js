@@ -25,7 +25,7 @@ export default class App extends Component {
             <c-connection-status></c-connection-status>
 
             <s-layout-header class="page-header">
-                <c-header-title title="{{$t(routeNav+ '.title')}}"></c-header-title>
+                <c-header-title title="{{$t((routeNav || routeAddon)+ '.title')}}"></c-header-title>
                 <div class="header-aside">
                     <c-dashboard-header
                         s-if="routeNav === 'dashboard'"
