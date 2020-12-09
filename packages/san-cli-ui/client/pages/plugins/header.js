@@ -4,7 +4,7 @@
 
 import Component from '@lib/san-component';
 import DependencyFilter from '@components/dependency/dependency-filter';
-import DevToolsTip from '@components/widgets/dev-tools-tip';
+import DevToolsTip from '@components/dev-tools-tip';
 
 export default class App extends Component {
     static template = /* html */`
