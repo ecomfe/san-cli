@@ -39,7 +39,7 @@ module.exports = (template, dest, options) => {
                 {
                     type: 'confirm',
                     name,
-                    message: 'Would you like to install npm dependencies?'
+                    message: '现在安装依赖？'
                 }
             ]);
             if (answers[name]) {
