@@ -17,7 +17,7 @@ extend type Mutation {
   projectSetFavorite(id: ID, favorite: Int): Project
   projectImport (path: String, force: Boolean): Project!
   projectOpen (id: ID!): Project!,
-  projectOpenInEditor (path: String, line: Int, column: Int): String,
+  projectOpenInEditor (path: String, line: Int, column: Int): projectOpenInEditor,
   projectRename (id: ID!, name: String!): Project!,
   projectRemove (id: ID!): Boolean!,
   projectCwdReset: String
@@ -67,5 +67,9 @@ type Project {
 enum ProjectType {
   san
   unknown
+}
+
+type projectOpenInEditor {
+  errMsg: String
 }
 `;
