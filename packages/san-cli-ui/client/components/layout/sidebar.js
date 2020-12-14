@@ -161,7 +161,7 @@ export default class App extends Component {
             if (res && res.data && res.data.projectOpenInEditor) {
                 // 返回了错误信息
                 Modal.error({
-                    title: this.$t('dropdown.editorOpenFail'),
+                    title: this.$t('common.openFail'),
                     content: res.data.projectOpenInEditor
                 });
             }

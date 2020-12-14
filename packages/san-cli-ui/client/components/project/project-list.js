@@ -134,7 +134,7 @@ export default class ProjectList extends Component {
         if (res && res.data && res.data.projectOpenInEditor) {
             // 返回了错误信息
             Modal.error({
-                title: this.$t('project.list.editorOpenFail'),
+                title: this.$t('common.openFail'),
                 content: res.data.projectOpenInEditor
             });
         }
