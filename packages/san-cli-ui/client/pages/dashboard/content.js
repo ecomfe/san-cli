@@ -29,6 +29,7 @@ export default class App extends Component {
                             widget="{=widget=}"
                             index="{{index}}"
                             custom="{=editing=}"
+                            grid-size="{=gridSize=}"
                             on-updatewidgets="updateWidgets"
                             on-hideOtherWidgets="hideOtherWidgets">
                         </c-dashboard>
@@ -95,8 +96,13 @@ export default class App extends Component {
 
     $events() {
         return {
-            toggleContentStatus(e) {
+            async toggleContentStatus(e) {
                 this.data.set('editing', e);
+                if (!e) {
+                    // 调整位置
+                    let widgets = await this.$apollo.query({query: WIDGETS});
+                    this.updateWidgets(widgets.data.widgets);
+                }
             }
         };
     }
@@ -105,6 +111,7 @@ export default class App extends Component {
         return {
             editing: false,
             widgets: [],
+            gridSize: 200,
             definitions: [],
             pageLoading: true,
             isHideOtherWidgets: false
@@ -122,6 +129,15 @@ export default class App extends Component {
             this.data.set('widgets', [...widgets.data.widgets]);
         }
         this.init();
+        this.onWindowResize();
+        window.addEventListener('resize', this.onWindowResize.bind(this));
+    }
+    onWindowResize() {
+        const bc = this.el.getBoundingClientRect();
+        this.data.set('gridSize', Math.floor(bc.width / 7));
+    }
+    detached() {
+        window.removeEventListener('resize', this.onWindowResize);
     }
 
     async init() {

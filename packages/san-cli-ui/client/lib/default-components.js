@@ -5,6 +5,8 @@
 import {defineComponent} from 'san';
 import {
     Alert,
+    Avatar,
+    Badge,
     Button,
     Card,
     Dropdown,
@@ -14,6 +16,7 @@ import {
     Input,
     InputNumber,
     Layout,
+    List,
     Menu,
     Modal,
     Pagination,
@@ -22,6 +25,7 @@ import {
     Spin,
     Switch,
     Tabs,
+    Tag,
     Tooltip,
     Progress,
     Tree
@@ -31,6 +35,8 @@ import {Link} from 'san-router';
 // 自动注入以下Santd组件
 export default {
     's-alert': Alert,
+    's-avatar': Avatar,
+    's-badge': Badge,
     's-button': Button,
     's-card': Card,
     's-dropdown': Dropdown,
@@ -47,6 +53,9 @@ export default {
     's-layout-content': Layout.Content,
     's-layout-header': Layout.Header,
     's-layout-sider': Layout.Sider,
+    's-list': List,
+    's-list-item': List.Item,
+    's-list-item-meta': List.Item.Meta,
     's-menu': Menu,
     's-menu-divider': Menu.MenuDivider,
     's-menu-item': Menu.Item,
@@ -63,6 +72,7 @@ export default {
     's-switch': Switch,
     's-tabs': Tabs,
     's-tabpane': Tabs.TabPane,
+    's-tag': Tag,
     's-tooltip': Tooltip,
     's-progress': Progress,
     's-tree': Tree,

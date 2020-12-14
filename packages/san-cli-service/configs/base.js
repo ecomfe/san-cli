@@ -74,10 +74,19 @@ module.exports = {
                     .add('node_modules')
                     .add(api.resolve('node_modules'))
                     .add(resolveLocal('node_modules'));
-            if(process.env.SAN_CLI_TEST){
-                // 解决源码测试 san-loader san-hot-loader 找不到
-                resolveLoader.add(resolveLocal('../../node_modules'));
+
+            //  优先考虑本地安装的html-loader版本，没有的话去全局路径寻找
+            try {
+                const htmlLoader = resolve.sync('html-loader', {basedir: api.getCwd()});
+                // console.log(`Find local htmlLoader at [${htmlLoader}]`);
             }
+            catch (e) {
+                // 找到html-loader所在根目录
+                let nodeModulesPath = path.dirname(require.resolve('html-loader'));
+                nodeModulesPath = nodeModulesPath.substring(0, nodeModulesPath.lastIndexOf('node_modules')) + 'node_modules';
+                resolveLoader.add(nodeModulesPath);
+            }
+
             /* eslint-enable */
 
             // set san alias

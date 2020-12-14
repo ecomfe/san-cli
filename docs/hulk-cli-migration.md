@@ -56,7 +56,7 @@ npm install stylus stylus-loader --save-dev
 module.exports = {
     ...
     
-    transpileDependencies: ['@baidu/nano'],
+    transpileDependencies: ['@baidu/nano', '@baidu/xbox-native', '@baidu/xbox'],
 
     ....
 }

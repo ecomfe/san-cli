@@ -78,7 +78,6 @@
                 "folderName": "项目文件夹",
                 "submitText": "开始创建",
                 "cancelSubmitText": "取消创建",
-                "spinTip": "正在创建项目...",
                 "prompts": {
                     "projectNamePlaceholder": "默认使用项目文件夹名称作为项目名称"
                 }
@@ -109,7 +108,8 @@
         "chooseLabel": "选择脚手架模板",
         "choosePlaceholder": "请选择脚手架模板",
         "customLabel": "自定义模板地址",
-        "optionLabel": "自定义脚手架模板"
+        "optionLabel": "自定义脚手架模板",
+        "useCache": "优先使用缓存"
     },
     "nav": {
         "dashboard": {
