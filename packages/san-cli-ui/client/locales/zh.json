@@ -328,7 +328,7 @@
             "confirm": "确认",
             "image": "https://raw.githubusercontent.com/baidu/san-devtools/master/docs/images/san-panel.png",
             "link": "https://github.com/baidu/san-devtools",
-            "chromeLink": "https://chrome.google.com/webstore/detail/san-devtool/pjnngoafflflkagpebgfifjejlnfhahc"
+            "chromeLink": "https://chrome.google.com/webstore/detail/san-devtool/fcjifbggoejmfnfcmnaobcppbfhlndad"
         },
         "emptyTip": "暂无部件",
         "widget": {
