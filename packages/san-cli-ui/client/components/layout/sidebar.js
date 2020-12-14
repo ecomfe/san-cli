@@ -9,6 +9,7 @@ import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 import PROJECT_OPEN_IN_EDITOR from '@graphql/project/projectOpenInEditor.gql';
 import VIEWS from '@graphql/view/views.gql';
 import './sidebar.less';
+import {Modal} from 'santd';
 
 export default class App extends Component {
     static template = /* html */`
@@ -102,13 +103,20 @@ export default class App extends Component {
 
     async handleMenuClick(e) {
         if (e.key === 'open-in-editor') {
-            let path = this.data.get('projectCurrent.path');
-            await this.$apollo.mutate({
+            const path = this.data.get('projectCurrent.path');
+            const res = await this.$apollo.mutate({
                 mutation: PROJECT_OPEN_IN_EDITOR,
                 variables: {
                     path
                 }
             });
+            if (res && res.data && res.data.projectOpenInEditor) {
+                // 返回了错误信息
+                Modal.error({
+                    title: this.$t('dropdown.editorOpenFail'),
+                    content: res.data.projectOpenInEditor
+                });
+            }
             return;
         }
 

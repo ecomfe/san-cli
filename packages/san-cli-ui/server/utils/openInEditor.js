@@ -1,6 +1,6 @@
 /**
  * @file 在编辑器中打开项目
- * @author jinzhan
+ * @author jinzhan, Lohoyo
 */
 const path = require('path');
 const launch = require('launch-editor');
@@ -17,8 +17,14 @@ module.exports = async (options, cwd) => {
         }
     }
     info(`Opening [${query}] in code editor...`);
+    let returnMsg = '';
     launch(query, 'code', (fileName, errorMsg) => {
-        error(`Unable to open [${fileName}]: ${errorMsg}`);
+        returnMsg = `Unable to open [${fileName}]: ${errorMsg}`;
+        error(returnMsg);
     });
-    return true;
+    // 等上面的 lanuch 函数的回调执行完
+    await new Promise(resolve => {
+        setTimeout(resolve, 1000);
+    });
+    return returnMsg;
 };

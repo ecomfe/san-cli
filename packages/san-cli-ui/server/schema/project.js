@@ -1,6 +1,6 @@
 /**
  * @file 项目相关的schema
- * @author jinzhan
+ * @author jinzhan, Lohoyo
 */
 const gql = require('graphql-tag');
 
@@ -17,7 +17,7 @@ extend type Mutation {
   projectSetFavorite(id: ID, favorite: Int): Project
   projectImport (path: String, force: Boolean): Project!
   projectOpen (id: ID!): Project!,
-  projectOpenInEditor (path: String, line: Int, column: Int): Boolean,
+  projectOpenInEditor (path: String, line: Int, column: Int): String,
   projectRename (id: ID!, name: String!): Project!,
   projectRemove (id: ID!): Boolean!,
   projectCwdReset: String
