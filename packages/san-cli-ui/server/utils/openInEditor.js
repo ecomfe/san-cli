@@ -26,5 +26,7 @@ module.exports = async (options, cwd) => {
     await new Promise(resolve => {
         setTimeout(resolve, 1000);
     });
-    return returnMsg;
+    return {
+        errMsg: returnMsg
+    };
 };

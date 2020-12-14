@@ -158,11 +158,11 @@ export default class App extends Component {
                     path
                 }
             });
-            if (res && res.data && res.data.projectOpenInEditor) {
+            if (res && res.data && res.data.projectOpenInEditor && res.data.projectOpenInEditor.errMsg) {
                 // 返回了错误信息
                 Modal.error({
                     title: this.$t('common.openFail'),
-                    content: res.data.projectOpenInEditor
+                    content: res.data.projectOpenInEditor.errMsg
                 });
             }
             return;
