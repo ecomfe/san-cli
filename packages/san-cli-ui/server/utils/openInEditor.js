@@ -22,7 +22,7 @@ module.exports = async (options, cwd) => {
         returnMsg = `Unable to open [${fileName}]: ${errorMsg}`;
         error(returnMsg);
     });
-    // 等上面的 lanuch 函数的回调执行完
+    // 等上面的 launch 函数的回调执行完
     await new Promise(resolve => {
         setTimeout(resolve, 1000);
     });
