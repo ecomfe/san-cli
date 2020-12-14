@@ -15,6 +15,7 @@ import PROJECT_CWD_RESET from '@graphql/project/projectCwdReset.gql';
 import List from './list';
 import 'animate.css';
 import './project-list.less';
+import {Modal} from 'santd';
 
 export default class ProjectList extends Component {
 
@@ -124,12 +125,19 @@ export default class ProjectList extends Component {
 
     async onOpen({item}) {
         // todo: 与layout/index内方法整合到一起
-        await this.$apollo.mutate({
+        const res = await this.$apollo.mutate({
             mutation: PROJECT_OPEN_IN_EDITOR,
             variables: {
                 path: item.path
             }
         });
+        if (res && res.data && res.data.projectOpenInEditor) {
+            // 返回了错误信息
+            Modal.error({
+                title: this.$t('project.list.editorOpenFail'),
+                content: res.data.projectOpenInEditor
+            });
+        }
     }
 
     onEdit(e) {
