@@ -6,6 +6,12 @@
 import Component from '@lib/san-component';
 import './client-addon.less';
 
+/**
+ * 组件props
+ *
+ * @param {string} clientAddon 组件的id
+ * @param {Object} data 渲染组件的数据
+ */
 export default class ClientAddon extends Component {
     static template = `
         <div class="client-addon"></div>
