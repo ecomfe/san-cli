@@ -17,7 +17,7 @@ const debug = getDebugLogger('init:download-repo');
 
 module.exports = (repo, dest, options) => {
     repo = normalize(repo, options);
-    const {url, checkout = 'master', timeout = 60e3} = repo;
+    const {url, checkout = '', timeout = 60e3} = repo;
     const {template, appName} = options;
     const rm = fse.removeSync;
     // 先删除
@@ -40,7 +40,7 @@ module.exports = (repo, dest, options) => {
                 );
             }, timeout);
         }
-        gitclone(url, dest, {checkout, shallow: checkout === 'master'}, err => {
+        gitclone(url, dest, {checkout, shallow: checkout === 'master' || !checkout}, err => {
             tid && clearTimeout(tid);
 
             if (!err) {
@@ -103,7 +103,7 @@ function normalize(repo, opts) {
         const match = tRegex.exec(repo);
         return {
             url: match[1],
-            checkout: match[2] || 'master'
+            checkout: match[2] || ''
         };
     }
     // 公司名/目录名/repo#分支
@@ -117,11 +117,11 @@ function normalize(repo, opts) {
     if (!match) {
         return {
             url: repo,
-            checkout: 'master'
+            checkout: ''
         };
     }
     // TODO 这里要不要创建个 san-projects/san-templates 的用户放一些标准的项目脚手架？没有之前，product 默认写 ksky521吧~
-    const [m, source = 'github', baidu = 'baidu', product = 'ksky521', repoName, checkout = 'master'] = match;
+    const [m, source = 'github', baidu = 'baidu', product = 'ksky521', repoName, checkout = ''] = match;
     let url = repo;
     switch (source) {
         case 'icode':

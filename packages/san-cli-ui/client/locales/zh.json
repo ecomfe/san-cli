@@ -412,7 +412,8 @@
         }
     },
     "common": {
-        "back": "返回"
+        "back": "返回",
+        "openFail": "打开失败"
     },
     "addons": {
         "dashboard": {

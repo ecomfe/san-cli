@@ -11,6 +11,7 @@ import VIEWS from '@graphql/view/views.gql';
 import VIEW_ADDED from '@graphql/view/viewAdded.gql';
 import VIEW_REMOVED from '@graphql/view/viewRemoved.gql';
 import './sidebar.less';
+import {Modal} from 'santd';
 
 /**
  * 组件props
@@ -150,13 +151,20 @@ export default class App extends Component {
 
     async handleMenuClick(e) {
         if (e.key === 'open-in-editor') {
-            let path = this.data.get('projectCurrent.path');
-            await this.$apollo.mutate({
+            const path = this.data.get('projectCurrent.path');
+            const res = await this.$apollo.mutate({
                 mutation: PROJECT_OPEN_IN_EDITOR,
                 variables: {
                     path
                 }
             });
+            if (res && res.data && res.data.projectOpenInEditor && res.data.projectOpenInEditor.errMsg) {
+                // 返回了错误信息
+                Modal.error({
+                    title: this.$t('common.openFail'),
+                    content: res.data.projectOpenInEditor.errMsg
+                });
+            }
             return;
         }
 
