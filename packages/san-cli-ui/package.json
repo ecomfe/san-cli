@@ -1,6 +1,6 @@
 {
     "name": "san-cli-ui",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "main": "commander.js",
     "license": "MIT",
     "engines": {
@@ -52,7 +52,7 @@
     ],
     "dependencies": {
         "@akryum/winattr": "^3.0.0",
-        "@jinzhan/open-browser": "^0.1.0",
+        "@jinzhan/open-browser": "^0.1.1",
         "apollo-server-express": "^2.15.1",
         "chalk": "^4.0.0",
         "clone": "^2.1.2",
