@@ -80,7 +80,8 @@
                 "cancelSubmitText": "取消创建",
                 "prompts": {
                     "projectNamePlaceholder": "默认使用项目文件夹名称作为项目名称"
-                }
+                },
+                "existedFolder": "该文件夹已存在"
             },
             "import": {
                 "noModulesTips": {

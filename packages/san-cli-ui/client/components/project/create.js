@@ -8,6 +8,7 @@ import Component from '@lib/san-component';
 import PromptsForm from '@components/prompts-form';
 import PROJECT_CREATION from '@graphql/project/projectCreation.gql';
 import './create.less';
+import {Modal} from 'santd';
 
 export default class ProjectCreate extends Component {
     static template = /* html */`
@@ -96,9 +97,15 @@ export default class ProjectCreate extends Component {
                 ...this.formData
             }
         }).then(({data}) => {
-            // 创建完成
             this.fire('setloading', false);
-
+            if (data && data.projectCreation && data.projectCreation.errno === 1) {
+                // 目标文件夹已存在
+                Modal.error({
+                    title: this.$t('project.components.create.existedFolder'),
+                });
+                return;
+            }
+            // 创建完成
             // TODO: 跳转到项目页面
             setTimeout(() => router.locator.redirect('/'));
         });

@@ -29,7 +29,7 @@ type ProjectTemplate {
 }
 
 type ProjectCreation {
-  prompts: [ProjectPrompt]
+  errno: Int
 }
 
 type ProjectInitTemplate {
