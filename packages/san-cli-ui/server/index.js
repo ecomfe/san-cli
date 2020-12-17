@@ -20,7 +20,7 @@ const setHeaders = (res, path, stat) => res.set('Cache-Control', CACHE_CONTROL);
 
 module.exports = options => {
     const {
-        host = '0.0.0.0',
+        host = '127.0.0.1',
         port = 8333,
         distPath,
         publicPath,
