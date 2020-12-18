@@ -133,7 +133,11 @@ export default class App extends Component {
         window.addEventListener('resize', this.onWindowResize.bind(this));
     }
     onWindowResize() {
+        if (!this.el) {
+            return;
+        }
         const bc = this.el.getBoundingClientRect();
+        // widget页面布局横向7个栅格
         this.data.set('gridSize', Math.floor(bc.width / 7));
     }
     detached() {

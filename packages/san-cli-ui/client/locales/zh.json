@@ -327,7 +327,7 @@
             "more": "查看更多",
             "cancel": "取消",
             "confirm": "确认",
-            "image": "https://raw.githubusercontent.com/baidu/san-devtools/master/docs/images/san-panel.png",
+            "image": "/public/devtoolsmain.png",
             "link": "https://github.com/baidu/san-devtools",
             "chromeLink": "https://chrome.google.com/webstore/detail/san-devtool/fcjifbggoejmfnfcmnaobcppbfhlndad"
         },
