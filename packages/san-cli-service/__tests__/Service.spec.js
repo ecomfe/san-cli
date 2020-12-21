@@ -181,9 +181,9 @@ describe('e2e 测试', () => {
                 output: {
                     path: path.join(cwd, '/output'),
                     jsonpFunction: 'HK3',
-                    filename: 'static/san-cli/js/[name].[hash:8].js',
+                    filename: 'static/san-cli/js/[name].[contenthash:8].js',
                     publicPath: 'https://s.bdstatic.com/',
-                    chunkFilename: 'static/san-cli/js/[name].[hash:8].js'
+                    chunkFilename: 'static/san-cli/js/[name].[contenthash:8].js'
                 },
                 resolve: {
                     symlinks: false,
