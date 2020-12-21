@@ -27,7 +27,7 @@ module.exports = {
             // sourcemap
             const filename = getAssetPath(
                 assetsDir,
-                `js/[name]${isLegacyBundle ? '-legacy' : ''}${options.filenameHashing ? '.[hash:8]' : ''}.js`
+                `js/[name]${isLegacyBundle ? '-legacy' : ''}${options.filenameHashing ? '.[contenthash:8]' : ''}.js`
             );
             // 条件判断sourcemap是否开启，san.config.js传入
             let ifSourcemap = false;
