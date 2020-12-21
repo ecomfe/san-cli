@@ -205,14 +205,12 @@ class Widgets {
         }
 
         for (const widget of this.widgets) {
-            if (widget !== ignoreWidget) {
-                if (this.areOverlapping({x, y, width, height}, widget)) {
-                    return {
-                        result: false,
-                        newY: y,
-                        newX: widget.x + widget.width
-                    };
-                }
+            if (widget !== ignoreWidget && this.areOverlapping({x, y, width, height}, widget)) {
+                return {
+                    result: false,
+                    newY: y,
+                    newX: widget.x + widget.width
+                };
             }
         }
         // 有足够的空间

@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file preset test
- * @author yanyiting
+ * @author yanyiting, Lohoyo
  */
 
 const preset = require('../preset');
@@ -39,11 +39,11 @@ test('检测 polyfill', () => {
     const {code} = babel.transformSync(`
         const a = new Map();
     `, defaultOptions);
-    expect(code).toMatch('"core-js/modules/es.array.iterator"');
-    expect(code).toMatch('"core-js/modules/es.map"');
-    expect(code).toMatch('"core-js/modules/es.object.to-string"');
-    expect(code).toMatch('"core-js/modules/es.string.iterator"');
-    expect(code).toMatch('"core-js/modules/web.dom-collections.iterator"');
+    expect(code).toMatch('core-js/modules/es.array.iterator');
+    expect(code).toMatch('core-js/modules/es.map');
+    expect(code).toMatch('core-js/modules/es.object.to-string');
+    expect(code).toMatch('core-js/modules/es.string.iterator');
+    expect(code).toMatch('core-js/modules/web.dom-collections.iterator');
     expect(code).toMatch('var a = new Map()');
 });
 
@@ -54,11 +54,11 @@ test('modern 模式会省略不必要的 polyfill', () => {
         presets: preset({}, {targets: {esmodules: true}}).presets,
         filename: 'test-entry-file.js'
     });
-    expect(code).toMatch('"core-js/modules/es.array.iterator"');
-    expect(code).not.toMatch('"core-js/modules/es.map"');
-    expect(code).not.toMatch('"core-js/modules/es.object.to-string"');
-    expect(code).not.toMatch('"core-js/modules/es.string.iterator"');
-    expect(code).toMatch('"core-js/modules/web.dom-collections.iterator"');
+    expect(code).toMatch('core-js/modules/es.array.iterator');
+    expect(code).not.toMatch('core-js/modules/es.map');
+    expect(code).not.toMatch('core-js/modules/es.object.to-string');
+    expect(code).not.toMatch('core-js/modules/es.string.iterator');
+    expect(code).toMatch('core-js/modules/web.dom-collections.iterator');
 });
 
 test('解构赋值', () => {
@@ -74,5 +74,5 @@ test('async/await', () => {
             await Promise.resolve();
         }
     `, defaultOptions);
-    expect(code).toMatch('"regenerator-runtime/runtime"');
+    expect(code).toMatch('regenerator-runtime/runtime');
 });

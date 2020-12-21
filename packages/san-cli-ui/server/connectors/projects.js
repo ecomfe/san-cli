@@ -119,6 +119,15 @@ class Projects {
 
     // 创建san项目
     async create(params, context) {
+        try {
+            fs.accessSync(params.name, fs.constants.F_OK);
+            return {
+                errno: 1
+            };
+        } catch (err) {
+            // 即将创建的文件夹没有已存在，什么都不用做
+        }
+
         const args = [
             `--project-presets='${JSON.stringify(params.presets)}'`,
             '--offline',
