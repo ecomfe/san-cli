@@ -5,31 +5,6 @@ body,
     height: 100%;
     overflow: hidden;
 }
-.flex-none {
-    flex: 0 0 auto;
-}
-.flex-all {
-    flex: 1 1 100%;
-}
-.loading {
-    position: fixed !important;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    background-color: rgba(255, 255, 255, .9);
-    height: 100%;
-    z-index: 1000;
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
-}
-.widget-loading {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 .com-santd-btn-large {
     width: 272px;
@@ -84,6 +59,10 @@ body,
     opacity: .3;
 }
 
+.santd-btn {
+    border-radius: 16px;   
+}
+
 .empty-tip {
     position: absolute;
     left: 50%;
@@ -96,4 +75,33 @@ body,
     text-align: center;
     font-size: 20px;
     color: #989898;
+}
+
+.flex-none {
+    flex: 0 0 auto;
+}
+
+.flex-all {
+    flex: 1 1 100%;
+}
+
+.loading {
+    position: fixed !important;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, .9);
+    height: 100%;
+    z-index: 1000;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+}
+
+.widget-loading {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -3,7 +3,7 @@
  * @author jinzhan
  */
 const path = require('path');
-const openBrowser = require('@jinzhan/open-browser');
+const openBrowser = require('open-web-browser');
 exports.builder = {
     port: {
         alias: 'p',

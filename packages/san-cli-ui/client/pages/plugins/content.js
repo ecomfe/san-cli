@@ -29,7 +29,7 @@ export default class Plugins extends Component {
                     <fragment slot="content">
                         <s-radio-group
                             name="radiogroup"
-                            defaultValue="plugin"
+                            defaultValue="{{radioValue}}"
                             on-change="onRadioChange"
                             class="pkg-radio">
                             <s-radio-button value="plugin">

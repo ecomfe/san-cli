@@ -86,6 +86,18 @@ class Widgets {
             await this.loadPromise;
         }
         debug('widgets', this.widgets);
+        return this.realign();
+    }
+    realign() { // 有空行整体上移
+        let minY = 99999;
+        for (const widget of this.widgets) {
+            minY = Math.min(widget.y, minY);
+        }
+        if (minY > 0) {
+            for (const widget of this.widgets) {
+                widget.y -= minY;
+            }
+        }
         return this.widgets;
     }
     load(context) {
@@ -98,10 +110,14 @@ class Widgets {
             this.widgets = getDefaultWidgets();
         }
 
-        this.widgets.forEach(widget => {
+        for (const widget of this.widgets) {
             // 防止多次重复加载的问题
             !this.widgetCount.has(widget.definitionId) && this.updateCount(widget.definitionId, 1);
-        });
+            // 处理遗留的位置不对问题
+            if (widget.x >= 7 || widget.x + widget.width > 7) {
+                this.move(widget, context);
+            }
+        }
 
         debug('Widgets loaded', this.widgets.length);
 
@@ -164,36 +180,16 @@ class Widgets {
         this.widgetCount.set(definitionId, count >= 0 ? count : 0);
     }
     findValidPosition(definition, currentWidget = null) {
-        // Find next available space
         const width = (currentWidget && currentWidget.width) || definition.defaultWidth || definition.minWidth;
         const height = (currentWidget && currentWidget.height) || definition.defaultHeight || definition.minHeight;
-        // Mark occupied positions on the grid
-        const grid = new Map();
-        for (const widget of this.widgets) {
-            if (widget !== currentWidget) {
-                for (let x = widget.x; x < widget.x + widget.width; x++) {
-                    for (let y = widget.y; y < widget.y + widget.height; y++) {
-                        grid.set(`${x}:${y}`, true);
-                    }
-                }
-            }
-        }
-        // Go through the possible positions
+
         let x = 0;
         let y = 0;
-        while (true) {
-            // Virtual "line brak"
-            if (x !== 0 && x + width >= 7) {
-                x = 0;
-                y++;
-            }
-            const {result, testX} = this.hasEnoughSpace(grid, x, y, width, height);
-            if (!result) {
-                x = testX + 1;
-                continue;
-            }
-            // Found! :)
-            break;
+        let res = {};
+        while (!res.result) {
+            res = this.hasEnoughSpace(x, y, width, height, currentWidget);
+            x = res.newX;
+            y = res.newY;
         }
 
         return {
@@ -203,17 +199,22 @@ class Widgets {
             height
         };
     }
-    hasEnoughSpace(grid, x, y, width, height) {
-        // Test if enough horizontal available space
-        for (let testX = x; testX < x + width; testX++) {
-            // Test if enough vertical available space
-            for (let testY = y; testY < y + height; testY++) {
-                if (grid.get(`${testX}:${testY}`)) {
-                    return {result: false, testX};
-                }
+    hasEnoughSpace(x, y, width, height, ignoreWidget) {
+        if (x + width > 7) {
+            return {result: false, newY: y + 1, newX: 0};
+        }
+
+        for (const widget of this.widgets) {
+            if (widget !== ignoreWidget && this.areOverlapping({x, y, width, height}, widget)) {
+                return {
+                    result: false,
+                    newY: y,
+                    newX: widget.x + widget.width
+                };
             }
         }
-        return {result: true};
+        // 有足够的空间
+        return {result: true, newY: y, newX: x};
     }
     findById({id}, context) {
         return this.widgets.find(w => w.id === id);
@@ -237,8 +238,9 @@ class Widgets {
     move(input, context) {
         const widget = this.findById(input, context);
         if (widget) {
-            widget.x = input.x;
-            widget.y = input.y;
+            widget.x = input.x < 0 ? 0
+                : input.x + input.width > 7 ? 7 - input.width : input.x;
+            widget.y = input.y >= 0 ? input.y : 0;
             const definition = this.findDefinition(widget, context);
             widget.width = input.width;
             widget.height = input.height;

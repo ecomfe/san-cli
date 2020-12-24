@@ -6,10 +6,12 @@ const path = require('path');
 const cwd = require('./cwd');
 const channels = require('../utils/channels');
 const {resolveModuleRoot} = require('../utils/module');
+const projects = require('./projects');
 
 class ClientAddons {
     constructor() {
         this.addons = [];
+        this.context = null;
     }
     add(options, context) {
         if (this.findOne(options.id)) {
@@ -30,7 +32,8 @@ class ClientAddons {
     findOne(id) {
         return this.addons.find(addon => addon.id === id);
     }
-    list() {
+    list(context) {
+        this.context = context;
         return this.addons;
     }
     clear() {
@@ -55,7 +58,8 @@ class ClientAddons {
             }
             catch (error) {
                 try {
-                    resolvedPath = require.resolve(cwd.get() + '/node_modules/' + addon.path);
+                    const projectPath = this.context ? projects.getCurrent(this.context).path : cwd.get();
+                    resolvedPath = require.resolve(projectPath + '/node_modules/' + addon.path);
                 }
                 catch (e) {
                 }
