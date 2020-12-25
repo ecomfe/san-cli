@@ -70,7 +70,7 @@
         "lowdb": "^1.0.0",
         "node-fetch": "^2.6.0",
         "node-ipc": "^9.1.1",
-        "node-notifier": "^7.0.0",
+        "node-notifier": "^9.0.0",
         "portfinder": "^1.0.25",
         "recast": "^0.19.1",
         "rss-parser": "^3.9.0",
