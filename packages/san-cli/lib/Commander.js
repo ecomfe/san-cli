@@ -262,7 +262,7 @@ module.exports = class Command {
                 );
             };
         }
-        const iCommand = (cmdName, description, builder, handler, middlewares) => {
+        const iCommand = (cmdName, description, builder = {}, handler, middlewares) => {
             command(
                 cmdName,
                 description,
