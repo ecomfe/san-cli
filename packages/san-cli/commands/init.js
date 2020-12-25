@@ -7,5 +7,5 @@
  * @file init wrapper
  * @author ksky521
  */
-module.exports = require('san-cli-command-init');
+module.exports = require('san-cli-init');
 

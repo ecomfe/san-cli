@@ -3,7 +3,7 @@
 
 在日常开发中，我们可能需要扩展团队的 CLI 命令，比如给`san`命令添加一个`san deploy`命令，用于将代码上传到对应开发机上进行联调，这时候可以直接添加 San CLI 的 Command 插件来实现。
 
-San CLI 的脚手架命令就是通过 Command 插件来实现的，详细代码可以参考[san-cli-command-init](TODO)对应的代码。
+San CLI 的脚手架命令就是通过 Command 插件来实现的，详细代码可以参考[san-cli-init](TODO)对应的代码。
 
 San CLI 的命令行解析是使用的[yargs](https://github.com/yargs/yargs/)实现的，Command 插件需要遵循 [yargs command module 规范](https://github.com/yargs/yargs/blob/master/docs/api.md#commandmodule)，即按照下面的写法：
 
@@ -83,4 +83,4 @@ exports.handler = argv => {
 
 这时候执行`san hello --name demo`就可以看到对应结果。
 
-> 在 San CLI 的项目代码中，san-cli-command-init 是 Command 插件，可以查看源码实现。
+> 在 San CLI 的项目代码中，san-cli-init 是 Command 插件，可以查看源码实现。

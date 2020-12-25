@@ -1,6 +1,6 @@
-# san-cli-command-init
+# san-cli-init
 
-san-cli-command-init 是 [San](https://github.com/baidu/san) CLI 工具中创建项目的核心功能部分。
+san-cli-init 是 [San](https://github.com/baidu/san) CLI 工具中创建项目的核心功能部分。
 是一个 [command 插件](https://ecomfe.github.io/san-cli/#/cmd-plugin)。
 
 主要步骤如下：
@@ -17,7 +17,7 @@ san-cli-command-init 是 [San](https://github.com/baidu/san) CLI 工具中创建
 ## 安装
 
 ```shell
-$ npm install --save-dev san-cli-command-init
+$ npm install --save-dev san-cli-init
 ```
 
 ## 测试
@@ -26,7 +26,7 @@ $ npm install --save-dev san-cli-command-init
 
 ```bash
 #执行__tests__下所有测试文件
-yarn test san-cli-command-init
+yarn test san-cli-init
 #只执行某单个文件 例如：checkStatus.spec.js
 yarn test san-cli checkStatus
 ```

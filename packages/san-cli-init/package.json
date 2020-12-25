@@ -1,12 +1,12 @@
 {
-    "name": "san-cli-command-init",
-    "version": "1.0.3",
+    "name": "san-cli-init",
+    "version": "1.0.0",
     "main": "index.js",
     "author": "ksky521",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/ecomfe/san-cli.git",
-        "directory": "packages/san-cli-command-init"
+        "directory": "packages/san-cli-init"
     },
     "bugs": {
         "url": "https://github.com/ecomfe/san-cli/issues"
