@@ -8,7 +8,7 @@
         "portfinder": "^1.0.25",
         "san-cli-utils": "^1.0.0",
         "tty-table": "^2.8.2",
-        "webpack": "^4.41.2",
+        "webpack": "^5.0.0",
         "webpack-dev-server": "^3.10.3",
         "write-file-webpack-plugin": "^4.5.1"
     },
