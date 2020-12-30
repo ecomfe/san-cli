@@ -31,7 +31,6 @@ export default class ProjectCreate extends Component {
                     s-ref="form"
                     prompts="{{prompts}}"
                     hide-submit-btn="true"
-                    submit-text="{{$t('project.components.create.submitText')}}"
                     on-submit="onPromptsFormSubmit"
                     dropdownClassName="create-dropdown"
                     dropdownStyle="{{{'border-radius': '21px'}}}">
