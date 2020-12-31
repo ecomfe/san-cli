@@ -15,7 +15,8 @@
 ![](./assets/run-task-widget.png)
 
 ## “新闻”部件
-在“新闻”部件，我们可以配置喜欢的 RSS 源直接阅读而不用跳转第三方网站（默认配置的 RSS 源是 https://ecomfe.github.io/atom.xml ）。
+在“新闻”部件，我们可以配置喜欢的 RSS 源直接阅读而不用跳转第三方网站（默认配置的 RSS 源是 [https://ecomfe.github.io/atom.xml](https://ecomfe.github.io/atom.xml)）。
+
 点击右上角的“全屏”按钮还可以获得最佳的阅读体检。
 
 ![](./assets/news-widget.png)
