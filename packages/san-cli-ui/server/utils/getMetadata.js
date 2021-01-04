@@ -11,7 +11,7 @@ const fetch = require('node-fetch');
 
 const metadataCache = new LRU({
     max: 200,
-    maxAge: 1000 * 60 * 30
+    maxAge: 1000 * 60
 });
 
 async function getMetadata(args, full = false) {
