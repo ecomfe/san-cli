@@ -14,7 +14,7 @@ module.exports = {
     builder: {},
     async handler(argv) {
         const fse = require('fs-extra');
-        const inquirer = require('inquirer');
+        const prompts = require('prompts');
         const readRc = require('san-cli-utils/readRc');
         const {getGlobalSanRcFilePath, getUserHomeFolder} = require('san-cli-utils/path');
         const {success} = require('san-cli-utils/ttyLogger');
@@ -27,15 +27,15 @@ module.exports = {
         if (templateAlias[name] && templateAlias[name] !== url) {
             // ask 替换？
 
-            const answers = await inquirer.prompt([
+            const answers = await prompts([
                 {
                     name: 'action',
-                    type: 'list',
+                    type: 'select',
                     // eslint-disable-next-line
                     message: `\`${name}\` already exists，and the current value is \`${templateAlias[name]}\`.Please select an operation：`,
                     choices: [
-                        {name: 'overwrite', value: 'overwrite'},
-                        {name: 'cancel', value: false}
+                        {title: 'overwrite', value: 'overwrite'},
+                        {title: 'cancel', value: false}
                     ]
                 }
             ]);

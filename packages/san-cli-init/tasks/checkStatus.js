@@ -49,15 +49,15 @@ module.exports = (template, dest, options) => {
                 const {action} = await prompt([
                     {
                         name: 'action',
-                        type: 'list',
+                        type: 'select',
                         // eslint-disable-next-line
                         message: `The directory ${chalk.cyan(
                             shortDest
                         )} already exists. Please select an operation：`,
                         choices: [
-                            {name: 'overwrite', value: 'overwrite'},
-                            {name: 'merge', value: 'merge'},
-                            {name: 'cancel', value: false}
+                            {title: 'overwrite', value: 'overwrite'},
+                            {title: 'merge', value: 'merge'},
+                            {title: 'cancel', value: false}
                         ]
                     }
                 ]);
