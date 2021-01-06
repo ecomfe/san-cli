@@ -11,11 +11,11 @@
 const Handlebars = require('handlebars');
 
 // 增加 handleba helper
-Handlebars.registerHelper('if_eq', (a, b, opts) => {
+Handlebars.registerHelper('if_eq', function (a, b, opts) {
     return a === b ? opts.fn(this) : opts.inverse(this);
 });
 
-Handlebars.registerHelper('unless_eq', (a, b, opts) => {
+Handlebars.registerHelper('unless_eq', function (a, b, opts) {
     return a === b ? opts.inverse(this) : opts.fn(this);
 });
 /*
