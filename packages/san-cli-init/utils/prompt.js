@@ -8,12 +8,12 @@
  * @author ksky521
  */
 
-const inquirer = require('inquirer');
+const prompts = require('prompts');
 
 // 交互式问询
 module.exports = input => {
     if (!Array.isArray(input)) {
         input = [input];
     }
-    return inquirer.prompt(input);
+    return prompts(input);
 };
