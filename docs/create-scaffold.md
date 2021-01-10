@@ -92,7 +92,7 @@ module.exports = {
 }
 ```
 
-`prompts` 交互问答 inquirer，key 为问题名称（string 类型），value 为问题配置项（Object 类型）
+`prompts` 交互问答，key 为问题名称（string 类型），value 为问题配置项（Object 类型）
 
 **例如**
 
@@ -107,18 +107,16 @@ module.exports = {
             default: '{{name}}'
         },
         tplEngine: {
-            type: 'list',
+            type: 'select',
             message: '选择模板引擎',
             choices: [
                 {
-                    name: '使用Smarty',
-                    value: 'smarty',
-                    short: 'Smarty'
+                    title: 'Smarty（百度内部）',
+                    value: 'smarty'
                 },
                 {
-                    name: '纯 HTML',
-                    value: 'html',
-                    short: 'HTML'
+                    title: '纯 HTML',
+                    value: 'html'
                 }
             ]
         },
@@ -128,18 +126,16 @@ module.exports = {
         },
         demoType: {
             when: 'demo',
-            type: 'list',
+            type: 'select',
             message: '选择示例代码类型：',
             choices: [
                 {
-                    name: 'san-store (推荐)',
-                    value: 'store',
-                    short: 'san-store'
+                    title: 'san-store (推荐)',
+                    value: 'store'
                 },
                 {
-                    name: 'normal',
-                    value: 'normal',
-                    short: 'normal'
+                    title: 'normal',
+                    value: 'normal'
                 }
             ]
         }

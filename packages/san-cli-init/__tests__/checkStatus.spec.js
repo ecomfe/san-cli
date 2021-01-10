@@ -8,8 +8,8 @@
  * @author yanyiting
  */
 
-jest.mock('inquirer');
-const inquirer = require('inquirer');
+jest.mock('prompts');
+const prompts = require('prompts');
 const checkStatus = require('../tasks/checkStatus');
 
 function Task() {
@@ -60,7 +60,7 @@ test('目录已存在，--force强行删除', async () => {
 });
 
 test('在当前目录下执行命令后，回答在当前目录创建', async () => {
-    inquirer.prompt.mockResolvedValueOnce({ok: true});
+    prompts.mockResolvedValueOnce({ok: true});
     await checkStatus('https://github.com/yyt/HelloWorld.git', '.', {
         _inPlace: true
     })({}, task).then(() => {
@@ -74,7 +74,7 @@ test('在当前目录下执行命令后，回答在当前目录创建', async ()
 });
 
 test('在当前目录下执行命令后，回答不在当前目录创建', async () => {
-    inquirer.prompt.mockResolvedValueOnce({ok: false});
+    prompts.mockResolvedValueOnce({ok: false});
     await checkStatus('https://github.com/yyt/HelloWorld.git', '.', {
         _inPlace: true
     })({}, task).then(() => {
@@ -84,7 +84,7 @@ test('在当前目录下执行命令后，回答不在当前目录创建', async
 });
 
 test('目录已存在，回答覆盖', async () => {
-    inquirer.prompt.mockResolvedValueOnce({action: 'overwrite'});
+    prompts.mockResolvedValueOnce({action: 'overwrite'});
     await checkStatus('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-template', {})({}, task)
         .then(() => {
             expect(task.nextInfo[2]).toMatch('Overwrite selected, first delete');
@@ -93,7 +93,7 @@ test('目录已存在，回答覆盖', async () => {
 });
 
 test('目录已存在，回答取消', async () => {
-    inquirer.prompt.mockResolvedValueOnce({action: false});
+    prompts.mockResolvedValueOnce({action: false});
     await checkStatus('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-template', {})({}, task)
         .then(() => {
             expect(task.res).toMatch('Cancel overwrite');
@@ -101,7 +101,7 @@ test('目录已存在，回答取消', async () => {
 });
 
 test('目录已存在，回答合并', async () => {
-    inquirer.prompt.mockResolvedValueOnce({action: 'merge'});
+    prompts.mockResolvedValueOnce({action: 'merge'});
     await checkStatus('https://github.com/yyt/HelloWorld.git', __dirname + '/mock-template', {})({}, task)
         .then(() => {
             expect(task.nextInfo).toEqual([

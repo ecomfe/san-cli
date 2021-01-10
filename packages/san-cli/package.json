@@ -1,7 +1,7 @@
 {
     "name": "san-cli",
     "description": "San.js 定制化的前端工程构建工具",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "scriptName": "san",
     "main": "index.js",
     "bin": {
@@ -32,20 +32,20 @@
         "import-cwd": "^3.0.0",
         "import-global": "^0.1.0",
         "import-lazy": "^4.0.0",
-        "inquirer": "~7.0.0",
         "lodash.merge": "^4.6.2",
         "opener": "^1.5.1",
+        "prompts": "^2.4.0",
         "qrcode-terminal": "^0.12.0",
+        "read-pkg": "^5.2.0",
         "resolve-cwd": "^3.0.0",
+        "san-cli-docit": "^0.1.0",
         "san-cli-init": "^1.0.0",
         "san-cli-service": "^1.0.0",
-        "san-cli-utils": "^1.0.0",
         "san-cli-ui": "^1.0.0",
-        "san-cli-docit": "^0.1.0",
+        "san-cli-utils": "^1.0.0",
         "semver": "^7.1.1",
         "update-notifier": "^4.0.0",
         "write-pkg": "^4.0.0",
-        "read-pkg": "^5.2.0",
         "yargs": "~15.0.2"
     },
     "gitHead": "402d813859ac219434712fa2063e5f724819004a"

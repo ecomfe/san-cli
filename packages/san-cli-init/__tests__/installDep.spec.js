@@ -8,10 +8,10 @@
  * @author yanyiting
  */
 
-jest.mock('inquirer');
+jest.mock('prompts');
 
 const fs = require('fs');
-const inquirer = require('inquirer');
+const prompts = require('prompts');
 const installDep = require('../tasks/installDep');
 
 function Task() {
@@ -38,7 +38,7 @@ beforeEach(() => {
 });
 
 test('不安装依赖', async () => {
-    inquirer.prompt.mockResolvedValueOnce({install: false});
+    prompts.mockResolvedValueOnce({install: false});
 
     await installDep('https://github.com/yyt/HelloWorld.git', 'none', {})({}, task)
         .then(() => {
@@ -48,7 +48,7 @@ test('不安装依赖', async () => {
 });
 
 test('用户选择安装依赖', async () => {
-    inquirer.prompt.mockResolvedValueOnce({install: true});
+    prompts.mockResolvedValueOnce({install: true});
 
     // package.json无法mock，这里手动创建下临时文件
     const tempDir = '___temp___' + Date.now();
