@@ -11,14 +11,22 @@ npm i -g san-cli
 ## 快速创建
 
 ```bash
+san init <app-name>
+```
+
+> 1. 创建的是 san 项目。
+> 2. app-name 是要创建的工程项目目录，可以为`.`（即在当前目录下创建）。
+
+## 指定脚手架创建
+
+```bash
 san init <template> <app-name>
 ```
 
-1. 创建的为 san 项目
-2. template 是工程项目脚手架地址，支持 github，icode，gitlab 等 repo 作为脚手架直接创建项目，并且可以指定 template 的 alias，详见下方**san remote**
-3. app-name 是要创建的工程项目目录，可以为`.`（即在当前目录下创建）
+> 1. template 是工程项目脚手架地址，支持 github、icode、gitlab 等 repo 作为脚手架直接创建项目，并且可以指定 template 的 alias，详见下方的 **san remote**
+> 2. 为了方便，我们创建了一个 San 的基础脚手架 ksky521/san-project，不指定脚手架创建时（即快速创建时），用的就是这个基础脚手架。
 
-###### **例如**
+### 例如
 
 ```bash
 # 1. 支持传入完整repo地址:
@@ -39,8 +47,6 @@ san init template#branch demo
 # 5. 项目生成在当前目录
 san init template#branch .
 ```
-
-> 为了方便，我们创建了一个 San 的基础项目，可以使用 san init ksky521/san-project 来安装这个项目脚手架
 
 ## `init` 参数说明
 
