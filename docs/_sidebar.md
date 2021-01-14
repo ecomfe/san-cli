@@ -37,8 +37,5 @@
     -   插件开发
         -   [插件基本结构](/ui/structure.md)
         -   [插件对象](/ui/plugin-object.md)
-        -   [添加addon组件](/ui/add-addon.md)
-        -   [添加项目配置](/ui/add-config.md)
-        -   [更改项目任务](/ui/cover-task.md)
-        -   [添加自定义视图](/ui/add-view.md)
+        -   [添加widget部件](/ui/add-addon.md)
         -   [公共静态文件](/ui/static.md)

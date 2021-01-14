@@ -3,8 +3,6 @@
 在`San CLI`中主要通过`san serve`和`san build`命令进行生产和开发环境的打包，San的脚手架工程内置了四个命令，包括启动本地服务、生产环境打包、打包分析、现代模式打包等，脚手架工程的package.json内可执行的命令有：
 
 ```js
-san serve // 本地打包 + local server
-san build // 生产环境打包
 npm run start // 打包+启动本地服务
 npm run build // 打包发布
 npm run analyzer // 打包分析
