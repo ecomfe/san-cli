@@ -1,5 +1,5 @@
 @import '~san-cli-ui/client/assets/darkmode.less';
-.dashboard-widget-welcome {
+.widget-welcome {
     display: flex;
     padding: 16px;
     align-items: center;
@@ -38,7 +38,7 @@
                 flex: 1;
                 margin-left: 24px;
             }
-            .santd-icon {
+            :global(.santd-icon) {
                 font-size: 26px;
                 .color-6();
             }
@@ -49,7 +49,7 @@
         flex-direction: column;
         justify-content: center;
         margin-top: 16px;
-        .santd-btn {
+        :global(.santd-btn) {
             border-radius: 20px;
             padding: 0 20px !important;
         }

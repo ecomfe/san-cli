@@ -1,11 +1,11 @@
 import ChartWithDetails from './chart-with-details';
 import buildHierarchy from '../../utils/buildHierarchy';
 import {getAssetsData, getBundleDetails, formatSize} from '../../utils/util';
-import './index.less';
+import styles from './index.less';
 
 export default {
     template: /* html */`
-        <div class="{{chartAreaClass}}" s-if="!disabled">
+        <div s-if="!disabled">
             <fragment s-if="assetsData && assetsData.length && assetsData.length > 1">
                 <select on-change="onAssetChange" value="{{selectedAssetIndex}}">
                     <option value="0">All Chunks</option>
@@ -17,6 +17,7 @@ export default {
             <c-char-width-details 
                 chartData="{{chartData}}" 
                 bundleDetails="{{bundleDetails}}"
+                styles="{{styles}}"
             />
         </div>
     `,
@@ -27,6 +28,7 @@ export default {
 
     initData() {
         return {
+            styles,
             selectedAssetIndex: 0
         };
     },
