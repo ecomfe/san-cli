@@ -16,7 +16,13 @@ module.exports = function ({id, port = 8889}) {
         css: {
             sourceMap: false,
             cssPreprocessor: 'less',
-            extract: false
+            extract: false,
+            requireModuleExtension: false,
+            loaderOptions: {
+                css: {
+                    localsConvention: 'camelCase'
+                }
+            }
         },
         pages: {
             index: {

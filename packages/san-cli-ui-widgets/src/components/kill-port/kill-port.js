@@ -3,20 +3,20 @@
  * @author zttonly, Lohoyo
  */
 
-import './kill-port.less';
+import styles from './kill-port.less';
 
 export default {
     template: /* html */`
-        <div class="dashboard-widget-kill-port">
-            <div class="status status-{{status}}">
+        <div class="{{styles.widgetKillPort}}">
+            <div class="{{styles.status}} {{styles['status-' + status]}}">
                 <s-icon type="{{icons[status]}}"/>
-                <div class="info">
+                <div class="{{styles.info}}">
                     {{$t('dashboard.widgets.kill-port.status.' + status)}}
                 </div>
             </div>
-            <div class="actions">
+            <div class="{{styles.actions}}">
                 <s-input-number min="0" max="9999" value="{{port}}" on-change="onchange"></s-input-number>
-                <s-button class="btn" type="primary" on-click="kill">
+                <s-button class="{{styles.btn}}" type="primary" on-click="kill">
                     {{$t('dashboard.widgets.kill-port.kill')}}
                 </s-button>
             </div>
@@ -24,6 +24,7 @@ export default {
     `,
     initData() {
         return {
+            styles,
             status: 'idle',
             icons: {
                 idle: 'thunderbolt',
