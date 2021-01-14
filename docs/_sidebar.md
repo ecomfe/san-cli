@@ -22,15 +22,18 @@
     -   [插件机制](/plugin.md)
         -   [Command 插件](/cmd-plugin.md)
         -   [Service 插件](/srv-plugin.md)
--   CLI UI
+-   San CLI UI
     -   [开始使用](/ui/start.md)
-    -   功能简介
-        -   [项目列表](/ui/project-list.md)
-        -   [仪表盘](/ui/dashboard.md)
-        -   [插件管理](/ui/plugin.md)
-        -   [依赖管理](/ui/dependency.md)
-        -   [配置管理](/ui/configuration.md)
-        -   [任务管理](/ui/task.md)
+    -   [功能简介](/ui/function.md)
+        -   [项目管理](/ui/project-list.md)
+        -   [工程构建](/ui/construction.md)
+            -   [项目创建](/ui/project-create.md)
+            -   [配置管理](/ui/configuration.md)
+            -   [依赖管理](/ui/dependency.md)
+            -   [插件管理](/ui/plugin.md)
+            -   [任务管理](/ui/task.md)
+        -   工具扩展
+            -   [仪表盘](/ui/dashboard.md)
     -   插件开发
         -   [插件基本结构](/ui/structure.md)
         -   [插件对象](/ui/plugin-object.md)
