@@ -78,10 +78,10 @@
                 "folderName": "项目文件夹",
                 "submitText": "开始创建",
                 "cancelSubmitText": "取消创建",
-                "spinTip": "正在创建项目...",
                 "prompts": {
                     "projectNamePlaceholder": "默认使用项目文件夹名称作为项目名称"
-                }
+                },
+                "existedFolder": "该文件夹已存在"
             },
             "import": {
                 "noModulesTips": {
@@ -107,9 +107,10 @@
     "enter": "进入",
     "scaffold": {
         "chooseLabel": "选择脚手架模板",
-        "choosePlaceholder": "请选择脚手架模板",
         "customLabel": "自定义模板地址",
-        "optionLabel": "自定义脚手架模板"
+        "optionLabel": "自定义脚手架模板",
+        "useCache": "优先使用缓存",
+        "tooltip": "脚手架模板：创建项目时基于的模板。"
     },
     "nav": {
         "dashboard": {
@@ -326,9 +327,9 @@
             "more": "查看更多",
             "cancel": "取消",
             "confirm": "确认",
-            "image": "https://raw.githubusercontent.com/baidu/san-devtools/master/docs/images/san-panel.png",
+            "image": "/public/devtoolsmain.png",
             "link": "https://github.com/baidu/san-devtools",
-            "chromeLink": "https://chrome.google.com/webstore/detail/san-devtool/pjnngoafflflkagpebgfifjejlnfhahc"
+            "chromeLink": "https://chrome.google.com/webstore/detail/san-devtool/fcjifbggoejmfnfcmnaobcppbfhlndad"
         },
         "emptyTip": "暂无部件",
         "widget": {
@@ -412,7 +413,8 @@
         }
     },
     "common": {
-        "back": "返回"
+        "back": "返回",
+        "openFail": "打开失败"
     },
     "addons": {
         "dashboard": {

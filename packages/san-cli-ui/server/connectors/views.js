@@ -41,7 +41,7 @@ class Views {
             list = createViewsSet();
             this.viewsMap.set(file, list);
         }
-        debug('Views', list);
+        debug('get views', list);
         return list;
     }
 

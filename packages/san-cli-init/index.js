@@ -8,6 +8,8 @@
  * @author ksky521
  */
 
+const isTemplatePath = require('./utils/isTemplatePath');
+
 exports.command = 'init [template] [app-name]';
 exports.description = 'Create an empty repo';
 exports.builder = {
@@ -59,16 +61,28 @@ exports.builder = {
 // 默认项目脚手架地址
 
 const defaultTemplate = 'ksky521/san-project';
+
+
 exports.handler = cliApi => {
     const {warn} = require('san-cli-utils/ttyLogger');
 
     let {template, appName} = cliApi;
     let {templateAlias: templateAliasMap} = cliApi.getPresets() || {};
-    if (appName === undefined && template) {
-        // 只有一个参数，这个默认是使用当前文件夹，把 appName 当成是脚手架地址
-        appName = template;
-        template = defaultTemplate;
-        warn(`Use ${defaultTemplate} as scaffold template.`);
+
+    if (template && appName === undefined) {
+        // 只有一个参数的情况
+        // 如果是模板，则默认使用当前文件夹
+        if (isTemplatePath(template)) {
+            appName = './';
+            const folderName = process.cwd().split('/').pop();
+            warn(`Use ${folderName} as project name`);
+        }
+        else {
+            // 如果不是模板，则认为是文件夹地址，并使用默认的模板
+            appName = template;
+            template = defaultTemplate;
+            warn(`Use ${defaultTemplate} as scaffold template.`);
+        }
     }
     else if (template === undefined) {
         // 两个参数都没有

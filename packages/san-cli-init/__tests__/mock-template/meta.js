@@ -12,31 +12,29 @@ module.exports = {
     },
     prompts: {
         tplEngine: {
-            type: 'list',
+            type: 'select',
             message: '选择模板引擎',
             choices: [
                 {
-                    name: '使用Smarty',
-                    value: 'smarty',
-                    short: 'Smarty'
+                    title: '使用Smarty',
+                    value: 'smarty'
                 },
                 {
-                    name: '纯 HTML',
-                    value: 'html',
-                    short: 'HTML'
+                    title: '纯 HTML',
+                    value: 'html'
                 }
             ]
         },
         enableMatrix: {
-            type: 'list',
+            type: 'select',
             message: '是否启用matrix-loader？',
             choices: [
                 {
-                    name: '不启用 (默认)',
+                    title: '不启用 (默认)',
                     value: 'false'
                 },
                 {
-                    name: '启用',
+                    title: '启用',
                     value: 'true'
                 }
             ]

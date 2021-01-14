@@ -4,12 +4,12 @@
  * This source code is licensed under the MIT license.
  * See LICENSE file in the project root for license information.
  *
- * @file inquirer的prompts数据验证组件
+ * @file prompts数据验证组件
  * @author jinzhan
  */
 
 /**
- * 当直接通过预设来传值的时候，需要保证预设是和inquirer.prompts中相同的格式
+ * 当直接通过预设来传值的时候，需要保证预设是和prompts中相同的格式
  *
  * # 验证思路
  *  1. 遍历prompts中的全部字段；
@@ -18,7 +18,7 @@
  *  4. 检查隐藏的必填字段，比如list
  *  5. 注：多传了的字段不做关注；
  *
- * @param {Object} prompts inquirer的问题，可以参考脚手架中的meta.js
+ * @param {Object} prompts prompts的问题，可以参考脚手架中的meta.js
  * @param {Object} presets 包含问题答案的JSON
  * @returns {boolean} 验证通过返回true
 */

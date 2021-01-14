@@ -9,11 +9,11 @@
  */
 
 jest.unmock('fs-extra');
-jest.mock('inquirer');
+jest.mock('prompts');
 
 const fs = require('fs');
 const fse = require('fs-extra');
-const inquirer = require('inquirer');
+const prompts = require('prompts');
 const generator = require('../tasks/generator');
 
 function Task() {
@@ -41,8 +41,8 @@ beforeEach(() => {
 
 test('meta.js', async () => {
     // 选择smarty、false
-    inquirer.prompt.mockResolvedValueOnce({tplEngine: 'smarty'});
-    inquirer.prompt.mockResolvedValueOnce({enableMatrix: false});
+    prompts.mockResolvedValueOnce({tplEngine: 'smarty'});
+    prompts.mockResolvedValueOnce({enableMatrix: false});
 
     let ctx = {
         localTemplatePath: __dirname + '/mock-template'

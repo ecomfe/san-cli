@@ -54,7 +54,7 @@ export default {
             this.data.set('status', 'idle');
         }, 3000);
     },
-    onchange(p) {
+    onchange(p = '') {
         this.data.set('port', p);
     },
     async kill() {
