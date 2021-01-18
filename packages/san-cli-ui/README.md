@@ -1,6 +1,6 @@
 # san-cli-ui
 
-A graphical interface for [san-cli](https://github.com/ecomfe/san-cli).
+A graphical interface for [san-cli](https://github.com/ecomfe/san-cli). Inspired by [vue ui](https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui)
 
 ## Usage
 
