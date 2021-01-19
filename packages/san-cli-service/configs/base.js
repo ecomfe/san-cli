@@ -29,8 +29,11 @@ module.exports = {
             // prettier-ignore
             webpackConfig.output
                 .path(api.resolve(projectOptions.outputDir))
+                // TODO: to be immigrated to chunkLoadingGlobal
+                // TODO: @see https://github.com/webpack/webpack/pull/11385
+                // TODO: .jsonpFunction不再支持了，看起来是chainWebpack需要升级
                 // 留个小彩蛋吧~
-                .jsonpFunction(projectOptions.jsonpFunction || 'HK3')
+                // .jsonpFunction(projectOptions.jsonpFunction || 'HK3')
                 /* eslint-disable max-len */
                 .filename((isLegacyBundle ? '[name]-legacy' : '[name]') + `${projectOptions.filenameHashing ? '.[contenthash:8]' : ''}.js`)
                 /* eslint-enable max-len */
@@ -43,9 +46,6 @@ module.exports = {
                     .set('symlinks', false)
                     // 默认加上 less 吧，less 内部用的最多
                     .extensions.merge(['.js', '.css', '.less', '.san'])
-                    .end()
-                .plugin('pnp')
-                    .use({...require('pnp-webpack-plugin')})
                     .end()
                 .modules
                     .add('node_modules')
@@ -67,9 +67,6 @@ module.exports = {
             const resolveLoader = webpackConfig
                 .resolveLoader
                 // 添加 pnp-loader
-                .plugin('pnp-loaders')
-                    .use({ ...require('pnp-webpack-plugin').topLevelLoader })
-                    .end()
                 .modules
                     .add('node_modules')
                     .add(api.resolve('node_modules'))
@@ -161,9 +158,8 @@ module.exports = {
             webpackConfig.plugin('define').use(require('webpack/lib/DefinePlugin'), [defineVar()]);
             if (!isProd) {
                 // dev mode
-                webpackConfig.devtool('cheap-module-eval-source-map');
+                webpackConfig.devtool('eval-cheap-module-source-map');
                 webpackConfig.plugin('hmr')
-                    .use(require('webpack/lib/NamedModulesPlugin'))
                     .use(require('webpack/lib/HotModuleReplacementPlugin'));
                 webpackConfig.plugin('no-emit-on-errors').use(require('webpack/lib/NoEmitOnErrorsPlugin'));
             }
