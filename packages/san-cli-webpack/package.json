@@ -4,12 +4,12 @@
     "main": "index.js",
     "dependencies": {
         "fs-extra": "^8.1.0",
-        "html-webpack-plugin": "^3.2.0",
+        "html-webpack-plugin": "~5.0.0-beta.4",
         "portfinder": "^1.0.25",
         "san-cli-utils": "^1.0.0",
         "tty-table": "^2.8.2",
-        "webpack": "^4.41.2",
-        "webpack-dev-server": "^3.10.3",
+        "webpack": "~5.13.0",
+        "webpack-dev-server": "^3.11.1",
         "write-file-webpack-plugin": "^4.5.1"
     },
     "author": "ksky521",

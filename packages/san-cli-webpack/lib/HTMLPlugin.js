@@ -52,7 +52,7 @@ function main(pluginData, compilation) {
     });
 
     // TODO: 支持 html-webpack-plugin v4, 目前 v4 还有好多插件不支持，只能调通 3.0
-    pluginData.chunks.forEach(({childrenByOrder}) => {
+    pluginData.chunks && pluginData.chunks.forEach(({childrenByOrder}) => {
         Object.keys(childrenByOrder).forEach(key => {
             if (Array.isArray(childrenByOrder[key]) && childrenByOrder[key].length && idsSet[key]) {
                 idsSet[key].add(...childrenByOrder[key]);
