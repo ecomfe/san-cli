@@ -37,7 +37,7 @@
         "lodash.mapvalues": "^4.6.0",
         "lodash.transform": "^4.6.0",
         "san-cli-utils": "^1.0.0",
-        "webpack": "~4.41.2"
+        "webpack": "~5.13.0"
     },
     "devDependencies": {
         "@babel/core": "^7.8.6",
