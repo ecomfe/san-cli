@@ -81,7 +81,7 @@ module.exports = {
         config.optimization.splitChunks({
             cacheGroups: {
                 // 三方库模块独立打包
-                vendors: {
+                defaultVendors: {
                     name: 'vendors',
                     test: /[\\/]node_modules(?!\/santd)[\\/]/,
                     priority: -10,
