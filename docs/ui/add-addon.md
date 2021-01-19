@@ -44,7 +44,7 @@
 
 这里我们使用UI插件脚手架，创建一个名为`san-cli-ui-widget-hello`的工程，使用`San CLI UI`的创建项目功能，在脚手架地址输入`San CLI UI`插件脚手架地址，按照步骤执行，完成创建。过程演示如下：
 
-![](./assets/widget-create.gif)
+![](https://b.bdstatic.com/searchbox/icms/searchbox/img/widget-create.gif)
 
 在新创建工程的目录中关键的文件：`san.config.js`、`ui.js`、`src/index.js`中已包含了默认配置，开发者直接修改其中的名称即可。
 
@@ -220,7 +220,7 @@ module.exports = api => {
 
 依赖安装完成，在`San CLI UI`界面中打开`san-local`工程的仪表盘即可看到效果。
 
-![](./assets/widget-debug.gif)
+![](https://b.bdstatic.com/searchbox/icms/searchbox/img/widget-debug.gif)
 
 
 ### 发布安装
