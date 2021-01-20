@@ -15,8 +15,6 @@ import WIDGET_FRAGMENT from '@graphql/widget/widgetFragment.gql';
 import WIDGET_MOVE from '@graphql/widget/widgetMove.gql';
 import './dashboard.less';
 
-const GRID_SIZE = 200;
-
 const ZOOM = 0.7;
 
 const getPositionStyle = (x, y) => (
@@ -159,6 +157,7 @@ export default class DashboardWidget extends Component {
 
     static computed = {
         mainStyle() {
+            const gridSize = this.data.get('gridSize');
             const field = this.data.get('widget');
             const moveState = this.data.get('moveState');
             if (!field) {
@@ -167,24 +166,25 @@ export default class DashboardWidget extends Component {
             if (moveState) {
                 return {
                     ...getPositionStyle(moveState.pxX, moveState.pxY),
-                    ...getSizeStyle({field, gridSize: GRID_SIZE})
+                    ...getSizeStyle({field, gridSize})
                 };
             }
             return {
-                ...getPositionStyle(GRID_SIZE * field.x, GRID_SIZE * field.y),
-                ...getSizeStyle({field, gridSize: GRID_SIZE})
+                ...getPositionStyle(gridSize * field.x, gridSize * field.y),
+                ...getSizeStyle({field, gridSize})
             };
         },
 
         moveGhostStyle() {
+            const gridSize = this.data.get('gridSize');
             const moveState = this.data.get('moveState');
             const field = this.data.get('widget');
             if (!field || !moveState) {
                 return {};
             }
             return {
-                ...getPositionStyle(GRID_SIZE * moveState.x, GRID_SIZE * moveState.y),
-                ...getSizeStyle({field, gridSize: GRID_SIZE})
+                ...getPositionStyle(gridSize * moveState.x, gridSize * moveState.y),
+                ...getSizeStyle({field, gridSize})
             };
         },
         visiblePrompts() {
@@ -234,14 +234,15 @@ export default class DashboardWidget extends Component {
         window.removeEventListener('mouseup', this.ev2);
     }
     updateMoveState(e) {
+        const gridSize = this.data.get('gridSize');
         const initalMousePosition = this.data.get('initalMousePosition');
         const mouseDeltaX = e.clientX - initalMousePosition.x;
         const mouseDeltaY = e.clientY - initalMousePosition.y;
         const field = this.data.get('widget');
-        const pxX = field.x * GRID_SIZE + mouseDeltaX / ZOOM;
-        const pxY = field.y * GRID_SIZE + mouseDeltaY / ZOOM;
-        let x = Math.round(pxX / GRID_SIZE);
-        let y = Math.round(pxY / GRID_SIZE);
+        const pxX = field.x * gridSize + mouseDeltaX / ZOOM;
+        const pxY = field.y * gridSize + mouseDeltaY / ZOOM;
+        let x = Math.round(pxX / gridSize);
+        let y = Math.round(pxY / gridSize);
         if (x < 0) {
             x = 0;
         }

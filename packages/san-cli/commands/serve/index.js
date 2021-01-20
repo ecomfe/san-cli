@@ -12,7 +12,7 @@ const run = require('./run');
 exports.command = 'serve [entry]';
 exports.description = 'Builds and serves your app, rebuilding on file changes';
 exports.builder = {
-    'https': {
+    https: {
         type: 'boolean',
         default: false,
         describe: 'Enable https'

@@ -11,6 +11,8 @@
         height: calc(100% + 24px);
         position: absolute;
         top: -12px;
+        display: flex;
+        flex-direction: column;
         .background-color-1();
         .title-bar {
             display: flex;
@@ -57,6 +59,7 @@
             }
         }
         .widgets {
+            height: 100%;
             flex: 1;
             overflow-x: hidden;
             overflow-y: auto;
@@ -102,5 +105,5 @@
 .item-icon {
     font-size: 32px;
     margin-right: 16px;
-    .color-1();
+    color: #236eff;
 }

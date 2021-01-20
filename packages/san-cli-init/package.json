@@ -1,12 +1,12 @@
 {
-    "name": "san-cli-command-init",
-    "version": "1.0.2",
+    "name": "san-cli-init",
+    "version": "1.0.0",
     "main": "index.js",
     "author": "ksky521",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/ecomfe/san-cli.git",
-        "directory": "packages/san-cli-command-init"
+        "directory": "packages/san-cli-init"
     },
     "bugs": {
         "url": "https://github.com/ecomfe/san-cli/issues"
@@ -23,7 +23,7 @@
         "gulp-rename": "^2.0.0",
         "handlebars": "^4.5.1",
         "hash-sum": "^2.0.0",
-        "inquirer": "^7.0.0",
+        "prompts": "^2.4.0",
         "san-cli-utils": "^1.0.0",
         "through2": "^3.0.1",
         "vinyl-fs": "^3.0.3"

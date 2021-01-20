@@ -8,12 +8,16 @@
  * @author ksky521
  */
 
-const inquirer = require('inquirer');
+const prompts = require('prompts');
 const evaluate = require('./utils/evaluate');
 
 const promptMapping = {
-    string: 'input',
-    boolean: 'confirm'
+    string: 'text',
+    boolean: 'confirm',
+    // 因为把 inquirer 换成了 prompts，为了兼容旧脚手架模板，所以加了如下映射
+    // list 是 inquirer 的单选问答，select 是 prompts 的单选问答
+    // 虽然 prompts 也有名为 list 的问答，但是是个很不常用的问答，所以这么写没关系，等旧脚手架模板慢慢退出历史舞台后可以删了该映射
+    list: 'select'
 };
 
 module.exports = async (prompts, data, argv) => {
@@ -61,12 +65,12 @@ async function prompt(data, key, prompt, tplData) {
             }
             : prompt.default;
 
-    const answers = await inquirer.prompt([
+    const answers = await prompts([
         {
             type: promptMapping[prompt.type] || prompt.type,
             name: key,
             message: prompt.message || prompt.label || key,
-            default: render(promptDefault, tplData),
+            initial: render(promptDefault, tplData),
             choices: prompt.choices || [],
             validate: prompt.validate || (() => true)
         }
