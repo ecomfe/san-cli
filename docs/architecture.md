@@ -18,9 +18,6 @@ San CLI 的核心模块包含：
 -   san-loader：`.san`文件 webpack loader
 -   san-hot-loader：给 san 组件添加 HMR 功能
 -   san-cli-plugin-\*：对应 service 的 plugin
--   san-cli-docit：一个方便编写组件文档和预览的小工具，可做建站工具，需要的模块包括：
-    -   san-cli-markdown-loader：markdown-loader
-    -   san-cli-docit-theme：docit 皮肤
 
 结合模块的主流程可以如下图所示：
 

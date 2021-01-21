@@ -44,8 +44,6 @@
     },
     "scripts": {
         "commit": "git-cz",
-        "doc": "cd docs && node ../packages/san-cli/index.js docit .",
-        "build:doc": "cd docs && node ../packages/san-cli/index.js docit . --output",
         "lint": "eslint --ignore-path .eslintignore ./",
         "test": "node scripts/test.js"
     },
