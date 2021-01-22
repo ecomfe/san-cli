@@ -386,5 +386,19 @@ module.exports = class Command {
 };
 
 function getCmdLogInfo(cmd) {
-    return `${scriptName[0].toUpperCase()}${scriptName.slice(1)} ${cmd} v${pkgVersion}`;
+    let cmdName = cmd;
+    // 命令和包不一致的情况
+    if (cmdName === 'build' || cmdName === 'serve') {
+        cmdName = 'service';
+    }
+    // 获取包对应的package.json，如果存在的话
+    const pkg = `san-cli-${cmdName}/package.json`;
+    let version = '';
+    try {
+        version = require(pkg).version;
+    }
+    catch (e) {}
+    const mainCommand = `${scriptName[0].toUpperCase()}${scriptName.slice(1)}`;
+    const subCommand = version ? `\n${mainCommand} ${cmd} v${version || pkgVersion}` : '';
+    return `${mainCommand} v${pkgVersion}${subCommand}`;
 }
