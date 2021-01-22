@@ -83,7 +83,13 @@ class Plugins {
             else {
                 pluginApi.pluginId = id;
                 try {
+                    const viewNum = pluginApi.viewPlugin ? pluginApi.viewPlugin.views.length : 0;
                     module(pluginApi);
+                    // 如果新增了视图
+                    if (pluginApi.viewPlugin && pluginApi.viewPlugin.views.length > viewNum) {
+                        // 数组最后一项为新增的视图
+                        pluginApi.viewPlugin.views[pluginApi.viewPlugin.views.length - 1].pkgName = id;
+                    }
                     debug('Plugin API loaded for', name, pluginApi.cwd);
                 }
                 catch (e) {
