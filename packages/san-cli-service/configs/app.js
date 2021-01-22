@@ -113,7 +113,7 @@ module.exports = {
                         chunks = [name]
                         // chunks = ['common', 'vendors', 'css-common', name]
                     } = pageConfig;
-                    if (chunks.indexOf(name) === -1) {
+                    if (Array.isArray(chunks) && chunks.indexOf(name) === -1) {
                         chunks.push(name);
                     }
 
