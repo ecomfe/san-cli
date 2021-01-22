@@ -8,7 +8,7 @@
  * @author yanyiting
  */
 
-exports.command = 'hello';
+exports.command = 'customize_cmd';
 exports.builder = {
     name: {
         type: 'string'
@@ -16,5 +16,5 @@ exports.builder = {
 };
 exports.description = 'San Command Plugin Demo';
 exports.handler = cliApi => {
-    console.log(`hello, ${cliApi.name}`);
+    console.log(cliApi.name);
 };
