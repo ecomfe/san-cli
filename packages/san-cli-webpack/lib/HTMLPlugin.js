@@ -102,7 +102,6 @@ module.exports = class HulkHtmlWebpackPlugin {
     }
     afterHTMLProcessing(compilation, data, cb) {
         // 处理 html 中的{%block name="__head_asset"%}中的 head 和 body tag
-        // data.html = data.html.replace('');
         data.html = data.html.replace(SMARTY_BLOCK, m => m.replace(/<[/]?(head|body)>/g, ''));
         typeof cb === 'function' && cb(null, data);
         return data;
