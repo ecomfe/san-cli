@@ -117,22 +117,32 @@ module.exports = {
             if (splitChunks) {
                 webpackConfig.optimization.splitChunks(splitChunks);
             }
+
             webpackConfig.optimization.minimizer('js').use(
                 new TerserPlugin({
                     extractComments: false,
-                    sourceMap: ifSourcemap,
                     parallel: true,
-                    cache: true,
                     terserOptions: Object.assign(defaultTerserOptions, terserOptions)
                 })
             );
 
             // keep module.id stable when vendor modules does not change
-            webpackConfig.plugin('hash-module-ids').use(require('webpack/lib/HashedModuleIdsPlugin'), [
-                {
-                    hashDigest: 'hex'
-                }
-            ]);
+            /**
+             * TODO: HashedModuleIdsPlugin → optimization.moduleIds: 'deterministic'
+             * TODO: @see https://webpack.js.org/migrate/5
+             * TODO: 文档里面这么写，但是没有 webpackConfig.optimization.moduleIds方法，webpackChain的问题？
+             * 官方文档又说，optimization.moduleIds也不用设置
+             *
+             * Consider removing optimization.moduleIds and optimization.chunkIds from your webpack configuration.
+             * The defaults could be better,
+             * because they support long term caching in production mode and debugging in development mode.
+             *
+             * webpackConfig.plugin('hash-module-ids').use(require('webpack/lib/HashedModuleIdsPlugin'), [
+             *    {
+             *        hashDigest: 'hex'
+             *    }
+             * ]);
+             * */
         });
     }
 };
