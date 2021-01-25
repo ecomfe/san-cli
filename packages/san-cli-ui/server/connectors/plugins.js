@@ -98,7 +98,7 @@ class Plugins {
                             pluginApi.widgetPlugin.widgets[i].pkgName = id;
                         }
                     }
-                    
+
                     debug('Plugin API loaded for', name, pluginApi.cwd);
                 }
                 catch (e) {
