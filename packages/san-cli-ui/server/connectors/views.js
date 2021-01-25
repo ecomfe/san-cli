@@ -45,14 +45,14 @@ class Views {
         return list;
     }
 
-    /**
-     * 查找视图
-     * @param {string} query 视图 id 或 插件的 npm 包名
-     * @return {Object} 视图
-     */
-    findOne(query) {
+    findOne(id) {
         const views = this.getViews();
-        return views.find(view => view.id === query || view.pkgName === query);
+        return views.find(view => view.id === id);
+    }
+
+    findByPkgName(pkgName) {
+        const views = this.getViews();
+        return views.filter(view => view.pkgName === pkgName);
     }
 
     async add({view, project}, context) {
