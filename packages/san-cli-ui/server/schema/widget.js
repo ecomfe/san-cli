@@ -50,6 +50,7 @@ type Widget {
   prompts: [Prompt]
   config: JSON
   configured: Boolean!
+  pkgName: String
 }
 
 input WidgetAddInput {
