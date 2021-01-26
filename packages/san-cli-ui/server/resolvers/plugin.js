@@ -1,5 +1,5 @@
 /**
- * @file 项目配置相关的resolver
+ * @file 项目plugins相关的resolver
  * @author zttonly, Lohoyo
 */
 const plugins = require('../connectors/plugins');
@@ -9,9 +9,8 @@ const dependencies = require('../connectors/dependencies');
 
 module.exports = {
     Plugin: {
-        version: (plugin, args, context) => 'version',
-        description: (plugin, args, context) => 'description',
-        logo: (plugin, args, context) => plugin.getLogo(plugin, context)
+        version: (plugin, args, context) => dependencies.getVersion(plugin, context),
+        description: (plugin, args, context) => dependencies.getDescription(plugin, context)
     },
 
     Query: {

@@ -1,5 +1,5 @@
 /**
- * @file JSON格式的本地文件存储
+ * @file 纯JSON格式的文件数据存储，通常将项目logs等放这里
  * @author jinzhan
  */
 const path = require('path');
