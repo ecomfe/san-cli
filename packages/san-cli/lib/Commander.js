@@ -363,9 +363,16 @@ module.exports = class Command {
                     // * 如果路径是相对路径或者包名，是 cwd，还是san-cli，还是 global？
                     cmdName = cmd;
                     time(`load-${cmd}`);
-                    instance = require(cmd);
+                    try {
+                        instance = require(cmd);
+                    }
+                    catch (e) {
+                        error(`[${cmd}] is not a validated module!`);
+                        return;
+                    }
                     timeEnd(`load-${cmd}`);
                 }
+
                 // 保证至少command是存在的
                 if (instance && instance.command) {
                     if (!cmdName || unique.has(cmdName)) {
@@ -378,7 +385,7 @@ module.exports = class Command {
                     this.command(instance);
                 }
                 else {
-                    error(`${cmd} is not a validated command instance!`);
+                    error(`[${cmd}] is not a validated command instance!`);
                 }
             });
         }
@@ -386,5 +393,19 @@ module.exports = class Command {
 };
 
 function getCmdLogInfo(cmd) {
-    return `${scriptName[0].toUpperCase()}${scriptName.slice(1)} ${cmd} v${pkgVersion}`;
+    let cmdName = cmd;
+    // 命令和包不一致的情况
+    if (cmdName === 'build' || cmdName === 'serve') {
+        cmdName = 'service';
+    }
+    // 获取包对应的package.json，如果存在的话
+    const pkg = `san-cli-${cmdName}/package.json`;
+    let version = '';
+    try {
+        version = require(pkg).version;
+    }
+    catch (e) {}
+    const mainCommand = `${scriptName[0].toUpperCase()}${scriptName.slice(1)}`;
+    const subCommand = version ? `\n${mainCommand} ${cmd} v${version || pkgVersion}` : '';
+    return `${mainCommand} v${pkgVersion}${subCommand}`;
 }

@@ -68,10 +68,9 @@ describe('e2e 测试', () => {
             expect(webpackConfig).toMatchObject({
                 mode: 'development',
                 context: cwd + '',
-                devtool: 'cheap-module-eval-source-map',
+                devtool: 'eval-cheap-module-source-map',
                 output: {
                     path: path.join(cwd, '/output'),
-                    jsonpFunction: 'HK3',
                     filename: '[name].js',
                     publicPath: '/'
                 },
@@ -180,7 +179,6 @@ describe('e2e 测试', () => {
                 devtool: 'source-map',
                 output: {
                     path: path.join(cwd, '/output'),
-                    jsonpFunction: 'HK3',
                     filename: 'static/san-cli/js/[name].[contenthash:8].js',
                     publicPath: 'https://s.bdstatic.com/',
                     chunkFilename: 'static/san-cli/js/[name].[contenthash:8].js'

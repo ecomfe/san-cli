@@ -18,7 +18,6 @@ module.exports = api => {
     }
 
     // Welcome widget
-
     api.registerWidget({
         id: 'san.widgets.welcome',
         title: 'dashboard.widgets.welcome.title',

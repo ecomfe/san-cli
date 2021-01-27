@@ -16,7 +16,6 @@ const WebpackDevServer = require('webpack-dev-server');
 const portfinder = require('portfinder');
 
 // webpack Plugins
-const NameModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 const SanFriendlyErrorsPlugin = require('./lib/SanFriendlyErrorsPlugin');
 const WriteFileWebpackPlugin = require('write-file-webpack-plugin');
 
@@ -66,14 +65,13 @@ module.exports = function devServer({webpackConfig, devServerConfig, publicPath,
 
         // 添加插件
         // 在 serve 情况下添加
-        webpackConfig.plugins.push(new NameModulesPlugin());
         webpackConfig.plugins.push(new SanFriendlyErrorsPlugin());
         // 处理 tpl 的情况，smarty copy 到 output
         webpackConfig.plugins.push(new WriteFileWebpackPlugin({test: /\.tpl$/}));
 
         if (closeDevtoolDebug.enabled) {
             // 这里使用closeDevTool debug 来开启
-            webpackConfig.devtool = 'none';
+            webpackConfig.devtool = false;
             webpackConfig.optimization = {
                 minimize: false
             };

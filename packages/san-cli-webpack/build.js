@@ -23,7 +23,7 @@ module.exports = function build({webpackConfig, compilerCallback}) {
 
         if (closeDevtoolDebug.enabled) {
             // 使用DEBUG=san-cli:webpack:closeDevtool 开启
-            webpackConfig.devtool = 'none';
+            webpackConfig.devtool = false;
             webpackConfig.optimization = {
                 minimize: false
             };
@@ -34,6 +34,7 @@ module.exports = function build({webpackConfig, compilerCallback}) {
         if (typeof compilerCallback === 'function') {
             compilerCallback(compiler);
         }
+
         const callback = (err, stats) => {
             if (err || stats.hasErrors()) {
                 debug(err);

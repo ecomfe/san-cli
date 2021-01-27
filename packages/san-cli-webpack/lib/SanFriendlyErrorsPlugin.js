@@ -55,6 +55,11 @@ function isLikelyASyntaxError(message) {
 
 // Cleans up webpack error messages.
 function formatMessage(message) {
+    // 兼容webpack5升级
+    if (typeof message === 'object') {
+        message = Object.values(message).join('\n');
+    }
+
     let lines = message.split('\n');
 
     // Strip webpack-added headers off errors/warnings
@@ -123,7 +128,7 @@ function formatWebpackMessages(json) {
 }
 function showError(arr) {
     clearConsole();
-    error(chalk.red(`Failed to compile with ${arr.length} errors.`));
+    error(chalk.red(`[SanFriendlyErrorsPlugin]Failed to compile with ${arr.length} errors.`));
     arr.forEach(message => {
         const lines = message.split('\n');
 
@@ -142,9 +147,10 @@ function showError(arr) {
 
 }
 function showWarning(arr) {
+    arr.forEach(err => warn(err));
     warn(`Compiled with ${arr.length} warnings.`);
-    console.log(`${arr.join('\n\n')}`);
 }
+
 module.exports = class SanFriendlyErrorsPlugin {
     apply(compiler) {
         const done = stats => {

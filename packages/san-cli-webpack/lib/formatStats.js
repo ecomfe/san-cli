@@ -7,12 +7,10 @@
  * @file formatStats 美化下 stats log
  */
 
-/* global Set, Map */
 const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
 const ConsoleTable = require('tty-table');
-
 const {textCommonColor} = require('san-cli-utils/color');
 const {chalk} = require('san-cli-utils/ttyLogger');
 
@@ -27,7 +25,7 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
     const isMinJS = val => /\.min\.js$/.test(val);
 
     /* eslint-disable no-unused-vars */
-    let {assets, entrypoints, chunks} = stats;
+    let {assets, entrypoints, assetsByChunkName, chunks} = stats;
     /* eslint-enable no-unused-vars */
 
     function getChunksById(id) {
@@ -35,7 +33,6 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
             return chunks[id];
         }
         return chunks.find(chunk => chunk.id === id);
-
     }
 
     // 记录唯一 chunkid
@@ -44,7 +41,9 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
     // 1. 找出 entry 中的自身包含的 chunkid，排除公共chunk 的 id
     const commonChunksIds = new Set();
     Object.keys(entrypoints).map(name => {
-        entrypoints[name].chunks.forEach(chunkId => {
+        const entry = entrypoints[name];
+        const entryData = entry.chunks || entry.assets || [];
+        entryData.forEach(chunkId => {
             // 存在，那么就是公共模块 id，添加进公共模块 ids
             if (uniChunksMap.has(chunkId)) {
                 commonChunksIds.add(chunkId);
@@ -56,8 +55,8 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
     });
 
     const entries = Object.keys(entrypoints).map(name => {
-        const entry = entrypoints[name];
-        const {prefetch = [], preload = []} = entry.children;
+        const entry = entrypoints[name] || {};
+        const {prefetch = [], preload = []} = entry.children || {};
 
         let prefetchChunks = [];
         let preloadChunks = [];
@@ -76,12 +75,14 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
 
         const asyncChunks = [];
 
-        entry.chunks.forEach(chunkId => {
+        const entryData = entry.chunks || entry.assets || [];
+
+        entryData.forEach(chunkId => {
             if (!commonChunksIds.has(chunkId)) {
                 const chunk = getChunksById(chunkId);
                 // 2. 非公共模块则查找他的 children
                 // 这是因为公共模块查找出出来的 children 是依赖公共模块的全部依赖，所以不能说明是当前 entry 依赖到的模块，会导致计算不准确
-                const children = chunk.children;
+                const children = chunk.children || [];
                 if (children.length) {
                     asyncChunks.push(
                         ...flatten(
@@ -92,6 +93,9 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
                                 .map(() => getAssetsFiles(chunk.files))
                         )
                     );
+                }
+                else {
+                    asyncChunks.push(...getAssetsFiles(chunk.files));
                 }
             }
         });
@@ -113,7 +117,7 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
                 return false;
             }
             // 标识下 common 的模块类型
-            if (a.chunks.length === 1 && commonChunksIds.has(a.chunks[0])) {
+            if (a.chunks && a.chunks.length === 1 && commonChunksIds.has(a.chunks[0])) {
                 a.type = ['common'];
             }
             else {

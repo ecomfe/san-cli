@@ -26,9 +26,12 @@ describe('Commander', () => {
         });
         expect(flag).toBeTruthy();
     });
+
+    // 确认新增命令添加成功
     test('commands list', () => {
-        // 确认新增命令添加成功
-        expect(commands.map(item => item[0].match(/\w+/g)[0])).toEqual([
+        // 用户可能有自定义的命令，这里不能直接toEqual
+        const commandsList = commands.map(item => item[0].match(/\w+/g)[0]);
+        expect(commandsList).toEqual(expect.arrayContaining([
             'build',
             'serve',
             'init',
@@ -37,17 +40,17 @@ describe('Commander', () => {
             'plugin',
             'remote',
             'ui',
-            'hello'
-        ]);
+            'customize_cmd'
+        ]));
     });
-    test('run hello', () => {
-        // const origLog = console.log;
+    test('run customize_cmd', () => {
+        const val = 'hello, world';
         global.console = {
             log(msg) {
-                expect(msg).toBe('hello, world');
+                expect(msg).toBe(val);
             }
         };
-        cli.run(['hello', '--name', 'world']);
+        cli.run(['customize_cmd', '--name', val]);
     });
 });
 

@@ -11,17 +11,17 @@ describe('command inspect', () => {
     const p = path.dirname(cliBinPath);
     test('inspect', () => {
         const stdout = execSync(`node ${cliBinPath} inspect`).toString();
-        expect(stdout).toMatch(`San inspect v${version}`);
+        expect(stdout).toMatch(`San v${version}`);
         expect(stdout).toMatch(p);
     });
     test('inspect plugins', () => {
         const stdout = execSync(`node ${cliBinPath} inspect plugins`).toString();
-        expect(stdout).toMatch(`San inspect v${version}`);
+        expect(stdout).toMatch(`San v${version}`);
         expect(stdout).toMatch('new SanLoaderPlugin');
     });
     test('inspect with flag', () => {
         const stdout = execSync(`node ${cliBinPath} inspect --plugin progress`).toString();
-        expect(stdout).toMatch(`San inspect v${version}`);
+        expect(stdout).toMatch(`San v${version}`);
         expect(stdout).toMatch('WebpackBarPlugin');
     });
 });

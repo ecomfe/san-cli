@@ -9,7 +9,7 @@
  */
 
 const semver = require('semver');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const {cssnanoOptions: defaultCssnanoOptions} = require('../options');
 const {findExisting} = require('san-cli-utils/path');
 const {warn} = require('san-cli-utils/ttyLogger');
@@ -92,7 +92,6 @@ module.exports = {
                         rule.use('extract-css-loader')
                             .loader(require('mini-css-extract-plugin').loader)
                             .options({
-                                hmr: !isProd,
                                 publicPath: cssPublicPath
                             });
                     }
@@ -228,13 +227,12 @@ module.exports = {
                         preset: ['default', Object.assign(defaultCssnanoOptions, cssnanoOptions)]
                     };
                     // 压缩
-                    webpackConfig.optimization.minimizer('css').use(
-                        new OptimizeCSSAssetsPlugin({
-                            assetNameRegExp: /\.css$/g,
-                            cssProcessorOptions: nanoOptions,
-                            canPrint: true
-                        })
-                    );
+                    webpackConfig.optimization.minimizer('css')
+                        .use(CssMinimizerPlugin, [{
+                            parallel: rootOptions.parallel,
+                            sourceMap: rootOptions.productionSourceMap && sourceMap,
+                            minimizerOptions: nanoOptions
+                        }]);
                 }
             }
         });

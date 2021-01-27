@@ -145,7 +145,8 @@ module.exports = {
                     // inject html plugin for the page
                     const pageHtmlOptions = Object.assign(
                         {
-                            alwaysWriteToDisk: true
+                            alwaysWriteToDisk: true,
+                            scriptLoading: 'blocking'
                         },
                         htmlOptions,
                         pageConfig,

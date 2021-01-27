@@ -30,7 +30,7 @@
         "pretty-time": "^1.1.0",
         "san-cli-utils": "^1.0.0",
         "tty-table": "^2.8.2",
-        "webpackbar": "^4.0.0"
+        "webpackbar": "~5.0.0-3"
     },
     "gitHead": "402d813859ac219434712fa2063e5f724819004a"
 }
