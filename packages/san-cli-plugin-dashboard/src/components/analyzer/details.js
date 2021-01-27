@@ -3,12 +3,12 @@ import {formatSize} from '../../utils/util';
 /* global SanComponent */
 export default class App extends SanComponent {
     static template = /* html */ `
-    <div class="chart-details"
+    <div class="{{styles.chartDetails}}"
          style="margin-top:-{{topMargin}}"
          s-if="title || bigText || sizeText">
-        <span class="details-name">{{title}}</span>
-        <div class="details-percentage">{{bigText}}</div>
-        <div class="details-size">{{sizeText}}</div>
+        <span class="{{styles.detailsName}}">{{title}}</span>
+        <div class="{{styles.detailsPercentage}}">{{bigText}}</div>
+        <div class="{{styles.detailsSize}}">{{sizeText}}</div>
     </div>
     `;
 
