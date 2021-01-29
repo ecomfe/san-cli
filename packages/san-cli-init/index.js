@@ -54,7 +54,7 @@ exports.builder = {
         type: 'string',
         default: '',
         hidden: true,
-        describe: 'The JSON string of project preset according to PROMPTS in meta\.js within template'
+        describe: 'The JSON string of project preset according to PROMPTS in meta.js within template'
     }
 };
 
@@ -62,35 +62,34 @@ exports.builder = {
 
 const defaultTemplate = 'ksky521/san-project';
 
-
-exports.handler = cliApi => {
+exports.handler = argv => {
     const {warn} = require('san-cli-utils/ttyLogger');
 
-    let {template, appName} = cliApi;
-    let {templateAlias: templateAliasMap} = cliApi.getPresets() || {};
+    let {template, appName} = argv;
 
     if (template && appName === undefined) {
         // 只有一个参数的情况
         // 如果是模板，则默认使用当前文件夹
         if (isTemplatePath(template)) {
             appName = './';
-            const folderName = process.cwd().split('/').pop();
+            const folderName = process
+                .cwd()
+                .split('/')
+                .pop();
             warn(`Use ${folderName} as project name`);
-        }
-        else {
+        } else {
             // 如果不是模板，则认为是文件夹地址，并使用默认的模板
             appName = template;
             template = defaultTemplate;
             warn(`Use ${defaultTemplate} as scaffold template.`);
         }
-    }
-    else if (template === undefined) {
+    } else if (template === undefined) {
         // 两个参数都没有
         template = defaultTemplate;
         appName = './';
         warn(`Use ${defaultTemplate} as scaffold template.`);
     }
 
-    const options = Object.assign(cliApi, {templateAliasMap, template, appName});
+    const options = Object.assign(argv, {template, appName});
     require('./run')(template, appName, options);
 };

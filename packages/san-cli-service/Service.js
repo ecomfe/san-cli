@@ -39,43 +39,25 @@ const showConfig = getDebugLogger('webpack:config');
 /* global Map, Proxy */
 module.exports = class Service extends EventEmitter {
     constructor(
-        name,
+        cwd,
         {
-            cwd,
-            configFile,
             watch = false,
-            mode = process.env.NODE_ENV,
             autoLoadConfigFile = true,
             plugins = [],
             useBuiltInPlugin = true,
-            useProgress = true,
-            useProfiler = false,
             useDashboard = false,
             projectOptions = {}
         } = {}
     ) {
         super();
-        // 不使用进度条
-        this.useProgress = useProgress;
 
         // 发送CLI UI信息的IPC服务
         this.useDashboard = useDashboard;
-
-        // webpackbar 的 profiler 需要开启进度条才能使用
-        this.useProfiler = useProgress && useProfiler;
-        // watch模式
+        // watch模式，watch configfile变化
         this.useWatchMode = watch;
-        // 配置文件
-        this.configFile = configFile;
         // 不存在的时候，是否主动查找&加载本地的 san.config.js
         this.autoLoadConfigFile = autoLoadConfigFile;
 
-        // 添加 global 配置，san config.js 使用
-        global.__isProduction = mode === 'production';
-        // mode
-        this.mode = mode;
-        // 名字，目前用于进度条
-        this.name = name;
         // 工作目录
         this.cwd = cwd || process.cwd();
         // logger
@@ -100,13 +82,11 @@ module.exports = class Service extends EventEmitter {
                 env = dotenv.parse(content) || {};
                 debug('loadEnv envPath %s', envPath);
                 debug('loadEnv env object %O', env);
-            }
-            catch (err) {
+            } catch (err) {
                 // 文件不存在
                 if (err.toString().indexOf('ENOENT') < 0) {
                     logger.error(err);
-                }
-                else {
+                } else {
                     return {};
                 }
             }
@@ -173,8 +153,7 @@ module.exports = class Service extends EventEmitter {
             // 2. 真正加载
             plugins = plugins.map(this._loadPlugin.bind(this));
             plugins = [...builtInPlugins, ...plugins];
-        }
-        else {
+        } else {
             plugins = builtInPlugins;
         }
 
@@ -187,6 +166,7 @@ module.exports = class Service extends EventEmitter {
             pluginOptions = p[1];
             p = p[0];
         }
+
         if (typeof p === 'string') {
             // 处理引入
             try {
@@ -216,35 +196,51 @@ module.exports = class Service extends EventEmitter {
                     return plugin;
                 }
                 logger.error(`Plugin is invalid: ${p}. Service plugin must has id and apply function!`);
-            }
-            catch (e) {
+            } catch (e) {
                 logger.error(`Plugin load failed: ${p}`);
                 logger.error(e);
             }
-        }
-        else if (typeof p === 'object' && p.id && typeof p.apply === 'function') {
+        } else if (typeof p === 'object' && p.id && typeof p.apply === 'function') {
             // 处理 object
             if (pluginOptions) {
                 return [p, pluginOptions];
             }
             return p;
-        }
-        else {
+        } else if (typeof p === 'function') {
+            // 如果传入的plugin是个函数，增加id
+            return [{id: 'anonymous', apply: p}, pluginOptions];
+        } else {
             logger.error('Service plugin is invalid');
             if (p && p.toString() === '[object Object]') {
                 logger.error(p);
             }
         }
     }
-    init(mode) {
+    init(mode, configFile) {
         if (this.initialized) {
             // 初始化过一次之后就不需要二次了
             // 注意这里会导致 configFile 这类二次修改不会生效
             return this;
         }
         this.initialized = true;
-        this.mode = mode;
 
+        // 先加载 env 文件，保证 config 文件中可以用到
+        time('loadEnv');
+        this.loadEnv(mode);
+        timeEnd('loadEnv');
+
+        // set mode
+        // load user config
+        time('loadProjectOptions');
+        const projectOptions = this.loadProjectOptions(configFile);
+        debug('projectOptions: %O', projectOptions);
+        timeEnd('loadProjectOptions');
+
+        // 添加插件
+        if (Array.isArray(projectOptions.plugins) && projectOptions.plugins.length) {
+            projectOptions.plugins.forEach(p => this.addPlugin(p));
+        }
+        // 初始化插件
         this.plugins.forEach(plugin => {
             this.initPlugin(plugin);
         });
@@ -288,7 +284,7 @@ module.exports = class Service extends EventEmitter {
         apply(api, this.projectOptions, options);
         return this;
     }
-    async loadProjectOptions(configFile) {
+    loadProjectOptions(configFile) {
         let originalConfigFile = configFile;
         if (configFile && typeof configFile === 'string') {
             configFile = isAbsolute(configFile) ? configFile : resolve(this.cwd, configFile);
@@ -298,7 +294,7 @@ module.exports = class Service extends EventEmitter {
             }
         }
         // 首先试用 argv 的 config，然后寻找默认的，找到则读取，格式失败则报错
-        let config = defaultsDeep(this._initProjectOptions, defaultConfig);
+        let config = defaultsDeep(defaultConfig, this._initProjectOptions);
         let result = {
             filepath: originalConfigFile,
             config: configFile ? require(configFile) : false
@@ -317,32 +313,24 @@ module.exports = class Service extends EventEmitter {
 
             if (!result.config || typeof result.config !== 'object') {
                 logger.error(`${textCommonColor(configPath)}: Expected object type.`);
-            }
-            else {
+            } else {
                 // 校验config.js schema 格式
                 try {
-                    await validateOptions(result.config);
-                }
-                catch (e) {
+                    validateOptions(result.config);
+                } catch (e) {
                     logger.error(`${textCommonColor(configPath)}: Invalid type.`);
                     throw new SError(e);
                 }
             }
             debug('loadProjectOptions from %s', configPath);
-            // 这里特殊处理下 plugins 字段吧
-            // if (result.config.plugins && result.config.plugins.length) {
-            //     result.config.plugins = result.config.plugins.map(k =>
-            //         typeof k === 'string' ? resolve(dirname(result.filepath), k) : k
-            //     );
-            // }
 
             // 加载默认的 config 配置
             config = defaultsDeep(result.config, config);
-        }
-        else {
+        } else {
             // this.logger.warn(`${textCommonColor('san.config.js')} Cannot find! Use default configuration.`);
         }
-        return this.normalizeConfig(config, result.filepath);
+        this.projectOptions = this.normalizeConfig(config, result.filepath);
+        return this.projectOptions;
     }
     normalizeConfig(config, filepath) {
         // normalize publicPath
@@ -364,8 +352,7 @@ module.exports = class Service extends EventEmitter {
                         if (Array.isArray(page[key])) {
                             // 处理成相对 san.config.js
                             page[key] = page[key].map(p => (isAbsolute(p) ? p : resolve(filepath, p)));
-                        }
-                        else {
+                        } else {
                             page[key] = resolve(filepath, page[key]);
                         }
                     }
@@ -375,63 +362,52 @@ module.exports = class Service extends EventEmitter {
         return config;
     }
 
-    async run(callback) {
-        // 先加载 env 文件，保证 config 文件中可以用到
-        time('loadEnv');
-        this.loadEnv(this.mode);
-        timeEnd('loadEnv');
-
-        // set mode
-        // load user config
-        time('loadProjectOptions');
-        const projectOptions = await this.loadProjectOptions(this.configFile);
-        debug('projectOptions: %O', projectOptions);
-        timeEnd('loadProjectOptions');
-
-        this.projectOptions = projectOptions;
-        // 添加插件
-        if (Array.isArray(projectOptions.plugins) && projectOptions.plugins.length) {
-            projectOptions.plugins.forEach(p => this.addPlugin(p));
+    run(name, args = {}) {
+        let mode = args.mode || process.env.NODE_ENV;
+        if (!['production', 'development'].includes(mode)) {
+            mode = 'development';
         }
-        // 开始添加依赖 argv 的内置 plugin
-        // 添加progress plugin
-        if (this.useProgress) {
+
+        // 添加 global 配置，san config.js 使用
+        // global.__isProduction = mode === 'production'; // 去掉？？？
+
+        const {progress, profiler, watch} = args;
+        // 使用进度条, 添加progress plugin
+        if (progress) {
+            // 名字，目前用于进度条
             const progressOptions = {
-                name: this.name
+                name,
+                // webpackbar 的 profiler 需要开启进度条才能使用
+                profile: !!profiler
             };
-            if (this.useProfiler) {
-                progressOptions.profile = true;
-            }
             this.addPlugin(require('san-cli-plugin-progress'), progressOptions);
         }
 
         // 添加dashboard Plugin
         if (this.useDashboard) {
             this.addPlugin(require('san-cli-plugin-dashboard'), {
-                type: this.name,
-                keepAlive: this.watch
+                type: name,
+                keepAlive: watch
             });
         }
 
+        // init 之后就执行了initplugin，所以在之前addPlugin
         time('init');
-        this.init(this.mode);
+        this.init(mode, args.configFile);
         timeEnd('init');
 
-        if (typeof callback === 'function') {
-            time('callback');
-            callback(this._getApiInstance(`${this.name}:callback`), this.projectOptions);
-            timeEnd('callback');
-        }
+        // 返回一个promise
+        return Promise.resolve(this._getApiInstance(`run:${name}`));
     }
     addPlugin(name, options = {}) {
         argsert('<string|array|object> [object|undefined]', [name, options], arguments.length);
 
         if (Array.isArray(name)) {
             [name, options = {}] = name;
-        }
-        else if (typeof name === 'object') {
+        } else if (typeof name === 'object') {
             argsert('<string> <function>', [name.id, name.apply], 2);
         }
+
         const plugin = this._loadPlugin([name, options]);
         this.plugins.push(plugin);
         return this;
@@ -459,8 +435,7 @@ module.exports = class Service extends EventEmitter {
                 if (res) {
                     config = webpackMerge(config, res);
                 }
-            }
-            else if (fn) {
+            } else if (fn) {
                 // merge literal values
                 config = webpackMerge(config, fn);
             }
