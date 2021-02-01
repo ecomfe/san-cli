@@ -97,6 +97,7 @@ export default class App extends Component {
     async setProjectNav() {
         const {data} = await this.$apollo.query({query: VIEWS});
         const views  = (data.views || []).map(this.formatView.bind(this));
+        this.fire('setviewname', views);
         this.data.set('projectNav', views);
         this.subscribeViewChange();
     }
