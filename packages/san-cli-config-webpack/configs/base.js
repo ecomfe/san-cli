@@ -2,10 +2,21 @@ const fs = require('fs');
 const path = require('path');
 const resolveSync = require('resolve');
 const defaultsDeep = require('lodash.defaultsdeep');
-const {createRule} = require('../rules');
+const rules = require('../rules');
+const {getAssetPath} = require('san-cli-utils/path');
 
 module.exports = (webpackChainConfig, projectOptions) => {
-    const {resolve, resolveLocal, isProduction, isLegacyBundle, context} = projectOptions;
+    const {
+        loaderOptions = {},
+        resolve,
+        resolveLocal,
+        isProduction,
+        isLegacyBundle,
+        context,
+        filenameHashing,
+        assetsDir,
+        largeAssetSize = 1024
+    } = projectOptions;
     webpackChainConfig.context(context);
 
     // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
@@ -14,7 +25,7 @@ module.exports = (webpackChainConfig, projectOptions) => {
     webpackChainConfig.output
         .path(resolve(projectOptions.outputDir))
         /* eslint-disable max-len */
-        .filename((isLegacyBundle() ? '[name]-legacy' : '[name]') + `${projectOptions.filenameHashing ? '.[contenthash:8]' : ''}.js`)
+        .filename((isLegacyBundle() ? '[name]-legacy' : '[name]') + `${filenameHashing ? '.[contenthash:8]' : ''}.js`)
         /* eslint-enable max-len */
         .publicPath(projectOptions.publicPath);
 
@@ -86,42 +97,51 @@ module.exports = (webpackChainConfig, projectOptions) => {
 
     // set loaders
     // ------------------------loaders------------
-    const loaderOptions = projectOptions.loaderOptions || {};
-
-    function setLoader(lang, test, loaders) {
-        // 如果san.config.js 中loaderOptions.xx为false则不添加
-        if (loaderOptions[lang] === false) {
-            return;
+    if (loaderOptions.san !== false) {
+        const sanLoaders = [['san', loaderOptions.san]];
+        if (!isProduction() && loaderOptions['san-hot'] !== false) {
+            sanLoaders.unshift(['san-hot', loaderOptions['san-hot']]);
         }
-        if (!Array.isArray(loaders)) {
-            loaders = [loaders];
-        }
-        loaders = loaders.map(a => {
-            let name;
-            let options = {};
-            if (Array.isArray(a)) {
-                name = a[0];
-                options = a[1] || {};
-            } else if (typeof a === 'object') {
-                name = a.name;
-                options = a.options || {};
-            } else {
-                name = a;
-            }
-            return [name, defaultsDeep(options, loaderOptions[lang])];
-        });
-        createRule(lang, test, loaders);
+        rules.createRule(webpackChainConfig, 'san', /\.san$/, sanLoaders);
     }
 
-    if (isProduction()) {
-        setLoader('san', /\.san$/, ['san']);
-    } else {
-        setLoader('san', /\.san$/, ['san-hot', 'san']);
-    }
-
-    setLoader('ejs', /\.ejs$/, 'ejs');
-
-    setLoader('html', /\.html?$/, 'html');
+    // html, ejs
+    [
+        ['html', /\.html?$/],
+        ['ejs', /\.ejs$/]
+    ].forEach(([name, test]) => {
+        if (loaderOptions[name] !== false) {
+            rules.createRule(webpackChainConfig, name, test, [[name, loaderOptions[name]]]);
+        }
+    });
+    // 使用url-loader 设置 img, media, fonts + svg-url设置svg
+    [
+        ['fonts', /\.(woff2?|eot|ttf|otf)(\?.*)?$/i, 'url'],
+        ['media', /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/, 'url'],
+        ['image', /\.(png|jpe?g|gif|webp)(\?.*)?$/, 'url'],
+        ['svg', /\.svg(\?.*)?$/, 'svg']
+    ].forEach(([name, test, loader]) => {
+        if (loaderOptions[name] !== false) {
+            rules[loader](
+                webpackChainConfig,
+                name,
+                test,
+                // prettier-ignore
+                typeof loaderOptions[name] === 'object'
+                    ? defaultsDeep(
+                        {
+                            limit: largeAssetSize,
+                            name: getAssetPath(
+                                assetsDir,
+                                `${name}/[name]${filenameHashing ? '.[contenthash:8]' : ''}.[ext]`
+                            )
+                        },
+                        loaderOptions[name]
+                    )
+                    : undefined
+            );
+        }
+    });
 
     // -----------plugins--------
     webpackChainConfig.plugin('san').use(require('san-loader/lib/plugin'));

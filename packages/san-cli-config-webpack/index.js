@@ -32,7 +32,7 @@ const normalizeProjectOptions = projectOptions => {
             return process.env.SAN_CLI_LEGACY_BUIL;
         },
         isProduction() {
-            return process.env.NODE_ENV === 'production';
+            return projectOptions.mode === 'production';
         },
         resolveLocal(...args) {
             return path.join(__dirname, '../', ...args);

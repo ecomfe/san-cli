@@ -6,7 +6,7 @@ module.exports = function createOneOfRule(chainConfig, name, test, oneOfs) {
     if (!Array.isArray(oneOfs)) {
         oneOfs = [oneOfs];
     }
-    oneOfs.forEach(({name, resourceQuery, loader: loaderName, options: loaderOptions}) => {
+    oneOfs.forEach(({name, resourceQuery, loader: loaderName, options: loaderOptions, test}) => {
         if (builtinLoaders[loaderName]) {
             const loaderFactory = builtinLoaders[loaderName];
             loaderOptions = loaderFactory(loaderOptions);
@@ -18,6 +18,9 @@ module.exports = function createOneOfRule(chainConfig, name, test, oneOfs) {
         let r = baseRule.oneOf(name);
         if (resourceQuery) {
             r = r.resourceQuery(resourceQuery);
+        }
+        if (test) {
+            r = r.test(test);
         }
 
         r.use(loaderName)

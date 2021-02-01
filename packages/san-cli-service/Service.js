@@ -237,6 +237,7 @@ module.exports = class Service extends EventEmitter {
         // load user config
         time('loadProjectOptions');
         const projectOptions = this.loadProjectOptions(configFile);
+        projectOptions.mode = mode;
         debug('projectOptions: %O', projectOptions);
         timeEnd('loadProjectOptions');
 
