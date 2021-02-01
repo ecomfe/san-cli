@@ -66,10 +66,7 @@ module.exports = class Service extends EventEmitter {
         this.pkg = readPkg(this.cwd);
 
         this.initialized = false;
-        // 添加默认context
-        if (!projectOptions.context) {
-            projectOptions.context = this.cwd;
-        }
+
         this._initProjectOptions = projectOptions;
         // webpack chain & merge array
         this.webpackChainFns = [];
@@ -237,6 +234,7 @@ module.exports = class Service extends EventEmitter {
         // load user config
         time('loadProjectOptions');
         const projectOptions = this.loadProjectOptions(configFile);
+        // 下面是给cnfig-webpack用的
         projectOptions.mode = mode;
         debug('projectOptions: %O', projectOptions);
         timeEnd('loadProjectOptions');
@@ -363,6 +361,12 @@ module.exports = class Service extends EventEmitter {
                     }
                 });
             });
+        }
+
+        config.pkg = this.pkg;
+        // 添加默认context
+        if (!config.context) {
+            config.context = this.cwd;
         }
         return config;
     }
