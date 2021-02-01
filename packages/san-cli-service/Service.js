@@ -66,6 +66,10 @@ module.exports = class Service extends EventEmitter {
         this.pkg = readPkg(this.cwd);
 
         this.initialized = false;
+        // 添加默认context
+        if (!projectOptions.context) {
+            projectOptions.context = this.cwd;
+        }
         this._initProjectOptions = projectOptions;
         // webpack chain & merge array
         this.webpackChainFns = [];
@@ -367,6 +371,7 @@ module.exports = class Service extends EventEmitter {
         if (!['production', 'development'].includes(mode)) {
             mode = 'development';
         }
+        process.env.NODE_ENV = mode;
 
         // 添加 global 配置，san config.js 使用
         // global.__isProduction = mode === 'production'; // 去掉？？？

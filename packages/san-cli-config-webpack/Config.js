@@ -38,6 +38,20 @@ module.exports = class Confing {
                 .options(options)
                 .end();
         });
+        return this;
+    }
+    getRuleByName(name) {
+        return this.chainConfig.module.rule(name);
+    }
+    // 根据namne删除rule
+    removeRule(name) {
+        const map = this.getRuleByName(name);
+        if (map) {
+            for (let [name] of map) {
+                map.delete(name);
+            }
+        }
+        return this;
     }
     createOneOfRule(name, test, oneOfs) {
         const baseRule = this.chainConfig.module.rule(name).test(test);
@@ -64,6 +78,8 @@ module.exports = class Confing {
                 .end()
                 .end();
         });
+        return this;
+
         /*
         config.module
         .rule('css')
@@ -101,11 +117,16 @@ module.exports = class Confing {
     }
     removePlugin(name) {
         this.chainConfig.plugins.delete(name);
+        return this;
     }
     addPlugin(name, plugin, pluginOptions) {
         this.chainConfig.plugin(name).use(plugin, pluginOptions);
+        return this;
     }
-    getChainConfig(mode) {
+    getConfig(mode) {
         return this.chainConfig;
+    }
+    toConfig() {
+        return this.chainConfig.toConfig();
     }
 };

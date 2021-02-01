@@ -25,7 +25,7 @@ module.exports = class PluginAPI {
         return this.service;
     }
     isProd() {
-        return this.service.mode === 'production';
+        return process.env.NODE_ENV === 'production';
     }
     getCwd() {
         return this.service.cwd;
