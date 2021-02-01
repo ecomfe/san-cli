@@ -1,8 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 const resolveSync = require('resolve');
-module.exports = (configInstance, projectOptions) => {
-    const webpackChainConfig = configInstance.getConfig();
+const defaultsDeep = require('lodash.defaultsdeep');
+const {createRule} = require('../rules');
+
+module.exports = (webpackChainConfig, projectOptions) => {
     const {resolve, resolveLocal, isProduction, isLegacyBundle, context} = projectOptions;
     webpackChainConfig.context(context);
 
@@ -34,22 +36,19 @@ module.exports = (configInstance, projectOptions) => {
         .alias
             .set('core-js', path.dirname(resolveSync('core-js')))
             .set('regenerator-runtime', path.dirname(resolveSync('regenerator-runtime')));
+    /* eslint-enable */
+
     if (fs.existsSync(resolve('src'))) {
         webpackChainConfig.resolve.alias
             // 加个@默认值
             .set('@', resolve('src'));
     }
 
-    // prettier-ignore
     // set resolveLoader
-    const resolveLoader = webpackChainConfig
-        .resolveLoader
-        // 添加 pnp-loader
-        .modules
-            .add('node_modules')
-            .add(resolve('node_modules'))
-            .add(resolveLocal('node_modules'));
-    /* eslint-enable */
+    const resolveLoader = webpackChainConfig.resolveLoader.modules
+        .add('node_modules')
+        .add(resolve('node_modules'))
+        .add(resolveLocal('node_modules'));
 
     //  优先考虑本地安装的html-loader版本，没有的话去全局路径寻找
     try {
@@ -109,9 +108,9 @@ module.exports = (configInstance, projectOptions) => {
             } else {
                 name = a;
             }
-            return [name, defaultOptions(options, loadersOptions[lang])];
+            return [name, defaultsDeep(options, loaderOptions[lang])];
         });
-        configInstance.createRule(lang, test, loaders);
+        createRule(lang, test, loaders);
     }
 
     if (isProduction()) {
@@ -119,27 +118,10 @@ module.exports = (configInstance, projectOptions) => {
     } else {
         setLoader('san', /\.san$/, ['san-hot', 'san']);
     }
-    setLoader('svg', /\.svg(\?.*)?$/, [
-        [
-            'svg',
-            {
-                dir: 'svg'
-            }
-        ]
-    ]);
 
     setLoader('ejs', /\.ejs$/, 'ejs');
+
     setLoader('html', /\.html?$/, 'html');
-    setLoader('fonts', /\.(woff2?|eot|ttf|otf)(\?.*)?$/i, [['url', {dir: 'fonts'}]]);
-    setLoader('img', /\.(png|jpe?g|gif|webp)(\?.*)?$/, [['url', {dir: 'img'}]]);
-    setLoader('media', /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/, [
-        [
-            'url',
-            {
-                dir: 'media'
-            }
-        ]
-    ]);
 
     // -----------plugins--------
     webpackChainConfig.plugin('san').use(require('san-loader/lib/plugin'));

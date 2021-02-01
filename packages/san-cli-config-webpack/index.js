@@ -1,11 +1,29 @@
 const path = require('path');
-const WebpackChain = require('webpack-chain');
 const lMerge = require('lodash.merge');
+const Config = require('webpack-chain');
 
 const {devServerOptions} = require('./defaultOptions');
-const Config = require('./Config');
 
-const configInstance = new Config(new WebpackChain());
+// exports.getRuleByName = name => {
+//     return chainConfig.module.rule(name);
+// };
+// // 根据namne删除rule
+// exports.removeRule = name => {
+//     const map = chainConfig.module.rule(name);
+//     if (map) {
+//         for (let [name] of map) {
+//             map.delete(name);
+//         }
+//     }
+// };
+
+// exports.removePlugin = name => {
+//     chainConfig.plugins.delete(name);
+// };
+// exports.addPlugin = (name, plugin, pluginOptions) => {
+//     chainConfig.plugin(name).use(plugin, pluginOptions);
+// };
+// exports.getChainConfig = () => chainConfig;
 
 const normalizeProjectOptions = projectOptions => {
     return {
@@ -27,16 +45,12 @@ const normalizeProjectOptions = projectOptions => {
         }
     };
 };
-exports.createChainConfig = function getChainConfig(mode, projectOptions) {
-    ['base', mode].forEach(name =>
-        require(`./configs/${name}`)(configInstance, normalizeProjectOptions(projectOptions))
+exports.createChainConfig = function getChainConfig(webpackConfig = new Config(), mode, projectOptions) {
+    ['base', 'style', mode].forEach(name =>
+        require(`./configs/${name}`)(webpackConfig, normalizeProjectOptions(projectOptions))
     );
-    const chainWebpackConfig = configInstance.getConfig();
 
-    return chainWebpackConfig;
-};
-exports.resetRule = (name, test, loaders) => {
-    // configInstance.createRule(name, test, loaders);
+    return webpackConfig;
 };
 
 exports.createDevServerConfig = (devServerConfig = {}) => {
