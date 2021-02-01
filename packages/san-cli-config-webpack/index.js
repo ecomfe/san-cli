@@ -19,5 +19,5 @@ exports.resetRule = (name, test, loaders) => {
 exports.createDevServerConfig = (devServerConfig = {}) => {
     return lMerge(devServerOptions, devServerConfig);
 };
-
+exports.createHTMLPlugin = pages => {};
 exports.script = () => {};
