@@ -25,7 +25,7 @@ export default class App extends Component {
             <c-connection-status></c-connection-status>
 
             <s-layout-header class="page-header">
-                <c-header-title title="{{$t((routeNav || routeAddon)+ '.title')}}"></c-header-title>
+                <c-header-title title="{{routeNav ? $t((routeNav)+ '.title') : viewName[routeAddon]}}"></c-header-title>
                 <div class="header-aside">
                     <c-dashboard-header
                         s-if="routeNav === 'dashboard'"
@@ -41,7 +41,7 @@ export default class App extends Component {
             </s-layout-header>
 
             <s-layout class="page-content h1oh">
-                <c-sidebar selectedMenu="{{routeNav || routeAddon}}" />
+                <c-sidebar selectedMenu="{{routeNav || routeAddon}}" on-setviewname="setViewName" />
 
                 <s-layout-content class="page-content-main">
                     <s-spin s-if="pageLoading"
@@ -115,5 +115,11 @@ export default class App extends Component {
         return {
             pageLoading: false
         };
+    }
+
+    setViewName(e) {
+        const viewName = {};
+        e.forEach(view => viewName[view.id] = view.name);
+        this.data.set('viewName', viewName);
     }
 }
