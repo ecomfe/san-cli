@@ -11,31 +11,25 @@
 const {resolve, isAbsolute, join, dirname} = require('path');
 const EventEmitter = require('events').EventEmitter;
 const {logger: consola, time, timeEnd, chalk, getDebugLogger} = require('san-cli-utils/ttyLogger');
-
 const importLazy = require('import-lazy')(require);
 const fs = require('fs-extra');
 const webpackMerge = importLazy('webpack-merge');
-const resolvePlugin = importLazy('./resolvePlugin');
 const defaultsDeep = require('lodash.defaultsdeep');
 const lMerge = require('lodash.merge');
 const dotenv = require('dotenv');
-
 const {createChainConfig, createDevServerConfig} = require('san-cli-config-webpack');
-
 const SError = require('san-cli-utils/SError');
-const PluginAPI = require('./PluginAPI');
 const {findExisting} = require('san-cli-utils/path');
 const {textCommonColor} = require('san-cli-utils/color');
 const argsert = require('san-cli-utils/argsert');
 const readPkg = require('san-cli-utils/readPkg');
-
+const PluginAPI = require('./PluginAPI');
+const resolvePlugin = importLazy('./resolvePlugin');
 const {defaults: defaultConfig, validateSync: validateOptions} = require('./options');
-
 const logger = consola.withTag('Service');
 const debug = getDebugLogger('service');
 const showConfig = getDebugLogger('webpack:config');
 
-/* global Map, Proxy */
 module.exports = class Service extends EventEmitter {
     constructor(
         cwd,
@@ -260,7 +254,6 @@ module.exports = class Service extends EventEmitter {
         return new Proxy(new PluginAPI(id, self), {
             get(target, prop) {
                 // 传入配置的自定义 pluginAPI 方法
-
                 if (['on', 'emit', 'addPlugin', 'getWebpackChainConfig', 'getWebpackConfig'].includes(prop)) {
                     if (typeof self[prop] === 'function') {
                         return self[prop].bind(self);
@@ -407,6 +400,7 @@ module.exports = class Service extends EventEmitter {
         // 返回一个promise
         return Promise.resolve(this._getApiInstance(`run:${name}`));
     }
+
     addPlugin(name, options = {}) {
         argsert('<string|array|object> [object|undefined]', [name, options], arguments.length);
 
@@ -422,7 +416,7 @@ module.exports = class Service extends EventEmitter {
     }
 
     getWebpackChainConfig() {
-        const chainableConfig = createChainConfig();
+        const chainableConfig = createChainConfig(this.projectOptions.mode, this.projectOptions);
         // apply chains
         this.webpackChainFns.forEach(fn => fn(chainableConfig));
         return chainableConfig;
@@ -452,6 +446,7 @@ module.exports = class Service extends EventEmitter {
         if (config !== original) {
             cloneRuleNames(config.module && config.module.rules, original.module && original.module.rules);
         }
+
         // 这里需要将 devServer 和 this.projectOptions.devServer 进行 merge
         config.devServer = createDevServerConfig(
             lMerge(config.devServer || {}, this.projectOptions.devServer || {}) || {}
@@ -499,6 +494,7 @@ function removeSlash(config, key) {
         config[key] = config[key].replace(/\/$/g, '');
     }
 }
+
 function ensureSlash(config, key) {
     let val = config[key];
     if (typeof val === 'string') {

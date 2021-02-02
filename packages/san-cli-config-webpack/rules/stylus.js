@@ -2,8 +2,8 @@ const createCSSRule = require('./createCSSRule');
 
 module.exports = (
     chainConfig,
-    name = ,
-    test,
+    name = 'styl',
+    test = /\.styl(us)?$/,
     options = {
         requireModuleExtension: true,
         extract: false,

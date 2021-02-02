@@ -5,9 +5,9 @@ const Config = require('webpack-chain');
 
 const {normalizeProjectOptions} = require('./utils');
 const {devServerOptions} = require('./defaultOptions');
-exports.createChainConfig = function getChainConfig(webpackConfig = new Config(), mode, projectOptions) {
+exports.createChainConfig = function getChainConfig(mode, projectOptions, webpackConfig = new Config()) {
     ['base', 'pages', 'style', mode].forEach(name =>
-        require(`./configs/${name}`)(webpackConfig, normalizeProjectOptions(projectOptions))
+        require(`./configs/${name}`)(webpackConfig, projectOptions ? normalizeProjectOptions(projectOptions) : {})
     );
     return webpackConfig;
 };

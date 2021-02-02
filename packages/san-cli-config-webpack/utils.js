@@ -1,6 +1,6 @@
 const path = require('path');
 // 将 env 中的值进行赋值
-exports.defineVar = function defineVar(projectOptions, raw) {
+exports.defineVar = (projectOptions, raw) => {
     const vars = {
         // TODO 这里要不要按照 mode 设置下 undefined 的情况？
         NODE_ENV: process.env.NODE_ENV,
@@ -24,7 +24,7 @@ exports.defineVar = function defineVar(projectOptions, raw) {
     }
     return vars;
 };
-exports.ensureRelative = function ensureRelative(outputDir, p) {
+exports.ensureRelative = (outputDir, p) => {
     if (path.isAbsolute(p)) {
         return path.relative(outputDir, p);
     }
@@ -50,4 +50,9 @@ exports.normalizeProjectOptions = projectOptions => {
             return projectOptions.context;
         }
     };
+};
+
+
+exports.resolveLocal = (...args) => {
+    return path.join(__dirname, '../', ...args);
 };

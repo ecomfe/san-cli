@@ -1,6 +1,5 @@
 const resolve = require('resolve');
-
-const builtinLoaders = require('./loaders');
+const builtinLoaders = require('../loaders');
 
 /**
  * 创建Rule

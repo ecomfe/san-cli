@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const resolveSync = require('resolve');
+const resolveSync = require('resolve').sync;
 const defaultsDeep = require('lodash.defaultsdeep');
 const rules = require('../rules');
 const {getAssetPath} = require('san-cli-utils/path');
@@ -44,7 +44,7 @@ module.exports = (webpackChainConfig, projectOptions) => {
             .add(resolveLocal('node_modules'))
             .end()
         // set alias
-        // TODO 这里要拿到跟babel配置一起设置
+        // TODO: 这里要拿到跟babel配置一起设置
         .alias
             .set('core-js', path.dirname(resolveSync('core-js')))
             .set('regenerator-runtime', path.dirname(resolveSync('regenerator-runtime')));

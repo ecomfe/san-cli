@@ -5,7 +5,7 @@ const {defineVar, ensureRelative, normalizeProjectOptions} = require('../utils')
 const {erserOptions: defaultTerserOptions, htmlMinifyOptions} = require('../defaultOptions');
 
 module.exports = (webpackConfig, projectOptions) => {
-    const options = normalizeProjectOptions(projectOptions);
+    const options = projectOptions ? normalizeProjectOptions(projectOptions) : {};
     const {resolve, isProduction} = options;
     const isProd = isProduction();
     const outputDir = resolve(options.outputDir);

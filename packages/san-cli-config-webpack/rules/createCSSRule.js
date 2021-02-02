@@ -1,4 +1,3 @@
-// const resolve = require('resolve');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const styleLoaderFactory = require('../loaders/style');
 const cssLoaderFactory = require('../loaders/css');

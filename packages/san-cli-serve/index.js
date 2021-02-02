@@ -86,5 +86,5 @@ exports.handler = argv => {
     const Service = require('san-cli-service');
     const service = new Service(process.cwd(), {watch: argv.watch, useDashboard: argv.dashboard});
     const run = require('./run');
-    service.run('serve', argv).then(run.bind(argv));
+    service.run('serve', argv).then(run.bind(run, argv));
 };

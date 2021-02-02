@@ -1,5 +1,5 @@
 const resolve = require('resolve');
-const builtinLoaders = require('./loaders');
+const builtinLoaders = require('../loaders');
 
 module.exports = function createOneOfRule(chainConfig, name, test, oneOfs) {
     const baseRule = chainConfig.module.rule(name).test(test);
