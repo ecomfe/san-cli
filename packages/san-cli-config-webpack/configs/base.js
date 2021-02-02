@@ -4,6 +4,7 @@ const resolveSync = require('resolve');
 const defaultsDeep = require('lodash.defaultsdeep');
 const rules = require('../rules');
 const {getAssetPath} = require('san-cli-utils/path');
+const {defineVar} = require('../utils');
 
 module.exports = (webpackChainConfig, projectOptions) => {
     const {
@@ -150,23 +151,6 @@ module.exports = (webpackChainConfig, projectOptions) => {
 
     // 定义 env 中的变量
     // 这里需要写到文档，以 SAN_VAR 开头的 env 变量
-    webpackChainConfig.plugin('define').use(require('webpack/lib/DefinePlugin'), [defineVar()]);
-    // 将 env 中的值进行赋值
-    function defineVar() {
-        const vars = {
-            // TODO 这里要不要按照 mode 设置下 undefined 的情况？
-            NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-            PRODUCTION: JSON.stringify(process.env.NODE_ENV === 'production'),
-            BASE_URL: JSON.stringify(projectOptions.publicPath)
-        };
-        // 这里把var 变量名拆出来
-        const re = /^SAN_VAR_([\w\d\_]+)$/;
-        Object.keys(process.env).forEach(key => {
-            if (re.test(key)) {
-                const name = re.exec(key)[1];
-                vars[name] = JSON.stringify(process.env[key]);
-            }
-        });
-        return vars;
-    }
+    webpackChainConfig.plugin('define').use(require('webpack/lib/DefinePlugin'), [defineVar(projectOptions)]);
+
 };

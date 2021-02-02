@@ -14,12 +14,13 @@ const {logger: consola, time, timeEnd, chalk, getDebugLogger} = require('san-cli
 
 const importLazy = require('import-lazy')(require);
 const fs = require('fs-extra');
-const Config = importLazy('webpack-chain');
 const webpackMerge = importLazy('webpack-merge');
 const resolvePlugin = importLazy('./resolvePlugin');
 const defaultsDeep = require('lodash.defaultsdeep');
 const lMerge = require('lodash.merge');
 const dotenv = require('dotenv');
+
+const {createChainConfig, createDevServerConfig} = require('san-cli-config-webpack');
 
 const SError = require('san-cli-utils/SError');
 const PluginAPI = require('./PluginAPI');
@@ -29,8 +30,6 @@ const argsert = require('san-cli-utils/argsert');
 const readPkg = require('san-cli-utils/readPkg');
 
 const {defaults: defaultConfig, validateSync: validateOptions} = require('./options');
-
-const BUILDIN_PLUGINS = ['base', 'css', 'app', 'optimization'];
 
 const logger = consola.withTag('Service');
 const debug = getDebugLogger('service');
@@ -144,7 +143,6 @@ module.exports = class Service extends EventEmitter {
         // 0. 判断是否需要加载 builtin plugin
         let builtInPlugins = [];
         if (useBuiltInPlugin) {
-            builtInPlugins = BUILDIN_PLUGINS.map(id => require(`./configs/${id}`));
             // * 添加上 babel 插件
             builtInPlugins.push(require('san-cli-plugin-babel'));
         }
@@ -424,7 +422,7 @@ module.exports = class Service extends EventEmitter {
     }
 
     getWebpackChainConfig() {
-        const chainableConfig = new Config();
+        const chainableConfig = createChainConfig();
         // apply chains
         this.webpackChainFns.forEach(fn => fn(chainableConfig));
         return chainableConfig;
@@ -455,7 +453,10 @@ module.exports = class Service extends EventEmitter {
             cloneRuleNames(config.module && config.module.rules, original.module && original.module.rules);
         }
         // 这里需要将 devServer 和 this.projectOptions.devServer 进行 merge
-        config.devServer = lMerge(config.devServer || {}, this.projectOptions.devServer || {}) || {};
+        config.devServer = createDevServerConfig(
+            lMerge(config.devServer || {}, this.projectOptions.devServer || {}) || {}
+        );
+
         let before = config.devServer.before;
         if (this.devServerMiddlewares.length) {
             /* eslint-disable space-before-function-paren */
@@ -472,9 +473,8 @@ module.exports = class Service extends EventEmitter {
         config.devServer.before = before;
         if (debug.enabled || showConfig.enabled) {
             // 在debug模式输出
-            let wpConfig = Config.toString(config);
-            debug(wpConfig);
-            showConfig(wpConfig);
+            debug(config);
+            showConfig(config);
         }
         return config;
     }

@@ -25,10 +25,11 @@
         "san": "~3.9.0",
         "san-cli-plugin-babel": "^1.0.0",
         "san-hot-loader": "^0.1.2",
+        "san-cli-webpack": "^1.0.0",
         "san-loader": "^0.2.0",
         "semver": "^7.1.1",
         "style-loader": "~2.0.0",
-        "svg-sprite-loader":"^5.2.1",
+        "svg-sprite-loader": "^5.2.1",
         "svg-url-loader": "^7.1.1",
         "url-loader": "^4.1.1",
         "webpack": "^5.16.0",
@@ -58,7 +59,7 @@
     "repository": {
         "type": "git",
         "url": "git+https://github.com/ecomfe/san-cli.git",
-        "directory": "packages/san-cli-webpack"
+        "directory": "packages/san-cli-config-webpack"
     },
     "bugs": {
         "url": "https://github.com/ecomfe/san-cli/issues"

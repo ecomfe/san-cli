@@ -36,6 +36,9 @@ module.exports = class PluginAPI {
     getProjectOption() {
         return this.service.projectOptions;
     }
+    getProjectOptions() {
+        return this.service.projectOptions;
+    }
     resolve(p) {
         if (p) {
             argsert('<string>', [p], arguments.length);
