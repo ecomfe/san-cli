@@ -158,7 +158,17 @@
         "plugin": "CLI 插件",
         "widget": "UI 部件",
         "pluginTip": "CLI 插件可以增强 San CLI，可能也包含 UI 功能",
-        "widgetTip": "UI 部件只包含 UI 功能"
+        "widgetTip": "UI 部件只包含 UI 功能",
+        "devtools": {
+            "btn": "安装 devtools",
+            "title": "安装 devtools",
+            "content": "调试 san.js 应用的开发工具。",
+            "image": "/public/devtoolsmain.png",
+            "modalBtn1": "确认",
+            "modalBtn2": "查看更多",
+            "modalBtnLink1": "https://chrome.google.com/webstore/detail/san-devtool/fcjifbggoejmfnfcmnaobcppbfhlndad", 
+            "modalBtnLink2": "https://github.com/baidu/san-devtools"
+        }
     },
     "task": {
         "title": "任务",
@@ -320,17 +330,6 @@
     },
     "dashboard": {
         "title": "项目仪表盘",
-        "tools": "安装 devtools",
-        "devtools": {
-            "title": "安装 devtools",
-            "content": "调试san.js应用的开发工具。",
-            "more": "查看更多",
-            "cancel": "取消",
-            "confirm": "确认",
-            "image": "/public/devtoolsmain.png",
-            "link": "https://github.com/baidu/san-devtools",
-            "chromeLink": "https://chrome.google.com/webstore/detail/san-devtool/fcjifbggoejmfnfcmnaobcppbfhlndad"
-        },
         "emptyTip": "暂无部件",
         "widget": {
             "remove": "移除部件",
