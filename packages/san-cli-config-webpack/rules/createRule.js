@@ -36,4 +36,5 @@ module.exports = function createRule(chainConfig, name, test, loaders) {
             .options(options)
             .end();
     });
+    return baseRule;
 };

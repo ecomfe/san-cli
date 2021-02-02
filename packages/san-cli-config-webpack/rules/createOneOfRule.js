@@ -29,6 +29,7 @@ module.exports = function createOneOfRule(chainConfig, name, test, oneOfs) {
             .end()
             .end();
     });
+    return baseRule;
 
     /*
     config.module
