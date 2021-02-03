@@ -372,9 +372,9 @@ module.exports = class Service extends EventEmitter {
         // 添加 global 配置，san config.js 使用
         // global.__isProduction = mode === 'production'; // 去掉？？？
 
-        const {progress, profiler, watch} = args;
+        const {noProgress, profiler, watch} = args;
         // 使用进度条, 添加progress plugin
-        if (progress) {
+        if (!noProgress) {
             // 名字，目前用于进度条
             const progressOptions = {
                 name,
