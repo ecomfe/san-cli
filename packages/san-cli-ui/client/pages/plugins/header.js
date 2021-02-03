@@ -4,14 +4,14 @@
 
 import Component from '@lib/san-component';
 import DependencyFilter from '@components/dependency/dependency-filter';
-import HeaderAd from '@components/header-ad';
+import HeaderNotice from '@components/header-notice';
 import './header.less';
 
 export default class App extends Component {
     static template = /* html */`
         <div class="plugins-header">
             <c-dependency-filter on-keywordChange="keywordChange" />
-            <c-header-ad s-if="showDevTools" adItem="{{$t('plugins.devtools')}}"></c-header-ad>
+            <c-header-notice s-if="showDevTools" noticeItem="{{$t('plugins.devtools')}}"></c-header-notice>
             <s-button type="primary" class="com-santd-btn-medium install-btn" on-click="showModal">
                 {{$t('plugins.installPackage')}} <s-icon type="plus"/>
             </s-button>
@@ -20,7 +20,7 @@ export default class App extends Component {
 
     static components = {
         'c-dependency-filter': DependencyFilter,
-        'c-header-ad': HeaderAd
+        'c-header-notice': HeaderNotice
     };
 
     initData() {

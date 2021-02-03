@@ -1,9 +1,9 @@
 /**
- * @file 广告配置
+ * @file 公告配置
  * @author Lohoyo
  */
 
-export const sidebarAd = [
+export const sidebarNotice = [
     {
         title: 'San 官网',
         link: 'https://baidu.github.io/san/'
@@ -18,7 +18,7 @@ export const sidebarAd = [
     }
 ];
 
-export const headerAd = [
+export const headerNotice = [
     // 示例
     // {
     //     btn: '安装 devtools',   // 必填

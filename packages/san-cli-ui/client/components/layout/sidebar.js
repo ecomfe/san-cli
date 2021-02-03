@@ -12,7 +12,7 @@ import VIEW_ADDED from '@graphql/view/viewAdded.gql';
 import VIEW_REMOVED from '@graphql/view/viewRemoved.gql';
 import './sidebar.less';
 import {Modal} from 'santd';
-import {sidebarAd} from '@/ad';
+import {sidebarNotice} from '@/notice';
 
 /**
  * 组件props
@@ -59,9 +59,9 @@ export default class App extends Component {
                 </fragment>
             </s-menu>
 
-            <!---广告--->
-            <div class="ad">
-                <a s-for="item in ad" href="{{item.link}}" target="_blank">{{item.title}}</a>
+            <!---公告--->
+            <div class="notice">
+                <a s-for="item in notice" href="{{item.link}}" target="_blank">{{item.title}}</a>
             </div>
         </s-layout-sider>
     `;
@@ -79,7 +79,7 @@ export default class App extends Component {
         await this.setCurrentProject();
         this.setRecentProjects();
         this.setProjectNav();
-        this.data.set('ad', sidebarAd);
+        this.data.set('notice', sidebarNotice);
     }
 
     async setCurrentProject() {

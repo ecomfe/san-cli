@@ -18,8 +18,8 @@ import ConfigurationContent from './configuration/content';
 import TaskContent from './task/content';
 import '@components/layout/layout.less';
 import './app.less';
-import HeaderAd from '@components/header-ad';
-import {headerAd} from '@/ad';
+import HeaderNotice from '@components/header-notice';
+import {headerNotice} from '@/notice';
 
 export default class App extends Component {
     static template = /* html */`
@@ -38,7 +38,7 @@ export default class App extends Component {
                     <c-plugins-header
                         s-else-if="routeNav === 'plugins'"
                     />
-                    <c-header-ad s-for="item in ad" adItem="{{item}}"></c-header-ad>
+                    <c-header-notice s-for="item in notice" noticeItem="{{item}}"></c-header-notice>
                     <c-more-btn></c-more-btn>
                 </div>
             </s-layout-header>
@@ -95,7 +95,7 @@ export default class App extends Component {
         'c-task-content': TaskContent,
         'c-client-addon': ClientAddon,
         'c-more-btn': MoreBtn,
-        'c-header-ad': HeaderAd
+        'c-header-notice': HeaderNotice
     };
 
     static computed = {
@@ -122,7 +122,7 @@ export default class App extends Component {
     }
 
     inited() {
-        this.data.set('ad', headerAd);
+        this.data.set('notice', headerNotice);
     }
 
     setViewName(e) {
