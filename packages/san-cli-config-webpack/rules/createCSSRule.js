@@ -33,7 +33,8 @@ module.exports = (
             rule.use('extract-css')
                 .loader(MiniCssExtractPlugin.loader)
                 .options(loaderOptions['extract-css']);
-        } else {
+        }
+        else {
             rule.use('style')
                 .loader(styleLoader.loader)
                 .options(styleLoader.options);
