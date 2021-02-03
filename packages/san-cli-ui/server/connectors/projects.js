@@ -25,10 +25,7 @@ const SAN_COMMAND_NAME = SAN_CLI_UI_DEV ? 'yarn' : 'san';
 const SAN_COMMAND_ARGS = SAN_CLI_UI_DEV ? ['dev:san'] : [];
 
 // 默认的repositories
-const DEFAULT_TEMPLATES = [{
-    label: 'github:san-project-base',
-    value: 'https://github.com/ksky521/san-project'
-}];
+const DEFAULT_TEMPLATES = require('../../TEMPLATES.json');
 
 const debug = getDebugLogger('ui:project');
 

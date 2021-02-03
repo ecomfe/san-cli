@@ -10,6 +10,7 @@ import CWD from '@graphql/cwd/cwd.gql';
 import PROJECT_INIT_TEMPLATE from '@graphql/project/projectInitTemplate.gql';
 import PROJECT_TEMPLATE_LIST from '@graphql/project/projectTemplateList.gql';
 import CONSOLE_LOG_ADDED from '@graphql/console/consoleLogAdded.gql';
+import {TEMPLATES_URL} from '@lib/const';
 import './content.less';
 
 export default class Project extends Component {
@@ -145,6 +146,18 @@ export default class Project extends Component {
         const {data} = await this.$apollo.query({
             query: PROJECT_TEMPLATE_LIST
         });
+        // fetch最新的模板列表, 防止json格式有错catch住
+        try {
+            const res = await fetch(TEMPLATES_URL);
+            if (res.ok && res.status === 200) {
+                const list = await res.json();
+                if (Array.isArray(list) && list.length) {
+                    // 本地和远程读取文件相同，直接替换
+                    data.projectTemplateList = list;
+                }
+            }
+        }
+        catch (e) {}
         this.setLoading(false);
         this.data.set('current', this.data.get('current') + 1);
         this.data.set('projectTemplateList', data.projectTemplateList);
