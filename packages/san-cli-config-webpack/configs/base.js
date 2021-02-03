@@ -115,6 +115,7 @@ module.exports = (webpackChainConfig, projectOptions) => {
             rules.createRule(webpackChainConfig, name, test, [[name, loaderOptions[name]]]);
         }
     });
+
     // 使用url-loader 设置 img, media, fonts + svg-url设置svg
     [
         ['fonts', /\.(woff2?|eot|ttf|otf)(\?.*)?$/i, 'url'],
@@ -146,11 +147,11 @@ module.exports = (webpackChainConfig, projectOptions) => {
 
     // -----------plugins--------
     webpackChainConfig.plugin('san').use(require('san-loader/lib/plugin'));
+
     // 大小写敏感！！！！
     webpackChainConfig.plugin('case-sensitive-paths').use(require('case-sensitive-paths-webpack-plugin'));
 
     // 定义 env 中的变量
     // 这里需要写到文档，以 SAN_VAR 开头的 env 变量
     webpackChainConfig.plugin('define').use(require('webpack/lib/DefinePlugin'), [defineVar(projectOptions)]);
-
 };
