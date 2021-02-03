@@ -16,6 +16,7 @@ exports.cssnanoOptions = {
         removeAll: true
     }
 };
+
 exports.devServerOptions = {
     watchContentBase: false,
     hot: true,
@@ -38,6 +39,7 @@ exports.devServerOptions = {
     port: 8899,
     https: false
 };
+
 exports.terserOptions = {
     format: {
         comments: false
@@ -56,10 +58,13 @@ exports.terserOptions = {
     warnings: false,
     toplevel: true
 };
+
 exports.htmlMinifyOptions = {
     removeComments: true,
     collapseWhitespace: false,
-    removeAttributeQuotes: true,
+    // 引号保留，不然inline的base64图片compress时报错
+    removeAttributeQuotes: false,
+    quoteCharacter: '"',
     collapseBooleanAttributes: true,
     removeScriptTypeAttributes: false,
     minifyCSS: true,
