@@ -5,7 +5,7 @@ const {findExisting, getAssetPath} = require('san-cli-utils/path');
 const {warn} = require('san-cli-utils/ttyLogger');
 
 const {cssnanoOptions: defaultCssnanoOptions} = require('../defaultOptions');
-const createCSSRule = require('./createCSSRule');
+const createCSSRule = require('../rules/createCSSRule');
 
 module.exports = (webpackChainConfig, rootOptions) => {
     const {
@@ -55,9 +55,8 @@ module.exports = (webpackChainConfig, rootOptions) => {
 
     // use relative publicPath in extracted CSS based on extract location
     // use config publicPath first
-    const cssPublicPath =
-        rootOptions.publicPath ||
-        '../'.repeat(extractOptions.filename.replace(/^\.[\/\\]/, '').split(/[\/\\]/g).length - 1);
+    const cssPublicPath = rootOptions.publicPath
+        || '../'.repeat(extractOptions.filename.replace(/^\.[\/\\]/, '').split(/[\/\\]/g).length - 1);
 
     loaderOptions['extract-css'] = Object.assign(
         {
@@ -98,12 +97,13 @@ module.exports = (webpackChainConfig, rootOptions) => {
         let sassLoaderVersion;
         try {
             sassLoaderVersion = semver.major(require('sass-loader/package.json').version);
-        } catch (e) {}
+        }
+        catch (e) {}
         if (sassLoaderVersion < 8) {
             warn('A new version of sass-loader is available. Please upgrade for best experience.');
         }
         // 添加 sass 逻辑
-        createCSSRule('scss', /\.scss$/, {
+        createCSSRule(webpackChainConfig, 'scss', /\.scss$/, {
             requireModuleExtension,
             preprocessor: cssPreprocessor,
             loaderOptions,
@@ -125,7 +125,7 @@ module.exports = (webpackChainConfig, rootOptions) => {
                 })
             });
         }
-        createCSSRule('sass', /\.sass$/, {
+        createCSSRule(webpackChainConfig, 'sass', /\.sass$/, {
             requireModuleExtension,
             preprocessor: cssPreprocessor,
             loaderOptions,
@@ -134,7 +134,7 @@ module.exports = (webpackChainConfig, rootOptions) => {
         });
     }
     if (!cssPreprocessor || cssPreprocessor === 'less') {
-        createCSSRule('less', /\.less$/, {
+        createCSSRule(webpackChainConfig, 'less', /\.less$/, {
             requireModuleExtension,
             preprocessor: cssPreprocessor,
             loaderOptions,
@@ -143,7 +143,7 @@ module.exports = (webpackChainConfig, rootOptions) => {
         });
     }
     if (!cssPreprocessor || cssPreprocessor === 'stylus') {
-        createCSSRule('stylus', /\.styl(us)?$/, {
+        createCSSRule(webpackChainConfig, 'stylus', /\.styl(us)?$/, {
             requireModuleExtension,
             preprocessor: cssPreprocessor,
             loaderOptions,

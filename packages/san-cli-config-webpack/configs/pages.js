@@ -1,8 +1,9 @@
 const path = require('path');
+const fs = require('fs');
+const lMerge = require('lodash.merge');
 const minify = require('html-minifier-terser').minify;
-
 const {defineVar, ensureRelative, normalizeProjectOptions} = require('../utils');
-const {erserOptions: defaultTerserOptions, htmlMinifyOptions} = require('../defaultOptions');
+const {terserOptions: defaultTerserOptions, htmlMinifyOptions} = require('../defaultOptions');
 
 module.exports = (webpackConfig, projectOptions) => {
     const options = projectOptions ? normalizeProjectOptions(projectOptions) : {};
@@ -64,7 +65,7 @@ module.exports = (webpackConfig, projectOptions) => {
     const SanHtmlPlugin = require('san-cli-webpack/lib/HTMLPlugin');
     const htmlPath = resolve('public/index.html');
     // 默认路径
-    const defaultHtmlPath = fs.existsSync(htmlPath) ? htmlPath : require.resolve('./public/index.html');
+    const defaultHtmlPath = fs.existsSync(htmlPath) ? htmlPath : require.resolve('../public/index.html');
     const publicCopyIgnore = ['index.html', '.DS_Store'];
     let useHtmlPlugin = false;
     if (!multiPageConfig) {
@@ -74,7 +75,8 @@ module.exports = (webpackConfig, projectOptions) => {
         htmlOptions.template = defaultHtmlPath;
         webpackConfig.plugin('html').use(HTMLPlugin, [htmlOptions]);
         useHtmlPlugin = true;
-    } else {
+    }
+    else {
         // multi-page setup
         /** simple
          * pages: {
