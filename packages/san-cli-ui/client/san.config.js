@@ -45,12 +45,16 @@ module.exports = {
         config.plugin('clean-webpack-plugin').use(CleanWebpackPlugin);
 
         // 这里可以用来扩展 webpack 的配置，使用的是 webpack-chain 语法
-        config.module.rule('html')
-            .use('html-loader')
-            .tap(options => {
-                options.attrs.push('link:href');
-                return options;
-            });
+
+        // TODO: 这里报错了，应该是html-loader的版本升级，api变更了所致，先注释掉，
+        //       直接提到san-cli-service里面去了
+
+        // config.module.rule('html-loader')
+        //     .use('html-loader')
+        //     .tap(options => {
+        //         options.attrs.push('link:href');
+        //         return options;
+        //     });
 
         config.module.rule('img')
             .test(/\.(png|jpe?g|gif)(\?.*)?$/)

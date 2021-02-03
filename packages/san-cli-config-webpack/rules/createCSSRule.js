@@ -56,7 +56,8 @@ module.exports = (
                 localIdentName: '[name]_[local]_[hash:base64:5]',
                 ...cssLoaderOptions.modules
             };
-        } else {
+        }
+        else {
             delete cssLoaderOptions.modules;
         }
 
@@ -73,9 +74,15 @@ module.exports = (
                     loaderOptions.postcss
                 )
             );
+
             rule.use('postcss')
                 .loader(loader)
-                .options(options);
+                .options({
+                    sourceMap,
+                    postcssOptions: {
+                        plugins: options.plugins || []
+                    }
+                });
         }
 
         if (preprocessor) {
