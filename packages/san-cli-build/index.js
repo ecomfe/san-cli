@@ -1,4 +1,3 @@
-const run = require('./run');
 exports.command = 'build [entry]';
 exports.description = 'Compiles an app into an output directory named dist';
 
@@ -101,5 +100,5 @@ exports.handler = argv => {
     const Service = require('san-cli-service');
     const service = new Service(process.cwd(), {watch: argv.watch, useDashboard: argv.dashboard});
     const run = require('./run');
-    service.run('build', argv).then(run.bind(argv));
+    service.run('build', argv).then(run.bind(run, argv));
 };

@@ -60,7 +60,7 @@ module.exports = (webpackChainConfig, rootOptions) => {
 
     loaderOptions['extract-css'] = Object.assign(
         {
-            hmr: !isProd,
+            // hmr: !isProd,
             publicPath: cssPublicPath
         },
         loaderOptions['extract-css'] || {}

@@ -67,11 +67,13 @@ function execCommand(argv = process.argv) {
                 break;
             }
         }
-    } catch (e) {
+    }
+    catch (e) {
         if (e.code === 'MODULE_NOT_FOUND') {
             // 没找到
             console.error(chalk.red(`${cmdName} command not found, you may install san-cli-${cmdName}`));
-        } else {
+        }
+        else {
             console.error(e);
         }
         process.exit(1);
