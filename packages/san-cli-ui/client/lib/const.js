@@ -39,3 +39,6 @@ export const RANKING_MODE_MAP = {
     quality: '?quality=1.0&maintenance=0.0&popularity=0.0',
     maintenance: '?quality=0.0&maintenance=1.0&popularity=0.0'
 };
+
+// eslint-disable-next-line max-len
+export const NOTICE_CONFIG_URL = 'https://raw.githubusercontent.com/ecomfe/san-cli/master/packages/san-cli-ui/client/notice.json';

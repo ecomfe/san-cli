@@ -19,7 +19,7 @@ import TaskContent from './task/content';
 import '@components/layout/layout.less';
 import './app.less';
 import HeaderNotice from '@components/header-notice';
-import {headerNotice} from '@/notice';
+import {NOTICE_CONFIG_URL} from '@lib/const';
 
 export default class App extends Component {
     static template = /* html */`
@@ -122,7 +122,9 @@ export default class App extends Component {
     }
 
     inited() {
-        this.data.set('notice', headerNotice);
+        fetch(NOTICE_CONFIG_URL).then(res => res.json()).then(res => {
+            res && res.headerNotice && this.data.set('notice', res.headerNotice);
+        });
     }
 
     setViewName(e) {
