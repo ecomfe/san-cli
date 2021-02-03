@@ -79,7 +79,8 @@ exports.handler = argv => {
     if (!argv.mode) {
         if (['development', 'production'].includes(process.env.NODE_ENV)) {
             argv.mode = process.env.NODE_ENV;
-        } else {
+        }
+        else {
             argv.mode = 'development';
         }
     }
