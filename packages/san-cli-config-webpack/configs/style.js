@@ -25,6 +25,7 @@ module.exports = (webpackChainConfig, rootOptions) => {
         cssPreprocessor,
         cssnanoOptions
     } = cssOptions;
+
     // 有则优先使用css中的loaderoptions，否则使用root loaderOptions
     const loaderOptions = cssOptions.loaderOptions
         ? defaultsDeep(rootLoaderOptions, cssOptions.loaderOptions)
@@ -134,7 +135,7 @@ module.exports = (webpackChainConfig, rootOptions) => {
         });
     }
     if (!cssPreprocessor || cssPreprocessor === 'less') {
-        createCSSRule(webpackChainConfig, 'less', /\.less$/, {
+        require('../rules/less')(webpackChainConfig, 'less', /\.less$/, {
             requireModuleExtension,
             preprocessor: cssPreprocessor,
             loaderOptions,

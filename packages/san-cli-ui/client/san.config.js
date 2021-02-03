@@ -18,6 +18,7 @@ module.exports = {
     publicPath: '/',
     outputDir: 'dist',
     filenameHashing: isProduction,
+
     css: {
         sourceMap: isProduction,
         cssPreprocessor: 'less',

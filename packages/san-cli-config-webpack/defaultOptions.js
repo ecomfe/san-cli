@@ -76,3 +76,18 @@ exports.eslintOptions = {
     'no-unused-vars': 2,
     'no-undef': 2
 };
+
+exports.lessOptions = {
+    requireModuleExtension: true,
+    extract: false,
+    preprocessor: undefined,
+    loaderOptions: {
+        style: {},
+        css: {},
+        less: {
+            javascriptEnabled: true,
+            compress: false
+        }
+    },
+    sourceMap: false
+};

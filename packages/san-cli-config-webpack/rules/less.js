@@ -1,25 +1,13 @@
+const lMerge = require('lodash.merge');
 const createCSSRule = require('./createCSSRule');
+const {lessOptions} = require('../defaultOptions');
 
 module.exports = (
     chainConfig,
     name = 'less',
     test = /\.less$/,
-    options = {
-        requireModuleExtension: true,
-        extract: false,
-        preprocessor: undefined,
-        loaderOptions: {
-            style: {},
-            css: {},
-            less: {
-                javascriptEnabled: true,
-                compress: false
-            }
-        },
-        sourceMap: false
-    }
+    options
 ) => {
-    options.preprocessor = 'less';
-
+    options = lMerge({preprocessor: 'less'}, lessOptions, options);
     createCSSRule(chainConfig, name, test, options);
 };
