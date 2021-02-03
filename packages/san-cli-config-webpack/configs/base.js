@@ -124,23 +124,23 @@ module.exports = (webpackChainConfig, projectOptions) => {
         ['svg', /\.svg(\?.*)?$/, 'svg']
     ].forEach(([name, test, loader]) => {
         if (loaderOptions[name] !== false) {
+            const options = defaultsDeep(
+                {
+                    limit: largeAssetSize,
+                    name: getAssetPath(
+                        assetsDir,
+                        `${name}/[name]${filenameHashing ? '.[contenthash:8]' : ''}.[ext]`
+                    )
+                },
+                loaderOptions[name] || {}
+            );
+
             rules[loader](
                 webpackChainConfig,
                 name,
                 test,
                 // prettier-ignore
-                typeof loaderOptions[name] === 'object'
-                    ? defaultsDeep(
-                        {
-                            limit: largeAssetSize,
-                            name: getAssetPath(
-                                assetsDir,
-                                `${name}/[name]${filenameHashing ? '.[contenthash:8]' : ''}.[ext]`
-                            )
-                        },
-                        loaderOptions[name]
-                    )
-                    : undefined
+                options
             );
         }
     });
