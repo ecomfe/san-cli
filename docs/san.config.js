@@ -4,9 +4,6 @@ module.exports = {
     devServer: {
         contentBase: __dirname
     },
-    docit: {
-        siteName: 'San CLI'
-    },
     splitChunks: {
         cacheGroups: {
             default: false,

@@ -8,31 +8,31 @@ import TASK_RUN from 'san-cli-ui/client/graphql/task/taskRun.gql';
 import TASK_STOP from 'san-cli-ui/client/graphql/task/taskStop.gql';
 import TASK_CHANGED from 'san-cli-ui/client/graphql/task/taskChanged.gql';
 import taskIconColor from 'san-cli-ui/client/lib/utils/task-icon-color';
-import './run-task.less';
+import styles from './run-task.less';
 
 export default {
     template: /* html */`
-        <div class="dashboard-widget-run-task">
+        <div class="{{styles.widgetRunTask}}">
             <template s-if="task">
-                <div class="task-icon" style="color: {{iconColor}}">{{task.name[0] | upper}}</div>
-                <div class="task-name text" style="color: {{iconColor}}">{{task.name}}</div>
-                <div class="task-description text">{{description ? $t(description) : ''}}</div>
+                <div class="{{styles.taskIcon}}" style="color: {{iconColor}}">{{task.name[0] | upper}}</div>
+                <div class="{{styles.taskName}} {{styles.text}}" style="color: {{iconColor}}">{{task.name}}</div>
+                <div class="{{styles.taskDescription}} {{styles.text}}">{{description ? $t(description) : ''}}</div>
                 <s-button
                     s-if="task.status !== 'running'"
                     type="primary"
                     on-click="runTask"
-                    class="run-task-btn task-btn stopped">
+                    class="{{styles.runTaskBtn}} {{styles.taskBtn}} {{styles.stopped}}">
                     {{$t('task.run')}}
                 </s-button>
                 <s-button
                     s-else
                     type="primary"
                     on-click="stopTask"
-                    class="run-task-btn task-btn running">
+                    class="{{styles.runTaskBtn}} {{styles.taskBtn}} {{styles.running}}">
                     {{$t('task.stop')}}
                 </s-button>
                 <s-router-link to="/project/task/{{taskId}}">
-                    <s-button class="run-task-btn jump-btn">
+                    <s-button class="{{styles.runTaskBtn}} {{styles.jumpBtn}}">
                         {{$t('dashboard.widgets.run-task.page')}}
                     </s-button>
                 </s-router-link>
@@ -63,6 +63,7 @@ export default {
     },
     initData() {
         return {
+            styles,
             task: null
         };
     },

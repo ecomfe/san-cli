@@ -97,6 +97,7 @@ export default class App extends Component {
     async setProjectNav() {
         const {data} = await this.$apollo.query({query: VIEWS});
         const views  = (data.views || []).map(this.formatView.bind(this));
+        this.fire('setviewname', views);
         this.data.set('projectNav', views);
         this.subscribeViewChange();
     }
@@ -127,7 +128,7 @@ export default class App extends Component {
             next: ({data}) => {
                 if (data && data.viewRemoved) {
                     const view = this.formatView(data.viewRemoved);
-                    const index = this.data.get('projectNav').findIndex(id => id === view.id);
+                    const index = this.data.get('projectNav').findIndex(({id}) => id === view.id);
                     if (~index) {
                         this.data.splice('projectNav', [index, 1]);
                     }

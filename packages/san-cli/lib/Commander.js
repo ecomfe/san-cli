@@ -22,7 +22,7 @@ const {scriptName, version: pkgVersion} = require('../package.json');
 const CommanderAPI = require('./CommanderAPI');
 const {getCommandName} = require('./utils');
 
-const buildinCmds = ['build', 'serve', 'init', 'inspect', 'command', 'plugin', 'remote', 'docit', 'ui'];
+const buildinCmds = ['build', 'serve', 'init', 'inspect', 'command', 'plugin', 'remote', 'ui'];
 const linkText = `For more information, visit ${textCommonColor('https://ecomfe.github.io/san-cli')}`;
 
 const globalDebug = getDebugLogger();

@@ -10,4 +10,10 @@ npm i -g san-cli
 san ui
 ```
 
+## Debug in production environment
+
+```
+san ui --debug
+```
+
 [More info](https://ecomfe.github.io/san-cli/#/ui/start)
