@@ -7,6 +7,9 @@
 module.exports = {
     base: '/san-cli/',
     title: 'San CLI',
+    head: [
+        ['link', {rel: 'icon', href: '/san-cli/favicon.ico'}]
+    ],
 
     themeConfig: {
         nav: [
