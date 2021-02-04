@@ -83,11 +83,26 @@ class Plugins {
             else {
                 pluginApi.pluginId = id;
                 try {
+                    const viewNum = pluginApi.viewPlugin ? pluginApi.viewPlugin.views.length : 0;
+                    const widgetNum = pluginApi.widgetPlugin ? pluginApi.widgetPlugin.widgets.length : 0;
                     module(pluginApi);
+                    // 如果新增了视图
+                    if (pluginApi.viewPlugin && pluginApi.viewPlugin.views.length > viewNum) {
+                        for (let i = viewNum; i < pluginApi.viewPlugin.views.length; i++) {
+                            pluginApi.viewPlugin.views[i].pkgName = id;
+                        }
+                    }
+                    // 如果新增了部件，且不是内置部件
+                    if (widgetNum !== 0 && pluginApi.widgetPlugin.widgets.length > widgetNum) {
+                        for (let i = widgetNum; i < pluginApi.widgetPlugin.widgets.length; i++) {
+                            pluginApi.widgetPlugin.widgets[i].pkgName = id;
+                        }
+                    }
+
                     debug('Plugin API loaded for', name, pluginApi.cwd);
                 }
                 catch (e) {
-                    debug('ERROR while loading plugin API for ${name}:', e);
+                    debug(`ERROR while loading plugin API for ${name}:`, e);
                 }
                 pluginApi.pluginId = null;
             }
@@ -158,6 +173,7 @@ class Plugins {
 
             // 添加仪表盘插件
             if (pluginApi.widgetPlugin && pluginApi.widgetPlugin.widgets) {
+                widgets.widgetDefs.size && widgets.reset();
                 for (const definition of pluginApi.widgetPlugin.widgets) {
                     await widgets.registerDefinition({definition, project}, context);
                 }

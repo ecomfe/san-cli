@@ -15,15 +15,24 @@ exports.builder = {
         alias: 'H',
         type: 'string',
         describe: 'Hostname of the URL'
+    },
+    debug: {
+        type: 'boolean',
+        default: false,
+        describe: 'Debug in production environment'
     }
 };
 exports.description = 'San CLI UI';
 exports.command = 'ui';
 
 exports.handler = cliApi => {
-    const {host, port} = cliApi;
     const distPath = path.join(__dirname, './dist');
     const publicPath = path.join(__dirname, './public');
+    const {debug, host, port} = cliApi;
+
+    if (debug) {
+        require('debug').enable('san-cli:ui:*');
+    }
 
     const createServer = require('./server/');
     createServer({
