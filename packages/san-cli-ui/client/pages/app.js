@@ -29,6 +29,7 @@ export default class App extends Component {
             <s-layout-header class="page-header">
                 <c-header-title title="{{routeNav ? $t((routeNav)+ '.title') : viewName[routeAddon]}}"></c-header-title>
                 <div class="header-aside">
+                    <c-header-notice s-for="item in notice" noticeItem="{{item}}"></c-header-notice>
                     <c-dashboard-header
                         s-if="routeNav === 'dashboard'"
                     />
@@ -38,7 +39,6 @@ export default class App extends Component {
                     <c-plugins-header
                         s-else-if="routeNav === 'plugins'"
                     />
-                    <c-header-notice s-for="item in notice" noticeItem="{{item}}"></c-header-notice>
                     <c-more-btn></c-more-btn>
                 </div>
             </s-layout-header>
