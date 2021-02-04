@@ -44,8 +44,8 @@
     },
     "scripts": {
         "commit": "git-cz",
-        "doc": "cd docs && node ../packages/san-cli/index.js docit .",
-        "build:doc": "yarn workspace san-cli-docit build && cd docs && node ../packages/san-cli/index.js docit . --output",
+        "doc": "sdoc start docs",
+        "build:doc": "sdoc build docs",
         "lint": "eslint --ignore-path .eslintignore ./",
         "test": "node scripts/test.js"
     },

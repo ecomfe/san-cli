@@ -35,15 +35,12 @@ module.exports = {
                     }]
                 }, {
                     title: 'CLI UI',
-                    children: [{
-                        path: '/ui/start/',
-                        children: [{
-                            title: '功能简介',
-                            children: ['/ui/project-list/', '/ui/dashboard/', '/ui/plugin/', '/ui/dependency/', '/ui/configuration/', '/ui/task/']
-                        }, {
-                            title: '插件开发',
-                            children: ['/ui/structure/', '/ui/plugin-object/', '/ui/add-addon/', '/ui/add-config/', '/ui/task/', '/ui/add-view/', '/ui/static/']
-                        }]
+                    children: ['/ui/start/', {
+                        title: '功能简介',
+                        children: ['/ui/project-list/', '/ui/dashboard/', '/ui/plugin/', '/ui/dependency/', '/ui/configuration/', '/ui/task/']
+                    }, {
+                        title: '插件开发',
+                        children: ['/ui/structure/', '/ui/plugin-object/', '/ui/add-addon/', '/ui/add-config/', '/ui/cover-task/', '/ui/add-view/', '/ui/static/']
                     }]
                 }]
         }
