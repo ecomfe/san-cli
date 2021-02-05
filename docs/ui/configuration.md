@@ -4,4 +4,4 @@
 
 在`San CLI UI`中，通过配置管理来集中查看、修改项目的各种配置文件。默认的可进行管理的配置文件有 san 项目配置文件和 eslint 配置文件。当然也支持用户定义其他可配置项，配置的自定义参见插件开发部分。
 
-![](./assets/configuration.png)
+<img src="./assets/configuration.png" style="width: 80%" />
