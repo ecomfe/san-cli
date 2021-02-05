@@ -10,10 +10,10 @@
 
 在依赖管理中，可以查看项目已安装的依赖列表，也可以在上方的搜索框中搜索项目已安装的依赖，然后更新或卸载它们。
 
-<img src="./assets/dependency.png" style="width: 80%" />
+<img src="./assets/dependency.png" style="width: 80%; max-width: 1000px;" />
 
 ### 安装依赖
 
 点击右上角的“安装依赖”按钮后，可以根据关键词搜索所有已发布的 npm 包，并且按不同方式对搜索结果进行排序，然后选择包进行安装。
 
-<img src="./assets/install-dependency.png" style="width: 80%" />
+<img src="./assets/install-dependency.png" style="width: 80%; max-width: 1000px;" />
