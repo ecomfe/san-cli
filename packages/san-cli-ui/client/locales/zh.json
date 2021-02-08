@@ -110,8 +110,7 @@
         "customLabel": "自定义模板地址",
         "optionLabel": "自定义脚手架模板",
         "useCache": "优先使用缓存",
-        "tooltip": "脚手架模板：创建项目时基于的模板。",
-        "tmplIntro": "简介"
+        "tooltip": "脚手架模板：创建项目时基于的模板。"
     },
     "nav": {
         "dashboard": {
