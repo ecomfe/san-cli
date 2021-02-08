@@ -12,6 +12,7 @@ import VIEW_ADDED from '@graphql/view/viewAdded.gql';
 import VIEW_REMOVED from '@graphql/view/viewRemoved.gql';
 import './sidebar.less';
 import {Modal} from 'santd';
+import {NOTICE_CONFIG_URL} from '@lib/const';
 
 /**
  * 组件props
@@ -57,6 +58,11 @@ export default class App extends Component {
                     </s-menu-item>
                 </fragment>
             </s-menu>
+
+            <!---公告--->
+            <div class="notice">
+                <a s-for="item in notice" href="{{item.link}}" target="_blank">{{item.title}}</a>
+            </div>
         </s-layout-sider>
     `;
 
@@ -73,6 +79,9 @@ export default class App extends Component {
         await this.setCurrentProject();
         this.setRecentProjects();
         this.setProjectNav();
+        fetch(NOTICE_CONFIG_URL).then(res => res.json()).then(res => {
+            res && res.sidebarNotice && this.data.set('notice', res.sidebarNotice);
+        });
     }
 
     async setCurrentProject() {
@@ -97,6 +106,7 @@ export default class App extends Component {
     async setProjectNav() {
         const {data} = await this.$apollo.query({query: VIEWS});
         const views  = (data.views || []).map(this.formatView.bind(this));
+        this.fire('setviewname', views);
         this.data.set('projectNav', views);
         this.subscribeViewChange();
     }
@@ -127,7 +137,7 @@ export default class App extends Component {
             next: ({data}) => {
                 if (data && data.viewRemoved) {
                     const view = this.formatView(data.viewRemoved);
-                    const index = this.data.get('projectNav').findIndex(id => id === view.id);
+                    const index = this.data.get('projectNav').findIndex(({id}) => id === view.id);
                     if (~index) {
                         this.data.splice('projectNav', [index, 1]);
                     }

@@ -50,6 +50,11 @@ class Views {
         return views.find(view => view.id === id);
     }
 
+    findByPkgName(pkgName) {
+        const views = this.getViews();
+        return views.filter(view => view.pkgName === pkgName);
+    }
+
     async add({view, project}, context) {
         debug('add', view);
         this.remove(view.id, context);

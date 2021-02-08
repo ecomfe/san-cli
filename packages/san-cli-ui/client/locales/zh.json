@@ -110,7 +110,8 @@
         "customLabel": "自定义模板地址",
         "optionLabel": "自定义脚手架模板",
         "useCache": "优先使用缓存",
-        "tooltip": "脚手架模板：创建项目时基于的模板。"
+        "tooltip": "脚手架模板：创建项目时基于的模板。",
+        "tmplIntro": "简介"
     },
     "nav": {
         "dashboard": {
@@ -158,7 +159,17 @@
         "plugin": "CLI 插件",
         "widget": "UI 部件",
         "pluginTip": "CLI 插件可以增强 San CLI，可能也包含 UI 功能",
-        "widgetTip": "UI 部件只包含 UI 功能"
+        "widgetTip": "UI 部件只包含 UI 功能",
+        "devtools": {
+            "btn": "安装 devtools",
+            "title": "安装 devtools",
+            "content": "调试 san.js 应用的开发工具。",
+            "image": "/public/devtoolsmain.png",
+            "modalBtn1": "确认",
+            "modalBtn2": "查看更多",
+            "modalBtnLink1": "https://chrome.google.com/webstore/detail/san-devtool/fcjifbggoejmfnfcmnaobcppbfhlndad", 
+            "modalBtnLink2": "https://github.com/baidu/san-devtools"
+        }
     },
     "task": {
         "title": "任务",
@@ -320,17 +331,6 @@
     },
     "dashboard": {
         "title": "项目仪表盘",
-        "tools": "安装 devtools",
-        "devtools": {
-            "title": "安装 devtools",
-            "content": "调试san.js应用的开发工具。",
-            "more": "查看更多",
-            "cancel": "取消",
-            "confirm": "确认",
-            "image": "/public/devtoolsmain.png",
-            "link": "https://github.com/baidu/san-devtools",
-            "chromeLink": "https://chrome.google.com/webstore/detail/san-devtool/fcjifbggoejmfnfcmnaobcppbfhlndad"
-        },
         "emptyTip": "暂无部件",
         "widget": {
             "remove": "移除部件",
@@ -432,5 +432,16 @@
     "notFound": {
         "tips": "没有这个页面",
         "btnText": "返回首页"
+    },
+    "template": {
+        "san-project": {
+            "description": "San默认脚手架，包含smarty和html解决方案"
+        },
+        "san-cli-plugin-template": {
+            "description": "San Plugin脚手架，快速创建一个San CLI插件"
+        },
+        "san-ui-addon-project": {
+            "description": "San CLI UI脚手架，快速创建一个San CLI UI插件"
+        }
     }
 }

@@ -3,7 +3,6 @@
  */
 
 import Component from '@lib/san-component';
-
 import './header.less';
 
 export default class App extends Component {

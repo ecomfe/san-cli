@@ -1,10 +1,10 @@
 @import '~san-cli-ui/client/assets/darkmode.less';
-.dashboard-widget-news {
+.widget-news {
     height: 100%;
     display: flex;
     border-top: 1px solid;
     .border-color-3();
-    .widget-loading {
+    :global(.widget-loading) {
         width: 100%;
     }
     .error {
@@ -15,7 +15,7 @@
         justify-content: center;
         padding-bottom: 42px;
         color: rgba(0, 0, 0, .4);
-        .santd-icon {
+        :global(.santd-icon) {
             font-size: 32px;
         }
     }
@@ -88,6 +88,9 @@
         width: calc(100% - 320px);
         overflow: auto;
         .color-8();
+        h1, h2, h3, h4, h5, h6 {
+            .color-8();
+        }
     }
     .media {
         margin-top: 16px;

@@ -3,17 +3,17 @@
  * @author zttonly, Lohoyo
  */
 
-import './news.less';
+import styles from './news.less';
 
 export default {
     template: /* html */`
-        <div class="dashboard-widget-news">
+        <div class="{{styles.widgetNews}}">
             <div s-if="loading" class="widget-loading">
                 <s-spin spinning="{=loading=}">
                     <s-icon slot="indicator" type="loading" style="font-size: 24px;" />
                 </s-spin>
             </div>
-            <div s-elif="error" class="error">
+            <div s-elif="error" class="{{styles.error}}">
                 <s-icon type="{{errIcons[error]}}"/>
                 <div>{{$t('dashboard.widgets.news.errors.' + error)}}</div>
             </div>
@@ -21,12 +21,12 @@ export default {
                 <nav>
                     <article
                         s-for="item in feed.items"
-                        class="news-item {{selectedItem === item ? 'news-item-selected' : ''}}"
+                        class="{{styles.newsItem}} {{selectedItem === item ? styles.newsItemSelected : ''}}"
                         on-click="handleClick(item)">
                         <div>
-                            <div class="title" title={{item.title}}>{{item.title}}</div>
-                            <div class="snippet">{{item.contentSnippet}}</div>
-                            <span class="date">{{item.pubDate | dateFormat}}</span>
+                            <div class="{{styles.title}}" title={{item.title}}>{{item.title}}</div>
+                            <div class="{{styles.snippet}}">{{item.contentSnippet}}</div>
+                            <span class="{{styles.date}}">{{item.pubDate | dateFormat}}</span>
                             <a href="{{item.link}}" target="_blank" rel="noopener noreferrer">
                                 {{$t('dashboard.widgets.news.origin')}}
                             </a>
@@ -34,7 +34,7 @@ export default {
                     </article>
                 </nav>
                 <main s-html="selectedItem['content:encoded'] || selectedItem.content"></main>
-                <div s-if="selectedItem.enclosure" class="media">
+                <div s-if="selectedItem.enclosure" class="{{styles.media}}">
                     <img s-if="isImg" src="{{selectedItem.enclosure.url}}"/>
                     <audio s-if="isAudio" src="{{selectedItem.enclosure.url}}" controls></audio>
                     <video s-if="isVideo" src="{{selectedItem.enclosure.url}}" controls></video>
@@ -69,6 +69,7 @@ export default {
     },
     initData() {
         return {
+            styles,
             loading: false,
             feed: null,
             error: null,

@@ -5,7 +5,6 @@
 import {router} from 'san-router';
 import {Modal} from 'santd';
 import Component from '@lib/san-component';
-import ProjectTemplateList from '@components/project/template-list';
 import FolderExplorer from '@components/project/folder-explorer';
 import CWD from '@graphql/cwd/cwd.gql';
 import PROJECT_IMPORT from '@graphql/project/projectImport.gql';
@@ -33,8 +32,7 @@ export default class Project extends Component {
     `;
 
     static components = {
-        'c-folder-explorer': FolderExplorer,
-        'c-project-template-list': ProjectTemplateList
+        'c-folder-explorer': FolderExplorer
     };
 
     initData() {
@@ -44,7 +42,6 @@ export default class Project extends Component {
             pageLoading: false,
             current: 0,
             isPackage: false,
-            projectTemplateList: [],
             projectTemplate: ''
         };
     }
