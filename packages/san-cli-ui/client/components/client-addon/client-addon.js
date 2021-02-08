@@ -32,6 +32,7 @@ export default class ClientAddon extends Component {
                 this.addonComponent.attach(this.el);
             })
             .catch(e => {
+                // eslint-disable-next-line no-console
                 console.log(`awaitComponent ${clientAddon} error: ${e}`);
             });
 
@@ -40,6 +41,7 @@ export default class ClientAddon extends Component {
                 this.addonComponent.data.set('data', data);
             }
             else {
+                // eslint-disable-next-line no-console
                 console.log('AddonComponent is not initialized.');
             }
         });

@@ -1,8 +1,7 @@
 /**
  * @file inspect command tests
  */
-/* global describe, test */
-const execSync = require('child_process').execSync;
+
 const {getReportFileName} = require('../../lib/utils');
 
 describe('lib/utils getReportFileName', () => {

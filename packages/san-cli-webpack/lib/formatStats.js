@@ -7,7 +7,6 @@
  * @file formatStats 美化下 stats log
  */
 
-/* global Set, Map */
 const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');

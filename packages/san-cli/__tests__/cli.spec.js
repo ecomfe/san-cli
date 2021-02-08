@@ -1,7 +1,7 @@
 /**
  * @file inspect command tests
  */
-/* global describe, test */
+
 const execSync = require('child_process').execSync;
 const {version, scriptName} = require('../package.json');
 const cliBinPath = require.resolve('../index.js');
