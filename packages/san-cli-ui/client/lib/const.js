@@ -39,5 +39,3 @@ export const RANKING_MODE_MAP = {
     quality: '?quality=1.0&maintenance=0.0&popularity=0.0',
     maintenance: '?quality=0.0&maintenance=1.0&popularity=0.0'
 };
-
-export const TEMPLATES_URL = 'https://raw.githubusercontent.com/ecomfe/san-cli/master/packages/san-cli-ui/TEMPLATES.json';
