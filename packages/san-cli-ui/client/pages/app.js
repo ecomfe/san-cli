@@ -18,6 +18,8 @@ import ConfigurationContent from './configuration/content';
 import TaskContent from './task/content';
 import '@components/layout/layout.less';
 import './app.less';
+import HeaderNotice from '@components/header-notice';
+import {NOTICE_CONFIG_URL} from '@lib/const';
 
 export default class App extends Component {
     static template = /* html */`
@@ -27,6 +29,7 @@ export default class App extends Component {
             <s-layout-header class="page-header">
                 <c-header-title title="{{routeNav ? $t((routeNav)+ '.title') : viewName[routeAddon]}}"></c-header-title>
                 <div class="header-aside">
+                    <c-header-notice s-for="item in notice" noticeItem="{{item}}"></c-header-notice>
                     <c-dashboard-header
                         s-if="routeNav === 'dashboard'"
                     />
@@ -91,7 +94,8 @@ export default class App extends Component {
         'c-configuration-content': ConfigurationContent,
         'c-task-content': TaskContent,
         'c-client-addon': ClientAddon,
-        'c-more-btn': MoreBtn
+        'c-more-btn': MoreBtn,
+        'c-header-notice': HeaderNotice
     };
 
     static computed = {
@@ -115,6 +119,12 @@ export default class App extends Component {
         return {
             pageLoading: false
         };
+    }
+
+    inited() {
+        fetch(NOTICE_CONFIG_URL).then(res => res.json()).then(res => {
+            res && res.headerNotice && this.data.set('notice', res.headerNotice);
+        });
     }
 
     setViewName(e) {

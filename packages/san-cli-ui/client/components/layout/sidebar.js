@@ -12,6 +12,7 @@ import VIEW_ADDED from '@graphql/view/viewAdded.gql';
 import VIEW_REMOVED from '@graphql/view/viewRemoved.gql';
 import './sidebar.less';
 import {Modal} from 'santd';
+import {NOTICE_CONFIG_URL} from '@lib/const';
 
 /**
  * 组件props
@@ -57,6 +58,11 @@ export default class App extends Component {
                     </s-menu-item>
                 </fragment>
             </s-menu>
+
+            <!---公告--->
+            <div class="notice">
+                <a s-for="item in notice" href="{{item.link}}" target="_blank">{{item.title}}</a>
+            </div>
         </s-layout-sider>
     `;
 
@@ -73,6 +79,9 @@ export default class App extends Component {
         await this.setCurrentProject();
         this.setRecentProjects();
         this.setProjectNav();
+        fetch(NOTICE_CONFIG_URL).then(res => res.json()).then(res => {
+            res && res.sidebarNotice && this.data.set('notice', res.sidebarNotice);
+        });
     }
 
     async setCurrentProject() {
