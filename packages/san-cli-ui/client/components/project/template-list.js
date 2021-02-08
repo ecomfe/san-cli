@@ -43,7 +43,7 @@ export default class ProjectList extends Component {
                                 {{tmpl.title}}
                             </a>
                             <div class="template-desc">
-                                {{$t('scaffold.tmplIntro')}}: {{tmpl.description}}
+                                {{tmpl.description}}
                             </div>
                         </div>
                     </div>
@@ -130,12 +130,7 @@ export default class ProjectList extends Component {
         }
         const projectTemplateList = this.data.get('projectTemplateList');
         const showTmplList = projectTemplateList.map(item => {
-            let description = item.description;
-            if (item.description.indexOf('template.') > -1) {
-                try {
-                    description = this.$t(item.description);
-                } catch (e) {}
-            }
+            const description = item.description ? this.$t(item.description) || item.description : '';
             return {
                 title: item.label.replace(/^\w+:/, ''),
                 link: item.value,
