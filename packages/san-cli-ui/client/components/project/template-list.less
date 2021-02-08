@@ -60,46 +60,6 @@
             opacity: .8;
         }
     }
-    .template-all {
-        line-height: 1.5;
-        color: rgba(0, 0, 0, 0.65);
-        box-sizing: border-box;
-        position: relative;
-        max-height: 400px;
-        margin-top: 20px;
-        overflow-y: auto;
-        background-color: #fff;
-        box-shadow: 0 2px 10px 3px rgb(228 228 228 / 30%);
-        border-radius: 18px;
-        padding: 10px 0;
-        .template-item {
-            padding: 12px 32px;
-            border-bottom: 1px solid #e8e8e8;
-            &.active {
-                background-color:rgba(24, 144, 255, 0.2);
-            }
-            &:last-child {
-                border-bottom: none;
-            }
-        }
-        .template-title {
-            display: inline-block;
-            margin-bottom: 6px;
-            color: rgba(0, 0, 0, 0.65);
-            font-size: 16px;
-            line-height: 22px;
-            color: rgba(0, 0, 0, 0.65);
-            text-decoration: none;
-            &:hover {
-                color: #446ffd;
-            }
-        }
-        .template-desc {
-            color: rgba(0, 0, 0, 0.45);
-            font-size: 14px;
-            line-height: 22px;
-        }
-    }
 }
 .template-list-dropdown {
     .santd-select-dropdown-menu {
@@ -126,6 +86,19 @@
                     content: none;
                 }
             }
+        }
+    }
+    .template-desc {
+        margin-top: 8px;
+        font-size: 16px;
+    }
+    .santd-select-unselectable {
+        .color-4();
+    }
+    .santd-select-dropdown-menu-item-active,
+    .santd-select-dropdown-menu-item-selected {
+        .darkmode & {
+            color: #333;
         }
     }
 }
