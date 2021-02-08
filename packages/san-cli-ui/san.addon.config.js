@@ -1,5 +1,5 @@
 /**
- * @file AddonConfig webpack配置导出给外部插件使用
+ * @file AddonConfig webpack配置导出给外部插件使用, 增加cssmodule
  * @author zttonly
 */
 
