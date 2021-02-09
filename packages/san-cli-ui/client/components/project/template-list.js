@@ -25,28 +25,22 @@ export default class ProjectList extends Component {
                     <s-select
                         value="{=currentTemplate=}"
                         dropdownClassName="template-list-dropdown"
-                        dropdownStyle="{{{'border-radius': '18px'}}}"
-                        on-select="templateChange">
+                        dropdownStyle="{{{'border-radius': '18px'}}}">
                         <s-select-option s-for="template in projectTemplateList" value="{{template.value}}">
-                            {{template.label}}
+                            <div>
+                                <a href="{{template.value}}" target="_blank">
+                                    {{template.label}}
+                                </a>
+                                <div class="template-desc">
+                                    {{template.description ? $t(template.description) || template.description : ''}}
+                                </div>
+                            </div>
                         </s-select-option>
                         <!----自定义的模板项---->
                         <s-select-option value="">
                             {{$t('scaffold.optionLabel')}}
                         </s-select-option>
                     </s-select>
-                    <div class="template-all" s-if="showTmplList">
-                        <div s-for="tmpl in showTmplList" 
-                            class="template-item {{currentTemplate[0] === tmpl.link ? 'active' : ''}}"
-                        >
-                            <a href="{{tmpl.link}}" class="template-title">
-                                {{tmpl.title}}
-                            </a>
-                            <div class="template-desc">
-                                {{tmpl.description}}
-                            </div>
-                        </div>
-                    </div>
                 </s-formitem>
 
                 <s-formitem label="{{$t('scaffold.customLabel')}}"
@@ -73,7 +67,6 @@ export default class ProjectList extends Component {
         return {
             customTemplate: '',
             currentTemplate: '',
-            showTmplList: null,
             formItemLayout: {
                 tailWrapperCol: {
                     xs: {
@@ -89,10 +82,7 @@ export default class ProjectList extends Component {
             useCache: true
         };
     }
-    attached() {
-        const currentTemplate = this.data.get('currentTemplate');
-        this.templateChange(Array.isArray(currentTemplate) ? currentTemplate[0] : null);
-    }
+
     handleSubmit(e) {
         e && e.preventDefault();
         let template = this.data.get('currentTemplate');
@@ -121,22 +111,5 @@ export default class ProjectList extends Component {
 
     changeUseCache(e) {
         this.data.set('useCache', e);
-    }
-
-    templateChange(value) {
-        if (!value) {
-            this.data.set('showTmplList', null);
-            return;
-        }
-        const projectTemplateList = this.data.get('projectTemplateList');
-        const showTmplList = projectTemplateList.map(item => {
-            const description = item.description ? this.$t(item.description) || item.description : '';
-            return {
-                title: item.label.replace(/^\w+:/, ''),
-                link: item.value,
-                description
-            };
-        });
-        this.data.set('showTmplList', showTmplList);
     }
 }
