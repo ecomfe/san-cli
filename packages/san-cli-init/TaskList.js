@@ -98,8 +98,10 @@ module.exports = class TaskList {
         }
         const p = `[${this._index + 1}/${this.length}]`;
         if (reason) {
+            // eslint-disable-next-line no-console
             console.log(chalk.dim(`${new Array(p.length + 1).join(' ')} ${figures.arrowRight} ${reason}`));
         }
+        // eslint-disable-next-line no-console
         console.log(chalk.dim(p) + ` ${title}`);
 
         if (!this._spinner) {

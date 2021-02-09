@@ -5,8 +5,6 @@
 const path = require('path');
 const fs = require('fs-extra');
 const rcPath = require('../utils/rcPath');
-const {getDebugLogger} = require('san-cli-utils/ttyLogger');
-const debug = getDebugLogger('ui:models:data');
 
 const shareDataDir = 'shared-data';
 const rootFolder = path.resolve(rcPath, shareDataDir);
@@ -19,7 +17,6 @@ const resolve = (projectId, id) => {
 
 const hasData = (projectId, id) => {
     const file = resolve(projectId, id);
-    // debug(file);
     return fs.existsSync(file);
 };
 

@@ -52,6 +52,7 @@ module.exports = function apply(argv, api, projectOptions) {
                 timings: true,
                 performance: true
             });
+            // eslint-disable-next-line no-console
             console.log(
                 require('san-cli-webpack/lib/formatStats')(stats, targetDirShort, {
                     resolve: p => api.resolve(p)
@@ -66,6 +67,7 @@ module.exports = function apply(argv, api, projectOptions) {
                     }
                     else {
                         successLog('Build legacy bundle success');
+                        // eslint-disable-next-line no-console
                         console.log();
                     }
                     return;

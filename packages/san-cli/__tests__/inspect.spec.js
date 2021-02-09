@@ -1,7 +1,7 @@
 /**
  * @file inspect command tests
  */
-/* global describe, test */
+
 const execSync = require('child_process').execSync;
 const path = require('path');
 const {version} = require('../package.json');

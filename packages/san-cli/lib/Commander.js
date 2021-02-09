@@ -142,9 +142,11 @@ module.exports = class Command {
                 // modern 打包不要输出这个了
                 // 打印名字
                 if (cmd === 'init') {
+                    // eslint-disable-next-line no-console
                     console.log(chalk.bold(getCmdLogInfo(cmd)));
                 }
                 else {
+                    // eslint-disable-next-line no-console
                     console.log(textCommonBold(getCmdLogInfo(cmd)));
                 }
             }
@@ -303,6 +305,7 @@ module.exports = class Command {
         const commands = usage.getCommands();
         const log = msg => {
             // colorful
+            // eslint-disable-next-line no-console
             console.log(msg ? msg.replace(/`([^`]+)`/g, (_, m) => chalk.cyan(m)) : '');
         };
         // 添加help

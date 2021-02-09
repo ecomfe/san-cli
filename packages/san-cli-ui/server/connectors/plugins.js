@@ -272,6 +272,7 @@ class Plugins {
             }
         }
         else {
+            // eslint-disable-next-line no-console
             console.log('serve issue', 'pluginId:', pluginId, 'projectId:', projectId, 'file:', file);
         }
 

@@ -16,6 +16,7 @@ exports.description = desc;
 exports.builder = yargs => {
     if (yargs.argv._.length === 1) {
         const scriptName = yargs.$0;
+        /* eslint-disable no-console */
         console.log(
             textCommonColor(
                 `Usage: ${scriptName[0].toUpperCase()}${scriptName.slice(1)} command <add|ls|rm|list|remove> [flags]`
@@ -24,6 +25,7 @@ exports.builder = yargs => {
         console.log();
         console.log(desc);
         console.log();
+        /* eslint-enable no-console */
 
         yargs.showHelp();
         process.exit();

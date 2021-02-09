@@ -126,6 +126,7 @@ export default class App extends Component {
                     }
                 }
                 else {
+                    // eslint-disable-next-line no-console
                     console.log('VIEW_ADDED Error');
                 }
             }
@@ -143,6 +144,7 @@ export default class App extends Component {
                     }
                 }
                 else {
+                    // eslint-disable-next-line no-console
                     console.log('VIEW_REMOVED Error');
                 }
             }

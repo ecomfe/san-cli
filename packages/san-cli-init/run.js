@@ -49,6 +49,7 @@ module.exports = (template, appName, options = {}) => {
         .then(({metaData: opts, tplData: data}) => {
             // const {metaData: argv, tplData: data} = ctx;
             const duration = timeCost(startTime);
+            // eslint-disable-next-line no-console
             console.log('✨  Done in ' + duration + 's.');
             opts = opts || {};
             // 有些 meta 的信息之类会有问题，所以加个强制退出
@@ -83,11 +84,13 @@ function logMessage(message, data) {
             .render(message, data)
             .then(res => {
                 // 显示
+                // eslint-disable-next-line no-console
                 console.log(res);
             })
             .catch(error);
     }
     else if (message) {
+        // eslint-disable-next-line no-console
         console.log(message);
     }
 }

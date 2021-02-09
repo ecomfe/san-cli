@@ -91,6 +91,7 @@ function getProjectPresets(projectPresets, metaData) {
             }
         }
         catch (e) {
+            // eslint-disable-next-line no-console
             console.log(e);
         }
     }

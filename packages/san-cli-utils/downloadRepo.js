@@ -121,7 +121,8 @@ function normalize(repo, opts) {
         };
     }
     // TODO 这里要不要创建个 san-projects/san-templates 的用户放一些标准的项目脚手架？没有之前，product 默认写 ksky521吧~
-    const [m, source = 'github', baidu = 'baidu', product = 'ksky521', repoName, checkout = ''] = match;
+    // eslint-disable-next-line no-unused-vars
+    const [_, source = 'github', baidu = 'baidu', product = 'ksky521', repoName, checkout = ''] = match;
     let url = repo;
     switch (source) {
         case 'icode':

@@ -3,7 +3,6 @@
  * @author jinzhan
  */
 import san from 'san';
-import {router} from 'san-router';
 import Component from '@lib/san-component';
 import loadScript from 'load-script';
 import apolloClient from '@lib/apollo-client';
@@ -122,9 +121,11 @@ const load = ({url, id}) => {
     loadScript(url, (err, script) => {
         if (err) {
             addonMap.set(url, false);
+            // eslint-disable-next-line no-console
             console.log(`[error]: load ${url} failed.`);
         }
         else {
+            // eslint-disable-next-line no-console
             console.log('Load addon:', {url, id});
         }
     });
@@ -147,6 +148,7 @@ export const loadClientAddons = async () => {
         next: result => {
             const {data, error, errors} = result;
             if (error || errors) {
+                // eslint-disable-next-line no-console
                 console.log('client-addon error:', error || errors);
             }
             if (data && data.clientAddonAdded) {
@@ -154,6 +156,7 @@ export const loadClientAddons = async () => {
             }
         },
         error: err => {
+            // eslint-disable-next-line no-console
             console.log('error', err);
         }
     });

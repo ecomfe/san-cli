@@ -50,6 +50,7 @@ module.exports = (prompts, presets) => {
         const preset = presets[key];
 
         if (!preset) {
+            // eslint-disable-next-line no-console
             console.log(`❗️ Project presets ${key} is not specified.`);
             return false;
         }
@@ -58,6 +59,7 @@ module.exports = (prompts, presets) => {
         if (prompt.type === 'list') {
             const choices = prompt.choices.map(item => item.value);
             if (choices.indexOf(preset) === -1) {
+                // eslint-disable-next-line no-console
                 console.log(`❗️ Project presets ${key} is illegal.`);
                 return false;
             }
