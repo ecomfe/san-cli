@@ -76,6 +76,7 @@ const schema = joi
             sourceMap: joi.boolean(),
             requireModuleExtension: joi.boolean(),
             loaderOptions: joi.object({
+                style: joi.object(),
                 css: joi.object(),
                 sass: joi.object(),
                 less: joi.object(),

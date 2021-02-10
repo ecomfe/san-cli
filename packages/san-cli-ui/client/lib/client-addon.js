@@ -151,7 +151,6 @@ export const loadClientAddons = async () => {
             if (error || errors) {
                 console.log('client-addon error:', error || errors);
             }
-            console.log(data);
             if (data && data.clientAddonAdded) {
                 load(data.clientAddonAdded);
             }
