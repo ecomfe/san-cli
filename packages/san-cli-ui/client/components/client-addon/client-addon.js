@@ -14,7 +14,7 @@ import './client-addon.less';
  */
 export default class ClientAddon extends Component {
     static template = `
-        <div class="client-addon"></div>
+        <div class="client-addon {{nsClass}}"></div>
     `;
 
     attached() {
@@ -22,7 +22,7 @@ export default class ClientAddon extends Component {
         const data = this.data.get('data');
         this.addonComponent = null;
         window.ClientAddonApi.awaitComponent(clientAddon)
-            .then(Component => {
+            .then(({component: Component, namespace}) => {
                 this.addonComponent = new Component({
                     owner: this,
                     data: {
@@ -30,6 +30,7 @@ export default class ClientAddon extends Component {
                     }
                 });
                 this.addonComponent.attach(this.el);
+                namespace && this.data.set('nsClass', namespace);
             })
             .catch(e => {
                 // eslint-disable-next-line no-console
