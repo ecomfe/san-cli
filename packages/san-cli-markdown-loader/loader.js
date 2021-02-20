@@ -3,7 +3,6 @@
  * @author ksky521
  */
 const qs = require('querystring');
-const fs = require('fs');
 const path = require('path');
 const grayMatter = require('gray-matter');
 const loaderUtils = require('loader-utils');
@@ -12,16 +11,6 @@ const compiler = require('./lib/compiler');
 const parseHeader = require('./lib/parseHeader');
 const parseList = require('./lib/parseList');
 const {mdLink2Html} = require('./lib/utils');
-
-function updateSanDocit(filename, info) {
-    global.SAN_DOCIT = global.SAN_DOCIT || {};
-
-    let sandocit = global.SAN_DOCIT[filename] || {};
-    sandocit = Object.assign(sandocit, info);
-
-    // 记录数据
-    global.SAN_DOCIT[filename] = sandocit;
-}
 
 // eslint-disable-next-line
 module.exports = function(content) {
@@ -35,8 +24,6 @@ module.exports = function(content) {
         // 需要跳过，让给picker处理
         return content;
     }
-
-    const options = loaderUtils.getOptions(loaderContext);
     let {
         codebox = '',
         cwd = query.cwd || process.cwd(),
@@ -52,7 +39,7 @@ module.exports = function(content) {
         markdownIt,
         rootUrl = '/',
         extractHeaders = ['H2', 'H3']
-    } = options || query;
+    } = loaderUtils.getOptions(loaderContext) || query;
 
     if (!loaderContext['thread-loader'] && !loaderContext[NS]) {
         loaderContext.emitError(
@@ -82,13 +69,6 @@ module.exports = function(content) {
         rootUrl
     };
 
-    const contextQuery = `context=${JSON.stringify({
-        codebox,
-        cwd,
-        i18n,
-        rootUrl
-    })}`;
-
     const getTemplate = (content, quote = true) => {
         const cls = typeof matter.classes === 'string' ? [matter.classes] : matter.classes || ['markdown'];
         const encode = quote ? str => JSON.stringify(str) : str => str;
@@ -97,6 +77,7 @@ module.exports = function(content) {
             .replace(/\u2029/g, '\\u2029')}`;
     };
 
+    // 整个文件返回 san Component
     let sanboxArray = [];
     sanboxRegExp.lastIndex = 0;
     content = content.replace(sanboxRegExp, (input, match) => {
@@ -105,71 +86,116 @@ module.exports = function(content) {
         return `<san-box-${idx}></san-box-${idx}>`;
     });
 
-    const toc = parseHeader(content, compiler.getCompiler(markdownIt), extractHeaders);
-
-    let codeboxSource = '';
-    if (sanboxArray.length) {
-        codeboxSource = sanboxArray.reduce((total, currentValue, idx) => {
-            const query = `?san-md-picker&get=sanbox&eq=${idx}&${contextQuery}`;
-            const name = `sanbox${idx}`;
-            // San 不支持全局组件，通过变量手工替换处理，另外两种办法也行不通
-            // 1. customElements.define 可以实现简单的WebComponent定义（HTML字符串）
-            // 2. san-component 支持template里的全局组件，不支持HTML字符串里的组件
-            return `${total}
-                import ${name} from ${stringifyRequest(resourcePath + query)};
-                window.__sanbox['${name}'] = {
-                    el: 'san-box-${idx}',
-                    comp: ${name}
-                };
+    // 存在 exportType 的情况
+    switch (query.exportType) {
+        case 'list': {
+            // 这里是给 sidebar 和 navbar 这样的 list 用到的解析
+            const listHtml = parseList(content, {
+                resourcePath,
+                relativeTo: query.relativeTo,
+                relativeLink: link,
+                context: cwd,
+                rootUrl
+            });
+            return `
+                /**
+                 * markdown with exportType=list
+                 * @file ${resourcePath}
+                 * @query ${rawQuery}
+                 */
+                export default ${JSON.stringify(listHtml)};
             `;
-        }, 'window.__sanbox = {};');
+        }
+        // 这是返回 html，不处理 san box
+        case 'html':
+            return getTemplate(compiler(content, markdownIt), false);
+
+        case 'matter':
+            // 返回 matter 对象
+            return `
+                /**
+                 * markdown with exportType=matter
+                 * @file ${resourcePath}
+                 * @query ${rawQuery}
+                 */
+                export default ${JSON.stringify(matter)};
+            `;
     }
 
-    let getSideOrNavBarHTML = filepath => {
-        const content = fs.readFileSync(filepath, 'utf8');
-        const html = parseList(content, {
-            resourcePath,
-            relativeTo: resourcePath,
-            relativeLink: link,
-            context: cwd,
-            rootUrl
+    const toc = parseHeader(content, compiler.getCompiler(markdownIt), extractHeaders);
+    const contextQuery = `context=${JSON.stringify({
+        codebox,
+        cwd,
+        i18n,
+        rootUrl
+    })}`;
+    // 为了代码好阅读：
+    // 1. 默认 md 引入会进入到这里逻辑，然后替换掉 sanbox 中的内容为了对应的 tag
+    // 2. template 是直接引入的 html-loader!markdown-loaer!md?exportType=html
+    //    用 html-loader 处理后，link 和 image 就得到了保证
+    // 3. 转到 template 的处理去上面的 switch 分支
+    let code;
+    let templateRequest = stringifyRequest(
+        [`-!${require.resolve('html-loader')}`, __filename, resourcePath + '?exportType=html'].join('!')
+    );
+    if (sanboxArray.length === 0) {
+        // 如果没有san box 则直接返回 html template
+        code = `
+            /**
+             * markdown to san Component
+             * @file ${resourcePath}
+             * @query ${rawQuery}
+             */
+            import {defineComponent} from 'san';
+            import template from ${templateRequest};
+            const Content = defineComponent({
+                template
+            })
+            Content.$matter = ${JSON.stringify(matter)};
+            Content.$toc = ${JSON.stringify(toc)};
+            Content.$link = ${JSON.stringify(link)}
+            export const matter = ${JSON.stringify(matter)};
+            export const link = ${JSON.stringify(link)};
+            export const toc = ${JSON.stringify(toc)};
+            export default Content;
+        `;
+    }
+    else {
+        // 返回 san box
+        let components = {};
+        sanboxArray = sanboxArray.map((box, idx) => {
+            const query = `?san-md-picker&get=sanbox&eq=${idx}&${contextQuery}`;
+            components[`san-box-${idx}`] = `Sanbox${idx}`;
+            return `import Sanbox${idx} from ${stringifyRequest(resourcePath + query)};`;
         });
-
-        return html;
-    };
-
-    const html = getTemplate(compiler(content, markdownIt), false);
-
-    let info = {
-        content: html,
-        config: {
-            rootUrl,
-            siteName: options.siteName
-        },
-        toc,
-        link,
-        matter
-    };
-
-    if (options.sidebar) {
-        info.sidebar = getSideOrNavBarHTML(options.sidebar);
+        let compString = [];
+        Object.keys(components).forEach(key => {
+            compString.push(JSON.stringify(key) + ':' + components[key]);
+        });
+        compString = `{
+            ${compString.join(',\n')}
+        }`;
+        code = `
+            /**
+             * markdown with sanbox to San Component
+             * @file ${resourcePath}
+             * @query ${rawQuery}
+             */
+            import {defineComponent} from 'san';
+            import template from ${templateRequest};
+            ${sanboxArray.join('\n')}
+            const Content = defineComponent({
+                template,
+                components: ${compString}
+            });
+            Content.$matter = ${JSON.stringify(matter)};
+            Content.$toc = ${JSON.stringify(toc)};
+            Content.$link = ${JSON.stringify(link)}
+            export const matter = ${JSON.stringify(matter)};
+            export const link = ${JSON.stringify(link)};
+            export const toc = ${JSON.stringify(toc)};
+            export default Content;
+        `;
     }
-    if (options.navbar) {
-        info.navbar = getSideOrNavBarHTML(options.navbar);
-    }
-
-    // 记录数据
-    updateSanDocit(resourcePath, info);
-
-    const code = `
-        /**
-         * markdown
-         * @file ${resourcePath}
-         * @query ${rawQuery}
-        */
-        ${codeboxSource}
-        export default ${JSON.stringify(info)};
-    `;
-
     return code;
 };
