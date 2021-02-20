@@ -24,7 +24,7 @@ exports.slugify = str =>
         // lowercase
         .toLowerCase();
 
-const mdLink2Html = str => str.replace(/\.md$/, '/').replace(/README\/$/, '');
+const mdLink2Html = str => str.replace(/\.md$/, '.html').replace(/README\.html$/, 'index.html');
 exports.mdLink2Html = mdLink2Html;
 exports.getRelativeLink = (from, to, rootUrl = '/') => {
     to = mdLink2Html(to);
