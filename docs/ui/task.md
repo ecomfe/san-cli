@@ -11,13 +11,13 @@ npm run build:modern // 现代模式打包
 
 在`San CLI UI`的任务管理中对每一个内置命令实现了对应的可视化操作任务，同时增加了一个内置的**inspect**任务，用于查看webpack的配置，
 
-![](./assets/task.png)
+<img src="./assets/task.png" style="width: 80%; max-width: 1000px;" />
 
 ## 任务详情
 
 进入其中一个任务的详情页后，比如 start，在右上角设置按钮可以配置该任务，点击运行启动任务。
 
-![](./assets/start-task.png)
+<img src="./assets/start-task.png" style="width: 80%; max-width: 1000px;" />
 
 `San CLI UI`的任务管理，在实现内置命令执行的同时，通过插件机制实现了命令的增强：
  - 在仪表盘将打包过程及结果的统计信息进行了可视化的展示，包括资源大小及执行速度等，使得打包过程更清晰，产出大小分类更直观。
