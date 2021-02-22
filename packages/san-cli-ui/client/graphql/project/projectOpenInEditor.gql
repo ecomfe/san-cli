@@ -1,6 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/project/projectOpenInEditor.gql
-mutation projectOpenInEditor ($path: String, $line: Int, $column: Int) {
-  projectOpenInEditor(path: $path, line: $line, column: $column) {
-    errMsg
-  }
-}

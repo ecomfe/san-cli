@@ -1,8 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/task/taskRestoreParameters.gql
-#import "../prompt/promptFragment.gql"
-
-mutation taskRestoreParameters ($id: ID!) {
-  taskRestoreParameters (id: $id) {
-    ...prompt
-  }
-}

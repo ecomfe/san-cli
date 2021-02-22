@@ -1,8 +1,0 @@
-mutation pluginItem ($id: String!) {
-    pluginItem (id: $id) {
-        current
-        latest
-        wanted
-        range
-    }
-}

@@ -1,7 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/console/consoleLogFragment.gql
-fragment consoleLog on ConsoleLog {
-  id
-  type
-  message
-  date
-}

@@ -1,5 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/project/currentProjectIdSet.gql
-
-mutation currentProjectIdSet ($projectId: ID!) {
-  currentProjectIdSet(projectId: $projectId) @client
-}

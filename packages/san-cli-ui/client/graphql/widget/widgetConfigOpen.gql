@@ -1,8 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/widget/widgetConfigOpen.gql
-#import "./widgetFragment.gql"
-
-mutation widgetConfigOpen ($id: ID!) {
-  widgetConfigOpen (id: $id) {
-    ...widget
-  }
-}

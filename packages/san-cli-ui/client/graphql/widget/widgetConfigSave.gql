@@ -1,8 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/widget/widgetConfigSave.gql
-#import "./widgetFragment.gql"
-
-mutation widgetConfigSave ($id: ID!) {
-  widgetConfigSave (id: $id) {
-    ...widget
-  }
-}

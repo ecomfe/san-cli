@@ -1,6 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/project/projectCreation.gql
-mutation projectCreation ($name: String, $template: String, $presets: JSON) {
-  projectCreation (name: $name, template: $template, presets: $presets) {
-    errno
-  }
-}

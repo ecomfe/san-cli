@@ -1,6 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/task/taskLogFragment.gql
-fragment taskLog on TaskLog {
-  taskId
-  type
-  text
-}

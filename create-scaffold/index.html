@@ -1,0 +1,92 @@
+<!doctype html><html><head><meta charset="utf-8"/><title>San CLI</title><link rel="icon" href="/san-cli/favicon.ico"><script>window['SAN_DOCIT'] = {};</script><base href="/san-cli/"><link href="/san-cli/static/css/chunk-vendors.css" rel="stylesheet"><link href="/san-cli/static/css/client-entry.css" rel="stylesheet"></head><body><div id="app"><div id="site"><header id="header"><a href="/san-cli/" class="navbar"><img src="/san-cli/logo.svg" alt="Home" class="logo"> <span>San CLI</span></a><ul><li><a target="_blank" href="https://baidu.github.io/san/">San</a></li><li><a target="_blank" href="https://ecomfe.github.io/santd/">Santd</a></li><li><a target="_blank" href="https://github.com/ecomfe/eslint-plugin-san">Github</a></li></ul></header><aside id="sidebar" class="sidebar"><ul class="tree"><li data-id="/"><a href="/san-cli/" onclick="return false;">介绍</a></li><li><span>基础命令</span><ul><li data-id="/create-project/"><a href="/san-cli/create-project/" onclick="return false;">初始化项目</a></li><li data-id="/serve/"><a href="/san-cli/serve/" onclick="return false;">开发打包</a></li><li data-id="/build/"><a href="/san-cli/build/" onclick="return false;">生产打包</a></li></ul></li><li><span>配置</span><ul><li data-id="/config/"><a href="/san-cli/config/" onclick="return false;">San CLI 配置文件</a></li><li data-id="/advanced/"><a href="/san-cli/advanced/" onclick="return false;">高级配置</a></li><li data-id="/presets/"><a href="/san-cli/presets/" onclick="return false;">Presets 预设</a></li><li data-id="/env/"><a href="/san-cli/env/" onclick="return false;">环境变量</a></li></ul></li><li><span>常见解决方案</span><ul><li data-id="/modern-mode/"><a href="/san-cli/modern-mode/" onclick="return false;">现在的浏览器打包模式</a></li><li data-id="/bundle-analyze/"><a href="/san-cli/bundle-analyze/" onclick="return false;">Bundle 分析</a></li><li data-id="/component/"><a href="/san-cli/component/" onclick="return false;">San Component 组件开发</a></li><li data-id="/smarty/"><a href="/san-cli/smarty/" onclick="return false;">Smarty 相关</a></li><li data-id="/deployment/"><a href="/san-cli/deployment/" onclick="return false;">部署</a></li><li data-id="/hulk-cli-migration/"><a href="/san-cli/hulk-cli-migration/" onclick="return false;">hulk-cli升级san-cli</a></li></ul></li><li><span>二次开发</span><ul><li data-id="/architecture/"><a href="/san-cli/architecture/" onclick="return false;">内部实现</a></li><li data-id="/create-scaffold/"><a href="/san-cli/create-scaffold/" onclick="return false;">如何创建一个脚手架项目</a></li><li data-id="/plugin/"><a href="/san-cli/plugin/" onclick="return false;">插件</a><ul><li data-id="/cmd-plugin/"><a href="/san-cli/cmd-plugin/" onclick="return false;">Command 插件</a></li><li data-id="/srv-plugin/"><a href="/san-cli/srv-plugin/" onclick="return false;">编写一个 Serivce 插件</a></li></ul></li></ul></li><li><span>CLI UI</span><ul><li data-id="/ui/start/"><a href="/san-cli/ui/start/" onclick="return false;">San CLI UI</a></li><li><span>功能简介</span><ul><li data-id="/ui/project-list/"><a href="/san-cli/ui/project-list/" onclick="return false;">项目管理</a></li><li data-id="/ui/dashboard/"><a href="/san-cli/ui/dashboard/" onclick="return false;">工具扩展</a></li><li data-id="/ui/plugin/"><a href="/san-cli/ui/plugin/" onclick="return false;">插件管理</a></li><li data-id="/ui/dependency/"><a href="/san-cli/ui/dependency/" onclick="return false;">依赖管理与插件管理</a></li><li data-id="/ui/configuration/"><a href="/san-cli/ui/configuration/" onclick="return false;">配置管理</a></li><li data-id="/ui/task/"><a href="/san-cli/ui/task/" onclick="return false;">任务管理</a></li></ul></li><li><span>插件开发</span><ul><li data-id="/ui/structure/"><a href="/san-cli/ui/structure/" onclick="return false;">San CLI UI 工作流程</a></li><li data-id="/ui/plugin-object/"><a href="/san-cli/ui/plugin-object/" onclick="return false;">插件对象</a></li><li data-id="/ui/add-addon/"><a href="/san-cli/ui/add-addon/" onclick="return false;">widget部件</a></li><li data-id="/ui/add-config/"><a href="/san-cli/ui/add-config/" onclick="return false;">添加项目配置</a></li><li data-id="/ui/cover-task/"><a href="/san-cli/ui/cover-task/" onclick="return false;">更改项目任务</a></li><li data-id="/ui/add-view/"><a href="/san-cli/ui/add-view/" onclick="return false;">添加自定义视图</a></li><li data-id="/ui/static/"><a href="/san-cli/ui/static/" onclick="return false;">公共静态文件</a></li></ul></li></ul></li></ul></aside><article id="content"><div id="router-view" class="router-view"><div class="content"><div class="markdown"><h1 id="%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%84%9A%E6%89%8B%E6%9E%B6%E9%A1%B9%E7%9B%AE"><a class="header-anchor" href="#%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%84%9A%E6%89%8B%E6%9E%B6%E9%A1%B9%E7%9B%AE">#</a> 如何创建一个脚手架项目</h1><p>日常开发中，团队可以创建自己的项目脚手架，本文将介绍脚手架创建的方法。</p><h2 id="%E8%84%9A%E6%89%8B%E6%9E%B6%E9%A1%B9%E7%9B%AE%E5%BF%85%E5%A4%87%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><a class="header-anchor" href="#%E8%84%9A%E6%89%8B%E6%9E%B6%E9%A1%B9%E7%9B%AE%E5%BF%85%E5%A4%87%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84">#</a> 脚手架项目必备的基础目录结构</h2><pre class="language-text"><code class="language-text">├── template            # 模板目录结构
+│&nbsp;&nbsp; ├── san.config.js   # cli配置项
+└── meta.js/meta.json   # 模板创建 prompt 交互问题</code></pre><p>San CLI 使用 handlerbars 渲染 template 目录，所以脚手架请使用 handlerbars 语法。</p><h2 id="meta.js%2Fmeta.json"><a class="header-anchor" href="#meta.js%2Fmeta.json">#</a> meta.js/meta.json</h2><p>回答的内容会作为模板数据来处理文件</p><h5 id="meta.js"><a class="header-anchor" href="#meta.js">#</a> meta.js</h5><pre class="language-js"><code class="language-js"><span class="token comment">// meta 配置项</span>
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 生成器会将 handlerbars 语法填上 prompts 内容</span>
+    <span class="token comment">// 扩展 handlerbars helper</span>
+    helpers<span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token comment">// 过滤满足 value 跳转的目录 key，不做生成处理</span>
+    filters<span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token string">&#39;mock/**&#39;</span><span class="token operator">:</span> <span class="token string">&#39;useMock&#39;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token comment">// 脚手架交互问答</span>
+    prompts<span class="token operator">:</span> <span class="token punctuation">{</span>
+        name<span class="token operator">:</span> <span class="token punctuation">{</span>
+            type<span class="token operator">:</span> <span class="token string">&#39;string&#39;</span><span class="token punctuation">,</span>
+            required<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+            label<span class="token operator">:</span> <span class="token string">&#39;项目名称&#39;</span><span class="token punctuation">,</span>
+            <span class="token comment">// 默认 {{name}} 会被替换成init 命令的目录名</span>
+            <span class="token comment">// 类似还有username、email 等 git 配置</span>
+            <span class="token keyword">default</span><span class="token operator">:</span> <span class="token string">&#39;{{name}}&#39;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        useMock<span class="token operator">:</span> <span class="token punctuation">{</span>
+            type<span class="token operator">:</span> <span class="token string">&#39;confirm&#39;</span><span class="token punctuation">,</span>
+            message<span class="token operator">:</span> <span class="token string">&#39;使用 mock 数据？&#39;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre><h5 id="meta.json"><a class="header-anchor" href="#meta.json">#</a> meta.json</h5><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token comment">// meta 配置项</span>
+<span class="token punctuation">}</span></code></pre><h5 id="%E9%85%8D%E7%BD%AE%E9%A1%B9"><a class="header-anchor" href="#%E9%85%8D%E7%BD%AE%E9%A1%B9">#</a> 配置项</h5><p><code>helpers</code> 自定义 handlerbars 的块级 helper，cli 会调用 registerHelper，处理这段自定义</p><p><strong>例如</strong></p><pre class="language-js"><code class="language-js"><span class="token comment">// meta.js</span>
+<span class="token punctuation">{</span>
+    helpers<span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token function-variable function">if_or</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">v1<span class="token punctuation">,</span> v2<span class="token punctuation">,</span> options</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>v1 <span class="token operator">||</span> v2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> options<span class="token punctuation">.</span><span class="token function">fn</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">return</span> options<span class="token punctuation">.</span><span class="token function">inverse</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre><p><code>filters</code> 过滤满足 value 跳转的目录 key，不做渲染处理</p><p><strong>例如</strong></p><pre class="language-js"><code class="language-js"><span class="token comment">// meta.js</span>
+<span class="token punctuation">{</span>
+    filters<span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token string">&#39;mock/**&#39;</span><span class="token operator">:</span> <span class="token string">&#39;tplEngine!==&quot;smarty&quot;&#39;</span><span class="token punctuation">,</span>
+        <span class="token string">&#39;template/**&#39;</span><span class="token operator">:</span> <span class="token string">&#39;tplEngine!==&quot;smarty&quot;&#39;</span><span class="token punctuation">,</span>
+        <span class="token string">&#39;template/demo-store/**&#39;</span><span class="token operator">:</span> <span class="token string">&#39;!demo || (demo &amp;&amp; demoType!==&quot;store&quot;)&#39;</span><span class="token punctuation">,</span>
+        <span class="token string">&#39;template/demo/**&#39;</span><span class="token operator">:</span> <span class="token string">&#39;!demo || (demo &amp;&amp; demoType!==&quot;normal&quot;)&#39;</span><span class="token punctuation">,</span>
+        <span class="token string">&#39;src/pages/demo-store/**&#39;</span><span class="token operator">:</span> <span class="token string">&#39;!demo || (demo &amp;&amp; demoType!==&quot;store&quot;)&#39;</span><span class="token punctuation">,</span>
+        <span class="token string">&#39;src/pages/demo/**&#39;</span><span class="token operator">:</span> <span class="token string">&#39;!demo || (demo &amp;&amp; demoType!==&quot;normal&quot;)&#39;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre><p><code>prompts</code> 交互问答，key 为问题名称（string 类型），value 为问题配置项（Object 类型）</p><p><strong>例如</strong></p><pre class="language-js"><code class="language-js"><span class="token comment">// meta.js</span>
+<span class="token punctuation">{</span>
+    prompts<span class="token operator">:</span> <span class="token punctuation">{</span>
+        name<span class="token operator">:</span> <span class="token punctuation">{</span>
+            type<span class="token operator">:</span> <span class="token string">&#39;string&#39;</span><span class="token punctuation">,</span>
+            required<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+            label<span class="token operator">:</span> <span class="token string">&#39;项目名称&#39;</span><span class="token punctuation">,</span>
+            <span class="token keyword">default</span><span class="token operator">:</span> <span class="token string">&#39;{{name}}&#39;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        tplEngine<span class="token operator">:</span> <span class="token punctuation">{</span>
+            type<span class="token operator">:</span> <span class="token string">&#39;select&#39;</span><span class="token punctuation">,</span>
+            message<span class="token operator">:</span> <span class="token string">&#39;选择模板引擎&#39;</span><span class="token punctuation">,</span>
+            choices<span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    title<span class="token operator">:</span> <span class="token string">&#39;Smarty（百度内部）&#39;</span><span class="token punctuation">,</span>
+                    value<span class="token operator">:</span> <span class="token string">&#39;smarty&#39;</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    title<span class="token operator">:</span> <span class="token string">&#39;纯 HTML&#39;</span><span class="token punctuation">,</span>
+                    value<span class="token operator">:</span> <span class="token string">&#39;html&#39;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        demo<span class="token operator">:</span> <span class="token punctuation">{</span>
+            type<span class="token operator">:</span> <span class="token string">&#39;confirm&#39;</span><span class="token punctuation">,</span>
+            message<span class="token operator">:</span> <span class="token string">&#39;安装demo示例？&#39;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        demoType<span class="token operator">:</span> <span class="token punctuation">{</span>
+            when<span class="token operator">:</span> <span class="token string">&#39;demo&#39;</span><span class="token punctuation">,</span>
+            type<span class="token operator">:</span> <span class="token string">&#39;select&#39;</span><span class="token punctuation">,</span>
+            message<span class="token operator">:</span> <span class="token string">&#39;选择示例代码类型：&#39;</span><span class="token punctuation">,</span>
+            choices<span class="token operator">:</span> <span class="token punctuation">[</span>
+                <span class="token punctuation">{</span>
+                    title<span class="token operator">:</span> <span class="token string">&#39;san-store (推荐)&#39;</span><span class="token punctuation">,</span>
+                    value<span class="token operator">:</span> <span class="token string">&#39;store&#39;</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token punctuation">{</span>
+                    title<span class="token operator">:</span> <span class="token string">&#39;normal&#39;</span><span class="token punctuation">,</span>
+                    value<span class="token operator">:</span> <span class="token string">&#39;normal&#39;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre><h2 id="san.config.js"><a class="header-anchor" href="#san.config.js">#</a> san.config.js</h2><p>san.config.js 是 San-CLI 的配置文件，配置格式<a href="/san-cli/config/">参考</a></p><h2 id="%E7%9B%B8%E5%85%B3-dot-%E6%96%87%E4%BB%B6"><a class="header-anchor" href="#%E7%9B%B8%E5%85%B3-dot-%E6%96%87%E4%BB%B6">#</a> 相关 dot 文件</h2><p>模板中的<code>_xxx</code>文件会在安装之后，转换成<code>.xxx</code>文件，例如<code>template/_babelrc</code>经过<code>san init</code>之后，会变成<code>.babelrc</code>。</p><p>常见 dot 文件：</p><ul><li>babelrc：babel 配置</li><li>editorconfig：常见规范类的配置</li><li>npmrc：npm 配置</li><li>prettierrc：格式化插件</li><li>gitignore：git 忽略</li><li>fecsrc：fecs 格式化配置</li></ul></div></div></div><aside class="toc"><ul class="tree"></ul></aside></article></div></div><script src="/san-cli/static/js/chunk-vendors.js"></script><script src="/san-cli/static/js/client-entry.js"></script></body></html>

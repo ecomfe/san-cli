@@ -1,8 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/prompt/promptChoiceFragment.gql
-fragment promptChoice on PromptChoice {
-  value
-  name
-  checked
-  disabled
-  isDefault
-}

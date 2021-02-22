@@ -1,8 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/console/consoleLogAdded.gql
-#import "./consoleLogFragment.gql"
-
-subscription consoleLogAdded {
-  consoleLogAdded {
-    ...consoleLog
-  }
-}

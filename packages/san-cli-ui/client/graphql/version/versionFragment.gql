@@ -1,9 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/version/versionFragment.gql
-
-fragment version on Version {
-  current
-  latest
-  wanted
-  range
-  localPath
-}

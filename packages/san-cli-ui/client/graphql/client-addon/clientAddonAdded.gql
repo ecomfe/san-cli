@@ -1,8 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/client-addon/clientAddonAdded.gql
-#import "./clientAddonFragment.gql"
-
-subscription clientAddonAdded {
-  clientAddonAdded {
-    ...clientAddon
-  }
-}

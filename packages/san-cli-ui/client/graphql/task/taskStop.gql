@@ -1,8 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/task/taskStop.gql
-#import "./taskFragment.gql"
-
-mutation taskStop ($id: ID!) {
-  taskStop (id: $id) {
-    ...task
-  }
-}

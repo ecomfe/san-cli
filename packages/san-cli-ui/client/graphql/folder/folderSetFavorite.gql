@@ -1,8 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/folder/folderSetFavorite.gql
-#import "./folderCurrentFragment.gql"
-
-mutation folderSetFavorite ($path: String!, $favorite: Boolean!) {
-  folderSetFavorite (path: $path, favorite: $favorite) {
-    ...folderCurrent
-  }
-}

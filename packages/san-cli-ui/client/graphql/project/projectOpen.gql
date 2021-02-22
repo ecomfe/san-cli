@@ -1,7 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/project/projectOpen.gql
-#import './projectFragment.gql'
-mutation projectOpen ($id: ID!) {
-    projectOpen (id: $id) {
-    ...project
-  }
-}

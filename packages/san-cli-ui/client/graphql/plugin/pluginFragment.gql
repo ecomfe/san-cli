@@ -1,7 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/plugin/pluginFragment.gql
-fragment plugin on Plugin {
-  id
-  official
-  installed
-  website
-}

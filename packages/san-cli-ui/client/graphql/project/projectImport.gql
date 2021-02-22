@@ -1,8 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/project/projectImport.gql
-#import "./projectFragment.gql"
-
-mutation projectImport ($path: String, $force: Boolean) {
-  projectImport(path: $path, force: $force) {
-    ...project
-  }
-}

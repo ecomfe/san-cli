@@ -1,7 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/plugin/pluginActionResultFragment.gql
-fragment pluginActionResult on PluginActionResult {
-  id
-  params
-  results
-  errors
-}

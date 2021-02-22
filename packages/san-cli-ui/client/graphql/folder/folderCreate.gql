@@ -1,8 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/folder/folderCreate.gql
-#import "./folderCurrentFragment.gql"
-
-mutation folderCreate ($name: String!) {
-  folderCreate (name: $name) {
-    ...folderCurrent
-  }
-}

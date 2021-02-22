@@ -1,8 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/dependency/dependency-uninstall.gql
-#import './dependencyFragment.gql'
-
-mutation dependencyUninstall ($id: String!, $type: String!) {
-    dependencyUninstall (id: $id, type: $type) {
-        ...dependency
-    }
-}

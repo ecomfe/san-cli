@@ -1,7 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/dependency/dependencyFragment.gql
-fragment dependency on Dependency {
-    id
-    type
-    website
-    installed
-}

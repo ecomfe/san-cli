@@ -1,8 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/dependency/dependencies.gql
-#import './dependencyFragment.gql'
-
-query dependencies {
-    dependencies {
-        ...dependency
-    }
-}

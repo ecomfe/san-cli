@@ -1,8 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/shared-data/sharedData.gql
-#import "./sharedDataFragment.gql"
-
-query sharedData ($id: ID!, $projectId: ID!) {
-  sharedData (id: $id, projectId: $projectId) {
-    ...sharedData
-  }
-}

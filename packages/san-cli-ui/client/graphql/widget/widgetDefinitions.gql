@@ -1,8 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/widget/widgetDefinitions.gql
-#import "./widgetDefinitionFragment.gql"
-
-query widgetDefinitions {
-  widgetDefinitions {
-    ...widgetDefinition
-  }
-}

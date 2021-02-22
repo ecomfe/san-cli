@@ -1,8 +1,0 @@
-# Reference: https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-ui/src/graphql/folder/folderOpen.gql
-#import "./folderCurrentFragment.gql"
-
-mutation folderOpen ($path: String!) {
-  folderOpen(path: $path) {
-    ...folderCurrent
-  }
-}
