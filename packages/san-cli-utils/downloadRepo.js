@@ -63,13 +63,15 @@ module.exports = (repo, dest, options) => {
     });
 };
 function getErrorMessage(reason, gitInfo) {
-    // 说明是ssh方式
-    const tRegex = /^((?:ssh:\/\/|git@).+?)(?:#(.+))?$/;
     let {url, appName} = gitInfo;
+    const isSSH = /^((?:ssh:\/\/|git@).+?)(?:#(.+))?$/.test(url);
     const cmd = 'init';
-    const info = `Fail to pull \`${url}\`${
-        tRegex.test(url) ? ' with SSH' : ''
-    }, please check the path and code permissions are correct.
+    const info = `${isSSH
+        ? `Fail to pull template with SSH, please use HTTPS instead and try again.
+In most cases, you can use HTTPS by adding ${
+    chalk.cyan('--use-https')
+}, unless you use a SSH URL directly as the template.`
+        : `Fail to pull \`${url}\`, please check the path and code permissions are correct.`}
 
 Fail message: ${chalk.cyan(reason)}.
 
