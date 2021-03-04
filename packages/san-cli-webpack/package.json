@@ -4,7 +4,7 @@
     "main": "index.js",
     "dependencies": {
         "fs-extra": "^8.1.0",
-        "html-webpack-plugin": "~5.0.0-beta.4",
+        "html-webpack-plugin": "^5.2.0",
         "portfinder": "^1.0.25",
         "san-cli-utils": "^1.0.0",
         "tty-table": "^2.8.2",

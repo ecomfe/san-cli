@@ -81,14 +81,14 @@ module.exports = (webpackConfig, projectOptions) => {
         /** simple
          * pages: {
                 index: {
-                entry: 'src/entry-point/index/main.js', //entry for the public page
-                template: 'public/index.html', // source template
-                filename: 'index.html' // output as dist/*
+                    entry: 'src/entry-point/index/main.js', //entry for the public page
+                    template: 'public/index.html', // source template
+                    filename: 'index.html' // output as dist/*
                 },
                 signin: {
-                entry: 'src/entry-point/signin/main.js',
-                template: 'public/signin.html',
-                filename: 'signin.html'
+                    entry: 'src/entry-point/signin/main.js',
+                    template: 'public/signin.html',
+                    filename: 'signin.html'
                 }
             }
         */
@@ -148,7 +148,9 @@ module.exports = (webpackConfig, projectOptions) => {
                     title
                 }
             );
+
             webpackConfig.plugin(`html-${name}`).use(HTMLPlugin, [pageHtmlOptions]);
+
             webpackConfig.plugin(`san-html-${name}`).use(SanHtmlPlugin);
         });
         useHtmlPlugin = true;
