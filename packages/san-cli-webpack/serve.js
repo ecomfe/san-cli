@@ -17,7 +17,6 @@ const portfinder = require('portfinder');
 
 // webpack Plugins
 const SanFriendlyErrorsPlugin = require('./lib/SanFriendlyErrorsPlugin');
-const WriteFileWebpackPlugin = require('write-file-webpack-plugin');
 
 const {prepareUrls} = require('san-cli-utils/path');
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
@@ -66,8 +65,6 @@ module.exports = function devServer({webpackConfig, devServerConfig, publicPath,
         // 添加插件
         // 在 serve 情况下添加
         webpackConfig.plugins.push(new SanFriendlyErrorsPlugin());
-        // 处理 tpl 的情况，smarty copy 到 output
-        webpackConfig.plugins.push(new WriteFileWebpackPlugin({test: /\.tpl$/}));
 
         if (closeDevtoolDebug.enabled) {
             // 这里使用closeDevTool debug 来开启
@@ -99,6 +96,10 @@ module.exports = function devServer({webpackConfig, devServerConfig, publicPath,
             // 这里注意：
             // 如果是 contentBase = outputDir 谨慎打开，打开后 template 每次文件都会重写，从而导致 hmr 失效，每次都 reload 页面
             watchContentBase: false,
+
+            // 处理 tpl 的情况，smarty copy 到 output
+            writeToDisk: filePath => /\.tpl$/.test(filePath),
+
             publicPath
         };
         const server = new WebpackDevServer(
