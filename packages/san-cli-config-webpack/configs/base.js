@@ -125,14 +125,14 @@ module.exports = (webpackChainConfig, projectOptions) => {
     ].forEach(([name, test, loader]) => {
         if (loaderOptions[name] !== false) {
             const options = defaultsDeep(
+                loaderOptions[name] || {},
                 {
                     limit: largeAssetSize,
                     name: getAssetPath(
                         assetsDir,
                         `${name}/[name]${filenameHashing ? '.[contenthash:8]' : ''}.[ext]`
                     )
-                },
-                loaderOptions[name] || {}
+                }
             );
 
             rules[loader](
