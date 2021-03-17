@@ -73,7 +73,7 @@ const schema = joi
         css: joi.object({
             cssnanoOptions: joi.object(),
             cssPreprocessor: joi.string().valid('less', 'sass', 'stylus'),
-            extract: joi.boolean(),
+            extract: joi.alternatives().try(joi.boolean(), joi.object()),
             sourceMap: joi.boolean(),
             requireModuleExtension: joi.boolean(),
             loaderOptions: joi.object({
