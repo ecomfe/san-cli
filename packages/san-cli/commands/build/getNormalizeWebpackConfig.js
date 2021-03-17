@@ -60,7 +60,7 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
             new BundleAnalyzerPlugin({
                 logLevel: 'warn',
                 openAnalyzer: false,
-                analyzerMode: 'static',
+                analyzerMode: statsJson ? 'disabled' : 'static',
                 reportFilename,
                 statsFilename,
                 generateStatsFile: !!statsJson
