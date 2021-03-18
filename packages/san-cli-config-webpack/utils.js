@@ -32,6 +32,9 @@ exports.ensureRelative = (outputDir, p) => {
 };
 
 exports.normalizeProjectOptions = projectOptions => {
+    if (!projectOptions) {
+        return {};
+    }
     return {
         ...projectOptions,
         isLegacyBundle() {

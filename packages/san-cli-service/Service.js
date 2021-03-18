@@ -18,6 +18,7 @@ const defaultsDeep = require('lodash.defaultsdeep');
 const lMerge = require('lodash.merge');
 const dotenv = require('dotenv');
 const {createChainConfig, createDevServerConfig} = require('san-cli-config-webpack');
+const {normalizeProjectOptions} = require('san-cli-config-webpack/utils');
 const SError = require('san-cli-utils/SError');
 const {findExisting} = require('san-cli-utils/path');
 const {textCommonColor} = require('san-cli-utils/color');
@@ -416,7 +417,20 @@ module.exports = class Service extends EventEmitter {
     }
 
     getWebpackChainConfig() {
-        const chainableConfig = createChainConfig(this.projectOptions.mode, this.projectOptions);
+        const projectOptions = normalizeProjectOptions(this.projectOptions);
+        const chainableConfig = createChainConfig(this.projectOptions.mode, projectOptions);
+        if (this.projectOptions.extends) {
+            this.projectOptions.extends.forEach(item => {
+                if (typeof item === 'string') {
+                    item = [item];
+                }
+                const [config, options] = item;
+                const configPath = require.resolve(config, {
+                    paths: [process.cwd()]
+                });
+                require(configPath)(chainableConfig, projectOptions, options);
+            });
+        }
         // apply chains
         this.webpackChainFns.forEach(fn => fn(chainableConfig));
         return chainableConfig;

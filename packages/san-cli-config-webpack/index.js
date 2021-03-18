@@ -2,8 +2,6 @@ const path = require('path');
 const fs = require('fs');
 const lMerge = require('lodash.merge');
 const Config = require('webpack-chain');
-
-const {normalizeProjectOptions} = require('./utils');
 const {devServerOptions} = require('./defaultOptions');
 
 const getChainMap = (config, methods) => {
@@ -43,9 +41,9 @@ const getChainMap = (config, methods) => {
     };
 });
 
-exports.createChainConfig = function getChainConfig(mode, projectOptions, webpackConfig = new Config()) {
+exports.createChainConfig = (mode, projectOptions, webpackConfig = new Config()) => {
     ['base', 'pages', 'style', mode].forEach(name =>
-        require(`./configs/${name}`)(webpackConfig, projectOptions ? normalizeProjectOptions(projectOptions) : {})
+        require(`./configs/${name}`)(webpackConfig, projectOptions)
     );
     return webpackConfig;
 };
