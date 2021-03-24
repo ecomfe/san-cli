@@ -289,7 +289,7 @@ module.exports = class Service extends EventEmitter {
             }
         }
         // 首先试用 argv 的 config，然后寻找默认的，找到则读取，格式失败则报错
-        let config = defaultsDeep(defaultConfig, this._initProjectOptions);
+        let config = defaultsDeep(this._initProjectOptions, defaultConfig);
         let result = {
             filepath: originalConfigFile,
             config: configFile ? require(configFile) : false
