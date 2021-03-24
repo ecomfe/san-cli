@@ -28,7 +28,7 @@ module.exports = (webpackChainConfig, rootOptions) => {
 
     // 有则优先使用css中的loaderoptions，否则使用root loaderOptions
     const loaderOptions = cssOptions.loaderOptions
-        ? defaultsDeep(rootLoaderOptions, cssOptions.loaderOptions)
+        ? defaultsDeep(cssOptions.loaderOptions, rootLoaderOptions)
         : rootLoaderOptions;
 
     // ------css module------
