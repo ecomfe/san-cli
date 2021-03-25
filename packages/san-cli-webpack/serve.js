@@ -26,7 +26,7 @@ const {addDevClientToEntry, getWebpackErrorInfoFromStats} = require('./utils');
 const debug = getDebugLogger('webpack:serve');
 const closeDevtoolDebug = getDebugLogger('webpack:closeDevtool');
 
-module.exports = function devServer({webpackConfig, devServerConfig, publicPath, compilerCallback}) {
+module.exports = function devServer({webpackConfig, devServerConfig, publicPath, compilerCallback, customDevServer = null}) {
     return new Promise(async (resolve, reject) => {
         const {https, host, port: basePort, public: rawPublicUrl, hotOnly} = devServerConfig;
         const protocol = https ? 'https' : 'http';
@@ -102,7 +102,9 @@ module.exports = function devServer({webpackConfig, devServerConfig, publicPath,
 
             publicPath
         };
-        const server = new WebpackDevServer(
+        // 可以增加自定义的devServer，若不使用webpack-dev-server需要将webpackConfig.devServer移除
+        const Server = customDevServer || WebpackDevServer;
+        const server = new Server(
             compiler,
             Object.assign(defaultDevServer, devServerConfig, {
                 https,
