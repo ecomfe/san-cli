@@ -111,7 +111,7 @@
         "start-server-and-test": "^1.11.5",
         "subscriptions-transport-ws": "^0.9.16",
         "tiny-emitter": "^2.1.0",
-        "url-loader": "^4.1.1",
+        "url-loader": "~3.0.0",
         "xterm": "^4.7.0",
         "xterm-addon-fit": "^0.4.0",
         "xterm-addon-web-links": "^0.4.0"
