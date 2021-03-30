@@ -95,6 +95,7 @@
         "babel-plugin-import": "^1.13.0",
         "clean-webpack-plugin": "^3.0.0",
         "cross-env": "^7.0.2",
+        "less-loader": "^4.0.3",
         "cypress": "^5.6.0",
         "deepmerge": "^4.2.2",
         "directory-named-webpack-plugin": "^4.0.1",
@@ -111,7 +112,6 @@
         "start-server-and-test": "^1.11.5",
         "subscriptions-transport-ws": "^0.9.16",
         "tiny-emitter": "^2.1.0",
-        "url-loader": "^4.1.1",
         "xterm": "^4.7.0",
         "xterm-addon-fit": "^0.4.0",
         "xterm-addon-web-links": "^0.4.0"
