@@ -9,54 +9,37 @@
  */
 
 const path = require('path');
-const url = require('url');
-
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-const portfinder = require('portfinder');
 
 // webpack Plugins
 const SanFriendlyErrorsPlugin = require('./lib/SanFriendlyErrorsPlugin');
 
-const {prepareUrls} = require('san-cli-utils/path');
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
-
-const {addDevClientToEntry, getWebpackErrorInfoFromStats} = require('./utils');
+const {addDevClientToEntry, getWebpackErrorInfoFromStats, getServerParams} = require('./utils');
 
 const debug = getDebugLogger('webpack:serve');
 const closeDevtoolDebug = getDebugLogger('webpack:closeDevtool');
 
 module.exports = function devServer({webpackConfig, devServerConfig, publicPath, compilerCallback, customDevServer = null}) {
     return new Promise(async (resolve, reject) => {
-        const {https, host, port: basePort, public: rawPublicUrl, hotOnly} = devServerConfig;
-        const protocol = https ? 'https' : 'http';
-        portfinder.basePort = basePort;
-        // 查找空闲的 port
-        const port = await portfinder.getPortPromise();
-        const publicUrl = rawPublicUrl
-            ? /^[a-zA-Z]+:\/\//.test(rawPublicUrl)
-                ? rawPublicUrl
-                : `${protocol}://${rawPublicUrl}`
-            : null;
-        const urls = prepareUrls(protocol, host, port, publicPath);
+        const {
+            https,
+            port,
+            host,
+            protocol,
+            publicUrl,
+            urls,
+            networkUrl,
+            sockjsUrl
+        } = await getServerParams(devServerConfig, publicPath);
         // mode 不是 production 则添加 hmr 功能
         if (webpackConfig.mode !== 'production') {
-            /* eslint-disable */
-            const sockjsUrl = publicUrl
-                ? `?${publicUrl}/sockjs-node`
-                : `?${url.format({
-                      protocol,
-                      port,
-                      hostname: urls.lanUrlForConfig || 'localhost',
-                      pathname: '/sockjs-node'
-                  })}`;
-            /* eslint-enable */
-
             const devClients = [
                 // dev server client
                 require.resolve('webpack-dev-server/client') + sockjsUrl,
                 // hmr client
-                require.resolve(hotOnly ? 'webpack/hot/dev-server' : 'webpack/hot/only-dev-server')
+                require.resolve(devServerConfig.hotOnly ? 'webpack/hot/dev-server' : 'webpack/hot/only-dev-server')
             ];
             // inject dev/hot client
             addDevClientToEntry(webpackConfig, devClients);
@@ -133,13 +116,7 @@ module.exports = function devServer({webpackConfig, devServerConfig, publicPath,
                 protocol,
                 publicUrl,
                 url: urls.localUrlForBrowserz,
-                networkUrl: publicUrl
-                    ? publicUrl.replace(/([^/])$/, '$1/')
-                    : url.format({
-                        protocol,
-                        port,
-                        hostname: urls.lanUrlForConfig || 'localhost'
-                    }),
+                networkUrl,
                 urls
             });
             if (isFirstCompile) {
