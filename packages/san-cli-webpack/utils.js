@@ -102,3 +102,56 @@ function resolveEntry(entry) {
         isFile
     };
 }
+
+
+/**
+ * @file 集中处理devServer的参数
+ * @author
+ */
+
+const {prepareUrls} = require('san-cli-utils/path');
+const portfinder = require('portfinder');
+const url = require('url');
+
+exports.getServerParams = async (devServerConfig, publicPath) => {
+
+    const {https, host, port: basePort, public: rawPublicUrl} = devServerConfig;
+    const protocol = https ? 'https' : 'http';
+    portfinder.basePort = basePort;
+    // 查找空闲的 port
+    const port = await portfinder.getPortPromise();
+    const publicUrl = rawPublicUrl
+        ? /^[a-zA-Z]+:\/\//.test(rawPublicUrl)
+            ? rawPublicUrl
+            : `${protocol}://${rawPublicUrl}`
+        : null;
+    const urls = prepareUrls(protocol, host, port, publicPath);
+    /* eslint-disable */
+    const sockjsUrl = publicUrl
+        ? `?${publicUrl}/sockjs-node`
+        : `?${url.format({
+            protocol,
+            port,
+            hostname: urls.lanUrlForConfig || 'localhost',
+            pathname: '/sockjs-node'
+        })}`;
+    /* eslint-enable */
+    const networkUrl = publicUrl
+        ? publicUrl.replace(/([^/])$/, '$1/')
+        : url.format({
+            protocol,
+            port,
+            hostname: urls.lanUrlForConfig || 'localhost'
+        });
+
+    return {
+        https,
+        port,
+        host,
+        protocol,
+        publicUrl,
+        urls,
+        sockjsUrl,
+        networkUrl
+    };
+};
