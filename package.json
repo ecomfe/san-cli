@@ -32,6 +32,7 @@
         "jest": "^24.8.0",
         "lint-staged": "^9.2.5",
         "memfs": "^3.0.1",
+        "rimraf": "^3.0.2",
         "stylelint": "^12.0.0"
     },
     "lint-staged": {
@@ -48,7 +49,7 @@
         "doc": "sdoc start docs",
         "build:doc": "sdoc build docs",
         "lint": "eslint --ignore-path .eslintignore ./",
-        "test": "node scripts/test.js"
+        "test": "rimraf ./packages/test && node scripts/test.js"
     },
     "commitlint": {
         "extends": [
