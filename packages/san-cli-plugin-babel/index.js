@@ -62,9 +62,7 @@ module.exports = {
                 .loader('babel-loader')
                 .options({
                     presets: [
-                        loaderOptions.babel
-                            ? [require.resolve('./preset'), loaderOptions.babel]
-                            : [require.resolve('./preset')]
+                        [require.resolve('./preset'), loaderOptions.babel]
                     ]
                 });
         });
