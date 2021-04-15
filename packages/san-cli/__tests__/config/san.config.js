@@ -14,7 +14,7 @@
 const CDN = 'https://s.bdstatic.com/';
 
 // 生产环境下的静态目录
-const STATIC_PRO = 'static/e2e-serve';
+const STATIC_PRO = 'static/e2e';
 
 const resolve = pathname => path.resolve(__dirname, pathname);
 
@@ -28,7 +28,7 @@ module.exports = {
     publicPath: isProduction ? CDN : '/',
     outputDir,
     // 文件名是否 hash
-    filenameHashing:isProduction,
+    filenameHashing: false,
     devServer: {
         port: 8899
     },
