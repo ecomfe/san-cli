@@ -28,7 +28,7 @@ module.exports = {
     publicPath: isProduction ? CDN : '/',
     outputDir,
     // 文件名是否 hash
-    filenameHashing: false,
+    filenameHashing:isProduction,
     devServer: {
         port: 8899
     },
@@ -73,7 +73,8 @@ module.exports = {
                 name: 'vendors',
                 test: /[\\/]node_modules(?!\/@baidu)[\\/]/,
                 // minChunks: 1,
-                priority: -10
+                priority: -10,
+                chunks: 'initial'
             }
         }
     },
