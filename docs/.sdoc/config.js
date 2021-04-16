@@ -15,7 +15,7 @@ module.exports = {
         nav: [
             {text: 'San', link: 'https://baidu.github.io/san/'},
             {text: 'Santd', link: 'https://ecomfe.github.io/santd/'},
-            {text: 'Github', link: 'https://github.com/ecomfe/eslint-plugin-san'}
+            {text: 'Github', link: 'https://github.com/ecomfe/san-cli'}
         ],
 
         sidebar: {
