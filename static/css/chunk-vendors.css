@@ -455,6 +455,7 @@ pre[class*='language-'] {
   height: 28px;
   vertical-align: middle;
   margin-right: 8px;
+  margin-top: -5px;
 }
 #header ul {
   padding-left: 1.5rem;
@@ -472,6 +473,15 @@ pre[class*='language-'] {
   margin-left: 32px;
   line-height: 32px;
   font-size: 20px;
+}
+#header ul li a {
+  display: flex;
+  align-items: center;
+}
+#header ul li a .nav-img {
+  width: 28px;
+  height: 28px;
+  margin-right: 10px;
 }
 #header ul a {
   color: #314659;
