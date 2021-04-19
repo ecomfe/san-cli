@@ -53,12 +53,13 @@ module.exports = {
                 // 这里 {output}/template 目录会被 hulk-mock-server 接管
                 // 其他路径不会走 smarty 渲染，所以访问 tpl 文件会出现下载文件
                 // 更换router路径，参考 hulk-mock-server 配置
-                filename: 'template/index/index.tpl'
+                filename: 'template/index/index.tpl',
+                chunks: ['vendors']
             }
     },
     // 默认node_modules的依赖是不过 babel 的
     // 如果依赖是 ESM 版本，要过 babel，请开启这里
-    // transpileDependencies:['@baidu/nano'],
+    transpileDependencies:['axios'],
     css: {
         sourceMap: isProduction,
         cssPreprocessor: 'less'
