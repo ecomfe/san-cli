@@ -72,7 +72,7 @@ module.exports = function devServer({webpackConfig, devServerConfig, publicPath,
         webpackConfig.plugins.push(new WriteFileWebpackPlugin({test: /\.tpl$/}));
 
         if (closeDevtoolDebug.enabled) {
-            // 这里使用closeDevTool debug 来开启
+            // 这里使用 closeDevTool debug 来开启
             webpackConfig.devtool = 'none';
             webpackConfig.optimization = {
                 minimize: false

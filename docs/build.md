@@ -28,7 +28,7 @@ san build [entry]
 
 ### 报告和日志相关
 
--   `--analyze，--analyzer`：是否使用 webpack-analyze-bunlde 输出包分析，值为 true 或 false，默认 false
+-   `--analyze，--analyzer`：是否使用 webpack-bundle-analyzer 输出包分析，值为 true 或 false，默认 false
 -   `--profile`：是否展示编译进度日志，值为 true 或 false，默认是 false
 -   `--report`：是否输将包分析报表生成为单个 HTML 文件，值为 true 或 false 或者文件名，默认 false，仅生成 Webpack Stats JSON 文件
 -   `--stats-json，--statsJson`：是否输将包分析报表生成为 stats.json，值为 true 或 false 或者文件名，默认是 false
