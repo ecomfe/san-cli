@@ -51,6 +51,14 @@ module.exports = (name, dest, options) => {
             Object.keys(metaData.helpers).forEach(key => {
                 Handlebars.registerHelper(key, metaData.helpers[key]);
             });
+
+        // 添加 handlebar partials
+        // eslint-disable-next-line
+        metaData.partials &&
+            Object.keys(metaData.partials).forEach(key => {
+                Handlebars.registerPartial(key, metaData.partials[key]);
+            });
+
         // 2. 请回答
         task.info();
 
