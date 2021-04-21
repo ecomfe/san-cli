@@ -99,7 +99,7 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
                 );
                 process.exit(1);
             } else {
-                remoteObj[key] = process.env[`SAN_REMOTE_${upperRemote}_${upperKey}`];
+                remoteObj[key] = val;
             }
         });
         chainConfig.plugin('deploy-files').use(DeployPlugin, [remoteObj]);
