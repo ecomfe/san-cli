@@ -17,7 +17,8 @@ function genTranspileDepRegex(transpileDependencies) {
             return process.platform === 'win32'
                 ? depPath.replace(/\\/g, '\\\\') // double escape for windows style path
                 : depPath;
-        } else if (dep instanceof RegExp) {
+        }
+        else if (dep instanceof RegExp) {
             return dep.source;
         }
     });
@@ -39,6 +40,11 @@ module.exports = {
                 .rule('js')
                 .test(/\.m?js?$/)
                 .exclude.add(filepath => {
+                    // 兼容webpack 5下data URI，filepath不存在的问题
+                    if (!filepath) {
+                        return true;
+                    }
+
                     // 包含 .san 的路径
                     if (/\.san$/.test(filepath)) {
                         return false;
@@ -48,10 +54,12 @@ module.exports = {
                     if (filepath.startsWith(cliPath)) {
                         return true;
                     }
+
                     // 不排除白名单
                     if (transpileDepRegex && transpileDepRegex.test(filepath)) {
                         return false;
                     }
+
                     // 默认不编译 node_modules，如果要编译使用排除
                     return /node_modules/.test(filepath);
                 })
