@@ -78,7 +78,7 @@ describe('e2e 测试', () => {
                 resolve: {
                     symlinks: false,
                     alias: {
-                        'core-js': path.join(cwd, '/packages/san-cli-service/node_modules/core-js'),
+                        'core-js': path.join(cwd, '/node_modules/core-js'),
                         'regenerator-runtime': path.join(cwd, '/node_modules/regenerator-runtime'),
                         san: path.join(cwd, '/node_modules/san/dist/san.spa.dev.js'),
                         '@assets': cwd + '/src/assets',
@@ -188,7 +188,7 @@ describe('e2e 测试', () => {
                 resolve: {
                     symlinks: false,
                     alias: {
-                        'core-js': path.join(cwd, '/packages/san-cli-service/node_modules/core-js'),
+                        'core-js': path.join(cwd, '/node_modules/core-js'),
                         'regenerator-runtime': path.join(cwd, '/node_modules/regenerator-runtime'),
                         san: path.join(cwd, '/node_modules/san/dist/san.spa.js'),
                         '@assets': cwd + '/src/assets',
