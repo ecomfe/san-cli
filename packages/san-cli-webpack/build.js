@@ -9,61 +9,73 @@
  */
 
 const webpack = require('webpack');
+const EventEmitter = require('events').EventEmitter;
+const {getWebpackErrorInfoFromStats, initConfig} = require('./utils');
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
-const SanFriendlyErrorsPlugin = require('./lib/SanFriendlyErrorsPlugin');
-const {getWebpackErrorInfoFromStats} = require('./utils');
 const debug = getDebugLogger('webpack:build');
-const closeDevtoolDebug = getDebugLogger('webpack:closeDevtool');
 
-module.exports = function build({webpackConfig, compilerCallback}) {
-    webpackConfig.plugins.push(new SanFriendlyErrorsPlugin());
-
-    return new Promise((resolve, reject) => {
+module.exports = class Build extends EventEmitter {
+    constructor(webpackConfig) {
+        super();
+        this.init(webpackConfig);
+    }
+    init(webpackConfig) {
         debug('start');
+        const {
+            config,
+            isWatch,
+            watchOptions
+        } = initConfig(webpackConfig);
 
-        if (closeDevtoolDebug.enabled) {
-            // 使用DEBUG=san-cli:webpack:closeDevtool 开启
-            webpackConfig.devtool = false;
-            webpackConfig.optimization = {
-                minimize: false
-            };
+        this.isWatch = isWatch;
+        this.watchOptions = watchOptions;
+        try {
+            this.compiler = webpack(config);
         }
-
-        const compiler = webpack(webpackConfig);
-
-        if (typeof compilerCallback === 'function') {
-            compilerCallback(compiler);
+        catch (e) {
+            // 捕捉参数不正确的错误信息
+            this.emit('fail', {err: e, type: 'run'});
         }
+    }
 
-        const callback = (err, stats) => {
-            if (err || stats.hasErrors()) {
+    getCompiler() {
+        return this.compiler;
+    }
+    run() {
+        // 只run一次
+        if (this.inited) {
+            return;
+        }
+        this.inited = true;
+
+        const callback = (err, mulStats) => {
+            this.emit('complete', {stats: mulStats});
+            if (err || mulStats.hasErrors()) {
                 debug(err);
                 let errorInfo;
-                if (stats.hasErrors()) {
-                    errorInfo = stats.toJson();
+                if (mulStats.hasErrors()) {
+                    errorInfo = mulStats.toJson();
                     debug(errorInfo.errors);
                 }
 
-                reject(getWebpackErrorInfoFromStats(err, stats));
-                const isWatch = webpackConfig.watch;
-                if (isWatch) {
+                this.emit('fail', getWebpackErrorInfoFromStats(err, mulStats));
+                if (this.isWatch) {
                     debug(err || errorInfo.errorInfo);
                     process.exit(1);
                 }
                 return;
             }
-
-            resolve({stats});
+            this.emit('success', {stats: mulStats, isWatch: this.isWatch});
         };
-        if (webpackConfig.watch === true) {
-            const watchOptions = webpackConfig.watchOptions || {};
-            return compiler.watch(watchOptions, callback);
+
+        if (this.isWatch) {
+            return this.compiler.watch(this.watchOptions || {}, callback);
         }
         try {
-            compiler.run(callback);
+            this.compiler.run(callback);
         }
         catch (e) {
-            reject(e);
+            this.emit('fail', e);
         }
-    });
+    }
 };
