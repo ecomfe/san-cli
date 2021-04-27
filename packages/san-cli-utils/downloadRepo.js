@@ -137,6 +137,7 @@ function normalize(repo, opts) {
             }
             break;
         case 'github':
+        case 'gitlab':
         case 'bitbucket':
             if (useHttps) {
                 // https://github.com/ksky521/san-webpack.git
@@ -145,25 +146,6 @@ function normalize(repo, opts) {
             else {
                 // git@github.com:ksky521/san-webpack.git
                 url = `git@${source}.com:${product}/${repoName}.git`;
-            }
-            break;
-        case 'gitlab':
-            if (isBaidu) {
-                if (useHttps) {
-                    // 这里没写错，百度的 gitlab 就是 http 而不是 https
-                    url = `http://gitlab.baidu.com/${product}/${repoName}.git`;
-                }
-                else {
-                    url = `ssh://g@gitlab.baidu.com:8022/${product}/${repoName}.git`;
-                }
-            }
-            else {
-                if (useHttps) {
-                    url = `https://gitlab.com/${product}/${repoName}.git`;
-                }
-                else {
-                    url = `git@gitlab.com:${product}/${repoName}.git`;
-                }
             }
             break;
         case 'coding':
