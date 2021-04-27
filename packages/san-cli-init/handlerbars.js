@@ -9,6 +9,7 @@
  */
 
 const Handlebars = require('handlebars');
+const setDelimiters = require('handlebars-delimiters');
 
 // 增加 handleba helper
 Handlebars.registerHelper('if_eq', function (a, b, opts) {
@@ -61,8 +62,45 @@ Handlebars.registerHelper('x', function(expression, options) {
     }
     return result;
 });
-function isHandlebarTPL(content) {
-    return /{{([^{}]+)}}/g.test(content);
-}
-Handlebars.isHandlebarTPL = isHandlebarTPL;
+
+/**
+ * 添加设置自定义边界符的方案
+ * 
+ * @param {Array<string>} delimiters - ['<%=', '%>']
+*/
+Handlebars.setDelimiters = function(delimiters) {
+    if (!Array.isArray(delimiters) || delimiters.length !== 2) {
+        console.warn('Handlebars Delimiters Settings Failed');
+        return;
+    }
+    setDelimiters(Handlebars, [...delimiters]);
+    Handlebars.delimiters = delimiters;
+};
+
+/**
+ * 判断是否是Handlebars模板
+ * 
+ * @param {string} content - 文本内容
+ * @param {Array<string>} delimiters - 默认['{{', '}}']
+*/
+Handlebars.isHandlebarTPL = function(content, delimiters) {
+    if (!content) {
+        return false;
+    }
+
+    delimiters = delimiters || Handlebars.delimiters;
+
+    // Handlebars默认边界符
+    if (!delimiters) {
+        return /{{([^{}]+)}}/g.test(content);
+    }
+
+    // 对用户配置进行转义
+    const [startDelimiter, endDelimiter] = delimiters.map(
+        t => t.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+    );
+
+    return new RegExp(startDelimiter + '.*?' + endDelimiter, 'g').test(content);
+};
+
 module.exports = Handlebars;

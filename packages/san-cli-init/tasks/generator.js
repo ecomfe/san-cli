@@ -11,7 +11,6 @@
 const path = require('path');
 const fs = require('fs-extra');
 const through = require('through2');
-const setDelimiters = require('handlebars-delimiters');
 const Handlebars = require('../handlerbars');
 const vfs = require('vinyl-fs');
 const render = require('consolidate').handlebars.render;
@@ -60,9 +59,8 @@ module.exports = (name, dest, options) => {
                 Handlebars.registerPartial(key, metaData.partials[key]);
             });
 
-        // 设置自定义边界符，例如：
-        // setDelimiters(Handlebars, ['<%=', '%>']);
-        metaData.delimiters && setDelimiters(Handlebars, metaData.delimiters);
+        // 设置自定义边界符，例如：['<%=', '%>']
+        metaData.delimiters && Handlebars.setDelimiters(metaData.delimiters);
 
         // 2. 请回答
         task.info();
