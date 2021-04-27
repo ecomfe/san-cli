@@ -60,7 +60,9 @@ module.exports = (name, dest, options) => {
             });
 
         // 设置自定义边界符，例如：['<%=', '%>']
-        metaData.delimiters && Handlebars.setDelimiters(metaData.delimiters);
+        // {{}} 是handbar的默认边界符，这里做一个重置，忽略掉字符的转义问题
+        const defaultDelimiters = ['{{', '}}'];
+        Handlebars.setDelimiters(metaData.delimiters || defaultDelimiters);
 
         // 2. 请回答
         task.info();
