@@ -100,7 +100,7 @@ function normalize(repo, opts) {
     // ssh://username@icode.baidu.com:8235/baidu/foo/bar
     // ssh://git@icode.baidu.com:8235/baidu/foo/bar
     // 如果是完整地址，直接返回，无需标准化
-    const tRegex = /^((?:ssh:\/\/|https:\/\/|git@).+?)(?:#(.+))?$/;
+    const tRegex = /^((?:ssh:\/\/|https?:\/\/|git@).+?)(?:#(.+))?$/;
     if (tRegex.test(repo)) {
         const match = tRegex.exec(repo);
         return {
