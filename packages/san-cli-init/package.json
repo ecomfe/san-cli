@@ -1,6 +1,6 @@
 {
     "name": "san-cli-init",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "main": "index.js",
     "author": "ksky521",
     "repository": {
