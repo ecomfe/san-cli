@@ -47,7 +47,7 @@ san init template#branch .
 
 ## `init` 参数说明
 
--   `--ssh`：下载脚手架模板时是否使用 SSH，默认使用 HTTPS
+-   `--ssh`：下载脚手架模板时是否使用 SSH，默认使用 HTTP
 -   `--useCache，--cache` 优先使用本地已经下载过的脚手架缓存
 -   `--install` 初始化成功后，进入目录安装依赖
 -   `--offline` 标示 template 是离线脚手架
