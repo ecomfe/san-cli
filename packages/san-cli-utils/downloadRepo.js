@@ -29,7 +29,7 @@ module.exports = (repo, dest, options) => {
             tid = setTimeout(() => {
                 clearTimeout(tid);
                 reject(
-                    getErrorMessage('Download timeout, please check the network', {
+                    getErrorMessage('Download timeout', {
                         repo,
                         url,
                         dest,
@@ -67,11 +67,11 @@ function getErrorMessage(reason, gitInfo) {
     const isSSH = /^((?:ssh:\/\/|git@).+?)(?:#(.+))?$/.test(url);
     const cmd = 'init';
     const info = `${isSSH
-        ? `Fail to pull template with SSH, please use HTTPS instead and try again.
-In most cases, you can use HTTPS by adding ${
-    chalk.cyan('--use-https')
-}, unless you use a SSH URL directly as the template.`
-        : `Fail to pull \`${url}\`, please check the path and code permissions are correct.`}
+        ? `Fail to pull \`${url}\` with SSH, please use HTTPS/HTTP instead and try again, or check if you can use SSH.
+A simple way to check if you can use SSH is running the command: git clone ${url}`
+        : `Fail to pull \`${url}\`, please check the network, or use SSH instead and try again.
+A simple way to check the network is running the command: git clone ${url}`}
+If the methods above do not work, please check the path of ${chalk.cyan(url)}
 
 Fail message: ${chalk.cyan(reason)}.
 
@@ -110,7 +110,7 @@ function normalize(repo, opts) {
     }
     // 公司名/目录名/repo#分支
     const regex = /^(?:(icode|github|gitlab|bitbucket|coding):)?(?:(baidu)\/)?(?:([^/]+)\/)?([^#]+)(?:#(.+))?$/;
-    const useHttps = opts.useHttps || false;
+    const useSSH = opts.ssh || false;
     const {name, isBaidu} = getGitUser();
     // 如果是 是百度，则强制使用百度账号
     const user = isBaidu ? name : opts.username !== '' && opts.username ? opts.username : 'git';
@@ -128,7 +128,7 @@ function normalize(repo, opts) {
     let url = repo;
     switch (source) {
         case 'icode':
-            if (useHttps) {
+            if (!useSSH) {
                 // https://username@icode.baidu.com/baidu/foo/bar
                 url = `https://${user}@icode.baidu.com/${baidu}/${product}/${repoName}`;
             }
@@ -139,7 +139,7 @@ function normalize(repo, opts) {
         case 'github':
         case 'gitlab':
         case 'bitbucket':
-            if (useHttps) {
+            if (!useSSH) {
                 // https://github.com/ksky521/san-webpack.git
                 url = `https://${source}.com/${product}/${repoName}.git`;
             }
@@ -149,7 +149,7 @@ function normalize(repo, opts) {
             }
             break;
         case 'coding':
-            if (useHttps) {
+            if (!useSSH) {
                 url = `https://git.coding.net/${product}/${repoName}.git`;
             }
             else {

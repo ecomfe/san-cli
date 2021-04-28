@@ -17,8 +17,10 @@ const {name, isBaidu} = getGitUser();
 // 如果是 是百度，则强制使用百度账号
 const user = isBaidu ? name : 'git';
 
-test('只传入repoName（默认走github）', async () => {
-    const res = await downloadrepo('yyt', 'aaa', {});
+test('只传入repoName（默认走github），使用ssh方式', async () => {
+    const res = await downloadrepo('yyt', 'aaa', {
+        ssh: true
+    });
     expect(res).toEqual({
         url: 'git@github.com:ksky521/yyt.git',
         dest: 'aaa',
@@ -27,9 +29,7 @@ test('只传入repoName（默认走github）', async () => {
 });
 
 test('传入github地址，使用https方式，dev分支', async () => {
-    const res = await downloadrepo('github:yyt/HelloWorld#dev', 'aaa', {
-        useHttps: true
-    });
+    const res = await downloadrepo('github:yyt/HelloWorld#dev', 'aaa', {});
     expect(res).toEqual({
         url: 'https://github.com/yyt/HelloWorld.git',
         dest: 'aaa',
@@ -37,8 +37,10 @@ test('传入github地址，使用https方式，dev分支', async () => {
     });
 });
 
-test('传入icode地址', async () => {
-    const res = await downloadrepo('icode:baidu/foo/bar', 'aaa', {});
+test('传入icode地址，使用ssh方式', async () => {
+    const res = await downloadrepo('icode:baidu/foo/bar', 'aaa', {
+        ssh: true
+    });
     expect(res).toEqual({
         url: `ssh://${user}@icode.baidu.com:8235/baidu/foo/bar`,
         dest: 'aaa',
@@ -47,9 +49,7 @@ test('传入icode地址', async () => {
 });
 
 test('传入icode地址，使用https方式，dev分支', async () => {
-    const res = await downloadrepo('icode:baidu/foo/bar#dev', 'aaa', {
-        useHttps: true
-    });
+    const res = await downloadrepo('icode:baidu/foo/bar#dev', 'aaa', {});
     expect(res).toEqual({
         url: `https://${user}@icode.baidu.com/baidu/foo/bar`,
         dest: 'aaa',
@@ -57,8 +57,10 @@ test('传入icode地址，使用https方式，dev分支', async () => {
     });
 });
 
-test('传入coding地址', async () => {
-    const res = await downloadrepo('coding:yyt/HelloWorld', 'aaa', {});
+test('传入coding地址，使用ssh方式', async () => {
+    const res = await downloadrepo('coding:yyt/HelloWorld', 'aaa', {
+        ssh: true
+    });
     expect(res).toEqual({
         url: 'git@git.coding.net:yyt/HelloWorld.git',
         dest: 'aaa',
@@ -67,9 +69,7 @@ test('传入coding地址', async () => {
 });
 
 test('传入coding地址，使用https方式，dev分支', async () => {
-    const res = await downloadrepo('coding:yyt/HelloWorld#dev', 'aaa', {
-        useHttps: true
-    });
+    const res = await downloadrepo('coding:yyt/HelloWorld#dev', 'aaa', {});
     expect(res).toEqual({
         url: 'https://git.coding.net/yyt/HelloWorld.git',
         dest: 'aaa',
@@ -79,7 +79,7 @@ test('传入coding地址，使用https方式，dev分支', async () => {
 
 test('传入错误地址，传空', () => {
     return downloadrepo('', 'aaa', {}).catch(e => {
-        expect(e.toString()).toEqual(expect.stringMatching(/please check the path and code permissions are correct/));
+        expect(e.toString()).toEqual(expect.stringMatching(/please check the path/));
 
 
     });
