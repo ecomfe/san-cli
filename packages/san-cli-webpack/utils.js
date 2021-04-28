@@ -155,3 +155,60 @@ exports.getServerParams = async (devServerConfig, publicPath) => {
         networkUrl
     };
 };
+
+const {getDebugLogger} = require('san-cli-utils/ttyLogger');
+const SanFriendlyErrorsPlugin = require('./lib/SanFriendlyErrorsPlugin');
+const closeDevtoolDebug = getDebugLogger('webpack:closeDevtool');
+
+exports.initConfig = webpackConfig => {
+    let config = Array.isArray(webpackConfig) ? webpackConfig : [webpackConfig];
+    let isWatch = false;
+    let watchOptions = null;
+    let devServerConfig = null;
+
+    config = config.map(c => {
+        // 添加插件
+        c.plugins.push(new SanFriendlyErrorsPlugin());
+
+        if (closeDevtoolDebug.enabled) {
+            // 使用DEBUG=san-cli:webpack:closeDevtool 开启
+            c.devtool = false;
+            c.optimization = {
+                minimize: false
+            };
+        }
+        // mode 不是 production 则添加 hmr 功能
+        if (c.mode !== 'production' && c.devServer) {
+            // 多个配置只取第一个devServer
+            if (!devServerConfig) {
+                // create server
+                const defaultDevServer = {
+                    // 这里注意，这个配置的是 outputDir
+                    contentBase: path.resolve('public'),
+                    // 这里注意：
+                    // 如果是 contentBase = outputDir 谨慎打开，打开后 template 每次文件都会重写，从而导致 hmr 失效，每次都 reload 页面
+                    watchContentBase: false,
+
+                    // 处理 tpl 的情况，smarty copy 到 output
+                    writeToDisk: filePath => /\.tpl$/.test(filePath),
+
+                    publicPath: c.output.publicPath
+                };
+
+                devServerConfig = Object.assign(defaultDevServer, c.devServer);
+            }
+        }
+        // 取第一个配置
+        if (!isWatch && c.watch) {
+            watchOptions = c.watchOptions;
+            isWatch = c.watch;
+        }
+        return c;
+    });
+    return {
+        config,
+        isWatch,
+        watchOptions,
+        devServerConfig
+    };
+};

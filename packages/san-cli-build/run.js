@@ -47,11 +47,7 @@ module.exports = function apply(argv, api) {
             return;
         }
 
-        // 只有在非 analyze 模式下才会输出 log
-        const targetDir = api.resolve(dest || projectOptions.outputDir);
-        const targetDirShort = path.relative(api.getCwd(), targetDir);
-
-        const stats = webpackStats.toJson({
+        const statsJson = webpackStats.toJson({
             entrypoints: true,
             assets: true,
             chunks: true,
@@ -59,78 +55,82 @@ module.exports = function apply(argv, api) {
             modules: false
         });
 
-        try {
-            const statsInfo = require('san-cli-webpack/lib/formatStats')(stats, targetDirShort, {
-                resolve: p => api.resolve(p)
-            });
-            // eslint-disable-next-line no-console
-            console.log(statsInfo);
-        }
-        catch (err) {
-            error(err);
-        }
+        statsJson.children.forEach(stats => {
 
-        if (!watch) {
-            const duration = (Date.now() - startTime) / 1e3;
-            if (isModern) {
-                if (isModernBuild) {
-                    successLog('Build modern bundle success');
-                }
-                else {
-                    successLog('Build legacy bundle success');
-                }
-                return;
+            // 只有在非 analyze 模式下才会输出 log
+            const targetDirShort = path.resolve(stats.outputPath);
+
+            try {
+                const statsInfo = require('san-cli-webpack/lib/formatStats')(stats, targetDirShort, {
+                    resolve: p => api.resolve(p)
+                });
+                // eslint-disable-next-line no-console
+                console.log(statsInfo);
             }
-            const {time, version} = stats;
-            successLog(
-                `The ${textCommonColor(targetDirShort)} directory is ready to be deployed. Duration ${
-                    textCommonColor(`${duration}/${time / 1e3}s`)
-                }, Webpack ${version}.`
-            );
-        }
+            catch (err) {
+                error(err);
+            }
+
+            if (!watch) {
+                const duration = (Date.now() - startTime) / 1e3;
+                if (isModern) {
+                    if (isModernBuild) {
+                        successLog('Build modern bundle success');
+                    }
+                    else {
+                        successLog('Build legacy bundle success');
+                    }
+                    return;
+                }
+                const {time, version} = stats;
+                successLog(
+                    `The ${textCommonColor(targetDirShort)} directory is ready to be deployed. Duration ${
+                        textCommonColor(`${duration}/${time / 1e3}s`)
+                    }, Webpack ${version}.`
+                );
+            }
+        });
     }
 
     // 放到这里 require 是让命令行更快加载，而不是等 webpack 这大坨东西。。
-    const build = require('san-cli-webpack/build');
+    const Build = require('san-cli-webpack/build');
+    let build = null;
     if (modern) {
         // 2.1 modern mode，会fork execa 执行一次打包
         // modern mode 必须要保证 legacy 先打包完成
         if (!process.env.SAN_CLI_MODERN_BUILD) {
             process.env.SAN_CLI_LEGACY_BUILD = 1;
             // 获取 webpack 配置
-            let config = getNormalizeWebpackConfig(
+            const config = getNormalizeWebpackConfig(
                 api,
                 projectOptions,
                 Object.assign(argv, {
                     modernBuild: false
                 })
             );
+            build = new Build(config);
             // for legacy build
-            build({
-                webpackConfig: config
-            })
-                .then(async data => {
-                    success(data, {isModern: true});
-                    // execa 打包，保证打包环境的纯洁性
-                    const execa = require('execa');
-                    const cliBin = require('path').resolve(__dirname, '../../index.js');
-                    const rawArgs = process.argv.slice(3);
-                    // TODO 这里会有权限问题？还是自己电脑权限问题？
-                    // https://github.com/sindresorhus/execa/issues/75
-                    await execa(cliBin, ['build', ...rawArgs], {
-                        stdio: 'inherit',
-                        env: {
-                            SAN_CLI_MODERN_BUILD: true,
-                            SAN_CLI_LEGACY_BUILD: 0
-                        }
-                    });
-                })
-                .catch(fail);
+            build.on('success', async data => {
+                success(data, {isModern: true});
+                // execa 打包，保证打包环境的纯洁性
+                const execa = require('execa');
+                const cliBin = require('path').resolve(__dirname, '../../index.js');
+                const rawArgs = process.argv.slice(3);
+                // TODO 这里会有权限问题？还是自己电脑权限问题？
+                // https://github.com/sindresorhus/execa/issues/75
+                await execa(cliBin, ['build', ...rawArgs], {
+                    stdio: 'inherit',
+                    env: {
+                        SAN_CLI_MODERN_BUILD: true,
+                        SAN_CLI_LEGACY_BUILD: 0
+                    }
+                });
+            });
         } else {
             // 这里是 modern mode 的打包
             // 注意要用 clean = false 哦！！！不然会删掉 legacy-${filename}.json，legacy 打包就白费了！
             // 获取 webpack 配置
-            let config = getNormalizeWebpackConfig(
+            const config = getNormalizeWebpackConfig(
                 api,
                 projectOptions,
                 Object.assign(argv, {
@@ -139,19 +139,17 @@ module.exports = function apply(argv, api) {
                 })
             );
             // for modern build
-            build({
-                webpackConfig: config
-            })
-                .then(data => {
-                    success(data, {isModern: true, isModernBuild: true});
-                })
-                .catch(fail);
+            build = new Build(config);
+            build.on('success', async data => {
+                success(data, {isModern: true, isModernBuild: true});
+            });
         }
     } else {
         // 获取 webpack 配置
         // for build
-        build({webpackConfig: getNormalizeWebpackConfig(api, projectOptions, argv)})
-            .then(success)
-            .catch(fail);
+        build = new Build(getNormalizeWebpackConfig(api, projectOptions, argv));
+        build.on('success', success);
     }
+    build.on('fail', fail);
+    build.run();
 };

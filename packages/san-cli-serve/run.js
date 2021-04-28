@@ -16,72 +16,71 @@ module.exports = function apply(argv, api) {
     const mode = argv.mode;
     info(`Starting ${mode} server...`);
 
-    const devServer = require('san-cli-webpack/serve');
+    const Serve = require('san-cli-webpack/serve');
     const getNormalizeWebpackConfig = require('./getWebpackConfig');
 
     const projectOptions = api.getProjectOptions();
-
-    const {publicPath} = projectOptions;
     const webpackConfig = getNormalizeWebpackConfig(api, projectOptions, argv);
-    devServer({
-        webpackConfig,
-        publicPath,
-        devServerConfig: webpackConfig.devServer
-    })
-        .then(({isFirstCompile, networkUrl}) => {
-            if (isFirstCompile) {
-                const {textCommonColor} = require('san-cli-utils/color');
-                /* eslint-disable no-console */
-                console.log();
+    const build = new Serve(webpackConfig);
+    build.getServer().then(server => {
+        ['SIGINT', 'SIGTERM'].forEach(signal => {
+            process.on(signal, () => {
+                server.close(() => {
+                    build.removeAllListeners();
+                    process.exit(0);
+                });
+            });
+        });
 
-                console.log(`  Application is running at: ${textCommonColor(networkUrl)}`);
-
-                // 打开浏览器地址
-                argv.open && require('opener')(networkUrl);
-
-                if (argv.qrcode && !argv.dashboard) {
-                    console.log('  URL QRCode is: ');
-                    // 显示 terminal 二维码
-                    require('qrcode-terminal').generate(
-                        networkUrl,
-                        {
-                            small: true
-                        },
-                        qrcode => {
-                            // eslint-disable-next-line
-                            const q = '  ' + qrcode.split('\n').join('\n  ');
-                            console.log(q);
-                        }
-                    );
-                }
-
-                if (argv.dashboard) {
-                    const {IpcMessenger} = require('san-cli-utils/ipc');
-                    const ipc = new IpcMessenger();
-                    ipc.send({
-                        sanCliServe: {
-                            url: networkUrl
-                        }
-                    });
-                }
-                /* eslint-enable no-console */
-            }
-        })
-        .catch(({type, stats, err}) => {
-            if (type === 'server') {
+        server.listen(server.options.port, server.options.host, err => {
+            if (err) {
                 error('Local server start failed！', err);
-            } else if (stats && stats.toJson) {
-                // // TODO: 这里删掉，调试用的
-                // process.stderr.write(
-                //     stats.toString({
-                //         colors: true,
-                //         children: false,
-                //         modules: false,
-                //         chunkModules: false
-                //     })
-                // );
-            } else {
-                error(err);
+                return;
             }
         });
+    });
+    build.on('success', ({isFirstCompile, devServerConfig: ds}) => {
+        if (isFirstCompile) {
+            const {textCommonColor} = require('san-cli-utils/color');
+            const networkUrl = `${ds.https ? 'http' : 'http'}://${ds.host}:${ds.port}`;
+            /* eslint-disable no-console */
+            console.log();
+
+            console.log(`  Application is running at: ${textCommonColor(networkUrl)}`);
+
+            // 打开浏览器地址
+            argv.open && require('opener')(networkUrl);
+
+            if (argv.qrcode && !argv.dashboard) {
+                console.log('  URL QRCode is: ');
+                // 显示 terminal 二维码
+                require('qrcode-terminal').generate(
+                    networkUrl,
+                    {
+                        small: true
+                    },
+                    qrcode => {
+                        // eslint-disable-next-line
+                        const q = '  ' + qrcode.split('\n').join('\n  ');
+                        console.log(q);
+                    }
+                );
+            }
+
+            if (argv.dashboard) {
+                const {IpcMessenger} = require('san-cli-utils/ipc');
+                const ipc = new IpcMessenger();
+                ipc.send({
+                    sanCliServe: {
+                        url: networkUrl
+                    }
+                });
+            }
+            /* eslint-enable no-console */
+        }
+    });
+    build.on('fail', ({type, stats, err}) => {
+        error(type === 'server' ? 'Local server start failed！' : '', err);
+    });
+    build.run();
 };

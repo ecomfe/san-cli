@@ -11,130 +11,121 @@
 const path = require('path');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-
+const EventEmitter = require('events').EventEmitter;
 // webpack Plugins
-const SanFriendlyErrorsPlugin = require('./lib/SanFriendlyErrorsPlugin');
-
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
-const {addDevClientToEntry, getWebpackErrorInfoFromStats, getServerParams} = require('./utils');
+const {addDevClientToEntry, getWebpackErrorInfoFromStats, getServerParams, initConfig} = require('./utils');
 
 const debug = getDebugLogger('webpack:serve');
-const closeDevtoolDebug = getDebugLogger('webpack:closeDevtool');
-
-module.exports = function devServer({webpackConfig, devServerConfig, publicPath, compilerCallback}) {
-    return new Promise(async (resolve, reject) => {
+module.exports = class Serve extends EventEmitter {
+    constructor(webpackConfig = []) {
+        super();
+        // webpack启动的promise
+        this.initPromise = new Promise(resolve => {
+            this.initResolve = () => {
+                this.initPromise = null;
+                resolve();
+                debug('Init Promise resolved');
+            };
+        });
+        this.init(webpackConfig);
+        // server创建的promise
+        this.serverPromise = new Promise(resolve => {
+            this.serverResolve = () => {
+                this.serverPromise = null;
+                resolve();
+            };
+        });
+    }
+    async init(webpackConfig) {
+        const {config, devServerConfig} = initConfig(webpackConfig);
         const {
             https,
             port,
             host,
-            protocol,
-            publicUrl,
-            urls,
-            networkUrl,
+            // protocol,
+            // publicUrl,
+            // urls,
+            // networkUrl,
             sockjsUrl
-        } = await getServerParams(devServerConfig, publicPath);
-        // mode 不是 production 则添加 hmr 功能
-        if (webpackConfig.mode !== 'production') {
-            const devClients = [
-                // dev server client
-                require.resolve('webpack-dev-server/client') + sockjsUrl,
-                // hmr client
-                require.resolve(devServerConfig.hotOnly ? 'webpack/hot/dev-server' : 'webpack/hot/only-dev-server')
-            ];
+        } = await getServerParams(devServerConfig, devServerConfig.publicPath);
+        this.devServerConfig = Object.assign(devServerConfig, {
+            https,
+            port,
+            host
+        });
+        const devClients = [
+            // dev server client
+            require.resolve('webpack-dev-server/client') + sockjsUrl,
+            // hmr client
+            require.resolve(devServerConfig.hotOnly ? 'webpack/hot/dev-server' : 'webpack/hot/only-dev-server')
+        ];
+        config.forEach(c => {
             // inject dev/hot client
-            addDevClientToEntry(webpackConfig, devClients);
-        }
-
-        // 添加插件
-        // 在 serve 情况下添加
-        webpackConfig.plugins.push(new SanFriendlyErrorsPlugin());
-
-        if (closeDevtoolDebug.enabled) {
-            // 这里使用closeDevTool debug 来开启
-            webpackConfig.devtool = false;
-            webpackConfig.optimization = {
-                minimize: false
-            };
-        }
-
-        debug('start server with options %O', devServerConfig);
+            addDevClientToEntry(c, devClients);
+        });
 
         // create compiler
-        let compiler;
+        debug('start');
+
         try {
-            compiler = webpack(webpackConfig);
+            this.compiler = webpack(config);
+            this.initResolve();
         }
         catch (e) {
             // 捕捉参数不正确的错误信息
-            reject({err: e, type: 'run'});
+            this.emit('fail', {err: e, type: 'run'});
         }
-        if (typeof compilerCallback === 'function') {
-            compilerCallback(compiler);
+    }
+    async getCompiler() {
+        if (this.initPromise) {
+            await this.initPromise;
+        }
+        return this.compiler;
+    }
+    async getServer() {
+        if (this.serverPromise) {
+            await this.serverPromise;
+        }
+        return this.server;
+    }
+    async run() {
+        if (this.inited) {
+            return;
+        }
+        this.inited = true;
+        if (this.initPromise) {
+            await this.initPromise;
         }
 
-        // create server
-        const defaultDevServer = {
-            // 这里注意，这个配置的是 outputDir
-            contentBase: path.resolve('public'),
-            // 这里注意：
-            // 如果是 contentBase = outputDir 谨慎打开，打开后 template 每次文件都会重写，从而导致 hmr 失效，每次都 reload 页面
-            watchContentBase: false,
-
-            // 处理 tpl 的情况，smarty copy 到 output
-            writeToDisk: filePath => /\.tpl$/.test(filePath),
-
-            publicPath
-        };
         const server = new WebpackDevServer(
-            compiler,
-            Object.assign(defaultDevServer, devServerConfig, {
-                https,
-                port,
-                host
-            })
+            this.compiler,
+            this.devServerConfig
         );
+        this.server = server;
+        this.serverResolve();
 
-        // 记录是第一次编译：用于打开浏览器和输出第一次的 log
         let isFirstCompile = true;
-
-        compiler.hooks.done.tap('san-cli-serve', stats => {
-            debug('compiler done');
+        this.compiler.hooks.done.tap('san-cli-serve', stats => {
+            this.emit('complete', {stats});
             if (stats.hasErrors()) {
                 const errObj = getWebpackErrorInfoFromStats(undefined, stats);
                 errObj.type = 'webpack';
-                return reject(errObj);
+                debug(errObj);
+                this.emit('fail', errObj);
             }
-
-            // 革命成功啦
-            resolve({
-                stats,
-                server,
-                isFirstCompile,
-                port,
-                protocol,
-                publicUrl,
-                url: urls.localUrlForBrowserz,
-                networkUrl,
-                urls
-            });
+            else {
+                this.emit('success', {
+                    stats,
+                    server,
+                    isFirstCompile,
+                    devServerConfig: this.devServerConfig
+                });
+            }
             if (isFirstCompile) {
                 // 重置一下
                 isFirstCompile = false;
             }
         });
-
-        ['SIGINT', 'SIGTERM'].forEach(signal => {
-            process.on(signal, () => {
-                server.close(() => {
-                    process.exit(0);
-                });
-            });
-        });
-
-        server.listen(port, host, err => {
-            if (err) {
-                return reject({err, type: 'server'});
-            }
-        });
-    });
+    }
 };
