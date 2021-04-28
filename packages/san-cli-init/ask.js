@@ -10,6 +10,7 @@
 
 const prompts = require('prompts');
 const render = require('consolidate').handlebars.render;
+const {chalk} = require('san-cli-utils/ttyLogger');
 const evaluate = require('./utils/evaluate');
 
 const promptMapping = {
@@ -57,11 +58,14 @@ async function prompt(data, key, prompt, tplData) {
 
     if (promptDefault && typeof promptDefault === 'string') {
         try {
-            initial = await render(promptDefault, tplData);
+            initial = await render(promptDefault, {
+                noEscape: true,
+                ...tplData
+            });
         }
         catch (e) {
             /* eslint-disable no-console */
-            console.warn(`Handbars render [name: ${key}] error`);
+            console.warn(`${chalk.red('✖')} Handbars render [name: ${key}] error`);
         }
     }
 
