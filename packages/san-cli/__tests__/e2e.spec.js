@@ -34,11 +34,15 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
     // 创建测试项目
     const init = child_process.spawn('san', cmdArgs);
 
-    init.stderr.on('data', data => {
-        if (data.toString().includes('Download timeout')) {
-            throw '你网络不行啊，没能从 GitHub 上把脚手架模板下载下来，不信的话你随便 clone 个 GitHub 上的代码库试试。';
-        }
-    });
+    try {
+        init.stderr.on('data', data => {
+            if (data.toString().includes('Download timeout')) {
+                throw '你网络不行啊，没能从 GitHub 上把脚手架模板下载下来，不信的话你随便 clone 个 GitHub 上的代码库试试。';
+            }
+        });
+    } catch (err) {
+        throw err;
+    }
 
     init.on('close', async () => {
         const configPath = path.join(cwd, 'san.config.js');
@@ -227,7 +231,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
     });
 });
 
-afterAll(async () => {
-    await browser.close();
-    serve.kill();
+afterAll(() => {
+    browser && browser.close();
+    serve && serve.kill();
 });
