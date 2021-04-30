@@ -82,6 +82,7 @@ exports.resolveModule = function (request, context) {
             resolvedPath = resolve(request, {paths: [context]});
         }
     } catch (e) {
+        // eslint-disable-next-line no-console
         console.log(e);
     }
     return resolvedPath;

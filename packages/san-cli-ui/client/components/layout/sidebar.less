@@ -1,95 +1,117 @@
 @import '../../assets/darkmode.less';
 .page-sidebar {
     padding-top: 60px;
-    .sidebar-dropdown {
-        position: absolute;
-        left: 0;
-        top: 0;
-        .background-color-9();
-        z-index: 11;
-        cursor: pointer;
-        color: #fff;
-        &:hover {
-            .background-color-10();
-        }
-        .project-name {
-            width: 151px;
-            padding-left: 3px;
-            padding-right: 13px;
-            height: 60px;
-            line-height: 60px;
-            text-align: center;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-            position: relative;
-            font-size: 16px;
-            .caret-down {
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                right: 3px;
-            }
-        }
-    }
-    .sidebar-menu {
-        height: 100%;
-        .background-color-9();
-        border-right: none;
-        .santd-menu-item {
-            font-size: 16px;
-            opacity: .65;
-            transition: opacity .3s;
-            margin: 0;
-            height: 64px;
-            line-height: 64px;
+    .background-color-9();
+    .santd-layout-sider-children {
+        display: flex;
+        flex-direction: column;
+        .sidebar-dropdown {
+            position: absolute;
+            left: 0;
+            top: 0;
+            .background-color-9();
+            z-index: 11;
+            cursor: pointer;
+            color: #fff;
             &:hover {
-                opacity: 1;
                 .background-color-10();
             }
-            & > a {
-                text-decoration: none;
-                background-repeat: no-repeat;
-                background-position: 16px center;
-                padding-left: 54px;
-            }
-            .default-icon {
+            .project-name {
+                width: 151px;
+                padding-left: 3px;
+                padding-right: 13px;
+                height: 60px;
+                line-height: 60px;
+                text-align: center;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
                 position: relative;
-                .santd-icon {
+                font-size: 16px;
+                .caret-down {
                     position: absolute;
-                    left: 16px;
-                    top: 20px;
-                    font-size: 24px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    right: 3px;
                 }
             }
-            .dashboard-icon {
-                background-image: url(../../assets/dashboard-icon.svg);
+        }
+        .sidebar-menu {
+            .background-color-9();
+            border-right: none;
+            .santd-menu-item {
+                font-size: 16px;
+                opacity: .65;
+                transition: opacity .3s;
+                margin: 0;
+                height: 64px;
+                line-height: 64px;
+                &:hover {
+                    opacity: 1;
+                    .background-color-10();
+                }
+                & > a {
+                    text-decoration: none;
+                    background-repeat: no-repeat;
+                    background-position: 16px center;
+                    padding-left: 54px;
+                }
+                .default-icon {
+                    position: relative;
+                    .santd-icon {
+                        position: absolute;
+                        left: 16px;
+                        top: 20px;
+                        font-size: 24px;
+                    }
+                }
+                .dashboard-icon {
+                    background-image: url(../../assets/dashboard-icon.svg);
+                }
+                .plugins-icon {
+                    background-image: url(../../assets/plugins-icon.svg);
+                }
+                .dependency-icon {
+                    background-image: url(../../assets/dependency-icon.svg);
+                }
+                .configuration-icon {
+                    background-image: url(../../assets/configuration-icon.svg);
+                }
+                .task-icon {
+                    background-image: url(../../assets/tasks-icon.svg);
+                }
             }
-            .plugins-icon {
-                background-image: url(../../assets/plugins-icon.svg);
-            }
-            .dependency-icon {
-                background-image: url(../../assets/dependency-icon.svg);
-            }
-            .configuration-icon {
-                background-image: url(../../assets/configuration-icon.svg);
-            }
-            .task-icon {
-                background-image: url(../../assets/tasks-icon.svg);
+            .santd-menu-item-selected {
+                .background-color-10();
+                opacity: 1;
+                &::before {
+                    content: '';
+                    width: 6px;
+                    height: 100%;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    .background-color-11();
+                    border-radius: 3px;
+                }
             }
         }
-        .santd-menu-item-selected {
-            .background-color-10();
-            opacity: 1;
-            &::before {
-                content: '';
-                width: 6px;
-                height: 100%;
-                position: absolute;
-                left: 0;
-                top: 0;
-                .background-color-11();
-                border-radius: 3px;
+        .notice {
+            overflow-y: scroll;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding-left: 15px;
+            padding-bottom: 15px;
+            font-size: 10px;
+            :first-child {
+                margin-top: auto;
+            }
+            a {
+                color: #fff;
+                &:hover {
+                    opacity: .8;
+                }
             }
         }
     }

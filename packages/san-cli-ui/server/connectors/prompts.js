@@ -194,6 +194,7 @@ class Prompts {
     async setValue({id, value}) {
         const prompt = this.findOne(id);
         if (!prompt) {
+            // eslint-disable-next-line no-console
             console.warn(`Prompt '${prompt}' not found`);
             return null;
         }

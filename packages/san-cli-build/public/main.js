@@ -11,4 +11,5 @@
 import {defineComponent} from 'san';
 import App from '~entry';
 const Component = defineComponent(App);
+// eslint-disable-next-line no-unused-vars
 const app = new Component();

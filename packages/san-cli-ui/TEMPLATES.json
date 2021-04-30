@@ -1,0 +1,17 @@
+[
+    {
+        "label": "github:san-project-base",
+        "value": "https://github.com/ksky521/san-project",
+        "description": "template.san-project.description"
+    },
+    {
+        "label": "github:san-cli-plugin-template",
+        "value": "https://github.com/jinzhan/san-cli-plugin-template.git",
+        "description": "template.san-cli-plugin-template.description"
+    },
+    {
+        "label": "github:san-ui-addon-project",
+        "value": "https://github.com/zttonly/san-ui-addon-project.git",
+        "description": "template.san-ui-addon-project.description"
+    }
+]

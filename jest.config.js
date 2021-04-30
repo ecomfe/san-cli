@@ -154,9 +154,10 @@ module.exports = {
     ],
 
     // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-    // testPathIgnorePatterns: [
-    //   "<rootDir>/packages/san-cli-init/handlerbars.js"
-    // ],
+    testPathIgnorePatterns: [
+        // "<rootDir>/packages/san-cli-init/handlerbars.js",
+        '<rootDir>/packages/test'
+    ],
 
     // The regexp pattern or array of patterns that Jest uses to detect test files
     // testRegex: [],

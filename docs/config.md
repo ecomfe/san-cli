@@ -226,7 +226,9 @@ module.exports = {
 };
 ```
 
-!> 但是，我们推荐使用`babel.config.js`或者`.babelrc`进行 Babel 配置。
+::: warning
+但是，我们推荐使用`babel.config.js`或者`.babelrc`进行 Babel 配置。
+:::
 
 ### css 相关
 
@@ -256,7 +258,9 @@ module.exports = {
 };
 ```
 
-!> 推荐根据项目实际情况进行配置，这样只会添加对应的 loader。
+::: warning
+推荐根据项目实际情况进行配置，这样只会添加对应的 loader。
+:::
 
 #### `extract`
 
@@ -280,4 +284,6 @@ css 相关的 loader 配置项，支持：
 -   `stylus` 需要新增的 stylus-loader 配置项；
 -   `postcss` 需要新增的 postcss-loader 配置项，默认支持 postcss.config.js 的配置。
 
-!> 这里介绍的是一般配置，更多高级的配置以及优化相关的配置可以继续阅读[高级配置](./advanced.md)内容。
+::: warning
+这里介绍的是一般配置，更多高级的配置以及优化相关的配置可以继续阅读[高级配置](./advanced.md)内容。
+:::

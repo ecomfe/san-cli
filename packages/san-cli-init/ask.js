@@ -9,6 +9,8 @@
  */
 
 const prompts = require('prompts');
+const render = require('consolidate').handlebars.render;
+const {chalk} = require('san-cli-utils/ttyLogger');
 const evaluate = require('./utils/evaluate');
 
 const promptMapping = {
@@ -36,20 +38,7 @@ module.exports = async (prompts, data, argv) => {
     }
     return Promise.resolve(answers);
 };
-// 将 default 使用 templateData 渲染一下，比如作者之类的
-// default中有{{author}}类似这样的，渲染一下，填上
-function render(content, data) {
-    if (content && /{{([^{}]+)}}/g.test(content)) {
-        Object.keys(data).forEach(key => {
-            if (data[key] && typeof data[key] === 'string') {
-                content = content.split(new RegExp(`{{\\s*${key}\\s*}}`, 'g')).join(data[key]);
-            }
-        });
-        return content;
-    }
 
-    return content;
-}
 async function prompt(data, key, prompt, tplData) {
     // 当 when 起作用的时候跳过
     if (prompt.when && !evaluate(prompt.when, data)) {
@@ -65,12 +54,27 @@ async function prompt(data, key, prompt, tplData) {
             }
             : prompt.default;
 
+    let initial = promptDefault;
+
+    if (promptDefault && typeof promptDefault === 'string') {
+        try {
+            initial = await render(promptDefault, {
+                noEscape: true,
+                ...tplData
+            });
+        }
+        catch (e) {
+            /* eslint-disable no-console */
+            console.warn(`${chalk.red('✖')} Handbars render [name: ${key}] error`);
+        }
+    }
+
     const answers = await prompts([
         {
             type: promptMapping[prompt.type] || prompt.type,
             name: key,
             message: prompt.message || prompt.label || key,
-            initial: render(promptDefault, tplData),
+            initial,
             choices: prompt.choices || [],
             validate: prompt.validate || (() => true)
         }

@@ -6,8 +6,9 @@ San CLI 在兼顾 San 生态的同时，尽量做到通用化配置，在设计�
 
 ## 安装
 
-!> San CLI 的 Node.js 版本要求 `>= 8.16.0`。
-
+::: warning
+San CLI 的 Node.js 版本要求 `>= 8.16.0`。
+:::
 
 通过下面命令安装 San CLI
 

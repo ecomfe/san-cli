@@ -29,14 +29,11 @@ san init <template> <app-name>
 ### 例如
 
 ```bash
-# 1. 支持传入完整repo地址:
+# 1. 支持传入完整的 repo 地址:
 san init ksky521/san-project demo
-# 下面的示例请换成自己的地址和 username
 san init https://github.com/ksky521/san-project.git demo
-# 下面的示例请换成自己的地址和 username (百度内部建议使用如下模板地址)
-san init ssh://${username}@icode.baidu.com:8235/baidu/hulk/san-project-base demo
 # 2. 默认是从 github repo 安装
-# 所以 git@github.com:ksky521/simple.git 这个 repo到 demo 文件，可以使用：
+# 所以用 git@github.com:ksky521/simple.git 这个 repo 时可以简写成：
 san init simple demo
 #  3. 支持 github，icode，gitlab 等简写方式
 san init github:ksky521/san-project demo
@@ -50,6 +47,7 @@ san init template#branch .
 
 ## `init` 参数说明
 
+-   `--ssh`：下载脚手架模板时是否使用 SSH，默认使用 HTTP
 -   `--useCache，--cache` 优先使用本地已经下载过的脚手架缓存
 -   `--install` 初始化成功后，进入目录安装依赖
 -   `--offline` 标示 template 是离线脚手架

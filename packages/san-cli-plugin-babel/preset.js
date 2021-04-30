@@ -83,7 +83,7 @@ module.exports = (context, options = {}) => {
         exclude,
         shippedProposals,
         forceAllTransforms,
-        // 入口文件，用来配合userPolyfills
+        // 入口文件，用来配合 userPolyfills
         entryFiles = defaultEntryFiles,
         absoluteRuntime = runtimePath,
         version = runtimeVersion
@@ -91,7 +91,7 @@ module.exports = (context, options = {}) => {
 
 
     if (debugLogger.enabled) {
-        // 使用DEBUG=san-cli:babel 开启
+        // 使用 DEBUG=san-cli:babel 开启
         debug = true;
     }
 
@@ -99,7 +99,7 @@ module.exports = (context, options = {}) => {
 
     const isModernBundle = process.env.SAN_CLI_MODERN_BUILD;
 
-    // 格式化target
+    // 格式化 target
     let targets = getTargets(rawTargets, {
         ignoreBrowserslistConfig,
         configPath

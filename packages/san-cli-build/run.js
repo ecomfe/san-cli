@@ -20,7 +20,7 @@ module.exports = function apply(argv, api) {
     const startTime = Date.now();
     const mode = argv.mode; // 默认是 production
 
-    const {watch, analyze, dest, modern} = argv;
+    const {watch, analyze, modern} = argv;
     // --modern + --analyze 应该显示 modern 的 analyze 的结果
     if (modern && analyze) {
         process.env.SAN_CLI_MODERN_BUILD = true;
@@ -96,7 +96,7 @@ module.exports = function apply(argv, api) {
     const Build = require('san-cli-webpack/build');
     let build = null;
     if (modern) {
-        // 2.1 modern mode，会fork execa 执行一次打包
+        // 2.1 modern mode，会 fork execa 执行一次打包
         // modern mode 必须要保证 legacy 先打包完成
         if (!process.env.SAN_CLI_MODERN_BUILD) {
             process.env.SAN_CLI_LEGACY_BUILD = 1;

@@ -10,6 +10,7 @@ export default class App extends SanComponent {
                 bundleDetails="{{bundleDetails}}"
                 details="{{hoverDetails}}"
                 topMargin="0"
+                styles="{{styles}}"
             />
             <c-chart
                 data="{{chartData}}"
@@ -17,7 +18,7 @@ export default class App extends SanComponent {
                 on-unhover="onChartUnhover"
                 on-render="onChartRender"
             />
-            <c-breadcrumbs nodes="{{breadcrumbNodes}}" />
+            <c-breadcrumbs nodes="{{breadcrumbNodes}}" styles="{{styles}}" />
         </div>
     `;
 
@@ -57,10 +58,11 @@ export default class App extends SanComponent {
     }
 
     updateChart() {
-        let chartAreaClass = 'chart';
+        const styles = this.data.get('styles');
+        let chartAreaClass = styles.chart;
         const {chartData, bundleDetails} = this.data.get();
         if (chartData && chartData.maxDepth > 9) {
-            chartAreaClass += ' chart--large';
+            chartAreaClass += ' ' + styles['chart--large'];
         }
 
         this.data.set('chartAreaClass', chartAreaClass);

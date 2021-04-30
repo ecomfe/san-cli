@@ -3,27 +3,27 @@
  * @author zttonly
  */
 
-import './welcome.less';
+import styles from './welcome.less';
 import sanLogo from '../../assets/san-white.svg';
 
 export default {
     template: /* html */`
-        <div class="dashboard-widget-welcome">
-            <div class="logo-wrapper">
-                <img src="{{sanLogo}}" class="logo"/>
+        <div class="{{styles.widgetWelcome}}">
+            <div class="{{styles.logoWrapper}}">
+                <img src="{{sanLogo}}" class="{{styles.logo}}"/>
             </div>
-            <div class="title">
+            <div class="{{styles.title}}">
                 {{$t('dashboard.widgets.welcome.content.title')}}
             </div>
-            <div class="tips">
-                <div s-for="n in num" class="tip">
+            <div class="{{styles.tips}}">
+                <div s-for="n in num" class="{{styles.tip}}">
                     <s-icon type="{{tipIcons[n - 1]}}"/>
-                    <div class="message">
+                    <div class="{{styles.message}}">
                         {{$t('dashboard.widgets.welcome.content.tips' + n) | raw}}
                     </div>
                 </div>
             </div>
-            <div class="actions flex-none">
+            <div class="{{styles.actions}} flex-none">
                 <s-button
                     icon="check"
                     type="primary"
@@ -37,6 +37,7 @@ export default {
     `,
     initData() {
         return {
+            styles,
             num: [1, 2, 3],
             tipIcons: [
                 'dashboard',

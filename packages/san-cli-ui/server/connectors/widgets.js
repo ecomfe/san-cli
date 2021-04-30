@@ -149,7 +149,8 @@ class Widgets {
             width,
             height,
             config: null,
-            configured: !definition.needsUserConfig
+            configured: !definition.needsUserConfig,
+            pkgName: definition.pkgName
         };
 
         // Default config
@@ -218,6 +219,9 @@ class Widgets {
     }
     findById({id}, context) {
         return this.widgets.find(w => w.id === id);
+    }
+    findByPkgName(pkgName, context) {
+        return this.widgets.filter(w => w.pkgName === pkgName);
     }
     remove({id}, context) {
         const index = this.widgets.findIndex(w => w.id === id);

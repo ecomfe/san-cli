@@ -8,7 +8,6 @@
  * @author ksky521
  */
 
-const path = require('path');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const EventEmitter = require('events').EventEmitter;
@@ -20,7 +19,7 @@ const debug = getDebugLogger('webpack:serve');
 module.exports = class Serve extends EventEmitter {
     constructor(webpackConfig = []) {
         super();
-        // webpack启动的promise
+        // webpack 启动的 promise
         this.initPromise = new Promise(resolve => {
             this.initResolve = () => {
                 this.initPromise = null;
@@ -29,7 +28,7 @@ module.exports = class Serve extends EventEmitter {
             };
         });
         this.init(webpackConfig);
-        // server创建的promise
+        // server 创建的 promise
         this.serverPromise = new Promise(resolve => {
             this.serverResolve = () => {
                 this.serverPromise = null;

@@ -47,7 +47,9 @@ export const generateItem = (inputKey, inputValue, prefix = '') => {
         type = inputValue instanceof Array ? 'array' : 'object';
         children = [];
         for (let k in inputValue) {
-            children.push(generateItem(k, inputValue[k], key));
+            if (inputValue.hasOwnProperty(k)) {
+                children.push(generateItem(k, inputValue[k], key));
+            }
         }
         if (children.length === 0) {
             children.push(generateItem(JSON.stringify(inputValue), 'struct_leaf', key));
