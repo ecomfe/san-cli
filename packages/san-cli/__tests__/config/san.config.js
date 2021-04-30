@@ -22,6 +22,7 @@ const resolve = pathname => path.resolve(__dirname, pathname);
 const outputDir = 'output';
 const isProduction = process.env.NODE_ENV === 'production';
 
+console.log('process.env.ONE:', process.env.ONE);
 
 module.exports = {
     assetsDir: isProduction ? STATIC_PRO : 'static',

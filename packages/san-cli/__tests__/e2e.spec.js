@@ -37,7 +37,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
     try {
         init.stderr.on('data', data => {
             if (data.toString().includes('Download timeout')) {
-                throw '你网络不行啊，没能从 GitHub 上把脚手架模板下载下来，不信的话你随便 clone 个 GitHub 上的代码库试试。';
+                throw '你网络不行啊，没能从 GitHub 上把脚手架模板下载下来，不信的话你用 HTTPS 随便 clone 个 GitHub 上的代码库试试。';
             }
         });
     } catch (err) {
@@ -102,7 +102,8 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
         const cssPath = path.join(outputPath, 'static/e2e/css');
 
         await new Promise((resolve, reject) => {
-            child_process.exec('san build --mode production --modern --report', {cwd}, () => {
+            fse.writeFileSync(path.join(cwd, '.env'), 'ONE=1');
+            child_process.exec('san build --mode production --modern --report', {cwd}, (error, stdout, stderr) => {
                 // 测试点4：产出目录的名字是否正确（测 san.config 的 outputDir）
                 expect(fse.existsSync(outputPath)).toBeTruthy();
 
@@ -190,6 +191,9 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
                 // 测试点23：产出的 css 是否按配置自动补全了浏览器前缀（测 postcss 的 autoprefixer 和 browserslist）
                 expect(demoCSSContent).toEqual(expect.stringContaining('display:-webkit-box;'));
 
+                // 测试点24：.env 文件的环境变量是否被成功读取（测 .env 文件）
+                expect(stdout).toEqual(expect.stringContaining('process.env.ONE: 1'));
+
                 resolve();
             });
         });
@@ -201,28 +205,30 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
             fse.writeFile(configPath, configContent);
             child_process.exec('san build --mode development', {cwd}, () => {
                 const baseTplContent = fse.readFileSync(baseTplPath, 'utf8');
-                // 测试点24：产出的 tpl/html 里的 js 是否没压缩（测 development mode）
+                // 测试点25：产出的 tpl/html 里的 js 是否没压缩（测 development mode）
                 expect(baseTplContent).toEqual(expect.stringMatching(/<script>[\s\S]+;\n[\s\S]+<\/script>/));
+                // 测试点26：产出的 tpl/html 里的 css 是否没压缩（测 development mode）
+                expect(baseTplContent).toEqual(expect.not.stringContaining('margin:0;padding:0;'));
 
-                // 测试点25：css 是否没单独打包（测 development mode）
+                // 测试点27：css 是否没单独打包（测 development mode）
                 expect(fse.existsSync(cssPath)).toBeFalsy();
 
                 const indexJSPath = path.join(outputPath, 'index.js');
-                // 测试点26：产出的文件的名字是否不含 hash（测 san.conifg 的 filenameHashing)
+                // 测试点28：产出的文件的名字是否不含 hash（测 san.conifg 的 filenameHashing)
                 expect(fse.existsSync(indexJSPath)).toBeTruthy();
 
                 const indexJSContent = fse.readFileSync(indexJSPath, 'utf8');
-                // 测试点27：产出的 js 是否没压缩（测 development mode）
+                // 测试点29：产出的 js 是否没压缩（测 development mode）
                 expect(indexJSContent).toEqual(expect.stringMatching(/;\n(?!\/)/));
 
                 const indexJSMapPath = path.join(outputPath, 'index.js.map');
-                // 测试点28：是否没产出 .map 文件（测 san.config 的 sourceMap)
+                // 测试点30：是否没产出 .map 文件（测 san.config 的 sourceMap)
                 expect(fse.existsSync(indexJSMapPath)).toBeFalsy();
 
-                // 测试点29：产出中的 classname 是否正确（css module）（测 san.conifg 的 css.requireModuleExtension）
+                // 测试点31：产出中的 classname 是否正确（css module）（测 san.conifg 的 css.requireModuleExtension）
                 expect(indexJSContent).toEqual(expect.stringContaining('_main_'));
 
-                // 测试点30：大于配置大小的图片是否没编译成 base64
+                // 测试点32：大于配置大小的图片是否没编译成 base64
                 expect(indexJSContent).toEqual(expect.not.stringContaining('data:image'));
 
                 done();
