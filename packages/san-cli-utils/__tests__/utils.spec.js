@@ -9,7 +9,7 @@
  */
 
 const {flatten, tmpl} = require('../utils');
-/* global test */
+
 describe('测试flatten', () => {
     test('空数组', () => {
         expect(flatten([])).toEqual([]);

@@ -39,4 +39,6 @@
 2. 安卓首屏减少 100ms 左右，iOS 首屏减少 60ms 左右；
 
 
-!> Modern Mode 的具体收益受具体项目而影响，上面的数据仅供参考，不过 Modern Mode 肯定是正向的！
+::: warning
+Modern Mode 的具体收益受具体项目而影响，上面的数据仅供参考，不过 Modern Mode 肯定是正向的！
+:::

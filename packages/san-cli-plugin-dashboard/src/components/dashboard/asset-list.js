@@ -1,12 +1,11 @@
 import {bytes2kb} from '../../utils/util';
 import {getSpeeds} from '../../utils/assets';
-import './asset-list.less';
 
 /* global SanComponent */
 export default class AssetList extends SanComponent {
     static template = /* html */`
-        <div class="asset-list">
-            <s-grid-row class="first-row" s-if="assets.length">
+        <div class="{{styles.assetList}}">
+            <s-grid-row class="{{styles.firstRow}}" s-if="assets.length">
                 <s-grid-col span="11"></s-grid-col>
                 <s-grid-col span="4">{{sizeType}}</s-grid-col>
                 <s-grid-col span="3">Global</s-grid-col>
@@ -14,13 +13,13 @@ export default class AssetList extends SanComponent {
                 <s-grid-col span="3">3G Fast</s-grid-col>
             </s-grid-row>
             <s-grid-row s-for="item in assets">
-                <s-grid-col span="11" class="first-col">{{item.name}}</s-grid-col>
+                <s-grid-col span="11" class="{{styles.firstCol}}">{{item.name}}</s-grid-col>
                 <s-grid-col span="4">{{item.size}}</s-grid-col>
                 <s-grid-col span="3">{{item.globalSpeed}}</s-grid-col>
                 <s-grid-col span="3">{{item['3gsSpeed']}}</s-grid-col>
                 <s-grid-col span="3">{{item['3gfSpeed']}}</s-grid-col>
             </s-grid-row>
-            <div s-if="!assets.length" class="empty">...</div>
+            <div s-if="!assets.length" class="{{styles.empty}}">...</div>
         </div>
         `;
     static computed = {
@@ -38,5 +37,5 @@ export default class AssetList extends SanComponent {
                 };
             });
         }
-    }
+    };
 };

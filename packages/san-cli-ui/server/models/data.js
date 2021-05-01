@@ -1,12 +1,10 @@
 /**
- * @file JSON格式的本地文件存储
+ * @file 纯JSON格式的文件数据存储，通常将项目logs等放这里
  * @author jinzhan
  */
 const path = require('path');
 const fs = require('fs-extra');
 const rcPath = require('../utils/rcPath');
-const {getDebugLogger} = require('san-cli-utils/ttyLogger');
-const debug = getDebugLogger('ui:models:data');
 
 const shareDataDir = 'shared-data';
 const rootFolder = path.resolve(rcPath, shareDataDir);
@@ -19,7 +17,6 @@ const resolve = (projectId, id) => {
 
 const hasData = (projectId, id) => {
     const file = resolve(projectId, id);
-    // debug(file);
     return fs.existsSync(file);
 };
 

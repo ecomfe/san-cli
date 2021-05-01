@@ -171,7 +171,7 @@ exports.initConfig = webpackConfig => {
         c.plugins.push(new SanFriendlyErrorsPlugin());
 
         if (closeDevtoolDebug.enabled) {
-            // 使用DEBUG=san-cli:webpack:closeDevtool 开启
+            // 使用 DEBUG=san-cli:webpack:closeDevtool 开启
             c.devtool = false;
             c.optimization = {
                 minimize: false
@@ -179,7 +179,7 @@ exports.initConfig = webpackConfig => {
         }
         // mode 不是 production 则添加 hmr 功能
         if (c.mode !== 'production' && c.devServer) {
-            // 多个配置只取第一个devServer
+            // 多个配置只取第一个 devServer
             if (!devServerConfig) {
                 // create server
                 const defaultDevServer = {

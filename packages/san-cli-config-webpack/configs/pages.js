@@ -166,8 +166,8 @@ module.exports = (webpackConfig, projectOptions) => {
     // ------ 这里把 copy 拿到这里来处理是为了合并 ignore
     if (options.copy) {
         const addCopyOptions = options => {
-            let {from, to = './', ignore = [], compress = true} = options;
-            // 默认开启压缩 tpl 和 html 文件，smarty 的专属
+            let {from, to = './', ignore = [], compress = process.env.NODE_ENV === 'production'} = options;
+            // smarty 的专属
             // prettier-ignore
             const defaultTransformOptions = compress
                 ? {

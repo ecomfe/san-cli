@@ -1,5 +1,5 @@
 /**
- * @file 本地的json数据库
+ * @file 包装本地的轻量级JSON数据库lowdb，存储项目信息等
  * @author jinzhan
  */
 

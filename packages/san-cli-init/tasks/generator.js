@@ -51,6 +51,17 @@ module.exports = (name, dest, options) => {
             Object.keys(metaData.helpers).forEach(key => {
                 Handlebars.registerHelper(key, metaData.helpers[key]);
             });
+
+        // 添加 handlebar partials
+        // eslint-disable-next-line
+        metaData.partials &&
+            Object.keys(metaData.partials).forEach(key => {
+                Handlebars.registerPartial(key, metaData.partials[key]);
+            });
+
+        // 设置自定义边界符，例如：['<%=', '%>']
+        metaData.delimiters && Handlebars.setDelimiters(metaData.delimiters);
+
         // 2. 请回答
         task.info();
 
@@ -91,6 +102,7 @@ function getProjectPresets(projectPresets, metaData) {
             }
         }
         catch (e) {
+            // eslint-disable-next-line no-console
             console.log(e);
         }
     }

@@ -26,4 +26,5 @@ fragment widget on Widget {
   prompts {
     ...prompt
   }
+  pkgName
 }

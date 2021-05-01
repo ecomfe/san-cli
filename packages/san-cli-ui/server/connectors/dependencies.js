@@ -18,6 +18,8 @@ const {readPackage} = require('../utils/fileHelper');
 const {resolveModule, resolveModuleRoot} = require('../utils/module');
 const {getMetadata} = require('../utils/getMetadata');
 const debug = getDebugLogger('ui:dependencies');
+const views = require('./views');
+const widgets = require('./widgets');
 
 const PACKAGE_INSTALL_CONFIG = {
     npm: {
@@ -172,13 +174,21 @@ class Dependencies {
         return this.findOne(id);
     }
 
-    async unInstall(args) {
+    async unInstall(args, context) {
         let {
             id
         } = args;
         let deleteData = this.findOne(id);
         // 卸载npm安装依赖
         await this.runCommand('remove', [id]);
+        // 这个 id 是插件的 npm 包名
+        const viewArr = views.findByPkgName(id);
+        // 这个 id 是插件开发者定义的视图 id。
+        viewArr.forEach(view => views.remove(view.id, context));
+
+        const widgetArr = widgets.findByPkgName(id);
+        widgetArr.forEach(widget => widgets.remove(widget, context));
+
         return deleteData;
     }
 

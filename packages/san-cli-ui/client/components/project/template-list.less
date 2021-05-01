@@ -63,6 +63,7 @@
 }
 .template-list-dropdown {
     .santd-select-dropdown-menu {
+        max-height: 402px;
         border-radius: 18px;
         font-size: 20px;
         .background-color-1();
@@ -86,6 +87,19 @@
                     content: none;
                 }
             }
+        }
+    }
+    .template-desc {
+        margin-top: 8px;
+        font-size: 16px;
+    }
+    .santd-select-unselectable {
+        .color-4();
+    }
+    .santd-select-dropdown-menu-item-active,
+    .santd-select-dropdown-menu-item-selected {
+        .darkmode & {
+            color: #333;
         }
     }
 }

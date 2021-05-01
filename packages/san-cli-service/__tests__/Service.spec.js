@@ -77,9 +77,9 @@ describe('e2e 测试', () => {
                 resolve: {
                     symlinks: false,
                     alias: {
-                        'core-js': path.join(cwd, '/packages/san-cli-service/node_modules/core-js'),
-                        'regenerator-runtime': path.join(cwd, '/node_modules/regenerator-runtime'),
-                        san: path.join(cwd, '/node_modules/san/dist/san.spa.dev.js'),
+                        'core-js': path.dirname(require.resolve('core-js')),
+                        'regenerator-runtime': path.dirname(require.resolve('regenerator-runtime')),
+                        'san': path.dirname(require.resolve('san', {paths: [cwd]})) + '/san.spa.dev.js',
                         '@assets': cwd + '/src/assets',
                         '@components': cwd + '/src/components',
                         '@app': cwd + '/src/lib/App.js',
@@ -186,9 +186,9 @@ describe('e2e 测试', () => {
                 resolve: {
                     symlinks: false,
                     alias: {
-                        'core-js': path.join(cwd, '/packages/san-cli-service/node_modules/core-js'),
-                        'regenerator-runtime': path.join(cwd, '/node_modules/regenerator-runtime'),
-                        san: path.join(cwd, '/node_modules/san/dist/san.spa.js'),
+                        'core-js': path.dirname(require.resolve('core-js')),
+                        'regenerator-runtime': path.dirname(require.resolve('regenerator-runtime')),
+                        'san': path.dirname(require.resolve('san', {paths: [cwd]})) + '/san.spa.js',
                         '@assets': cwd + '/src/assets',
                         '@components': cwd + '/src/components',
                         '@app': cwd + '/src/lib/App.js',

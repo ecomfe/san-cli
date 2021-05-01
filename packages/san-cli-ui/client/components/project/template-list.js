@@ -27,7 +27,14 @@ export default class ProjectList extends Component {
                         dropdownClassName="template-list-dropdown"
                         dropdownStyle="{{{'border-radius': '18px'}}}">
                         <s-select-option s-for="template in projectTemplateList" value="{{template.value}}">
-                            {{template.label}}
+                            <div>
+                                <a href="{{template.value}}" target="_blank">
+                                    {{template.label}}
+                                </a>
+                                <div class="template-desc">
+                                    {{template.description ? $t(template.description) || template.description : ''}}
+                                </div>
+                            </div>
                         </s-select-option>
                         <!----自定义的模板项---->
                         <s-select-option value="">
