@@ -114,7 +114,7 @@ module.exports = function apply(argv, api) {
                 success(data, {isModern: true});
                 // execa 打包，保证打包环境的纯洁性
                 const execa = require('execa');
-                const cliBin = require('path').resolve(__dirname, '../../index.js');
+                const cliBin = require('path').resolve(__dirname, '../san-cli/index.js');
                 const rawArgs = process.argv.slice(3);
                 // TODO 这里会有权限问题？还是自己电脑权限问题？
                 // https://github.com/sindresorhus/execa/issues/75
