@@ -7,7 +7,9 @@ const puppeteer = require('puppeteer');
 const fse = require('fs-extra');
 const portfinder = require('portfinder');
 const rimraf = require('rimraf');
+const {getGitUser} = require('../../san-cli-utils/env');
 
+const {isBaidu} = getGitUser();
 let browser;
 let serve;
 
@@ -32,6 +34,14 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
         '--install'
     ];
     // 创建测试项目
+    // 在公司 clone GitHub 的代码总是挂，加个临时代理，创建完测试项目会还原
+    let oldHTTPProxy;
+    if (isBaidu) {
+        try {
+            oldHTTPProxy = child_process.execSync('git config --global http.proxy').toString();
+        } catch (err) {}
+        child_process.execSync('git config --global http.proxy http://agent.baidu.com:8118');
+    }
     const init = child_process.spawn('san', cmdArgs);
 
     try {
@@ -45,6 +55,9 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
     }
 
     init.on('close', async () => {
+        isBaidu && child_process.execSync(oldHTTPProxy
+            ? `git config --global http.proxy ${oldHTTPProxy}`
+            : 'git config --global --unset http.proxy');
         const configPath = path.join(cwd, 'san.config.js');
         fse.copySync(path.join(__dirname, './config/san.config.js'), configPath);
 
