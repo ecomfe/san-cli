@@ -7,9 +7,7 @@ const puppeteer = require('puppeteer');
 const fse = require('fs-extra');
 const portfinder = require('portfinder');
 const rimraf = require('rimraf');
-const {getGitUser} = require('../../san-cli-utils/env');
 
-const {isBaidu} = getGitUser();
 let browser;
 let serve;
 
@@ -34,20 +32,12 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
         '--install'
     ];
     // 创建测试项目
-    // 在公司 clone GitHub 的代码总是挂，加个临时代理，创建完测试项目会还原
-    let oldHTTPProxy;
-    if (isBaidu) {
-        try {
-            oldHTTPProxy = child_process.execSync('git config --global http.proxy').toString();
-        } catch (err) {}
-        child_process.execSync('git config --global http.proxy http://agent.baidu.com:8118');
-    }
     const init = child_process.spawn('san', cmdArgs);
 
     try {
         init.stderr.on('data', data => {
             if (data.toString().includes('Download timeout')) {
-                throw '你网络不行啊，没能从 GitHub 上把脚手架模板下载下来，不信的话你用 HTTPS 随便 clone 个 GitHub 上的代码库试试。';
+                throw '你网络不行，用 HTTPS clone GitHub 的代码库时失败了，可以通过配置代理解决，不会配置的话可以找胡粤。';
             }
         });
     } catch (err) {
@@ -55,9 +45,6 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
     }
 
     init.on('close', async () => {
-        isBaidu && child_process.execSync(oldHTTPProxy
-            ? `git config --global http.proxy ${oldHTTPProxy}`
-            : 'git config --global --unset http.proxy');
         const configPath = path.join(cwd, 'san.config.js');
         fse.copySync(path.join(__dirname, './config/san.config.js'), configPath);
 
