@@ -14,7 +14,7 @@ const path = require('path');
 jest.unmock('fs-extra');
 // jest.unmock('cosmiconfig');
 
-describe('e2e 测试', () => {
+describe('检查 webpack 配置', () => {
     const cwd = process.cwd();
     test('检查 npm start 时的 webpack 配置', done => {  // eslint-disable-line
         const service = new Service('serve', {

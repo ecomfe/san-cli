@@ -1,5 +1,5 @@
-// 运行测试的时间上限设为6分钟（默认是5秒，太短了不够用）
-jest.setTimeout(360000);
+// 运行测试的时间上限设为3分钟（默认是5秒，太短了不够用）
+jest.setTimeout(180000);
 
 const path = require('path');
 const child_process = require('child_process');
@@ -37,7 +37,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
     try {
         init.stderr.on('data', data => {
             if (data.toString().includes('Download timeout')) {
-                throw '你网络不行啊，没能从 GitHub 上把脚手架模板下载下来，不信的话你用 HTTPS 随便 clone 个 GitHub 上的代码库试试。';
+                throw '你网络不行，用 HTTPS clone GitHub 的代码库时失败了，可以通过配置代理解决，不会配置的话可以找胡粤。';
             }
         });
     } catch (err) {
@@ -108,8 +108,8 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
                 expect(fse.existsSync(outputPath)).toBeTruthy();
 
                 const indexTplContent = fse.readFileSync(path.join(outputPath, 'template/index/index.tpl'), 'utf8');
-                // 测试点5：产出的 tpl/html 里是否存在 <script type=module></script>、<script nomodule></script>（测 --modern）
-                expect(indexTplContent).toEqual(expect.stringContaining('type=module'));
+                // 测试点5：产出的 tpl/html 里是否存在 <script type="module"></script>、<script nomodule></script>（测 --modern）
+                expect(indexTplContent).toEqual(expect.stringContaining(' type="module"'));
                 expect(indexTplContent).toEqual(expect.stringContaining('nomodule'));
 
                 // 测试点6：smarty 的产出的 head 和 body 的 js 和 css 放对了吗（测 smarty）
