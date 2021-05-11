@@ -297,8 +297,8 @@
                     "description": "默认值只能为'less', 'sass', 'styl', 'stylus', 'scss'，例如写了 less，那么只编译 less、css 代码，默认全编译。"
                 },
                 "requireModuleExtension": {
-                    "label": "启用 CSS Modules",
-                    "description": "默认只有 *.module.[ext] 文件名被视为 CSS modules 文件。启用后将所有样式文件视为 CSS modules。"
+                    "label": "是否仅是含 .module 扩展名的文件支持 CSS Modules",
+                    "description": "默认启用，只有 *.module.[ext] 文件名被视为 CSS Modules 文件。关闭后会将所有样式文件视为 CSS Modules。"
                 },
                 "extract": {
                     "label": "抽取 CSS",

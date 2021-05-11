@@ -272,7 +272,7 @@ module.exports = {
 
 #### `requireModuleExtension`
 
-是否不使用 css module，默认是`true`，使用的。
+是否仅是含 .module 扩展名的文件（如：.module.less）支持 CSS Modules，默认是 true。
 
 #### `loaderOptions`
 
