@@ -68,11 +68,11 @@ module.exports = {
             jsRule
                 .use('babel-loader')
                 .loader('babel-loader')
-                .options({
+                .options(loaderOptions.babel !== false ? {
                     presets: [
                         [require.resolve('./preset'), loaderOptions.babel]
                     ]
-                });
+                } : {});
         });
     }
 };
