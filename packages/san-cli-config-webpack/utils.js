@@ -19,8 +19,8 @@ exports.defineVar = (projectOptions, raw) => {
         return vars;
     }
 
-    for (const key in vars) {
-        vars[key] = JSON.stringify(vars[key]);
+    for (const [key, value] of Object.entries(vars)) {
+        vars[key] = JSON.stringify(value);
     }
     return vars;
 };
@@ -44,7 +44,7 @@ exports.normalizeProjectOptions = projectOptions => {
             return projectOptions.mode === 'production';
         },
         resolveLocal(...args) {
-            return path.join(__dirname, '../', ...args);
+            return path.join(__dirname, ...args);
         },
         resolve(p) {
             if (p) {
@@ -57,5 +57,5 @@ exports.normalizeProjectOptions = projectOptions => {
 
 
 exports.resolveLocal = (...args) => {
-    return path.join(__dirname, '../', ...args);
+    return path.join(__dirname, ...args);
 };

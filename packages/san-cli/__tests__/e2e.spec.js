@@ -83,7 +83,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
                     if (isFirstCompilation) {
                         isFirstCompilation = false;
                     } else {
-                        // 等待页面内容更新
+                        // 等待页面内容更新，如果超时了那应该就是你把代码改坏了，导致 HMR 失效了
                         await page.waitForFunction(
                             selector => document.querySelector(selector).textContent.includes('updated'), {}, 'h2'
                         );
