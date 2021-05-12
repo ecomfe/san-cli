@@ -13,8 +13,8 @@ const path = require('path');
 
 let pluginApi = null;
 beforeEach(() => {
+    process.env.NODE_ENV = 'production';
     pluginApi = new PluginAPI('plugin-yyt', {
-        mode: 'production',
         webpackChainFns: [],
         webpackRawConfigFns: [],
         cwd: 'user/yyt'
