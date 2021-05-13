@@ -1,6 +1,4 @@
 const createCSSRule = require('./createCSSRule');
-const {error} = require('san-cli-utils/ttyLogger');
-const semver = require('semver');
 
 module.exports = (
     chainConfig,

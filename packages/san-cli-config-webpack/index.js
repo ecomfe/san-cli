@@ -1,5 +1,3 @@
-const path = require('path');
-const fs = require('fs');
 const lMerge = require('lodash.merge');
 const Config = require('webpack-chain');
 const {devServerOptions} = require('./defaultOptions');
