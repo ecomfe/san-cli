@@ -9,6 +9,7 @@
     -   [高级配置](/advanced.md)
     -   [CLI 预设](/presets.md)
     -   [环境变量](/env.md)
+    -   [浏览器兼容性](/browser-compatibility.md)
 -   常见解决方案
     -   [现代浏览器打包](/modern-mode.md)
     -   [打包分析](/bundle-analyze.md)
