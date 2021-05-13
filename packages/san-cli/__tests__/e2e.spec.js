@@ -83,7 +83,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
                     if (isFirstCompilation) {
                         isFirstCompilation = false;
                     } else {
-                        // 等待页面内容更新
+                        // 等待页面内容更新，如果超时了那应该就是你把代码改坏了，导致 HMR 失效了
                         await page.waitForFunction(
                             selector => document.querySelector(selector).textContent.includes('updated'), {}, 'h2'
                         );
@@ -228,7 +228,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
                 // 测试点31：产出中的 classname 是否正确（css module）（测 san.conifg 的 css.requireModuleExtension）
                 expect(indexJSContent).toEqual(expect.stringContaining('_main_'));
 
-                // 测试点32：大于配置大小的图片是否没编译成 base64
+                // 测试点32：大于配置大小的图片是否没编译成 base64（测 san.config 的 largeAssetSize）
                 expect(indexJSContent).toEqual(expect.not.stringContaining('data:image'));
 
                 done();

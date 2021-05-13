@@ -17,9 +17,8 @@ jest.unmock('fs-extra');
 describe('检查 webpack 配置', () => {
     const cwd = process.cwd();
     test('检查 npm start 时的 webpack 配置', done => {  // eslint-disable-line
-        const service = new Service('serve', {
+        const service = new Service(cwd, {
             autoLoadConfigFile: false,
-            mode: 'development',
             projectOptions: {
                 assetsDir: 'static',
                 publicPath: '/',
@@ -63,7 +62,7 @@ describe('检查 webpack 配置', () => {
             }
         });
 
-        service.run(api => {
+        service.run().then(api => {
             const webpackConfig = api.getWebpackConfig();
             expect(webpackConfig).toMatchObject({
                 mode: 'development',
@@ -89,7 +88,7 @@ describe('检查 webpack 配置', () => {
                     modules: [
                         'node_modules',
                         path.join(cwd, '/node_modules'),
-                        path.join(cwd, '/packages/san-cli-service/node_modules')
+                        path.join(cwd, '/packages/san-cli-config-webpack/node_modules')
                     ]
                 },
                 resolveLoader: {
@@ -97,7 +96,7 @@ describe('检查 webpack 配置', () => {
                         path.join(cwd, '/packages/san-cli-plugin-babel/node_modules'),
                         'node_modules',
                         path.join(cwd, '/node_modules'),
-                        path.join(cwd, '/packages/san-cli-service/node_modules')
+                        path.join(cwd, '/packages/san-cli-config-webpack/node_modules')
                     ]
                 },
                 entry: {index: [path.join(cwd, '/src/pages/index/index.js')]},
@@ -125,9 +124,8 @@ describe('检查 webpack 配置', () => {
     });
 
     test('检查 npm run build 时的 webpack 配置', done => {  // eslint-disable-line
-        const service = new Service('build', {
+        const service = new Service(cwd, {
             autoLoadConfigFile: false,
-            mode: 'production',
             projectOptions: {
                 assetsDir: 'static/san-cli',
                 publicPath: 'https://s.bdstatic.com/',
@@ -171,7 +169,7 @@ describe('检查 webpack 配置', () => {
             }
         });
 
-        service.run(api => {
+        service.run('build', {mode: 'production'}).then(api => {
             const webpackConfig = api.getWebpackConfig();
             expect(webpackConfig).toMatchObject({
                 mode: 'production',
@@ -198,7 +196,7 @@ describe('检查 webpack 配置', () => {
                     modules: [
                         'node_modules',
                         path.join(cwd, '/node_modules'),
-                        path.join(cwd, '/packages/san-cli-service/node_modules')
+                        path.join(cwd, '/packages/san-cli-config-webpack/node_modules')
                     ]
                 },
                 resolveLoader: {
@@ -206,7 +204,7 @@ describe('检查 webpack 配置', () => {
                         path.join(cwd, '/packages/san-cli-plugin-babel/node_modules'),
                         'node_modules',
                         path.join(cwd, '/node_modules'),
-                        path.join(cwd, '/packages/san-cli-service/node_modules')
+                        path.join(cwd, '/packages/san-cli-config-webpack/node_modules')
                     ]
                 },
                 entry: {index: [path.join(cwd, '/src/pages/index/index.js')]},
@@ -236,8 +234,7 @@ describe('检查 webpack 配置', () => {
 
 describe('constructor resolvePlugins _loadPlugin', () => {
     test('plugins有值，useBuiltInPlugin为true', () => {
-        const service = new Service('name', {
-            cwd: __dirname + '/mock',
+        const service = new Service(__dirname + '/mock', {
             plugins: [
                 // string格式
                 './yyt-plugin.js',
@@ -262,10 +259,6 @@ describe('constructor resolvePlugins _loadPlugin', () => {
                 return item.id;
             })
         ).toEqual([
-            'built-in:base',
-            'built-in:css',
-            'built-in:app',
-            'built-in:optimization',
             'san-cli-plugin-babel',
             'yyt-plugin',
             'yyt1-plugin',
@@ -278,8 +271,7 @@ describe('constructor resolvePlugins _loadPlugin', () => {
         expect(service._initProjectOptions).toEqual({outputDir: 'output'});
     });
     test('plugins为空，useBuiltInPlugin为true', () => {
-        const service = new Service('name', {
-            cwd: __dirname + '/mock',
+        const service = new Service(__dirname + '/mock', {
             useBuiltInPlugin: true,
             projectOptions: {
                 outputDir: 'output'
@@ -293,11 +285,10 @@ describe('constructor resolvePlugins _loadPlugin', () => {
                 }
                 return item.id;
             })
-        ).toEqual(['built-in:base', 'built-in:css', 'built-in:app', 'built-in:optimization', 'san-cli-plugin-babel']);
+        ).toEqual(['san-cli-plugin-babel']);
     });
     test('useBuiltInPlugin为false', () => {
-        const service = new Service('name', {
-            cwd: __dirname + '/mock',
+        const service = new Service(__dirname + '/mock', {
             useBuiltInPlugin: false,
             projectOptions: {
                 outputDir: 'output'
@@ -309,9 +300,7 @@ describe('constructor resolvePlugins _loadPlugin', () => {
 });
 
 describe('loadEnv', () => {
-    const service = new Service('name', {
-        cwd: __dirname + '/mock'
-    });
+    const service = new Service(__dirname + '/mock');
     test('有mode值', () => {
         service.loadEnv('production');
         expect(process.env.TEST_ENV_PRODUCTION_PATH).toBe('/home/work/env/production');
@@ -324,9 +313,7 @@ describe('loadEnv', () => {
 });
 
 describe('loadProjectOptions', () => {
-    const service = new Service('name', {
-        cwd: __dirname + '/mock'
-    });
+    const service = new Service(__dirname + '/mock');
     test('可查到的文件路径', async () => {
         const config = await service.loadProjectOptions('san.config.js');
         // 检测san.config.js中的配置项是否保留还在
@@ -359,13 +346,10 @@ describe('loadProjectOptions', () => {
         // 会去自动查找项目中的san.config.js，查验一下是否找到了并返回正确的配置项
         expect(config.templateDir).toBe('the-template-dir');
     });
-
 });
 
 describe('initPlugin', () => {
-    const service = new Service('name', {
-        cwd: __dirname + '/mock'
-    });
+    const service = new Service(__dirname + '/mock');
     const expectfunc = api => {
         expect(typeof api.addPlugin).toBe('function');
         expect(typeof api.chainWebpack).toBe('function');
