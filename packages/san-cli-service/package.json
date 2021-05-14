@@ -1,7 +1,7 @@
 {
     "name": "san-cli-service",
     "description": "定制化的前端工程构建工具",
-    "version": "1.0.1",
+    "version": "1.0.4",
     "main": "Service.js",
     "license": "MIT",
     "engines": {
@@ -67,7 +67,7 @@
         "terser-webpack-plugin": "^2.3.5",
         "url-loader": "~3.0.0",
         "webpack": "~4.41.2",
-        "webpack-bundle-analyzer": "^3.3.2",
+        "webpack-bundle-analyzer": "^4.0.0",
         "webpack-chain": "~6.3.0",
         "webpack-merge": "~4.2.2"
     },

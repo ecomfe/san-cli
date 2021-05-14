@@ -12,10 +12,10 @@ San CLI 内置了[webpack-bundle-analyzer](https://github.com/webpack-contrib/we
 
 ## 分析结果
 
-除了直接使用 webpack-bundle-analyzer 查看结果，还可以将 Bundle 结果保存下来，用于分析和比较两次打包的结果，查找是否打包合理，San CLI 的 build 使用下面的两个方式来将分析结果进行保存：
+除了直接使用 webpack-bundle-analyzer 查看结果，还可以将 Bundle 结果保存下来，用于分析和比较两次打包的结果，查看是否打包合理，San CLI 的 build 使用下面的两个参数来将分析结果进行保存：
 
--   `--stats-json，--stats`：生成 Webpack stats JSON 文件到 stats.json，值为 true 或 false，默认是 false
--   `--report`：是否输将包分析报表生成为单个 HTML 文件，值为 true 或 false，默认 false，仅生成 Webpack Stats JSON 文件
+-   `--stats-json，--stats`：生成 Webpack stats JSON 文件到 stats.json
+-   `--report`：将包分析报表生成为单个 HTML 文件
 
 关于 Bundle 结果的分析可以查看[这篇文章](https://survivejs.com/webpack/optimizing/build-analysis/)介绍了很多 Bundle 分析工具。这些工具的使用方法都是将生成的报告 JSON 地址上传上去，然后分析，这里就不再赘余了。
 

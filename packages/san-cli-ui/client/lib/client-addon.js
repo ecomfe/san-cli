@@ -3,7 +3,6 @@
  * @author jinzhan
  */
 import san from 'san';
-import {router} from 'san-router';
 import Component from '@lib/san-component';
 import loadScript from 'load-script';
 import apolloClient from '@lib/apollo-client';
@@ -16,6 +15,7 @@ export default class ClientAddon {
     constructor() {
         this.components = new Map();
         this.listeners = new Map();
+        this.namespace = new Map();
     }
 
     /**
@@ -24,18 +24,18 @@ export default class ClientAddon {
      * @param {string} id 组件的标识
      * @param {Object} options san.defineComponent快捷定义参数，详见：https://baidu.github.io/san/doc/main-members/#Component
      */
-    defineComponent(id, options) {
+    defineComponent(id, options, namespace) {
         // TODO: 此处也可以使用san-component
         const component = san.defineComponent({
             ...options,
             components: Object.assign({}, uiComponents, options.components || {})
         }, Component);
         this.components.set(id, component);
-
+        namespace && this.namespace.set(id, namespace);
         // 调用组件相应的回调方法，这里可以配合awaitComponent添加回调
         const listeners = this.listeners.get(id);
         if (listeners) {
-            listeners.forEach(listener => listener(component));
+            listeners.forEach(listener => listener({component, namespace}));
             this.listeners.delete(id);
         }
     }
@@ -59,8 +59,9 @@ export default class ClientAddon {
     awaitComponent(id) {
         return new Promise((resolve, reject) => {
             const component = this.getComponent(id);
+            const namespace = this.namespace.get(id);
             if (component) {
-                resolve(component);
+                resolve({component, namespace});
             }
             else {
                 this.addListener(id, resolve);
@@ -103,8 +104,8 @@ export default class ClientAddon {
     // }
 
     // TODO: 由于目前路由组件的一些局限性，先弄个简版的
-    addRoutes(id, component) {
-        this.defineComponent(id, component);
+    addRoutes(id, component, namespace) {
+        this.defineComponent(id, component, namespace);
     }
 };
 
@@ -122,9 +123,11 @@ const load = ({url, id}) => {
     loadScript(url, (err, script) => {
         if (err) {
             addonMap.set(url, false);
+            // eslint-disable-next-line no-console
             console.log(`[error]: load ${url} failed.`);
         }
         else {
+            // eslint-disable-next-line no-console
             console.log('Load addon:', {url, id});
         }
     });
@@ -147,6 +150,7 @@ export const loadClientAddons = async () => {
         next: result => {
             const {data, error, errors} = result;
             if (error || errors) {
+                // eslint-disable-next-line no-console
                 console.log('client-addon error:', error || errors);
             }
             if (data && data.clientAddonAdded) {
@@ -154,6 +158,7 @@ export const loadClientAddons = async () => {
             }
         },
         error: err => {
+            // eslint-disable-next-line no-console
             console.log('error', err);
         }
     });

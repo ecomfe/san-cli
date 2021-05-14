@@ -4,12 +4,13 @@
 
 import Component from '@lib/san-component';
 import DependencyFilter from '@components/dependency/dependency-filter';
+import './header.less';
 
 export default class App extends Component {
     static template = /* html */`
         <div class="dependency-header">
             <c-dependency-filter on-keywordChange="keywordChange" />
-            <s-button type="primary" class="com-santd-btn-medium" on-click="showModal">
+            <s-button type="primary" class="com-santd-btn-medium install-btn" on-click="showModal">
                 {{$t('dependency.installPackage')}} <s-icon type="plus"/>
             </s-button>
         </div>

@@ -22,11 +22,7 @@ const {scriptName, version: pkgVersion} = require('../package.json');
 const CommanderAPI = require('./CommanderAPI');
 const {getCommandName} = require('./utils');
 
-const buildinCmds = ['build', 'serve', 'init', 'inspect', 'command', 'plugin', 'remote', 'docit', 'ui'];
-const buildinCmdPackages = {
-    init: 'san-cli-command-init',
-    ui: 'san-cli-ui'
-};
+const buildinCmds = ['build', 'serve', 'init', 'inspect', 'command', 'plugin', 'remote', 'ui'];
 const linkText = `For more information, visit ${textCommonColor('https://ecomfe.github.io/san-cli')}`;
 
 const globalDebug = getDebugLogger();
@@ -146,9 +142,11 @@ module.exports = class Command {
                 // modern 打包不要输出这个了
                 // 打印名字
                 if (cmd === 'init') {
+                    // eslint-disable-next-line no-console
                     console.log(chalk.bold(getCmdLogInfo(cmd)));
                 }
                 else {
+                    // eslint-disable-next-line no-console
                     console.log(textCommonBold(getCmdLogInfo(cmd)));
                 }
             }
@@ -266,7 +264,7 @@ module.exports = class Command {
                 );
             };
         }
-        const iCommand = (cmdName, description, builder, handler, middlewares) => {
+        const iCommand = (cmdName, description, builder = {}, handler, middlewares) => {
             command(
                 cmdName,
                 description,
@@ -307,6 +305,7 @@ module.exports = class Command {
         const commands = usage.getCommands();
         const log = msg => {
             // colorful
+            // eslint-disable-next-line no-console
             console.log(msg ? msg.replace(/`([^`]+)`/g, (_, m) => chalk.cyan(m)) : '');
         };
         // 添加help

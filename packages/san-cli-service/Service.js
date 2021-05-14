@@ -36,7 +36,6 @@ const logger = consola.withTag('Service');
 const debug = getDebugLogger('service');
 const showConfig = getDebugLogger('webpack:config');
 
-/* global Map, Proxy */
 module.exports = class Service extends EventEmitter {
     constructor(
         name,

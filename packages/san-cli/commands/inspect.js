@@ -68,6 +68,7 @@ exports.handler = argv => {
         }
 
         const output = toString(res);
+        // eslint-disable-next-line no-console
         console.log(output);
     });
 };

@@ -135,6 +135,7 @@ function showError(arr) {
         }
         else {
             error(lines[0]);
+            // eslint-disable-next-line no-console
             console.log(lines.splice(1).join('\n'));
         }
     });
@@ -143,6 +144,7 @@ function showError(arr) {
 }
 function showWarning(arr) {
     warn(`Compiled with ${arr.length} warnings.`);
+    // eslint-disable-next-line no-console
     console.log(`${arr.join('\n\n')}`);
 }
 module.exports = class SanFriendlyErrorsPlugin {

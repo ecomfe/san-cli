@@ -91,12 +91,15 @@ body,
     right: 0;
     left: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, .9);
+    .background-color-15();
     height: 100%;
     z-index: 1000;
     display: flex !important;
     justify-content: center;
     align-items: center;
+    .santd-icon, .santd-spin-text {
+        .color-6();
+    }
 }
 
 .widget-loading {
@@ -104,4 +107,66 @@ body,
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.santd-modal-content {
+    .background-color-1();
+    .color-4();
+    border-radius: 18px;
+    .santd-icon {
+        .color-6();
+    }
+    .santd-modal-close {
+        .santd-icon {
+            .color-4();
+        }
+    }
+    .santd-modal-header {
+        .background-color-1();
+        border-top-left-radius: 18px;
+        border-top-right-radius: 18px;
+        .border-color-7();
+        .santd-modal-title {
+            .color-4();
+        }
+    }
+    .santd-input {
+        .background-color-16();
+        border-radius: 20px;
+        .color-4();
+        .border-color-8();
+    }
+    .santd-modal-footer, .santd-modal-confirm-btns {
+        .border-color-7();
+        .santd-btn {
+            border-radius: 20px;
+            &:nth-last-child(2) {
+                .background-color-16();
+                .color-4();
+                .border-color-8();
+            }
+        }
+    }
+    .santd-form-item-no-colon, .santd-modal-confirm-title, .santd-modal-confirm-content {
+        .color-4();
+    }
+    .santd-select-selection {
+        border-radius: 16px ;
+        .background-color-16();
+        .color-4();
+        .border-color-8();
+        .santd-icon {
+            .color-4();
+        }
+    }
+}
+.santd-dropdown {
+    .santd-menu {
+        .background-color-2();
+        border: none;
+        .color-4();
+        .santd-menu-item-group-title {
+            .color-4();
+        }
+    }
 }

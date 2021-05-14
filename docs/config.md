@@ -74,7 +74,7 @@ module.exports = {
 -   `template` 页面模板文件相对地址。 _String_
 -   `filename` 页面模板文件产出地址。 _String_
 -   `title` 用于生成的 HTML 文档的标题。 _String_
--   `chunks` 允许插入到模板中的一些 chunk，不配置此项会默认将 entry 中所有的 chunk 注入到模板中；如果配置，需要跟 mode 里面的 splitChunks 遥相呼应。 _String 或 Array 数组项为 String_
+-   `chunks` 允许插入到模板中的一些 chunk，如果在 splitChunks 里配置了拆包，就需要把拆的包的名字添加到这里。 _Array 数组项为 String_
 
 > 这里的 pages 内的配置项除了 entry 为特殊指定的 Webpack `entry`外，其他的都是 html-webpack-plugin 的配置项。
 
@@ -226,7 +226,9 @@ module.exports = {
 };
 ```
 
-!> 但是，我们推荐使用`babel.config.js`或者`.babelrc`进行 Babel 配置。
+::: warning
+但是，我们推荐使用`babel.config.js`或者`.babelrc`进行 Babel 配置。
+:::
 
 ### css 相关
 
@@ -256,7 +258,9 @@ module.exports = {
 };
 ```
 
-!> 推荐根据项目实际情况进行配置，这样只会添加对应的 loader。
+::: warning
+推荐根据项目实际情况进行配置，这样只会添加对应的 loader。
+:::
 
 #### `extract`
 
@@ -268,7 +272,7 @@ module.exports = {
 
 #### `requireModuleExtension`
 
-是否不使用 css module，默认是`true`，使用的。
+是否仅是含 .module 扩展名的文件（如：.module.less）支持 CSS Modules，默认是 true。
 
 #### `loaderOptions`
 
@@ -280,4 +284,6 @@ css 相关的 loader 配置项，支持：
 -   `stylus` 需要新增的 stylus-loader 配置项；
 -   `postcss` 需要新增的 postcss-loader 配置项，默认支持 postcss.config.js 的配置。
 
-!> 这里介绍的是一般配置，更多高级的配置以及优化相关的配置可以继续阅读[高级配置](./advanced.md)内容。
+::: warning
+这里介绍的是一般配置，更多高级的配置以及优化相关的配置可以继续阅读[高级配置](./advanced.md)内容。
+:::

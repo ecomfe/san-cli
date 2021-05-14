@@ -1,4 +1,4 @@
-# hulk-cli升级san-cli
+# hulk-cli 升级 san-cli v3
 
 ## 为什么要升级
 
@@ -28,7 +28,7 @@ npm install san-cli
 1. 如果使用`less`，执行
 
 ```
-npm install less less-loader --save-dev
+npm install less less-loader@~5.0.0 --save-dev
 ```
 
 2. 如果使用`sass`，执行

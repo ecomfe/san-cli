@@ -52,6 +52,7 @@ module.exports = function apply(argv, api, projectOptions) {
                 timings: true,
                 performance: true
             });
+            // eslint-disable-next-line no-console
             console.log(
                 require('san-cli-webpack/lib/formatStats')(stats, targetDirShort, {
                     resolve: p => api.resolve(p)
@@ -66,6 +67,7 @@ module.exports = function apply(argv, api, projectOptions) {
                     }
                     else {
                         successLog('Build legacy bundle success');
+                        // eslint-disable-next-line no-console
                         console.log();
                     }
                     return;
@@ -86,7 +88,7 @@ module.exports = function apply(argv, api, projectOptions) {
     // 放到这里 require 是让命令行更快加载，而不是等 webpack 这大坨东西。。
     const build = require('san-cli-webpack/build');
     if (modern) {
-        // 2.1 modern mode，会fork execa 执行一次打包
+        // 2.1 modern mode，会 fork execa 执行一次打包
         // modern mode 必须要保证 legacy 先打包完成
         if (!process.env.SAN_CLI_MODERN_BUILD) {
             process.env.SAN_CLI_LEGACY_BUILD = 1;

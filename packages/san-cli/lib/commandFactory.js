@@ -209,6 +209,7 @@ exports.listFactory = (propName = 'commands') => {
                 const rc = readRc('rc');
                 if (!rc || !rc[propName] || rc[propName].length === 0) {
                     log(`Your global ${propName} list is empty!`);
+                    // eslint-disable-next-line no-console
                     console.log();
                 } else {
                     log(`Your global ${propName} in \`sanrc.json\` :`);
@@ -223,6 +224,7 @@ exports.listFactory = (propName = 'commands') => {
             const pkgRc = readRc('package.json');
             if (!pkgRc || !pkgRc[propName] || pkgRc[propName].length === 0) {
                 log(`Your local ${propName} list is empty!`);
+                // eslint-disable-next-line no-console
                 console.log();
             } else {
                 log(`Your local ${propName} in \`package.json\` :`);
@@ -230,9 +232,11 @@ exports.listFactory = (propName = 'commands') => {
             }
 
             if (!argv.all) {
+                // eslint-disable-next-line no-console
                 console.log();
                 // 到此结束
                 log(`Use \`${'-g'}\` flag to show global ${propName}.`);
+                // eslint-disable-next-line no-console
                 console.log();
             }
         }

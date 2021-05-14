@@ -16,5 +16,6 @@ exports.builder = {
 };
 exports.description = 'San Command Plugin Demo';
 exports.handler = cliApi => {
+    // eslint-disable-next-line no-console
     console.log(`hello, ${cliApi.name}`);
 };

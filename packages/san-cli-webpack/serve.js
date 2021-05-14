@@ -58,7 +58,7 @@ module.exports = function devServer({webpackConfig, devServerConfig, publicPath,
                 // dev server client
                 require.resolve('webpack-dev-server/client') + sockjsUrl,
                 // hmr client
-                require.resolve(hotOnly ? 'webpack/hot/dev-server' : 'webpack/hot/only-dev-server')
+                require.resolve(hotOnly ? 'webpack/hot/only-dev-server' : 'webpack/hot/dev-server')
             ];
             // inject dev/hot client
             addDevClientToEntry(webpackConfig, devClients);
@@ -72,7 +72,7 @@ module.exports = function devServer({webpackConfig, devServerConfig, publicPath,
         webpackConfig.plugins.push(new WriteFileWebpackPlugin({test: /\.tpl$/}));
 
         if (closeDevtoolDebug.enabled) {
-            // 这里使用closeDevTool debug 来开启
+            // 这里使用 closeDevTool debug 来开启
             webpackConfig.devtool = 'none';
             webpackConfig.optimization = {
                 minimize: false

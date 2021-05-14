@@ -19,13 +19,22 @@ export default class ProjectList extends Component {
         <div class="flex-all project-template-list">
             <s-form on-submit="handleSubmit" colon="{{false}}">
                 <s-formitem label="{{$t('scaffold.chooseLabel')}}">
+                    <s-tooltip title="{{$t('scaffold.tooltip')}}" class="question-icon">
+                        <s-icon type="question-circle"></s-icon>
+                    </s-tooltip>
                     <s-select
                         value="{=currentTemplate=}"
-                        placeholder="{{$('scaffold.choosePlaceholder')}}"
                         dropdownClassName="template-list-dropdown"
                         dropdownStyle="{{{'border-radius': '18px'}}}">
                         <s-select-option s-for="template in projectTemplateList" value="{{template.value}}">
-                            {{template.label}}
+                            <div>
+                                <a href="{{template.value}}" target="_blank">
+                                    {{template.label}}
+                                </a>
+                                <div class="template-desc">
+                                    {{template.description ? $t(template.description) || template.description : ''}}
+                                </div>
+                            </div>
                         </s-select-option>
                         <!----自定义的模板项---->
                         <s-select-option value="">

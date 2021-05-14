@@ -94,11 +94,13 @@ export default class Task extends Component {
                         choice.value = JSON.parse(choice.value);
                     }
                     catch (e) {
+                        // eslint-disable-next-line no-console
                         console.log(`Prompt choices parse error: ${e}`);
                     }
                 });
             }
             catch (e) {
+                // eslint-disable-next-line no-console
                 console.log(`Prompt parse error: ${e}`);
             }
         });

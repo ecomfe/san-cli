@@ -7,7 +7,6 @@
  * @file commander test
  * @author yanyiting
  */
-/* global describe, jest, test */
 
 jest.mock('read-pkg');
 
@@ -36,7 +35,6 @@ describe('Commander', () => {
             'command',
             'plugin',
             'remote',
-            'docit',
             'ui',
             'hello'
         ]);

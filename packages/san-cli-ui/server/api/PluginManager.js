@@ -65,7 +65,7 @@ class PluginManager {
         return this.viewPlugin;
     }
 
-    // 注册视图组件插件：viewPlugin
+    // 注册视图组件插件：addonPlugin
     registerAddon(...args) {
         if (!this.addonPlugin) {
             this.addonPlugin = new AddonPlugin(...args);

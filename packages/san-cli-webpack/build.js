@@ -22,7 +22,7 @@ module.exports = function build({webpackConfig, compilerCallback}) {
         debug('start');
 
         if (closeDevtoolDebug.enabled) {
-            // 使用DEBUG=san-cli:webpack:closeDevtool 开启
+            // 使用 DEBUG=san-cli:webpack:closeDevtool 开启
             webpackConfig.devtool = 'none';
             webpackConfig.optimization = {
                 minimize: false

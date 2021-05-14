@@ -7,6 +7,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const execa = require('execa');
 const shortId = require('shortid');
+const fetch = require('node-fetch');
 const {getDebugLogger, log, error} = require('san-cli-utils/ttyLogger');
 const {getGitUser} = require('san-cli-utils/env');
 const {tmpl} = require('san-cli-utils/utils');
@@ -25,10 +26,8 @@ const SAN_COMMAND_NAME = SAN_CLI_UI_DEV ? 'yarn' : 'san';
 const SAN_COMMAND_ARGS = SAN_CLI_UI_DEV ? ['dev:san'] : [];
 
 // 默认的repositories
-const DEFAULT_TEMPLATES = [{
-    label: 'github:san-project-base',
-    value: 'https://github.com/ksky521/san-project'
-}];
+const DEFAULT_TEMPLATES = require('../../TEMPLATES.json');
+const TEMPLATES_URL = 'https://raw.githubusercontent.com/ecomfe/san-cli/master/packages/san-cli-ui/TEMPLATES.json';
 
 const debug = getDebugLogger('ui:project');
 
@@ -38,7 +37,7 @@ class Projects {
      *
      * @return {Array<Object>}
      */
-    async getTemplateList() {
+    async getTemplateList(context) {
         const child = await execa('san', ['remote', 'list']);
         // 来自于san remote list的repositories
         let remoteList = child.stdout.split('\n').slice(1);
@@ -64,8 +63,32 @@ class Projects {
         }
 
         // 添加默认的库
-        const templates = remoteList.concat(DEFAULT_TEMPLATES);
-
+        let defaultTemplates = DEFAULT_TEMPLATES;
+        const templatesCache = context.db.get('templatesCache').value();
+        // 大于2小时重新fetch
+        if (templatesCache && (Date.now() - templatesCache.lastFetchDate) < 7200000) {
+            defaultTemplates = templatesCache.list;
+        }
+        else {
+            context.db.set('templatesCache', null).write();
+            // fetch最新的模板列表, 防止json格式有错catch住
+            try {
+                const list = await fetch(TEMPLATES_URL).then(res => res.json());
+                if (Array.isArray(list) && list.length) {
+                    // 远程获取到直接替换
+                    defaultTemplates = list;
+                    context.db.set('templatesCache', {
+                        lastFetchDate: Date.now(),
+                        list
+                    }).write();
+                }
+            }
+            catch (e) {
+                debug(`fetch templates error: ${e}`);
+            }
+        }
+        // 添加默认的库
+        const templates = remoteList.concat(defaultTemplates);
         debug(`templates: ${templates.join(' \/ ')}`);
 
         return templates;

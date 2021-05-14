@@ -97,7 +97,7 @@ module.exports = api => {
                     return;
                 }
                 const value = await fs.readJson(statsFile);
-                const {stats, analyzer} = processStats(value);
+                const {stats} = processStats(value);
                 // TODO: 优化analyzer数据的处理
                 sharedData.set(id, stats, {
                     disk: true
