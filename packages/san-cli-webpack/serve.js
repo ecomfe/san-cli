@@ -109,9 +109,8 @@ module.exports = class Serve extends EventEmitter {
             this.emit('complete', {stats});
             if (stats.hasErrors()) {
                 const errObj = getWebpackErrorInfoFromStats(undefined, stats);
-                errObj.type = 'webpack';
                 debug(errObj);
-                this.emit('fail', errObj);
+                this.emit('fail', {...errObj, type: 'webpack'});
             }
             else {
                 this.emit('success', {

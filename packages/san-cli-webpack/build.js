@@ -34,7 +34,7 @@ module.exports = class Build extends EventEmitter {
         }
         catch (e) {
             // 捕捉参数不正确的错误信息
-            this.emit('fail', {err: e, type: 'run'});
+            this.emit('fail', {err: e, type: 'init'});
         }
     }
 
@@ -75,7 +75,7 @@ module.exports = class Build extends EventEmitter {
             this.compiler.run(callback);
         }
         catch (e) {
-            this.emit('fail', e);
+            this.emit('fail', {err: e, type: 'run'});
         }
     }
 };
