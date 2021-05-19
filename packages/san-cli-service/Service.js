@@ -242,7 +242,7 @@ module.exports = class Service extends EventEmitter {
         }
         // 初始化插件
         this.plugins.forEach(plugin => {
-            this.initPlugin(plugin);
+            plugin && this.initPlugin(plugin);
         });
         // webpack 配置
         if (this.projectOptions.chainWebpack) {
