@@ -457,11 +457,17 @@ module.exports = class Service extends EventEmitter {
                 const res = fn(config);
                 if (res) {
                     config = webpackMerge(config, res);
+                    if (res.resolve && res.resolve.extensions) {
+                        config.resolve.extensions = res.resolve.extensions;
+                    }
                 }
             }
             else if (fn) {
                 // merge literal values
                 config = webpackMerge(config, fn);
+                if (fn.resolve && fn.resolve.extensions) {
+                    config.resolve.extensions = fn.resolve.extensions;
+                }
             }
         });
 
