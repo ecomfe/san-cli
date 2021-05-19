@@ -42,7 +42,9 @@ module.exports = {
             type: 'confirm',
             message: '使用 mock 数据？'
         }
-    }
+    },
+    // San CLI 默认使用 yarn 安装依赖，若要使用 npm，则需把 useYarn 置为 false
+    useYarn: false
 };
 ```
 
