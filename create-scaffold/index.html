@@ -23,7 +23,9 @@ module<span class="token punctuation">.</span>exports <span class="token operato
             type<span class="token operator">:</span> <span class="token string">&#39;confirm&#39;</span><span class="token punctuation">,</span>
             message<span class="token operator">:</span> <span class="token string">&#39;使用 mock 数据？&#39;</span>
         <span class="token punctuation">}</span>
-    <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token comment">// San CLI 默认使用 yarn 安装依赖，若要使用 npm，则需把 useYarn 置为 false</span>
+    useYarn<span class="token operator">:</span> <span class="token boolean">false</span>
 <span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre><h5 id="meta.json">meta.json</h5><pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
     <span class="token comment">// meta 配置项</span>
 <span class="token punctuation">}</span></code></pre><h5 id="%E9%85%8D%E7%BD%AE%E9%A1%B9">配置项</h5><p><code>helpers</code> 自定义 handlerbars 的块级 helper，cli 会调用 registerHelper，处理这段自定义</p><p><strong>例如</strong></p><pre class="language-js"><code class="language-js"><span class="token comment">// meta.js</span>
