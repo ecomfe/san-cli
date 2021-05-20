@@ -117,11 +117,6 @@ module.exports = class Service extends EventEmitter {
         defaultEnv = Object.assign(defaultEnv, load(envPath));
 
         const envObj = Object.assign(defaultEnv, localEnv);
-        Object.keys(envObj).forEach(key => {
-            if (!process.env.hasOwnProperty(key)) {
-                process.env[key] = envObj[key];
-            }
-        });
         merge(envObj);
         if (mode) {
             const defaultNodeEnv = mode === 'production' ? mode : 'development';
@@ -174,7 +169,7 @@ module.exports = class Service extends EventEmitter {
                 if (typeof plugin === 'object' && typeof plugin.apply === 'function') {
                     if (!plugin.id) {
                         logger.warn(`Plugin is invalid: ${p}. Service plugin must has id.`);
-                        // 默认 id 是配置的string，方便查找
+                        // 默认 id 是配置的 string，方便查找
                         plugin.id = p;
                     }
                     // 这里支持两种情况：
@@ -310,7 +305,7 @@ module.exports = class Service extends EventEmitter {
         if (result && result.config) {
             let configPath = result.filepath;
 
-            if (!result.config || typeof result.config !== 'object') {
+            if (typeof result.config !== 'object') {
                 logger.error(`${textCommonColor(configPath)}: Expected object type.`);
             } else {
                 // 校验config.js schema 格式
