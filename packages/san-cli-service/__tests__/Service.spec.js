@@ -58,6 +58,18 @@ describe('检查 webpack 配置', () => {
                     host: '0.0.0.0',
                     port: 8899,
                     https: false
+                },
+                plugins: [
+                    {
+                        id: 'lhy3-plugin',
+                        apply() {}
+                    }
+                ],
+                chainWebpack: config => config.resolve.alias.set('@', cwd + '/src'),
+                configWebpack: {
+                    resolve: {
+                        extensions: ['.js', '.san', '.json', '.less']
+                    }
                 }
             }
         });
@@ -84,7 +96,7 @@ describe('检查 webpack 配置', () => {
                         '@app': cwd + '/src/lib/App.js',
                         '@store': cwd + '/src/lib/Store.js'
                     },
-                    extensions: ['.js', '.css', '.less', '.san'],
+                    extensions: ['.js', '.san', '.json', '.less'],
                     modules: [
                         'node_modules',
                         path.join(cwd, '/node_modules'),
@@ -119,7 +131,13 @@ describe('检查 webpack 配置', () => {
                     https: false
                 }
             });
-            done();
+            service.run().then(() => {
+                const loadEnv = jest.spyOn(service, 'loadEnv');
+                // 通过是否调用了 loadEnv 来判断第二次 run 时是否又重新初始化了
+                expect(loadEnv).not.toHaveBeenCalled();
+                loadEnv.mockClear();
+                done();
+            });
         });
     });
 
@@ -243,7 +261,15 @@ describe('constructor resolvePlugins _loadPlugin', () => {
                 // array格式两项，参数一obj
                 [{id: 'yyt3-plugin', apply: () => {}}, {}],
                 // array格式两项，参数一string
-                ['./yyt2-plugin.js', {a: 1}]
+                ['./yyt2-plugin.js', {a: 1}],
+                // 没有 id 的 plugin
+                './lhy-plugin.js',
+                // 函数格式
+                () => {},
+                // 没有 apply 函数的无效 plugin
+                './lhy2-plugin.js',
+                // 瞎传,
+                {}
             ],
             useBuiltInPlugin: true,
             projectOptions: {
@@ -256,14 +282,18 @@ describe('constructor resolvePlugins _loadPlugin', () => {
                 if (Array.isArray(item)) {
                     return item[0].id;
                 }
-                return item.id;
+                return item && item.id;
             })
         ).toEqual([
             'san-cli-plugin-babel',
             'yyt-plugin',
             'yyt1-plugin',
             'yyt3-plugin',
-            'yyt2-plugin'
+            'yyt2-plugin',
+            './lhy-plugin.js',
+            'anonymous',
+            undefined,
+            undefined
         ]);
         // 检测对于加options的插件是否已加入进去
         expect(service.plugins.filter(item => Array.isArray(item))[1][1]).toEqual({a: 1});
@@ -301,14 +331,27 @@ describe('constructor resolvePlugins _loadPlugin', () => {
 
 describe('loadEnv', () => {
     const service = new Service(__dirname + '/mock');
-    test('有mode值', () => {
+    afterEach(() => {
+        delete process.env.TEST_ENV_PATH;
+        delete process.env.TEST_ENV_PRODUCTION_PATH;
+        delete process.env.TEST_ENV_PRODUCTION_LOACAL_PATH;
+        delete process.env.TEST_ENV_DEVELOPMENT_PATH;
+    });
+    test('有 mode 值', () => {
         service.loadEnv('production');
         expect(process.env.TEST_ENV_PRODUCTION_PATH).toBe('/home/work/env/production');
         expect(process.env.TEST_ENV_PRODUCTION_LOACAL_PATH).toBe('/home/work/env/production/local');
+        expect(process.env.TEST_ENV_PATH).toBe('/home/work/env');
     });
-    test('没有mode值, 不存在某个.env文件', () => {
+    test('没有 mode 值', () => {
         service.loadEnv();
-        expect(process.env.TEST_ENV_PATH).toBeUndefined();
+        expect(process.env.TEST_ENV_PRODUCTION_PATH).toBeUndefined();
+        expect(process.env.TEST_ENV_PATH).toBe('/home/work/env');
+    });
+    test('不存在 mode 对应的 .local 文件', () => {
+        service.loadEnv('development');
+        expect(process.env.TEST_ENV_DEVELOPMENT_PATH).toBe('/home/work/env/development');
+        expect(process.env.TEST_ENV_PATH).toBe('/home/work/env');
     });
 });
 
@@ -341,10 +384,20 @@ describe('loadProjectOptions', () => {
         // 检测是否加了css配置项
         expect(config.css).toBeUndefined();
     });
+    test('不可查到的文件路径', async () => {
+        const warn = jest.spyOn(service.logger, 'warn');
+        await service.loadProjectOptions('san.config.json');
+        expect(warn).toHaveBeenCalledWith('config file `san.config.json` is not exists!');
+        warn.mockClear();
+    });
     test('不可查到的文件路径，但是工程中存在san.config.js', async () => {
         const config = await service.loadProjectOptions();
         // 会去自动查找项目中的san.config.js，查验一下是否找到了并返回正确的配置项
         expect(config.templateDir).toBe('the-template-dir');
+    });
+    test('配置文件的格式不对，应该导出对象但是导出了函数', async () => {
+        const config = await service.loadProjectOptions('san.config2.js');
+        expect(typeof config).toBe('function');
     });
 });
 
