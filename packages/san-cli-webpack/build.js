@@ -29,13 +29,7 @@ module.exports = class Build extends EventEmitter {
 
         this.isWatch = isWatch;
         this.watchOptions = watchOptions;
-        try {
-            this.compiler = webpack(config);
-        }
-        catch (e) {
-            // 捕捉参数不正确的错误信息
-            this.emit('fail', {err: e, type: 'init'});
-        }
+        this.compiler = webpack(config);
     }
 
     getCompiler() {
