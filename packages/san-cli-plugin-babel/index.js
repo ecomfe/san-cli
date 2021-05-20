@@ -29,8 +29,9 @@ module.exports = {
     id: 'san-cli-plugin-babel',
     apply(api, projectOptions = {}) {
         const cliPath = path.dirname(path.resolve(__dirname, './package.json'));
-        const {loaderOptions = {}, transpileDependencies = []} = projectOptions;
-
+        const {loaderOptions = {}, transpileDependencies = [], cache} = projectOptions;
+        // 开启babel缓存, 第二次构建时，会读取之前的缓存，与外层cache保持一致，未设置外层时默认打开babel缓存，Modern打包不开启
+        const cacheDirectory = (typeof cache === 'undefined' || cache) && !process.env.SAN_CLI_MODERN_BUILD;
         // 如果需要 babel 转义node_module 中的模块，则使用这个配置
         // 类似 xbox 这些基础库都提供 esm 版本
         const transpileDepRegex = genTranspileDepRegex(transpileDependencies);
@@ -71,7 +72,8 @@ module.exports = {
                 .options(loaderOptions.babel !== false ? {
                     presets: [
                         [require.resolve('./preset'), loaderOptions.babel]
-                    ]
+                    ],
+                    cacheDirectory
                 } : {});
         });
     }

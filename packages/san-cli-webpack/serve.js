@@ -67,14 +67,8 @@ module.exports = class Serve extends EventEmitter {
         // create compiler
         debug('start');
 
-        try {
-            this.compiler = webpack(config);
-            this.initResolve();
-        }
-        catch (e) {
-            // 捕捉参数不正确的错误信息
-            this.emit('fail', {err: e, type: 'run'});
-        }
+        this.compiler = webpack(config);
+        this.initResolve();
     }
     async getCompiler() {
         if (this.initPromise) {
@@ -109,9 +103,8 @@ module.exports = class Serve extends EventEmitter {
             this.emit('complete', {stats});
             if (stats.hasErrors()) {
                 const errObj = getWebpackErrorInfoFromStats(undefined, stats);
-                errObj.type = 'webpack';
                 debug(errObj);
-                this.emit('fail', errObj);
+                this.emit('fail', {...errObj, type: 'webpack'});
             }
             else {
                 this.emit('success', {
