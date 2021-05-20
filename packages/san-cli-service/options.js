@@ -104,12 +104,11 @@ const schema = joi
     })
     // 为了方便自定义扩展
     .unknown(true);
-exports.validate = (options, cb) => {
-    schema.validate(options, cb);
-};
-exports.validateSync = async (value, options) => {
-    const rs = await schema.validateAsync(value, options);
-    return rs;
+exports.validate = (value, options) => {
+    const {error} = schema.validate(value, options);
+    if (error) {
+        throw error;
+    }
 };
 
 exports.defaults = {
