@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file Service test
- * @author yanyiting
+ * @author yanyiting, Lohoyo
  */
 
 const Service = require('../Service');
@@ -16,6 +16,13 @@ jest.unmock('fs-extra');
 
 describe('检查 webpack 配置', () => {
     const cwd = process.cwd();
+
+    test('没有初始化就获取 webpack 配置', () => {
+        const service = new Service();
+        expect(() => service.getWebpackConfig({}))
+            .toThrow('Service must call init() before calling getWebpackConfig().');
+    });
+
     test('检查 npm start 时的 webpack 配置', done => {  // eslint-disable-line
         const service = new Service(cwd, {
             autoLoadConfigFile: false,
@@ -24,15 +31,15 @@ describe('检查 webpack 配置', () => {
                 publicPath: '/',
                 outputDir: 'output',
                 filenameHashing: false,
-                copy: {from: 'template', to: 'template'},
+                copy: [{from: 'template', to: 'template'}],
                 pages: {
                     index: {
                         entry: cwd + '/src/pages/index/index.js',
-                        template: cwd + '/template/index/index.tpl',
-                        filename: 'template/index/index.tpl'
+                        template: __dirname + '/mock/index.tpl',
+                        chunks: ['vendors']
                     }
                 },
-                css: {sourceMap: false, cssPreprocessor: 'less'},
+                css: {sourceMap: false, cssPreprocessor: 'sass'},
                 alias: {
                     '@assets': cwd + '/src/assets',
                     '@components': cwd + '/src/components',
@@ -60,15 +67,17 @@ describe('检查 webpack 配置', () => {
                     https: false
                 },
                 plugins: [
-                    {
-                        id: 'lhy3-plugin',
-                        apply() {}
-                    }
+                    [
+                        {
+                            id: 'lhy3-plugin',
+                            apply() {}
+                        }
+                    ]
                 ],
                 chainWebpack: config => config.resolve.alias.set('@', cwd + '/src'),
                 configWebpack: {
                     resolve: {
-                        extensions: ['.js', '.san', '.json', '.less']
+                        extensions: ['.js', '.san', '.json', '.sass']
                     }
                 }
             }
@@ -96,7 +105,7 @@ describe('检查 webpack 配置', () => {
                         '@app': cwd + '/src/lib/App.js',
                         '@store': cwd + '/src/lib/Store.js'
                     },
-                    extensions: ['.js', '.san', '.json', '.less'],
+                    extensions: ['.js', '.san', '.json', '.sass'],
                     modules: [
                         'node_modules',
                         path.join(cwd, '/node_modules'),
@@ -153,8 +162,7 @@ describe('检查 webpack 配置', () => {
                 pages: {
                     index: {
                         entry: cwd + '/src/pages/index/index.js',
-                        template: cwd + '/template/index/index.tpl',
-                        filename: 'template/index/index.tpl'
+                        template: cwd + '/pages.template.ejs'
                     }
                 },
                 css: {sourceMap: true, cssPreprocessor: 'less'},
@@ -183,6 +191,13 @@ describe('检查 webpack 配置', () => {
                     host: '0.0.0.0',
                     port: 8899,
                     https: false
+                },
+                configWebpack() {
+                    return {
+                        resolve: {
+                            extensions: ['.js', '.css', '.less', '.san', 'ts']
+                        }
+                    };
                 }
             }
         });
@@ -210,7 +225,7 @@ describe('检查 webpack 配置', () => {
                         '@app': cwd + '/src/lib/App.js',
                         '@store': cwd + '/src/lib/Store.js'
                     },
-                    extensions: ['.js', '.css', '.less', '.san'],
+                    extensions: ['.js', '.css', '.less', '.san', 'ts'],
                     modules: [
                         'node_modules',
                         path.join(cwd, '/node_modules'),
@@ -384,20 +399,24 @@ describe('loadProjectOptions', () => {
         // 检测是否加了css配置项
         expect(config.css).toBeUndefined();
     });
-    test('不可查到的文件路径', async () => {
+    test('不可查到的文件路径', () => {
         const warn = jest.spyOn(service.logger, 'warn');
-        await service.loadProjectOptions('san.config.json');
+        service.loadProjectOptions('san.config.json');
         expect(warn).toHaveBeenCalledWith('config file `san.config.json` is not exists!');
         warn.mockClear();
     });
-    test('不可查到的文件路径，但是工程中存在san.config.js', async () => {
-        const config = await service.loadProjectOptions();
+    test('不可查到的文件路径，但是工程中存在 san.config.js', () => {
+        const config = service.loadProjectOptions();
         // 会去自动查找项目中的san.config.js，查验一下是否找到了并返回正确的配置项
         expect(config.templateDir).toBe('the-template-dir');
     });
-    test('配置文件的格式不对，应该导出对象但是导出了函数', async () => {
-        const config = await service.loadProjectOptions('san.config2.js');
+    test('配置文件的格式不对，应该导出对象但是导出了函数', () => {
+        const config = service.loadProjectOptions('san.config2.js');
         expect(typeof config).toBe('function');
+    });
+    test('配置文件的配置字段的的值的格式错误', () => {
+        expect(() => service.loadProjectOptions('san.config3.js'))
+            .toThrow('ValidationError: "pages" must be of type object');
     });
 });
 
@@ -447,33 +466,3 @@ describe('initPlugin', () => {
         ]);
     });
 });
-
-// describe('registerCommand', () => {
-//     let service = null;
-//     beforeEach(() => {
-//         service = new Service(__dirname + '/mock');
-//     });
-//     test('name为string，yargsModule为obj', () => {
-//         service.registerCommand('yyt [component]', {
-//             builder: {},
-//             description: 'yyt description',
-//             handler(argv) {},
-//             aliases: []
-//         });
-//         expect(service.registeredCommands.get('yyt').describe).toBe('yyt description');
-//     });
-//     test('name为string，yargsModule为function', () => {
-//         service.registerCommand('yyt [component]', argv => {});
-//         expect(service.registeredCommands.get('yyt').describe).toBeFalsy();
-//     });
-//     test('只有name值（只有第一个参数）', () => {
-//         service.registerCommand({
-//             command: 'yyt [component]',
-//             builder: {},
-//             description: 'yyt only name description',
-//             handler(argv) {},
-//             aliases: []
-//         });
-//         expect(service.registeredCommands.get('yyt').describe).toBe('yyt only name description');
-//     });
-// });

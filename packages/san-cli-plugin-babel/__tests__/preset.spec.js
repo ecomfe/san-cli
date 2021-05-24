@@ -31,6 +31,22 @@ test('默认值', () => {
     });
 });
 
+test('现代模式的默认值', () => {
+    process.env.SAN_CLI_MODERN_BUILD = true;
+    const presets = preset().presets;
+    delete process.env.SAN_CLI_MODERN_BUILD;
+    expect(presets[0][1]).toEqual({
+        bugfixes: true,
+        debug: false,
+        exclude: [],
+        loose: false,
+        useBuiltIns: 'usage',
+        corejs: require('core-js/package.json').version,
+        targets: {},
+        modules: false
+    });
+});
+
 test('添加 plugin', () => {
     const plugins = preset({plugins: [{id: 'a'}]}).plugins;
     expect(plugins.length).toBe(8);
@@ -76,4 +92,9 @@ test('async/await', () => {
         }
     `, defaultOptions);
     expect(code).toMatch('regenerator-runtime/runtime');
+});
+
+test('显式传入 polyfill', () => {
+    const presets = preset(undefined, {polyfills: 'es.promise'}).presets;
+    expect(presets[0][1].exclude).toBe('es.promise');
 });
