@@ -202,6 +202,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
             let configContent = fse.readFileSync(configPath, 'utf8');
             configContent = configContent.replace('css: {', 'css: {requireModuleExtension: false,');
             configContent = configContent.replace('module.exports = {', 'module.exports = {largeAssetSize: 1,');
+            configContent = configContent.replace('splitChunks: {', 'cache: false,splitChunks: {');
             fse.writeFile(configPath, configContent);
             child_process.exec('san build --mode development', {cwd}, () => {
                 const baseTplContent = fse.readFileSync(baseTplPath, 'utf8');
