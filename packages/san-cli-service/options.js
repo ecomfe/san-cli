@@ -88,6 +88,8 @@ const schema = joi
         }),
         // webpack 相关配置
         alias: joi.object(),
+        // 缓存的相关配置
+        cache: joi.alternatives().try(joi.boolean(), joi.object()),
         // 内置 loader 的 options
         loaderOptions: joi.object(),
         // 主要用 splitChunks.cacheGroups
