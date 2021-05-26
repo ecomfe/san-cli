@@ -21,12 +21,12 @@ module.exports = function apply(argv, api) {
 
     const projectOptions = api.getProjectOptions();
     const webpackConfig = getNormalizeWebpackConfig(api, projectOptions, argv);
-    const build = new Serve(webpackConfig);
-    build.getServer().then(server => {
+    const serve = new Serve(webpackConfig);
+    serve.getServer().then(server => {
         ['SIGINT', 'SIGTERM'].forEach(signal => {
             process.on(signal, () => {
                 server.close(() => {
-                    build.removeAllListeners();
+                    serve.removeAllListeners();
                     process.exit(0);
                 });
             });
@@ -39,7 +39,7 @@ module.exports = function apply(argv, api) {
             }
         });
     });
-    build.on('success', ({isFirstCompile, devServerConfig: ds}) => {
+    serve.on('success', ({isFirstCompile, devServerConfig: ds}) => {
         if (isFirstCompile) {
             const {textCommonColor} = require('san-cli-utils/color');
             const networkUrl = `${ds.https ? 'http' : 'http'}://${ds.host}:${ds.port}`;
@@ -79,8 +79,8 @@ module.exports = function apply(argv, api) {
             /* eslint-enable no-console */
         }
     });
-    build.on('fail', ({type, stats, err}) => {
+    serve.on('fail', ({type, stats, err}) => {
         error(type === 'server' ? 'Local server start failed！' : '', err);
     });
-    build.run();
+    serve.run();
 };

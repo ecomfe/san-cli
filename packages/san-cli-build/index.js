@@ -46,10 +46,10 @@ exports.builder = {
         default: false,
         describe: 'Enable webpack-bundle-analyzer server'
     },
-    'no-clean': {
+    'clean': {
         type: 'boolean',
-        default: false,
-        describe: 'Do not delete the output directory before building'
+        default: true,
+        describe: 'Delete the output directory before building'
     },
     'no-colors': {
         alias: 'no-color',
