@@ -14,7 +14,8 @@ module.exports = (webpackChainConfig, rootOptions) => {
         css: cssOptions = {},
         sourceMap: rootSourceMap,
         resolve,
-        loaderOptions: rootLoaderOptions = {}
+        loaderOptions: rootLoaderOptions = {},
+        esbuild = {} // beta功能，使用esbuild压缩css时无法产生sourcemap: https://github.com/privatenumber/esbuild-loader
     } = rootOptions;
     const isProd = isProduction();
     // 这里loaderOptions直接用 rootOptions.css 的内容
@@ -83,12 +84,13 @@ module.exports = (webpackChainConfig, rootOptions) => {
             plugins: [require('autoprefixer')]
         };
     }
-
+    const useEsbuild = esbuild.css;
     // 1. 设置style loader
     // 2. 设置 css loader + css module + postcss
     createCSSRule(webpackChainConfig, 'css', /\.css$/, {
         requireModuleExtension,
         extract: shouldExtract,
+        useEsbuild,
         loaderOptions,
         sourceMap: false
     });
@@ -109,6 +111,7 @@ module.exports = (webpackChainConfig, rootOptions) => {
             preprocessor: cssPreprocessor,
             loaderOptions,
             extract: shouldExtract,
+            useEsbuild,
             sourceMap
         });
 
@@ -131,6 +134,7 @@ module.exports = (webpackChainConfig, rootOptions) => {
             preprocessor: cssPreprocessor,
             loaderOptions,
             extract: shouldExtract,
+            useEsbuild,
             sourceMap
         });
     }
@@ -140,6 +144,7 @@ module.exports = (webpackChainConfig, rootOptions) => {
             preprocessor: cssPreprocessor,
             loaderOptions,
             extract: shouldExtract,
+            useEsbuild,
             sourceMap
         });
     }
@@ -149,6 +154,7 @@ module.exports = (webpackChainConfig, rootOptions) => {
             preprocessor: cssPreprocessor,
             loaderOptions,
             extract: shouldExtract,
+            useEsbuild,
             sourceMap
         });
     }
@@ -157,7 +163,7 @@ module.exports = (webpackChainConfig, rootOptions) => {
     if (shouldExtract) {
         webpackChainConfig.plugin('extract-css').use(require('mini-css-extract-plugin'), [extractOptions]);
         // minify extracted CSS
-        if (isProd) {
+        if (isProd && !useEsbuild) {
             const nanoOptions = {
                 preset: ['default', Object.assign(defaultCssnanoOptions, cssnanoOptions)]
             };

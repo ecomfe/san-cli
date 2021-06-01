@@ -1,6 +1,7 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const styleLoaderFactory = require('../loaders/style');
 const cssLoaderFactory = require('../loaders/css');
+const esbuildLoaderFactory = require('../loaders/esbuild');
 const postcssLoaderFactory = require('../loaders/postcss');
 const {error} = require('san-cli-utils/ttyLogger');
 
@@ -13,6 +14,7 @@ module.exports = (
         preprocessor,
         loaderOptions = {},
         extract: shouldExtract,
+        useEsbuild,
         sourceMap
     }
 ) => {
@@ -64,7 +66,14 @@ module.exports = (
         rule.use('css')
             .loader(loader)
             .options(cssLoaderOptions);
-
+        // 使用esbuild压缩css
+        if (!shouldExtract && useEsbuild) {
+            const {loader: esBuildLoader, options: esbuildLoaderOptions = {}} = esbuildLoaderFactory();
+            rule.use('esbuild')
+                .loader(esBuildLoader)
+                .options(esbuildLoaderOptions)
+                .after('css');
+        }
         if (hasPostCSSConfig) {
             const {loader, options} = postcssLoaderFactory(
                 Object.assign(
