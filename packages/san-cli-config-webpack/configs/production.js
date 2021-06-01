@@ -4,7 +4,7 @@ const {getAssetPath} = require('san-cli-utils/path');
 const {terserOptions: defaultTerserOptions} = require('../defaultOptions');
 
 module.exports = (webpackConfig, projectOptions) => {
-    const {assetsDir, splitChunks, terserOptions = {}} = projectOptions;
+    const {assetsDir, splitChunks, terserOptions = {}, runtimeChunk} = projectOptions;
     // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
     const isLegacyBundle = parseInt(process.env.SAN_CLI_LEGACY_BUILD, 10) === 1;
     // sourcemap
@@ -31,6 +31,9 @@ module.exports = (webpackConfig, projectOptions) => {
 
     if (splitChunks) {
         webpackConfig.optimization.splitChunks(splitChunks);
+    }
+    if (runtimeChunk) {
+        webpackConfig.optimization.runtimeChunk(runtimeChunk);
     }
 
     webpackConfig.optimization.minimizer('js').use(

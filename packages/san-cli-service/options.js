@@ -94,6 +94,8 @@ const schema = joi
         loaderOptions: joi.object(),
         // 主要用 splitChunks.cacheGroups
         splitChunks: joi.object(),
+        // 主要用 runtimeChunk
+        runtimeChunk: joi.alternatives().try(joi.string(), joi.object()),
         // 纯自定义的函数
         chainWebpack: joi.func(),
         configWebpack: joi.alternatives().try(joi.object(), joi.func()),
