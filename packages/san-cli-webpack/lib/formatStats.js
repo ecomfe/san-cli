@@ -25,7 +25,7 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
     const isMinJS = val => /\.min\.js$/.test(val);
 
     /* eslint-disable no-unused-vars */
-    let {assets, entrypoints, assetsByChunkName, chunks} = stats;
+    let {assets, entrypoints, chunks} = stats;
     /* eslint-enable no-unused-vars */
 
     function getChunksById(id) {
@@ -101,7 +101,7 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
         });
         return {
             name,
-            assets: entry.assets,
+            assets: entry.assets.map(a => a.name),
             prefetchAssets,
             preloadAssets,
             asyncAssets: [...new Set(asyncChunks)]
