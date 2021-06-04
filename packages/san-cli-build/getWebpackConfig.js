@@ -7,7 +7,7 @@
  * @file 将 build 的 webpackConfig 处理拆出来
  * @author ksky521
  */
-const fse = require('fs-extra');
+
 const {resolveEntry} = require('san-cli-webpack/utils');
 const {error, chalk} = require('san-cli-utils/ttyLogger');
 const {getReportFileName} = require('./utils');
@@ -16,11 +16,6 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     // 读取 cli 传入的 argv
     const {mode, entry, dest, analyze, watch, clean, remote, report, statsJson, modern, modernBuild = false} = argv;
     const targetDir = api.resolve(dest || projectOptions.outputDir);
-
-    if (clean) {
-        // 删掉目录
-        fse.removeSync(targetDir);
-    }
 
     const chainConfig = api.getWebpackChainConfig();
     // modern mode
@@ -107,7 +102,10 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
 
     // resolve webpack config
     let webpackConfig = api.getWebpackConfig(chainConfig);
-
+    // 删除目录
+    if (clean) {
+        webpackConfig.output.clean = true;
+    }
     // --dest
     if (dest) {
         webpackConfig.output.path = targetDir;

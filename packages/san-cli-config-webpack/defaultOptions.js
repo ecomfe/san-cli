@@ -19,7 +19,7 @@ exports.cssnanoOptions = {
 
 exports.devServerOptions = {
     watchContentBase: false,
-    hot: true,
+    hot: false, // 已经使用HotModuleReplacementPlugin了
     hotOnly: false,
     logLevel: 'silent',
     clientLogLevel: 'silent',
