@@ -145,6 +145,22 @@ module.exports = {
     esbuild: {css: true}
 };
 ```
+
+### unsafeCache
+webpack5新增的安全策略，对应config.module.unsafeCache, 开启后（true）可加快构建速度，默认不开启（false）
+
+### thread
+生产环境下开启多进程打包，开启方式
+
+```js
+module.exports = {
+    // ...
+    thread: true // 或填入{}也可
+};
+```
+
+thread传入true可开启，还可传入[thread-loader](https://webpack.js.org/loaders/thread-loader/)的配置对象，替换默认配置
+
 ### html-minifier 配置
 
 除此之外，San CLI 中使用的 html-webpack-plugin 的配置项中可以使用 html-minifier，在 San CLi 中默认的配置如下：
