@@ -96,8 +96,10 @@ const schema = joi
         splitChunks: joi.object(),
         // webpack5 runtimeChunk
         runtimeChunk: joi.alternatives().try(joi.string(), joi.object()),
-        // beta: 主要用在生产环境（转换js、压缩js和css）
+        // beta: 主要用在开发环境（转换js）生产环境（压缩js和css）
         esbuild: joi.object(),
+        // thread-loader：主要用在生产环境环境
+        thread: joi.alternatives().try(joi.boolean(), joi.object()),
         // config.module.unsafeCache,webpack5新增
         unsafeCache: joi.boolean(),
         // 纯自定义的函数

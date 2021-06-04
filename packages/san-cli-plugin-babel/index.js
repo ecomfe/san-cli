@@ -29,13 +29,11 @@ module.exports = {
     id: 'san-cli-plugin-babel',
     apply(api, projectOptions = {}) {
         const cliPath = path.dirname(path.resolve(__dirname, './package.json'));
-        const {loaderOptions = {}, transpileDependencies = [], cache, mode, esbuild} = projectOptions;
+        const {loaderOptions = {}, transpileDependencies = [], cache, mode, esbuild, thread} = projectOptions;
         // beta esbuild实验配置项
         if (mode === 'development' && esbuild) {
             return;
         }
-        // 开启babel缓存, 第二次构建时，会读取之前的缓存，与外层cache保持一致，未设置外层时默认打开babel缓存，Modern打包不开启
-        const cacheDirectory = (typeof cache === 'undefined' || cache) && !process.env.SAN_CLI_MODERN_BUILD;
         // 如果需要 babel 转义node_module 中的模块，则使用这个配置
         // 类似 xbox 这些基础库都提供 esm 版本
         const transpileDepRegex = genTranspileDepRegex(transpileDependencies);
@@ -69,16 +67,24 @@ module.exports = {
                     return /node_modules/.test(filepath);
                 })
                 .end();
-
+            // 开销大,无必要不开启，仅生产环境开启
+            if (thread && mode !== 'development') {
+                jsRule
+                    .use('thread-loader')
+                    .loader('thread-loader')
+                    .options(typeof thread === 'object' ? thread : {});
+            }
             jsRule
                 .use('babel-loader')
                 .loader('babel-loader')
                 .options(loaderOptions.babel !== false ? {
                     presets: [
-                        [require.resolve('./preset'), loaderOptions.babel]
+                        [require.resolve('./preset'), loaderOptions.babel || {}]
                     ],
-                    cacheDirectory
-                } : {});
+                    // 开启babel缓存, 开发环境第二次构建时会读取之前的缓存，与外层cache保持一致
+                    cacheDirectory: !!cache
+                } : {})
+                .end();
         });
     }
 };
