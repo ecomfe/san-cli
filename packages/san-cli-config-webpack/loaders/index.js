@@ -1,5 +1,6 @@
 [
     'babel',
+    'esbuild',
     'ejs',
     'html',
     'file',
