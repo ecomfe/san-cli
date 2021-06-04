@@ -118,6 +118,10 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
 
     // --mode
     webpackConfig.mode = mode;
+    // webpackchain暂不支持unsafeCache设置，关闭后可加快构建速度
+    if (projectOptions.unsafeCache) {
+        webpackConfig.module.unsafeCache = true;
+    }
 
     // entry
     if (entry) {

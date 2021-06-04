@@ -98,6 +98,8 @@ const schema = joi
         runtimeChunk: joi.alternatives().try(joi.string(), joi.object()),
         // beta: 主要用在生产环境（转换js、压缩js和css）
         esbuild: joi.object(),
+        // config.module.unsafeCache,webpack5新增
+        unsafeCache: joi.boolean(),
         // 纯自定义的函数
         chainWebpack: joi.func(),
         configWebpack: joi.alternatives().try(joi.object(), joi.func()),
