@@ -110,6 +110,41 @@ module.exports = {
 };
 ```
 
+### esbuild
+
+> 实验性功能，可能会有坑，但可以有效提升速度体验
+
+压缩js除使用默认 terserjs外，还可以使用esbuild压缩，开启方式
+
+```js
+module.exports = {
+    // ...
+    esbuild: true // 或填入{}也可
+};
+```
+
+将使用以下默认配置进行压缩
+
+```js
+{
+    // ...
+    minify: true,        
+    target: 'es2015',
+};
+```
+
+也可通过esbuild项直接传入配置，具体配置见（https://github.com/privatenumber/esbuild-loader）
+
+esbuild开启后，默认也会在开发环境下使用esbuild-loader替换babel-loader，速度大幅提升
+
+esbuild也可以开启css压缩（默认不开启），按照如下方式传入即可
+
+```js
+module.exports = {
+    // ...
+    esbuild: {css: true}
+};
+```
 ### html-minifier 配置
 
 除此之外，San CLI 中使用的 html-webpack-plugin 的配置项中可以使用 html-minifier，在 San CLi 中默认的配置如下：
