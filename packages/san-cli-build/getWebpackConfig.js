@@ -7,7 +7,6 @@
  * @file 将 build 的 webpackConfig 处理拆出来
  * @author ksky521
  */
-
 const {resolveEntry} = require('san-cli-webpack/utils');
 const {error, chalk} = require('san-cli-utils/ttyLogger');
 const {getReportFileName} = require('./utils');
@@ -103,9 +102,7 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     // resolve webpack config
     let webpackConfig = api.getWebpackConfig(chainConfig);
     // 删除目录
-    if (clean) {
-        webpackConfig.output.clean = true;
-    }
+    webpackConfig.output.clean = !!clean;
     // --dest
     if (dest) {
         webpackConfig.output.path = targetDir;
@@ -118,7 +115,7 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
 
     // --mode
     webpackConfig.mode = mode;
-    // webpackchain暂不支持unsafeCache设置，关闭后可加快构建速度
+    // webpackchain暂不支持unsafeCache设置，该项置为true（表示关闭安全策略）后可加快构建速度
     if (projectOptions.unsafeCache) {
         webpackConfig.module.unsafeCache = true;
     }

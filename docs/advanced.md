@@ -147,7 +147,7 @@ module.exports = {
 ```
 
 ### unsafeCache
-webpack5新增的安全策略，对应config.module.unsafeCache, 开启后（true）可加快构建速度，默认不开启（false）
+webpack5新增了安全策略，对应config.module.unsafeCache, 开启后（true）表示忽略安全策略，可加快构建速度，默认不开启（false）
 
 ### thread
 生产环境下开启多进程打包，开启方式

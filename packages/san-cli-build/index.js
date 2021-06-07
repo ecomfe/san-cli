@@ -48,7 +48,7 @@ exports.builder = {
     },
     'clean': {
         type: 'boolean',
-        default: true,
+        default: false,
         describe: 'Delete the output directory before building'
     },
     'no-colors': {
