@@ -110,7 +110,7 @@ module.exports = {
 };
 ```
 
-### esbuild
+### loaderOptions.esbuild
 
 > 实验性功能，可能会有坑，但可以有效提升速度体验
 
@@ -119,7 +119,9 @@ module.exports = {
 ```js
 module.exports = {
     // ...
-    esbuild: true // 或填入{}也可
+    loaderOptions: {
+        esbuild: true // 或填入{}也可
+    }
 };
 ```
 
@@ -133,7 +135,7 @@ module.exports = {
 };
 ```
 
-也可通过esbuild项直接传入配置，具体配置见（https://github.com/privatenumber/esbuild-loader）
+也可通过esbuild项直接传入配置，具体配置见[esbuild-loader](https://github.com/privatenumber/esbuild-loader)
 
 esbuild开启后，默认也会在开发环境下使用esbuild-loader替换babel-loader，速度大幅提升
 
@@ -142,24 +144,14 @@ esbuild也可以开启css压缩（默认不开启），按照如下方式传入�
 ```js
 module.exports = {
     // ...
-    esbuild: {css: true}
+    loaderOptions: {
+        esbuild: {css: true}
+    }
 };
 ```
 
 ### unsafeCache
 webpack5新增了安全策略，对应config.module.unsafeCache, 开启后（true）表示忽略安全策略，可加快构建速度，默认不开启（false）
-
-### thread
-生产环境下开启多进程打包，开启方式
-
-```js
-module.exports = {
-    // ...
-    thread: true // 或填入{}也可
-};
-```
-
-thread传入true可开启，还可传入[thread-loader](https://webpack.js.org/loaders/thread-loader/)的配置对象，替换默认配置
 
 ### html-minifier 配置
 

@@ -29,9 +29,9 @@ module.exports = {
     id: 'san-cli-plugin-babel',
     apply(api, projectOptions = {}) {
         const cliPath = path.dirname(path.resolve(__dirname, './package.json'));
-        const {loaderOptions = {}, transpileDependencies = [], cache, mode, esbuild, thread} = projectOptions;
-        // beta esbuild实验配置项
-        if (mode === 'development' && esbuild) {
+        const {loaderOptions = {}, transpileDependencies = [], cache, mode} = projectOptions;
+        // esbuild实验配置项
+        if (mode === 'development' && loaderOptions.esbuild) {
             return;
         }
         // 如果需要 babel 转义node_module 中的模块，则使用这个配置
@@ -68,11 +68,11 @@ module.exports = {
                 })
                 .end();
             // 开销大,无必要不开启，仅生产环境开启
-            if (thread && mode !== 'development') {
+            if (loaderOptions.thread && mode !== 'development') {
                 jsRule
                     .use('thread-loader')
                     .loader('thread-loader')
-                    .options(typeof thread === 'object' ? thread : {});
+                    .options(typeof loaderOptions.thread === 'object' ? loaderOptions.thread : {});
             }
             jsRule
                 .use('babel-loader')
