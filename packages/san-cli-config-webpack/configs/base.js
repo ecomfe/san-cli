@@ -28,8 +28,8 @@ module.exports = (webpackChainConfig, projectOptions) => {
         /* eslint-disable max-len */
         .filename((isLegacyBundle() ? '[name]-legacy' : '[name]') + `${filenameHashing ? '.[contenthash:8]' : ''}.js`)
         /* eslint-enable max-len */
-        .publicPath(projectOptions.publicPath);
-
+        .publicPath(projectOptions.publicPath)
+        .pathinfo(false);
     // prettier-ignore
     /* eslint-disable*/
     webpackChainConfig

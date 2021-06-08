@@ -110,7 +110,7 @@ module.exports = {
 };
 ```
 
-### esbuild
+### loaderOptions.esbuild
 
 > 实验性功能，可能会有坑，但可以有效提升速度体验
 
@@ -119,7 +119,9 @@ module.exports = {
 ```js
 module.exports = {
     // ...
-    esbuild: true // 或填入{}也可
+    loaderOptions: {
+        esbuild: true // 或填入{}也可
+    }
 };
 ```
 
@@ -133,7 +135,7 @@ module.exports = {
 };
 ```
 
-也可通过esbuild项直接传入配置，具体配置见（https://github.com/privatenumber/esbuild-loader）
+也可通过esbuild项直接传入配置，具体配置见[esbuild-loader](https://github.com/privatenumber/esbuild-loader)
 
 esbuild开启后，默认也会在开发环境下使用esbuild-loader替换babel-loader，速度大幅提升
 
@@ -142,9 +144,15 @@ esbuild也可以开启css压缩（默认不开启），按照如下方式传入�
 ```js
 module.exports = {
     // ...
-    esbuild: {css: true}
+    loaderOptions: {
+        esbuild: {css: true}
+    }
 };
 ```
+
+### unsafeCache
+webpack5新增了安全策略，对应config.module.unsafeCache, 开启后（true）表示忽略安全策略，可加快构建速度，默认不开启（false）
+
 ### html-minifier 配置
 
 除此之外，San CLI 中使用的 html-webpack-plugin 的配置项中可以使用 html-minifier，在 San CLi 中默认的配置如下：

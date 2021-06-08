@@ -230,6 +230,19 @@ module.exports = {
 但是，我们推荐使用`babel.config.js`或者`.babelrc`进行 Babel 配置。
 :::
 
+其他可在`loaderOptions`中配置的选项：
+
+-   `image` 需要新增或覆盖默认图片的url-loader 配置项
+-   `thread` 需要在生产环境下开启多进程打包的thread-loader的配置项，thread传入true可开启，还可传入[thread-loader](https://webpack.js.org/loaders/thread-loader/)的配置对象，替换默认配置。例如：
+    ```js
+    module.exports = {
+        // ...
+        loaderOptions: {
+            thread: true // 或填入{}也可
+        }
+    };
+    ```
+
 ### css 相关
 
 San CLI 中跟 CSS 相关的配置都统一放置在`css`中。例如：
@@ -283,6 +296,7 @@ css 相关的 loader 配置项，支持：
 -   `less` 需要新增的 less-loader 配置项；
 -   `stylus` 需要新增的 stylus-loader 配置项；
 -   `postcss` 需要新增的 postcss-loader 配置项，默认支持 postcss.config.js 的配置。
+
 
 ::: warning
 这里介绍的是一般配置，更多高级的配置以及优化相关的配置可以继续阅读[高级配置](./advanced.md)内容。

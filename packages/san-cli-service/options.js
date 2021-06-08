@@ -90,14 +90,14 @@ const schema = joi
         alias: joi.object(),
         // 缓存的相关配置
         cache: joi.alternatives().try(joi.boolean(), joi.object()),
-        // 内置 loader 的 options
+        // 内置 loader 的 options 增加thread-loader主要用在生产环境 增加esbuild-loader主要用在开发环境（转换js）生产环境（压缩js和css）
         loaderOptions: joi.object(),
         // 主要用 splitChunks.cacheGroups
         splitChunks: joi.object(),
         // webpack5 runtimeChunk
         runtimeChunk: joi.alternatives().try(joi.string(), joi.object()),
-        // beta: 主要用在生产环境（转换js、压缩js和css）
-        esbuild: joi.object(),
+        // config.module.unsafeCache,webpack5新增
+        unsafeCache: joi.boolean(),
         // 纯自定义的函数
         chainWebpack: joi.func(),
         configWebpack: joi.alternatives().try(joi.object(), joi.func()),

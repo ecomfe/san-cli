@@ -8,8 +8,8 @@
         "portfinder": "^1.0.25",
         "san-cli-utils": "^1.0.0",
         "tty-table": "^2.8.2",
-        "webpack": "^5.16.0",
-        "webpack-dev-server": "^3.11.1"
+        "webpack": "^5.38.1",
+        "webpack-dev-server": "^3.11.2"
     },
     "author": "ksky521",
     "keywords": [

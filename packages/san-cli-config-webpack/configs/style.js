@@ -14,8 +14,7 @@ module.exports = (webpackChainConfig, rootOptions) => {
         css: cssOptions = {},
         sourceMap: rootSourceMap,
         resolve,
-        loaderOptions: rootLoaderOptions = {},
-        esbuild = {} // beta功能，使用esbuild压缩css时无法产生sourcemap: https://github.com/privatenumber/esbuild-loader
+        loaderOptions: rootLoaderOptions = {}
     } = rootOptions;
     const isProd = isProduction();
     // 这里loaderOptions直接用 rootOptions.css 的内容
@@ -26,7 +25,8 @@ module.exports = (webpackChainConfig, rootOptions) => {
         cssPreprocessor,
         cssnanoOptions
     } = cssOptions;
-
+    // 实验功能，使用esbuild压缩css时无法产生sourcemap: https://github.com/privatenumber/esbuild-loader
+    const esbuild = rootLoaderOptions.esbuild || {};
     // 有则优先使用css中的loaderoptions，否则使用root loaderOptions
     const loaderOptions = cssOptions.loaderOptions
         ? defaultsDeep(cssOptions.loaderOptions, rootLoaderOptions)
