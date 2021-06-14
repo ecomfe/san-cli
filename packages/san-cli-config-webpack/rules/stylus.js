@@ -5,7 +5,6 @@ module.exports = (
     name = 'styl',
     test = /\.styl(us)?$/,
     options = {
-        requireModuleExtension: true,
         extract: false,
         loaderOptions: {
             style: {},

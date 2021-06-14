@@ -10,7 +10,6 @@ module.exports = (
     name,
     test,
     {
-        requireModuleExtension,
         preprocessor,
         loaderOptions = {},
         extract: shouldExtract,
@@ -23,12 +22,13 @@ module.exports = (
     const hasPostCSSConfig = loaderOptions.postcss !== false;
 
     // rules for *.module.* files
-    const extModulesRule = baseRule.oneOf('normal-modules').test(/\.module\.\w+$/);
+    const moduleTest = /\.module\.\w+$/;
+    const extModulesRule = baseRule.oneOf('normal-modules').test(moduleTest);
     applyLoaders(extModulesRule, true);
 
     // rules for normal CSS imports
     const normalRule = baseRule.oneOf('normal');
-    applyLoaders(normalRule, !requireModuleExtension);
+    applyLoaders(normalRule);
 
     function applyLoaders(rule, isCssModule) {
         if (shouldExtract) {
@@ -49,18 +49,12 @@ module.exports = (
                         // prettier-ignore
                         1 + (hasPostCSSConfig ? 1 : 0)
                 },
-                loaderOptions.css || {}
+                loaderOptions.css
             )
         );
         const {loader, options: cssLoaderOptions = {}} = cssLoader;
-        if (isCssModule) {
-            cssLoaderOptions.modules = {
-                localIdentName: '[name]_[local]_[hash:base64:5]',
-                ...cssLoaderOptions.modules
-            };
-        }
-        else {
-            delete cssLoaderOptions.modules;
+        if (isCssModule && typeof cssLoaderOptions.modules.auto === 'undefined') {
+            cssLoaderOptions.modules.auto = moduleTest;
         }
 
         rule.use('css')

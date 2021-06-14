@@ -83,7 +83,6 @@ exports.eslintOptions = {
 };
 
 exports.lessOptions = {
-    requireModuleExtension: true,
     extract: false,
     preprocessor: undefined,
     loaderOptions: {

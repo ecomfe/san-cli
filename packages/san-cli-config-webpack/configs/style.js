@@ -32,14 +32,13 @@ module.exports = (webpackChainConfig, rootOptions) => {
         ? defaultsDeep(cssOptions.loaderOptions, rootLoaderOptions)
         : rootLoaderOptions;
 
-    // ------css module------
-    let requireModuleExtension = cssOptions.requireModuleExtension;
-    if (typeof requireModuleExtension === 'undefined') {
-        if (loaderOptions.css && loaderOptions.css.modules) {
-            throw new Error('`css.requireModuleExtension` is required when custom css modules options provided');
-        }
-        requireModuleExtension = true;
-    }
+    // css module使用loaderOption下css的配置控制
+    loaderOptions.css = loaderOptions.css || {};
+
+    loaderOptions.css.modules = {
+        localIdentName: isProd ? '[hash:base64]' : '[name]_[local]_[hash:base64:5]',
+        ...loaderOptions.css.modules
+    };
 
     // --------extract css---------
     const shouldExtract = extract !== false;
@@ -88,7 +87,6 @@ module.exports = (webpackChainConfig, rootOptions) => {
     // 1. 设置style loader
     // 2. 设置 css loader + css module + postcss
     createCSSRule(webpackChainConfig, 'css', /\.css$/, {
-        requireModuleExtension,
         extract: shouldExtract,
         useEsbuild,
         loaderOptions,
@@ -107,7 +105,6 @@ module.exports = (webpackChainConfig, rootOptions) => {
         }
         // 添加 sass 逻辑
         createCSSRule(webpackChainConfig, 'scss', /\.scss$/, {
-            requireModuleExtension,
             preprocessor: cssPreprocessor,
             loaderOptions,
             extract: shouldExtract,
@@ -130,7 +127,6 @@ module.exports = (webpackChainConfig, rootOptions) => {
             });
         }
         createCSSRule(webpackChainConfig, 'sass', /\.sass$/, {
-            requireModuleExtension,
             preprocessor: cssPreprocessor,
             loaderOptions,
             extract: shouldExtract,
@@ -140,7 +136,6 @@ module.exports = (webpackChainConfig, rootOptions) => {
     }
     if (!cssPreprocessor || cssPreprocessor === 'less') {
         require('../rules/less')(webpackChainConfig, 'less', /\.less$/, {
-            requireModuleExtension,
             preprocessor: cssPreprocessor,
             loaderOptions,
             extract: shouldExtract,
@@ -150,7 +145,6 @@ module.exports = (webpackChainConfig, rootOptions) => {
     }
     if (!cssPreprocessor || cssPreprocessor === 'stylus') {
         createCSSRule(webpackChainConfig, 'stylus', /\.styl(us)?$/, {
-            requireModuleExtension,
             preprocessor: cssPreprocessor,
             loaderOptions,
             extract: shouldExtract,

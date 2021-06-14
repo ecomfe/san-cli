@@ -171,7 +171,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
                 // 测试点18：产出的 js 是否引入了 polyfill（测 babel）
                 expect(vendorsLegacyJSMapContent).toEqual(expect.stringContaining('/core-js/'));
 
-                // 测试点19：产出中的 classname 是否正确（css module）（测 san.conifg 的 css.requireModuleExtension）
+                // 测试点19：产出中的 classname 是否正确（css module）（默认启用css modules)
                 expect(indexCSSContent).toEqual(expect.not.stringContaining('_main_'));
 
                 // 测试点20：产出的 tpl/html 是否引入了配置的拆包（测 san.config 的 pages.chunks）
@@ -200,7 +200,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
 
         rimraf(outputPath, () => {
             let configContent = fse.readFileSync(configPath, 'utf8');
-            configContent = configContent.replace('css: {', 'css: {requireModuleExtension: false,');
+            configContent = configContent.replace('css: {// ', 'css: {');
             configContent = configContent.replace('module.exports = {', 'module.exports = {largeAssetSize: 1,');
             configContent = configContent.replace('splitChunks: {', 'cache: false,splitChunks: {');
             fse.writeFile(configPath, configContent);
