@@ -283,15 +283,11 @@ module.exports = {
 
 产出是否生成 sourceMap，默认与外层的（js 的 sourceMap） sourceMap 值一样。
 
-#### `requireModuleExtension`
-
-是否仅是含 .module 扩展名的文件（如：.module.less）支持 CSS Modules，默认是 true。
-
 #### `loaderOptions`
 
 css 相关的 loader 配置项，支持：
 
--   `css` 需要新增的 css-loader 配置项；
+-   `css` 需要新增的 css-loader 配置项；此处可以修改css modules相关配置([css-loader](https://github.com/webpack-contrib/css-loader#modules))
 -   `sass` 需要新增的 sass-loader 配置项；
 -   `less` 需要新增的 less-loader 配置项；
 -   `stylus` 需要新增的 stylus-loader 配置项；

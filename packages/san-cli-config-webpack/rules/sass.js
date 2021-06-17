@@ -5,7 +5,6 @@ module.exports = (
     name = 'scss',
     test = /\.scss$/,
     options = {
-        requireModuleExtension: true,
         extract: false,
         loaderOptions: {
             style: {},

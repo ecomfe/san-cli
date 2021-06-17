@@ -5,7 +5,6 @@ module.exports = (
     name,
     test,
     options = {
-        requireModuleExtension: true,
         extract: false,
         preprocessor: undefined,
         loaderOptions: {
