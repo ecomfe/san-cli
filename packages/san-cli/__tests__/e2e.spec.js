@@ -32,7 +32,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
         '--install'
     ];
     // 创建测试项目
-    const init = child_process.spawn('san', cmdArgs);
+    const init = child_process.spawn('san', cmdArgs, {shell: true});
 
     try {
         init.stderr.on('data', data => {

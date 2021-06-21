@@ -9,6 +9,7 @@
  */
 
 const {defineVar, ensureRelative, normalizeProjectOptions, resolveLocal} = require('../utils');
+const path = require('path');
 
 describe('测试 defineVar 函数', () => {
     test('有 SAN_VAR_ 开头的环境变量的情况', () => {
@@ -39,6 +40,8 @@ describe('测试 normalizeProjectOptions 函数', () => {
 
 describe('测试 resolveLocal 函数', () => {
     test('传入正确的参数是否返回了正确的结果', () => {
-        expect(resolveLocal('node_modules')).toBe(process.cwd() + '/packages/san-cli-config-webpack/node_modules');
+        expect(resolveLocal('node_modules')).toBe(
+            path.join(process.cwd(), 'packages', 'san-cli-config-webpack', 'node_modules')
+        );
     });
 });
