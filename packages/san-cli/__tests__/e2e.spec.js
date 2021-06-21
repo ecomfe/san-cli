@@ -35,7 +35,11 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
     const init = child_process.spawn('san', cmdArgs, {shell: true});
 
     try {
+        init.stdout.on('data', data => {
+            console.log(`stdout: ${data}`);
+        });
         init.stderr.on('data', data => {
+            console.error(`stderr: ${data}`);
             if (data.toString().includes('Download timeout')) {
                 throw '你网络不行，用 HTTPS clone GitHub 的代码库时失败了，可以通过配置代理解决，不会配置的话可以找胡粤。';
             }
@@ -51,6 +55,13 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
         const port = await portfinder.getPortPromise();
         fse.writeFile(configPath, fse.readFileSync(configPath, 'utf8').replace('8899', port));
         serve = child_process.spawn('san', ['serve'], {cwd});
+
+        serve.stdout.on('data', data => {
+            console.log(`stdout: ${data}`);
+        });
+        serve.stderr.on('data', data => {
+            console.error(`stderr: ${data}`);
+        });
 
         let isFirstCompilation = true;
         let page;
@@ -104,6 +115,14 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
         await new Promise((resolve, reject) => {
             fse.writeFileSync(path.join(cwd, '.env'), 'ONE=1');
             child_process.exec('san build --mode production --modern --report', {cwd}, (error, stdout, stderr) => {
+
+                if (error) {
+                    console.error(`exec error: ${error}`);
+                    return;
+                }
+                console.log(`stdout: ${stdout}`);
+                console.error(`stderr: ${stderr}`);
+
                 // 测试点4：产出目录的名字是否正确（测 san.config 的 outputDir）
                 expect(fse.existsSync(outputPath)).toBeTruthy();
 
@@ -204,7 +223,15 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
             configContent = configContent.replace('module.exports = {', 'module.exports = {largeAssetSize: 1,');
             configContent = configContent.replace('splitChunks: {', 'cache: false,splitChunks: {');
             fse.writeFile(configPath, configContent);
-            child_process.exec('san build --mode development', {cwd}, () => {
+            child_process.exec('san build --mode development', {cwd}, (error, stdout, stderr) => {
+
+                if (error) {
+                    console.error(`exec error: ${error}`);
+                    return;
+                }
+                console.log(`stdout: ${stdout}`);
+                console.error(`stderr: ${stderr}`);
+
                 const baseTplContent = fse.readFileSync(baseTplPath, 'utf8');
                 // 测试点25：产出的 tpl/html 里的 js 是否没压缩（测 development mode）
                 expect(baseTplContent).toEqual(expect.stringMatching(/<script>[\s\S]+;\n[\s\S]+<\/script>/));
