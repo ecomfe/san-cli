@@ -67,7 +67,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
 
                     browser = await puppeteer.launch();
                     page = await browser.newPage();
-                    await page.goto(url + '/template/index/index.tpl');
+                    await page.goto('http://0.0.0.0:' + port + '/template/index/index.tpl');
                     const h2Text = await page.evaluate(() => document.querySelector('h2').textContent);
                     // 测试点2：页面正常跑起来了没？
                     expect(h2Text).toMatch('Hello world, I am OK~');
