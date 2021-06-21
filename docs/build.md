@@ -8,7 +8,7 @@
 san build [entry]
 ```
 
--   entry：入口文件，用于编译单一文件，不传入，则从当前[工作目录](https://zh.wikipedia.org/wiki/%E5%B7%A5%E4%BD%9C%E7%9B%AE%E9%8C%84)，读取 Config 文件的 pages 配置项。
+-   entry：入口文件，用于编译单一文件，不传入，则从当前[工作目录](https://zh.wikipedia.org/wiki/%E5%B7%A5%E4%BD%9C%E7%9B%AE%E9%8C%84)，读取 Config 文件的 pages 配置项
 
 打包结束之后，build 命令默认会生成产出物报表，效果如下：
 
@@ -16,11 +16,11 @@ san build [entry]
 
 ## 参数说明
 
-### 跟性能相关
+### 性能相关
 
 -   `--modern` 是否使用 modern mode 打包，值为 true 或 false，默认是 false，modern mode[参考](/modern-mode.md)
 
-### 跟配置相关
+### 配置相关
 
 -   `--dest` 产出文件目录
 -   `--mode，--m` 环境指示，值为 development 或 production，默认是 production
@@ -37,5 +37,4 @@ san build [entry]
 ### 其他
 
 -   `--watch，--w` 是否监听代码变化
--   `--no-clean` 是否在 building 之前不删除上一次的产出文件，值为 true 或 false，默认 false
--   `--remote` 将编译产出远程部署到目标机器的名称，具体使用可[参考文档](/deployment.md)
+-   `--remote` 将编译产出远程部署到目标机器的名称，具体使用可参考[文档](/deployment.md)

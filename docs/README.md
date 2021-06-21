@@ -25,13 +25,11 @@ yarn global add san-cli
 
 ```bash
 san -h
-san build
-san serve
 ```
 
 ## 特点
 
--   支持 Command 和 Service 双插件机制，可以定制化自己/团队的 CLI
+-   支持 Command 和 Service 双插件机制，可以定制自己的或团队的 CLI
 -   内置打包、部署、包分析、性能分析等功能和最佳实践
 -   支持自定义项目脚手架
 -   支持 Markdown 建站

@@ -1,15 +1,15 @@
 
 # Presets 预设
 
-为了方便个人和团队使用，San CLI 支持`sanrc.json`的预设文件，该文件存储在`homedir/.san/sanrc.json`，这个文件因为存储在个人的 home 文件夹，所以不会被同步到项目中，适应场景是自己定制的 San CLI 配置。
+为了方便个人和团队使用，San CLI 支持预设文件`sanrc.json`，该文件存储在`homedir/.san/sanrc.json`，这个文件因为存储在个人的 home 文件夹，所以不会被同步到项目中，适应场景是定制自己的 San CLI 配置。
 
 团队或者项目中如果要统一 San CLI 的预设配置，可以修改项目的`package.json`的`san`字段，添加对应的配置项。
 
-> 更精确的表达是：sanrc.json 是 CLI 的配置文件，san.config.js 是项目的配置文件。
+> 注意和 san.config.js 的区别：sanrc.json 是 CLI 的配置文件，san.config.js 是项目的配置文件。
 
 ## 配置项
 
-`sanrc.json`的文件配置项如下：
+`sanrc.json`的配置项如下：
 
 -   commands：**Array**，添加的 [Command 插件](/cmd-plugin.md)，数组内存储的是`String`类型，支持路径或者插件的 NPM 包名；
 -   plugins：**Array**，添加的 [Service 插件](/srv-plugin.md)，数组内存储的是`String`类型，支持路径或者插件的 NPM 包名；
