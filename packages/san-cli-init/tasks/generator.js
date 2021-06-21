@@ -93,6 +93,7 @@ function getProjectPresets(projectPresets, metaData) {
     let data = null;
     if (projectPresets) {
         try {
+            console.log(666, projectPresets)
             data = JSON.parse(projectPresets);
             if (validatePrompts(metaData.prompts, data)) {
                 debug('ProjectPresets is valid!');
