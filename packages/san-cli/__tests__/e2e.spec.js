@@ -19,16 +19,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
         'init',
         'https://github.com/ksky521/san-project',
         cwd,
-        `--project-presets="{
-            'name': 'e2e',
-            'description': 'A San project',
-            'author': 'Lohoyo',
-            'tplEngine': 'smarty',
-            'lint': false,
-            'demo': true,
-            'demoType': 'normal',
-            'cssPreprocessor': 'less'
-        }"`,
+        `--project-presets='{"name": "e2e", "description": "A San project", "author": "Lohoyo", "tplEngine": "smarty", "lint": false, "demo": true, "demoType": "normal", "cssPreprocessor": "less"}'`,
         '--install'
     ];
     // 创建测试项目
