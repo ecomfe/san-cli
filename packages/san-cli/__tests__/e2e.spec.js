@@ -19,22 +19,11 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
         'init',
         'https://github.com/ksky521/san-project',
         cwd,
-        process.platform === 'win32'
-            ? '--project-presets="{\\"name\\": \\"e2e\\", \\"description\\": \\"A San project\\", \\"author\\": \\"Lohoyo\\", \\"tplEngine\\": \\"smarty\\", \\"lint\\": false, \\"demo\\": true, \\"demoType\\": \\"normal\\", \\"cssPreprocessor\\": \\"less\\"}"'
-            : `--project-presets='{
-                "name": "e2e",
-                "description": "A San project",
-                "author": "Lohoyo",
-                "tplEngine": "smarty",
-                "lint": false,
-                "demo": true,
-                "demoType": "normal",
-                "cssPreprocessor": "less"
-            }'`,
+        '--project-presets="{\\"name\\": \\"e2e\\", \\"description\\": \\"A San project\\", \\"author\\": \\"Lohoyo\\", \\"tplEngine\\": \\"smarty\\", \\"lint\\": false, \\"demo\\": true, \\"demoType\\": \\"normal\\", \\"cssPreprocessor\\": \\"less\\"}"',
         '--install'
     ];
     // 创建测试项目
-    const init = child_process.spawn('san', cmdArgs, {shell: process.platform === 'win32'});
+    const init = child_process.spawn('san', cmdArgs, {shell: true});
 
     try {
         init.stdout.on('data', data => {
@@ -56,7 +45,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
 
         const port = await portfinder.getPortPromise();
         fse.writeFile(configPath, fse.readFileSync(configPath, 'utf8').replace('8899', port));
-        serve = child_process.spawn('san', ['serve'], {cwd, shell: process.platform === 'win32'});
+        serve = child_process.spawn('san', ['serve'], {cwd, shell: true});
 
         serve.stdout.on('data', data => {
             console.log(`stdout: ${data}`);
@@ -97,6 +86,10 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
                         isFirstCompilation = false;
                     } else {
                         // 等待页面内容更新，如果超时了那应该就是你把代码改坏了，导致 HMR 失效了
+                        setInterval(() => {
+                            let temp = await page.evaluate(() => document.querySelector('h2').textContent);
+                            console.log(777, temp)
+                        }, 1000);
                         await page.waitForFunction(
                             selector => document.querySelector(selector).textContent.includes('updated'), {}, 'h2'
                         );
