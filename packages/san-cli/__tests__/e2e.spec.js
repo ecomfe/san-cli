@@ -86,7 +86,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
                         isFirstCompilation = false;
                     } else {
                         // 等待页面内容更新，如果超时了那应该就是你把代码改坏了，导致 HMR 失效了
-                        setInterval(() => {
+                        setInterval(async () => {
                             let temp = await page.evaluate(() => document.querySelector('h2').textContent);
                             console.log(777, temp)
                         }, 1000);
