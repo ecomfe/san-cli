@@ -1,5 +1,5 @@
 // 运行测试的时间上限设为3分钟（默认是5秒，太短了不够用）
-jest.setTimeout(120000);
+jest.setTimeout(180000);
 
 const path = require('path');
 const child_process = require('child_process');
@@ -19,7 +19,18 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
         'init',
         'https://github.com/ksky521/san-project',
         cwd,
-        '--project-presets="{\\"name\\": \\"e2e\\", \\"description\\": \\"A San project\\", \\"author\\": \\"Lohoyo\\", \\"tplEngine\\": \\"smarty\\", \\"lint\\": false, \\"demo\\": true, \\"demoType\\": \\"normal\\", \\"cssPreprocessor\\": \\"less\\"}"',
+        process.platform === 'win32'
+            ? '--project-presets="{\\"name\\": \\"e2e\\", \\"description\\": \\"A San project\\", \\"author\\": \\"Lohoyo\\", \\"tplEngine\\": \\"smarty\\", \\"lint\\": false, \\"demo\\": true, \\"demoType\\": \\"normal\\", \\"cssPreprocessor\\": \\"less\\"}"'
+            : `--project-presets='{
+                "name": "e2e",
+                "description": "A San project",
+                "author": "Lohoyo",
+                "tplEngine": "smarty",
+                "lint": false,
+                "demo": true,
+                "demoType": "normal",
+                "cssPreprocessor": "less"
+            }'`,
         '--install'
     ];
     // 创建测试项目
