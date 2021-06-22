@@ -74,7 +74,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
 
                     const appJSPath = path.join(cwd, 'src/pages/index/containers/app.js');
                     // 修改测试项目代码以测试 HMR
-                    fse.writeFile(
+                    fse.writeFileSync(
                         appJSPath,
                         fse.readFileSync(appJSPath, 'utf8').replace('I am OK', 'I have been updated')
                     );
