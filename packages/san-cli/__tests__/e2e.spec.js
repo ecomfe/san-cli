@@ -256,7 +256,16 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
     });
 });
 
-afterAll(() => {
-    browser && browser.close();
-    serve && serve.kill();
+afterAll(async () => {
+    if (browser) {
+        await browser.close();
+    }
+    if (!serve) {
+        return;
+    }
+    if (process.platform === 'win32') {
+        child_process.spawn("taskkill", ["/pid", serve.pid, '/f', '/t']);
+    } else {
+        serve.kill();
+    }
 });
