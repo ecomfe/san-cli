@@ -67,7 +67,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
 
                     browser = await puppeteer.launch();
                     page = await browser.newPage();
-                    await page.goto('http://localhost:' + port + '/template/index/index.tpl');
+                    await page.goto('http://127.0.0.1:' + port + '/template/index/index.tpl');
                     const h2Text = await page.evaluate(() => document.querySelector('h2').textContent);
                     // 测试点2：页面正常跑起来了没？
                     expect(h2Text).toMatch('Hello world, I am OK~');
@@ -78,18 +78,17 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
                         appJSPath,
                         fse.readFileSync(appJSPath, 'utf8').replace('I am OK', 'I have been updated')
                     );
+                    console.log(111, fse.readFileSync(appJSPath, 'utf8'))
                 }
                 // 测试 HMR
                 if (data.toString().match('Compiled successfully')) {
                     // 第二次编译成功时才是 HMR（第一次编译成功时是初次起服务）
                     if (isFirstCompilation) {
+                        console.log(222)
                         isFirstCompilation = false;
                     } else {
+                        console.log(333)
                         // 等待页面内容更新，如果超时了那应该就是你把代码改坏了，导致 HMR 失效了
-                        setInterval(async () => {
-                            let temp = await page.evaluate(() => document.querySelector('h2').textContent);
-                            console.log(777, temp)
-                        }, 1000);
                         await page.waitForFunction(
                             selector => document.querySelector(selector).textContent.includes('updated'), {}, 'h2'
                         );
