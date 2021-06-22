@@ -44,7 +44,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
         fse.copySync(path.join(__dirname, './config/san.config.js'), configPath);
 
         const port = await portfinder.getPortPromise();
-        fse.writeFile(configPath, fse.readFileSync(configPath, 'utf8').replace('8899', port));
+        fse.writeFileSync(configPath, fse.readFileSync(configPath, 'utf8').replace('8899', port));
         serve = child_process.spawn('san', ['serve'], {cwd, shell: true});
 
         serve.stdout.on('data', data => {
@@ -216,7 +216,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
             configContent = configContent.replace('css: {// ', 'css: {');
             configContent = configContent.replace('module.exports = {', 'module.exports = {largeAssetSize: 1,');
             configContent = configContent.replace('splitChunks: {', 'cache: false,splitChunks: {');
-            fse.writeFile(configPath, configContent);
+            fse.writeFileSync(configPath, configContent);
             child_process.exec('san build --mode development', {cwd}, (error, stdout, stderr) => {
 
                 if (error) {
