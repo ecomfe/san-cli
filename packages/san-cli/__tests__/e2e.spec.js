@@ -19,11 +19,22 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
         'init',
         'https://github.com/ksky521/san-project',
         cwd,
-        '--project-presets="{\\"name\\": \\"e2e\\", \\"description\\": \\"A San project\\", \\"author\\": \\"Lohoyo\\", \\"tplEngine\\": \\"smarty\\", \\"lint\\": false, \\"demo\\": true, \\"demoType\\": \\"normal\\", \\"cssPreprocessor\\": \\"less\\"}"',
+        process.platform === 'win32'
+            ? '--project-presets="{\\"name\\": \\"e2e\\", \\"description\\": \\"A San project\\", \\"author\\": \\"Lohoyo\\", \\"tplEngine\\": \\"smarty\\", \\"lint\\": false, \\"demo\\": true, \\"demoType\\": \\"normal\\", \\"cssPreprocessor\\": \\"less\\"}"'
+            : `--project-presets='{
+                "name": "e2e",
+                "description": "A San project",
+                "author": "Lohoyo",
+                "tplEngine": "smarty",
+                "lint": false,
+                "demo": true,
+                "demoType": "normal",
+                "cssPreprocessor": "less"
+            }'`,
         '--install'
     ];
     // 创建测试项目
-    const init = child_process.spawn('san', cmdArgs, {shell: true});
+    const init = child_process.spawn('san', cmdArgs, {shell: process.platform === 'win32'});
 
     try {
         init.stdout.on('data', data => {
@@ -45,7 +56,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
 
         const port = await portfinder.getPortPromise();
         fse.writeFileSync(configPath, fse.readFileSync(configPath, 'utf8').replace('8899', port));
-        serve = child_process.spawn('san', ['serve'], {cwd, shell: true});
+        serve = child_process.spawn('san', ['serve'], {cwd, shell: process.platform === 'win32'});
 
         serve.stdout.on('data', data => {
             console.log(`stdout: ${data}`);
