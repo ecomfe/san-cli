@@ -119,7 +119,7 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     if (projectOptions.unsafeCache) {
         webpackConfig.module.unsafeCache = true;
     }
-    // webpackchain暂不支持realContentHash设置，webpackchain升级后可移到config内处理
+    // fixme: webpackchain暂不支持realContentHash设置，webpackchain升级后可移到config内处理
     if (webpackConfig.optimization) {
         webpackConfig.optimization.realContentHash = false;
     }

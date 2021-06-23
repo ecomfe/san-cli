@@ -9,9 +9,11 @@
  */
 
 module.exports = function apply(argv, api) {
-    const {info} = require('san-cli-utils/ttyLogger');
+    const path = require('path');
+    const {info, success: successLog, error} = require('san-cli-utils/ttyLogger');
+    const {textCommonColor} = require('san-cli-utils/color');
     const getNormalizeWebpackConfig = require('./getWebpackConfig');
-    const {compileSuccess, compileFail} = require('./utils');
+
     const projectOptions = api.getProjectOptions();
 
     // 开始时间
@@ -26,6 +28,76 @@ module.exports = function apply(argv, api) {
     const bundleTag = modern ? (process.env.SAN_CLI_MODERN_BUILD ? 'modern bundle ' : 'legacy bundle ') : '';
     info(`Building ${bundleTag}for ${mode}...`);
 
+    // 编译失败处理逻辑
+    function fail({err, stats}) {
+        if (stats && stats.toJson) {
+            // const info = stats.toJson();
+            // error(info.errors);
+        }
+        else {
+            info('Build failed with errors.');
+            error(err ? err : 'Webpack config error, use `--verbose` flag to show debug log');
+        }
+        process.exit(1);
+    }
+    // 编译成功处理逻辑
+    function success({stats: webpackStats, isWatch}, {isModern, isModernBuild} = {}) {
+        if (analyze) {
+            successLog('Build complete. Watching for changes...');
+            return;
+        }
+
+        const statsJson = webpackStats.toJson({
+            all: false,
+            entrypoints: true,
+            assets: true,
+            chunks: true,
+            ids: true,
+            version: true,
+            timings: true,
+            outputPath: true,
+            moduleAssets: true,
+            cachedAssets: true,
+            runtimeModules: true
+        });
+
+        // san-cli-build对于单一的config会转换为[config]，此处统一按照多重config处理
+        statsJson.children.forEach(stats => {
+
+            // 只有在非 analyze 模式下才会输出 log
+            const targetDirShort = path.resolve(stats.outputPath);
+
+            try {
+                const statsInfo = require('san-cli-webpack/lib/formatStats')(stats, targetDirShort, {
+                    resolve: p => api.resolve(p)
+                });
+                // eslint-disable-next-line no-console
+                console.log(statsInfo);
+            }
+            catch (err) {
+                error(err);
+            }
+
+            if (!isWatch) {
+                const duration = (Date.now() - startTime) / 1e3;
+                if (isModern) {
+                    if (isModernBuild) {
+                        successLog('Build modern bundle success');
+                    }
+                    else {
+                        successLog('Build legacy bundle success');
+                    }
+                    return;
+                }
+                const {time, version} = stats;
+                successLog(
+                    `The ${textCommonColor(targetDirShort)} directory is ready to be deployed. Duration ${
+                        textCommonColor(`${duration}/${time / 1e3}s`)
+                    }, Webpack ${version}.`
+                );
+            }
+        });
+    }
 
     // 放到这里 require 是让命令行更快加载，而不是等 webpack 这大坨东西。。
     const Build = require('san-cli-webpack/build');
@@ -46,7 +118,7 @@ module.exports = function apply(argv, api) {
             build = new Build(config);
             // for legacy build
             build.on('success', async data => {
-                compileSuccess(data, {analyze, isModern: true}, {startTime, api});
+                success(data, {isModern: true});
                 // execa 打包，保证打包环境的纯洁性
                 const execa = require('execa');
                 const cliBin = require('path').resolve(__dirname, '../san-cli/index.js');
@@ -76,15 +148,15 @@ module.exports = function apply(argv, api) {
             // for modern build
             build = new Build(config);
             build.on('success', data => {
-                compileSuccess(data, {analyze, isModern: true, isModernBuild: true}, {startTime, api});
+                success(data, {isModern: true, isModernBuild: true});
             });
         }
     } else {
         // 获取 webpack 配置
         // for build
         build = new Build(getNormalizeWebpackConfig(api, projectOptions, argv));
-        build.on('success', data => compileSuccess(data, {analyze}, {startTime, api}));
+        build.on('success', success);
     }
-    build.on('fail', compileFail);
+    build.on('fail', fail);
     build.run();
 };
