@@ -102,7 +102,7 @@
         "directory-named-webpack-plugin": "^4.0.1",
         "fastq": "^1.8.0",
         "graphql-tag": "^2.10.3",
-        "less-loader": "^4.0.3",
+        "less-loader": "^5.0.0",
         "load-script": "^1.0.0",
         "md5": "^2.3.0",
         "nodemon": "^2.0.4",
