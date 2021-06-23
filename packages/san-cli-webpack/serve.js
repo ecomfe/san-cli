@@ -45,9 +45,10 @@ module.exports = class Serve extends EventEmitter {
             // protocol,
             // publicUrl,
             // urls,
-            // networkUrl,
+            networkUrl,
             sockjsUrl
         } = await getServerParams(devServerConfig, devServerConfig.publicPath);
+        this.networkUrl = networkUrl;
         this.devServerConfig = Object.assign(devServerConfig, {
             https,
             port,
@@ -111,6 +112,7 @@ module.exports = class Serve extends EventEmitter {
                     stats,
                     server,
                     isFirstCompile,
+                    networkUrl: this.networkUrl,
                     devServerConfig: this.devServerConfig
                 });
             }

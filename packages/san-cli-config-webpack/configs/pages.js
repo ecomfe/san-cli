@@ -17,18 +17,8 @@ module.exports = (webpackConfig, projectOptions) => {
     const htmlOptions = {
         inject: true,
         title: projectOptions.pkg.name,
-        templateParameters: (...args) => {
-            /* eslint-disable one-var */
-            let compilation, assets, assetTags, pluginOptions;
-            /* eslint-enable one-var */
-
-            if (args.length === 4) {
-                // v4 v5 版本
-                [compilation, assets, assetTags, pluginOptions] = args;
-            } else {
-                // v3 版本
-                [compilation, assets, pluginOptions] = args;
-            }
+        templateParameters: (compilation, assets, assetTags, options) => {
+            // html-webpack-plugin version>=4
             // enhance html-webpack-plugin's built in template params
             let stats;
             return Object.assign(
@@ -42,7 +32,7 @@ module.exports = (webpackConfig, projectOptions) => {
                     htmlWebpackPlugin: {
                         files: assets,
                         tags: assetTags,
-                        options: pluginOptions
+                        options
                     }
                 },
                 defineVar(projectOptions, true /* raw */)
@@ -75,8 +65,7 @@ module.exports = (webpackConfig, projectOptions) => {
         htmlOptions.template = defaultHtmlPath;
         webpackConfig.plugin('html').use(HTMLPlugin, [htmlOptions]);
         useHtmlPlugin = true;
-    }
-    else {
+    } else {
         // multi-page setup
         /** simple
          * pages: {

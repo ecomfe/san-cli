@@ -251,7 +251,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
                 // 测试点30：是否没产出 .map 文件（测 san.config 的 sourceMap)
                 expect(fse.existsSync(indexJSMapPath)).toBeFalsy();
 
-                // 测试点31：产出中的 classname 是否正确（css module）（测 san.conifg 的 css.requireModuleExtension）
+                // 测试点31：产出中的 classname 是否正确（css module）（默认启用css modules）
                 expect(indexJSContent).toEqual(expect.stringContaining('_main_'));
 
                 // 测试点32：大于配置大小的图片是否没编译成 base64（测 san.config 的 largeAssetSize）

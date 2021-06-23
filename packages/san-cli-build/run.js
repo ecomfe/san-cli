@@ -20,7 +20,7 @@ module.exports = function apply(argv, api) {
     const startTime = Date.now();
     const mode = argv.mode; // 默认是 production
 
-    const {watch, analyze, modern} = argv;
+    const {analyze, modern} = argv;
     // --modern + --analyze 应该显示 modern 的 analyze 的结果
     if (modern && analyze) {
         process.env.SAN_CLI_MODERN_BUILD = true;
@@ -41,20 +41,27 @@ module.exports = function apply(argv, api) {
         process.exit(1);
     }
     // 编译成功处理逻辑
-    function success({stats: webpackStats}, {isModern, isModernBuild} = {}) {
+    function success({stats: webpackStats, isWatch}, {isModern, isModernBuild} = {}) {
         if (analyze) {
             successLog('Build complete. Watching for changes...');
             return;
         }
 
         const statsJson = webpackStats.toJson({
+            all: false,
             entrypoints: true,
             assets: true,
             chunks: true,
-            hash: false,
-            modules: false
+            ids: true,
+            version: true,
+            timings: true,
+            outputPath: true,
+            moduleAssets: true,
+            cachedAssets: true,
+            runtimeModules: true
         });
 
+        // san-cli-build对于单一的config会转换为[config]，此处统一按照多重config处理
         statsJson.children.forEach(stats => {
 
             // 只有在非 analyze 模式下才会输出 log
@@ -71,7 +78,7 @@ module.exports = function apply(argv, api) {
                 error(err);
             }
 
-            if (!watch) {
+            if (!isWatch) {
                 const duration = (Date.now() - startTime) / 1e3;
                 if (isModern) {
                     if (isModernBuild) {
@@ -140,7 +147,7 @@ module.exports = function apply(argv, api) {
             );
             // for modern build
             build = new Build(config);
-            build.on('success', async data => {
+            build.on('success', data => {
                 success(data, {isModern: true, isModernBuild: true});
             });
         }
