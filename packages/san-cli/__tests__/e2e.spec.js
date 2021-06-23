@@ -89,7 +89,13 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
                     console.log(789, fse.existsSync(path.join(cwd, '../../..')))
                     if (fse.existsSync(path.join(cwd, '../../..'))) {
                         console.log(999)
+                        if (process.platform === 'win32') {
+                            child_process.spawn("taskkill", ["/pid", serve.pid, '/f', '/t']);
+                        } else {
+                            serve.kill();
+                        }
                         resolve();
+                        return;
                     }
 
                     // 修改测试项目代码以测试 HMR
@@ -114,6 +120,11 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
                         // 测试点3：HMR 好使不？
                         expect(h2Text).toMatch('Hello world, I have been updated~');
 
+                        if (process.platform === 'win32') {
+                            child_process.spawn("taskkill", ["/pid", serve.pid, '/f', '/t']);
+                        } else {
+                            serve.kill();
+                        }
                         resolve();
                     }
                 }
@@ -281,12 +292,12 @@ afterAll(async () => {
     if (browser) {
         await browser.close();
     }
-    if (!serve) {
-        return;
-    }
-    if (process.platform === 'win32') {
-        child_process.spawn("taskkill", ["/pid", serve.pid, '/f', '/t']);
-    } else {
-        serve.kill();
-    }
+    // if (!serve) {
+    //     return;
+    // }
+    // if (process.platform === 'win32') {
+    //     child_process.spawn("taskkill", ["/pid", serve.pid, '/f', '/t']);
+    // } else {
+    //     serve.kill();
+    // }
 });
