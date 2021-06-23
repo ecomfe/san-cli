@@ -198,10 +198,13 @@ exports.initConfig = webpackConfig => {
                 devServerConfig = Object.assign(defaultDevServer, c.devServer);
             }
         }
-        // 取第一个配置
-        if (!isWatch && c.watch) {
-            watchOptions = c.watchOptions;
-            isWatch = c.watch;
+        // 取第一个配置，执行watch函数，无需再添加config.watch
+        if (typeof c.watch !== 'undefined') {
+            if (!isWatch) {
+                watchOptions = c.watchOptions;
+                isWatch = c.watch;
+            }
+            delete c.watch;
         }
         return c;
     });

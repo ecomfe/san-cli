@@ -36,13 +36,6 @@ module.exports = (webpackConfig, projectOptions) => {
         webpackConfig.optimization.runtimeChunk(runtimeChunk);
     }
 
-    webpackConfig.optimization.minimizer('js').use(
-        new TerserPlugin({
-            extractComments: false,
-            parallel: true,
-            terserOptions: lMerge(defaultTerserOptions, terserOptions)
-        })
-    );
     if (loaderOptions.esbuild) {
         const {ESBuildMinifyPlugin} = require('esbuild-loader');
         webpackConfig.optimization.minimizer('js').use(new ESBuildMinifyPlugin({
@@ -51,5 +44,14 @@ module.exports = (webpackConfig, projectOptions) => {
             target: 'es2015',
             ...(typeof loaderOptions.esbuild === 'object' ? loaderOptions.esbuild : {})
         }));
+    }
+    else {
+        webpackConfig.optimization.minimizer('js').use(
+            new TerserPlugin({
+                extractComments: false,
+                parallel: true,
+                terserOptions: lMerge(defaultTerserOptions, terserOptions)
+            })
+        );
     }
 };
