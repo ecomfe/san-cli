@@ -84,6 +84,14 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
                     expect(h2Text).toMatch('Hello world, I am OK~');
 
                     const appJSPath = path.join(cwd, 'src/pages/index/containers/app.js');
+
+                    console.log(456, path.join(cwd, '../../../isCI'))
+                    console.log(789, fse.existsSync(path.join(cwd, '../../../isCI')))
+                    if (fse.existsSync(path.join(cwd, '../../../isCI'))) {
+                        console.log(999)
+                        resolve();
+                    }
+
                     // 修改测试项目代码以测试 HMR
                     fse.writeFileSync(
                         appJSPath,
@@ -91,9 +99,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
                     );
                 }
                 // 测试 HMR
-                console.log(123, path.join(cwd, '../../../isCI'))
-                if (!fse.existsSync(path.join(cwd, '../../../isCI'))
-                    && data.toString().match('Compiled successfully')) {
+                if (data.toString().match('Compiled successfully')) {
                     // 第二次编译成功时才是 HMR（第一次编译成功时是初次起服务）
                     if (isFirstCompilation) {
                         console.log(222)
