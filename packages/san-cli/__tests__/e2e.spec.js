@@ -85,9 +85,9 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
 
                     const appJSPath = path.join(cwd, 'src/pages/index/containers/app.js');
 
-                    console.log(456, path.join(cwd, '../../../isCI'))
-                    console.log(789, fse.existsSync(path.join(cwd, '../../../isCI')))
-                    if (fse.existsSync(path.join(cwd, '../../../isCI'))) {
+                    console.log(456, path.join(cwd, '../../..'))
+                    console.log(789, fse.existsSync(path.join(cwd, '../../..')))
+                    if (fse.existsSync(path.join(cwd, '../../..'))) {
                         console.log(999)
                         resolve();
                     }
