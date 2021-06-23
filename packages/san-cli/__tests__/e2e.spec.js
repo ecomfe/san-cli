@@ -89,10 +89,10 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
                         appJSPath,
                         fse.readFileSync(appJSPath, 'utf8').replace('I am OK', 'I have been updated')
                     );
-                    console.log(111, fse.readFileSync(appJSPath, 'utf8'))
                 }
                 // 测试 HMR
-                if (data.toString().match('Compiled successfully')) {
+                if (!fse.existsSync(path.join(cwd, '../../../.github/workflows/isCI'))
+                    && data.toString().match('Compiled successfully')) {
                     // 第二次编译成功时才是 HMR（第一次编译成功时是初次起服务）
                     if (isFirstCompilation) {
                         console.log(222)
