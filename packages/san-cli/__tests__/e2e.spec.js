@@ -91,7 +91,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
                     );
                 }
                 // 测试 HMR
-                console.log(123, !fse.existsSync(path.join(cwd, '../../../isCI')))
+                console.log(123, path.join(cwd, '../../../isCI'))
                 if (!fse.existsSync(path.join(cwd, '../../../isCI'))
                     && data.toString().match('Compiled successfully')) {
                     // 第二次编译成功时才是 HMR（第一次编译成功时是初次起服务）
