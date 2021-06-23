@@ -39,10 +39,9 @@ module.exports = function apply(argv, api) {
             }
         });
     });
-    serve.on('success', ({isFirstCompile, devServerConfig: ds}) => {
+    serve.on('success', ({isFirstCompile, devServerConfig: ds, networkUrl}) => {
         if (isFirstCompile) {
             const {textCommonColor} = require('san-cli-utils/color');
-            const networkUrl = `${ds.https ? 'http' : 'http'}://${ds.host}:${ds.port}`;
             /* eslint-disable no-console */
             console.log();
 
