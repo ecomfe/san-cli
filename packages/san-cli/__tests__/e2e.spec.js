@@ -257,7 +257,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
 
                 const baseTplContent = fse.readFileSync(baseTplPath, 'utf8');
                 // 测试点25：产出的 tpl/html 里的 js 是否没压缩（测 development mode）
-                expect(baseTplContent).toEqual(expect.stringMatching(/<script>[\s\S]+;\n[\s\S]+<\/script>/));
+                expect(baseTplContent).toEqual(expect.stringMatching(/<script>[\s\S]+\n[\s\S]+<\/script>/));
                 // 测试点26：产出的 tpl/html 里的 css 是否没压缩（测 development mode）
                 expect(baseTplContent).toEqual(expect.not.stringContaining('margin:0;padding:0;'));
 
