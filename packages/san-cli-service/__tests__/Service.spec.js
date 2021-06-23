@@ -99,7 +99,7 @@ describe('检查 webpack 配置', () => {
                     alias: {
                         'core-js': path.dirname(require.resolve('core-js')),
                         'regenerator-runtime': path.dirname(require.resolve('regenerator-runtime')),
-                        'san': path.dirname(require.resolve('san', {paths: [cwd]})) + '/san.spa.dev.js',
+                        'san': path.join(path.dirname(require.resolve('san', {paths: [cwd]})), 'san.spa.dev.js'),
                         '@assets': cwd + '/src/assets',
                         '@components': cwd + '/src/components',
                         '@app': cwd + '/src/lib/App.js',
@@ -219,7 +219,7 @@ describe('检查 webpack 配置', () => {
                     alias: {
                         'core-js': path.dirname(require.resolve('core-js')),
                         'regenerator-runtime': path.dirname(require.resolve('regenerator-runtime')),
-                        'san': path.dirname(require.resolve('san', {paths: [cwd]})) + '/san.spa.js',
+                        'san': path.join(path.dirname(require.resolve('san', {paths: [cwd]})), 'san.spa.js'),
                         '@assets': cwd + '/src/assets',
                         '@components': cwd + '/src/components',
                         '@app': cwd + '/src/lib/App.js',
