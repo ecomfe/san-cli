@@ -39,7 +39,7 @@
         "read-pkg": "^5.2.0",
         "resolve-cwd": "^3.0.0",
         "san-cli-init": "^1.0.0",
-        "san-cli-service": "^1.0.0",
+        "san-cli-service": "^2.0.0",
         "san-cli-ui": "^1.0.0",
         "san-cli-utils": "^1.0.0",
         "semver": "^7.1.1",
