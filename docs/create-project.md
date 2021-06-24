@@ -2,7 +2,7 @@
 
 # 初始化项目
 
-## 没有安装 San-CLI 需要安装
+## 没有安装 San CLI 需要安装
 
 ```bash
 npm i -g san-cli
@@ -35,7 +35,7 @@ san init https://github.com/ksky521/san-project.git demo
 # 2. 默认是从 github repo 安装
 # 所以用 git@github.com:ksky521/simple.git 这个 repo 时可以简写成：
 san init simple demo
-#  3. 支持 github，icode，gitlab 等简写方式
+# 3. 支持 github，icode，gitlab 等简写方式
 san init github:ksky521/san-project demo
 san init icode:baidu/hulk/san-project-base demo
 san init coding:ksky521/san-project demo

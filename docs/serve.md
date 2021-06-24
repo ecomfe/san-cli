@@ -15,7 +15,7 @@ san serve [entry]
 
 -   `--port，--p`：指定 devServer 端口号，默认为 8899
 -   `--host，--H`：指定 devServer 域名，默认为 0.0.0.0
--   `--public`：指定 HMR client 的 URL，默认http://localhost:8899/sockjs-node
+-   `--public`：指定 HMR client 的 URL，默认为 http://localhost:8899/sockjs-node
 -   `--open，--O`：是否在编译打包完成后，自动在浏览器中打开页面地址，值为 true 或 false，默认是 false
 -   `--qrcode`：是否输出页面地址二维码，值为 true 或 false，默认是 true
 -   `--mode，--m`：环境指示，值为 development 或 production，默认是 development
