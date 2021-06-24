@@ -4,7 +4,6 @@
 */
 
 const isProduction = process.env.NODE_ENV === 'production';
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 module.exports = function ({id, port = 8889}) {
     return {
@@ -17,13 +16,16 @@ module.exports = function ({id, port = 8889}) {
             sourceMap: false,
             cssPreprocessor: 'less',
             extract: false,
-            requireModuleExtension: false,
             loaderOptions: {
                 css: {
-                    localsConvention: 'camelCase'
+                    modules: {
+                        auto: () => true,
+                        exportLocalsConvention: 'camelCase'
+                    }
                 }
             }
         },
+        cache: false, // 关闭cache，否则调试widget时有样式缓存
         pages: {
             index: {
                 entry: './src/index.js',
@@ -32,7 +34,6 @@ module.exports = function ({id, port = 8889}) {
             }
         },
         chainWebpack: config => {
-            config.plugin('clean-webpack-plugin').use(CleanWebpackPlugin);
             config.plugins.delete('preload');
             config.plugins.delete('prefetch');
             config.module.rule('gql')
