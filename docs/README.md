@@ -13,9 +13,9 @@ San CLI 的 Node.js 版本要求 `>= 8.16.0`。
 通过下面命令安装 San CLI
 
 ```bash
-npm install -g san-cli san-cli-serve san-cli-build
+npm install -g san-cli
 # OR
-yarn global add san-cli san-cli-serve san-cli-build
+yarn global add san-cli
 ```
 
 
