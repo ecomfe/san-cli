@@ -1,7 +1,7 @@
 {
     "name": "san-cli-service",
     "description": "定制化的前端工程构建工具",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "main": "Service.js",
     "license": "MIT",
     "engines": {
@@ -30,6 +30,7 @@
         "fs-extra": "^8.1.0",
         "import-lazy": "^4.0.0",
         "joi": "^17.3.0",
+	"san-cli-config-webpack": "^1.0.0",
         "lodash.defaultsdeep": "^4.6.1",
         "lodash.merge": "^4.6.2",
         "san-cli-plugin-dashboard": "^2.0.0",
