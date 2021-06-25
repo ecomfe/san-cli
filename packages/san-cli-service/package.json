@@ -32,6 +32,8 @@
         "joi": "^17.3.0",
         "lodash.defaultsdeep": "^4.6.1",
         "lodash.merge": "^4.6.2",
+        "san-cli-plugin-dashboard": "^2.0.0",
+        "san-cli-plugin-progress": "^2.0.0",
         "webpack-merge": "^5.7.3"
     },
     "gitHead": "402d813859ac219434712fa2063e5f724819004a"
