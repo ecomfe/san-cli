@@ -31,7 +31,7 @@
         "yargs": "~15.0.2",
         "chalk":"^4.1.0",
         "san-cli-init": "^2.0.0",
-        "san-cli-build": "^1.0.2",
+        "san-cli-build": "^1.0.1",
         "san-cli-serve": "^1.0.1",
         "semver": "^7.1.1",
         "update-notifier": "^4.0.0"
