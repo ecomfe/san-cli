@@ -29,7 +29,7 @@ san build [entry]
 ### 报告和日志相关
 
 -   `--analyze，--analyzer`：是否使用 webpack-bundle-analyzer 输出包分析，值为 true 或 false，默认 false
--   `--profile`：是否展示编译进度日志，值为 true 或 false，默认是 false
+-   `--profile，--profiler`：是否展示编译进度日志，值为 true 或 false，默认是 false
 -   `--report`：是否输将包分析报表生成为单个 HTML 文件，值为 true 或 false 或者文件名，默认 false，仅生成 Webpack Stats JSON 文件
 -   `--stats-json，--statsJson`：是否输将包分析报表生成为 stats.json，值为 true 或 false 或者文件名，默认是 false
 -   `--no-colors`：是否展示无色彩 log，值为 true 或 false，默认是 false
@@ -37,4 +37,6 @@ san build [entry]
 ### 其他
 
 -   `--watch，--w` 是否监听代码变化
+-   `--clean` 是否在 building 之前删除上一次的产出文件，值为 true 或 false，默认 false
 -   `--remote` 将编译产出远程部署到目标机器的名称，具体使用可参考[文档](/deployment.md)
+-   `--no-progress`：禁用默认的进度条（webpackbar）值为 true 或 false，默认是 false

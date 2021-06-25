@@ -24,6 +24,7 @@ exports.builder = {
         describe: 'Project config file'
     },
     mode: {
+        alias: 'm',
         hidden: true,
         type: 'string',
         choices: ['development', 'production'],

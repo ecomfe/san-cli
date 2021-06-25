@@ -1,7 +1,7 @@
 {
     "name": "san-cli-plugin-dashboard",
     "description": "Service plugin for san cli",
-    "version": "1.0.1",
+    "version": "2.0.0",
     "main": "index.js",
     "license": "MIT",
     "engines": {

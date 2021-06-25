@@ -3,11 +3,9 @@
     -   [init: 初始化项目](/create-project.md)
     -   [serve: 开发打包](/serve.md)
     -   [build: 生产打包](/build.md)
-    -   [inspect: 查看 webpack 内置信息](/inspect.md)
 -   配置
     -   [配置文件](/config.md)
     -   [高级配置](/advanced.md)
-    -   [CLI 预设](/presets.md)
     -   [环境变量](/env.md)
     -   [浏览器兼容性](/browser-compatibility.md)
 -   常见解决方案
@@ -21,7 +19,6 @@
     -   [内部实现](/architecture.md)
     -   [如何创建一个脚手架项目](/create-scaffold.md)
     -   [插件机制](/plugin.md)
-        -   [Command 插件](/cmd-plugin.md)
         -   [Service 插件](/srv-plugin.md)
 -   San CLI UI
     -   [开始使用](/ui/start.md)
