@@ -18,7 +18,7 @@ module.exports = {
     // ...
     splitChunks: {
         cacheGroups: {
-            vendors: {
+            defaultVendors: {
                 name: 'vendors',
                 test: /[\\/]node_modules(?!\/@baidu)[\\/]/,
                 // minChunks: 1,
@@ -35,8 +35,6 @@ module.exports = {
     }
 };
 ```
-
-> 同时 San CLI 内置了[optimize-css-assets-webpack-plugin](https://github.com/NMFR/optimize-css-assets-webpack-plugin)，也就是说支持使用 splitChunks 来拆分 CSS 文件。
 
 ## 代码压缩和优化
 
