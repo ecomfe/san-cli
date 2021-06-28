@@ -9,7 +9,7 @@
     },
     "license": "MIT",
     "engines": {
-        "node": ">=8.16"
+        "node": ">=12.0"
     },
     "author": "ksky521",
     "repository": {
