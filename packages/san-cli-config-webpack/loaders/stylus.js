@@ -1,8 +1,7 @@
-const resolve = require('resolve');
 const factory = require('./loaderFactory');
 
 module.exports = factory({
-    loader: resolve.sync('stylus-loader'),
+    loader: 'stylus-loader',
     options: {
         preferPathResolver: 'webpack'
     }
