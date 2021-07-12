@@ -28,7 +28,7 @@ const killServe = async () => {
 test('serve 命令和 build 命令的 E2E 测试', done => {
     // 用于创建测试项目的目录
     const cwd = path.join(__dirname, '../../test/e2e');
-
+    /* eslint-disable no-console */
     const cmdArgs = [
         'init',
         'https://github.com/ksky521/san-project',
@@ -49,18 +49,32 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
     ];
     // 创建测试项目
     const init = child_process.spawn('san', cmdArgs, {shell: isWindows});
-
+    let incompatible = false;
     try {
         init.stderr.on('data', data => {
             if (data.toString().includes('Download timeout')) {
                 throw '你网络不行，用 HTTPS clone GitHub 的代码库时失败了，可以通过配置代理解决，不会配置的话可以找胡粤。';
             }
+
+            console.error(`init stderr: ${data}`);
+            if (data.toString().includes('Found incompatible module')) {
+                incompatible = true;
+            }
         });
     } catch (err) {
         throw err;
     }
+    init.stdout.on('data', data => {
+        console.log(`init stdout: ${data}`);
+    });
 
-    init.on('close', async () => {
+    init.on('close', async code => {
+        if (code !== 0 && incompatible) {
+            done();
+            console.log('====== close because of incompatible module');
+            return;
+        }
+        console.log('====== start run san serve ======');
         const configPath = path.join(cwd, 'san.config.js');
         fse.copySync(path.join(__dirname, './config/san.config.js'), configPath);
 
@@ -71,7 +85,11 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
         let isFirstCompilation = true;
         let page;
         await new Promise((resolve, reject) => {
+            serve.stderr.on('data', data => {
+                console.error(`serve stderr: ${data}`);
+            });
             serve.stdout.on('data', async data => {
+                console.log(`init stdout: ${data}`);
                 const urlMatch = data.toString().match(/http:\/\/[\d\.:]+/);
                 // 是否输出了 URL（输出了 URL 意味着服务起来了）
                 if (urlMatch) {
@@ -127,8 +145,12 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
         const cssPath = path.join(outputPath, 'static/e2e/css');
 
         await new Promise((resolve, reject) => {
+
+            console.log('====== start run san build --mode production ======');
             fse.writeFileSync(path.join(cwd, '.env'), 'ONE=1');
             child_process.exec('san build --mode production --modern --report', {cwd}, (error, stdout, stderr) => {
+                console.log(`san build --mode production stdout: ${stdout}`);
+                console.log(`san build --mode production stderr: ${stderr}`);
                 // 测试点4：产出目录的名字是否正确（测 san.config 的 outputDir）
                 expect(fse.existsSync(outputPath)).toBeTruthy();
 
@@ -224,12 +246,15 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
         });
 
         rimraf(outputPath, () => {
+            console.log('====== start run san build --mode development ======');
             let configContent = fse.readFileSync(configPath, 'utf8');
             configContent = configContent.replace('css: {// ', 'css: {');
             configContent = configContent.replace('module.exports = {', 'module.exports = {largeAssetSize: 1,');
             configContent = configContent.replace('splitChunks: {', 'cache: false,splitChunks: {');
             fse.writeFileSync(configPath, configContent);
             child_process.exec('san build --mode development', {cwd}, (error, stdout, stderr) => {
+                console.log(`san build --mode development stdout: ${stdout}`);
+                console.log(`san build --mode development stderr: ${stderr}`);
                 const baseTplContent = fse.readFileSync(baseTplPath, 'utf8');
                 // 测试点25：产出的 tpl/html 里的 js 是否没压缩（测 development mode）
                 expect(baseTplContent).toEqual(expect.stringMatching(/<script>[\s\S]+\n[\s\S]+<\/script>/));

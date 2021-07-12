@@ -47,7 +47,6 @@ describe('检查 webpack 配置', () => {
                     '@store': cwd + '/src/lib/Store.js'
                 },
                 sourceMap: false,
-                polyfill: true,
                 devServer: {
                     watchContentBase: false,
                     hot: true,
@@ -173,7 +172,6 @@ describe('检查 webpack 配置', () => {
                     '@store': cwd + '/src/lib/Store.js'
                 },
                 sourceMap: true,
-                polyfill: true,
                 devServer: {
                     watchContentBase: false,
                     hot: true,

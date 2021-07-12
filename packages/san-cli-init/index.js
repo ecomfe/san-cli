@@ -60,7 +60,7 @@ exports.builder = {
 
 // 默认项目脚手架地址
 
-const defaultTemplate = 'ksky521/san-project';
+const defaultTemplate = 'ksky521/san-project#v4';
 
 exports.handler = argv => {
     const {warn} = require('san-cli-utils/ttyLogger');

@@ -64,7 +64,6 @@ const schema = joi
             )
         ),
         // 生产环境优化相关
-        polyfill: joi.boolean(),
         terserOptions: joi.object(),
         sourceMap: joi.alternatives().try(joi.boolean(), joi.string()),
         filenameHashing: joi.boolean(),
@@ -117,7 +116,6 @@ exports.validate = (value, options) => {
 };
 
 exports.defaults = {
-    polyfill: true,
     pages: undefined,
     outputDir: 'output',
     assetsDir: '',
