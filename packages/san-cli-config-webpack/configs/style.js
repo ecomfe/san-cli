@@ -162,11 +162,9 @@ module.exports = (webpackChainConfig, rootOptions) => {
                 preset: ['default', Object.assign(defaultCssnanoOptions, cssnanoOptions)]
             };
             // 压缩
-            const {parallel = true, productionSourceMap = false} = rootOptions;
             webpackChainConfig.optimization.minimizer('css').use(CssMinimizerPlugin, [
                 {
-                    parallel,
-                    sourceMap: productionSourceMap && sourceMap,
+                    parallel: true,
                     minimizerOptions: nanoOptions
                 }
             ]);

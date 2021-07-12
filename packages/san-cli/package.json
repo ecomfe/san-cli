@@ -1,7 +1,7 @@
 {
     "name": "san-cli",
     "description": "San.js 定制化的前端工程构建工具",
-    "version": "3.0.1",
+    "version": "4.0.0",
     "scriptName": "san",
     "main": "index.js",
     "bin": {
@@ -9,7 +9,7 @@
     },
     "license": "MIT",
     "engines": {
-        "node": ">=8.16"
+        "node": ">=12.0"
     },
     "author": "ksky521",
     "repository": {
@@ -30,7 +30,9 @@
     "dependencies": {
         "yargs": "~15.0.2",
         "chalk":"^4.1.0",
-        "san-cli-init": "^2.0.0",
+        "san-cli-init": "^2.0.1",
+        "san-cli-build": "^1.0.1",
+        "san-cli-serve": "^1.0.1",
         "semver": "^7.1.1",
         "update-notifier": "^4.0.0"
     },
