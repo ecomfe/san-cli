@@ -1,6 +1,6 @@
 # san-cli-ui-widgets
 
-san-cli-ui-widgets 是 [San](https://github.com/baidu/san) CLI UI工具中内置部件，显示在仪表盘。
+san-cli-ui-widgets 是 [San](https://github.com/baidu/san) CLI UI 工具中内置部件，显示在仪表盘。
 
 ```
 
@@ -17,13 +17,13 @@ san-cli-ui-widgets 是 [San](https://github.com/baidu/san) CLI UI工具中内置
 
 ## 使用文档
 
-请移步[San-CLI 文档](https://ecomfe.github.io/san-cli) 安装san-cli-ui体验，san-cli-ui-widgets是san-cli-ui的默认依赖。
+请移步[San-CLI 文档](https://ecomfe.github.io/san-cli) 安装 san-cli-ui 体验，san-cli-ui-widgets 是san-cli-ui 的默认依赖。
 
 ## 测试
 
 执行命令
 
 ```bash
-#执行__tests__下所有测试文件
+#执行 __tests__ 文件夹下所有测试文件
 yarn test
 ```

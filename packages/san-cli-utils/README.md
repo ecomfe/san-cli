@@ -27,7 +27,7 @@ $ npm install --save-dev san-cli-utils
 执行命令
 
 ```bash
-#执行__tests__下所有测试文件
+#执行 __tests__ 文件夹下所有测试文件
 yarn test san-cli-utils
 #只执行某单个文件 例如：env.spec.js
 yarn test san-cli-utils env
