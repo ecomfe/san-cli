@@ -63,7 +63,11 @@ module.exports = {
     transpileDependencies:['axios'],
     css: {
         sourceMap: isProduction,
-        cssPreprocessor: 'less'
+        cssPreprocessor: 'less',
+        loaderOptions: {
+            css: {// modules: {auto: () => true}
+            }
+        }
     },
     splitChunks: {
         // splitChunks 配置

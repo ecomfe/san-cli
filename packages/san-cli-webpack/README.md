@@ -19,7 +19,7 @@ $ npm install --save-dev san-cli-webpack
 执行命令
 
 ```bash
-#执行__tests__下所有测试文件
+#执行 __tests__ 文件夹下所有测试文件
 yarn test san-cli-webpack
 #只执行某单个文件 例如：utils.spec.js
 yarn test san-cli-webpack utils

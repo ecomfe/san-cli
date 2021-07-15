@@ -27,7 +27,7 @@ module.exports = {
                     children: ['/create-project/', '/serve/', '/build/']
                 }, {
                     title: '配置',
-                    children: ['/config/', '/advanced/', '/presets/', '/env/']
+                    children: ['/config/', '/advanced/', '/presets/', '/env/', '/browser-compatibility/']
                 }, {
                     title: '常见解决方案',
                     children: ['/modern-mode/', '/bundle-analyze/', '/component/', '/smarty/', '/deployment/', '/hulk-cli-migration/']

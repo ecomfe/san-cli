@@ -52,7 +52,7 @@ function main(pluginData, compilation) {
     });
 
     // TODO: 支持 html-webpack-plugin v4, 目前 v4 还有好多插件不支持，只能调通 3.0
-    pluginData.chunks.forEach(({childrenByOrder}) => {
+    pluginData.chunks && pluginData.chunks.forEach(({childrenByOrder}) => {
         Object.keys(childrenByOrder).forEach(key => {
             if (Array.isArray(childrenByOrder[key]) && childrenByOrder[key].length && idsSet[key]) {
                 idsSet[key].add(...childrenByOrder[key]);
@@ -84,15 +84,8 @@ module.exports = class HulkHtmlWebpackPlugin {
         compiler.hooks.compilation.tap(name, compilation => {
             const alterAssetTags = this.alterAssetTags.bind(this, compilation);
             const afterHTMLProcessing = this.afterHTMLProcessing.bind(this, compilation);
-            if (HtmlWebpackPlugin.getHooks) {
-                // 支持v4
-                HtmlWebpackPlugin.getHooks(compilation).alterAssetTags.tapAsync(name, alterAssetTags);
-                HtmlWebpackPlugin.getHooks(compilation).afterTemplateExecution.tapAsync(name, afterHTMLProcessing);
-            }
-            else {
-                compilation.hooks.htmlWebpackPluginAlterAssetTags.tapAsync(name, alterAssetTags);
-                compilation.hooks.htmlWebpackPluginAfterHtmlProcessing.tap(name, afterHTMLProcessing);
-            }
+            HtmlWebpackPlugin.getHooks(compilation).alterAssetTags.tapAsync(name, alterAssetTags);
+            HtmlWebpackPlugin.getHooks(compilation).beforeEmit.tapAsync(name, afterHTMLProcessing);
         });
     }
     alterAssetTags(compilation, data, cb) {
@@ -102,7 +95,6 @@ module.exports = class HulkHtmlWebpackPlugin {
     }
     afterHTMLProcessing(compilation, data, cb) {
         // 处理 html 中的{%block name="__head_asset"%}中的 head 和 body tag
-        // data.html = data.html.replace('');
         data.html = data.html.replace(SMARTY_BLOCK, m => m.replace(/<[/]?(head|body)>/g, ''));
         typeof cb === 'function' && cb(null, data);
         return data;

@@ -2,7 +2,7 @@
 
 # 初始化项目
 
-## 没有安装 San-CLI 需要安装
+## 没有安装 San CLI 需要安装
 
 ```bash
 npm i -g san-cli
@@ -35,7 +35,7 @@ san init https://github.com/ksky521/san-project.git demo
 # 2. 默认是从 github repo 安装
 # 所以用 git@github.com:ksky521/simple.git 这个 repo 时可以简写成：
 san init simple demo
-#  3. 支持 github，icode，gitlab 等简写方式
+# 3. 支持 github，icode，gitlab 等简写方式
 san init github:ksky521/san-project demo
 san init icode:baidu/hulk/san-project-base demo
 san init coding:ksky521/san-project demo
@@ -54,57 +54,3 @@ san init template#branch .
 -   `--force` 跳过提醒，强制删除已存在的目录，默认会提醒
 -   `--username，--u` 指定 Git 用户名，默认：git
 -   `--registry` 设置 npm registry
-
-## 使用 remote 管理脚手架模板别名
-
-初始化的时候，项目脚手架路径较长，不容易记忆，可以使用 remote 命令来管理脚手架模板的别名。remote 方法包括三个：
-
--   add：添加
--   remove/rm：删除，
--   list/ls：列出脚手架模板 alias
-
-#### 1. 添加一组 alias
-
-```bash
-# 基本语法
-san remote add <name> <url>
-```
-
-###### **_例如_**
-
-```bash
-san remote add hello github:yyt/HelloWorld
-san remote add project ssh://git@icode.baidu.com:8235/baidu/hulk/san-project-base
-```
-
-#### 2. 移除一组 alias
-
-```bash
-san remote remove <name>
-```
-
-从预设文件中将你输入的映射的关系移除
-
-###### **_例如_**
-
-```bash
-san remote rm hello
-```
-
-#### 3. 查看 alias 列表
-
-```bash
-san remote list
-```
-
-查看目前的映射关系表
-
-###### **例如**
-
-```bash
-san remote list
-# or
-san remote ls
-```
-
-更多类似用法和配置方式查看[预设文件](/presets.md)。

@@ -30,7 +30,8 @@ module.exports = {
     coveragePathIgnorePatterns: [
         '<rootDir>/packages/san-cli-init/handlerbars.js',
         'examples',
-        'node_modules'
+        'node_modules',
+        '__tests__'
     ],
 
     // A list of reporter names that Jest uses when writing coverage reports

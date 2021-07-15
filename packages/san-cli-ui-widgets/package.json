@@ -22,7 +22,7 @@
     "babel-plugin-import": "^1.13.0",
     "cross-env": "^7.0.2",
     "postcss-import": "^11.0.0",
-    "postcss-loader": "^2.0.8",
+    "postcss-loader": "^5.0.0",
     "autoprefixer": "^9.7.5",
     "postcss-url": "^7.2.1"
   },

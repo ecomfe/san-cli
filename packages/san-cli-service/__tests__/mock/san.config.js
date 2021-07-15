@@ -16,7 +16,7 @@ module.exports = {
     // 这是多页面配置
     pages: {
         index: {
-            entry: './src/pages/index/index.js',
+            entry: ['./src/pages/index/index.js'],
             template: './pages.template.ejs',
             filename: 'index/index.html'
         }

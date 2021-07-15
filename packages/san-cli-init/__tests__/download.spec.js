@@ -10,6 +10,7 @@
 
 const hash = require('hash-sum');
 const download = require('../tasks/download');
+const path = require('path');
 
 function Task() {
     this.skipInfo = [];
@@ -39,7 +40,7 @@ test('使用本地路径localTemplatePath', async () => {
         localTemplatePath: 'User/yyt'
     }, task)
         .then(() => {
-            expect(task.skipInfo).toEqual(['Use local path `User/yyt`']);
+            expect(task.skipInfo).toEqual(['Use local path `User' + path.sep + 'yyt`']);
             expect(task.res).toBe('done');
         });
 });
@@ -61,7 +62,7 @@ test('远程拉取成功', async () => {
         'none',
         {}
     )(ctx, task).then(() => {
-        expect(ctx.localTemplatePath).toMatch(`.san/templates/${hash(template)}/HelloWorld`);
+        expect(ctx.localTemplatePath).toMatch(path.join('.san', 'templates', hash(template), 'HelloWorld'));
         expect(task.nextInfo).toEqual(['Pulling template from the remote repository...']);
         expect(task.res).toBe('done');
     });

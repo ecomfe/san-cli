@@ -46,7 +46,7 @@ describe('测试getTemplatePath', () => {
         expect(getTemplatePath('/User/yyt/aaa')).toBe('/User/yyt/aaa');
     });
     test('传入相对地址', () => {
-        expect(getTemplatePath('../yyt')).toMatch('/yyt');
+        expect(getTemplatePath('../yyt')).toMatch(path.sep + 'yyt');
     });
 });
 

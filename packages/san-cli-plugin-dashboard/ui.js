@@ -412,56 +412,57 @@ module.exports = api => {
      * 添加San CLI的inspect内置任务
      * 该任务不增加视图
     */
-    api.registerTask({
-        name: 'inspect',
-        command: 'san inspect',
-        description: 'task.description.inspect',
-        link: 'https://ecomfe.github.io/san-cli',
-        icon: sanIcon,
-        prompts: [
-            {
-                name: 'mode',
-                type: 'list',
-                default: 'production',
-                choices: [
-                    {
-                        name: 'development',
-                        value: 'development'
-                    },
-                    {
-                        name: 'production',
-                        value: 'production'
-                    },
-                    {
-                        name: 'test',
-                        value: 'test'
-                    },
-                    {
-                        name: '(unset)',
-                        value: ''
-                    }
-                ],
-                message: 'task.inspect.mode'
-            },
-            {
-                name: 'verbose',
-                type: 'confirm',
-                default: false,
-                message: 'task.inspect.verbose'
-            }
-        ],
-        onBeforeRun: ({answers, args}) => {
-            if (answers.mode) {
-                args.push('--mode', answers.mode);
-            }
+    // TODO: 添加san inspect命令
+    // api.registerTask({
+    //     name: 'inspect',
+    //     command: 'san inspect',
+    //     description: 'task.description.inspect',
+    //     link: 'https://ecomfe.github.io/san-cli',
+    //     icon: sanIcon,
+    //     prompts: [
+    //         {
+    //             name: 'mode',
+    //             type: 'list',
+    //             default: 'production',
+    //             choices: [
+    //                 {
+    //                     name: 'development',
+    //                     value: 'development'
+    //                 },
+    //                 {
+    //                     name: 'production',
+    //                     value: 'production'
+    //                 },
+    //                 {
+    //                     name: 'test',
+    //                     value: 'test'
+    //                 },
+    //                 {
+    //                     name: '(unset)',
+    //                     value: ''
+    //                 }
+    //             ],
+    //             message: 'task.inspect.mode'
+    //         },
+    //         {
+    //             name: 'verbose',
+    //             type: 'confirm',
+    //             default: false,
+    //             message: 'task.inspect.verbose'
+    //         }
+    //     ],
+    //     onBeforeRun: ({answers, args}) => {
+    //         if (answers.mode) {
+    //             args.push('--mode', answers.mode);
+    //         }
 
-            if (answers.verbose) {
-                args.push('--verbose');
-            }
+    //         if (answers.verbose) {
+    //             args.push('--verbose');
+    //         }
 
-        },
-        logs: []
-    });
+    //     },
+    //     logs: []
+    // });
 
     if (process.env.SAN_CLI_UI_DEV) {
         api.registerAddon({
