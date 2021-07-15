@@ -27,7 +27,7 @@
     "dependencies": {
         "babel-loader": "^8.0.6",
         "case-sensitive-paths-webpack-plugin": "^2.2.0",
-        "copy-webpack-plugin": "~6.0.0",
+        "copy-webpack-plugin": "~6.4.1",
         "core-js": "^3.6.4",
         "css-loader": "~3.2.0",
         "deploy-files": "^0.1.0",
