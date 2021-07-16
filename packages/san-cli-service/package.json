@@ -31,7 +31,7 @@
         "core-js": "^3.6.4",
         "css-loader": "~3.2.0",
         "deploy-files": "^0.1.0",
-        "dotenv": "~8.2.0",
+        "dotenv": "~8.6.0",
         "ejs-loader": "~0.3.5",
         "execa": "^4.0.0",
         "file-loader": "^5.0.2",
