@@ -89,7 +89,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
                 console.error(`serve stderr: ${data}`);
             });
             serve.stdout.on('data', async data => {
-                console.log(`init stdout: ${data}`);
+                console.log(`serve stdout: ${data}`);
                 const urlMatch = data.toString().match(/http:\/\/[\d\.:]+/);
                 // 是否输出了 URL（输出了 URL 意味着服务起来了）
                 if (urlMatch) {
@@ -202,8 +202,10 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
                 expect(demoJSContent).toEqual(expect.not.stringMatching(/;\n(?!\/)/));
 
                 const indexJSMapFileName = jsDir.find(filename => filename.match(/^(index.)[a-z0-9]+(.js.map)$/));
+                const indexCSSMapFileName = cssDir.find(filename => filename.match(/^(index.)[a-z0-9]+(.css.map)$/));
                 // 测试点16：是否产出了 .map 文件（测 san.config 的 sourceMap)
                 expect(indexJSMapFileName).toBeDefined();
+                expect(indexCSSMapFileName).toBeDefined();
 
                 const vendorsLegacyJSMapFileName = jsDir.find(
                     filename => filename.match(/^(vendors-legacy.)[a-z0-9]+(.js.map)$/)
@@ -273,8 +275,10 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
                 expect(indexJSContent).toEqual(expect.stringMatching(/;\n(?!\/)/));
 
                 const indexJSMapPath = path.join(outputPath, 'index.js.map');
+                const indexCSSMapPath = path.join(outputPath, 'index.css.map');
                 // 测试点30：是否没产出 .map 文件（测 san.config 的 sourceMap)
                 expect(fse.existsSync(indexJSMapPath)).toBeFalsy();
+                expect(fse.existsSync(indexCSSMapPath)).toBeFalsy();
 
                 // 测试点31：产出中的 classname 是否正确（css module）（默认启用css modules）
                 expect(indexJSContent).toEqual(expect.stringContaining('_main_'));

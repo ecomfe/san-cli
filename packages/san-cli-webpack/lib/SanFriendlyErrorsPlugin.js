@@ -55,11 +55,6 @@ function isLikelyASyntaxError(message) {
 
 // Cleans up webpack error messages.
 function formatMessage(message) {
-    // 兼容webpack5升级
-    if (typeof message === 'object') {
-        message = Object.values(message).join('\n');
-    }
-
     let lines = message.split('\n');
 
     // Strip webpack-added headers off errors/warnings
@@ -113,10 +108,10 @@ function formatMessage(message) {
 }
 
 function formatWebpackMessages(json) {
-    const formattedErrors = json.errors.map(function (message) {
+    const formattedErrors = json.errors.map(function ({message}) {
         return formatMessage(message, true);
     });
-    const formattedWarnings = json.warnings.map(function (message) {
+    const formattedWarnings = json.warnings.map(function ({message}) {
         return formatMessage(message, false);
     });
     const result = {errors: formattedErrors, warnings: formattedWarnings};
