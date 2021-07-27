@@ -58,12 +58,16 @@ exports.resolveEntry = (resolveEntryPath, absoluteEntryPath, webpackConfig, defa
         const isFile = obj.isFile;
 
         webpackConfig.entry = webpackConfig.entry || {};
-        if (isFile && !/\.san$/.test(resolveEntryPath)) {
+        const isSanFile = /\.san$/.test(resolveEntryPath);
+        if (isFile && !isSanFile) {
             webpackConfig.entry.app = resolveEntryPath;
         } else {
             webpackConfig.entry.app = defaultEntry;
             // san 文件/目录的情况需要指定 ~entry
             webpackConfig.resolve.alias['~entry'] = absoluteEntryPath;
+        }
+        if (isSanFile) {
+            webpackConfig.cache = false;
         }
     }
     // 处理 entry 不存在的情况
