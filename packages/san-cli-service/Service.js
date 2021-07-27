@@ -225,7 +225,7 @@ module.exports = class Service extends EventEmitter {
         // 下面是给cnfig-webpack用的
         projectOptions.mode = mode;
 
-        const entryFiles = Object.keys(projectOptions.pages).map(key => projectOptions.pages[key].entry);
+        const entryFiles = Object.keys(projectOptions.pages || {}).map(key => projectOptions.pages[key].entry);
         process.env.SAN_CLI_ENTRY_FILES = JSON.stringify(entryFiles);
 
         debug('projectOptions: %O', projectOptions);
