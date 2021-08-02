@@ -24,7 +24,7 @@ module.exports = function apply(argv, api) {
             obj = obj[key];
         }
         return obj[fields[l - 1]];
-    }
+    };
 
     const config = api.getWebpackConfig();
     let res;
