@@ -106,9 +106,8 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
 
                     const appJSPath = path.join(cwd, 'src/pages/index/containers/app.js');
 
-                    // CI 里的 Windows 环境不测 HMR，因为不能成功
-                    // 本地的 Windows 环境测 HMR 是能成功的
-                    if (isWindows && fse.existsSync(path.join(cwd, '../../../isCI'))) {
+                    // HMR 只在本地测，CI 里不测，因为 CI 里 HMR 有时莫名其妙不能成功
+                    if (fse.existsSync(path.join(cwd, '../../../isCI'))) {
                         killServe();
                         resolve();
                         return;
