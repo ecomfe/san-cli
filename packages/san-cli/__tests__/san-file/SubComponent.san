@@ -1,0 +1,21 @@
+<template>
+    <div class="sub-component">I am a {{name}}!</div>
+</template>
+
+<script>
+import {Component} from 'san';
+
+export default class SubComponent extends Component {
+    initData() {
+        return {
+            name: 'sub component'
+        };
+    }
+}
+</script>
+
+<style>
+    .sub-component {
+        color: red;
+    }
+</style>

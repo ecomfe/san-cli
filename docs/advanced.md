@@ -44,7 +44,9 @@ module.exports = {
 
 ```js
 {
-    comments: false,
+    format: {
+        comments: false
+    },
     compress: {
         unused: true,
         // 删掉 debugger

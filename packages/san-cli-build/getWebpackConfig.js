@@ -126,7 +126,7 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
 
     // entry
     if (entry) {
-        webpackConfig = resolveEntry(entry, api.resolve(entry), webpackConfig);
+        webpackConfig = resolveEntry(entry, api.resolve(entry), webpackConfig, require.resolve('./public/main.js'));
     }
     return webpackConfig;
 };

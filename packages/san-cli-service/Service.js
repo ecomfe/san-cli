@@ -222,7 +222,7 @@ module.exports = class Service extends EventEmitter {
         // load user config
         time('loadProjectOptions');
         const projectOptions = this.loadProjectOptions(configFile);
-        // 下面是给cnfig-webpack用的
+        // 下面是给 config-webpack 用的
         projectOptions.mode = mode;
 
         const entryFiles = Object.keys(projectOptions.pages || {}).map(key => projectOptions.pages[key].entry);
