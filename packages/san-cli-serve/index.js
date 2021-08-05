@@ -73,6 +73,11 @@ exports.builder = {
         type: 'boolean',
         default: true,
         describe: 'Print out the QRCode of the URL'
+    },
+    esm: {
+        type: 'boolean',
+        default: false,
+        describe: 'Acceleration using esmodule'
     }
 };
 
@@ -85,8 +90,17 @@ exports.handler = argv => {
             argv.mode = 'development';
         }
     }
+    const projectOptions = {
+        loaderOptions: {
+            esbuild: argv.esm
+        }
+    };
     const Service = require('san-cli-service');
-    const service = new Service(process.cwd(), {watch: argv.watch, useDashboard: argv.dashboard});
+    const service = new Service(process.cwd(), {
+        watch: argv.watch,
+        useDashboard: argv.dashboard,
+        projectOptions
+    });
     const run = require('./run');
     service.run('serve', argv).then(run.bind(run, argv));
 };

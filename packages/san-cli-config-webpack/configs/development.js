@@ -3,8 +3,8 @@ module.exports = (webpackConfig, projectOptions) => {
     webpackConfig.devtool('eval-cheap-module-source-map');
     webpackConfig.plugin('hmr').use(require('webpack/lib/HotModuleReplacementPlugin'));
     webpackConfig.plugin('no-emit-on-errors').use(require('webpack/lib/NoEmitOnErrorsPlugin'));
-    const {cache, loaderOptions = {}, esm} = projectOptions;
-    const esbuild = loaderOptions.esbuild || esm;
+    const {cache, loaderOptions = {}} = projectOptions;
+    const esbuild = loaderOptions.esbuild;
     // cache可以传false来禁止，或者传入object来配置
     const cacheOption = typeof cache === 'undefined' ? {
         type: 'filesystem',

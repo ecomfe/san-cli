@@ -35,3 +35,4 @@ san serve [entry]
 -   `--no-progress`：禁用默认的进度条（webpackbar）值为 true 或 false，默认是 false
 -   `--open，--O`：是否在编译打包完成后，自动在浏览器中打开页面地址，值为 true 或 false，默认是 false
 -   `--qrcode`：是否输出页面地址二维码，值为 true 或 false，默认是 true
+-   `--esm`：是否开启esmodule打包加速本地调试启动速度，开启后使用esbuild-loader替换babel-loader
