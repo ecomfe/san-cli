@@ -3,6 +3,7 @@
     -   [init: 初始化项目](/create-project.md)
     -   [serve: 开发打包](/serve.md)
     -   [build: 生产打包](/build.md)
+    -   [inspect: 查看webpack内置信息](/inspect.md)
 -   配置
     -   [配置文件](/config.md)
     -   [高级配置](/advanced.md)
