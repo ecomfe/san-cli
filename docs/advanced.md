@@ -148,6 +148,17 @@ module.exports = {
 };
 ```
 
+### esm
+
+值为`true` or `false` 只在开发环境有效，开启后使用esbuild-loader替换babel-loader，使用esmodule加速本地调试速度
+
+```js
+module.exports = {
+    // ...
+    esm: true
+};
+```
+
 ### unsafeCache
 
 webpack5 新增了安全策略，对应 config.module.unsafeCache，开启后（true）表示忽略安全策略，可加快构建速度，默认不开启（false）。
