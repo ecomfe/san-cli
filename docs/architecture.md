@@ -8,6 +8,8 @@ San CLI 在兼顾 San 生态的同时，尽量做到通用化配置，在设计�
 
 ## 核心模块介绍
 
+![](./assets/san-cli4.png)
+
 San CLI 的核心模块包含：
 
 -   san-cli：核心模块，负责整合整个工作流程。
@@ -26,7 +28,7 @@ San CLI 的核心模块包含：
 
 结合模块的主流程可以如下图所示：
 
-![]()
+![](./assets/flow.png)
 
 ### san-cli-utils 重点方法介绍
 
@@ -80,7 +82,7 @@ San CLI 的命令行使用了[yargs](https://github.com/yargs/yargs/)。通过�
 2. 添加最新版本检查器；
 3. 加载并执行已安装的命令（`init`、`build`、`serve`、`ui`等）：通过实例化 Service，执行`Service.run(commandName, argv)`；
 
-![]()
+![](./assets/core-flow.png)
 
 ## san-cli-init：脚手架实现
 
@@ -114,7 +116,6 @@ const service = new Service(name, {
     mode,
     // 是否使用内置 Plugin
     useBuiltInPlugin,
-    // 项目配置，这里是从 sanrc 读取内容传入
     // 优先级比 san.config.js 低
     projectOptions,
     // 传入的插件 list
@@ -144,7 +145,7 @@ service.run(callback);
     3. 返回service实例对象
 4. 执行 `callback`。
 
-![]()
+![](./assets/service-flow.png)
 
 > **webpackChain 回调栈**存储的是接收[webpack-chain](https://github.com/neutrinojs/webpack-chain)格式的 webpack 配置文件的处理函数；
 > **webpackConfig 回调栈**存储的是接受普通 webpack 配置文件对象的处理函数。
