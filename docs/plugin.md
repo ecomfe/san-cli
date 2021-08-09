@@ -13,4 +13,4 @@ Service 插件主要是针对 Webpack 相关的，会加载内置 Webpack 配置
 
 ### 深入阅读
 
--   [Service 插件](/srv-plugin.md)
+-   [编写一个 Service 插件](/srv-plugin.md)

@@ -9,7 +9,7 @@
  */
 
 // 可以通过传入 api 和 options，获得 yarg 的 handler
-// 方便 command 插件直接调用 run，得到 handler
+// 方便插件直接调用 run，得到 handler
 // 为了扩展，需要增加 webpack 和 dev-server 的配置回调
 module.exports = function apply(argv, api) {
     const {info, error} = require('san-cli-utils/ttyLogger');

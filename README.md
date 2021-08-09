@@ -19,9 +19,9 @@ English | [简体中文](./README-zh_CN.md)
 
 ## 🎉 Features
 
--   Complete project scaffolding.
--   webpack-based with zero configuration.
--   Extensible command line and webpack packaging plugins.
+-   Complete project scaffolding
+-   webpack-based with zero configuration
+-   Extensible command line and webpack packaging plugins
 
 San CLI takes into account the San ecosystem while trying to achieve universal configuration. At the beginning of the design phase, we aimed to be not limited to the San application scope, but to make a general and customizable front-end development tooling.
 
@@ -96,8 +96,7 @@ For detailed documentation, please check the [San CLI docs](./docs/README.md).
 -   [santd](https://ecomfe.github.io/santd/) - Components Library following the [Ant Design](https://ant.design/) specification
 -   [san-mui](https://ecomfe.github.io/san-mui/) - [Material Design](https://www.material.io/) Components Library
 -   [san-xui](https://ecomfe.github.io/san-xui/) - A Set of SAN UI Components that widely used on Baidu Cloud Console
--   [drei](https://github.com/ssddi456/drei/) - VSCode extension for SAN
--   [san-cli](https://github.com/ecomfe/san-cli) - A CLI tooling based on SAN for rapid development
+-   [sanny](https://github.com/searchfe/sanny/) - VSCode extension for SAN
 -   [san-test-utils](https://github.com/ecomfe/san-test-utils) - The unit testing utility library for SAN
 -   [san-loader](https://github.com/ecomfe/san-loader) - Webpack loader for single-file SAN components
 -   [san-hot-loader](https://github.com/ecomfe/san-hot-loader) - Webpack loader for SAN components HMR

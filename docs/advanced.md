@@ -1,7 +1,7 @@
 
 # 高级配置
 
-这篇文章介绍一些高级配置的配置项，这些配置项虽然在日常项目中配置的较少，但是对于项目来说这些配置项往往是可以解决日常常见的问题。
+这篇文章介绍一些高级配置的配置项，这些配置项虽然在日常项目中配置得较少，但是对于项目来说这些配置项往往是可以解决日常常见的问题。
 
 ## 使用拆包
 
@@ -137,7 +137,7 @@ module.exports = {
 
 也可通过 esbuild 配置项直接传入配置，具体配置见[esbuild-loader](https://github.com/privatenumber/esbuild-loader)。
 
-esbuild 开启后，默认也会在开发环境下使用 esbuild-loader 替换 babel-loader，速度大幅提升。
+esbuild 开启后，默认也会在开发环境下使用 esbuild-loader 替换 babel-loader，速度会大幅提升。
 
 esbuild 也可以开启 css 压缩（默认不开启），按照如下方式配置即可：
 
@@ -162,10 +162,14 @@ San CLI 中使用的 html-webpack-plugin 的配置项中可以使用 html-minifi
 {
     removeComments: true,
     collapseWhitespace: false,
-    removeAttributeQuotes: true,
+    // 引号保留，不然 inline 的 base64 图片 compress 时报错
+    removeAttributeQuotes: false,
+    quoteCharacter: '"',
     collapseBooleanAttributes: true,
     removeScriptTypeAttributes: false,
-    minifyCSS: true
+    minifyCSS: true,
+    // 处理 smarty 和 php 情况
+    ignoreCustomFragments: [/{%[\s\S]*?%}/, /<%[\s\S]*?%>/, /<\?[\s\S]*?\?>/]
     // more options:
     // https://github.com/kangax/html-minifier#options-quick-reference
 }

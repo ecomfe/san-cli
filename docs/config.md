@@ -164,7 +164,7 @@ module.exports = {
 ### 生产环境优化相关
 
 1. sourcemap：js 的 sourcemap 使用`sourceMap`，css 的使用`css.sourceMap`；
-2. filenameHashing：给文件路径添加 hash 值；
+2. filenameHashing：给文件名添加 hash 值；
 3. largeAssetSize：小于这个配置的图片和文件会被编译成 base64 放到 css 中。
 
 **例如**
@@ -197,7 +197,7 @@ module.exports = {
 
 #### `loaderOptions`
 
-在 San CLI 中内置很多 Loader，都有默认配置，如果修改默认配置可以使用`loaderOptions`，其中 css 中的 loader（例如 style-loader 、css-loader 等）则可以通过`css.loaderOptions`进行修改，例如：
+在 San CLI 中内置很多 Loader，都有默认配置，如果需要修改默认配置可以使用`loaderOptions`，其中 css 中的 loader（例如 style-loader 、css-loader 等）则可以通过`css.loaderOptions`进行修改，例如：
 
 **例如**
 

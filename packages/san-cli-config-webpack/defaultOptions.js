@@ -7,10 +7,10 @@ exports.cssnanoOptions = {
     zindex: false,
     reduceIdents: false,
     safe: true,
-    // cssnano 集成了autoprefixer的功能
-    // 会使用到autoprefixer进行无关前缀的清理
-    // 关闭autoprefixer功能
-    // 使用postcss的autoprefixer功能
+    // cssnano 集成了 autoprefixer 的功能
+    // 会使用到 autoprefixer 进行无关前缀的清理
+    // 关闭 autoprefixer 功能
+    // 使用 postcss 的 autoprefixer 功能
     autoprefixer: false,
     discardComments: {
         removeAll: true
@@ -62,7 +62,7 @@ exports.terserOptions = {
 exports.htmlMinifyOptions = {
     removeComments: true,
     collapseWhitespace: false,
-    // 引号保留，不然inline的base64图片compress时报错
+    // 引号保留，不然 inline 的 base64 图片 compress 时报错
     removeAttributeQuotes: false,
     quoteCharacter: '"',
     collapseBooleanAttributes: true,
