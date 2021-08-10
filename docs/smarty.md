@@ -1,20 +1,20 @@
 # Smarty 相关
 
-使用 Smarty 的 PHP 模板，可以配置[Hulk Mock Server](https://www.npmjs.com/package/hulk-mock-server) 。
+要使用 Smarty 的 PHP 模板，可以配置[Hulk Mock Server](https://www.npmjs.com/package/hulk-mock-server) 。
 
 ## Hulk Mock Server
 
-Mock Server 实现涉及到代码和说明
+Mock Server 实现涉及到的代码和说明：
 
 ```
 ├── mock    mock 文件
-│   ├── _data_  这里是JSON 数据，跟template 目录结构一致，支持 Mockjs 语法（**.mock.json）
+│   ├── _data_  这里是 JSON 数据，跟 template 目录结构一致，支持 Mockjs 语法（**.mock.json）
 │   └── index.js 配置文件
 ├── scripts
 │   ├── dev.js
 ```
 
-`dev.js`中会启动`webpackDevServer`和`hotReload`功能，DevServer 会将请求转发到 MockServer，MockServer （代码`middlewares/mocker.js`）包含两部分：`nodeServer`和`smartyServer`，node 遵循[`webpack-api-mocker`](https://github.com/jaywcjlove/webpack-api-mocker/)文档，`smartyServer`是 node 执行`php`命令行渲染 smarty 模板，然后将 stdout 作为输出。
+`dev.js`中会启动`webpackDevServer`和`hotReload`功能，DevServer 会将请求转发到 MockServer，MockServer （代码在`middlewares/mocker.js`）包含两部分：`nodeServer`和`smartyServer`，node 遵循[`webpack-api-mocker`](https://github.com/jaywcjlove/webpack-api-mocker/)文档，`smartyServer`是 node 执行`php`命令行渲染 smarty 模板，然后将 stdout 作为输出。
 
 smarty 支持的配置有：`baseDir=./template&bin=php&dataDir=mockDir/_mockdata_`
 

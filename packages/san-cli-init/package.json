@@ -1,6 +1,6 @@
 {
     "name": "san-cli-init",
-    "version": "1.0.4",
+    "version": "2.0.2",
     "main": "index.js",
     "author": "ksky521",
     "repository": {
@@ -18,12 +18,10 @@
         "consolidate": "^0.15.1",
         "execa": "^4.0.0",
         "fs-extra": "^8.1.0",
-        "git-clone": "^0.1.0",
         "gulp-filter": "^6.0.0",
         "gulp-rename": "^2.0.0",
         "handlebars": "^4.5.1",
         "handlebars-delimiters": "^1.0.0",
-        "hash-sum": "^2.0.0",
         "prompts": "^2.4.0",
         "san-cli-utils": "^1.0.0",
         "through2": "^3.0.1",

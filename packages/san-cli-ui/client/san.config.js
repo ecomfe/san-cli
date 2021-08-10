@@ -2,7 +2,6 @@
  * @file san config
  */
 const path = require('path');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const resolve = pathname => path.resolve(__dirname, pathname);
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 
@@ -18,6 +17,7 @@ module.exports = {
     publicPath: '/',
     outputDir: 'dist',
     filenameHashing: isProduction,
+
     css: {
         sourceMap: isProduction,
         cssPreprocessor: 'less',
@@ -41,28 +41,38 @@ module.exports = {
         '@graphql': resolve('graphql'),
         '@components': resolve('components')
     },
+    loaderOptions: {
+        // 这里是img的url-loader的配置
+        image: {
+            limit: 1000,
+            name: STATIC_PRO + '/img/[name].[hash:7].[ext]',
+            publicPath: '/'
+        }
+    },
+    splitChunks: {
+        // 三方库模块独立打包
+        defaultVendors: {
+            name: 'vendors',
+            test: /[\\/]node_modules(?!\/santd)[\\/]/,
+            priority: -10,
+            chunks: 'initial'
+        },
+        default: false
+    },
     chainWebpack: config => {
-        config.plugin('clean-webpack-plugin').use(CleanWebpackPlugin);
 
         // 这里可以用来扩展 webpack 的配置，使用的是 webpack-chain 语法
-        config.module.rule('html')
-            .use('html-loader')
-            .tap(options => {
-                options.attrs.push('link:href');
-                return options;
-            });
 
-        config.module.rule('img')
-            .test(/\.(png|jpe?g|gif)(\?.*)?$/)
-            .use('url-loader')
-            .tap(options => {
-                return {
-                    ...options,
-                    limit: 1000,
-                    name: STATIC_PRO + '/img/[name].[hash:7].[ext]',
-                    publicPath: '/'
-                };
-            });
+        // TODO: 这里报错了，应该是html-loader的版本升级，api变更了所致，先注释掉，
+        //       直接提到san-cli-service里面去了
+
+        // config.module.rule('html-loader')
+        //     .use('html-loader')
+        //     .tap(options => {
+        //         options.attrs.push('link:href');
+        //         return options;
+        //     });
+
 
         config.module.rule('gql')
             .test(/\.(graphql|gql)$/)
@@ -81,18 +91,6 @@ module.exports = {
         config.resolve.alias
             .set('san', isProduction ? 'san/dist/san.spa.min.js' : 'san/dist/san.spa.dev.js');
 
-        config.optimization.splitChunks({
-            cacheGroups: {
-                // 三方库模块独立打包
-                vendors: {
-                    name: 'vendors',
-                    test: /[\\/]node_modules(?!\/santd)[\\/]/,
-                    priority: -10,
-                    chunks: 'initial'
-                },
-                default: false
-            }
-        });
     },
     devServer: {
         port: 8888

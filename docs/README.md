@@ -7,7 +7,7 @@ San CLI 在兼顾 San 生态的同时，尽量做到通用化配置，在设计�
 ## 安装
 
 ::: warning
-San CLI 的 Node.js 版本要求 `>= 8.16.0`。
+San CLI 的 Node.js 版本要求 `>= 12.0`。
 :::
 
 通过下面命令安装 San CLI
@@ -25,13 +25,11 @@ yarn global add san-cli
 
 ```bash
 san -h
-san build
-san serve
 ```
 
 ## 特点
 
--   支持 Command 和 Service 双插件机制，可以定制化自己/团队的 CLI
+-   支持 Service 插件机制，可以定制自己的或团队的 CLI
 -   内置打包、部署、包分析、性能分析等功能和最佳实践
 -   支持自定义项目脚手架
 -   支持 Markdown 建站

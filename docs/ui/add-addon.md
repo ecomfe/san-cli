@@ -1,5 +1,5 @@
 
-# widget部件
+# widget 部件
 
 仪表盘部件的工作流程：
 
@@ -19,7 +19,7 @@
 实现一个显示在仪表盘的小部件，在ui.js内主要借助两个api：
 
 - `api.registerAddon`：注册插件的id并且定义加载的路径。
-- `api.registerWidget`：注册一个widget部件，返回小部件的具体配置。
+- `api.registerWidget`：注册一个 widget 部件，返回小部件的具体配置。
 
 在client端通过`ClientAddonApi`加载组件定义并挂载到仪表盘视图内，因此在index.js内需要用到:
 
@@ -81,7 +81,7 @@ module.exports = {
 > port是本地服务的端口，可修改，但应与ui.js文件中本地服务url保持一致
 
 
-`ui.js`文件已预置了插件加载路径定义和widget部件定义：
+`ui.js`文件已预置了插件加载路径定义和 widget 部件定义：
 
 ```js
 module.exports = api => {
@@ -153,10 +153,10 @@ export default {
 
 ```
 
-在开发addon组件过程中，会涉及到以下api：
+在开发 addon 组件过程中，会涉及到以下 API：
 
-- `api.registerAddon`：addon组件注册
-- `api.registerWidget`：widget部件注册
+- `api.registerAddon`：addon 组件注册
+- `api.registerWidget`：widget 部件注册
 - `api.callAction`：事件调用
 - `api.onAction`：事件监听
 - `ClientAddonApi.defineComponent`：组件定义

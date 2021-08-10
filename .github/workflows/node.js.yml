@@ -7,12 +7,15 @@ on: [push, pull_request]
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x]
+        os: [ubuntu-latest, windows-latest]
+        node-version: [12.x, 14.x]
     steps:
     - uses: actions/checkout@v2
+    - name: Create Env File
+      run: touch isCI
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
@@ -28,6 +31,8 @@ jobs:
         # 如果不加以下这行，发起 pr 后触发的 ci 拿到的 commit message 是“Merge ... into ...”而不是提交代码时输入的 commit message。
         ref: ${{ github.event.pull_request.head.sha }}
     - uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
     - run: yarn
     - name: commitlint
       run: echo $(git log --format=%B -n 1) | npx commitlint --verbose
@@ -37,5 +42,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
     - run: yarn
     - run: yarn lint

@@ -6,7 +6,7 @@
     ],
     "license": "MIT",
     "engines": {
-        "node": ">=8.16"
+        "node": ">=12.0"
     },
     "repository": {
         "type": "git",
@@ -21,7 +21,6 @@
         "@commitlint/core": "^8.3.4",
         "@ecomfe/eslint-config": "^3.2.0",
         "@ksky521/cz-emoji": "^1.2.1",
-        "@sdoc/cli": "^1.0.2",
         "babel-eslint": "^10.1.0",
         "commitizen": "^4.0.3",
         "commitlint-config-gitmoji": "1.0.1",
@@ -46,8 +45,8 @@
     },
     "scripts": {
         "commit": "git-cz",
-        "doc": "sdoc start docs",
-        "build:doc": "sdoc build docs",
+        "doc": "npx @sdoc/cli start docs",
+        "build:doc": "npx @sdoc/cli build docs",
         "lint": "eslint --ignore-path .eslintignore ./",
         "test": "rimraf ./packages/test && node scripts/test.js"
     },
