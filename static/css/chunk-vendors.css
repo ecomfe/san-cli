@@ -542,7 +542,7 @@ pre[class*='language-'] {
 .sidebar li ul > li ul > li ul > li span {
   padding-left: 80px;
 }
-.markdown {
+.markdown-content {
   /**
  * prism.js tomorrow night eighties for JavaScript, CoffeeScript, CSS and HTML
  * Based on https://github.com/chriskempson/tomorrow-theme
@@ -551,8 +551,8 @@ pre[class*='language-'] {
   /* Code blocks */
   /* Inline code */
 }
-.markdown code[class*='language-'],
-.markdown pre[class*='language-'] {
+.markdown-content code[class*='language-'],
+.markdown-content pre[class*='language-'] {
   color: #314659;
   background: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
@@ -572,109 +572,109 @@ pre[class*='language-'] {
   hyphens: none;
   border: none;
 }
-.markdown pre[class*='language-']::-moz-selection,
-.markdown pre[class*='language-'] ::-moz-selection,
-.markdown code[class*='language-']::-moz-selection,
-.markdown code[class*='language-'] ::-moz-selection {
+.markdown-content pre[class*='language-']::-moz-selection,
+.markdown-content pre[class*='language-'] ::-moz-selection,
+.markdown-content code[class*='language-']::-moz-selection,
+.markdown-content code[class*='language-'] ::-moz-selection {
   text-shadow: none;
   background: #b3d4fc;
 }
-.markdown pre[class*='language-']::selection,
-.markdown pre[class*='language-'] ::selection,
-.markdown code[class*='language-']::selection,
-.markdown code[class*='language-'] ::selection {
+.markdown-content pre[class*='language-']::selection,
+.markdown-content pre[class*='language-'] ::selection,
+.markdown-content code[class*='language-']::selection,
+.markdown-content code[class*='language-'] ::selection {
   text-shadow: none;
   background: #b3d4fc;
 }
 @media print {
-  .markdown code[class*='language-'],
-  .markdown pre[class*='language-'] {
+  .markdown-content code[class*='language-'],
+  .markdown-content pre[class*='language-'] {
     text-shadow: none;
   }
 }
-.markdown pre[class*='language-'] {
+.markdown-content pre[class*='language-'] {
   padding: 1em;
   margin: 0.5em 0;
   overflow: auto;
 }
-.markdown :not(pre) > code[class*='language-'],
-.markdown pre[class*='language-'] {
+.markdown-content :not(pre) > code[class*='language-'],
+.markdown-content pre[class*='language-'] {
   background: #f2f4f5;
 }
-.markdown :not(pre) > code[class*='language-'] {
+.markdown-content :not(pre) > code[class*='language-'] {
   padding: 0.1em;
   border-radius: 0.3em;
   white-space: normal;
 }
-.markdown .token.comment,
-.markdown .token.prolog,
-.markdown .token.doctype,
-.markdown .token.cdata {
+.markdown-content .token.comment,
+.markdown-content .token.prolog,
+.markdown-content .token.doctype,
+.markdown-content .token.cdata {
   color: slategray;
 }
-.markdown .token.punctuation {
+.markdown-content .token.punctuation {
   color: #999;
 }
-.markdown .namespace {
+.markdown-content .namespace {
   opacity: 0.7;
 }
-.markdown .token.property,
-.markdown .token.tag,
-.markdown .token.boolean,
-.markdown .token.number,
-.markdown .token.constant,
-.markdown .token.symbol,
-.markdown .token.deleted {
+.markdown-content .token.property,
+.markdown-content .token.tag,
+.markdown-content .token.boolean,
+.markdown-content .token.number,
+.markdown-content .token.constant,
+.markdown-content .token.symbol,
+.markdown-content .token.deleted {
   color: #f81d22;
 }
-.markdown .token.selector,
-.markdown .token.attr-name,
-.markdown .token.string,
-.markdown .token.char,
-.markdown .token.builtin,
-.markdown .token.inserted {
+.markdown-content .token.selector,
+.markdown-content .token.attr-name,
+.markdown-content .token.string,
+.markdown-content .token.char,
+.markdown-content .token.builtin,
+.markdown-content .token.inserted {
   color: #0b8235;
 }
-.markdown .token.operator,
-.markdown .token.entity,
-.markdown .token.url,
-.markdown .language-css .token.string,
-.markdown .style .token.string {
+.markdown-content .token.operator,
+.markdown-content .token.entity,
+.markdown-content .token.url,
+.markdown-content .language-css .token.string,
+.markdown-content .style .token.string {
   color: #0b8235;
 }
-.markdown .token.atrule,
-.markdown .token.attr-value,
-.markdown .token.keyword {
+.markdown-content .token.atrule,
+.markdown-content .token.attr-value,
+.markdown-content .token.keyword {
   color: #008dff;
 }
-.markdown .token.function {
+.markdown-content .token.function {
   color: #f81d22;
 }
-.markdown .token.regex,
-.markdown .token.important,
-.markdown .token.variable {
+.markdown-content .token.regex,
+.markdown-content .token.important,
+.markdown-content .token.variable {
   color: #e90;
 }
-.markdown .token.important,
-.markdown .token.bold {
+.markdown-content .token.important,
+.markdown-content .token.bold {
   font-weight: bold;
 }
-.markdown .token.italic {
+.markdown-content .token.italic {
   font-style: italic;
 }
-.markdown .token.entity {
+.markdown-content .token.entity {
   cursor: help;
 }
-.markdown pre[class*='language-'].line-numbers {
+.markdown-content pre[class*='language-'].line-numbers {
   position: relative;
   padding-left: 3.8em;
   counter-reset: linenumber;
 }
-.markdown pre[class*='language-'].line-numbers > code {
+.markdown-content pre[class*='language-'].line-numbers > code {
   position: relative;
   white-space: inherit;
 }
-.markdown .line-numbers .line-numbers-rows {
+.markdown-content .line-numbers .line-numbers-rows {
   position: absolute;
   pointer-events: none;
   top: 0;
@@ -687,12 +687,12 @@ pre[class*='language-'] {
   -webkit-user-select: none;
   user-select: none;
 }
-.markdown .line-numbers-rows > span {
+.markdown-content .line-numbers-rows > span {
   pointer-events: none;
   display: block;
   counter-increment: linenumber;
 }
-.markdown .line-numbers-rows > span:before {
+.markdown-content .line-numbers-rows > span:before {
   content: counter(linenumber);
   color: #999;
   display: block;
