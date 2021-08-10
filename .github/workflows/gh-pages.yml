@@ -9,6 +9,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - run: yarn
+    - run: yarn global add @sdoc/cli
     - run: yarn run build:doc
 
     - name: Deploy
