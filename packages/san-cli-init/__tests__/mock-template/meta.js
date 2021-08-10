@@ -38,6 +38,29 @@ module.exports = {
                     value: 'true'
                 }
             ]
+        },
+        demo: {
+            type: 'confirm',
+            message: '安装demo示例？'
+        },
+        demoType: {
+            when: 'demo',
+            type: 'list',
+            message: '选择示例代码类型：',
+            choices: [
+                {
+                    title: 'san-store (推荐)',  // 兼容 prompts
+                    name: 'san-store (推荐)',
+                    value: 'store',
+                    short: 'san-store'
+                },
+                {
+                    title: 'normal',    // 兼容 prompts
+                    name: 'normal',
+                    value: 'normal',
+                    short: 'normal'
+                }
+            ]
         }
     }
 };

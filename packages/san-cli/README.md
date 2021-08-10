@@ -17,7 +17,7 @@ San CLI takes into account the San ecosystem while trying to achieve universal c
 
 ## 📦 Installation
 
-> San CLI requires Node.js version 8.16.0 or above (8.16.0+ recommended).
+> San CLI requires Node.js version 12.0 or above (12.0+ recommended).
 
 ```bash
 # use npm
@@ -35,46 +35,6 @@ san -h
 ```
 
 For more information, visit [https://ecomfe.github.io/san-cli](https://ecomfe.github.io/san-cli).
-
-## 🤝 Contributing [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/ecomfe/san-cli/pulls)
-
-San CLI uses [Yarn Workspaces](https://classic.yarnpkg.com/en/docs/workspaces/) for local development.
-
-First clone the project to your computer, then install dependencies：
-
-```bash
-# install dependencies
-yarn
-```
-
-For design details, please read _[architecture](./docs/architecture.md)_.
-
-### 🔨 Testing
-
-```bash
-# test all
-yarn test
-# or test one specific package
-yarn test [packageName]
-# such as
-yarn test san-cli
-```
-
-### 🐛 Debug Log
-
-The [debug](https://npmjs.org/package/debug) module is used in the San CLI, so if you need to debug or see some information you can use the `DEBUG` variable. In San CLI, the scope of debug is `san-cli:`, and common variables include:
-
--   `perf`: Output performance log of San CLI itself.
--   `babel`: Output Babel related configuration.
--   `service`: Output service layer log.
--   `webpack:closeDevtool`: Close Devtools and no longer output `eval` type code. Directly output the packaged code for debugging.
--   `webpack:build`: Output webpack build related configuration.
--   `webpack:serve`: Output webpack serve related configuration.
--   `webpack:config`: Output the final config object of webpack.
-
-## 📝 Documentation
-
-For detailed documentation, please check the [San CLI docs](./docs/README.md).
 
 ## ☀️ License
 

@@ -2,7 +2,7 @@
 
 # San CLI 配置文件
 
-San CLI 的配置文件为`san.config.js`，该文件放在项目的根目录下，当执行 San CLI 命令的时候，CLI 会自动读取 san.config.js 的内容，当然我们也是支持传入 Config 文件，当使用 CLI 的时候，使用`--config`传入自定义的 Config 文件路径即可。
+San CLI 的配置文件为`san.config.js`，该文件放在项目的根目录下，当执行 San CLI 命令的时候，CLI 会自动读取 san.config.js 的内容，当然我们也支持传入 Config 文件，当使用 CLI 的时候，使用`--config`传入自定义的 Config 文件路径即可。
 
 ## 默认配置如下
 
@@ -10,7 +10,6 @@ San CLI 的配置文件为`san.config.js`，该文件放在项目的根目录下
 
 ```js
 module.exports = {
-    polyfill: true,
     pages: undefined,
     outputDir: 'output',
     assetsDir: '',
@@ -48,10 +47,6 @@ module.exports = {
 
 ### 页面和产出相关配置
 
-#### `polyfill`
-
-设置为`true`，则会自动使用Babel的`useBuiltIns='usage'`，使用core-js自动添加polyfill，默认是`true`。
-
 #### `pages`
 
 多页面配置，为页面配置项（为 html-webpack-plugin 中的相应配置项）如下：
@@ -70,11 +65,11 @@ module.exports = {
 
 主要配置项说明如下：
 
--   `entry` 页面入口文件相对地址。 _String 或 Array 数组项为 String_
+-   `entry` 页面入口文件相对地址。 _String 或 String[]_
 -   `template` 页面模板文件相对地址。 _String_
 -   `filename` 页面模板文件产出地址。 _String_
 -   `title` 用于生成的 HTML 文档的标题。 _String_
--   `chunks` 允许插入到模板中的一些 chunk，如果在 splitChunks 里配置了拆包，就需要把拆的包的名字添加到这里。 _Array 数组项为 String_
+-   `chunks` 允许插入到模板中的一些 chunk，如果在 splitChunks 里配置了拆包，就需要把拆的包的名字添加到这里。 _String[]_
 
 > 这里的 pages 内的配置项除了 entry 为特殊指定的 Webpack `entry`外，其他的都是 html-webpack-plugin 的配置项。
 
@@ -96,10 +91,11 @@ pages: {
 
 San CLI 内置了[copy-webpack-plugin](https://github.com/webpack-contrib/copy-webpack-plugin)，并且在配置中使用`copy`来进行配置：
 
-`copy` 模板拷贝。 _Object 或 Array 数组项为 Object_
+`copy` 模板拷贝。 _Object 或 Object[]_
 
 -   `from` 拷贝模板的源路径。 _String_
--   `to` 拷贝模板到 outputDir 中的目标路径。 _String_ -`compress` 模板内联 js、css 是否压缩，默认为 true。 _Boolean_
+-   `to` 拷贝模板到 outputDir 中的目标路径。 _String_
+-   `compress` 模板的内联 js、css 是否压缩，默认为 true。 _Boolean_
 -   `ignore` 忽略的模板路径，不会被拷贝。 _String 或 RegExp_
 
 **例如**
@@ -111,7 +107,7 @@ module.exports = {
         to: 'template/gem-h5/page'
     }
 };
-// 或者支持数组：
+// 也支持数组：
 {
     copy: [
         {
@@ -168,7 +164,7 @@ module.exports = {
 ### 生产环境优化相关
 
 1. sourcemap：js 的 sourcemap 使用`sourceMap`，css 的使用`css.sourceMap`；
-2. filenameHashing：给文件路径添加 hash 值；
+2. filenameHashing：给文件名添加 hash 值；
 3. largeAssetSize：小于这个配置的图片和文件会被编译成 base64 放到 css 中。
 
 **例如**
@@ -201,7 +197,7 @@ module.exports = {
 
 #### `loaderOptions`
 
-在 San CLI 中内置很多 Loader，都有默认配置，如果修改默认配置可以使用`loaderOptions`，其中 css 中的 loader（例如 style-loader 、css-loader 等）则可以通过`css.loaderOptions`进行修改，例如：
+在 San CLI 中内置很多 Loader，都有默认配置，如果需要修改默认配置可以使用`loaderOptions`，其中 css 中的 loader（例如 style-loader 、css-loader 等）则可以通过`css.loaderOptions`进行修改，例如：
 
 **例如**
 
@@ -230,6 +226,19 @@ module.exports = {
 但是，我们推荐使用`babel.config.js`或者`.babelrc`进行 Babel 配置。
 :::
 
+其他可在`loaderOptions`中配置的选项：
+
+-   `image` 用于修改图片的 url-loader 的默认配置项
+-   `thread` 需要在生产环境下开启多进程打包的 thread-loader 的配置项，thread 传入 true 可开启，还可传入[thread-loader](https://webpack.js.org/loaders/thread-loader/)的配置对象，替换默认配置。例如：
+    ```js
+    module.exports = {
+        // ...
+        loaderOptions: {
+            thread: true // 或填入 {}
+        }
+    };
+    ```
+
 ### css 相关
 
 San CLI 中跟 CSS 相关的配置都统一放置在`css`中。例如：
@@ -246,7 +255,7 @@ module.exports = {
 
 #### `cssPreprocessor`
 
-`css.cssPreprocessor` css 预处理器白名单，值只能为'less', 'sass', 'styl', 'stylus', 'scss'，例如写了 less，那么只编译 less、css 代码，默认全编译。
+`css.cssPreprocessor` css 预处理器白名单，值只能为 'less'、'sass'、'styl'、'stylus' 或 'scss'，例如写了 less，那么只编译 less、css 代码，默认全编译。
 
 **例如**
 
@@ -268,21 +277,18 @@ module.exports = {
 
 #### `sourceMap`
 
-产出是否生成 sourceMap，默认与外层的（js 的 sourceMap） sourceMap 值一样。
-
-#### `requireModuleExtension`
-
-是否仅是含 .module 扩展名的文件（如：.module.less）支持 CSS Modules，默认是 true。
+产出是否生成 sourceMap，默认与外层的（js 的 sourceMap） sourceMap 的值一样。
 
 #### `loaderOptions`
 
 css 相关的 loader 配置项，支持：
 
--   `css` 需要新增的 css-loader 配置项；
+-   `css` 需要新增的 css-loader 配置项；此处还可以修改 css modules 的相关配置（[css-loader](https://github.com/webpack-contrib/css-loader#modules)）
 -   `sass` 需要新增的 sass-loader 配置项；
 -   `less` 需要新增的 less-loader 配置项；
 -   `stylus` 需要新增的 stylus-loader 配置项；
 -   `postcss` 需要新增的 postcss-loader 配置项，默认支持 postcss.config.js 的配置。
+
 
 ::: warning
 这里介绍的是一般配置，更多高级的配置以及优化相关的配置可以继续阅读[高级配置](./advanced.md)内容。

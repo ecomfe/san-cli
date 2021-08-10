@@ -8,157 +8,118 @@
  * @author ksky521
  */
 
-const path = require('path');
-const url = require('url');
-
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-const portfinder = require('portfinder');
-
+const EventEmitter = require('events').EventEmitter;
 // webpack Plugins
-const NameModulesPlugin = require('webpack/lib/NamedModulesPlugin');
-const SanFriendlyErrorsPlugin = require('./lib/SanFriendlyErrorsPlugin');
-const WriteFileWebpackPlugin = require('write-file-webpack-plugin');
-
-const {prepareUrls} = require('san-cli-utils/path');
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
-
-const {addDevClientToEntry, getWebpackErrorInfoFromStats} = require('./utils');
+const {addDevClientToEntry, getWebpackErrorInfoFromStats, getServerParams, initConfig} = require('./utils');
 
 const debug = getDebugLogger('webpack:serve');
-const closeDevtoolDebug = getDebugLogger('webpack:closeDevtool');
-
-module.exports = function devServer({webpackConfig, devServerConfig, publicPath, compilerCallback}) {
-    return new Promise(async (resolve, reject) => {
-        const {https, host, port: basePort, public: rawPublicUrl, hotOnly} = devServerConfig;
-        const protocol = https ? 'https' : 'http';
-        portfinder.basePort = basePort;
-        // 查找空闲的 port
-        const port = await portfinder.getPortPromise();
-        const publicUrl = rawPublicUrl
-            ? /^[a-zA-Z]+:\/\//.test(rawPublicUrl)
-                ? rawPublicUrl
-                : `${protocol}://${rawPublicUrl}`
-            : null;
-        const urls = prepareUrls(protocol, host, port, publicPath);
-        // mode 不是 production 则添加 hmr 功能
-        if (webpackConfig.mode !== 'production') {
-            /* eslint-disable */
-            const sockjsUrl = publicUrl
-                ? `?${publicUrl}/sockjs-node`
-                : `?${url.format({
-                      protocol,
-                      port,
-                      hostname: urls.lanUrlForConfig || 'localhost',
-                      pathname: '/sockjs-node'
-                  })}`;
-            /* eslint-enable */
-
-            const devClients = [
-                // dev server client
-                require.resolve('webpack-dev-server/client') + sockjsUrl,
-                // hmr client
-                require.resolve(hotOnly ? 'webpack/hot/only-dev-server' : 'webpack/hot/dev-server')
-            ];
-            // inject dev/hot client
-            addDevClientToEntry(webpackConfig, devClients);
-        }
-
-        // 添加插件
-        // 在 serve 情况下添加
-        webpackConfig.plugins.push(new NameModulesPlugin());
-        webpackConfig.plugins.push(new SanFriendlyErrorsPlugin());
-        // 处理 tpl 的情况，smarty copy 到 output
-        webpackConfig.plugins.push(new WriteFileWebpackPlugin({test: /\.tpl$/}));
-
-        if (closeDevtoolDebug.enabled) {
-            // 这里使用 closeDevTool debug 来开启
-            webpackConfig.devtool = 'none';
-            webpackConfig.optimization = {
-                minimize: false
+module.exports = class Serve extends EventEmitter {
+    constructor(webpackConfig = []) {
+        super();
+        // webpack 启动的 promise
+        this.initPromise = new Promise(resolve => {
+            this.initResolve = () => {
+                this.initPromise = null;
+                resolve();
+                debug('Init Promise resolved');
             };
-        }
-
-        debug('start server with options %O', devServerConfig);
+        });
+        this.init(webpackConfig);
+        // server 创建的 promise
+        this.serverPromise = new Promise(resolve => {
+            this.serverResolve = () => {
+                this.serverPromise = null;
+                resolve();
+            };
+        });
+    }
+    async init(webpackConfig) {
+        const {config, devServerConfig} = initConfig(webpackConfig);
+        const {
+            https,
+            port,
+            host,
+            // protocol,
+            // publicUrl,
+            // urls,
+            networkUrl,
+            sockjsUrl
+        } = await getServerParams(devServerConfig, devServerConfig.publicPath);
+        this.networkUrl = networkUrl;
+        this.devServerConfig = Object.assign(devServerConfig, {
+            https,
+            port,
+            host
+        });
+        const devClients = [
+            // dev server client
+            require.resolve('webpack-dev-server/client') + sockjsUrl,
+            // hmr client
+            require.resolve(devServerConfig.hotOnly ? 'webpack/hot/dev-server' : 'webpack/hot/only-dev-server')
+        ];
+        config.forEach(c => {
+            // inject dev/hot client
+            addDevClientToEntry(c, devClients);
+        });
 
         // create compiler
-        let compiler;
-        try {
-            compiler = webpack(webpackConfig);
+        debug('start');
+
+        this.compiler = webpack(config);
+        this.initResolve();
+    }
+    async getCompiler() {
+        if (this.initPromise) {
+            await this.initPromise;
         }
-        catch (e) {
-            // 捕捉参数不正确的错误信息
-            reject({err: e, type: 'run'});
+        return this.compiler;
+    }
+    async getServer() {
+        if (this.serverPromise) {
+            await this.serverPromise;
         }
-        if (typeof compilerCallback === 'function') {
-            compilerCallback(compiler);
+        return this.server;
+    }
+    async run() {
+        if (this.inited) {
+            return;
+        }
+        this.inited = true;
+        if (this.initPromise) {
+            await this.initPromise;
         }
 
-        // create server
-        const defaultDevServer = {
-            // 这里注意，这个配置的是 outputDir
-            contentBase: path.resolve('public'),
-            // 这里注意：
-            // 如果是 contentBase = outputDir 谨慎打开，打开后 template 每次文件都会重写，从而导致 hmr 失效，每次都 reload 页面
-            watchContentBase: false,
-            publicPath
-        };
         const server = new WebpackDevServer(
-            compiler,
-            Object.assign(defaultDevServer, devServerConfig, {
-                https,
-                port,
-                host
-            })
+            this.compiler,
+            this.devServerConfig
         );
+        this.server = server;
+        this.serverResolve();
 
-        // 记录是第一次编译：用于打开浏览器和输出第一次的 log
         let isFirstCompile = true;
-
-        compiler.hooks.done.tap('san-cli-serve', stats => {
-            debug('compiler done');
+        this.compiler.hooks.done.tap('san-cli-serve', stats => {
+            this.emit('complete', {stats});
             if (stats.hasErrors()) {
                 const errObj = getWebpackErrorInfoFromStats(undefined, stats);
-                errObj.type = 'webpack';
-                return reject(errObj);
+                debug(errObj);
+                this.emit('fail', {...errObj, type: 'webpack'});
             }
-
-            // 革命成功啦
-            resolve({
-                stats,
-                server,
-                isFirstCompile,
-                port,
-                protocol,
-                publicUrl,
-                url: urls.localUrlForBrowserz,
-                networkUrl: publicUrl
-                    ? publicUrl.replace(/([^/])$/, '$1/')
-                    : url.format({
-                        protocol,
-                        port,
-                        hostname: urls.lanUrlForConfig || 'localhost'
-                    }),
-                urls
-            });
+            else {
+                this.emit('success', {
+                    stats,
+                    server,
+                    isFirstCompile,
+                    networkUrl: this.networkUrl,
+                    devServerConfig: this.devServerConfig
+                });
+            }
             if (isFirstCompile) {
                 // 重置一下
                 isFirstCompile = false;
             }
         });
-
-        ['SIGINT', 'SIGTERM'].forEach(signal => {
-            process.on(signal, () => {
-                server.close(() => {
-                    process.exit(0);
-                });
-            });
-        });
-
-        server.listen(port, host, err => {
-            if (err) {
-                return reject({err, type: 'server'});
-            }
-        });
-    });
+    }
 };

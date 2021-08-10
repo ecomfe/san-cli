@@ -60,7 +60,7 @@ module.exports = api => {
 }
 ```
 
-其中`api`由`San CLI UI`传入，为`PluginManager`的实例，所有插件的扩展功能都是基于这个对象来实现，例如：`api.registerConfig` 注册配置项、`api.registerWidget`注册widget部件、`api.registerAddon`注册插件id及加载路径等。
+其中`api`由`San CLI UI`传入，为`PluginManager`的实例，所有插件的扩展功能都是基于这个对象来实现，例如：`api.registerConfig` 注册配置项、`api.registerWidget`注册 widget 部件、`api.registerAddon`注册插件id及加载路径等。
 
 **index.js**
 
