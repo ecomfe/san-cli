@@ -46,8 +46,8 @@
     },
     "scripts": {
         "commit": "git-cz",
-        "doc": "npx @sdoc/cli start docs",
-        "build:doc": "npx @sdoc/cli build docs",
+        "doc": "sdoc start docs",
+        "build:doc": "sdoc build docs",
         "lint": "eslint --ignore-path .eslintignore ./",
         "test": "rimraf ./packages/test && node scripts/test.js"
     },
