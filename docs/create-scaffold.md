@@ -5,9 +5,9 @@
 ## 脚手架项目必备的基础目录结构
 
 ```
-├── template            # 模板目录结构
-│   ├── san.config.js   # cli配置项
-└── meta.js/meta.json   # 模板创建 prompt 交互问题
+├── template            # 脚手架模板目录
+│   ├── san.config.js   # San CLI 的项目配置文件
+└── meta.js/meta.json   # 创建项目时的 prompt 交互问题
 ```
 
 San CLI 使用 handlerbars 渲染 template 目录，所以脚手架请使用 handlerbars 语法。
@@ -24,7 +24,7 @@ module.exports = {
     // 生成器会将 handlerbars 语法填上 prompts 内容
     // 扩展 handlerbars helper
     helpers: {},
-    // 过滤满足 value 跳转的目录 key，不做生成处理
+    // 过滤符合 value 条件的目录 key，不做生成处理
     filters: {
         'mock/**': 'useMock'
     },
@@ -34,8 +34,7 @@ module.exports = {
             type: 'string',
             required: true,
             label: '项目名称',
-            // 默认 {{name}} 会被替换成init 命令的目录名
-            // 类似还有username、email 等 git 配置
+            // {{name}} 默认会使用执行 init 命令时的目录名
             default: '{{name}}'
         },
         useMock: {
@@ -76,7 +75,7 @@ module.exports = {
 }
 ```
 
-`filters` 过滤满足 value 跳转的目录 key，不做渲染处理
+`filters` 过滤符合 value 条件的目录 key，不做生成处理
 
 **例如**
 
@@ -94,7 +93,7 @@ module.exports = {
 }
 ```
 
-`prompts` 交互问答，key 为问题名称（string 类型），value 为问题配置项（Object 类型）
+`prompts` 交互问答，key 为问题名称，value 为问题配置项（Object 类型）
 
 **例如**
 
@@ -109,7 +108,7 @@ module.exports = {
             default: '{{name}}'
         },
         tplEngine: {
-            type: 'select',
+            type: 'list',
             message: '选择模板引擎',
             choices: [
                 {
@@ -128,7 +127,7 @@ module.exports = {
         },
         demoType: {
             when: 'demo',
-            type: 'select',
+            type: 'list',
             message: '选择示例代码类型：',
             choices: [
                 {
@@ -147,7 +146,7 @@ module.exports = {
 
 ## san.config.js
 
-san.config.js 是 San-CLI 的配置文件，配置格式[参考](/config.md)
+san.config.js 是 San CLI 的项目配置文件，配置格式[参考](/config.md)
 
 ## 相关 dot 文件
 
@@ -158,6 +157,5 @@ san.config.js 是 San-CLI 的配置文件，配置格式[参考](/config.md)
 -   babelrc：babel 配置
 -   editorconfig：常见规范类的配置
 -   npmrc：npm 配置
--   prettierrc：格式化插件
--   gitignore：git 忽略
--   fecsrc：fecs 格式化配置
+-   prettierrc：格式化插件的配置
+-   gitignore：git 忽略配置

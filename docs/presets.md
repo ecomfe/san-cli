@@ -27,7 +27,7 @@
 // 项目的 package.json
 {
     "name": "san-project",
-    // ..其他 package.json 配置
+    // ...其他 package.json 配置
     // san 字段
     "san": {
         "commands": ["san-command.js"],
@@ -58,8 +58,8 @@ san command add san-command.js -g
 ```
 
 ::: warning
-1. `--global`,`-g`：默认写到项目的 package.json 的 san 字段，使用`-g`则写到 home 文件夹的`sanrc.json`文件。
-2. command 实际是操作的`sanrc.json`或者 package.json `san` 的 commands 字段
+1. `--global`,`-g`：写到 home 文件夹的`sanrc.json`文件，默认是写到项目的 package.json 的 san 字段。
+2. command 操作的实际是`sanrc.json`或者 package.json `san` 的 commands 字段
 :::
 
 ### san plugin add/remove/list
@@ -80,16 +80,16 @@ san plugin add san-plugin.js -g
 ```
 
 ::: warning
-1. `--global`,`-g`：默认写到项目的 package.json 的 san 字段，使用`-g`则写到 home 文件夹的`sanrc.json`文件。
-2. plugin 实际是操作的`sanrc.json`或者 package.json `san` 的 plugins 字段
+1. `--global`,`-g`：写到 home 文件夹的`sanrc.json`文件，默认是写到项目的 package.json 的 san 字段。
+2. plugin 操作的实际是`sanrc.json`或者 package.json `san` 的 plugins 字段
 :::
 
 ### san remote add/remove/list
 
-每次初始化项目的时候，都输出长长的脚手架地址，使用`san remote`可以给脚手架模板创建一个短别名：
+如果每次初始化项目的时候，都要输入长长的脚手架模板地址，就可以考虑使用`san remote`给脚手架模板地址创建一个短别名：
 
 -   add：添加
--   remove/rm：删除，
+-   remove/rm：删除
 -   list/ls：列出脚手架模板 alias
 
 **用法举例：**

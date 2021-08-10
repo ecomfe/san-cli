@@ -3,12 +3,6 @@
 
 `san serve`是开发环境打包，下面详细说下用法。
 
-## 安装
-
-```bash
-$ npm install --save-dev san-cli-serve
-```
-
 ## 使用命令
 
 ```bash
@@ -22,7 +16,7 @@ san serve [entry]
 ### 配置相关
 
 -   `--mode，--m`：环境指示，值为 development 或 production，默认是 development
--   `--config，--config-file`：指定 san config 内容，值为 san config 文件的地址，默认会从目录中找寻 san.config.js 文件
+-   `--config，--config-file`：指定 san config 内容，值为 san config 文件的地址，默认会从当前目录寻找 san.config.js 文件
 -   `--port，--p`：指定 devServer 端口号，默认为 8899
 -   `--host，--H`：指定 devServer 域名，默认为 0.0.0.0
 -   `--https`：启用 https，值为 true 或 false，默认是 false
@@ -37,4 +31,4 @@ san serve [entry]
 -   `--no-progress`：禁用默认的进度条（webpackbar）值为 true 或 false，默认是 false
 -   `--open，--O`：是否在编译打包完成后，自动在浏览器中打开页面地址，值为 true 或 false，默认是 false
 -   `--qrcode`：是否输出页面地址二维码，值为 true 或 false，默认是 true
--   `--esm`：是否开启esmodule打包加速本地调试启动速度，开启后使用esbuild-loader替换babel-loader
+-   `--esm`：是否开启 esmodule 打包以加速本地调试的启动速度，开启后会使用 esbuild-loader 替换 babel-loader，默认是 false

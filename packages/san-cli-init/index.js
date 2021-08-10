@@ -55,6 +55,12 @@ exports.builder = {
         default: '',
         hidden: true,
         describe: 'The JSON string of project preset according to PROMPTS in meta.js within template'
+    },
+    'use-cache': {
+        type: 'boolean',
+        alias: 'cache',
+        default: false,
+        describe: 'Preference is given to using the local cache of already downloaded tempalte'
     }
 };
 

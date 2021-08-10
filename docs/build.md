@@ -24,7 +24,7 @@ san build [entry]
 
 -   `--dest` 产出文件目录
 -   `--mode，--m` 环境指示，值为 development 或 production，默认是 production
--   `--config，--config-file` 指定 san config 内容，值为 san config 文件的地址，默认会从目录中找寻 san.config.js 文件
+-   `--config，--config-file` 指定 san config 内容，值为 san config 文件的地址，默认会从当前目录中寻找 san.config.js 文件
 
 ### 报告和日志相关
 
