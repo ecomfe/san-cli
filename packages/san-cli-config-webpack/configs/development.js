@@ -15,14 +15,14 @@ module.exports = (webpackConfig, projectOptions) => {
     if (esbuild) {
         const esbuildLoaderFactory = require('../loaders/esbuild');
 
-        const jsRule = webpackConfig.module
-            .rule('js')
-            .test(/\.m?js?$/)
+        const script = webpackConfig.module
+            .rule('script')
+            .test(/\.(m?j|t)s$/)
             .exclude.add(filepath => !filepath)
             .end();
 
         const {loader: esBuildLoader} = esbuildLoaderFactory();
-        jsRule.use('esbuild-loader')
+        script.use('esbuild-loader')
             .loader(esBuildLoader)
             .options({
                 target: typeof esbuild === 'object' && esbuild.target || 'es2015'
