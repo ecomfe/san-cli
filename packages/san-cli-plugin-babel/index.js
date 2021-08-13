@@ -39,9 +39,9 @@ module.exports = {
         const transpileDepRegex = genTranspileDepRegex(transpileDependencies);
         api.chainWebpack(webpackConfig => {
             webpackConfig.resolveLoader.modules.prepend(path.join(cliPath, 'node_modules'));
-            const jsRule = webpackConfig.module
-                .rule('js')
-                .test(/\.m?js?$/)
+            const scriptRule = webpackConfig.module
+                .rule('script')
+                .test(/\.m?js?$|\.ts?$/)
                 .exclude.add(filepath => {
                     // 兼容webpack 5下data URI，filepath不存在的问题
                     if (!filepath) {
@@ -69,12 +69,12 @@ module.exports = {
                 .end();
             // 开销大,无必要不开启，仅生产环境开启
             if (loaderOptions.thread && mode !== 'development') {
-                jsRule
+                scriptRule
                     .use('thread-loader')
                     .loader('thread-loader')
                     .options(typeof loaderOptions.thread === 'object' ? loaderOptions.thread : {});
             }
-            jsRule
+            scriptRule
                 .use('babel-loader')
                 .loader('babel-loader')
                 .options(loaderOptions.babel !== false ? {
