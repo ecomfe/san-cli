@@ -31,8 +31,7 @@ SAN_REMOTE_XIAOMING_HOST=http://www.xiaoming.com:8080
 
 远端机器需部署可接收文件的服务，有两种方式：
 
-1. 通用方式：在远端机器部署上传接收脚本（或者服务），脚本的 [php](https://github.com/fex-team/fis3-deploy-http-push/blob/master/receiver.php) 的实现版本可参考（远端机器需要支持 php 的解析
-如果需要其他语言实现，请参考这个 php 脚本实现），把脚本放到远端机器上某个 Web 服务根目录，并且配置一个 url 能访问到即可。
+1. 通用方式：在远端机器，部署接收脚本（或者服务），这个是脚本的 [php](https://github.com/fex-team/fis3-deploy-http-push/blob/master/receiver.php) 实现版本（远端机器需要支持 php 的解析，如果需要其他语言实现，请参考这个 php 脚本实现），把脚本放到远端机器上某个 Web 服务根目录，配置一个 url 能访问到即可。
 2. 百度内部：使用[fsr](http://agroup.baidu.com/fis/md/article/196978)方式进行部署。
 
 
