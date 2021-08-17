@@ -36,7 +36,7 @@ module.exports = (webpackChainConfig, projectOptions) => {
         .resolve
             .set('symlinks', false)
             // 默认加上 less 吧，less 内部用的最多
-            .extensions.merge(['.js', '.css', '.less', '.san'])
+            .extensions.merge(['.js', '.ts', '.css', '.less', '.san'])
             .end()
         .modules
             .add('node_modules')
