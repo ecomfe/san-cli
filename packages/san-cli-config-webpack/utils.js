@@ -38,7 +38,7 @@ exports.normalizeProjectOptions = projectOptions => {
     return {
         ...projectOptions,
         isLegacyBundle() {
-            return process.env.SAN_CLI_LEGACY_BUIL;
+            return parseInt(process.env.SAN_CLI_LEGACY_BUILD, 10) === 1;
         },
         isProduction() {
             return projectOptions.mode === 'production';
