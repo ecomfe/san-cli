@@ -11,89 +11,16 @@
 const joi = require('joi');
 const devServerOptions = require('san-cli-config-webpack/defaultOptions').devServerOptions;
 
-const schema = joi
-    .object({
+let schema = joi
+    .object().keys({
         // env 相关
         jsonpFunction: joi.string(),
         transpileDependencies: joi.array(),
-        // 产出相关
-        copy: joi.alternatives().try(
-            joi.array().items(
-                joi
-                    .object({
-                        compress: joi.bool(),
-                        from: joi.string(),
-                        to: joi.string(),
-                        ignore: joi.alternatives().try(joi.string(), joi.object().instance(RegExp))
-                    })
-                    .unknown(true)
-            ),
-            joi
-                .object({
-                    from: joi.string(),
-                    compress: joi.bool(),
-                    to: joi.string(),
-                    ignore: joi.alternatives().try(joi.string(), joi.object().instance(RegExp))
-                })
-                .unknown(true)
-        ),
         // service 插件相关
         plugins: joi.array(),
-        // 产出相关
-        publicPath: joi.string().allow(''),
-        outputDir: joi.string(),
-        assetsDir: joi.string().allow(''),
-        // 多页配置
-        pages: joi.object().pattern(
-            /\w+/,
-            joi.alternatives().try(
-                joi.string().required(),
-                joi.array().items(joi.string().required()),
-                joi
-                    .object()
-                    .keys({
-                        entry: joi
-                            .alternatives()
-                            .try(joi.string().required(), joi.array().items(joi.string().required()))
-                            .required(),
-                        chunks: joi
-                            .alternatives()
-                            .try(joi.string().required(), joi.array().items(joi.string().required()))
-                    })
-                    .unknown(true)
-            )
-        ),
-        // 生产环境优化相关
-        terserOptions: joi.object(),
-        sourceMap: joi.alternatives().try(joi.boolean(), joi.string()),
-        filenameHashing: joi.boolean(),
-        largeAssetSize: joi.number(),
-        // css 相关
-        css: joi.object({
-            cssnanoOptions: joi.object(),
-            cssPreprocessor: joi.string().valid('less', 'sass', 'stylus'),
-            extract: joi.alternatives().try(joi.boolean(), joi.object()),
-            sourceMap: joi.boolean(),
-            loaderOptions: joi.object({
-                style: joi.object(),
-                css: joi.object(),
-                sass: joi.object(),
-                less: joi.object(),
-                stylus: joi.object(),
-                // 推荐使用 postcss.config.js
-                postcss: joi.object()
-            })
-        }),
-        // webpack 相关配置
-        alias: joi.object(),
-        // 缓存的相关配置
-        cache: joi.alternatives().try(joi.boolean(), joi.object()),
+        extends: joi.array(),
         // 内置 loader 的 options 增加thread-loader主要用在生产环境 增加esbuild-loader主要用在开发环境（转换js）生产环境（压缩js和css）
         loaderOptions: joi.object(),
-        // 主要用 splitChunks.cacheGroups
-        splitChunks: joi.object(),
-        // webpack5 runtimeChunk
-        runtimeChunk: joi.alternatives().try(joi.string(), joi.object()),
         // config.module.unsafeCache,webpack5新增
         unsafeCache: joi.boolean(),
         // 纯自定义的函数
@@ -108,6 +35,11 @@ const schema = joi
     })
     // 为了方便自定义扩展
     .unknown(true);
+
+exports.extendSchema = fn => {
+    schema = schema.keys(fn(joi));
+    return schema;
+};
 exports.validate = (value, options) => {
     const {error} = schema.validate(value, options);
     if (error) {
