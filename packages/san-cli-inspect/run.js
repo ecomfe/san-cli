@@ -30,6 +30,12 @@ module.exports = function apply(argv, api) {
     let res;
     let hasUnnamedRule;
 
+    if (argv.sanCliPlugins) {
+        // eslint-disable-next-line no-console
+        console.log(api.service.plugins);
+        return;
+    }
+
     if (argv.rule) {
         res = config.module.rules.find(r => r.__ruleNames[0] === argv.rule);
     }

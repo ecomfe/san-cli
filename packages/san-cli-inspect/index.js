@@ -24,12 +24,17 @@ exports.builder = {
     plugins: {
         type: 'boolean',
         default: false,
-        describe: 'List all plugin names'
+        describe: 'List all webpack plugin names'
     },
     plugin: {
         alias: 'pluginName',
         type: 'string',
         describe: 'Output configuration based on the plugin name'
+    },
+    'san-cli-plugins': {
+        type: 'boolean',
+        default: false,
+        describe: 'List all san cli plugin names'
     }
 };
 
