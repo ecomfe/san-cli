@@ -17,7 +17,8 @@ const {merge: webpackMerge} = importLazy('webpack-merge');
 const defaultsDeep = require('lodash.defaultsdeep');
 const lMerge = require('lodash.merge');
 const dotenv = require('dotenv');
-const {createChainConfig, createDevServerConfig} = require('san-cli-config-webpack');
+const {plugins: builtInPlugins, devServerOptions} = require('san-cli-config-webpack');
+const Config = require('webpack-chain');
 const {normalizeProjectOptions} = require('san-cli-config-webpack/utils');
 const SError = require('san-cli-utils/SError');
 const {findExisting} = require('san-cli-utils/path');
@@ -26,10 +27,11 @@ const argsert = require('san-cli-utils/argsert');
 const readPkg = require('san-cli-utils/readPkg');
 const PluginAPI = require('./PluginAPI');
 const resolvePlugin = importLazy('./resolvePlugin');
-const {defaults: defaultConfig, validate: validateOptions} = require('./options');
+const {defaults: defaultConfig, extendSchema, validate: validateOptions} = require('./options');
 const logger = consola.withTag('Service');
 const debug = getDebugLogger('service');
 const showConfig = getDebugLogger('webpack:config');
+const cloneDeep = require('lodash.clonedeep');
 
 module.exports = class Service extends EventEmitter {
     constructor(
@@ -129,21 +131,18 @@ module.exports = class Service extends EventEmitter {
         }
     }
 
-    resolvePlugins(plugins = [], useBuiltInPlugin = true) {
+    resolvePlugins(inputPlugins = [], useBuiltInPlugin = true) {
         // 0. 判断是否需要加载 builtin plugin
-        let builtInPlugins = [];
+        let plugins = [];
         if (useBuiltInPlugin) {
-            // * 添加上 babel 插件
-            builtInPlugins.push(require('san-cli-plugin-babel'));
+            // 1.新增内置插件
+            plugins = plugins.concat(builtInPlugins);
         }
-        plugins = Array.isArray(plugins) ? plugins : [];
+        plugins = plugins.concat(inputPlugins);
 
         if (plugins.length) {
             // 2. 真正加载
             plugins = plugins.map(this._loadPlugin.bind(this));
-            plugins = [...builtInPlugins, ...plugins];
-        } else {
-            plugins = builtInPlugins;
         }
 
         return plugins;
@@ -231,13 +230,49 @@ module.exports = class Service extends EventEmitter {
         debug('projectOptions: %O', projectOptions);
         timeEnd('loadProjectOptions');
 
-        // 添加插件
+        let pluginSwitch = {};
+        // 加载plguin顺序是：默认plugin + extends plugin + 当前san.config.js plugin，优先级也如此顺序
+        // 1. 扩展配置
+        if (Array.isArray(projectOptions.extends) && projectOptions.extends.length) {
+            projectOptions.extends.forEach(e => {
+
+                if (Array.isArray(e) && e.length === 2) {
+                    // 带有参数的plugin 配置
+                    pluginSwitch = Object.assign(pluginSwitch, e[1]);
+                    e = e[0];
+                }
+                let extendConfig = {};
+                if (typeof e === 'string') {
+                    const configPath = isAbsolute(e) ? e : resolve(this.cwd, e);
+
+                    try {
+                        extendConfig = require(configPath);
+                    } catch (err) {
+                        logger.warn('extends file is not exist!', err);
+                    }
+                }
+                else if (typeof e === 'object' && e.plugins) {
+                    extendConfig = e;
+                }
+                else {
+                    logger.error('Service extends is invalid', e);
+                }
+                const {plugins} = extendConfig;
+                // 删除plugins
+                delete extendConfig.plugins;
+                // 扩展plugins
+                plugins.forEach(p => this.addPlugin(p));
+                // 合并其余配置项
+                defaultsDeep(this.projectOptions, extendConfig);
+            });
+        }
+        // 2. 添加san.config.js插件,优先级最高
         if (Array.isArray(projectOptions.plugins) && projectOptions.plugins.length) {
             projectOptions.plugins.forEach(p => this.addPlugin(p));
         }
-        // 初始化插件
+        // 3. 初始化插件
         this.plugins.forEach(plugin => {
-            plugin && this.initPlugin(plugin);
+            plugin && this.initPlugin(plugin, pluginSwitch);
         });
         // webpack 配置
         if (this.projectOptions.chainWebpack) {
@@ -264,18 +299,33 @@ module.exports = class Service extends EventEmitter {
             }
         });
     }
-    initPlugin(plugin) {
+    initPlugin(plugin, pluginSwitch = {}) {
         let options = {};
         if (Array.isArray(plugin)) {
             options = plugin[1];
             plugin = plugin[0];
         }
-        const {id, apply} = plugin;
+        const {id, apply, schema} = plugin;
+        if (pluginSwitch[id] === false) {
+            return;
+        }
+        // 校验config.js schema 格式
+        if (schema) {
+            extendSchema(schema);
+            try {
+                validateOptions(this.projectOptions);
+            } catch (e) {
+                logger.error('Config file: Invalid type.');
+                throw new SError(e);
+            }
+        }
         const api = this._getApiInstance(id);
 
+        // 4. 格式化projectOptions，增加isProduction等变量
+        const projectOptions = normalizeProjectOptions(this.projectOptions);
         // 传入配置的 options
         // * 因为一般 plugin 不需要自定义 options，所以 projectOption 作为第二个参数
-        apply(api, this.projectOptions, options);
+        apply(api, projectOptions, options);
         return this;
     }
     loadProjectOptions(configFile) {
@@ -284,7 +334,7 @@ module.exports = class Service extends EventEmitter {
             configFile = isAbsolute(configFile) ? configFile : resolve(this.cwd, configFile);
             if (!fs.existsSync(configFile)) {
                 configFile = false;
-                this.logger.warn(`config file \`${originalConfigFile}\` is not exists!`);
+                logger.warn(`config file \`${originalConfigFile}\` is not exists!`);
             }
         }
         // 首先试用 argv 的 config，然后寻找默认的，找到则读取，格式失败则报错
@@ -307,15 +357,8 @@ module.exports = class Service extends EventEmitter {
 
             if (typeof result.config !== 'object') {
                 logger.error(`${textCommonColor(configPath)}: Expected object type.`);
-            } else {
-                // 校验config.js schema 格式
-                try {
-                    validateOptions(result.config);
-                } catch (e) {
-                    logger.error(`${textCommonColor(configPath)}: Invalid type.`);
-                    throw new SError(e);
-                }
             }
+
             debug('loadProjectOptions from %s', configPath);
 
             // 加载默认的 config 配置
@@ -323,7 +366,8 @@ module.exports = class Service extends EventEmitter {
         } else {
             // this.logger.warn(`${textCommonColor('san.config.js')} Cannot find! Use default configuration.`);
         }
-        this.projectOptions = this.normalizeConfig(config, result.filepath);
+        // 防止创建多个service实例时出现config相互影响
+        this.projectOptions = cloneDeep(this.normalizeConfig(config, result.filepath));
         return this.projectOptions;
     }
     normalizeConfig(config, filepath) {
@@ -416,20 +460,7 @@ module.exports = class Service extends EventEmitter {
     }
 
     getWebpackChainConfig() {
-        const projectOptions = normalizeProjectOptions(this.projectOptions);
-        const chainableConfig = createChainConfig(this.projectOptions.mode, projectOptions);
-        if (this.projectOptions.extends) {
-            this.projectOptions.extends.forEach(item => {
-                if (typeof item === 'string') {
-                    item = [item];
-                }
-                const [config, options] = item;
-                const configPath = require.resolve(config, {
-                    paths: [process.cwd()]
-                });
-                require(configPath)(chainableConfig, projectOptions, options);
-            });
-        }
+        const chainableConfig = new Config();
         // apply chains
         this.webpackChainFns.forEach(fn => fn(chainableConfig));
         return chainableConfig;
@@ -467,8 +498,10 @@ module.exports = class Service extends EventEmitter {
         }
 
         // 这里需要将 devServer 和 this.projectOptions.devServer 进行 merge
-        config.devServer = createDevServerConfig(
-            lMerge(config.devServer || {}, this.projectOptions.devServer || {}) || {}
+        config.devServer = lMerge(
+            devServerOptions,
+            config.devServer || {},
+            this.projectOptions.devServer || {}
         );
 
         let before = config.devServer.before;

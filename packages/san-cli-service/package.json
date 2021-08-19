@@ -25,12 +25,12 @@
         "webpack"
     ],
     "dependencies": {
-        "core-js": "^3.6.4",
         "dotenv": "~8.2.0",
         "fs-extra": "^8.1.0",
         "import-lazy": "^4.0.0",
         "joi": "^17.3.0",
         "lodash.defaultsdeep": "^4.6.1",
+        "lodash.clonedeep": "^4.5.0",
         "lodash.merge": "^4.6.2",
         "san-cli-config-webpack": "^1.0.0",
         "san-cli-plugin-dashboard": "^2.0.0",
