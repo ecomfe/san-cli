@@ -38,11 +38,14 @@ san serve [entry]
 执行`san serve --esm`即可开启基于ESM的本地构建加速，我们从以下几个方面来了解：
 
 1. 本地调试的场景
+
 项目在进行本地调试时，最主要的目的是功能的快速查看和验证，尤其在大型的项目中，本地构建的速度会对开发效率产生较大影响。实际情况中，开发者的本地浏览器多数版本较新，能够很好的支持 js 的 esnext 版本，那么，通过 babel 的 pollyfill 实现的 ES5 代码的转换完全可以省略；另一方面面向 esnext 构建，也可进一步尝试更快的转换工具 `esbuild-loader`，提升js的解析速度，`san serve --esm` 命令即从以上两方面出发，通过 esbuild-loader 指定构建 esnext 版本 bundle，提升本地构建效率。
 2. 加速的原理以及实际的效果
+
 [esbuild](https://github.com/evanw/esbuild) 是基于go语言实现的 JavaScript 打包工具，其打包速度相较于 webpack 有近百倍的提升，两者的实现原理并不相同，因此我们仅利用 esbuild 加速 js 的转换。开启 `esm` 项后，会将 `babel-loader` 替换为 [`esbuild-loader`](https://www.npmjs.com/package/esbuild-loader)，默认构建 target 指定为 **es2015**。
 通过对 San CLI 的默认 demo 进行测试，开启 esm 构建后，本地调试速度提升 30%+（1440ms -> 969ms）。
 3. 为什么不在生产环境使用？
+
 -  js 转换：在实际的项目中，通常需要对不支持 ES6 浏览器进行兼容，但 esbuild 仅支持构建 ES6 及以上版本，因此在生产环境中，仍使用 babel 进行转换。
 -  js 压缩：`esbuild-loader` 提供了生产环境对 js 进行压缩的插件 `ESBuildMinifyPlugin`，经 demo 测试，对比默认的 `terser-webpack-plugin`，其压缩速度提升30%，压缩后 bundle 体积略有增加。
 
