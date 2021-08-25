@@ -90,16 +90,16 @@ exports.handler = argv => {
             argv.mode = 'development';
         }
     }
-    const projectOptions = {
-        loaderOptions: {
-            esbuild: argv.esm
-        }
-    };
+
     const Service = require('san-cli-service');
     const service = new Service(process.cwd(), {
         watch: argv.watch,
         useDashboard: argv.dashboard,
-        projectOptions
+        extProjectOptions: {
+            loaderOptions: {
+                esbuild: argv.esm
+            }
+        }
     });
     const run = require('./run');
     service.run('serve', argv).then(run.bind(run, argv));
