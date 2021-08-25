@@ -169,13 +169,37 @@ San CLI 中使用的 html-webpack-plugin 的配置项中可以使用 html-minifi
     removeScriptTypeAttributes: false,
     minifyCSS: true,
     // 处理 smarty 和 php 情况
-    ignoreCustomFragments: [/{%[\s\S]*?%}/, /<%[\s\S]*?%>/, /<\?[\s\S]*?\?>/]
+    ignoreCustomFragments: [/{%[\s\S]*?%}/, /<%[\s\S]*?%>/, /<\?[\s\S]*?\?>/],
+    keepClosingSlash: true
     // more options:
     // https://github.com/kangax/html-minifier#options-quick-reference
 }
 ```
 
-使用者可以在`pages`中的`html-minifier`进行配置，具体配置可以[参考这里](https://github.com/DanielRuf/html-minifier-terser#options-quick-reference)。
+使用者可以在`pages`中的`minify`项进行配置，例如：
+
+```js
+pages: {
+    index: {
+        entry: './src/pages/index/index.js',
+        template: './template/index.tpl',
+        filename: 'index.tpl',
+        chunks: ['common', 'vendors'],
+        minify: {
+            collapseWhitespace: true,
+            keepClosingSlash: true,
+            removeComments: true,
+            removeRedundantAttributes: true,
+            removeScriptTypeAttributes: true,
+            removeStyleLinkTypeAttributes: true,
+            useShortDoctype: true
+        }
+    },
+    ...
+}
+```
+
+具体配置项可以[参考这里](https://github.com/DanielRuf/html-minifier-terser#options-quick-reference)。
 
 ## 编译 NPM 包中的 ES6 语法
 

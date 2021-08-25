@@ -9,7 +9,8 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - run: yarn
-    - run: yarn run build:doc
+    - run: yarn global add @sdoc/cli
+    - run: sdoc build docs
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v2.5.0
