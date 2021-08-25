@@ -250,7 +250,6 @@ module.exports = class Service extends EventEmitter {
     }
     _getApiInstance(id) {
         const self = this;
-
         return new Proxy(new PluginAPI(id, self), {
             get(target, prop) {
                 // 传入配置的自定义 pluginAPI 方法
@@ -267,8 +266,7 @@ module.exports = class Service extends EventEmitter {
     initPlugin(plugin) {
         let options = {};
         if (Array.isArray(plugin)) {
-            options = plugin[1];
-            plugin = plugin[0];
+            [plugin, options] = plugin;
         }
         const {id, apply} = plugin;
         const api = this._getApiInstance(id);
