@@ -298,7 +298,19 @@ describe('constructor resolvePlugins _loadPlugin', () => {
                 return item && item.id;
             })
         ).toEqual([
-            'san-cli-plugin-babel',
+            'base',
+            'output',
+            'extensions',
+            'alias',
+            'san',
+            'fonts',
+            'media',
+            'image',
+            'svg',
+            'js',
+            'html',
+            'css',
+            'optimization',
             'yyt-plugin',
             'yyt1-plugin',
             'yyt3-plugin',
@@ -328,7 +340,21 @@ describe('constructor resolvePlugins _loadPlugin', () => {
                 }
                 return item.id;
             })
-        ).toEqual(['san-cli-plugin-babel']);
+        ).toEqual([
+            'base',
+            'output',
+            'extensions',
+            'alias',
+            'san',
+            'fonts',
+            'media',
+            'image',
+            'svg',
+            'js',
+            'html',
+            'css',
+            'optimization'
+        ]);
     });
     test('useBuiltInPlugin为false', () => {
         const service = new Service(__dirname + '/mock', {
@@ -408,12 +434,12 @@ describe('loadProjectOptions', () => {
         // 会去自动查找项目中的san.config.js，查验一下是否找到了并返回正确的配置项
         expect(config.templateDir).toBe('the-template-dir');
     });
-    test('配置文件的格式不对，应该导出对象但是导出了函数', () => {
+    test('配置文件的格式不对，正常导出了对象', () => {
         const config = service.loadProjectOptions('san.config2.js');
-        expect(typeof config).toBe('function');
+        expect(typeof config).toBe('object');
     });
     test('配置文件的配置字段的的值的格式错误', () => {
-        expect(() => service.loadProjectOptions('san.config3.js'))
+        expect(() => service.init('production', 'san.config3.js'))
             .toThrow('ValidationError: "pages" must be of type object');
     });
 });

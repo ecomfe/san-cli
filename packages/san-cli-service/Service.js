@@ -334,7 +334,7 @@ module.exports = class Service extends EventEmitter {
             configFile = isAbsolute(configFile) ? configFile : resolve(this.cwd, configFile);
             if (!fs.existsSync(configFile)) {
                 configFile = false;
-                logger.warn(`config file \`${originalConfigFile}\` is not exists!`);
+                this.logger.warn(`config file \`${originalConfigFile}\` is not exists!`);
             }
         }
         // 首先试用 argv 的 config，然后寻找默认的，找到则读取，格式失败则报错
