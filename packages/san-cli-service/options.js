@@ -18,7 +18,7 @@ let schema = joi
         transpileDependencies: joi.array(),
         // service 插件相关
         plugins: joi.array(),
-        extends: joi.array(),
+        extends: joi.alternatives().try(joi.string(), joi.array()),
         // 内置 loader 的 options 增加thread-loader主要用在生产环境 增加esbuild-loader主要用在开发环境（转换js）生产环境（压缩js和css）
         loaderOptions: joi.object(),
         // config.module.unsafeCache,webpack5新增

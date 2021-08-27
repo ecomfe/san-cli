@@ -230,50 +230,24 @@ module.exports = class Service extends EventEmitter {
         debug('projectOptions: %O', projectOptions);
         timeEnd('loadProjectOptions');
 
-        let pluginSwitch = {};
-        // 加载plguin顺序是：默认plugin + extends plugin + 当前san.config.js plugin，优先级也如此顺序
-        // 1. 扩展配置
-        if (Array.isArray(projectOptions.extends) && projectOptions.extends.length) {
-            projectOptions.extends.forEach(e => {
-
-                if (Array.isArray(e) && e.length === 2) {
-                    // 带有参数的plugin 配置
-                    pluginSwitch = Object.assign(pluginSwitch, e[1]);
-                    e = e[0];
-                }
-                let extendConfig = {};
-                if (typeof e === 'string') {
-                    const configPath = isAbsolute(e) ? e : resolve(this.cwd, e);
-
-                    try {
-                        extendConfig = require(configPath);
-                    } catch (err) {
-                        logger.warn('extends file is not exist!', err);
-                    }
-                }
-                else if (typeof e === 'object' && e.plugins) {
-                    extendConfig = e;
-                }
-                else {
-                    logger.error('Service extends is invalid', e);
-                }
-                const {plugins} = extendConfig;
-                // 删除plugins
-                delete extendConfig.plugins;
-                // 扩展plugins
-                plugins.forEach(p => this.addPlugin(p));
-                // 合并其余配置项
-                defaultsDeep(this.projectOptions, extendConfig);
-            });
-        }
+        const pluginMap = projectOptions.extends && this.loadeExt(projectOptions.extends) || {};
         // 2. 添加san.config.js插件,优先级最高
         if (Array.isArray(projectOptions.plugins) && projectOptions.plugins.length) {
             projectOptions.plugins.forEach(p => this.addPlugin(p));
         }
+        // 只存储开启的plugin, 并去重
+        const oriPlugins = this.plugins;
+        this.plugins = [];
+        let loadMap = {};
+        for (let i = oriPlugins.length - 1; i >= 0; i--) {
+            let p = oriPlugins[i] && Array.isArray(oriPlugins[i]) ? oriPlugins[i][0] : oriPlugins[i];
+            if (p && !loadMap[p.id] && pluginMap[p.id] !== false) {
+                loadMap[p.id] = true;
+                this.plugins.unshift(oriPlugins[i]);
+            }
+        }
         // 3. 初始化插件
-        this.plugins.forEach(plugin => {
-            plugin && this.initPlugin(plugin, pluginSwitch);
-        });
+        this.plugins.forEach(plugin => this.initPlugin(plugin));
         // webpack 配置
         if (this.projectOptions.chainWebpack) {
             this.webpackChainFns.push(this.projectOptions.chainWebpack);
@@ -299,16 +273,90 @@ module.exports = class Service extends EventEmitter {
             }
         });
     }
-    initPlugin(plugin, pluginSwitch = {}) {
+    /**
+     * 加载扩展的配置
+     * @param {any} extConfigs san.config.js内的extends扩展项
+     * @returns {object}
+     * extends扩展的配置4种格式:
+     * 1. 单一配置文件地址, 可以填入绝对路径或相对路径: 'san-cli-config-xx'
+     * 2. 数组内多个配置文件: ['san-cli-config-x1', 'san-cli-config-x2']
+     * 3. 数组内除配置文件外还增加插件的开关控制对象: [['san-cli-config-xx', {mypluginId: false}]]
+     * 4. 数组内直接传入扩展的对象: [[{plugins: 'path/to/file'}, {mypluginId: false}]]
+     */
+    loadeExt(extConfigs) {
+        if (!(typeof extConfigs === 'string' || Array.isArray(extConfigs))) {
+            return;
+        }
+        // plugins的总开关
+        const pluginMap = {};
+        // 加载plguin顺序是：默认plugin + extends plugin + 当前san.config.js plugin，优先级也如此顺序
+        // 1. 扩展配置
+        let tmpPath = {};
+        if (typeof extConfigs === 'string') {
+            extConfigs = [extConfigs];
+        }
+        let result = [];
+        // 加载extends并去重，最后加载的配置有效
+        for (let i = extConfigs.length - 1; i >= 0; i--) {
+            let e = extConfigs[i];
+            let options = {};
+            if (Array.isArray(e) && e.length === 2) {
+                [e, options] = e;
+            }
+
+            let extOptions = null;
+            if (typeof e === 'string') {
+                // 查找当前工程下和当前工程下的node_modules
+                const configPath = findExisting(e, this.cwd)
+                    || findExisting(e, this.cwd + '/node_modules/');
+
+                if (!configPath) {
+                    logger.error(`extends config: ${e} not exist!`);
+                }
+                // 路径存在，且未被加载
+                else if (!tmpPath[configPath]) {
+                    tmpPath[configPath] = true;
+                    try {
+                        extOptions = require(configPath);
+                    }
+                    catch (err) {
+                        logger.error(`extends file: ${configPath} load fail!`, err);
+                    }
+                }
+            }
+            else if (typeof e === 'object' && e.plugins) {
+                extOptions = e;
+            }
+            else {
+                logger.error('extends is invalid', e);
+            }
+            // 没有拿到配置则跳过
+            if (!extOptions) {
+                continue;
+            }
+            result.unshift([extOptions, options]);
+        }
+        // 配置合并到this.projectOptions内
+        result.forEach(c => {
+            // 合并开关控制
+            Object.assign(pluginMap, c[1]);
+            const plugins = c[0].plugins;
+            // 删除plugins
+            delete c[0].plugins;
+            // 扩展plugins
+            plugins.forEach(p => this.addPlugin(p));
+            // 合并其余配置项
+            defaultsDeep(this.projectOptions, c[0]);
+        });
+        return pluginMap;
+    }
+    initPlugin(plugin) {
         let options = {};
         if (Array.isArray(plugin)) {
             options = plugin[1];
             plugin = plugin[0];
         }
         const {id, apply, schema} = plugin;
-        if (pluginSwitch[id] === false) {
-            return;
-        }
         // 校验config.js schema 格式
         if (schema) {
             extendSchema(schema);
