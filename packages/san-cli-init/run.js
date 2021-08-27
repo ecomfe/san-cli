@@ -11,7 +11,7 @@
 const path = require('path');
 const consolidate = require('consolidate');
 const {timeCost} = require('san-cli-utils/utils');
-const TaskList = require('./TaskList');
+const TaskCenter = require('./TaskCenter');
 const checkStatus = require('./tasks/checkStatus');
 const download = require('./tasks/download');
 const generator = require('./tasks/generator');
@@ -30,7 +30,7 @@ module.exports = (template, appName, options = {}) => {
     // 记录一下开始新建工程时的起始时间
     const startTime = Date.now();
     const taskList = [
-        {title: '🔍 Checking directory and offline package status...', task: checkStatus(template, dest, options)},
+        {title: '🔍 Checking directory and offline template status...', task: checkStatus(template, dest, options)},
         {title: '🚚 Downloading project scaffolding template...', task: download(template, dest, options)},
         {title: '🔨 Generating directory structure...', task: generator(template, dest, options)},
         {title: '🔗 Installing dependencies...', task: installDep(template, dest, options)}
@@ -43,8 +43,8 @@ module.exports = (template, appName, options = {}) => {
     // 3. 安装 install
     // 4. 安装依赖 installDep
     // 5. 结束，显示问候语
-    const tasks = new TaskList(taskList);
-    tasks
+    const taskCenter = new TaskCenter(taskList);
+    taskCenter
         .run()
         .then(({metaData: opts, tplData: data}) => {
             // const {metaData: argv, tplData: data} = ctx;

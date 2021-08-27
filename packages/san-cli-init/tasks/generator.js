@@ -26,7 +26,7 @@ const ask = require('../ask');
 const exists = fs.existsSync;
 const debug = getDebugLogger('init:generate');
 
-module.exports = (name, dest, options) => {
+module.exports = (template, dest, options) => {
     return async (ctx, task) => {
         const src = ctx.localTemplatePath;
         // 0. 设置meta信息
@@ -146,7 +146,7 @@ async function startTask(src, dest, ctx, task) {
         vfs.src(rootSrc, {cwd: templateDir, cwdbase: true, dot: true})
             // 过滤
             // .pipe(f)
-            // 4. 增加 handlerbar
+            // 3. 增加 handlerbar
             .pipe(streamFile(template, data))
             // 处理 _ 开头文件为 .开头
             .pipe(dotFileFilter)

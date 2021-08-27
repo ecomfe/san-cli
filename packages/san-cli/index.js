@@ -29,7 +29,7 @@ checkNodeVersion(requiredNodeVersion, pkgName);
 // 3. 执行命令
 execCommand();
 
-function execCommand(argv = process.argv) {
+function execCommand() {
     const cmdName = process.argv[2];
     if (['-v', '-V', '--version'].includes(cmdName)) {
         console.log(pkgVersion);

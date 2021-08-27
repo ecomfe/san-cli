@@ -11,7 +11,7 @@
 const {ora, figures, chalk} = require('san-cli-utils/ttyLogger');
 const SError = require('san-cli-utils/SError');
 
-module.exports = class TaskList {
+module.exports = class TaskCenter {
     constructor(tasks, options = {}) {
         this._tasks = tasks;
         this._options = options;
@@ -62,9 +62,9 @@ module.exports = class TaskList {
     }
 
     _taskWrapper(task) {
-        task.skip = reason => {
+        task.skip = skipReason => {
             task.status = 'skiped'; // running failed
-            this.next({reason, type: 'skip'});
+            this.next(skipReason);
         };
         task.info = data => {
             if (data) {
@@ -89,17 +89,16 @@ module.exports = class TaskList {
                 this.next();
             }
         };
-        return task(this._context, task);
     }
-    _startTask(idx, {reason, type = ''} = {}) {
+    _startTask(idx, skipReason) {
         let {title, task} = this._tasks[idx];
         if (this._spinner) {
             this._spinner.stop();
         }
-        const p = `[${this._index + 1}/${this.length}]`;
-        if (reason) {
+        const p = `[${this._index + 1}/${this._tasksLength}]`;
+        if (skipReason) {
             // eslint-disable-next-line no-console
-            console.log(chalk.dim(`${new Array(p.length + 1).join(' ')} ${figures.arrowRight} ${reason}`));
+            console.log(chalk.dim(`${new Array(p.length + 1).join(' ')} ${figures.arrowRight} ${skipReason}`));
         }
         // eslint-disable-next-line no-console
         console.log(chalk.dim(p) + ` ${title}`);
@@ -109,6 +108,7 @@ module.exports = class TaskList {
         }
         task.status = 'running';
         this._taskWrapper(task);
+        task(this._context, task);
     }
     _done() {
         this._spinner.stop();
@@ -118,26 +118,14 @@ module.exports = class TaskList {
         this._spinner.stop();
         this._reject(err);
     }
-    next(reason) {
+    next(skipReason) {
         this._index++;
         if (this._index >= this._tasks.length) {
             // 完成了
             this._setStatus('done');
             this._done();
         } else {
-            this._startTask(this._index, reason);
+            this._startTask(this._index, skipReason);
         }
-    }
-    getIndex() {
-        return this._index;
-    }
-    get status() {
-        return this._status;
-    }
-    get index() {
-        return this._index;
-    }
-    get length() {
-        return this._tasks.length;
     }
 };
