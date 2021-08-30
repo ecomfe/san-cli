@@ -10,7 +10,7 @@
 
 const webpack = require('webpack');
 const EventEmitter = require('events').EventEmitter;
-const {getWebpackErrorInfoFromStats, initConfig} = require('./utils');
+const {getWebpackErrorInfoFromStats, formatConfig} = require('./utils');
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const debug = getDebugLogger('webpack:build');
 
@@ -25,7 +25,7 @@ module.exports = class Build extends EventEmitter {
             config,
             isWatch,
             watchOptions
-        } = initConfig(webpackConfig);
+        } = formatConfig(webpackConfig);
 
         this.isWatch = isWatch;
         this.watchOptions = watchOptions;

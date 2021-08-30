@@ -164,7 +164,7 @@ const {getDebugLogger} = require('san-cli-utils/ttyLogger');
 const SanFriendlyErrorsPlugin = require('./lib/SanFriendlyErrorsPlugin');
 const closeDevtoolDebug = getDebugLogger('webpack:closeDevtool');
 
-exports.initConfig = webpackConfig => {
+exports.formatConfig = webpackConfig => {
     let config = Array.isArray(webpackConfig) ? webpackConfig : [webpackConfig];
     let isWatch = false;
     let watchOptions = null;

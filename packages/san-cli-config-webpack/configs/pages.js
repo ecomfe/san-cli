@@ -57,14 +57,12 @@ module.exports = (webpackConfig, projectOptions) => {
     // 默认路径
     const defaultHtmlPath = fs.existsSync(htmlPath) ? htmlPath : require.resolve('../public/index.html');
     const publicCopyIgnore = ['index.html', '.DS_Store'];
-    let useHtmlPlugin = false;
     if (!multiPageConfig) {
         // default, single page setup.
         htmlOptions.alwaysWriteToDisk = true;
         htmlOptions.inject = true;
         htmlOptions.template = defaultHtmlPath;
         webpackConfig.plugin('html').use(HTMLPlugin, [htmlOptions]);
-        useHtmlPlugin = true;
     } else {
         // multi-page setup
         /** simple
@@ -142,13 +140,11 @@ module.exports = (webpackConfig, projectOptions) => {
 
             webpackConfig.plugin(`san-html-${name}`).use(SanHtmlPlugin);
         });
-        useHtmlPlugin = true;
     }
-    if (useHtmlPlugin) {
-        // 这里插件是依赖 html-webpack-plguin 的，所以不配置 hwp，会报错哦~
-        // html-webpack-harddisk-plugin
-        webpackConfig.plugin('html-webpack-harddisk').use(require('html-webpack-harddisk-plugin'));
-    }
+
+    // 这里插件是依赖 html-webpack-plguin 的，所以不配置 hwp，会报错哦~
+    // html-webpack-harddisk-plugin
+    webpackConfig.plugin('html-webpack-harddisk').use(require('html-webpack-harddisk-plugin'));
 
     const copyArgs = [];
 
