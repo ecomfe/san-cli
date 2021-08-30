@@ -11,7 +11,7 @@
 const {ora, figures, chalk} = require('san-cli-utils/ttyLogger');
 const SError = require('san-cli-utils/SError');
 
-module.exports = class TaskCenter {
+module.exports = class TaskList {
     constructor(tasks, options = {}) {
         this._tasks = tasks;
         this._options = options;
