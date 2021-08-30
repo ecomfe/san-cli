@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file preset test
- * @author yanyiting
+ * @author yanyiting, Lohoyo
  */
 
 const preset = require('../preset');
@@ -20,30 +20,47 @@ const defaultOptions = {
 test('默认值', () => {
     const presets = preset().presets;
     expect(presets[0][1]).toEqual({
+        bugfixes: true,
         debug: false,
+        exclude: [],
         loose: false,
-        ignoreBrowserslistConfig: undefined,
         useBuiltIns: 'usage',
-        corejs: 3,
-        targets: undefined,
+        corejs: require('core-js/package.json').version,
+        targets: {},
+        modules: false
+    });
+});
+
+test('现代模式的默认值', () => {
+    process.env.SAN_CLI_MODERN_BUILD = true;
+    const presets = preset().presets;
+    delete process.env.SAN_CLI_MODERN_BUILD;
+    expect(presets[0][1]).toEqual({
+        bugfixes: true,
+        debug: false,
+        exclude: [],
+        loose: false,
+        useBuiltIns: 'usage',
+        corejs: require('core-js/package.json').version,
+        targets: {},
         modules: false
     });
 });
 
 test('添加 plugin', () => {
     const plugins = preset({plugins: [{id: 'a'}]}).plugins;
-    expect(plugins.length).toBe(7);
+    expect(plugins.length).toBe(8);
 });
 
 test('检测 polyfill', () => {
     const {code} = babel.transformSync(`
         const a = new Map();
     `, defaultOptions);
-    expect(code).toMatch('"core-js/modules/es.array.iterator"');
-    expect(code).toMatch('"core-js/modules/es.map"');
-    expect(code).toMatch('"core-js/modules/es.object.to-string"');
-    expect(code).toMatch('"core-js/modules/es.string.iterator"');
-    expect(code).toMatch('"core-js/modules/web.dom-collections.iterator"');
+    expect(code).toMatch('core-js/modules/es.array.iterator');
+    expect(code).toMatch('core-js/modules/es.map');
+    expect(code).toMatch('core-js/modules/es.object.to-string');
+    expect(code).toMatch('core-js/modules/es.string.iterator');
+    expect(code).toMatch('core-js/modules/web.dom-collections.iterator');
     expect(code).toMatch('var a = new Map()');
 });
 
@@ -54,11 +71,11 @@ test('modern 模式会省略不必要的 polyfill', () => {
         presets: preset({}, {targets: {esmodules: true}}).presets,
         filename: 'test-entry-file.js'
     });
-    expect(code).toMatch('"core-js/modules/es.array.iterator"');
-    expect(code).not.toMatch('"core-js/modules/es.map"');
-    expect(code).not.toMatch('"core-js/modules/es.object.to-string"');
-    expect(code).not.toMatch('"core-js/modules/es.string.iterator"');
-    expect(code).toMatch('"core-js/modules/web.dom-collections.iterator"');
+    expect(code).toMatch('core-js/modules/es.array.iterator');
+    expect(code).not.toMatch('core-js/modules/es.map');
+    expect(code).not.toMatch('core-js/modules/es.object.to-string');
+    expect(code).not.toMatch('core-js/modules/es.string.iterator');
+    expect(code).toMatch('core-js/modules/web.dom-collections.iterator');
 });
 
 test('解构赋值', () => {
@@ -74,5 +91,10 @@ test('async/await', () => {
             await Promise.resolve();
         }
     `, defaultOptions);
-    expect(code).toMatch('"regenerator-runtime/runtime"');
+    expect(code).toMatch('regenerator-runtime/runtime');
+});
+
+test('显式传入 polyfill', () => {
+    const presets = preset(undefined, {polyfills: 'es.promise'}).presets;
+    expect(presets[0][1].exclude).toBe('es.promise');
 });

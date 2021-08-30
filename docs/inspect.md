@@ -1,10 +1,15 @@
----
-title: 查看webpack内置信息
----
+# 查看webpack内置信息
 
-# 查看 webpack rule
+> 注意: 默认不会安装此命令，需要手动安装
+## 安装
 
-## 查看所有内置 webpack rules list
+```shell
+$ npm install --save-dev san-cli-inspect
+```
+
+## 查看 webpack rule
+
+### 查看所有内置 webpack rules list
 
 ```bash
 san inspect --rules
@@ -13,28 +18,27 @@ san inspect --rules
 ```js
 [
   'san',
-  'js',
-  'ejs',
   'html',
-  'svg',
-  'img',
-  'media',
+  'ejs',
   'fonts',
+  'media',
+  'image',
+  'svg',
   'css',
-  'postcss',
-  'less'
+  'less',
+  'js'
 ]
 ```
 
-## 查看具体内置 webpack rule 信息
+### 查看具体内置 webpack rule 信息
 
 ```bash
-san inspect --rule postcss
+san inspect --rule css
 ```
 
-# 查看 webpack plugin
+## 查看 webpack plugin
 
-## 查看所有内置 webpack plugins list
+### 查看所有内置 webpack plugins list
 
 ```bash
 san inspect --plugins
@@ -45,43 +49,26 @@ san inspect --plugins
   'san',
   'case-sensitive-paths',
   'define',
-  'hmr',
-  'no-emit-on-errors',
   'html-index',
   'san-html-index',
-  'html-demo-store',
-  'san-html-demo-store',
-  'html-webpack-harddisk-plugin',
-  'copy-webpack-plugin',
+  'html-webpack-harddisk',
+  'hmr',
+  'no-emit-on-errors',
   'progress'
 ]
 ```
 
-## 查看具体内置 webpack plugin 信息
+### 查看具体内置 webpack plugin 信息
 
 ```bash
-san inspect --plugin copy-webpack-plugin
+san inspect --plugin san
+
+/* config.plugin('san') */
+new SanLoaderPlugin()
 ```
 
 ```js
-new CopyPlugin(
-  {
-    patterns: [
-      {
-        transform: function () { /* omitted long function */ },
-        from: '/Users/baidu/Desktop/baidu/xxx/template',
-        to: '/Users/baidu/Desktop/baidu/xxx/output/template',
-        globOptions: {
-          ignore: [
-            'index.html',
-            '.DS_Store',
-            'index/index.tpl',
-            'demo-store/index.tpl'
-          ]
-        }
-      }
-    ]
-  }
-)
+/* config.plugin('san') */
+new SanLoaderPlugin()
 ```
 

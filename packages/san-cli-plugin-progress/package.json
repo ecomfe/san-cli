@@ -1,12 +1,12 @@
 {
     "name": "san-cli-plugin-progress",
     "description": "san-cli进度条插件",
-    "version": "0.1.0",
+    "version": "2.0.0",
     "scriptName": "san",
     "main": "index.js",
     "license": "MIT",
     "engines": {
-        "node": ">=8.16"
+        "node": ">=12.0"
     },
     "keywords": [
         "san.js",
@@ -28,9 +28,9 @@
     "dependencies": {
         "figures": "^3.1.0",
         "pretty-time": "^1.1.0",
-        "san-cli-utils": "^0.1.0",
+        "san-cli-utils": "^1.0.0",
         "tty-table": "^2.8.2",
-        "webpackbar": "^4.0.0"
+        "webpackbar": "~5.0.0-3"
     },
     "gitHead": "402d813859ac219434712fa2063e5f724819004a"
 }

@@ -1,0 +1,20 @@
+name: Blog Deploy
+
+on: workflow_dispatch
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - run: yarn
+    - run: yarn global add @sdoc/cli
+    - run: sdoc build docs
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v2.5.0
+      env:
+        PERSONAL_TOKEN: ${{secrets.PERSONAL_TOKEN}}
+        PUBLISH_BRANCH: gh-pages
+        PUBLISH_DIR: ./docs/.sdoc/dist

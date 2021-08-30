@@ -28,9 +28,10 @@ module.exports = {
 
     // An array of regexp pattern strings used to skip coverage collection
     coveragePathIgnorePatterns: [
-        '<rootDir>/packages/san-cli-command-init/handlerbars.js',
+        '<rootDir>/packages/san-cli-init/handlerbars.js',
         'examples',
-        'node_modules'
+        'node_modules',
+        '__tests__'
     ],
 
     // A list of reporter names that Jest uses when writing coverage reports
@@ -154,9 +155,10 @@ module.exports = {
     ],
 
     // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-    // testPathIgnorePatterns: [
-    //   "<rootDir>/packages/san-cli-command-init/handlerbars.js"
-    // ],
+    testPathIgnorePatterns: [
+        // "<rootDir>/packages/san-cli-init/handlerbars.js",
+        '<rootDir>/packages/test'
+    ],
 
     // The regexp pattern or array of patterns that Jest uses to detect test files
     // testRegex: [],
@@ -177,7 +179,7 @@ module.exports = {
     // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
     transformIgnorePatterns: [
         '/node_modules/.*',
-        '<rootDir>/packages/san-cli-command-init/handlerbars.js'
+        '<rootDir>/packages/san-cli-init/handlerbars.js'
     ]
     // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
     // unmockedModulePathPatterns: undefined,

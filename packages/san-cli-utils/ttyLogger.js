@@ -73,14 +73,17 @@ exports.done = logger.success;
 exports.warning = logger.warn;
 
 exports.line = msg => {
+    // eslint-disable-next-line no-console
     console.log();
     msg ? logger('─'.repeat(20) + msg + '─'.repeat(20)) : logger('─'.repeat(45));
+    // eslint-disable-next-line no-console
     console.log();
 };
 
 exports.clearConsole = () => {
     if (process.stdout.isTTY) {
         const blank = '\n'.repeat(process.stdout.rows);
+        // eslint-disable-next-line no-console
         console.log(blank);
         readline.cursorTo(process.stdout, 0, 0);
         readline.clearScreenDown(process.stdout);

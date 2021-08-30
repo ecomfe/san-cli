@@ -1,7 +1,7 @@
 
 # 高级配置
 
-这篇文章介绍一些高级配置的配置项，这些配置项虽然在日常项目中配置的较少，但是对于项目来说这些配置项往往是可以解决日常常见的问题。
+这篇文章介绍一些高级配置的配置项，这些配置项虽然在日常项目中配置得较少，但是对于项目来说这些配置项往往是可以解决日常常见的问题。
 
 ## 使用拆包
 
@@ -18,7 +18,7 @@ module.exports = {
     // ...
     splitChunks: {
         cacheGroups: {
-            vendors: {
+            defaultVendors: {
                 name: 'vendors',
                 test: /[\\/]node_modules(?!\/@baidu)[\\/]/,
                 // minChunks: 1,
@@ -36,53 +36,17 @@ module.exports = {
 };
 ```
 
-> 同时 San CLI 内置了 [optimize-css-assets-webpack-plugin](https://github.com/NMFR/optimize-css-assets-webpack-plugin)，也就是说支持使用 splitChunks 来拆分 CSS 文件。
-
 ## 代码压缩和优化
 
-在项目中可以对产出的代码中压缩和优化，在 San CLI 的 JS 使用了 terserjs 和 CSS 使用 cssnano。支持默认 San CLI 的配置是：
+在项目中可以对产出的代码进行压缩和优化，San CLI 会对 JS 使用 terserjs 和对 CSS 使用 cssnano。
 
-默认 cssnano 配置：
-
-```js
-{
-    mergeLonghand: false,
-    cssDeclarationSorter: false,
-    normalizeUrl: false,
-    discardUnused: false,
-    // 避免 cssnano 重新计算 z-index
-    zindex: false,
-    reduceIdents: false,
-    safe: true,
-    // cssnano 集成了autoprefixer的功能
-    // 会使用到autoprefixer进行无关前缀的清理
-    // 关闭autoprefixer功能
-    // 使用postcss的autoprefixer功能
-    autoprefixer: false,
-    discardComments: {
-        removeAll: true
-    }
-}
-```
-
-在 San CLI 的配置文件中，所有跟 CSS 的相关的配置是放在了`css`配置项中，所以对 cssnano 的修改也是在`css.cssnanoOptions`中进行修改：
-
-```js
-module.exports = {
-    // ...
-    css: {
-        cssnanoOptions: {
-            // 自定义的配置
-        }
-    }
-};
-```
-
-默认 terserjs 配置：
+默认的 terserjs 配置：
 
 ```js
 {
-    comments: false,
+    format: {
+        comments: false
+    },
     compress: {
         unused: true,
         // 删掉 debugger
@@ -110,28 +74,136 @@ module.exports = {
 };
 ```
 
+默认的 cssnano 配置：
+
+```js
+{
+    mergeLonghand: false,
+    cssDeclarationSorter: false,
+    normalizeUrl: false,
+    discardUnused: false,
+    // 避免 cssnano 重新计算 z-index
+    zindex: false,
+    reduceIdents: false,
+    safe: true,
+    // cssnano 集成了 autoprefixer 的功能
+    // 会使用到 autoprefixer 进行无关前缀的清理
+    // 关闭 autoprefixer 功能
+    // 使用 postcss 的 autoprefixer 功能
+    autoprefixer: false,
+    discardComments: {
+        removeAll: true
+    }
+}
+```
+
+在 San CLI 的配置文件中，所有跟 CSS 的相关的配置是放在了`css`配置项中，所以对 cssnano 的修改也是在`css.cssnanoOptions`中进行修改：
+
+```js
+module.exports = {
+    // ...
+    css: {
+        cssnanoOptions: {
+            // 自定义的配置
+        }
+    }
+};
+```
+
+### loaderOptions.esbuild
+
+> 实验性功能，可能会有坑，但可以有效提升速度体验。
+
+压缩 js 除使用默认开启的 terserjs 外，还可以使用 esbuild 压缩，开启方式：
+
+```js
+module.exports = {
+    // ...
+    loaderOptions: {
+        esbuild: true // 或填入 {}
+    }
+};
+```
+
+开启后将使用以下的默认配置进行压缩：
+
+```js
+{
+    // ...
+    minify: true,        
+    target: 'es2015',
+};
+```
+
+也可通过 esbuild 配置项直接传入配置，具体配置见[esbuild-loader](https://github.com/privatenumber/esbuild-loader)。
+
+esbuild 开启后，默认也会在开发环境下使用 esbuild-loader 替换 babel-loader，速度会大幅提升。
+
+esbuild 也可以开启 css 压缩（默认不开启），按照如下方式配置即可：
+
+```js
+module.exports = {
+    // ...
+    loaderOptions: {
+        esbuild: {css: true}
+    }
+};
+```
+
+### unsafeCache
+
+webpack5 新增了安全策略，对应 config.module.unsafeCache，开启后（true）表示忽略安全策略，可加快构建速度，默认不开启（false）。
+
 ### html-minifier 配置
 
-除此之外，San CLI 中使用的 html-webpack-plugin 的配置项中可以使用 html-minifier，在 San CLi 中默认的配置如下：
+San CLI 中使用的 html-webpack-plugin 的配置项中可以使用 html-minifier，在 San CLI 中默认的配置如下：
 
 ```js
 {
     removeComments: true,
     collapseWhitespace: false,
-    removeAttributeQuotes: true,
+    // 引号保留，不然 inline 的 base64 图片 compress 时报错
+    removeAttributeQuotes: false,
+    quoteCharacter: '"',
     collapseBooleanAttributes: true,
     removeScriptTypeAttributes: false,
     minifyCSS: true,
+    // 处理 smarty 和 php 情况
+    ignoreCustomFragments: [/{%[\s\S]*?%}/, /<%[\s\S]*?%>/, /<\?[\s\S]*?\?>/],
+    keepClosingSlash: true
     // more options:
     // https://github.com/kangax/html-minifier#options-quick-reference
 }
 ```
 
-使用者可以在`pages`中的`html-minifier`进行配置，具体配置可以[参考这里](https://github.com/DanielRuf/html-minifier-terser#options-quick-reference)。
+使用者可以在`pages`中的`minify`项进行配置，例如：
+
+```js
+pages: {
+    index: {
+        entry: './src/pages/index/index.js',
+        template: './template/index.tpl',
+        filename: 'index.tpl',
+        chunks: ['common', 'vendors'],
+        minify: {
+            collapseWhitespace: true,
+            keepClosingSlash: true,
+            removeComments: true,
+            removeRedundantAttributes: true,
+            removeScriptTypeAttributes: true,
+            removeStyleLinkTypeAttributes: true,
+            useShortDoctype: true
+        }
+    },
+    ...
+}
+```
+
+具体配置项可以[参考这里](https://github.com/DanielRuf/html-minifier-terser#options-quick-reference)。
 
 ## 编译 NPM 包中的 ES6 语法
 
-在项目中，我们推荐使用 ESM 语法的模块，ESM 语法的模块在使用的同时，可以使用统一 的 Webpack 配置，并且基于 Tree-shaking，打出的包体积更加合理。但是在 San CLI 中，默认是不会编译 NPM 包中的 ES6 语法的代码，这时候依赖的 NPM 包中使用 ES6 语法，需要使用`transpileDependencies`。
+在项目中，我们推荐使用 ESM 语法的模块，ESM 语法的模块在使用的同时，可以使用统一的 Webpack 配置，并且基于 Tree-shaking，打出的包体积更加合理。但是在 San CLI 中，默认不会编译 NPM 包中的 ES6 语法的代码，这时候如果需要编译依赖的 NPM 包中的 ES6 语法，需要使用`transpileDependencies`。
 
 `transpileDependencies`可接受的类型为`Array`、`String`或者`RegExp`。例如我们项目依赖`@baidu/nano`这个 UI 基础库，则可以设置配置如下：
 
@@ -146,7 +218,7 @@ module.exports = {
 
 ## 使用 chainWebpack 和 configWebpack 进行个性化配置
 
-如果要更加自主的进行个性化的配置，那么可以在 San CLI 配置文件中的 chainWebpack 和 configWebpack 进行修改，`chainWebpack` 接受的参数是 [webpack-chain](https://github.com/neutrinojs/webpack-chain) 语法的配置，`configWebpack`接受的参数是 Webpack 的配置对象。
+如果要更加自主地进行个性化的配置，那么可以用 San CLI 配置文件中的 chainWebpack 和 configWebpack 来修改配置，`chainWebpack` 接受的参数是 [webpack-chain](https://github.com/neutrinojs/webpack-chain) 语法的配置，`configWebpack`接受的参数是 Webpack 的配置对象。
 
 例如：
 
@@ -237,8 +309,10 @@ module.exports = {
 };
 ```
 
-!> 这里特殊说明下，`middleware`传入的是一个 function，并且**返回**一个中间件。
+::: warning
+这里特殊说明下，`middleware`传入的是一个 function，并且**返回**一个中间件。
+:::
 
 ## 更多
 
-如果想了解更多 Service 插件相关内容，那么请浏览[这个文档](./srv-plugin.md)
+如果想了解更多 Service 插件相关内容，那么请浏览[这个文档](./srv-plugin.md)。

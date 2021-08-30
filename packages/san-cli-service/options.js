@@ -8,7 +8,8 @@
  * @author ksky521
  */
 
-const joi = require('@hapi/joi');
+const joi = require('joi');
+const devServerOptions = require('san-cli-config-webpack/defaultOptions').devServerOptions;
 
 const schema = joi
     .object({
@@ -63,7 +64,6 @@ const schema = joi
             )
         ),
         // 生产环境优化相关
-        polyfill: joi.boolean(),
         terserOptions: joi.object(),
         sourceMap: joi.alternatives().try(joi.boolean(), joi.string()),
         filenameHashing: joi.boolean(),
@@ -72,10 +72,10 @@ const schema = joi
         css: joi.object({
             cssnanoOptions: joi.object(),
             cssPreprocessor: joi.string().valid('less', 'sass', 'stylus'),
-            extract: joi.boolean(),
+            extract: joi.alternatives().try(joi.boolean(), joi.object()),
             sourceMap: joi.boolean(),
-            requireModuleExtension: joi.boolean(),
             loaderOptions: joi.object({
+                style: joi.object(),
                 css: joi.object(),
                 sass: joi.object(),
                 less: joi.object(),
@@ -86,10 +86,16 @@ const schema = joi
         }),
         // webpack 相关配置
         alias: joi.object(),
-        // 内置 loader 的 options
+        // 缓存的相关配置
+        cache: joi.alternatives().try(joi.boolean(), joi.object()),
+        // 内置 loader 的 options 增加thread-loader主要用在生产环境 增加esbuild-loader主要用在开发环境（转换js）生产环境（压缩js和css）
         loaderOptions: joi.object(),
         // 主要用 splitChunks.cacheGroups
         splitChunks: joi.object(),
+        // webpack5 runtimeChunk
+        runtimeChunk: joi.alternatives().try(joi.string(), joi.object()),
+        // config.module.unsafeCache,webpack5新增
+        unsafeCache: joi.boolean(),
         // 纯自定义的函数
         chainWebpack: joi.func(),
         configWebpack: joi.alternatives().try(joi.object(), joi.func()),
@@ -102,98 +108,19 @@ const schema = joi
     })
     // 为了方便自定义扩展
     .unknown(true);
-exports.validate = (options, cb) => {
-    schema.validate(options, cb);
-};
-exports.validateSync = async (value, options) => {
-    const rs = await schema.validateAsync(value, options);
-    return rs;
+exports.validate = (value, options) => {
+    const {error} = schema.validate(value, options);
+    if (error) {
+        throw error;
+    }
 };
 
 exports.defaults = {
-    polyfill: true,
     pages: undefined,
     outputDir: 'output',
     assetsDir: '',
     publicPath: '/',
     filenameHashing: false,
-    devServer: {
-        watchContentBase: false,
-        hot: true,
-        hotOnly: false,
-        logLevel: 'silent',
-        clientLogLevel: 'silent',
-        overlay: {warnings: false, errors: true},
-        stats: 'errors-only',
-        inline: false,
-        lazy: false,
-        index: 'index.html',
-        watchOptions: {
-            aggregateTimeout: 300,
-            ignored: /node_modules/,
-            poll: 100
-        },
-        disableHostCheck: true,
-        compress: false,
-        host: '0.0.0.0',
-        port: 8899,
-        https: false
-    },
+    devServer: devServerOptions,
     sourceMap: false
-};
-
-exports.cssnanoOptions = {
-    mergeLonghand: false,
-    cssDeclarationSorter: false,
-    normalizeUrl: false,
-    discardUnused: false,
-    // 避免 cssnano 重新计算 z-index
-    zindex: false,
-    reduceIdents: false,
-    safe: true,
-    // cssnano 集成了autoprefixer的功能
-    // 会使用到autoprefixer进行无关前缀的清理
-    // 关闭autoprefixer功能
-    // 使用postcss的autoprefixer功能
-    autoprefixer: false,
-    discardComments: {
-        removeAll: true
-    }
-};
-
-exports.terserOptions = {
-    comments: false,
-    compress: {
-        unused: true,
-        // 删掉 debugger
-        drop_debugger: true, // eslint-disable-line
-        // 移除 console
-        drop_console: true, // eslint-disable-line
-        // 移除无用的代码
-        dead_code: true // eslint-disable-line
-    },
-    ie8: false,
-    safari10: true,
-    warnings: false,
-    toplevel: true
-};
-exports.htmlMinifyOptions = {
-    removeComments: true,
-    collapseWhitespace: false,
-    removeAttributeQuotes: true,
-    collapseBooleanAttributes: true,
-    removeScriptTypeAttributes: false,
-    minifyCSS: true,
-    // 处理 smarty 和 php 情况
-    ignoreCustomFragments: [/{%[\s\S]*?%}/, /<%[\s\S]*?%>/, /<\?[\s\S]*?\?>/]
-    // more options:
-    // https://github.com/kangax/html-minifier#options-quick-reference
-};
-
-exports.eslintOptions = {
-    'no-console': 2,
-    'no-debugger': 2,
-    'no-alert': 2,
-    'no-unused-vars': 2,
-    'no-undef': 2
 };

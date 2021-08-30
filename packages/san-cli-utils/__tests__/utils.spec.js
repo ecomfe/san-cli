@@ -8,7 +8,7 @@
  * @author yanyiting
  */
 
-const {flatten} = require('../utils');
+const {flatten, tmpl} = require('../utils');
 
 describe('测试flatten', () => {
     test('空数组', () => {
@@ -19,5 +19,23 @@ describe('测试flatten', () => {
     });
     test('二维数组', () => {
         expect(flatten([[1, 2, 3], 4, 5, 6, []])).toEqual([1, 2, 3, 4, 5, 6]);
+    });
+});
+
+describe('测试tmpl', () => {
+    test('单个占位符', () => {
+        expect(tmpl('My name is {{name}}', {name: 'Jinz'})).toEqual('My name is Jinz');
+    });
+    test('多个占位符', () => {
+        expect(tmpl('My name is {{name}} {{hello}}', {name: 'Jinz', hello: 'Hello JS'}))
+            .toEqual('My name is Jinz Hello JS');
+
+        expect(tmpl('My name is {{name}} {{hello}} {{w}}',
+            {name: 'Jinz', hello: 'Hello JS'})).toEqual('My name is Jinz Hello JS undefined');
+    });
+    test('异常数据', () => {
+        expect(tmpl('My name is {{name}}', '')).toEqual('My name is {{name}}');
+        expect(tmpl('My name is {{name}}', {})).toEqual('My name is undefined');
+        expect(() => tmpl(['name'], {name: 'Jinz'})).toThrowError('error');
     });
 });

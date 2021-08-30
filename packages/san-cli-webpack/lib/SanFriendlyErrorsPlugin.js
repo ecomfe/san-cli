@@ -108,10 +108,10 @@ function formatMessage(message) {
 }
 
 function formatWebpackMessages(json) {
-    const formattedErrors = json.errors.map(function (message) {
+    const formattedErrors = json.errors.map(function ({message}) {
         return formatMessage(message, true);
     });
-    const formattedWarnings = json.warnings.map(function (message) {
+    const formattedWarnings = json.warnings.map(function ({message}) {
         return formatMessage(message, false);
     });
     const result = {errors: formattedErrors, warnings: formattedWarnings};
@@ -123,7 +123,7 @@ function formatWebpackMessages(json) {
 }
 function showError(arr) {
     clearConsole();
-    error(chalk.red(`Failed to compile with ${arr.length} errors.`));
+    error(chalk.red(`[SanFriendlyErrorsPlugin]Failed to compile with ${arr.length} errors.`));
     arr.forEach(message => {
         const lines = message.split('\n');
 
@@ -135,6 +135,7 @@ function showError(arr) {
         }
         else {
             error(lines[0]);
+            // eslint-disable-next-line no-console
             console.log(lines.splice(1).join('\n'));
         }
     });
@@ -142,9 +143,10 @@ function showError(arr) {
 
 }
 function showWarning(arr) {
+    arr.forEach(err => warn(err));
     warn(`Compiled with ${arr.length} warnings.`);
-    console.log(`${arr.join('\n\n')}`);
 }
+
 module.exports = class SanFriendlyErrorsPlugin {
     apply(compiler) {
         const done = stats => {

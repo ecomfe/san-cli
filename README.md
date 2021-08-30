@@ -1,8 +1,8 @@
 <div align="center">
     <h1>San-CLI</h1>
     <blockquote>A CLI Tooling based on <a href="https://baidu.github.io/san/">San.js</a> for rapid development</blockquote>
-    <a href="https://travis-ci.org/ecomfe/san-cli/builds">
-        <img src="https://img.shields.io/travis/ecomfe/san-cli/master.svg?style=flat-square" alt="Build Status">
+    <a href="https://github.com/ecomfe/san-cli/actions?query=workflow%3A%22Node.js+CI%22">
+        <img src="https://github.com/ecomfe/san-cli/workflows/Node.js%20CI/badge.svg">
     </a>
     <a href="https://www.npmjs.com/package/san-cli">
         <img src="http://img.shields.io/npm/v/san-cli.svg?style=flat-square" alt="NPM version">
@@ -19,15 +19,15 @@ English | [简体中文](./README-zh_CN.md)
 
 ## 🎉 Features
 
--   Complete project scaffolding.
--   webpack-based with zero configuration.
--   Extensible command line and webpack packaging plugins.
+-   Complete project scaffolding
+-   webpack-based with zero configuration
+-   Extensible command line and webpack packaging plugins
 
 San CLI takes into account the San ecosystem while trying to achieve universal configuration. At the beginning of the design phase, we aimed to be not limited to the San application scope, but to make a general and customizable front-end development tooling.
 
 ## 📦 Installation
 
-> San CLI requires Node.js version 8.16.0 or above (8.16.0+ recommended).
+> San CLI requires Node.js version 12.0 or above (12.0+ recommended).
 
 ```bash
 # use npm
@@ -88,7 +88,7 @@ For detailed documentation, please check the [San CLI docs](./docs/README.md).
 
 ## 🍻 Companions
 
--   [san-devtool](https://github.com/baidu/san-devtool/blob/master/docs/user_guide.md) - Chrome DevTool extension
+-   [san-devtools](https://github.com/baidu/san-devtools/blob/master/docs/user_guide.md) - Chrome DevTools extension
 -   [san-router](https://github.com/baidu/san-router) - SPA Router
 -   [san-store](https://github.com/baidu/san-store) - Application States Management
 -   [san-update](https://github.com/baidu/san-update) - Immutable Data Update
@@ -96,10 +96,10 @@ For detailed documentation, please check the [San CLI docs](./docs/README.md).
 -   [santd](https://ecomfe.github.io/santd/) - Components Library following the [Ant Design](https://ant.design/) specification
 -   [san-mui](https://ecomfe.github.io/san-mui/) - [Material Design](https://www.material.io/) Components Library
 -   [san-xui](https://ecomfe.github.io/san-xui/) - A Set of SAN UI Components that widely used on Baidu Cloud Console
--   [drei](https://github.com/ssddi456/drei/) - VSCode extension for SAN
--   [san-cli](https://github.com/ecomfe/san-cli) - A CLI tooling based on SAN for rapid development
+-   [sanny](https://github.com/searchfe/sanny/) - VSCode extension for SAN
 -   [san-test-utils](https://github.com/ecomfe/san-test-utils) - The unit testing utility library for SAN
--   [san-loader](https://github.com/ecomfe/san-cli/tree/master/packages/san-loader) - Webpack loader for single-file SAN components
+-   [san-loader](https://github.com/ecomfe/san-loader) - Webpack loader for single-file SAN components
+-   [san-hot-loader](https://github.com/ecomfe/san-hot-loader) - Webpack loader for SAN components HMR
 
 ## ☀️ License
 

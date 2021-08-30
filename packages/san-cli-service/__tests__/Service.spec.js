@@ -5,7 +5,7 @@
  * See LICENSE file in the project root for license information.
  *
  * @file Service test
- * @author yanyiting
+ * @author yanyiting, Lohoyo
  */
 
 const Service = require('../Service');
@@ -14,26 +14,32 @@ const path = require('path');
 jest.unmock('fs-extra');
 // jest.unmock('cosmiconfig');
 
-describe('e2e 测试', () => {
+describe('检查 webpack 配置', () => {
     const cwd = process.cwd();
+
+    test('没有初始化就获取 webpack 配置', () => {
+        const service = new Service();
+        expect(() => service.getWebpackConfig({}))
+            .toThrow('Service must call init() before calling getWebpackConfig().');
+    });
+
     test('检查 npm start 时的 webpack 配置', done => {  // eslint-disable-line
-        const service = new Service('serve', {
+        const service = new Service(cwd, {
             autoLoadConfigFile: false,
-            mode: 'development',
             projectOptions: {
                 assetsDir: 'static',
                 publicPath: '/',
                 outputDir: 'output',
                 filenameHashing: false,
-                copy: {from: 'template', to: 'template'},
+                copy: [{from: 'template', to: 'template'}],
                 pages: {
                     index: {
                         entry: cwd + '/src/pages/index/index.js',
-                        template: cwd + '/template/index/index.tpl',
-                        filename: 'template/index/index.tpl'
+                        template: __dirname + '/mock/index.tpl',
+                        chunks: ['vendors']
                     }
                 },
-                css: {sourceMap: false, cssPreprocessor: 'less'},
+                css: {sourceMap: false, cssPreprocessor: 'sass'},
                 alias: {
                     '@assets': cwd + '/src/assets',
                     '@components': cwd + '/src/components',
@@ -41,7 +47,6 @@ describe('e2e 测试', () => {
                     '@store': cwd + '/src/lib/Store.js'
                 },
                 sourceMap: false,
-                polyfill: true,
                 devServer: {
                     watchContentBase: false,
                     hot: true,
@@ -59,38 +64,51 @@ describe('e2e 测试', () => {
                     host: '0.0.0.0',
                     port: 8899,
                     https: false
+                },
+                plugins: [
+                    [
+                        {
+                            id: 'lhy3-plugin',
+                            apply() {}
+                        }
+                    ]
+                ],
+                chainWebpack: config => config.resolve.alias.set('@', cwd + '/src'),
+                configWebpack: {
+                    resolve: {
+                        extensions: ['.js', '.san', '.json', '.sass']
+                    }
                 }
             }
         });
 
-        service.run(api => {
+        service.run().then(api => {
             const webpackConfig = api.getWebpackConfig();
             expect(webpackConfig).toMatchObject({
                 mode: 'development',
                 context: cwd + '',
-                devtool: 'cheap-module-eval-source-map',
+                devtool: 'eval-cheap-module-source-map',
                 output: {
                     path: path.join(cwd, '/output'),
-                    jsonpFunction: 'HK3',
                     filename: '[name].js',
                     publicPath: '/'
                 },
                 resolve: {
                     symlinks: false,
                     alias: {
-                        'core-js': path.join(cwd, '/packages/san-cli-service/node_modules/core-js'),
-                        'regenerator-runtime': path.join(cwd, '/node_modules/regenerator-runtime'),
-                        san: path.join(cwd, '/node_modules/san/dist/san.spa.dev.js'),
+                        'core-js': path.dirname(require.resolve('core-js')),
+                        'regenerator-runtime': path.dirname(require.resolve('regenerator-runtime')),
+                        'san': path.join(path.dirname(require.resolve('san', {paths: [cwd]})), 'san.spa.dev.js'),
                         '@assets': cwd + '/src/assets',
                         '@components': cwd + '/src/components',
                         '@app': cwd + '/src/lib/App.js',
                         '@store': cwd + '/src/lib/Store.js'
                     },
-                    extensions: ['.js', '.css', '.less', '.san'],
+                    extensions: ['.js', '.san', '.json', '.sass'],
                     modules: [
                         'node_modules',
                         path.join(cwd, '/node_modules'),
-                        path.join(cwd, '/packages/san-cli-service/node_modules')
+                        path.join(cwd, '/packages/san-cli-config-webpack/node_modules')
                     ]
                 },
                 resolveLoader: {
@@ -98,7 +116,7 @@ describe('e2e 测试', () => {
                         path.join(cwd, '/packages/san-cli-plugin-babel/node_modules'),
                         'node_modules',
                         path.join(cwd, '/node_modules'),
-                        path.join(cwd, '/packages/san-cli-service/node_modules')
+                        path.join(cwd, '/packages/san-cli-config-webpack/node_modules')
                     ]
                 },
                 entry: {index: [path.join(cwd, '/src/pages/index/index.js')]},
@@ -121,14 +139,19 @@ describe('e2e 测试', () => {
                     https: false
                 }
             });
-            done();
+            service.run().then(() => {
+                const loadEnv = jest.spyOn(service, 'loadEnv');
+                // 通过是否调用了 loadEnv 来判断第二次 run 时是否又重新初始化了
+                expect(loadEnv).not.toHaveBeenCalled();
+                loadEnv.mockClear();
+                done();
+            });
         });
     });
 
     test('检查 npm run build 时的 webpack 配置', done => {  // eslint-disable-line
-        const service = new Service('build', {
+        const service = new Service(cwd, {
             autoLoadConfigFile: false,
-            mode: 'production',
             projectOptions: {
                 assetsDir: 'static/san-cli',
                 publicPath: 'https://s.bdstatic.com/',
@@ -138,8 +161,7 @@ describe('e2e 测试', () => {
                 pages: {
                     index: {
                         entry: cwd + '/src/pages/index/index.js',
-                        template: cwd + '/template/index/index.tpl',
-                        filename: 'template/index/index.tpl'
+                        template: cwd + '/pages.template.ejs'
                     }
                 },
                 css: {sourceMap: true, cssPreprocessor: 'less'},
@@ -150,7 +172,6 @@ describe('e2e 测试', () => {
                     '@store': cwd + '/src/lib/Store.js'
                 },
                 sourceMap: true,
-                polyfill: true,
                 devServer: {
                     watchContentBase: false,
                     hot: true,
@@ -168,11 +189,18 @@ describe('e2e 测试', () => {
                     host: '0.0.0.0',
                     port: 8899,
                     https: false
+                },
+                configWebpack() {
+                    return {
+                        resolve: {
+                            extensions: ['.js', '.css', '.less', '.san', 'ts']
+                        }
+                    };
                 }
             }
         });
 
-        service.run(api => {
+        service.run('build', {mode: 'production'}).then(api => {
             const webpackConfig = api.getWebpackConfig();
             expect(webpackConfig).toMatchObject({
                 mode: 'production',
@@ -180,27 +208,26 @@ describe('e2e 测试', () => {
                 devtool: 'source-map',
                 output: {
                     path: path.join(cwd, '/output'),
-                    jsonpFunction: 'HK3',
-                    filename: 'static/san-cli/js/[name].[hash:8].js',
+                    filename: 'static/san-cli/js/[name].[contenthash:8].js',
                     publicPath: 'https://s.bdstatic.com/',
-                    chunkFilename: 'static/san-cli/js/[name].[hash:8].js'
+                    chunkFilename: 'static/san-cli/js/[name].[contenthash:8].js'
                 },
                 resolve: {
                     symlinks: false,
                     alias: {
-                        'core-js': path.join(cwd, '/packages/san-cli-service/node_modules/core-js'),
-                        'regenerator-runtime': path.join(cwd, '/node_modules/regenerator-runtime'),
-                        san: path.join(cwd, '/node_modules/san/dist/san.spa.js'),
+                        'core-js': path.dirname(require.resolve('core-js')),
+                        'regenerator-runtime': path.dirname(require.resolve('regenerator-runtime')),
+                        'san': path.join(path.dirname(require.resolve('san', {paths: [cwd]})), 'san.spa.js'),
                         '@assets': cwd + '/src/assets',
                         '@components': cwd + '/src/components',
                         '@app': cwd + '/src/lib/App.js',
                         '@store': cwd + '/src/lib/Store.js'
                     },
-                    extensions: ['.js', '.css', '.less', '.san'],
+                    extensions: ['.js', '.css', '.less', '.san', 'ts'],
                     modules: [
                         'node_modules',
                         path.join(cwd, '/node_modules'),
-                        path.join(cwd, '/packages/san-cli-service/node_modules')
+                        path.join(cwd, '/packages/san-cli-config-webpack/node_modules')
                     ]
                 },
                 resolveLoader: {
@@ -208,7 +235,7 @@ describe('e2e 测试', () => {
                         path.join(cwd, '/packages/san-cli-plugin-babel/node_modules'),
                         'node_modules',
                         path.join(cwd, '/node_modules'),
-                        path.join(cwd, '/packages/san-cli-service/node_modules')
+                        path.join(cwd, '/packages/san-cli-config-webpack/node_modules')
                     ]
                 },
                 entry: {index: [path.join(cwd, '/src/pages/index/index.js')]},
@@ -238,8 +265,7 @@ describe('e2e 测试', () => {
 
 describe('constructor resolvePlugins _loadPlugin', () => {
     test('plugins有值，useBuiltInPlugin为true', () => {
-        const service = new Service('name', {
-            cwd: __dirname + '/mock',
+        const service = new Service(__dirname + '/mock', {
             plugins: [
                 // string格式
                 './yyt-plugin.js',
@@ -248,7 +274,15 @@ describe('constructor resolvePlugins _loadPlugin', () => {
                 // array格式两项，参数一obj
                 [{id: 'yyt3-plugin', apply: () => {}}, {}],
                 // array格式两项，参数一string
-                ['./yyt2-plugin.js', {a: 1}]
+                ['./yyt2-plugin.js', {a: 1}],
+                // 没有 id 的 plugin
+                './lhy-plugin.js',
+                // 函数格式
+                () => {},
+                // 没有 apply 函数的无效 plugin
+                './lhy2-plugin.js',
+                // 瞎传,
+                {}
             ],
             useBuiltInPlugin: true,
             projectOptions: {
@@ -261,18 +295,18 @@ describe('constructor resolvePlugins _loadPlugin', () => {
                 if (Array.isArray(item)) {
                     return item[0].id;
                 }
-                return item.id;
+                return item && item.id;
             })
         ).toEqual([
-            'built-in:base',
-            'built-in:css',
-            'built-in:app',
-            'built-in:optimization',
             'san-cli-plugin-babel',
             'yyt-plugin',
             'yyt1-plugin',
             'yyt3-plugin',
-            'yyt2-plugin'
+            'yyt2-plugin',
+            './lhy-plugin.js',
+            'anonymous',
+            undefined,
+            undefined
         ]);
         // 检测对于加options的插件是否已加入进去
         expect(service.plugins.filter(item => Array.isArray(item))[1][1]).toEqual({a: 1});
@@ -280,8 +314,7 @@ describe('constructor resolvePlugins _loadPlugin', () => {
         expect(service._initProjectOptions).toEqual({outputDir: 'output'});
     });
     test('plugins为空，useBuiltInPlugin为true', () => {
-        const service = new Service('name', {
-            cwd: __dirname + '/mock',
+        const service = new Service(__dirname + '/mock', {
             useBuiltInPlugin: true,
             projectOptions: {
                 outputDir: 'output'
@@ -295,11 +328,10 @@ describe('constructor resolvePlugins _loadPlugin', () => {
                 }
                 return item.id;
             })
-        ).toEqual(['built-in:base', 'built-in:css', 'built-in:app', 'built-in:optimization', 'san-cli-plugin-babel']);
+        ).toEqual(['san-cli-plugin-babel']);
     });
     test('useBuiltInPlugin为false', () => {
-        const service = new Service('name', {
-            cwd: __dirname + '/mock',
+        const service = new Service(__dirname + '/mock', {
             useBuiltInPlugin: false,
             projectOptions: {
                 outputDir: 'output'
@@ -311,28 +343,37 @@ describe('constructor resolvePlugins _loadPlugin', () => {
 });
 
 describe('loadEnv', () => {
-    const service = new Service('name', {
-        cwd: __dirname + '/mock'
+    const service = new Service(__dirname + '/mock');
+    afterEach(() => {
+        delete process.env.TEST_ENV_PATH;
+        delete process.env.TEST_ENV_PRODUCTION_PATH;
+        delete process.env.TEST_ENV_PRODUCTION_LOACAL_PATH;
+        delete process.env.TEST_ENV_DEVELOPMENT_PATH;
     });
-    test('有mode值', () => {
+    test('有 mode 值', () => {
         service.loadEnv('production');
         expect(process.env.TEST_ENV_PRODUCTION_PATH).toBe('/home/work/env/production');
         expect(process.env.TEST_ENV_PRODUCTION_LOACAL_PATH).toBe('/home/work/env/production/local');
+        expect(process.env.TEST_ENV_PATH).toBe('/home/work/env');
     });
-    test('没有mode值, 不存在某个.env文件', () => {
+    test('没有 mode 值', () => {
         service.loadEnv();
-        expect(process.env.TEST_ENV_PATH).toBeUndefined();
+        expect(process.env.TEST_ENV_PRODUCTION_PATH).toBeUndefined();
+        expect(process.env.TEST_ENV_PATH).toBe('/home/work/env');
+    });
+    test('不存在 mode 对应的 .local 文件', () => {
+        service.loadEnv('development');
+        expect(process.env.TEST_ENV_DEVELOPMENT_PATH).toBe('/home/work/env/development');
+        expect(process.env.TEST_ENV_PATH).toBe('/home/work/env');
     });
 });
 
 describe('loadProjectOptions', () => {
-    const service = new Service('name', {
-        cwd: __dirname + '/mock'
-    });
+    const service = new Service(__dirname + '/mock');
     test('可查到的文件路径', async () => {
-        const config = await service.loadProjectOptions('./mock/san.config.js');
+        const config = await service.loadProjectOptions('san.config.js');
         // 检测san.config.js中的配置项是否保留还在
-        expect(config.templateDir).toBe('template');
+        expect(config.templateDir).toBe('the-template-dir');
         // 检测与./options中的默认配置项做merge的情况是否符合预期
         expect(config.devServer).toEqual({
             contentBase: 'output',
@@ -356,18 +397,29 @@ describe('loadProjectOptions', () => {
         // 检测是否加了css配置项
         expect(config.css).toBeUndefined();
     });
-    test('不可查到的文件路径，但是工程中存在san.config.js', async () => {
-        const config = await service.loadProjectOptions();
-        // 会去自动查找项目中的san.config.js，查验一下是否找到了并返回正确的配置项
-        expect(config.templateDir).toBe('template');
+    test('不可查到的文件路径', () => {
+        const warn = jest.spyOn(service.logger, 'warn');
+        service.loadProjectOptions('san.config.json');
+        expect(warn).toHaveBeenCalledWith('config file `san.config.json` is not exists!');
+        warn.mockClear();
     });
-
+    test('不可查到的文件路径，但是工程中存在 san.config.js', () => {
+        const config = service.loadProjectOptions();
+        // 会去自动查找项目中的san.config.js，查验一下是否找到了并返回正确的配置项
+        expect(config.templateDir).toBe('the-template-dir');
+    });
+    test('配置文件的格式不对，应该导出对象但是导出了函数', () => {
+        const config = service.loadProjectOptions('san.config2.js');
+        expect(typeof config).toBe('function');
+    });
+    test('配置文件的配置字段的的值的格式错误', () => {
+        expect(() => service.loadProjectOptions('san.config3.js'))
+            .toThrow('ValidationError: "pages" must be of type object');
+    });
 });
 
 describe('initPlugin', () => {
-    const service = new Service('name', {
-        cwd: __dirname + '/mock'
-    });
+    const service = new Service(__dirname + '/mock');
     const expectfunc = api => {
         expect(typeof api.addPlugin).toBe('function');
         expect(typeof api.chainWebpack).toBe('function');
@@ -412,33 +464,3 @@ describe('initPlugin', () => {
         ]);
     });
 });
-
-// describe('registerCommand', () => {
-//     let service = null;
-//     beforeEach(() => {
-//         service = new Service(__dirname + '/mock');
-//     });
-//     test('name为string，yargsModule为obj', () => {
-//         service.registerCommand('yyt [component]', {
-//             builder: {},
-//             description: 'yyt description',
-//             handler(argv) {},
-//             aliases: []
-//         });
-//         expect(service.registeredCommands.get('yyt').describe).toBe('yyt description');
-//     });
-//     test('name为string，yargsModule为function', () => {
-//         service.registerCommand('yyt [component]', argv => {});
-//         expect(service.registeredCommands.get('yyt').describe).toBeFalsy();
-//     });
-//     test('只有name值（只有第一个参数）', () => {
-//         service.registerCommand({
-//             command: 'yyt [component]',
-//             builder: {},
-//             description: 'yyt only name description',
-//             handler(argv) {},
-//             aliases: []
-//         });
-//         expect(service.registeredCommands.get('yyt').describe).toBe('yyt only name description');
-//     });
-// });

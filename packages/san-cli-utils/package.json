@@ -1,6 +1,6 @@
 {
     "name": "san-cli-utils",
-    "version": "0.1.0",
+    "version": "1.0.4",
     "main": "index.js",
     "license": "MIT",
     "author": "ksky521",
@@ -28,7 +28,10 @@
         "debug": "^4.1.1",
         "figures": "^3.1.0",
         "fs-extra": "^8.1.0",
+        "git-clone": "^0.1.0",
+        "hash-sum": "^2.0.0",
         "import-lazy": "^4.0.0",
+        "node-ipc": "^9.1.1",
         "ora": "^4.0.2",
         "read-pkg": "^5.2.0",
         "readline": "^1.3.0",

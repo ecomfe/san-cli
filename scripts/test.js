@@ -23,6 +23,7 @@ if (packagename) {
 
 const jestArgs = ['--runInBand', '--detectOpenHandles', ...(regx ? [regx] : [])];
 
+// eslint-disable-next-line no-console
 console.log(`running jest with args: ${jestArgs.join(' ')}`);
 /* eslint-disable jest/no-jest-import */
 require('jest').run(jestArgs);

@@ -1,7 +1,7 @@
 {
     "name": "san-cli",
     "description": "San.js 定制化的前端工程构建工具",
-    "version": "0.1.4",
+    "version": "4.0.0",
     "scriptName": "san",
     "main": "index.js",
     "bin": {
@@ -9,7 +9,7 @@
     },
     "license": "MIT",
     "engines": {
-        "node": ">=8.16"
+        "node": ">=12.0"
     },
     "author": "ksky521",
     "repository": {
@@ -28,22 +28,17 @@
         "san-cli"
     ],
     "dependencies": {
-        "fs-extra": "^8.1.0",
-        "import-cwd": "^3.0.0",
-        "import-global": "^0.1.0",
-        "import-lazy": "^4.0.0",
-        "inquirer": "~7.0.0",
-        "lodash.merge": "^4.6.2",
-        "opener": "^1.5.1",
-        "qrcode-terminal": "^0.12.0",
-        "resolve-cwd": "^3.0.0",
-        "san-cli-command-init": "^0.1.1",
-        "san-cli-docit": "^0.1.0",
-        "san-cli-service": "^0.1.5",
-        "san-cli-utils": "^0.1.0",
+        "yargs": "~15.0.2",
+        "chalk":"^4.1.0",
+        "san-cli-init": "^2.0.1",
+        "san-cli-build": "^1.0.1",
+        "san-cli-serve": "^1.0.1",
         "semver": "^7.1.1",
-        "update-notifier": "^4.0.0",
-        "yargs": "~15.0.2"
+        "update-notifier": "^4.0.0"
     },
-    "gitHead": "402d813859ac219434712fa2063e5f724819004a"
+    "gitHead": "402d813859ac219434712fa2063e5f724819004a",
+    "devDependencies": {
+        "portfinder": "^1.0.28",
+        "puppeteer": "^8.0.0"
+    }
 }

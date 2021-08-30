@@ -1,0 +1,159 @@
+@import '~san-cli-ui/client/assets/darkmode.less';
+.task-dashboard {
+    padding-top: 20px;
+    .header {
+        .background-color-1();
+        border-radius: 18px;
+        box-shadow: 0 2px 10px 3px rgba(228, 228, 228, .3);
+        height: 68px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        .header-title {
+            font-size: 20px;
+            .color-4();
+        }
+        .header-btn {
+            height: 36px;
+            border-radius: 18px;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        .open-app-btn {
+            padding: 0 15px !important;
+            margin-right: 10px;
+        }
+        .size-type-btn {
+            width: 101px;
+        }
+    }
+    .row {
+        margin: 16px 0;
+    }
+    .card {
+        border-radius: 18px;
+        text-align: center;
+        box-shadow: 0 2px 10px 3px rgba(228, 228, 228, .3);
+        .background-color-1();
+        :global(.santd-card-head) {
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .color-4();
+            .border-color-3();
+        }
+    }
+    .empty {
+        text-align: center;
+        width: 100%;
+    }
+}
+
+.task-dashboard-dropdown {
+    :global(.santd-menu) {
+        box-shadow: 0 2px 20px rgba(0, 0, 0 , .1);
+        border-radius: 5px;
+        width: 101px;
+    }
+}
+
+.asset-list {
+    font-size: 16px;
+    text-align: right;
+    .color-10();
+    .first-col {
+        text-align: left;
+        .color-4();
+    }
+    .first-row {
+        .color-4();
+    }
+    .empty {
+        color: rgba(0, 0, 0, .65);
+    }
+}
+
+.build-progress {
+    height: 208px;
+    .s-progress {
+        margin-top: -3px;
+        :global(.santd-icon-check) {
+            color: #1db86d;
+        }
+        :global(.santd-progress-text) {
+            .color-4();
+        }
+    }
+    .extra-info {
+        .color-4();
+        margin-top: 16px;
+        font-size: 16px;
+    }
+}
+
+.build-status {
+    height: 208px;
+    .first-row {
+        padding-top: 17px;
+        margin-bottom: 51px;
+    }
+    .info-block {
+        .value {
+            font-size: 24px;
+            font-weight: 500;
+            .color-10();
+        }
+        .label {
+            .color-4();
+            font-size: 16px;
+            margin-top: 1px;
+        }
+        .success {
+            color: #1db86d;
+        }
+    }
+    .error, .warning {
+        .value {
+            .color-4();
+        }
+    }
+}
+
+.module-list {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 16px;
+    span {
+        width: 50%;
+    }
+    .name {
+        text-align: left;
+        .color-4();
+    }
+    .size {
+        text-align: right;
+        .color-10();
+    }
+}
+
+.speed-stats {
+    font-size: 16px;
+    .item {
+        font-weight: 500;
+        display: flex;
+        justify-content: center;
+        .pair {
+            display: flex;
+            justify-content: space-between;
+            width: 213px;
+            .label {
+                .color-4();
+            }
+            .value {
+                .color-10();
+            }
+        }
+    }
+}

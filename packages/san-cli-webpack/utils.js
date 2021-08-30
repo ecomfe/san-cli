@@ -58,12 +58,16 @@ exports.resolveEntry = (resolveEntryPath, absoluteEntryPath, webpackConfig, defa
         const isFile = obj.isFile;
 
         webpackConfig.entry = webpackConfig.entry || {};
-        if (isFile && !/\.san$/.test(resolveEntryPath)) {
+        const isSanFile = /\.san$/.test(resolveEntryPath);
+        if (isFile && !isSanFile) {
             webpackConfig.entry.app = resolveEntryPath;
         } else {
             webpackConfig.entry.app = defaultEntry;
             // san 文件/目录的情况需要指定 ~entry
             webpackConfig.resolve.alias['~entry'] = absoluteEntryPath;
+        }
+        if (isSanFile) {
+            webpackConfig.cache = false;
         }
     }
     // 处理 entry 不存在的情况
@@ -102,3 +106,116 @@ function resolveEntry(entry) {
         isFile
     };
 }
+
+
+/**
+ * @file 集中处理devServer的参数
+ * @author
+ */
+
+const {prepareUrls} = require('san-cli-utils/path');
+const portfinder = require('portfinder');
+const url = require('url');
+
+exports.getServerParams = async (devServerConfig, publicPath) => {
+
+    const {https, host, port: basePort, public: rawPublicUrl} = devServerConfig;
+    const protocol = https ? 'https' : 'http';
+    portfinder.basePort = basePort;
+    // 查找空闲的 port
+    const port = await portfinder.getPortPromise();
+    const publicUrl = rawPublicUrl
+        ? /^[a-zA-Z]+:\/\//.test(rawPublicUrl)
+            ? rawPublicUrl
+            : `${protocol}://${rawPublicUrl}`
+        : null;
+    const urls = prepareUrls(protocol, host, port, publicPath);
+    /* eslint-disable */
+    const sockjsUrl = publicUrl
+        ? `?${publicUrl}/sockjs-node`
+        : `?${url.format({
+            protocol,
+            port,
+            hostname: urls.lanUrlForConfig || 'localhost',
+            pathname: '/sockjs-node'
+        })}`;
+    /* eslint-enable */
+    const networkUrl = publicUrl
+        ? publicUrl.replace(/([^/])$/, '$1/')
+        : url.format({
+            protocol,
+            port,
+            hostname: urls.lanUrlForConfig || 'localhost'
+        });
+
+    return {
+        https,
+        port,
+        host,
+        protocol,
+        publicUrl,
+        urls,
+        sockjsUrl,
+        networkUrl
+    };
+};
+
+const {getDebugLogger} = require('san-cli-utils/ttyLogger');
+const SanFriendlyErrorsPlugin = require('./lib/SanFriendlyErrorsPlugin');
+const closeDevtoolDebug = getDebugLogger('webpack:closeDevtool');
+
+exports.formatConfig = webpackConfig => {
+    let config = Array.isArray(webpackConfig) ? webpackConfig : [webpackConfig];
+    let isWatch = false;
+    let watchOptions = null;
+    let devServerConfig = null;
+
+    config = config.map(c => {
+        // 添加插件
+        c.plugins.push(new SanFriendlyErrorsPlugin());
+
+        if (closeDevtoolDebug.enabled) {
+            // 使用 DEBUG=san-cli:webpack:closeDevtool 开启
+            c.devtool = false;
+            c.optimization = {
+                minimize: false
+            };
+        }
+        // mode 不是 production 则添加 hmr 功能
+        if (c.mode !== 'production' && c.devServer) {
+            // 多个配置只取第一个 devServer
+            if (!devServerConfig) {
+                // create server
+                const defaultDevServer = {
+                    // 这里注意，这个配置的是 outputDir
+                    contentBase: path.resolve('public'),
+                    // 这里注意：
+                    // 如果是 contentBase = outputDir 谨慎打开，打开后 template 每次文件都会重写，从而导致 hmr 失效，每次都 reload 页面
+                    watchContentBase: false,
+
+                    // 处理 tpl 的情况，smarty copy 到 output
+                    writeToDisk: filePath => /\.tpl$/.test(filePath),
+
+                    publicPath: c.output.publicPath
+                };
+
+                devServerConfig = Object.assign(defaultDevServer, c.devServer);
+            }
+        }
+        // 取第一个配置，执行watch函数，无需再添加config.watch
+        if (typeof c.watch !== 'undefined') {
+            if (!isWatch) {
+                watchOptions = c.watchOptions;
+                isWatch = c.watch;
+            }
+            delete c.watch;
+        }
+        return c;
+    });
+    return {
+        config,
+        isWatch,
+        watchOptions,
+        devServerConfig
+    };
+};

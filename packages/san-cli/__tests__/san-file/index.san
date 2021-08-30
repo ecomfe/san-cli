@@ -1,0 +1,31 @@
+<template>
+    <fragment>
+        <div class="content">Hello {{name}}!</div>
+        <sub-component></sub-component>
+        <img src="{{logo}}">
+    </fragment>
+</template>
+
+<script>
+    import SubComponent from './SubComponent';
+    import './css.css';
+    import logo from './logo.svg';
+
+    export default {
+        components: {
+            'sub-component': SubComponent
+        },
+        initData() {
+            return {
+                logo,
+                name: 'San'
+            };
+        }
+    };
+</script>
+
+<style>
+    .content {
+        color: blue;
+    }
+</style>

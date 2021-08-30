@@ -10,13 +10,13 @@ module.exports = {
     // baseUrl: '/',
     // output 路径
     // 这个是 template在 output 的路径
-    templateDir: 'template',
+    templateDir: 'the-template-dir',
     // 下面是 loader 配置，可以配置 babel 和 postcss 插件等
     loaderOptions: {},
     // 这是多页面配置
     pages: {
         index: {
-            entry: './src/pages/index/index.js',
+            entry: ['./src/pages/index/index.js'],
             template: './pages.template.ejs',
             filename: 'index/index.html'
         }
