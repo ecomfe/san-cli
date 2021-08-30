@@ -8,7 +8,7 @@
  * @author yanyiting, Lohoyo
  */
 
-const {isJS, isCSS, addDevClientToEntry, resolveEntry, getServerParams, initConfig} = require('../utils');
+const {isJS, isCSS, addDevClientToEntry, resolveEntry, getServerParams, formatConfig} = require('../utils');
 
 let port;
 beforeAll(async () => {
@@ -132,7 +132,7 @@ describe('测试 getServerParams', () => {
     });
 });
 
-describe('测试 initConfig', () => {
+describe('测试 formatConfig', () => {
     test('传入预期的输入时输出是否符合预期', () => {
         const webpackConfig = {
             mode: 'development',
@@ -162,7 +162,7 @@ describe('测试 initConfig', () => {
             },
             watch: true
         };
-        expect(initConfig(webpackConfig)).toStrictEqual({
+        expect(formatConfig(webpackConfig)).toStrictEqual({
             config: [webpackConfig],
             isWatch: true,
             watchOptions: undefined,

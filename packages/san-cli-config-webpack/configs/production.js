@@ -13,19 +13,12 @@ module.exports = (webpackConfig, projectOptions) => {
         `js/[name]${isLegacyBundle ? '-legacy' : ''}${projectOptions.filenameHashing ? '.[contenthash:8]' : ''}.js`
     );
     // 条件判断sourcemap是否开启，san.config.js传入
-    let ifSourcemap = false;
-    if (projectOptions.sourceMap) {
-        ifSourcemap = true;
-    }
+    const sourceMap = projectOptions.sourceMap ? typeof projectOptions.sourceMap === 'string'
+        ? projectOptions.sourceMap : 'source-map' : false;
+
     webpackConfig
         .mode('production')
-        .devtool(
-            ifSourcemap
-                ? typeof projectOptions.sourceMap === 'string'
-                    ? projectOptions.sourceMap
-                    : 'source-map'
-                : false
-        )
+        .devtool(sourceMap)
         .output.filename(filename)
         .chunkFilename(filename);
 

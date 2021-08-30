@@ -13,7 +13,7 @@ const WebpackDevServer = require('webpack-dev-server');
 const EventEmitter = require('events').EventEmitter;
 // webpack Plugins
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
-const {addDevClientToEntry, getWebpackErrorInfoFromStats, getServerParams, initConfig} = require('./utils');
+const {addDevClientToEntry, getWebpackErrorInfoFromStats, getServerParams, formatConfig} = require('./utils');
 
 const debug = getDebugLogger('webpack:serve');
 module.exports = class Serve extends EventEmitter {
@@ -37,7 +37,7 @@ module.exports = class Serve extends EventEmitter {
         });
     }
     async init(webpackConfig) {
-        const {config, devServerConfig} = initConfig(webpackConfig);
+        const {config, devServerConfig} = formatConfig(webpackConfig);
         const {
             https,
             port,

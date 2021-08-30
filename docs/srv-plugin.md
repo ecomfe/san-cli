@@ -39,8 +39,6 @@ module.exports = {
 serviceInstance.addPlugin(require('plugin'), options);
 ```
 
-> 在插件中，可以直接使用`__isProduction`变量，代表是否为`mode === 'production'`，即是否为生产环境打包。
-
 ## 在插件内修改 Webpack 配置
 
 在插件内有两种方法可以修改 Webpack 配置：
