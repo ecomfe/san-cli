@@ -1,5 +1,5 @@
 /**
- * @file
+ * @file plugin html
  * @author
  */
 
@@ -9,7 +9,7 @@ const fs = require('fs');
 const resolveSync = require('resolve').sync;
 const lMerge = require('lodash.merge');
 const minify = require('html-minifier-terser').minify;
-const {defineVar, ensureRelative} = require('../utils');
+const {defineVar, ensureRelative, resolveLocal} = require('../utils');
 const {terserOptions: defaultTerserOptions, htmlMinifyOptions} = require('../defaultOptions');
 
 module.exports = {
@@ -59,10 +59,6 @@ module.exports = {
     apply(api, projectOptions = {}, options) {
         const {
             loaderOptions = {},
-            resolve,
-            context,
-            resolveLocal,
-            isProduction,
             copy
         } = projectOptions;
 
@@ -70,11 +66,11 @@ module.exports = {
             // set resolveLoader
             const resolveLoader = chainConfig.resolveLoader.modules
                 .add('node_modules')
-                .add(resolve('node_modules'))
+                .add(api.resolve('node_modules'))
                 .add(resolveLocal('node_modules'));
             //  优先考虑本地安装的html-loader版本，没有的话去全局路径寻找
             try {
-                resolveSync('html-loader', {basedir: context});
+                resolveSync('html-loader', {basedir: api.getCwd()});
                 // console.log(`Find local htmlLoader at [${htmlLoader}]`);
             } catch (e) {
                 // 找到html-loader所在根目录
@@ -94,8 +90,8 @@ module.exports = {
                 }
             });
 
-            const isProd = isProduction();
-            const outputDir = resolve(projectOptions.outputDir);
+            const isProd = api.isProd();
+            const outputDir = api.resolve(projectOptions.outputDir);
             const terserOptions = Object.assign(defaultTerserOptions, projectOptions.terserOptions || {});
 
             // 1. 判断 pages
@@ -139,7 +135,7 @@ module.exports = {
             const multiPageConfig = projectOptions.pages;
             const HTMLPlugin = require('html-webpack-plugin');
             const SanHtmlPlugin = require('san-cli-webpack/lib/HTMLPlugin');
-            const htmlPath = resolve('public/index.html');
+            const htmlPath = api.resolve('public/index.html');
             // 默认路径
             const defaultHtmlPath = fs.existsSync(htmlPath) ? htmlPath : require.resolve('../public/index.html');
             const publicCopyIgnore = ['index.html', '.DS_Store'];
@@ -188,7 +184,7 @@ module.exports = {
 
                     // inject entry
                     const entries = Array.isArray(entry) ? entry : [entry];
-                    chainConfig.entry(name).merge(entries.map(e => resolve(e)));
+                    chainConfig.entry(name).merge(entries.map(e => api.resolve(e)));
 
                     if (!filename) {
                         // 处理 smarty 情况
@@ -200,7 +196,7 @@ module.exports = {
                     }
                     // filename = path.join(projectOptions.templateDir, filename);
                     // resolve page index template
-                    const hasDedicatedTemplate = fs.existsSync(resolve(template));
+                    const hasDedicatedTemplate = fs.existsSync(api.resolve(template));
                     if (hasDedicatedTemplate) {
                         publicCopyIgnore.push(template);
                     }
@@ -241,7 +237,7 @@ module.exports = {
             // ------ 这里把 copy 拿到这里来处理是为了合并 ignore
             if (copy) {
                 const addCopyOptions = options => {
-                    let {from, to = './', ignore = [], compress = isProduction()} = options;
+                    let {from, to = './', ignore = [], compress = api.isProd()} = options;
                     // smarty 的专属
                     // prettier-ignore
                     const defaultTransformOptions = compress
@@ -261,10 +257,10 @@ module.exports = {
 
                     // 排除 templte 的情况
                     ignore = publicCopyIgnore.concat(typeof ignore === 'string' ? [ignore] : ignore);
-                    if (from && !/[$^*?!]+/.test(from) && fs.existsSync(resolve(from))) {
-                        from = resolve(from);
+                    if (from && !/[$^*?!]+/.test(from) && fs.existsSync(api.resolve(from))) {
+                        from = api.resolve(from);
                         // 保证template的相对路径
-                        ignore = ignore.map((f, i) => (i > 1 ? ensureRelative(from, resolve(f)) : f));
+                        ignore = ignore.map((f, i) => (i > 1 ? ensureRelative(from, api.resolve(f)) : f));
                         copyArgs.push(
                             Object.assign(defaultTransformOptions, options, {
                                 from,

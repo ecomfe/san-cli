@@ -50,6 +50,10 @@ test('测试 resolve', () => {
     expect(pluginAPI.resolve()).toBe('user/yyt');
 });
 
+test('测试 isLegacyBundle', () => {
+    expect(pluginAPI.isLegacyBundle()).toBeFalsy();
+});
+
 test('测试 getServiceInstance', () => {
     expect(pluginAPI.getServiceInstance()).toBe(service);
 });

@@ -8,7 +8,7 @@
  * @author Lohoyo
  */
 
-const {defineVar, ensureRelative, normalizeProjectOptions, resolveLocal} = require('../utils');
+const {defineVar, ensureRelative, resolveLocal} = require('../utils');
 const path = require('path');
 
 describe('测试 defineVar 函数', () => {
@@ -24,17 +24,6 @@ describe('测试 ensureRelative 函数', () => {
     test('第二个参数传入了绝对路径', () => {
         const path = ensureRelative('/Users/Lohoyo', '/Users/Lohoyo/index.html');
         expect(path).toBe('index.html');
-    });
-});
-
-describe('测试 normalizeProjectOptions 函数', () => {
-    test('没传参数', () => {
-        expect(normalizeProjectOptions()).toEqual({});
-    });
-    test('调用返回结果的 resolve 函数', () => {
-        expect(normalizeProjectOptions({
-            context: '/Users/Lohoyo/san-project'
-        }).resolve()).toEqual('/Users/Lohoyo/san-project');
     });
 });
 

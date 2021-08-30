@@ -1,5 +1,5 @@
 /**
- * @file
+ * @file plugin js
  * @author
  */
 
@@ -7,12 +7,11 @@ module.exports = {
     id: 'js',
     apply(api, projectOptions = {}, options) {
         const {
-            loaderOptions = {},
-            isProduction
+            loaderOptions = {}
         } = projectOptions;
         const esbuild = loaderOptions.esbuild;
         // 仅在生产环境可使用esbuild替换
-        if (!isProduction() && esbuild) {
+        if (!api.isProd() && esbuild) {
             api.chainWebpack(chainConfig => {
                 const esbuildLoaderFactory = require('../loaders/esbuild');
 

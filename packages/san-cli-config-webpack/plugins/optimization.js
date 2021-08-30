@@ -1,5 +1,5 @@
 /**
- * @file
+ * @file plugin optimization
  * @author
  */
 
@@ -19,11 +19,10 @@ module.exports = {
     apply(api, projectOptions = {}, options) {
         const {
             loaderOptions = {},
-            isProduction,
             terserOptions = {}
         } = projectOptions;
         api.chainWebpack(chainConfig => {
-            if (isProduction()) {
+            if (api.isProd()) {
                 if (loaderOptions.esbuild) {
                     const {ESBuildMinifyPlugin} = require('esbuild-loader');
                     chainConfig.optimization.minimizer('js').use(new ESBuildMinifyPlugin({

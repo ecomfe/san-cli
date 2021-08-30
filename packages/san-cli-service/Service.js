@@ -19,7 +19,6 @@ const lMerge = require('lodash.merge');
 const dotenv = require('dotenv');
 const {plugins: builtInPlugins, devServerOptions} = require('san-cli-config-webpack');
 const Config = require('webpack-chain');
-const {normalizeProjectOptions} = require('san-cli-config-webpack/utils');
 const SError = require('san-cli-utils/SError');
 const {findExisting} = require('san-cli-utils/path');
 const {textCommonColor} = require('san-cli-utils/color');
@@ -369,8 +368,7 @@ module.exports = class Service extends EventEmitter {
         }
         const api = this._getApiInstance(id);
 
-        // 4. 格式化projectOptions，增加isProduction等变量
-        const projectOptions = normalizeProjectOptions(this.projectOptions);
+        const projectOptions = this.projectOptions;
         // 传入配置的 options
         // * 因为一般 plugin 不需要自定义 options，所以 projectOption 作为第二个参数
         apply(api, projectOptions, options);

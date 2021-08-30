@@ -1,5 +1,5 @@
 /**
- * @file
+ * @file plugin output
  * @author
  */
 
@@ -16,9 +16,6 @@ module.exports = {
     }),
     apply(api, projectOptions = {}, options) {
         const {
-            resolve,
-            isLegacyBundle,
-            isProduction,
             outputDir,
             assetsDir,
             publicPath,
@@ -29,17 +26,17 @@ module.exports = {
             // set output
             // prettier-ignore
             chainConfig.output
-                .path(resolve(outputDir))
+                .path(api.resolve(outputDir))
                 /* eslint-disable max-len */
-                .filename((isLegacyBundle() ? '[name]-legacy' : '[name]') + `${filenameHashing ? '.[contenthash:8]' : ''}.js`)
+                .filename((api.isLegacyBundle() ? '[name]-legacy' : '[name]') + `${filenameHashing ? '.[contenthash:8]' : ''}.js`)
                 /* eslint-enable max-len */
                 .publicPath(publicPath)
                 .pathinfo(false);
             // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
-            if (isProduction()) {
+            if (api.isProd()) {
                 const filename = getAssetPath(
                     assetsDir,
-                    `js/[name]${isLegacyBundle() ? '-legacy' : ''}${filenameHashing ? '.[contenthash:8]' : ''}.js`
+                    `js/[name]${api.isLegacyBundle() ? '-legacy' : ''}${filenameHashing ? '.[contenthash:8]' : ''}.js`
                 );
                 chainConfig.output
                     .filename(filename)

@@ -1,9 +1,9 @@
 /**
- * @file
+ * @file plugin base
  * @author
  */
 
-const {defineVar} = require('../utils');
+const {defineVar, resolveLocal} = require('../utils');
 
 module.exports = {
     id: 'base',
@@ -18,19 +18,15 @@ module.exports = {
     apply(api, projectOptions = {}, options) {
         const {
             splitChunks,
-            isProduction,
-            resolve,
-            context,
-            resolveLocal,
             runtimeChunk
         } = projectOptions;
         // san-cli里面必须的选项，用户不能更改的，在这里设置
         api.chainWebpack(chainConfig => {
-            chainConfig.context(context);
+            chainConfig.context(api.getCwd());
 
             chainConfig.resolve.modules
                 .add('node_modules')
-                .add(resolve('node_modules'))
+                .add(api.resolve('node_modules'))
                 .add(resolveLocal('node_modules'))
                 .end();
 
@@ -46,7 +42,7 @@ module.exports = {
                 .use(require('webpack/lib/DefinePlugin'), [defineVar(projectOptions)]);
 
             // development
-            if (!isProduction()) {
+            if (!api.isProd()) {
                 chainConfig
                     .mode('development')
                     .devtool('eval-cheap-module-source-map');

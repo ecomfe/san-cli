@@ -1,5 +1,5 @@
 /**
- * @file
+ * @file plugin san
  * @author
  */
 
@@ -9,8 +9,7 @@ module.exports = {
     id: 'san',
     apply(api, projectOptions = {}, options) {
         const {
-            loaderOptions = {},
-            isProduction
+            loaderOptions = {}
         } = projectOptions;
 
         api.chainWebpack(chainConfig => {
@@ -19,7 +18,7 @@ module.exports = {
             // ------------------------loaders------------
             if (loaderOptions.san !== false) {
                 const sanLoaders = [['san', loaderOptions.san]];
-                if (!isProduction() && loaderOptions['san-hot'] !== false) {
+                if (!api.isProd() && loaderOptions['san-hot'] !== false) {
                     sanLoaders.unshift(['san-hot', loaderOptions['san-hot']]);
                 }
                 rules.createRule(chainConfig, 'san', /\.san$/, sanLoaders);

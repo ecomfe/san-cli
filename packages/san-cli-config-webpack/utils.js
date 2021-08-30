@@ -31,31 +31,7 @@ exports.ensureRelative = (outputDir, p) => {
     return p;
 };
 
-exports.normalizeProjectOptions = projectOptions => {
-    if (!projectOptions) {
-        return {};
-    }
-    return {
-        ...projectOptions,
-        isLegacyBundle() {
-            return parseInt(process.env.SAN_CLI_LEGACY_BUILD, 10) === 1;
-        },
-        isProduction() {
-            return projectOptions.mode === 'production';
-        },
-        resolveLocal(...args) {
-            return path.join(__dirname, ...args);
-        },
-        resolve(p) {
-            if (p) {
-                return path.resolve(projectOptions.context, p);
-            }
-            return projectOptions.context;
-        }
-    };
-};
-
-
 exports.resolveLocal = (...args) => {
     return path.join(__dirname, ...args);
 };
+

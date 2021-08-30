@@ -1,5 +1,5 @@
 /**
- * @file
+ * @file plugin css
  * @author
  */
 
@@ -34,18 +34,16 @@ module.exports = {
     }),
     apply(api, projectOptions = {}, options) {
         const {
-            isProduction,
             pkg,
             css: cssOptions = {},
             sourceMap: rootSourceMap,
-            resolve,
             publicPath,
             assetsDir,
             filenameHashing,
             loaderOptions: rootLoaderOptions = {}
         } = projectOptions;
         api.chainWebpack(chainConfig => {
-            const isProd = isProduction();
+            const isProd = api.isProd();
             // 这里loaderOptions直接用 projectOptions.css 的内容
             const {
                 extract = isProd,
@@ -104,7 +102,7 @@ module.exports = {
                 || pkg.postcss
                 || findExisting(
                     ['.postcssrc', '.postcssrc.js', 'postcss.config.js', '.postcssrc.yaml', '.postcssrc.json'],
-                    resolve('.')
+                    api.resolve('.')
                 )
             );
             if (!hasPostCSSConfig) {
