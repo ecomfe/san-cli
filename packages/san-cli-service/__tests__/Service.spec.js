@@ -451,7 +451,7 @@ describe('initPlugin', () => {
         expect(typeof api.chainWebpack).toBe('function');
         expect(typeof api.getWebpackChainConfig).toBe('function');
         expect(typeof api.getWebpackConfig).toBe('function');
-        expect(typeof api.getProjectOption).toBe('function');
+        expect(typeof api.getProjectOptions).toBe('function');
         expect(typeof api.getCwd).toBe('function');
     };
     test('参数为两项数组[{id: xxx, apply: () => {}}, {}]', () => {

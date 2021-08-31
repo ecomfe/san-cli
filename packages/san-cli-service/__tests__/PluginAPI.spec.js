@@ -66,8 +66,7 @@ test('测试 getPkg', () => {
     expect(pluginAPI.getPkg().name).toBe('san-cli');
 });
 
-test('测试 getProjectOption 和 getProjectOptions', () => {
-    expect(pluginAPI.getProjectOption().outputDir).toBe('output');
+test('测试 getProjectOptions', () => {
     expect(pluginAPI.getProjectOptions().outputDir).toBe('output');
 });
 

@@ -13,13 +13,16 @@ module.exports = {
         // webpack5 runtimeChunk
         runtimeChunk: joi.alternatives().try(joi.string(), joi.object()),
         // 缓存的相关配置
-        cache: joi.alternatives().try(joi.boolean(), joi.object())
+        cache: joi.alternatives().try(joi.boolean(), joi.object()),
+        sourceMap: joi.alternatives().try(joi.boolean(), joi.string()),
+        publicPath: joi.string().allow('')
     }),
-    apply(api, projectOptions = {}, options) {
+    apply(api, options = {}) {
         const {
             splitChunks,
-            runtimeChunk
-        } = projectOptions;
+            runtimeChunk,
+            publicPath
+        } = options;
         // san-cli里面必须的选项，用户不能更改的，在这里设置
         api.chainWebpack(chainConfig => {
             chainConfig.context(api.getCwd());
@@ -39,7 +42,7 @@ module.exports = {
             // 这里需要写到文档，以 SAN_VAR 开头的 env 变量
             chainConfig
                 .plugin('define')
-                .use(require('webpack/lib/DefinePlugin'), [defineVar(projectOptions)]);
+                .use(require('webpack/lib/DefinePlugin'), [defineVar(publicPath)]);
 
             // development
             if (!api.isProd()) {
@@ -48,7 +51,7 @@ module.exports = {
                     .devtool('eval-cheap-module-source-map');
                 chainConfig.plugin('hmr').use(require('webpack/lib/HotModuleReplacementPlugin'));
                 chainConfig.plugin('no-emit-on-errors').use(require('webpack/lib/NoEmitOnErrorsPlugin'));
-                const cache = projectOptions.cache;
+                const cache = options.cache;
                 // cache可以传false来禁止，或者传入object来配置
                 const cacheOption = typeof cache === 'undefined' ? {
                     type: 'filesystem',
@@ -60,15 +63,15 @@ module.exports = {
             else {
                 // 条件判断sourcemap是否开启，san.config.js传入
                 let ifSourcemap = false;
-                if (projectOptions.sourceMap) {
+                if (options.sourceMap) {
                     ifSourcemap = true;
                 }
                 chainConfig
                     .mode('production')
                     .devtool(
                         ifSourcemap
-                            ? typeof projectOptions.sourceMap === 'string'
-                                ? projectOptions.sourceMap
+                            ? typeof options.sourceMap === 'string'
+                                ? options.sourceMap
                                 : 'source-map'
                             : false
                     );

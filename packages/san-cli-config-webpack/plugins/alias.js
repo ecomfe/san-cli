@@ -13,7 +13,7 @@ module.exports = {
         // webpack 相关配置
         alias: joi.object()
     }),
-    apply(api, projectOptions = {}, options) {
+    apply(api, options = {}) {
         api.chainWebpack(chainConfig => {
             if (fs.existsSync(api.resolve('src'))) {
                 chainConfig.resolve.alias
@@ -36,9 +36,9 @@ module.exports = {
                     path.join(sanPath, !api.isProd() ? 'san.spa.dev.js' : 'san.spa.js')
                 );
             }
-            // projectOptions.alias
-            if (projectOptions.alias) {
-                let alias = projectOptions.alias;
+            // options.alias
+            if (options.alias) {
+                let alias = options.alias;
                 Object.keys(alias).forEach(k => {
                     let p = path.isAbsolute(alias[k]) ? alias[k] : api.resolve(alias[k]);
                     chainConfig.resolve.alias.set(k, p);

@@ -12,15 +12,13 @@ module.exports = {
     schema: joi => ({
         // 生产环境优化相关
         terserOptions: joi.object(),
-        sourceMap: joi.alternatives().try(joi.boolean(), joi.string()),
-        filenameHashing: joi.boolean(),
-        largeAssetSize: joi.number()
+        loaderOptions: joi.object()
     }),
-    apply(api, projectOptions = {}, options) {
+    apply(api, options = {}) {
         const {
             loaderOptions = {},
             terserOptions = {}
-        } = projectOptions;
+        } = options;
         api.chainWebpack(chainConfig => {
             if (api.isProd()) {
                 if (loaderOptions.esbuild) {

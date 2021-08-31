@@ -5,10 +5,13 @@
 
 module.exports = {
     id: 'js',
-    apply(api, projectOptions = {}, options) {
-        const {
-            loaderOptions = {}
-        } = projectOptions;
+    schema: joi => ({
+        loaderOptions: joi.object(),
+        transpileDependencies: joi.array(),
+        cache: joi.alternatives().try(joi.boolean(), joi.object())
+    }),
+    apply(api, options = {}) {
+        const loaderOptions = options.loaderOptions || {};
         const esbuild = loaderOptions.esbuild;
         // 仅在生产环境可使用esbuild替换
         if (!api.isProd() && esbuild) {
@@ -31,7 +34,7 @@ module.exports = {
         }
         else {
             const {apply} = require('san-cli-plugin-babel');
-            apply(api, projectOptions, options);
+            apply(api, options);
         }
     }
 };

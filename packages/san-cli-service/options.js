@@ -15,7 +15,6 @@ let schema = joi
     .object().keys({
         // env 相关
         jsonpFunction: joi.string(),
-        transpileDependencies: joi.array(),
         // service 插件相关
         plugins: joi.array(),
         extends: joi.alternatives().try(joi.string(), joi.array()),

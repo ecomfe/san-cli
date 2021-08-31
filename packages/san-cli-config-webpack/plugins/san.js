@@ -7,10 +7,11 @@ const rules = require('../rules');
 
 module.exports = {
     id: 'san',
-    apply(api, projectOptions = {}, options) {
-        const {
-            loaderOptions = {}
-        } = projectOptions;
+    schema: joi => ({
+        loaderOptions: joi.object()
+    }),
+    apply(api, options = {}) {
+        const loaderOptions = options.loaderOptions || {};
 
         api.chainWebpack(chainConfig => {
 

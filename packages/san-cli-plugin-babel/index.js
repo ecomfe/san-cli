@@ -28,14 +28,18 @@ function genTranspileDepRegex(transpileDependencies) {
 
 module.exports = {
     id: 'san-cli-plugin-babel',
-    apply(api, projectOptions = {}) {
+    schema: joi => ({
+        loaderOptions: joi.object(),
+        transpileDependencies: joi.array(),
+        cache: joi.alternatives().try(joi.boolean(), joi.object())
+    }),
+    apply(api, options = {}) {
         const cliPath = path.dirname(path.resolve(__dirname, './package.json'));
         const {
             loaderOptions = {},
             transpileDependencies = [],
-            cache,
-            isProduction
-        } = projectOptions;
+            cache
+        } = options;
         // 如果需要 babel 转义node_module 中的模块，则使用这个配置
         // 类似 xbox 这些基础库都提供 esm 版本
         const transpileDepRegex = genTranspileDepRegex(transpileDependencies);
@@ -75,7 +79,7 @@ module.exports = {
                 })
                 .end();
             // 开销大,无必要不开启，仅生产环境开启
-            if (loaderOptions.thread && isProduction()) {
+            if (loaderOptions.thread && api.isProd()) {
                 scriptRule
                     .use('thread-loader')
                     .loader('thread-loader')

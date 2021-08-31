@@ -33,9 +33,6 @@ module.exports = class PluginAPI {
     getPkg() {
         return this.service.pkg;
     }
-    getProjectOption() {
-        return this.service.projectOptions;
-    }
     getProjectOptions() {
         return this.service.projectOptions;
     }

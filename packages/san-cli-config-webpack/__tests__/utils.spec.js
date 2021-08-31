@@ -14,7 +14,7 @@ const path = require('path');
 describe('测试 defineVar 函数', () => {
     test('有 SAN_VAR_ 开头的环境变量的情况', () => {
         process.env.SAN_VAR_TEST = 1;
-        const vars = defineVar({publicPath: 'https://s.bdstatic.com/'}, true);
+        const vars = defineVar('https://s.bdstatic.com/', true);
         expect(vars.TEST).toBe('1');
         delete process.env.SAN_VAR_TEST;
     });

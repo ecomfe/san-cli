@@ -15,6 +15,11 @@ const createCSSRule = require('../rules/createCSSRule');
 module.exports = {
     id: 'css',
     schema: joi => ({
+        sourceMap: joi.alternatives().try(joi.boolean(), joi.string()),
+        publicPath: joi.string().allow(''),
+        assetsDir: joi.string().allow(''),
+        filenameHashing: joi.boolean(),
+        loaderOptions: joi.object(),
         // css 相关
         css: joi.object({
             cssnanoOptions: joi.object(),
@@ -30,24 +35,24 @@ module.exports = {
                 // 推荐使用 postcss.config.js
                 postcss: joi.object()
             })
-        }),
+        })
     }),
-    apply(api, projectOptions = {}, options) {
+    apply(api, options = {}) {
         const {
-            pkg,
             css: cssOptions = {},
             sourceMap: rootSourceMap,
             publicPath,
             assetsDir,
             filenameHashing,
             loaderOptions: rootLoaderOptions = {}
-        } = projectOptions;
+        } = options;
+        const pkg = api.getPkg();
         api.chainWebpack(chainConfig => {
             const isProd = api.isProd();
-            // 这里loaderOptions直接用 projectOptions.css 的内容
+            // 这里loaderOptions直接用 options.css 的内容
             const {
                 extract = isProd,
-                // 不在 css 中单独配置，默认跟 projectOptions.sourceMap 一致
+                // 不在 css 中单独配置，默认跟 options.sourceMap 一致
                 sourceMap = !!rootSourceMap,
                 cssPreprocessor,
                 cssnanoOptions

@@ -1,5 +1,5 @@
 /**
- * @file
+ * @file plugin image
  * @author
  */
 
@@ -9,20 +9,26 @@ const defaultsDeep = require('lodash.defaultsdeep');
 
 module.exports = {
     id: 'image',
-    apply(api, projectOptions = {}, options) {
+    schema: joi => ({
+        assetsDir: joi.string().allow(''),
+        filenameHashing: joi.boolean(),
+        loaderOptions: joi.object(),
+        largeAssetSize: joi.number()
+    }),
+    apply(api, options = {}) {
         const {
             loaderOptions = {},
             filenameHashing,
             assetsDir,
             largeAssetSize = 1024
-        } = projectOptions;
+        } = options;
         api.chainWebpack(chainConfig => {
             // 使用url-loader 设置 img, media, fonts + svg-url设置svg
             [
                 ['image', /\.(png|jpe?g|gif|webp)(\?.*)?$/, 'url']
             ].forEach(([name, test, loader]) => {
                 if (loaderOptions[name] !== false) {
-                    const options = defaultsDeep(
+                    const opt = defaultsDeep(
                         loaderOptions[name] || {},
                         {
                             limit: largeAssetSize,
@@ -37,7 +43,7 @@ module.exports = {
                         chainConfig,
                         name,
                         test,
-                        options
+                        opt
                     );
                 }
             });

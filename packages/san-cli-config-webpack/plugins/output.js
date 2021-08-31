@@ -12,15 +12,16 @@ module.exports = {
         // 产出相关
         publicPath: joi.string().allow(''),
         assetsDir: joi.string().allow(''),
-        outputDir: joi.string()
+        outputDir: joi.string(),
+        filenameHashing: joi.boolean()
     }),
-    apply(api, projectOptions = {}, options) {
+    apply(api, options = {}) {
         const {
             outputDir,
             assetsDir,
             publicPath,
             filenameHashing
-        } = projectOptions;
+        } = options;
         api.chainWebpack(chainConfig => {
             // 是 modern 模式，但不是 modern 打包，那么 js 加上 legacy
             // set output

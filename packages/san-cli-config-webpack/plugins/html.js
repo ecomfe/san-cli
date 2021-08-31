@@ -54,14 +54,19 @@ module.exports = {
                     ignore: joi.alternatives().try(joi.string(), joi.object().instance(RegExp))
                 })
                 .unknown(true)
-        )
+        ),
+        loaderOptions: joi.object(),
+        outputDir: joi.string(),
+        terserOptions: joi.object(),
+        publicPath: joi.string().allow('')
     }),
-    apply(api, projectOptions = {}, options) {
+    apply(api, options = {}) {
         const {
             loaderOptions = {},
-            copy
-        } = projectOptions;
-
+            copy,
+            publicPath
+        } = options;
+        const pkg = api.getPkg();
         api.chainWebpack(chainConfig => {
             // set resolveLoader
             const resolveLoader = chainConfig.resolveLoader.modules
@@ -91,15 +96,15 @@ module.exports = {
             });
 
             const isProd = api.isProd();
-            const outputDir = api.resolve(projectOptions.outputDir);
-            const terserOptions = Object.assign(defaultTerserOptions, projectOptions.terserOptions || {});
+            const outputDir = api.resolve(options.outputDir);
+            const terserOptions = Object.assign(defaultTerserOptions, options.terserOptions || {});
 
             // 1. 判断 pages
             // 2. build 做的事情是判断 serve 对象
             const htmlOptions = {
                 inject: true,
-                title: projectOptions.pkg.name,
-                templateParameters: (compilation, assets, assetTags, options) => {
+                title: pkg.name,
+                templateParameters: (compilation, assets, assetTags, opt) => {
                     // html-webpack-plugin version>=4
                     // enhance html-webpack-plugin's built in template params
                     let stats;
@@ -114,10 +119,10 @@ module.exports = {
                             htmlWebpackPlugin: {
                                 files: assets,
                                 tags: assetTags,
-                                options
+                                options: opt
                             }
                         },
-                        defineVar(projectOptions, true /* raw */)
+                        defineVar(publicPath, true /* raw */)
                     );
                 }
             };
@@ -132,7 +137,7 @@ module.exports = {
             }
 
             // resolve HTML file(s)
-            const multiPageConfig = projectOptions.pages;
+            const multiPageConfig = options.pages;
             const HTMLPlugin = require('html-webpack-plugin');
             const SanHtmlPlugin = require('san-cli-webpack/lib/HTMLPlugin');
             const htmlPath = api.resolve('public/index.html');
@@ -194,7 +199,6 @@ module.exports = {
                             filename = `${name}.html`;
                         }
                     }
-                    // filename = path.join(projectOptions.templateDir, filename);
                     // resolve page index template
                     const hasDedicatedTemplate = fs.existsSync(api.resolve(template));
                     if (hasDedicatedTemplate) {
@@ -236,8 +240,8 @@ module.exports = {
 
             // ------ 这里把 copy 拿到这里来处理是为了合并 ignore
             if (copy) {
-                const addCopyOptions = options => {
-                    let {from, to = './', ignore = [], compress = api.isProd()} = options;
+                const addCopyOptions = opt => {
+                    let {from, to = './', ignore = [], compress = api.isProd()} = opt;
                     // smarty 的专属
                     // prettier-ignore
                     const defaultTransformOptions = compress
@@ -262,7 +266,7 @@ module.exports = {
                         // 保证template的相对路径
                         ignore = ignore.map((f, i) => (i > 1 ? ensureRelative(from, api.resolve(f)) : f));
                         copyArgs.push(
-                            Object.assign(defaultTransformOptions, options, {
+                            Object.assign(defaultTransformOptions, opt, {
                                 from,
                                 to: path.join(outputDir, to),
                                 globOptions: {
@@ -273,7 +277,7 @@ module.exports = {
                     } else {
                         // 正则的，不处理
                         copyArgs.push(
-                            Object.assign(defaultTransformOptions, options, {
+                            Object.assign(defaultTransformOptions, opt, {
                                 from,
                                 to: path.join(outputDir, to),
                                 globOptions: {
