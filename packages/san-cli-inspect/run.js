@@ -29,10 +29,18 @@ module.exports = function apply(argv, api) {
     const config = api.getWebpackConfig();
     let res;
     let hasUnnamedRule;
-
-    if (argv.sanCliPlugins) {
+    const {extendSchema} = require('san-cli-service/options');
+    if (argv.servicePlugins) {
+        const splugin = api.service.plugins.map(p => {
+            return {
+                pluginId: p[0].id,
+                optionKeys: Object.keys(extendSchema(p[0].schema)),
+                location: p[0].path,
+                pluginOptions: JSON.stringify(p[1])
+            };
+        });
         // eslint-disable-next-line no-console
-        console.log(api.service.plugins);
+        console.log(splugin);
         return;
     }
 
