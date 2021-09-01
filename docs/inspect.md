@@ -72,3 +72,34 @@ new SanLoaderPlugin()
 new SanLoaderPlugin()
 ```
 
+### 查看所有内置 service plugins list
+
+```bash
+san inspect --service-plugins
+```
+
+该命令输出所有生效的 plugin 列表，每项包含该 plugin 的 id 、必须的配置项 optionKeys 、 插件引入的路径 location 、 插件实际的配置值 pluginOptions。在实际使用过程中，可根据列出的路径及配置项来排查问题。例如：
+
+```js
+[
+  {
+    pluginId: 'base',
+    optionKeys: [
+      'splitChunks',
+      'runtimeChunk',
+      'cache',
+      'sourceMap',
+      'publicPath'
+    ],
+    location: '/local/path/san-cli/packages/san-cli-config-webpack/plugins/base.js',
+    pluginOptions: '{"splitChunks":{"cacheGroups":{"vendors":{"name":"vendors1","test":{},"chunks":"initial","priority":-10}}},"runtimeChunk":"single","sourceMap":true,"publicPath":"https://static.com/"}'
+  },
+  {
+    pluginId: 'output',
+    optionKeys: [ 'publicPath', 'assetsDir', 'outputDir', 'filenameHashing' ],
+    location: '/local/path/san-cli/packages/san-cli-config-webpack/plugins/output.js',
+    pluginOptions: '{"publicPath":"https://static.com/","assetsDir":"static/demo-config","outputDir":"output","filenameHashing":true}'
+  },
+  ...
+]
+```

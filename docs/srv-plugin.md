@@ -10,11 +10,16 @@ San CLI 在实现可扩展 Webpack 配置的设计上，借鉴了 Vue CLI 的 Se
 module.exports = {
     // 插件 id
     id: 'plugin-id',
+    // 插件的配置信息格式 
+    schema: joi => ({
+        option1: joi.string()
+        ...
+    })
     // 插件的入口函数
-    apply(api, projectOptions, options) {
-        api.chainWebpack(webpackConfig => {
-            console.log(projectOptions);
-            webpackConfig.entry(/*...*/);
+    apply(api, options) {
+        api.chainWebpack(chainConfig => {
+            console.log(options);
+            chainConfig.entry(/*...*/);
         });
     },
     // GUI 预留接口
@@ -22,13 +27,22 @@ module.exports = {
 };
 ```
 
+## 插件的`schema`参数
+
+该字段会导出一个函数，函数内返回按照 [joi](https://www.npmjs.com/package/joi) 规范定义的plugin配置项的类型校验对象，在 Service 中会调用 schema 字段：
+
+1. 扩展合成大的校验对象，并对 `san.config.js` 内的参数进行校验
+
+2. 根据 schema 返回的对象，提取 `san.config.js` 内的对应项，并与 plugin 自身的配置合并，在 plugin 执行时传入，`san.config.js` 内参数优先级低于 plugin自身的配置
+
+> 当插件无需从 `san.config.js` 内获取配置时，则可不定义 schema 字段，否则必须定义 schema 字段，实际生效的配置值可利用 [`san inspect`](./inspect.md) 命令来查看
+
 ## 插件的`apply`函数
 
-插件的`apply`函数接受三个参数：
+插件的`apply`函数接受两个参数：
 
 1. `api`是 PluginAPI 实例，会提供一些 api（下面详细介绍）；
-2. `projectOptions`是 san.config.js 处理后的项目配置；
-3. `options` 是插件自己的参数，使用插件时传入：
+3. `options` 合并了插件自身的参数（使用插件时传入）和san.config.js的配置项，其中插件自身的配置优先级高于san.config.js内的配置项：
 
 ```js
 // san.config.js
@@ -39,7 +53,7 @@ module.exports = {
 serviceInstance.addPlugin(require('plugin'), options);
 ```
 
-> 在插件中，可以直接使用`__isProduction`变量，代表是否为`mode === 'production'`，即是否为生产环境打包。
+> 在插件中，可以直接使用`api.isProd()`判断是否为`mode === 'production'`，即是否为生产环境打包。
 
 ## 在插件内修改 Webpack 配置
 
@@ -138,6 +152,7 @@ module.exports = {
 -   `.getPkg()`：获取当前项目`package.json`内容；
 -   `.addPlugin(plugin, options)`：添加插件；
 -   `.middleware()`：添加 dev-server 中间件，**这里注意：中间件需要使用 factory 函数返回**。
+-   `.isLegacyBundle()`: 区分modern mode打包时，普通打包和modern打包
 
 **`.middleware()`示例：**
 

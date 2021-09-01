@@ -34,7 +34,7 @@ module.exports = function apply(argv, api) {
         const splugin = api.service.plugins.map(p => {
             return {
                 pluginId: p[0].id,
-                optionKeys: Object.keys(extendSchema(p[0].schema)),
+                optionKeys: p[0].schema ? Object.keys(extendSchema(p[0].schema)) : '',
                 location: p[0].path,
                 pluginOptions: JSON.stringify(p[1])
             };
