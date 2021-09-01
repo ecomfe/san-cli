@@ -321,7 +321,7 @@ describe('constructor resolvePlugins _loadPlugin', () => {
             undefined
         ]);
         // 检测对于加options的插件是否已加入进去
-        expect(service.plugins.filter(item => Array.isArray(item))[1][1]).toEqual({a: 1});
+        expect(service.plugins.filter(item => Array.isArray(item))[16][1]).toEqual({a: 1});
         // 检测新增的projectOptions是否已加入进去
         expect(service._initProjectOptions).toEqual({outputDir: 'output'});
     });
@@ -458,7 +458,7 @@ describe('initPlugin', () => {
         service.initPlugin([
             {
                 id: 'yyt-plugin',
-                apply: (api, projectOptions, options) => {
+                apply: (api, options) => {
                     expectfunc(api);
                     expect(options).toEqual({a: 1, b: 2});
                 }
@@ -473,7 +473,7 @@ describe('initPlugin', () => {
         service.initPlugin([
             {
                 id: 'yyt-plugin',
-                apply: (api, projectOptions, options) => {
+                apply: (api, options) => {
                     expectfunc(api);
                 }
             }
@@ -483,7 +483,7 @@ describe('initPlugin', () => {
         service.initPlugin([
             {
                 id: 'yyt-plugin',
-                apply: (api, projectOptions, options) => {
+                apply: (api, options) => {
                     expectfunc(api);
                 }
             }

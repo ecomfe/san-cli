@@ -36,8 +36,9 @@ let schema = joi
     .unknown(true);
 
 exports.extendSchema = fn => {
-    schema = schema.keys(fn(joi));
-    return schema;
+    const schemaObj = fn(joi);
+    schema = schema.keys(schemaObj);
+    return schemaObj;
 };
 exports.validate = (value, options) => {
     const {error} = schema.validate(value, options);

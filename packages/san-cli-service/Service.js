@@ -159,7 +159,8 @@ module.exports = class Service extends EventEmitter {
             try {
                 // 是从工作目录开始的
                 // san cli 内部使用 require
-                let plugin = require(resolvePlugin(p, this.cwd));
+                const pluginPath = resolvePlugin(p, this.cwd);
+                let plugin = require(pluginPath);
                 if (plugin.__esModule) {
                     // 重新赋值 esmodule
                     plugin = plugin.default;
@@ -170,17 +171,19 @@ module.exports = class Service extends EventEmitter {
                         // 默认 id 是配置的 string，方便查找
                         plugin.id = p;
                     }
+                    plugin.path = pluginPath;
                     // 这里支持两种情况：
                     // 1. 普通 plugin，没有参数
                     // 2. plugin 是 array，则第二个 value 是 options
                     // 这样兼容同一个 plugin 多次调用 options 不同情况
                     if (pluginOptions) {
                         debug('Plugin loaded: %s with options %O', chalk.magenta(plugin.id), pluginOptions);
-                        return [plugin, pluginOptions];
                     }
-                    debug('Plugin loaded: %s', chalk.magenta(plugin.id));
+                    else {
+                        debug('Plugin loaded: %s', chalk.magenta(plugin.id));
+                    }
 
-                    return plugin;
+                    return [plugin, pluginOptions];
                 }
                 logger.error(`Plugin is invalid: ${p}. Service plugin must has id and apply function!`);
             } catch (e) {
@@ -188,14 +191,11 @@ module.exports = class Service extends EventEmitter {
                 logger.error(e);
             }
         } else if (typeof p === 'object' && p.id && typeof p.apply === 'function') {
-            // 处理 object
-            if (pluginOptions) {
-                return [p, pluginOptions];
-            }
-            return p;
+            p.path = this.cwd;
+            return [p, pluginOptions];
         } else if (typeof p === 'function') {
             // 如果传入的plugin是个函数，增加id
-            return [{id: 'anonymous', apply: p}, pluginOptions];
+            return [{id: 'anonymous', apply: p, path: this.cwd}, pluginOptions];
         } else {
             logger.error('Service plugin is invalid');
             if (p && p.toString() === '[object Object]') {
@@ -229,22 +229,14 @@ module.exports = class Service extends EventEmitter {
         debug('projectOptions: %O', projectOptions);
         timeEnd('loadProjectOptions');
 
-        const pluginMap = projectOptions.extends && this.loadeExt(projectOptions.extends) || {};
-        // 2. 添加san.config.js插件,优先级最高
+        const pluginMap = projectOptions.extends && this.loadExt(projectOptions.extends) || {};
+        debug('pluginMap: %O', pluginMap);
+        // 2. 添加san.config.js插件,优先级最高最后加载
         if (Array.isArray(projectOptions.plugins) && projectOptions.plugins.length) {
             projectOptions.plugins.forEach(p => this.addPlugin(p));
         }
-        // 只存储开启的plugin, 并去重
-        const oriPlugins = this.plugins;
-        this.plugins = [];
-        let loadMap = {};
-        for (let i = oriPlugins.length - 1; i >= 0; i--) {
-            let p = oriPlugins[i] && Array.isArray(oriPlugins[i]) ? oriPlugins[i][0] : oriPlugins[i];
-            if (p && !loadMap[p.id] && pluginMap[p.id] !== false) {
-                loadMap[p.id] = true;
-                this.plugins.unshift(oriPlugins[i]);
-            }
-        }
+        // 过滤插件去掉重复，最后加载的插件和插件配置生效
+        this.filterPlugin(pluginMap);
         // 3. 初始化插件
         this.plugins.forEach(plugin => this.initPlugin(plugin));
         // webpack 配置
@@ -282,7 +274,7 @@ module.exports = class Service extends EventEmitter {
      * 3. 数组内除配置文件外还增加插件的开关控制对象: [['san-cli-config-xx', {mypluginId: false}]]
      * 4. 数组内直接传入扩展的对象: [[{plugins: 'path/to/file'}, {mypluginId: false}]]
      */
-    loadeExt(extConfigs) {
+    loadExt(extConfigs) {
         if (!(typeof extConfigs === 'string' || Array.isArray(extConfigs))) {
             return;
         }
@@ -305,29 +297,44 @@ module.exports = class Service extends EventEmitter {
 
             let extOptions = null;
             if (typeof e === 'string') {
-                // 查找当前工程下和当前工程下的node_modules
-                const configPath = findExisting(e, this.cwd)
-                    || findExisting(e, this.cwd + '/node_modules/');
-
-                if (!configPath) {
-                    logger.error(`extends config: ${e} not exist!`);
+                let configPath = '';
+                try {
+                    if (isAbsolute(e)) {
+                        configPath = require.resolve(e);
+                    }
+                    else {
+                        // 查找当前工程下和当前工程下的node_modules
+                        try {
+                            configPath = require.resolve(join(this.cwd, e));
+                        } catch (err) {
+                            configPath = require.resolve(join(this.cwd + '/node_modules/', e));
+                        }
+                    }
+                } catch (err) {
+                    logger.error(`Extends config: ${e} not exist!`);
+                    throw new SError(err);
                 }
+
                 // 路径存在，且未被加载
-                else if (!tmpPath[configPath]) {
+                if (!tmpPath[configPath]) {
                     tmpPath[configPath] = true;
                     try {
                         extOptions = require(configPath);
                     }
                     catch (err) {
-                        logger.error(`extends file: ${configPath} load fail!`, err);
+                        logger.error(`Extends file: ${configPath} load fail!`, err);
                     }
+                }
+                else {
+                    logger.warn(`Extends file: ${configPath} is discarded due to duplication. option: ${
+                        JSON.stringify(options)}`);
                 }
             }
             else if (typeof e === 'object' && e.plugins) {
                 extOptions = e;
             }
             else {
-                logger.error('extends is invalid', e);
+                logger.error('Extends is invalid', e);
             }
             // 没有拿到配置则跳过
             if (!extOptions) {
@@ -349,29 +356,54 @@ module.exports = class Service extends EventEmitter {
         });
         return pluginMap;
     }
-    initPlugin(plugin) {
-        let options = {};
-        if (Array.isArray(plugin)) {
-            options = plugin[1];
-            plugin = plugin[0];
+    filterPlugin(pluginMap) {
+        // 只存储开启的plugin, 并去重
+        const oriPlugins = this.plugins;
+        this.plugins = [];
+        const loadMap = {};
+        for (let i = oriPlugins.length - 1; i >= 0; i--) {
+            let [p, pOptions = {}] = oriPlugins[i];
+            if (pluginMap[p.id] !== false) {
+                if (!loadMap[p.id]) {
+                    loadMap[p.id] = true;
+                    // extends中的插件optons优先级高于插件自身定义的options
+                    const extendOptions = typeof pluginMap[p.id] === 'object' ? pluginMap[p.id] : {};
+                    pOptions = defaultsDeep(extendOptions, pOptions);
+                    this.plugins.unshift([p, pOptions]);
+                }
+                else {
+                    logger.warn(`Plugin id: ${p.id} is discarded due to duplication. path: ${
+                        p.path}. options: ${JSON.stringify(pOptions)}`);
+                }
+            }
         }
+    }
+    initPlugin(p) {
+        const [plugin, pluginOptions] = p;
         const {id, apply, schema} = plugin;
         // 校验config.js schema 格式
+        let schemaObj = {};
+        const optionInProject = {};
         if (schema) {
-            extendSchema(schema);
+            schemaObj = extendSchema(schema);
             try {
                 validateOptions(this.projectOptions);
             } catch (e) {
                 logger.error('Config file: Invalid type.');
                 throw new SError(e);
             }
+            // 拿到projectOptions内插件对应的配置项
+            const optionKeys = Object.keys(schemaObj);
+            optionKeys.forEach(key => {
+                optionInProject[key] = this.projectOptions[key];
+            });
+        }
+        else {
+            logger.warn(`Pluign id: ${id} schema undefined.`);
         }
         const api = this._getApiInstance(id);
-
-        const projectOptions = this.projectOptions;
-        // 传入配置的 options
-        // * 因为一般 plugin 不需要自定义 options，所以 projectOption 作为第二个参数
-        apply(api, projectOptions, options);
+        // 合并配置的option和projectOptions
+        apply(api, defaultsDeep(pluginOptions, optionInProject));
         return this;
     }
     loadProjectOptions(configFile) {
@@ -444,11 +476,6 @@ module.exports = class Service extends EventEmitter {
             });
         }
 
-        config.pkg = this.pkg;
-        // 添加默认context
-        if (!config.context) {
-            config.context = this.cwd;
-        }
         return config;
     }
 
