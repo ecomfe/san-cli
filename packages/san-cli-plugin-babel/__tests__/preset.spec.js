@@ -49,7 +49,7 @@ test('现代模式的默认值', () => {
 
 test('添加 plugin', () => {
     const plugins = preset({plugins: [{id: 'a'}]}).plugins;
-    expect(plugins.length).toBe(8);
+    expect(plugins.length).toBe(7);
 });
 
 test('检测 polyfill', () => {

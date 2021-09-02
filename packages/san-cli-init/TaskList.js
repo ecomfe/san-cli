@@ -11,13 +11,51 @@
 const {ora, figures, chalk} = require('san-cli-utils/ttyLogger');
 const SError = require('san-cli-utils/SError');
 
+class Task {
+    constructor(taskListInstance, taskFn) {
+        this.taskListInstance = taskListInstance;
+        this.status = '';
+        this.taskFn = taskFn;
+    }
+    getContext() {
+        return this.taskListInstance.getContext();
+    }
+    run() {
+        this.status = 'running';
+        this.taskFn(this.getContext(), this);
+    }
+    skip(skipReason) {
+        this.status = 'skiped'; // running failed
+        this.taskListInstance.next(skipReason);
+    }
+    complete() {
+        if (this.status === 'running') {
+            this.status = 'done';
+            this.taskListInstance.next();
+        }
+    }
+    error(err) {
+        if (this.status === 'running') {
+            this.status = 'failed';
+            this.taskListInstance.fail(err);
+        }
+    }
+    info(data) {
+        if (data) {
+            this.taskListInstance.startSpinner(data);
+        } else {
+            this.taskListInstance.stopSpinner();
+        }
+    }
+}
+
 module.exports = class TaskList {
     constructor(tasks, options = {}) {
         this._tasks = tasks;
         this._options = options;
         this._index = 0;
         this._tasksLength = tasks.length;
-        this._context = {};
+        this._context = Object.create(null);
         // 这里可以写个状态机
         this._status = 'ready'; // ready, pending, done, fail, running
 
@@ -26,7 +64,22 @@ module.exports = class TaskList {
             this._reject = reject;
         });
     }
+    startSpinner(text) {
+        if (this._spinner.isSpinning) {
+            this._spinner.text = text;
+        } else {
+            this._spinner.start(text);
+        }
+    }
+    stopSpinner() {
+        if (this._spinner) {
+            this._spinner.stop();
+        }
+    }
 
+    getContext() {
+        return this._context;
+    }
     _setStatus(status) {
         switch (status) {
             case 'ready':
@@ -61,45 +114,13 @@ module.exports = class TaskList {
         return this._promise;
     }
 
-    _taskWrapper(task) {
-        task.skip = reason => {
-            task.status = 'skiped'; // running failed
-            this.next({reason, type: 'skip'});
-        };
-        task.info = data => {
-            if (data) {
-                if (this._spinner.isSpinning) {
-                    this._spinner.text = data;
-                } else {
-                    this._spinner.start(data);
-                }
-            } else {
-                this._spinner.stop();
-            }
-        };
-        task.error = err => {
-            if (task.status === 'running') {
-                task.status = 'failed';
-                this._fail(err);
-            }
-        };
-        task.complete = () => {
-            if (task.status === 'running') {
-                task.status = 'done';
-                this.next();
-            }
-        };
-        return task(this._context, task);
-    }
-    _startTask(idx, {reason, type = ''} = {}) {
+    _startTask(idx, skipReason) {
         let {title, task} = this._tasks[idx];
-        if (this._spinner) {
-            this._spinner.stop();
-        }
-        const p = `[${this._index + 1}/${this.length}]`;
-        if (reason) {
+        this.stopSpinner();
+        const p = `[${this._index + 1}/${this._tasksLength}]`;
+        if (skipReason) {
             // eslint-disable-next-line no-console
-            console.log(chalk.dim(`${new Array(p.length + 1).join(' ')} ${figures.arrowRight} ${reason}`));
+            console.log(chalk.dim(`${new Array(p.length + 1).join(' ')} ${figures.arrowRight} ${skipReason}`));
         }
         // eslint-disable-next-line no-console
         console.log(chalk.dim(p) + ` ${title}`);
@@ -107,37 +128,24 @@ module.exports = class TaskList {
         if (!this._spinner) {
             this._spinner = ora('In processing...', {spinner: 'point'}).start();
         }
-        task.status = 'running';
-        this._taskWrapper(task);
+        new Task(this, task).run();
     }
-    _done() {
-        this._spinner.stop();
+    done() {
+        this.stopSpinner();
         this._resolve(this._context);
     }
-    _fail(err) {
-        this._spinner.stop();
+    fail(err) {
+        this.stopSpinner();
         this._reject(err);
     }
-    next(reason) {
+    next(skipReason) {
         this._index++;
-        if (this._index >= this._tasks.length) {
+        if (this._index >= this._tasksLength) {
             // 完成了
             this._setStatus('done');
-            this._done();
+            this.done();
         } else {
-            this._startTask(this._index, reason);
+            this._startTask(this._index, skipReason);
         }
-    }
-    getIndex() {
-        return this._index;
-    }
-    get status() {
-        return this._status;
-    }
-    get index() {
-        return this._index;
-    }
-    get length() {
-        return this._tasks.length;
     }
 };

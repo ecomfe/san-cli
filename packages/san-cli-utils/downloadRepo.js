@@ -91,11 +91,6 @@ Default template is ${chalk.cyan('ksky521/san-project')}, Use ${chalk.cyan('san 
     // }
 }
 function normalize(repo, opts) {
-    // aliasmap
-    // 这里的 templateAliasMap 是通过 sanrc → yargs argv 传入的
-    if (opts.templateAliasMap && opts.templateAliasMap[repo]) {
-        repo = opts.templateAliasMap[repo];
-    }
     // https://username@icode.baidu.com/baidu/foo/bar
     // ssh://username@icode.baidu.com:8235/baidu/foo/bar
     // ssh://git@icode.baidu.com:8235/baidu/foo/bar

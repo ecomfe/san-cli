@@ -27,5 +27,5 @@ $ npm install --save-dev san-cli-init
 #执行 __tests__ 文件夹下所有测试文件
 yarn test san-cli-init
 #只执行某单个文件 例如：checkStatus.spec.js
-yarn test san-cli checkStatus
+yarn test san-cli-init checkStatus
 ```
