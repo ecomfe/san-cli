@@ -36,7 +36,7 @@ module.exports = async (prompts, data, argv) => {
             await prompt(answers, key, prompts[key], data);
         }
     }
-    return Promise.resolve(answers);
+    return answers;
 };
 
 async function prompt(data, key, prompt, tplData) {
@@ -46,10 +46,9 @@ async function prompt(data, key, prompt, tplData) {
         return;
     }
 
-    /* eslint-disable space-before-function-paren,operator-linebreak */
-    let promptDefault =
-        typeof prompt.default === 'function'
-            ? function() {
+    let promptDefault
+        = typeof prompt.default === 'function'
+            ? function () {
                 return prompt.default.bind(this)(data);
             }
             : prompt.default;
@@ -64,7 +63,7 @@ async function prompt(data, key, prompt, tplData) {
             });
         }
         catch (e) {
-            /* eslint-disable no-console */
+            // eslint-disable-next-line no-console
             console.warn(`${chalk.red('✖')} Handbars render [name: ${key}] error`);
         }
     }
