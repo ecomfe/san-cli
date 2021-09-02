@@ -24,9 +24,9 @@ class Task {
         this.status = 'running';
         this.taskFn(this.getContext(), this);
     }
-    skip(reason) {
+    skip(skipReason) {
         this.status = 'skiped'; // running failed
-        this.taskListInstance.next({reason, type: 'skip'});
+        this.taskListInstance.next(skipReason);
     }
     complete() {
         if (this.status === 'running') {
@@ -114,13 +114,13 @@ module.exports = class TaskList {
         return this._promise;
     }
 
-    _startTask(idx, {reason, type = ''} = {}) {
+    _startTask(idx, skipReason) {
         let {title, task} = this._tasks[idx];
         this.stopSpinner();
-        const p = `[${this._index + 1}/${this.length}]`;
-        if (reason) {
+        const p = `[${this._index + 1}/${this._tasksLength}]`;
+        if (skipReason) {
             // eslint-disable-next-line no-console
-            console.log(chalk.dim(`${new Array(p.length + 1).join(' ')} ${figures.arrowRight} ${reason}`));
+            console.log(chalk.dim(`${new Array(p.length + 1).join(' ')} ${figures.arrowRight} ${skipReason}`));
         }
         // eslint-disable-next-line no-console
         console.log(chalk.dim(p) + ` ${title}`);
@@ -138,27 +138,14 @@ module.exports = class TaskList {
         this.stopSpinner();
         this._reject(err);
     }
-
-    next(reason) {
+    next(skipReason) {
         this._index++;
-        if (this._index >= this._tasks.length) {
+        if (this._index >= this._tasksLength) {
             // 完成了
             this._setStatus('done');
             this.done();
         } else {
-            this._startTask(this._index, reason);
+            this._startTask(this._index, skipReason);
         }
-    }
-    getIndex() {
-        return this._index;
-    }
-    get status() {
-        return this._status;
-    }
-    get index() {
-        return this._index;
-    }
-    get length() {
-        return this._tasks.length;
     }
 };
