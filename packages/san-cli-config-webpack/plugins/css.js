@@ -5,7 +5,6 @@
 
 const semver = require('semver');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const defaultsDeep = require('lodash.defaultsdeep');
 const {findExisting, getAssetPath} = require('san-cli-utils/path');
 const {warn} = require('san-cli-utils/ttyLogger');
 
@@ -14,59 +13,62 @@ const createCSSRule = require('../rules/createCSSRule');
 
 module.exports = {
     id: 'css',
-    schema: joi => ({
-        sourceMap: joi.alternatives().try(joi.boolean(), joi.string()),
-        publicPath: joi.string().allow(''),
-        assetsDir: joi.string().allow(''),
-        filenameHashing: joi.boolean(),
-        loaderOptions: joi.object(),
+    pickConfig: {
+        sourceMap: 'sourceMap',
+        publicPath: 'publicPath',
+        assetsDir: 'assetsDir',
+        filenameHashing: 'filenameHashing',
+        esbuildOptions: 'loaderOptions.esbuild',
         // css 相关
-        css: joi.object({
-            cssnanoOptions: joi.object(),
-            cssPreprocessor: joi.string().valid('less', 'sass', 'stylus'),
-            extract: joi.alternatives().try(joi.boolean(), joi.object()),
-            sourceMap: joi.boolean(),
-            loaderOptions: joi.object({
-                style: joi.object(),
-                css: joi.object(),
-                sass: joi.object(),
-                less: joi.object(),
-                stylus: joi.object(),
-                // 推荐使用 postcss.config.js
-                postcss: joi.object()
-            })
-        })
-    }),
+        cssnanoOptions: 'css.cssnanoOptions',
+        cssPreprocessor: 'css.cssPreprocessor',
+        extract: 'css.extract',
+        cssSourceMap: 'css.sourceMap',
+        styleOptions: 'css.loaderOptions.style',
+        cssOptions: 'css.loaderOptions.css',
+        sassOptions: 'css.loaderOptions.sass',
+        lessOptions: 'css.loaderOptions.less',
+        stylusOptions: 'css.loaderOptions.stylus',
+        // 推荐使用 postcss.config.js
+        postcssOptions: 'css.loaderOptions.postcss',
+        extractCssOptions: 'css.loaderOptions.extract-css'
+    },
     apply(api, options = {}) {
+        const isProd = api.isProd();
         const {
-            css: cssOptions = {},
             sourceMap: rootSourceMap,
             publicPath,
             assetsDir,
             filenameHashing,
-            loaderOptions: rootLoaderOptions = {}
+            // 使用esbuild压缩css时无法产生sourcemap: https://github.com/privatenumber/esbuild-loader
+            esbuildOptions: esbuild = {},
+            extract = isProd,
+            // 不在 css 中单独配置，默认跟 options.sourceMap 一致
+            cssSourceMap = !!rootSourceMap,
+            cssPreprocessor,
+            cssnanoOptions,
+            styleOptions: style,
+            cssOptions: css = {},
+            sassOptions: sass = {},
+            lessOptions: less,
+            stylusOptions: stylus,
+            postcssOptions: postcss,
+            extractCssOptions: extractCss = {}
         } = options;
         const pkg = api.getPkg();
         api.chainWebpack(chainConfig => {
-            const isProd = api.isProd();
-            // 这里loaderOptions直接用 options.css 的内容
-            const {
-                extract = isProd,
-                // 不在 css 中单独配置，默认跟 options.sourceMap 一致
-                sourceMap = !!rootSourceMap,
-                cssPreprocessor,
-                cssnanoOptions
-            } = cssOptions;
-            // 实验功能，使用esbuild压缩css时无法产生sourcemap: https://github.com/privatenumber/esbuild-loader
-            const esbuild = rootLoaderOptions.esbuild || {};
-            // 有则优先使用css中的loaderoptions，否则使用root loaderOptions
-            const loaderOptions = cssOptions.loaderOptions
-                ? defaultsDeep(cssOptions.loaderOptions, rootLoaderOptions)
-                : rootLoaderOptions;
+            // 组合所有css相关loader的options
+            const loaderOptions = {
+                style,
+                css,
+                sass,
+                less,
+                stylus,
+                postcss,
+                'extract-css': extractCss
+            };
 
             // css module使用loaderOption下css的配置控制
-            loaderOptions.css = loaderOptions.css || {};
-
             loaderOptions.css.modules = {
                 localIdentName: isProd ? '[hash:base64]' : '[name]_[local]_[hash:base64:5]',
                 ...loaderOptions.css.modules
@@ -96,7 +98,7 @@ module.exports = {
                     // hmr: !isProd,
                     publicPath: cssPublicPath
                 },
-                loaderOptions['extract-css'] || {}
+                loaderOptions['extract-css']
             );
 
             // -------postcss---------
@@ -141,7 +143,7 @@ module.exports = {
                     loaderOptions,
                     extract: shouldExtract,
                     useEsbuild,
-                    sourceMap
+                    sourceMap: cssSourceMap
                 });
 
                 if (sassLoaderVersion < 8) {
@@ -149,10 +151,10 @@ module.exports = {
                         {
                             indentedSyntax: true
                         },
-                        loaderOptions.sass || {}
+                        loaderOptions.sass
                     );
                 } else {
-                    loaderOptions.sass = Object.assign(loaderOptions.sass || {}, {
+                    loaderOptions.sass = Object.assign(loaderOptions.sass, {
                         sassOptions: Object.assign({}, loaderOptions.sass && loaderOptions.sass.sassOptions, {
                             indentedSyntax: true
                         })
@@ -163,7 +165,7 @@ module.exports = {
                     loaderOptions,
                     extract: shouldExtract,
                     useEsbuild,
-                    sourceMap
+                    sourceMap: cssSourceMap
                 });
             }
             if (!cssPreprocessor || cssPreprocessor === 'less') {
@@ -172,7 +174,7 @@ module.exports = {
                     loaderOptions,
                     extract: shouldExtract,
                     useEsbuild,
-                    sourceMap
+                    sourceMap: cssSourceMap
                 });
             }
             if (!cssPreprocessor || cssPreprocessor === 'stylus') {
@@ -181,7 +183,7 @@ module.exports = {
                     loaderOptions,
                     extract: shouldExtract,
                     useEsbuild,
-                    sourceMap
+                    sourceMap: cssSourceMap
                 });
             }
 

@@ -8,13 +8,13 @@ const {getAssetPath} = require('san-cli-utils/path');
 // 一个标准的插件
 module.exports = {
     id: 'output',
-    schema: joi => ({
+    pickConfig: [
         // 产出相关
-        publicPath: joi.string().allow(''),
-        assetsDir: joi.string().allow(''),
-        outputDir: joi.string(),
-        filenameHashing: joi.boolean()
-    }),
+        'publicPath',
+        'assetsDir',
+        'outputDir',
+        'filenameHashing'
+    ],
     apply(api, options = {}) {
         const {
             outputDir,

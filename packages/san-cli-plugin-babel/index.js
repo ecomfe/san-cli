@@ -28,15 +28,17 @@ function genTranspileDepRegex(transpileDependencies) {
 
 module.exports = {
     id: 'san-cli-plugin-babel',
-    schema: joi => ({
-        loaderOptions: joi.object(),
-        transpileDependencies: joi.array(),
-        cache: joi.alternatives().try(joi.boolean(), joi.object())
-    }),
+    pickConfig: {
+        threadOptions: 'loaderOptions.thread',
+        babelOptions: 'loaderOptions.babel',
+        transpileDependencies: 'transpileDependencies',
+        cache: 'cache'
+    },
     apply(api, options = {}) {
         const cliPath = path.dirname(path.resolve(__dirname, './package.json'));
         const {
-            loaderOptions = {},
+            threadOptions: thread,
+            babelOptions: babel,
             transpileDependencies = [],
             cache
         } = options;
@@ -79,18 +81,18 @@ module.exports = {
                 })
                 .end();
             // 开销大,无必要不开启，仅生产环境开启
-            if (loaderOptions.thread && api.isProd()) {
+            if (thread && api.isProd()) {
                 scriptRule
                     .use('thread-loader')
                     .loader('thread-loader')
-                    .options(typeof loaderOptions.thread === 'object' ? loaderOptions.thread : {});
+                    .options(typeof thread === 'object' ? thread : {});
             }
             scriptRule
                 .use('babel-loader')
                 .loader('babel-loader')
-                .options(loaderOptions.babel !== false ? {
+                .options(babel !== false ? {
                     presets: [
-                        [require.resolve('./preset'), loaderOptions.babel || {}]
+                        [require.resolve('./preset'), babel || {}]
                     ],
                     // 开启babel缓存, 开发环境第二次构建时会读取之前的缓存，与外层cache保持一致
                     cacheDirectory: !!cache

@@ -19,7 +19,7 @@ const service = {
     pkg: {
         name: 'san-cli'
     },
-    projectOptions: {
+    projectConfigs: {
         outputDir: 'output'
     },
     devServerMiddlewares: []
@@ -66,8 +66,8 @@ test('测试 getPkg', () => {
     expect(pluginAPI.getPkg().name).toBe('san-cli');
 });
 
-test('测试 getProjectOptions', () => {
-    expect(pluginAPI.getProjectOptions().outputDir).toBe('output');
+test('测试 getProjectConfigs', () => {
+    expect(pluginAPI.getProjectConfigs().outputDir).toBe('output');
 });
 
 test('测试 middleware', () => {

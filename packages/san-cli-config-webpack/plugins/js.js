@@ -5,16 +5,17 @@
 
 module.exports = {
     id: 'js',
-    schema: joi => ({
-        loaderOptions: joi.object(),
-        transpileDependencies: joi.array(),
-        cache: joi.alternatives().try(joi.boolean(), joi.object())
-    }),
+    pickConfig: {
+        esbuildOptions: 'loaderOptions.esbuild',
+        threadOptions: 'loaderOptions.thread',
+        babelOptions: 'loaderOptions.babel',
+        transpileDependencies: 'transpileDependencies',
+        cache: 'cache'
+    },
     apply(api, options = {}) {
-        const loaderOptions = options.loaderOptions || {};
-        const esbuild = loaderOptions.esbuild;
+        const esbuildOptions = options.esbuildOptions;
         // 仅在生产环境可使用esbuild替换
-        if (!api.isProd() && esbuild) {
+        if (!api.isProd() && esbuildOptions) {
             api.chainWebpack(chainConfig => {
                 const esbuildLoaderFactory = require('../loaders/esbuild');
 
@@ -28,7 +29,7 @@ module.exports = {
                 script.use('esbuild-loader')
                     .loader(esBuildLoader)
                     .options({
-                        target: typeof esbuild === 'object' && esbuild.target || 'es2015'
+                        target: typeof esbuildOptions === 'object' && esbuildOptions.target || 'es2015'
                     });
             });
         }

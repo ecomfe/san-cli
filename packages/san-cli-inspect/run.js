@@ -29,14 +29,14 @@ module.exports = function apply(argv, api) {
     const config = api.getWebpackConfig();
     let res;
     let hasUnnamedRule;
-    const {extendSchema} = require('san-cli-service/options');
+
     if (argv.servicePlugins) {
         const splugin = api.service.plugins.map(p => {
             return {
-                pluginId: p[0].id,
-                optionKeys: p[0].schema ? Object.keys(extendSchema(p[0].schema)) : '',
-                location: p[0].path,
-                pluginOptions: JSON.stringify(p[1])
+                id: p[0].id,
+                pickConfig: p[0].pickConfig || '',
+                options: JSON.stringify(p[1]),
+                path: p[0].path
             };
         });
         // eslint-disable-next-line no-console

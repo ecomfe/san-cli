@@ -9,44 +9,40 @@ const defaultsDeep = require('lodash.defaultsdeep');
 
 module.exports = {
     id: 'media',
-    schema: joi => ({
-        assetsDir: joi.string().allow(''),
-        filenameHashing: joi.boolean(),
-        loaderOptions: joi.object(),
-        largeAssetSize: joi.number()
-    }),
+    pickConfig: {
+        assetsDir: 'assetsDir',
+        filenameHashing: 'filenameHashing',
+        mediaOptions: 'loaderOptions.media',
+        largeAssetSize: 'largeAssetSize'
+    },
     apply(api, options = {}) {
         const {
-            loaderOptions = {},
+            mediaOptions,
             filenameHashing,
             assetsDir,
             largeAssetSize = 1024
         } = options;
         api.chainWebpack(chainConfig => {
             // 使用url-loader 设置 img, media, fonts + svg-url设置svg
-            [
-                ['media', /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/, 'url']
-            ].forEach(([name, test, loader]) => {
-                if (loaderOptions[name] !== false) {
-                    const opt = defaultsDeep(
-                        loaderOptions[name] || {},
-                        {
-                            limit: largeAssetSize,
-                            name: getAssetPath(
-                                assetsDir,
-                                `${name}/[name]${filenameHashing ? '.[contenthash:8]' : ''}.[ext]`
-                            )
-                        }
-                    );
+            if (mediaOptions !== false) {
+                const opt = defaultsDeep(
+                    mediaOptions || {},
+                    {
+                        limit: largeAssetSize,
+                        name: getAssetPath(
+                            assetsDir,
+                            `media/[name]${filenameHashing ? '.[contenthash:8]' : ''}.[ext]`
+                        )
+                    }
+                );
 
-                    rules[loader](
-                        chainConfig,
-                        name,
-                        test,
-                        opt
-                    );
-                }
-            });
+                rules.url(
+                    chainConfig,
+                    'media',
+                    /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+                    opt
+                );
+            }
         });
     }
 };

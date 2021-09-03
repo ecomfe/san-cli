@@ -9,25 +9,25 @@ const {terserOptions: defaultTerserOptions} = require('../defaultOptions');
 
 module.exports = {
     id: 'optimization',
-    schema: joi => ({
+    pickConfig: {
         // 生产环境优化相关
-        terserOptions: joi.object(),
-        loaderOptions: joi.object()
-    }),
+        esbuildOptions: 'loaderOptions.esbuild',
+        terserOptions: 'terserOptions'
+    },
     apply(api, options = {}) {
         const {
-            loaderOptions = {},
+            esbuildOptions,
             terserOptions = {}
         } = options;
         api.chainWebpack(chainConfig => {
             if (api.isProd()) {
-                if (loaderOptions.esbuild) {
+                if (esbuildOptions) {
                     const {ESBuildMinifyPlugin} = require('esbuild-loader');
                     chainConfig.optimization.minimizer('js').use(new ESBuildMinifyPlugin({
                         minify: true,
                         // minify的默认target设置为es2015，其他值: https://github.com/privatenumber/esbuild-loader
                         target: 'es2015',
-                        ...(typeof loaderOptions.esbuild === 'object' ? loaderOptions.esbuild : {})
+                        ...(typeof esbuildOptions === 'object' ? esbuildOptions : {})
                     }));
                 }
                 else {

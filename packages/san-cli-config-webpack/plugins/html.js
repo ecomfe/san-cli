@@ -14,55 +14,20 @@ const {terserOptions: defaultTerserOptions, htmlMinifyOptions} = require('../def
 
 module.exports = {
     id: 'html',
-    schema: joi => ({
-        // 多页配置
-        pages: joi.object().pattern(
-            /\w+/,
-            joi.alternatives().try(
-                joi.string().required(),
-                joi.array().items(joi.string().required()),
-                joi
-                    .object()
-                    .keys({
-                        entry: joi
-                            .alternatives()
-                            .try(joi.string().required(), joi.array().items(joi.string().required()))
-                            .required(),
-                        chunks: joi
-                            .alternatives()
-                            .try(joi.string().required(), joi.array().items(joi.string().required()))
-                    })
-                    .unknown(true)
-            )
-        ),
-        copy: joi.alternatives().try(
-            joi.array().items(
-                joi
-                    .object({
-                        compress: joi.bool(),
-                        from: joi.string(),
-                        to: joi.string(),
-                        ignore: joi.alternatives().try(joi.string(), joi.object().instance(RegExp))
-                    })
-                    .unknown(true)
-            ),
-            joi
-                .object({
-                    from: joi.string(),
-                    compress: joi.bool(),
-                    to: joi.string(),
-                    ignore: joi.alternatives().try(joi.string(), joi.object().instance(RegExp))
-                })
-                .unknown(true)
-        ),
-        loaderOptions: joi.object(),
-        outputDir: joi.string(),
-        terserOptions: joi.object(),
-        publicPath: joi.string().allow('')
-    }),
+    // 对象、数组、函数 fn(api， projectConfig) 返回对象 替换 webpack生命周期 reduce
+    pickConfig: {
+        pages: 'pages',
+        copy: 'copy',
+        htmlOptions: 'loaderOptions.html',
+        ejsOptions: 'loaderOptions.ejs',
+        outputDir: 'outputDir',
+        terserOptions: 'terserOptions',
+        publicPath: 'publicPath'
+    },
     apply(api, options = {}) {
         const {
-            loaderOptions = {},
+            htmlOptions: html,
+            ejsOptions,
             copy,
             publicPath
         } = options;
@@ -86,14 +51,12 @@ module.exports = {
             }
 
             // html, ejs
-            [
-                ['html', /\.html?$/],
-                ['ejs', /\.ejs$/]
-            ].forEach(([name, test]) => {
-                if (loaderOptions[name] !== false) {
-                    rules.createRule(chainConfig, name, test, [[name, loaderOptions[name]]]);
-                }
-            });
+            if (html !== false) {
+                rules.createRule(chainConfig, 'html', /\.html?$/, [['html', html]]);
+            }
+            if (ejsOptions !== false) {
+                rules.createRule(chainConfig, 'ejs', /\.ejs$/, [['ejs', ejsOptions]]);
+            }
 
             const isProd = api.isProd();
             const outputDir = api.resolve(options.outputDir);

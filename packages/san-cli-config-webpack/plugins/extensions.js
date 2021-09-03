@@ -5,9 +5,7 @@
 
 module.exports = {
     id: 'extensions',
-    schema: joi => ({
-        extensions: joi.array()
-    }),
+    pickConfig: ['extensions'],
     apply(api, options = {}) {
         const extensions = options.extensions || ['.js', '.ts', '.css', '.less', '.san'];
         api.chainWebpack(chainConfig => {

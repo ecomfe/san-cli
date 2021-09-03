@@ -26,11 +26,12 @@ const argsert = require('san-cli-utils/argsert');
 const readPkg = require('san-cli-utils/readPkg');
 const PluginAPI = require('./PluginAPI');
 const resolvePlugin = importLazy('./resolvePlugin');
-const {defaults: defaultConfig, extendSchema, validate: validateOptions} = require('./options');
+const {defaults: defaultConfig, validate: validateOptions} = require('./options');
 const logger = consola.withTag('Service');
 const debug = getDebugLogger('service');
 const showConfig = getDebugLogger('webpack:config');
 const cloneDeep = require('lodash.clonedeep');
+const get = require('lodash.get');
 
 module.exports = class Service extends EventEmitter {
     constructor(
@@ -41,7 +42,7 @@ module.exports = class Service extends EventEmitter {
             plugins = [],
             useBuiltInPlugin = true,
             useDashboard = false,
-            projectOptions = {}
+            projectConfigs = {}
         } = {}
     ) {
         super();
@@ -62,7 +63,7 @@ module.exports = class Service extends EventEmitter {
 
         this.initialized = false;
 
-        this._initProjectOptions = projectOptions;
+        this._initProjectConfigs = projectConfigs;
         // webpack chain & merge array
         this.webpackChainFns = [];
         this.webpackRawConfigFns = [];
@@ -218,33 +219,33 @@ module.exports = class Service extends EventEmitter {
 
         // set mode
         // load user config
-        time('loadProjectOptions');
-        const projectOptions = this.loadProjectOptions(configFile);
+        time('loadProjectConfigs');
+        const projectConfigs = this.loadProjectConfigs(configFile);
         // 下面是给 config-webpack 用的
-        projectOptions.mode = mode;
+        projectConfigs.mode = mode;
 
-        const entryFiles = Object.keys(projectOptions.pages || {}).map(key => projectOptions.pages[key].entry);
+        const entryFiles = Object.keys(projectConfigs.pages || {}).map(key => projectConfigs.pages[key].entry);
         process.env.SAN_CLI_ENTRY_FILES = JSON.stringify(entryFiles);
 
-        debug('projectOptions: %O', projectOptions);
-        timeEnd('loadProjectOptions');
+        debug('projectConfigs: %O', projectConfigs);
+        timeEnd('loadProjectConfigs');
 
-        const pluginMap = projectOptions.extends && this.loadExt(projectOptions.extends) || {};
+        const pluginMap = projectConfigs.extends && this.loadExt(projectConfigs.extends) || {};
         debug('pluginMap: %O', pluginMap);
         // 2. 添加san.config.js插件,优先级最高最后加载
-        if (Array.isArray(projectOptions.plugins) && projectOptions.plugins.length) {
-            projectOptions.plugins.forEach(p => this.addPlugin(p));
+        if (Array.isArray(projectConfigs.plugins) && projectConfigs.plugins.length) {
+            projectConfigs.plugins.forEach(p => this.addPlugin(p));
         }
         // 过滤插件去掉重复，最后加载的插件和插件配置生效
         this.filterPlugin(pluginMap);
         // 3. 初始化插件
         this.plugins.forEach(plugin => this.initPlugin(plugin));
         // webpack 配置
-        if (this.projectOptions.chainWebpack) {
-            this.webpackChainFns.push(this.projectOptions.chainWebpack);
+        if (this.projectConfigs.chainWebpack) {
+            this.webpackChainFns.push(this.projectConfigs.chainWebpack);
         }
-        if (this.projectOptions.configWebpack) {
-            this.webpackRawConfigFns.push(this.projectOptions.configWebpack);
+        if (this.projectConfigs.configWebpack) {
+            this.webpackRawConfigFns.push(this.projectConfigs.configWebpack);
         }
         return this;
     }
@@ -342,7 +343,7 @@ module.exports = class Service extends EventEmitter {
             }
             result.unshift([extOptions, options]);
         }
-        // 配置合并到this.projectOptions内
+        // 配置合并到this.projectConfigs内
         result.forEach(c => {
             // 合并开关控制
             Object.assign(pluginMap, c[1]);
@@ -352,7 +353,7 @@ module.exports = class Service extends EventEmitter {
             // 扩展plugins
             plugins.forEach(p => this.addPlugin(p));
             // 合并其余配置项
-            defaultsDeep(this.projectOptions, c[0]);
+            defaultsDeep(this.projectConfigs, c[0]);
         });
         return pluginMap;
     }
@@ -380,33 +381,15 @@ module.exports = class Service extends EventEmitter {
     }
     initPlugin(p) {
         const [plugin, pluginOptions] = p;
-        const {id, apply, schema} = plugin;
-        // 校验config.js schema 格式
-        let schemaObj = {};
-        const optionInProject = {};
-        if (schema) {
-            schemaObj = extendSchema(schema);
-            try {
-                validateOptions(this.projectOptions);
-            } catch (e) {
-                logger.error('Config file: Invalid type.');
-                throw new SError(e);
-            }
-            // 拿到projectOptions内插件对应的配置项
-            const optionKeys = Object.keys(schemaObj);
-            optionKeys.forEach(key => {
-                optionInProject[key] = this.projectOptions[key];
-            });
-        }
-        else {
-            logger.warn(`Pluign id: ${id} schema undefined.`);
-        }
+        const {id, apply, pickConfig} = plugin;
+        // 拿到projectConfigs内插件对应的配置项
         const api = this._getApiInstance(id);
-        // 合并配置的option和projectOptions
-        apply(api, defaultsDeep(pluginOptions, optionInProject));
+        const options = pickConfig ? defineOption(this.projectConfigs, api, pickConfig) : {};
+
+        apply(api, defaultsDeep(pluginOptions, options));
         return this;
     }
-    loadProjectOptions(configFile) {
+    loadProjectConfigs(configFile) {
         let originalConfigFile = configFile;
         if (configFile && typeof configFile === 'string') {
             configFile = isAbsolute(configFile) ? configFile : resolve(this.cwd, configFile);
@@ -416,7 +399,7 @@ module.exports = class Service extends EventEmitter {
             }
         }
         // 首先试用 argv 的 config，然后寻找默认的，找到则读取，格式失败则报错
-        let config = defaultsDeep(this._initProjectOptions, defaultConfig);
+        let config = defaultsDeep(this._initProjectConfigs, defaultConfig);
         let result = {
             filepath: originalConfigFile,
             config: configFile ? require(configFile) : false
@@ -435,9 +418,17 @@ module.exports = class Service extends EventEmitter {
 
             if (typeof result.config !== 'object') {
                 logger.error(`${textCommonColor(configPath)}: Expected object type.`);
+            } else {
+                // 校验config.js schema 格式
+                try {
+                    validateOptions(result.config);
+                } catch (e) {
+                    logger.error(`${textCommonColor(configPath)}: Invalid type.`);
+                    throw new SError(e);
+                }
             }
 
-            debug('loadProjectOptions from %s', configPath);
+            debug('loadProjectConfigs from %s', configPath);
 
             // 加载默认的 config 配置
             config = defaultsDeep(result.config, config);
@@ -445,8 +436,8 @@ module.exports = class Service extends EventEmitter {
             // this.logger.warn(`${textCommonColor('san.config.js')} Cannot find! Use default configuration.`);
         }
         // 防止创建多个service实例时出现config相互影响
-        this.projectOptions = cloneDeep(this.normalizeConfig(config, result.filepath));
-        return this.projectOptions;
+        this.projectConfigs = cloneDeep(this.normalizeConfig(config, result.filepath));
+        return this.projectConfigs;
     }
     normalizeConfig(config, filepath) {
         // normalize publicPath
@@ -570,11 +561,11 @@ module.exports = class Service extends EventEmitter {
             cloneRuleNames(config.module && config.module.rules, original.module && original.module.rules);
         }
 
-        // 这里需要将 devServer 和 this.projectOptions.devServer 进行 merge
+        // 这里需要将 devServer 和 this.projectConfigs.devServer 进行 merge
         config.devServer = lMerge(
             devServerOptions,
             config.devServer || {},
-            this.projectOptions.devServer || {}
+            this.projectConfigs.devServer || {}
         );
 
         let before = config.devServer.before;
@@ -628,4 +619,26 @@ function ensureSlash(config, key) {
         }
         config[key] = val.replace(/([^/])$/, '$1/');
     }
+}
+
+function defineOption(config, api, pickConfig) {
+    const res = {};
+    if (!(Array.isArray(pickConfig)
+        || typeof pickConfig === 'object'
+        || typeof pickConfig === 'function'
+    )) {
+        logger.error('Service pickConfig type error: mapper must be either an Array or an Object or a function');
+        return;
+    }
+    if (typeof pickConfig === 'function') {
+        pickConfig = pickConfig(config, api);
+    }
+    const getter = Array.isArray(pickConfig)
+        ? pickConfig.map(key => ({key, val: key}))
+        : Object.keys(pickConfig).map(key => ({key, val: pickConfig[key]}));
+
+    getter.forEach(({key, val}) => {
+        res[key] = get(config, val);
+    });
+    return res;
 }

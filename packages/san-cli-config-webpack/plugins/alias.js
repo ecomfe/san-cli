@@ -9,10 +9,7 @@ const resolveSync = require('resolve').sync;
 
 module.exports = {
     id: 'alias',
-    schema: joi => ({
-        // webpack 相关配置
-        alias: joi.object()
-    }),
+    pickConfig: ['alias'],
     apply(api, options = {}) {
         api.chainWebpack(chainConfig => {
             if (fs.existsSync(api.resolve('src'))) {
@@ -36,7 +33,6 @@ module.exports = {
                     path.join(sanPath, !api.isProd() ? 'san.spa.dev.js' : 'san.spa.js')
                 );
             }
-            // options.alias
             if (options.alias) {
                 let alias = options.alias;
                 Object.keys(alias).forEach(k => {

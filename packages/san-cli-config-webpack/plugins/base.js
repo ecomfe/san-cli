@@ -7,16 +7,15 @@ const {defineVar, resolveLocal} = require('../utils');
 
 module.exports = {
     id: 'base',
-    schema: joi => ({
-        // 主要用 splitChunks.cacheGroups
-        splitChunks: joi.object(),
+    pickConfig: [
+        'splitChunks',
         // webpack5 runtimeChunk
-        runtimeChunk: joi.alternatives().try(joi.string(), joi.object()),
+        'runtimeChunk',
         // 缓存的相关配置
-        cache: joi.alternatives().try(joi.boolean(), joi.object()),
-        sourceMap: joi.alternatives().try(joi.boolean(), joi.string()),
-        publicPath: joi.string().allow('')
-    }),
+        'cache',
+        'sourceMap',
+        'publicPath'
+    ],
     apply(api, options = {}) {
         const {
             splitChunks,

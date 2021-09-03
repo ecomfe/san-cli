@@ -8,7 +8,7 @@
  * @author ksky521
  */
 
-module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
+module.exports = function getNormalizeWebpackConfig(api, projectConfigs, argv) {
     const {resolveEntry} = require('san-cli-webpack/utils');
     const isProd = api.isProd();
     // 开始正式的操作
@@ -27,7 +27,7 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
             hot: !isProd,
             port: 8888,
             compress: isProd,
-            contentBase: projectOptions.outputDir
+            contentBase: projectConfigs.outputDir
         },
         webpackConfig.devServer,
         devServerArgv

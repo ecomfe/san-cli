@@ -7,20 +7,23 @@ const rules = require('../rules');
 
 module.exports = {
     id: 'san',
-    schema: joi => ({
-        loaderOptions: joi.object()
-    }),
+    pickConfig: {
+        sanOptions: 'loaderOptions.san',
+        sanHotOptions: 'loaderOptions.san-hot'
+    },
     apply(api, options = {}) {
-        const loaderOptions = options.loaderOptions || {};
-
+        const {
+            sanOptions,
+            sanHotOptions
+        } = options;
         api.chainWebpack(chainConfig => {
 
             // set loaders
             // ------------------------loaders------------
-            if (loaderOptions.san !== false) {
-                const sanLoaders = [['san', loaderOptions.san]];
-                if (!api.isProd() && loaderOptions['san-hot'] !== false) {
-                    sanLoaders.unshift(['san-hot', loaderOptions['san-hot']]);
+            if (sanOptions !== false) {
+                const sanLoaders = [['san', sanOptions]];
+                if (!api.isProd() && sanHotOptions !== false) {
+                    sanLoaders.unshift(['san-hot', sanHotOptions]);
                 }
                 rules.createRule(chainConfig, 'san', /\.san$/, sanLoaders);
             }

@@ -19,7 +19,7 @@ const Service = require('san-cli-service');
 // mode：当前模式，String 类型，默认取 process.env.NODE_ENV
 // plugins：插件集合，Array 类型
 // useBuiltInPlugin：是否使用基础编译打包插件(configs/app，configs/base，configs/css，configs/optimization)，Boolean 类型，默认为 true
-// projectOptions：san.config.js 配置项信息
+// projectConfigs：san.config.js 配置项信息
 // useProgress：是否使用进度条插件 san-cli-plugin-progess，Boolean 类型，默认为 true
 // useProfiler：是否使用 webpackbar 的 profiler，进度条插件的参数，Boolean 类型，默认为 true
 
@@ -29,7 +29,7 @@ const service = new Service('docit', {
     watch,
     mode,
     useBuiltInPlugin,
-    projectOptions,
+    projectConfigs,
     plugins: flatten(plugins),
     useProgress: !noProgress,
     useProfiler: profile

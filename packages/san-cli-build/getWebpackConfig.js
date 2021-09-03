@@ -11,10 +11,10 @@ const {resolveEntry} = require('san-cli-webpack/utils');
 const {error, chalk} = require('san-cli-utils/ttyLogger');
 const {getReportFileName} = require('./utils');
 
-module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
+module.exports = function getNormalizeWebpackConfig(api, projectConfigs, argv) {
     // 读取 cli 传入的 argv
     const {mode, entry, dest, analyze, watch, clean, remote, report, statsJson, modern, modernBuild = false} = argv;
-    const targetDir = api.resolve(dest || projectOptions.outputDir);
+    const targetDir = api.resolve(dest || projectConfigs.outputDir);
 
     const chainConfig = api.getWebpackChainConfig();
     // modern mode
@@ -116,7 +116,7 @@ module.exports = function getNormalizeWebpackConfig(api, projectOptions, argv) {
     // --mode
     webpackConfig.mode = mode;
     // webpackchain暂不支持unsafeCache设置，该项置为true（表示关闭安全策略）后可加快构建速度
-    if (projectOptions.unsafeCache) {
+    if (projectConfigs.unsafeCache) {
         webpackConfig.module.unsafeCache = true;
     }
     // fixme: webpackchain暂不支持realContentHash设置，webpackchain升级后可移到config内处理

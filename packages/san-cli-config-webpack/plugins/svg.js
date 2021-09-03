@@ -9,44 +9,40 @@ const defaultsDeep = require('lodash.defaultsdeep');
 
 module.exports = {
     id: 'svg',
-    schema: joi => ({
-        assetsDir: joi.string().allow(''),
-        filenameHashing: joi.boolean(),
-        loaderOptions: joi.object(),
-        largeAssetSize: joi.number()
-    }),
+    pickConfig: {
+        assetsDir: 'assetsDir',
+        filenameHashing: 'filenameHashing',
+        svgOptions: 'loaderOptions.svg',
+        largeAssetSize: 'largeAssetSize'
+    },
     apply(api, options = {}) {
         const {
-            loaderOptions = {},
+            svgOptions,
             filenameHashing,
             assetsDir,
             largeAssetSize = 1024
         } = options;
         api.chainWebpack(chainConfig => {
             // 使用url-loader 设置 img, media, fonts + svg-url设置svg
-            [
-                ['svg', /\.svg(\?.*)?$/, 'svg']
-            ].forEach(([name, test, loader]) => {
-                if (loaderOptions[name] !== false) {
-                    const opt = defaultsDeep(
-                        loaderOptions[name] || {},
-                        {
-                            limit: largeAssetSize,
-                            name: getAssetPath(
-                                assetsDir,
-                                `${name}/[name]${filenameHashing ? '.[contenthash:8]' : ''}.[ext]`
-                            )
-                        }
-                    );
+            if (svgOptions !== false) {
+                const opt = defaultsDeep(
+                    svgOptions || {},
+                    {
+                        limit: largeAssetSize,
+                        name: getAssetPath(
+                            assetsDir,
+                            `svg/[name]${filenameHashing ? '.[contenthash:8]' : ''}.[ext]`
+                        )
+                    }
+                );
 
-                    rules[loader](
-                        chainConfig,
-                        name,
-                        test,
-                        opt
-                    );
-                }
-            });
+                rules.svg(
+                    chainConfig,
+                    'svg',
+                    /\.svg(\?.*)?$/,
+                    opt
+                );
+            }
         });
     }
 };
