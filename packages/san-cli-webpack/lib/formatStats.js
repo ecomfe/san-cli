@@ -108,9 +108,9 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
         };
     });
 
-    const assetsMap = new Map(); // eslint-disable-line no-undef
+    const assetsMap = new Map();
     // 只提取 js 和 css
-    assets = assets.filter(a => {
+    assets = assets.filter(a => { // eslint-disable-line no-unused-vars
         if (isJS(a.name) || isCSS(a.name)) {
             const name = a.name;
             if (assetsMap.has(name)) {

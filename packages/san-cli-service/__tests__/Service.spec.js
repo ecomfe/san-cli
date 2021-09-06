@@ -26,7 +26,7 @@ describe('检查 webpack 配置', () => {
     test('检查 npm start 时的 webpack 配置', done => {  // eslint-disable-line
         const service = new Service(cwd, {
             autoLoadConfigFile: false,
-            projectOptions: {
+            projectConfigs: {
                 assetsDir: 'static',
                 publicPath: '/',
                 outputDir: 'output',
@@ -152,7 +152,7 @@ describe('检查 webpack 配置', () => {
     test('检查 npm run build 时的 webpack 配置', done => {  // eslint-disable-line
         const service = new Service(cwd, {
             autoLoadConfigFile: false,
-            projectOptions: {
+            projectConfigs: {
                 assetsDir: 'static/san-cli',
                 publicPath: 'https://s.bdstatic.com/',
                 outputDir: 'output',
@@ -285,7 +285,7 @@ describe('constructor resolvePlugins _loadPlugin', () => {
                 {}
             ],
             useBuiltInPlugin: true,
-            projectOptions: {
+            projectConfigs: {
                 outputDir: 'output'
             }
         });
@@ -298,7 +298,19 @@ describe('constructor resolvePlugins _loadPlugin', () => {
                 return item && item.id;
             })
         ).toEqual([
-            'san-cli-plugin-babel',
+            'base',
+            'output',
+            'extensions',
+            'alias',
+            'san',
+            'fonts',
+            'media',
+            'image',
+            'svg',
+            'js',
+            'html',
+            'css',
+            'optimization',
             'yyt-plugin',
             'yyt1-plugin',
             'yyt3-plugin',
@@ -309,14 +321,14 @@ describe('constructor resolvePlugins _loadPlugin', () => {
             undefined
         ]);
         // 检测对于加options的插件是否已加入进去
-        expect(service.plugins.filter(item => Array.isArray(item))[1][1]).toEqual({a: 1});
-        // 检测新增的projectOptions是否已加入进去
-        expect(service._initProjectOptions).toEqual({outputDir: 'output'});
+        expect(service.plugins.filter(item => Array.isArray(item))[16][1]).toEqual({a: 1});
+        // 检测新增的projectConfigs是否已加入进去
+        expect(service._initProjectConfigs).toEqual({outputDir: 'output'});
     });
     test('plugins为空，useBuiltInPlugin为true', () => {
         const service = new Service(__dirname + '/mock', {
             useBuiltInPlugin: true,
-            projectOptions: {
+            projectConfigs: {
                 outputDir: 'output'
             }
         });
@@ -328,12 +340,26 @@ describe('constructor resolvePlugins _loadPlugin', () => {
                 }
                 return item.id;
             })
-        ).toEqual(['san-cli-plugin-babel']);
+        ).toEqual([
+            'base',
+            'output',
+            'extensions',
+            'alias',
+            'san',
+            'fonts',
+            'media',
+            'image',
+            'svg',
+            'js',
+            'html',
+            'css',
+            'optimization'
+        ]);
     });
     test('useBuiltInPlugin为false', () => {
         const service = new Service(__dirname + '/mock', {
             useBuiltInPlugin: false,
-            projectOptions: {
+            projectConfigs: {
                 outputDir: 'output'
             }
         });
@@ -368,10 +394,10 @@ describe('loadEnv', () => {
     });
 });
 
-describe('loadProjectOptions', () => {
+describe('loadProjectConfigs', () => {
     const service = new Service(__dirname + '/mock');
     test('可查到的文件路径', async () => {
-        const config = await service.loadProjectOptions('san.config.js');
+        const config = await service.loadProjectConfigs('san.config.js');
         // 检测san.config.js中的配置项是否保留还在
         expect(config.templateDir).toBe('the-template-dir');
         // 检测与./options中的默认配置项做merge的情况是否符合预期
@@ -399,21 +425,21 @@ describe('loadProjectOptions', () => {
     });
     test('不可查到的文件路径', () => {
         const warn = jest.spyOn(service.logger, 'warn');
-        service.loadProjectOptions('san.config.json');
+        service.loadProjectConfigs('san.config.json');
         expect(warn).toHaveBeenCalledWith('config file `san.config.json` is not exists!');
         warn.mockClear();
     });
     test('不可查到的文件路径，但是工程中存在 san.config.js', () => {
-        const config = service.loadProjectOptions();
+        const config = service.loadProjectConfigs();
         // 会去自动查找项目中的san.config.js，查验一下是否找到了并返回正确的配置项
         expect(config.templateDir).toBe('the-template-dir');
     });
-    test('配置文件的格式不对，应该导出对象但是导出了函数', () => {
-        const config = service.loadProjectOptions('san.config2.js');
-        expect(typeof config).toBe('function');
+    test('配置文件的格式不对，正常导出了对象', () => {
+        const config = service.loadProjectConfigs('san.config2.js');
+        expect(typeof config).toBe('object');
     });
     test('配置文件的配置字段的的值的格式错误', () => {
-        expect(() => service.loadProjectOptions('san.config3.js'))
+        expect(() => service.init('production', 'san.config3.js'))
             .toThrow('ValidationError: "pages" must be of type object');
     });
 });
@@ -425,14 +451,14 @@ describe('initPlugin', () => {
         expect(typeof api.chainWebpack).toBe('function');
         expect(typeof api.getWebpackChainConfig).toBe('function');
         expect(typeof api.getWebpackConfig).toBe('function');
-        expect(typeof api.getProjectOption).toBe('function');
+        expect(typeof api.getProjectConfigs).toBe('function');
         expect(typeof api.getCwd).toBe('function');
     };
     test('参数为两项数组[{id: xxx, apply: () => {}}, {}]', () => {
         service.initPlugin([
             {
                 id: 'yyt-plugin',
-                apply: (api, projectOptions, options) => {
+                apply: (api, options) => {
                     expectfunc(api);
                     expect(options).toEqual({a: 1, b: 2});
                 }
@@ -447,7 +473,7 @@ describe('initPlugin', () => {
         service.initPlugin([
             {
                 id: 'yyt-plugin',
-                apply: (api, projectOptions, options) => {
+                apply: (api, options) => {
                     expectfunc(api);
                 }
             }
@@ -457,7 +483,7 @@ describe('initPlugin', () => {
         service.initPlugin([
             {
                 id: 'yyt-plugin',
-                apply: (api, projectOptions, options) => {
+                apply: (api, options) => {
                     expectfunc(api);
                 }
             }
