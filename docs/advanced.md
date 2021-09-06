@@ -241,7 +241,7 @@ module.exports = {
     plugins: [
         {
             id: 'built-in:plugin-progress',
-            apply(api, projectOptions, options = {}) {
+            apply(api, options = {}) {
                 api.chainWebpack(webpackConfig => {
                     options.color = require('san-cli-utils/randomColor').color;
                     webpackConfig.plugin('progress').use(require('webpackbar'), [options]);
@@ -321,6 +321,8 @@ module.exports = {
 
 - false，代表不加载该插件，当扩展了某些配置包，但其中某个插件需要大幅修改时，可以直接关闭包内的对应插件，自行定义插件处理
 - 插件对应的配置值，在 extends 扩展插件包时传入的插件配置值，其优先级是高于包内插件默认的配置值，此对象可用于覆盖配置包内的默认值
+
+> 此处注意，通过 extends 加载的插件配置对象，其格式与插件自身的配置对象格式相同，若插件有字段映射配置，则是 san.config.js 映射后的字段键值。
 
 ### 插件包的目录结构
 san-cli-config-demo 的目录结构如下

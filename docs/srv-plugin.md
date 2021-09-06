@@ -8,14 +8,13 @@ San CLI 在实现可扩展 Webpack 配置的设计上，借鉴了 Vue CLI 的 Se
 
 ```js
 module.exports = {
-    // 插件 id
+    // 必选，插件 id
     id: 'plugin-id',
-    // 插件的配置信息格式 
-    schema: joi => ({
-        option1: joi.string()
-        ...
-    })
-    // 插件的入口函数
+    // 可选，从config文件内获取的插件配置项的映射信息 
+    pickConfig: {
+        pluginOption1: 'config.a'
+    }
+    // 必选，插件的入口函数，api：pluginApi实例 options：插件配置
     apply(api, options) {
         api.chainWebpack(chainConfig => {
             console.log(options);
@@ -27,22 +26,56 @@ module.exports = {
 };
 ```
 
-## 插件的`schema`参数
+## 插件的`pickConfig`参数
 
+如需要从用户工程的配置文件 `san.config.js` 内获取插件的配置参数，则可利用该字段，将 `san.config.js` 内某些字段映射到插件的配置项，`pickConfig` 参数支持三种类型值：
+
+1. 数组：当插件配置项是 `san.config.js` 内的一级字段且键相同时，可直接使用数组，导出需要的配置项即可，例如：`['splitChunks', 'runtimeChunk', 'cache', 'sourceMap', 'publicPath']`；
 该字段会导出一个函数，函数内返回按照 [joi](https://www.npmjs.com/package/joi) 规范定义的plugin配置项的类型校验对象，在 Service 中会调用 schema 字段：
 
-1. 扩展合成大的校验对象，并对 `san.config.js` 内的参数进行校验
+2. 对象：当插件配置项来自于 `san.config.js` 内的不同层级参数时，可使用对象对齐，例如：
 
-2. 根据 schema 返回的对象，提取 `san.config.js` 内的对应项，并与 plugin 自身的配置合并，在 plugin 执行时传入，`san.config.js` 内参数优先级低于 plugin自身的配置
+```js
+pickConfig: {
+    assetsDir: 'assetsDir',
+    filenameHashing: 'filenameHashing',
+    esbuildOptions: 'loaderOptions.esbuild',
+    cssnanoOptions: 'css.cssnanoOptions',
+    cssPreprocessor: 'css.cssPreprocessor',
+    extract: 'css.extract',
+}
 
-> 当插件无需从 `san.config.js` 内获取配置时，则可不定义 schema 字段，否则必须定义 schema 字段，实际生效的配置值可利用 [`san inspect`](./inspect.md) 命令来查看
+```
+
+3. 函数：当转换 `san.config.js` 对象到插件配置项时需要根据环境变量做预先处理时，可利用函数，函数的格式如下：
+
+```js
+// projectConfigs: san.config.js对象
+// api：pluginApi实例
+pickConfig: (projectConfigs, api) => {
+    // 参数处理
+    if (api.isProd()) {
+        // ...
+    }
+    return {
+        pluginOption1: 'config.a'
+    };
+}
+
+```
+
+> 当插件无需从 `san.config.js` 内获取配置时，则可省略 pickConfig 字段，实际生效的配置值和映射关系可利用 [`san inspect`](./inspect.md) 命令来查看
+
+::: warning
+`san.config.js` 的配置对象默认不会传入插件内，只有通过该字段描述的对应关系，方可将指定配置值映射到插件配置项，进而传入插件内。
+:::
 
 ## 插件的`apply`函数
 
 插件的`apply`函数接受两个参数：
 
 1. `api`是 PluginAPI 实例，会提供一些 api（下面详细介绍）；
-3. `options` 合并了插件自身的参数（使用插件时传入）和san.config.js的配置项，其中插件自身的配置优先级高于san.config.js内的配置项：
+2. `options` 合并了插件自身的参数（使用插件时传入）和san.config.js内指定的字段值，其中插件自身的配置优先级高于san.config.js内的值
 
 ```js
 // san.config.js
@@ -66,12 +99,12 @@ serviceInstance.addPlugin(require('plugin'), options);
 
 ```js
 api.chainWebpack(webpackChain => {
-    console.log(projectOptions);
+    console.log(options);
     webpackChain.entry(/*...*/);
 });
 
 api.configWebpack(webpackConfig => {
-    console.log(projectOptions);
+    console.log(options);
     console.log(webpackConfig.entry);
 });
 ```
