@@ -43,7 +43,6 @@ exports.builder = {
         default: false,
         describe: 'To send ipc message to ui-dashboard'
     },
-
     https: {
         type: 'boolean',
         default: false,
