@@ -32,7 +32,7 @@ test('默认值', () => {
 
 test('添加 plugin', () => {
     const plugins = preset({plugins: [{id: 'a'}]}).plugins;
-    expect(plugins.length).toBe(7);
+    expect(plugins.length).toBe(6);
 });
 
 test('检测 polyfill', () => {
