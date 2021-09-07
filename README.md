@@ -1,3 +1,7 @@
+<h1 style="color: red;">
+此分支用于修复线上 san-cli v3 版本的不得不修复的 bug。注意！！！因为此代码库有多个 npm 包而 san-cli 只是其中一个 npm 包，所以此分支的代码和线上 san-cli v3 版本的代码不完全一致，发包之前需要和线上的包进行代码对比，确保没有问题。
+</h1>
+
 <div align="center">
     <h1>San-CLI</h1>
     <blockquote>A CLI Tooling based on <a href="https://baidu.github.io/san/">San.js</a> for rapid development</blockquote>
