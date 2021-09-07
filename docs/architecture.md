@@ -117,7 +117,7 @@ const service = new Service(name, {
     // 是否使用内置 Plugin
     useBuiltInPlugin,
     // 优先级比 san.config.js 低
-    projectOptions,
+    projectConfigs,
     // 传入的插件 list
     plugins,
     // 是否使用 progress
@@ -137,7 +137,7 @@ service.run(callback);
     1. 添加内置的 plugin
     2. 执行`init`：
         1. `loadEnv`：加载 env 文件；
-        2. `loadProjectOptions`：加载`san.config.js`；
+        2. `loadProjectConfigs`：加载`san.config.js`；
         3. 添加用户的 plugin
         4. 初始化插件，并且依次执行；
         5. 依次执行 webpackChain 回调栈；
@@ -158,9 +158,9 @@ service.run(callback);
 ```js
 module.exports = {
     id: 'plugin-id',
-    apply(api, projectOptions, pluginOptions) {
+    apply(api, options = {}) {
         api.chainWebpack(webpackConfig => {
-            console.log(projectOptions);
+            console.log(options);
             webpackConfig.entry(/*...*/);
         });
     },

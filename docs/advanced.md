@@ -264,7 +264,7 @@ module.exports = {
     plugins: [
         {
             id: 'built-in:plugin-progress',
-            apply(api, projectOptions, options = {}) {
+            apply(api, options = {}) {
                 api.chainWebpack(webpackConfig => {
                     options.color = require('san-cli-utils/randomColor').color;
                     webpackConfig.plugin('progress').use(require('webpackbar'), [options]);
@@ -311,6 +311,76 @@ module.exports = {
 
 ::: warning
 这里特殊说明下，`middleware`传入的是一个 function，并且**返回**一个中间件。
+:::
+
+## 在配置文件中添加配置包
+
+`extends` 增加自定义配置包，以 `san-cli-config-demo` 包为例：
+
+```js
+// san.config.js
+module.exports = {
+    extends: [
+        ['san-cli-config-demo']
+    ]
+};
+
+```
+### extends的配置包格式
+
+其中，extends扩展的配置支持4种格式:
+
+1. 单一配置文件地址, 可以填入绝对路径或相对路径: 'san-cli-config-xx'
+
+2. 数组内多个配置文件: ['san-cli-config-x1', 'san-cli-config-x2']
+
+3. 数组内除配置文件外还增加插件的开关控制对象: [['san-cli-config-xx', {mypluginId: false}]]
+
+4. 数组内直接传入扩展的对象: [[{plugins: 'path/to/file'}, {mypluginId: false}]]
+
+### extends支持加载配置对象
+
+当 extends 数组的一项通过数组传入时，其第二个参数是整个配置包插件的配置对象，该对象的key是扩展的配置包内插件的id，值可以是：
+
+- false，代表不加载该插件，当扩展了某些配置包，但其中某个插件需要大幅修改时，可以直接关闭包内的对应插件，自行定义插件处理
+- 插件对应的配置值，在 extends 扩展插件包时传入的插件配置值，其优先级是高于包内插件默认的配置值，此对象可用于覆盖配置包内的默认值
+
+> 此处注意，通过 extends 加载的插件配置对象，其格式与插件自身的配置对象格式相同，若插件有字段映射配置，则是 san.config.js 映射后的字段键值。
+
+### 插件包的目录结构
+san-cli-config-demo 的目录结构如下
+
+```bash
+
+├── plugins           # 插件
+│   ├── common.js
+│   ├── css.js
+│   └── svgSprite.js
+├── index.js          # 导出插件和配置对象
+├── README.md
+└── package.json
+
+```
+
+其中 `index.js` 导出包的配置对象，除包括扩展的plugins对象外，还可包括扩展插件的配置，例如：
+
+```js
+const resolve = require.resolve;
+module.exports = {
+    // 内置配置插件
+    plugins: [
+        resolve('./plugins/common'),
+        resolve('./plugins/svgSprite'),
+        resolve('./plugins/css')
+    ],
+    commonOption: 'myoption',
+    cssOption: {...}
+};
+
+```
+
+::: warning
+extends 和 `san.config.js` 文件内同时含有插件时，会首先加载 extends 内的plugins，之后加载 `san.config.js` 内的 plugins，但在执行时，当两个plugin含有相同id时，则最后加载的 plugin 生效。其余配置项加载顺序也相同，即先 extends 后 `san.config.js` 的配置项，因此可以通过在 `san.config.js` 定义相同配置项来覆盖扩展包内的配置项。
 :::
 
 ## 更多

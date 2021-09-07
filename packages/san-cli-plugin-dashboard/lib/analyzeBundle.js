@@ -134,7 +134,8 @@ function parseBundle(bundleContent) {
                 // Additional bundle without webpack loader.
                 // Modules are stored in second argument, after chunk ids:
                 // webpackJsonp([<chunks>], <modules>, ...)
-                // As function name may be changed with `output.jsonpFunction` option we can't rely on it's default name.
+                // As function name may be changed with `output.jsonpFunction` option
+                // we can't rely on it's default name.
                 if (
                     node.callee.type === 'Identifier'
                     && args.length >= 2
@@ -148,7 +149,8 @@ function parseBundle(bundleContent) {
                 // Additional bundle without webpack loader, with module IDs optimized.
                 // Modules are stored in second arguments Array(n).concat() call
                 // webpackJsonp([<chunks>], Array([minimum ID]).concat([<module>, <module>, ...]))
-                // As function name may be changed with `output.jsonpFunction` option we can't rely on it's default name.
+                // As function name may be changed with `output.jsonpFunction` option
+                // we can't rely on it's default name.
                 if (
                     node.callee.type === 'Identifier'
                     && (args.length === 2 || args.length === 3)
@@ -173,7 +175,8 @@ function parseBundle(bundleContent) {
                 }
 
                 // Additional bundles with webpack 4 are loaded with:
-                // (window.webpackJsonp=window.webpackJsonp||[]).push([[chunkId], [<module>, <module>], [[optional_entries]]]);
+                // (window.webpackJsonp=window.webpackJsonp||[])
+                //    .push([[chunkId], [<module>, <module>], [[optional_entries]]]);
                 if (
                     isWindowPropertyPushExpression(node)
                     && args.length === 1

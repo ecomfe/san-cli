@@ -30,6 +30,20 @@ module.exports = function apply(argv, api) {
     let res;
     let hasUnnamedRule;
 
+    if (argv.servicePlugins) {
+        const splugin = api.service.plugins.map(p => {
+            return {
+                id: p[0].id,
+                pickConfig: p[0].pickConfig || '',
+                options: JSON.stringify(p[1]),
+                path: p[0].path
+            };
+        });
+        // eslint-disable-next-line no-console
+        console.log(splugin);
+        return;
+    }
+
     if (argv.rule) {
         res = config.module.rules.find(r => r.__ruleNames[0] === argv.rule);
     }

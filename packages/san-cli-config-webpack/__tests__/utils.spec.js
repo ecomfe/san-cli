@@ -8,13 +8,13 @@
  * @author Lohoyo
  */
 
-const {defineVar, ensureRelative, normalizeProjectOptions, resolveLocal} = require('../utils');
+const {defineVar, ensureRelative, resolveLocal} = require('../utils');
 const path = require('path');
 
 describe('测试 defineVar 函数', () => {
     test('有 SAN_VAR_ 开头的环境变量的情况', () => {
         process.env.SAN_VAR_TEST = 1;
-        const vars = defineVar({publicPath: 'https://s.bdstatic.com/'}, true);
+        const vars = defineVar('https://s.bdstatic.com/', true);
         expect(vars.TEST).toBe('1');
         delete process.env.SAN_VAR_TEST;
     });
@@ -24,17 +24,6 @@ describe('测试 ensureRelative 函数', () => {
     test('第二个参数传入了绝对路径', () => {
         const path = ensureRelative('/Users/Lohoyo', '/Users/Lohoyo/index.html');
         expect(path).toBe('index.html');
-    });
-});
-
-describe('测试 normalizeProjectOptions 函数', () => {
-    test('没传参数', () => {
-        expect(normalizeProjectOptions()).toEqual({});
-    });
-    test('调用返回结果的 resolve 函数', () => {
-        expect(normalizeProjectOptions({
-            context: '/Users/Lohoyo/san-project'
-        }).resolve()).toEqual('/Users/Lohoyo/san-project');
     });
 });
 

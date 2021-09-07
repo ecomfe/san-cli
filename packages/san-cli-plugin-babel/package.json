@@ -1,7 +1,7 @@
 {
     "name": "san-cli-plugin-babel",
     "description": "San CLI babel plugin",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "main": "index.js",
     "license": "MIT",
     "engines": {
@@ -39,6 +39,7 @@
         "@babel/runtime-corejs3": "^7.6.3",
         "babel-loader": "^8.0.6",
         "core-js": "^3.6.4",
+        "regenerator-runtime": "^0.13.7",
         "thread-loader": "^3.0.4",
         "san-cli-utils": "^1.0.0",
         "san-hot-loader": "^0.1.1"
