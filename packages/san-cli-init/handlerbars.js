@@ -27,7 +27,7 @@ BAMM
 {{/xif}}
 */
 
-Handlebars.registerHelper('xif', function(expression, options) {
+Handlebars.registerHelper('xif', function (expression, options) {
     return Handlebars.helpers['x'].apply(this, [expression, options]) ? options.fn(this) : options.inverse(this);
 });
 /* a helper to execute javascript expressions
@@ -39,7 +39,7 @@ Handlebars.registerHelper('xif', function(expression, options) {
    OUTPUT:
    <p>Url: hi Sam, http://example.com <---- this is your href, your Age is: 20</p>
   */
-Handlebars.registerHelper('x', function(expression, options) {
+Handlebars.registerHelper('x', function (expression, options) {
     var result;
 
     // you can change the context, or merge it with options.data, options.hash
@@ -52,7 +52,7 @@ Handlebars.registerHelper('x', function(expression, options) {
     /* eslint-disable syntax */
     with (context) {
     /* eslint-enable syntax */
-        result = function() {
+        result = function () {
             try {
                 return eval(expression);
             } catch (e) {
@@ -68,7 +68,7 @@ Handlebars.registerHelper('x', function(expression, options) {
  * 
  * @param {Array<string>} delimiters - ['<%=', '%>']
 */
-Handlebars.setDelimiters = function(delimiters) {
+Handlebars.setDelimiters = function (delimiters) {
     if (!Array.isArray(delimiters) || delimiters.length !== 2) {
         console.warn('Handlebars Delimiters Settings Failed');
         return;
@@ -83,7 +83,7 @@ Handlebars.setDelimiters = function(delimiters) {
  * @param {string} content - 文本内容
  * @param {Array<string>} delimiters - 默认['{{', '}}']
 */
-Handlebars.isHandlebarTPL = function(content, delimiters) {
+Handlebars.isHandlebarTPL = function (content, delimiters) {
     if (!content) {
         return false;
     }

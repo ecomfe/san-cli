@@ -155,8 +155,7 @@ module.exports = (context, options = {}) => {
         require('@babel/plugin-syntax-dynamic-import'),
         require('@babel/plugin-syntax-import-meta'),
         [require('@babel/plugin-proposal-class-properties'), {loose}],
-        require('@babel/plugin-transform-new-target'),
-        require('@babel/plugin-transform-modules-commonjs')
+        require('@babel/plugin-transform-new-target')
     );
 
     plugins.push([
