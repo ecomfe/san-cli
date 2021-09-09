@@ -10,7 +10,7 @@
 
 module.exports = {
     id: 'built-in:plugin-dashboard',
-    apply(api, projectOptions, options = {}) {
+    apply(api, options = {}) {
         // 添加progress
         api.chainWebpack(webpackConfig => {
             webpackConfig.plugin('dashboard').use(require('./lib/DashboardPlugin'), [options]);

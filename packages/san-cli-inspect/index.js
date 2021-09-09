@@ -24,12 +24,24 @@ exports.builder = {
     plugins: {
         type: 'boolean',
         default: false,
-        describe: 'List all plugin names'
+        describe: 'List all webpack plugin names'
     },
     plugin: {
         alias: 'pluginName',
         type: 'string',
         describe: 'Output configuration based on the plugin name'
+    },
+    'service-plugins': {
+        alias: 'sp',
+        type: 'boolean',
+        default: false,
+        describe: 'List all san cli plugin names'
+    },
+    config: {
+        alias: 'config-file',
+        type: 'string',
+        hidden: true,
+        describe: 'Project config file'
     }
 };
 
@@ -37,5 +49,5 @@ exports.handler = argv => {
     const Service = require('san-cli-service');
     const service = new Service(process.cwd(), {watch: argv.watch, useDashboard: argv.dashboard});
     const run = require('./run');
-    service.run('build', argv).then(run.bind(run, argv));
+    service.run('inspect', argv).then(run.bind(run, argv));
 };

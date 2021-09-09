@@ -175,8 +175,8 @@ function parseBundle(bundleContent) {
                 }
 
                 // Additional bundles with webpack 4 are loaded with:
-                // eslint-disable-next-line max-len
-                // (window.webpackJsonp=window.webpackJsonp||[]).push([[chunkId], [<module>, <module>], [[optional_entries]]]);
+                // (window.webpackJsonp=window.webpackJsonp||[])
+                //    .push([[chunkId], [<module>, <module>], [[optional_entries]]]);
                 if (
                     isWindowPropertyPushExpression(node)
                     && args.length === 1

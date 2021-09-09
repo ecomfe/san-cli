@@ -19,7 +19,7 @@ const service = {
     pkg: {
         name: 'san-cli'
     },
-    projectOptions: {
+    projectConfigs: {
         outputDir: 'output'
     },
     devServerMiddlewares: []
@@ -50,6 +50,10 @@ test('测试 resolve', () => {
     expect(pluginAPI.resolve()).toBe('user/yyt');
 });
 
+test('测试 isLegacyBundle', () => {
+    expect(pluginAPI.isLegacyBundle()).toBeFalsy();
+});
+
 test('测试 getServiceInstance', () => {
     expect(pluginAPI.getServiceInstance()).toBe(service);
 });
@@ -62,9 +66,8 @@ test('测试 getPkg', () => {
     expect(pluginAPI.getPkg().name).toBe('san-cli');
 });
 
-test('测试 getProjectOption 和 getProjectOptions', () => {
-    expect(pluginAPI.getProjectOption().outputDir).toBe('output');
-    expect(pluginAPI.getProjectOptions().outputDir).toBe('output');
+test('测试 getProjectConfigs', () => {
+    expect(pluginAPI.getProjectConfigs().outputDir).toBe('output');
 });
 
 test('测试 middleware', () => {

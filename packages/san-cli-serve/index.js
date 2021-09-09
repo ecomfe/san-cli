@@ -89,7 +89,7 @@ exports.handler = argv => {
             argv.mode = 'development';
         }
     }
-    const projectOptions = {
+    const projectConfigs = {
         loaderOptions: {
             esbuild: argv.esm
         }
@@ -98,7 +98,7 @@ exports.handler = argv => {
     const service = new Service(process.cwd(), {
         watch: argv.watch,
         useDashboard: argv.dashboard,
-        projectOptions
+        projectConfigs
     });
     const run = require('./run');
     service.run('serve', argv).then(run.bind(run, argv));

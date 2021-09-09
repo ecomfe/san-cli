@@ -1,9 +1,7 @@
 [
-    'babel',
     'esbuild',
     'ejs',
     'html',
-    'file',
     'url',
     'css',
     'style',

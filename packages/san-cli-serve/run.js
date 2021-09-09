@@ -19,8 +19,8 @@ module.exports = function apply(argv, api) {
     const Serve = require('san-cli-webpack/serve');
     const getNormalizeWebpackConfig = require('./getWebpackConfig');
 
-    const projectOptions = api.getProjectOptions();
-    const webpackConfig = getNormalizeWebpackConfig(api, projectOptions, argv);
+    const projectConfigs = api.getProjectConfigs();
+    const webpackConfig = getNormalizeWebpackConfig(api, projectConfigs, argv);
     const serve = new Serve(webpackConfig);
     serve.getServer().then(server => {
         ['SIGINT', 'SIGTERM'].forEach(signal => {

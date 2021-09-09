@@ -33,11 +33,11 @@ module.exports = class PluginAPI {
     getPkg() {
         return this.service.pkg;
     }
-    getProjectOption() {
-        return this.service.projectOptions;
+    getProjectConfigs() {
+        return this.service.projectConfigs;
     }
-    getProjectOptions() {
-        return this.service.projectOptions;
+    isLegacyBundle() {
+        return parseInt(process.env.SAN_CLI_LEGACY_BUILD, 10) === 1;
     }
     resolve(p) {
         if (p) {
