@@ -4,7 +4,7 @@
  */
 const path = require('path');
 const {getDebugLogger} = require('san-cli-utils/ttyLogger');
-const {reloadModule} = require('../utils/module');
+const {reloadModule} = require('san-cli-utils/utils');
 const PluginManager = require('../api/PluginManager');
 const cwd = require('./cwd');
 const widgets = require('./widgets');

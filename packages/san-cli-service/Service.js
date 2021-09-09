@@ -24,6 +24,7 @@ const {findExisting} = require('san-cli-utils/path');
 const {textCommonColor} = require('san-cli-utils/color');
 const argsert = require('san-cli-utils/argsert');
 const readPkg = require('san-cli-utils/readPkg');
+const {reloadModule} = require('san-cli-utils/utils');
 const PluginAPI = require('./PluginAPI');
 const resolvePlugin = importLazy('./resolvePlugin');
 const {defaults: defaultConfig, validate: validateOptions} = require('./options');
@@ -319,7 +320,7 @@ module.exports = class Service extends EventEmitter {
                 if (!tmpPath[configPath]) {
                     tmpPath[configPath] = true;
                     try {
-                        extOptions = require(configPath);
+                        extOptions = reloadModule(configPath);
                     }
                     catch (err) {
                         logger.error(`Extends file: ${configPath} load fail!`, err);
