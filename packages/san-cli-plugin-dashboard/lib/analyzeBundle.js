@@ -134,7 +134,7 @@ function parseBundle(bundleContent) {
                 // Additional bundle without webpack loader.
                 // Modules are stored in second argument, after chunk ids:
                 // webpackJsonp([<chunks>], <modules>, ...)
-                // As function name may be changed with `output.jsonpFunction` option
+                // As function name may be changed with `output.jsonpFunction` option,
                 // we can't rely on it's default name.
                 if (
                     node.callee.type === 'Identifier'
@@ -149,7 +149,7 @@ function parseBundle(bundleContent) {
                 // Additional bundle without webpack loader, with module IDs optimized.
                 // Modules are stored in second arguments Array(n).concat() call
                 // webpackJsonp([<chunks>], Array([minimum ID]).concat([<module>, <module>, ...]))
-                // As function name may be changed with `output.jsonpFunction` option
+                // As function name may be changed with `output.jsonpFunction` option,
                 // we can't rely on it's default name.
                 if (
                     node.callee.type === 'Identifier'

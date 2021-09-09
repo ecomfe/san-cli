@@ -1,6 +1,5 @@
 # san-cli-serve
 
-san-cli-serve 是 [San](https://github.com/baidu/san) CLI 工具中创建项目的核心功能部分。
 san serve 命令的执行主体。
 
 ## 使用文档
