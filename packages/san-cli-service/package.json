@@ -33,7 +33,7 @@
         "lodash.defaultsdeep": "^4.6.1",
         "lodash.get": "^4.4.2",
         "lodash.merge": "^4.6.2",
-        "san-cli-config-webpack": "~2.0.0",
+        "san-cli-config-webpack": "~1.0.0",
         "san-cli-plugin-dashboard": "~3.0.0",
         "san-cli-plugin-progress": "~3.0.0",
         "webpack-merge": "^5.7.3"
