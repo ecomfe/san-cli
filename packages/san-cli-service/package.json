@@ -1,7 +1,7 @@
 {
     "name": "san-cli-service",
     "description": "定制化的前端工程构建工具",
-    "version": "3.0.0",
+    "version": "2.0.2",
     "main": "Service.js",
     "license": "MIT",
     "engines": {
@@ -33,9 +33,9 @@
         "lodash.defaultsdeep": "^4.6.1",
         "lodash.get": "^4.4.2",
         "lodash.merge": "^4.6.2",
-        "san-cli-config-webpack": "~2.0.0",
-        "san-cli-plugin-dashboard": "~3.0.0",
-        "san-cli-plugin-progress": "~3.0.0",
+        "san-cli-config-webpack": "^1.0.0",
+        "san-cli-plugin-dashboard": "^2.0.0",
+        "san-cli-plugin-progress": "^2.0.0",
         "webpack-merge": "^5.7.3"
     },
     "gitHead": "402d813859ac219434712fa2063e5f724819004a"

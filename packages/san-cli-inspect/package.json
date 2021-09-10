@@ -1,7 +1,7 @@
 {
     "name": "san-cli-inspect",
     "description": "San-CLI inspect command",
-    "version": "1.1.0",
+    "version": "1.0.0",
     "main": "index.js",
     "license": "MIT",
     "engines": {
@@ -24,6 +24,6 @@
         "san-cli"
     ],
     "dependencies": {
-        "san-cli-service": "~3.0.0"
+        "san-cli-service": "^2.0.1"
     }
 }
