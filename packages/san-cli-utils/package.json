@@ -32,11 +32,11 @@
         "hash-sum": "^2.0.0",
         "import-lazy": "^4.0.0",
         "node-ipc": "^9.1.1",
-        "ora": "^4.0.2",
+        "ora": "^6.0.0",
         "read-pkg": "^5.2.0",
         "readline": "^1.3.0",
-        "string-width": "^4.2.0",
-        "strip-ansi": "^6.0.0",
+        "string-width": "^5.0.0",
+        "strip-ansi": "^7.0.0",
         "user-home": "^2.0.0"
     },
     "gitHead": "402d813859ac219434712fa2063e5f724819004a"
