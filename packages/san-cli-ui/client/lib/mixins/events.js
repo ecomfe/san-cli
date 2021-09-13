@@ -38,7 +38,7 @@ const $eventBus = {
 
 // @发布事件
 // this.$emit('hello', {someData});
-module.exports = {
+export default {
 
     /**
      * 注入到san的生命周期inited方法中，这样方便跨组件拿到数据

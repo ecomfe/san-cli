@@ -5,6 +5,6 @@
 
 import $apollo from '@lib/apollo-client';
 
-module.exports = {
+export default {
     $apollo
 };

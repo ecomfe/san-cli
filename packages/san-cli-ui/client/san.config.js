@@ -49,6 +49,7 @@ module.exports = {
             publicPath: '/'
         }
     },
+    cache: false,
     splitChunks: {
         // 三方库模块独立打包
         defaultVendors: {
