@@ -9,7 +9,7 @@
         "san-cli-utils": "^1.0.0",
         "tty-table": "^2.8.2",
         "webpack": "^5.38.1",
-        "webpack-dev-server": "^3.11.2"
+        "webpack-dev-server": "^4.0.0"
     },
     "author": "ksky521",
     "keywords": [
