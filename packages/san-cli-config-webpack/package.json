@@ -18,7 +18,7 @@
         "lodash.merge": "^4.6.2",
         "mini-css-extract-plugin": "^1.6.0",
         "postcss": "^8.2.4",
-        "postcss-loader": "^5.0.0",
+        "postcss-loader": "^6.1.1",
         "resolve": "^1.12.0",
         "san-cli-plugin-babel": "^2.0.0",
         "san-cli-utils": "^1.0.3",
