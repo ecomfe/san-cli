@@ -4,7 +4,7 @@
     "main": "commander.js",
     "license": "MIT",
     "engines": {
-        "node": ">=8"
+        "node": ">=12.13.0"
     },
     "scripts": {
         "start": "cross-env DEBUG=san-cli:ui:* SAN_CLI_UI_DEV=true SAN_VAR_APP_GRAPHQL_ENDPOINT=ws://localhost:8333/graphql nodemon ../san-cli/index.js ui",
@@ -107,7 +107,7 @@
         "md5": "^2.3.0",
         "nodemon": "^2.0.4",
         "rimraf": "^3.0.2",
-        "san": "~3.10.0",
+        "san": "3.10.0",
         "san-component": "0.1.4",
         "san-router": "^1.2.2",
         "santd": "^1.0.0",
