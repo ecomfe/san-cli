@@ -25,8 +25,8 @@
     ],
     "dependencies": {
         "deploy-files": "^0.1.0",
-        "san-cli-service": "^2.0.1",
-        "san-cli-utils": "^1.0.3",
+        "san-cli-service": "^3.0.0",
+        "san-cli-utils": "^1.0.5",
         "san-cli-webpack": "^2.0.0"
     }
 }
