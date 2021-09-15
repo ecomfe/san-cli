@@ -1,6 +1,6 @@
 {
     "name": "san-cli-webpack",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "main": "index.js",
     "dependencies": {
         "fs-extra": "^10.0.0",
