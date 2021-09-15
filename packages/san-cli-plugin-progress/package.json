@@ -6,7 +6,7 @@
     "main": "index.js",
     "license": "MIT",
     "engines": {
-        "node": ">=12.0"
+        "node": ">=12.13.0"
     },
     "keywords": [
         "san.js",

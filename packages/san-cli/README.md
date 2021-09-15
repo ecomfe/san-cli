@@ -17,7 +17,7 @@ San CLI takes into account the San ecosystem while trying to achieve universal c
 
 ## 📦 Installation
 
-> San CLI requires Node.js version 12.0 or above (12.0+ recommended).
+> San CLI requires Node.js version 12.13.0 or above (12.13.0+ recommended).
 
 ```bash
 # use npm

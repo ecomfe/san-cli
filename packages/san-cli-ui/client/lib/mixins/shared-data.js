@@ -7,7 +7,7 @@ import SHARED_DATA_UPDATE from '@graphql/shared-data/sharedDataUpdate.gql';
 import SHARED_DATA_UPDATED from '@graphql/shared-data/sharedDataUpdated.gql';
 import PROJECT_CURRENT from '@graphql/project/projectCurrent.gql';
 
-module.exports = {
+export default {
     async $getProjectId() {
         const query = await this.$apollo.query({
             query: PROJECT_CURRENT

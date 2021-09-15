@@ -11,17 +11,17 @@ const listeners = {
     disconnected: []
 };
 
-function onConnected(cb) {
+export function onConnected(cb) {
     listeners.connected.push(cb);
     return () => off(listeners.connected, cb);
 }
 
-function onReconnected(cb) {
+export function onReconnected(cb) {
     listeners.reconnected.push(cb);
     return () => off(listeners.reconnected, cb);
 }
 
-function onDisconnected(cb) {
+export function onDisconnected(cb) {
     listeners.disconnected.push(cb);
     return () => off(listeners.disconnected, cb);
 }
@@ -50,9 +50,3 @@ emitter.on('disconnected', (component, ...args) => {
         listener(component, args);
     }
 });
-
-module.exports = {
-    onConnected,
-    onReconnected,
-    onDisconnected
-};
