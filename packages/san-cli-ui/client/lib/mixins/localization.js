@@ -14,7 +14,7 @@ let localization = locales || {};
  * $t('san.title') => 'SAN UI'
  * */
 
-module.exports = {
+export default {
     addLocalization(lang) {
         let newLocale = merge(localization, lang);
         Object.assign(localization, newLocale);

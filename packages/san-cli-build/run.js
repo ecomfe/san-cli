@@ -14,7 +14,7 @@ module.exports = function apply(argv, api) {
     const {textCommonColor} = require('san-cli-utils/color');
     const getNormalizeWebpackConfig = require('./getWebpackConfig');
 
-    const projectOptions = api.getProjectOptions();
+    const projectConfigs = api.getProjectConfigs();
 
     // 开始时间
     const startTime = Date.now();
@@ -110,7 +110,7 @@ module.exports = function apply(argv, api) {
             // 获取 webpack 配置
             const config = getNormalizeWebpackConfig(
                 api,
-                projectOptions,
+                projectConfigs,
                 Object.assign(argv, {
                     modernBuild: false
                 })
@@ -139,7 +139,7 @@ module.exports = function apply(argv, api) {
             // 获取 webpack 配置
             const config = getNormalizeWebpackConfig(
                 api,
-                projectOptions,
+                projectConfigs,
                 Object.assign(argv, {
                     modernBuild: true,
                     clean: false
@@ -154,7 +154,7 @@ module.exports = function apply(argv, api) {
     } else {
         // 获取 webpack 配置
         // for build
-        build = new Build(getNormalizeWebpackConfig(api, projectOptions, argv));
+        build = new Build(getNormalizeWebpackConfig(api, projectConfigs, argv));
         build.on('success', success);
     }
     build.on('fail', fail);

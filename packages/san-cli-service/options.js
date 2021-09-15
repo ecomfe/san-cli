@@ -39,6 +39,7 @@ const schema = joi
         ),
         // service 插件相关
         plugins: joi.array(),
+        extends: joi.alternatives().try(joi.string(), joi.array()),
         // 产出相关
         publicPath: joi.string().allow(''),
         outputDir: joi.string(),

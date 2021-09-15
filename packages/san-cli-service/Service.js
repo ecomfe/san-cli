@@ -17,19 +17,22 @@ const {merge: webpackMerge} = importLazy('webpack-merge');
 const defaultsDeep = require('lodash.defaultsdeep');
 const lMerge = require('lodash.merge');
 const dotenv = require('dotenv');
-const {createChainConfig, createDevServerConfig} = require('san-cli-config-webpack');
-const {normalizeProjectOptions} = require('san-cli-config-webpack/utils');
+const {plugins: builtInPlugins, devServerOptions} = require('san-cli-config-webpack');
+const Config = require('webpack-chain');
 const SError = require('san-cli-utils/SError');
 const {findExisting} = require('san-cli-utils/path');
 const {textCommonColor} = require('san-cli-utils/color');
 const argsert = require('san-cli-utils/argsert');
 const readPkg = require('san-cli-utils/readPkg');
+const {reloadModule} = require('san-cli-utils/utils');
 const PluginAPI = require('./PluginAPI');
 const resolvePlugin = importLazy('./resolvePlugin');
 const {defaults: defaultConfig, validate: validateOptions} = require('./options');
 const logger = consola.withTag('Service');
 const debug = getDebugLogger('service');
 const showConfig = getDebugLogger('webpack:config');
+const cloneDeep = require('lodash.clonedeep');
+const get = require('lodash.get');
 
 module.exports = class Service extends EventEmitter {
     constructor(
@@ -40,7 +43,7 @@ module.exports = class Service extends EventEmitter {
             plugins = [],
             useBuiltInPlugin = true,
             useDashboard = false,
-            projectOptions = {}
+            projectConfigs = {}
         } = {}
     ) {
         super();
@@ -61,7 +64,7 @@ module.exports = class Service extends EventEmitter {
 
         this.initialized = false;
 
-        this._initProjectOptions = projectOptions;
+        this._initProjectConfigs = projectConfigs;
         // webpack chain & merge array
         this.webpackChainFns = [];
         this.webpackRawConfigFns = [];
@@ -129,21 +132,18 @@ module.exports = class Service extends EventEmitter {
         }
     }
 
-    resolvePlugins(plugins = [], useBuiltInPlugin = true) {
+    resolvePlugins(inputPlugins = [], useBuiltInPlugin = true) {
         // 0. 判断是否需要加载 builtin plugin
-        let builtInPlugins = [];
+        let plugins = [];
         if (useBuiltInPlugin) {
-            // * 添加上 babel 插件
-            builtInPlugins.push(require('san-cli-plugin-babel'));
+            // 1.新增内置插件
+            plugins = plugins.concat(builtInPlugins);
         }
-        plugins = Array.isArray(plugins) ? plugins : [];
+        plugins = plugins.concat(inputPlugins);
 
         if (plugins.length) {
             // 2. 真正加载
             plugins = plugins.map(this._loadPlugin.bind(this));
-            plugins = [...builtInPlugins, ...plugins];
-        } else {
-            plugins = builtInPlugins;
         }
 
         return plugins;
@@ -161,7 +161,8 @@ module.exports = class Service extends EventEmitter {
             try {
                 // 是从工作目录开始的
                 // san cli 内部使用 require
-                let plugin = require(resolvePlugin(p, this.cwd));
+                const pluginPath = resolvePlugin(p, this.cwd);
+                let plugin = require(pluginPath);
                 if (plugin.__esModule) {
                     // 重新赋值 esmodule
                     plugin = plugin.default;
@@ -172,17 +173,19 @@ module.exports = class Service extends EventEmitter {
                         // 默认 id 是配置的 string，方便查找
                         plugin.id = p;
                     }
+                    plugin.path = pluginPath;
                     // 这里支持两种情况：
                     // 1. 普通 plugin，没有参数
                     // 2. plugin 是 array，则第二个 value 是 options
                     // 这样兼容同一个 plugin 多次调用 options 不同情况
                     if (pluginOptions) {
                         debug('Plugin loaded: %s with options %O', chalk.magenta(plugin.id), pluginOptions);
-                        return [plugin, pluginOptions];
                     }
-                    debug('Plugin loaded: %s', chalk.magenta(plugin.id));
+                    else {
+                        debug('Plugin loaded: %s', chalk.magenta(plugin.id));
+                    }
 
-                    return plugin;
+                    return [plugin, pluginOptions];
                 }
                 logger.error(`Plugin is invalid: ${p}. Service plugin must has id and apply function!`);
             } catch (e) {
@@ -190,14 +193,11 @@ module.exports = class Service extends EventEmitter {
                 logger.error(e);
             }
         } else if (typeof p === 'object' && p.id && typeof p.apply === 'function') {
-            // 处理 object
-            if (pluginOptions) {
-                return [p, pluginOptions];
-            }
-            return p;
+            p.path = this.cwd;
+            return [p, pluginOptions];
         } else if (typeof p === 'function') {
             // 如果传入的plugin是个函数，增加id
-            return [{id: 'anonymous', apply: p}, pluginOptions];
+            return [{id: 'anonymous', apply: p, path: this.cwd}, pluginOptions];
         } else {
             logger.error('Service plugin is invalid');
             if (p && p.toString() === '[object Object]') {
@@ -220,31 +220,33 @@ module.exports = class Service extends EventEmitter {
 
         // set mode
         // load user config
-        time('loadProjectOptions');
-        const projectOptions = this.loadProjectOptions(configFile);
+        time('loadProjectConfigs');
+        const projectConfigs = this.loadProjectConfigs(configFile);
         // 下面是给 config-webpack 用的
-        projectOptions.mode = mode;
+        projectConfigs.mode = mode;
 
-        const entryFiles = Object.keys(projectOptions.pages || {}).map(key => projectOptions.pages[key].entry);
+        const entryFiles = Object.keys(projectConfigs.pages || {}).map(key => projectConfigs.pages[key].entry);
         process.env.SAN_CLI_ENTRY_FILES = JSON.stringify(entryFiles);
 
-        debug('projectOptions: %O', projectOptions);
-        timeEnd('loadProjectOptions');
+        debug('projectConfigs: %O', projectConfigs);
+        timeEnd('loadProjectConfigs');
 
-        // 添加插件
-        if (Array.isArray(projectOptions.plugins) && projectOptions.plugins.length) {
-            projectOptions.plugins.forEach(p => this.addPlugin(p));
+        const pluginMap = projectConfigs.extends && this.loadExt(projectConfigs.extends) || {};
+        debug('pluginMap: %O', pluginMap);
+        // 2. 添加san.config.js插件,优先级最高最后加载
+        if (Array.isArray(projectConfigs.plugins) && projectConfigs.plugins.length) {
+            projectConfigs.plugins.forEach(p => this.addPlugin(p));
         }
-        // 初始化插件
-        this.plugins.forEach(plugin => {
-            plugin && this.initPlugin(plugin);
-        });
+        // 过滤插件去掉重复，最后加载的插件和插件配置生效
+        this.filterPlugin(pluginMap);
+        // 3. 初始化插件
+        this.plugins.forEach(plugin => this.initPlugin(plugin));
         // webpack 配置
-        if (this.projectOptions.chainWebpack) {
-            this.webpackChainFns.push(this.projectOptions.chainWebpack);
+        if (this.projectConfigs.chainWebpack) {
+            this.webpackChainFns.push(this.projectConfigs.chainWebpack);
         }
-        if (this.projectOptions.configWebpack) {
-            this.webpackRawConfigFns.push(this.projectOptions.configWebpack);
+        if (this.projectConfigs.configWebpack) {
+            this.webpackRawConfigFns.push(this.projectConfigs.configWebpack);
         }
         return this;
     }
@@ -263,20 +265,131 @@ module.exports = class Service extends EventEmitter {
             }
         });
     }
-    initPlugin(plugin) {
-        let options = {};
-        if (Array.isArray(plugin)) {
-            [plugin, options] = plugin;
+    /**
+     * 加载扩展的配置
+     * @param {any} extConfigs san.config.js内的extends扩展项
+     * @returns {object}
+     * extends扩展的配置4种格式:
+     * 1. 单一配置文件地址, 可以填入绝对路径或相对路径: 'san-cli-config-xx'
+     * 2. 数组内多个配置文件: ['san-cli-config-x1', 'san-cli-config-x2']
+     * 3. 数组内除配置文件外还增加插件的开关控制对象: [['san-cli-config-xx', {mypluginId: false}]]
+     * 4. 数组内直接传入扩展的对象: [[{plugins: 'path/to/file'}, {mypluginId: false}]]
+     */
+    loadExt(extConfigs) {
+        if (!(typeof extConfigs === 'string' || Array.isArray(extConfigs))) {
+            return;
         }
-        const {id, apply} = plugin;
-        const api = this._getApiInstance(id);
+        // plugins的总开关
+        const pluginMap = {};
+        // 加载plguin顺序是：默认plugin + extends plugin + 当前san.config.js plugin，优先级也如此顺序
+        // 1. 扩展配置
+        let tmpPath = {};
+        if (typeof extConfigs === 'string') {
+            extConfigs = [extConfigs];
+        }
+        let result = [];
+        // 加载extends并去重，最后加载的配置有效
+        for (let i = extConfigs.length - 1; i >= 0; i--) {
+            let e = extConfigs[i];
+            let options = {};
+            if (Array.isArray(e) && e.length === 2) {
+                [e, options] = e;
+            }
 
-        // 传入配置的 options
-        // * 因为一般 plugin 不需要自定义 options，所以 projectOption 作为第二个参数
-        apply(api, this.projectOptions, options);
+            let extOptions = null;
+            if (typeof e === 'string') {
+                let configPath = '';
+                try {
+                    if (isAbsolute(e)) {
+                        configPath = require.resolve(e);
+                    }
+                    else {
+                        // 查找当前工程下和当前工程下的node_modules
+                        try {
+                            configPath = require.resolve(join(this.cwd, e));
+                        } catch (err) {
+                            configPath = require.resolve(join(this.cwd + '/node_modules/', e));
+                        }
+                    }
+                } catch (err) {
+                    logger.error(`Extends config: ${e} not exist!`);
+                    throw new SError(err);
+                }
+
+                // 路径存在，且未被加载
+                if (!tmpPath[configPath]) {
+                    tmpPath[configPath] = true;
+                    try {
+                        extOptions = reloadModule(configPath);
+                    }
+                    catch (err) {
+                        logger.error(`Extends file: ${configPath} load fail!`, err);
+                    }
+                }
+                else {
+                    logger.warn(`Extends file: ${configPath} is discarded due to duplication. option: ${
+                        JSON.stringify(options)}`);
+                }
+            }
+            else if (typeof e === 'object' && e.plugins) {
+                extOptions = e;
+            }
+            else {
+                logger.error('Extends is invalid', e);
+            }
+            // 没有拿到配置则跳过
+            if (!extOptions) {
+                continue;
+            }
+            result.unshift([extOptions, options]);
+        }
+        // 配置合并到this.projectConfigs内
+        result.forEach(c => {
+            // 合并开关控制
+            Object.assign(pluginMap, c[1]);
+            const plugins = c[0].plugins;
+            // 删除plugins
+            delete c[0].plugins;
+            // 扩展plugins
+            plugins.forEach(p => this.addPlugin(p));
+            // 合并其余配置项
+            defaultsDeep(this.projectConfigs, c[0]);
+        });
+        return pluginMap;
+    }
+    filterPlugin(pluginMap) {
+        // 只存储开启的plugin, 并去重
+        const oriPlugins = this.plugins;
+        this.plugins = [];
+        const loadMap = {};
+        for (let i = oriPlugins.length - 1; i >= 0; i--) {
+            let [p, pOptions = {}] = oriPlugins[i];
+            if (pluginMap[p.id] !== false) {
+                if (!loadMap[p.id]) {
+                    loadMap[p.id] = true;
+                    // extends中的插件optons优先级高于插件自身定义的options
+                    const extendOptions = typeof pluginMap[p.id] === 'object' ? pluginMap[p.id] : {};
+                    pOptions = defaultsDeep(extendOptions, pOptions);
+                    this.plugins.unshift([p, pOptions]);
+                }
+                else {
+                    logger.warn(`Plugin id: ${p.id} is discarded due to duplication. path: ${
+                        p.path}. options: ${JSON.stringify(pOptions)}`);
+                }
+            }
+        }
+    }
+    initPlugin(p) {
+        const [plugin, pluginOptions] = p;
+        const {id, apply, pickConfig} = plugin;
+        // 拿到projectConfigs内插件对应的配置项
+        const api = this._getApiInstance(id);
+        const options = pickConfig ? defineOption(this.projectConfigs, api, pickConfig) : {};
+
+        apply(api, defaultsDeep(pluginOptions, options));
         return this;
     }
-    loadProjectOptions(configFile) {
+    loadProjectConfigs(configFile) {
         let originalConfigFile = configFile;
         if (configFile && typeof configFile === 'string') {
             configFile = isAbsolute(configFile) ? configFile : resolve(this.cwd, configFile);
@@ -286,7 +399,7 @@ module.exports = class Service extends EventEmitter {
             }
         }
         // 首先试用 argv 的 config，然后寻找默认的，找到则读取，格式失败则报错
-        let config = defaultsDeep(this._initProjectOptions, defaultConfig);
+        let config = defaultsDeep(this._initProjectConfigs, defaultConfig);
         let result = {
             filepath: originalConfigFile,
             config: configFile ? require(configFile) : false
@@ -314,15 +427,17 @@ module.exports = class Service extends EventEmitter {
                     throw new SError(e);
                 }
             }
-            debug('loadProjectOptions from %s', configPath);
+
+            debug('loadProjectConfigs from %s', configPath);
 
             // 加载默认的 config 配置
             config = defaultsDeep(result.config, config);
         } else {
             // this.logger.warn(`${textCommonColor('san.config.js')} Cannot find! Use default configuration.`);
         }
-        this.projectOptions = this.normalizeConfig(config, result.filepath);
-        return this.projectOptions;
+        // 防止创建多个service实例时出现config相互影响
+        this.projectConfigs = cloneDeep(this.normalizeConfig(config, result.filepath));
+        return this.projectConfigs;
     }
     normalizeConfig(config, filepath) {
         // normalize publicPath
@@ -352,11 +467,6 @@ module.exports = class Service extends EventEmitter {
             });
         }
 
-        config.pkg = this.pkg;
-        // 添加默认context
-        if (!config.context) {
-            config.context = this.cwd;
-        }
         return config;
     }
 
@@ -414,20 +524,7 @@ module.exports = class Service extends EventEmitter {
     }
 
     getWebpackChainConfig() {
-        const projectOptions = normalizeProjectOptions(this.projectOptions);
-        const chainableConfig = createChainConfig(this.projectOptions.mode, projectOptions);
-        if (this.projectOptions.extends) {
-            this.projectOptions.extends.forEach(item => {
-                if (typeof item === 'string') {
-                    item = [item];
-                }
-                const [config, options] = item;
-                const configPath = require.resolve(config, {
-                    paths: [process.cwd()]
-                });
-                require(configPath)(chainableConfig, projectOptions, options);
-            });
-        }
+        const chainableConfig = new Config();
         // apply chains
         this.webpackChainFns.forEach(fn => fn(chainableConfig));
         return chainableConfig;
@@ -464,9 +561,11 @@ module.exports = class Service extends EventEmitter {
             cloneRuleNames(config.module && config.module.rules, original.module && original.module.rules);
         }
 
-        // 这里需要将 devServer 和 this.projectOptions.devServer 进行 merge
-        config.devServer = createDevServerConfig(
-            lMerge(config.devServer || {}, this.projectOptions.devServer || {}) || {}
+        // 这里需要将 devServer 和 this.projectConfigs.devServer 进行 merge
+        config.devServer = lMerge(
+            devServerOptions,
+            config.devServer || {},
+            this.projectConfigs.devServer || {}
         );
 
         let before = config.devServer.before;
@@ -520,4 +619,26 @@ function ensureSlash(config, key) {
         }
         config[key] = val.replace(/([^/])$/, '$1/');
     }
+}
+
+function defineOption(config, api, pickConfig) {
+    const res = {};
+    if (!(Array.isArray(pickConfig)
+        || typeof pickConfig === 'object'
+        || typeof pickConfig === 'function'
+    )) {
+        logger.error('Service pickConfig type error: mapper must be either an Array or an Object or a function');
+        return;
+    }
+    if (typeof pickConfig === 'function') {
+        pickConfig = pickConfig(config, api);
+    }
+    const getter = Array.isArray(pickConfig)
+        ? pickConfig.map(key => ({key, val: key}))
+        : Object.keys(pickConfig).map(key => ({key, val: pickConfig[key]}));
+
+    getter.forEach(({key, val}) => {
+        res[key] = get(config, val);
+    });
+    return res;
 }

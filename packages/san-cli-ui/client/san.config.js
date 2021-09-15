@@ -21,7 +21,13 @@ module.exports = {
     css: {
         sourceMap: isProduction,
         cssPreprocessor: 'less',
-        extract: true
+        extract: true,
+        loaderOptions: {
+            less: {
+                javascriptEnabled: true,
+                compress: false
+            }
+        }
     },
 
     pages: {
@@ -49,6 +55,7 @@ module.exports = {
             publicPath: '/'
         }
     },
+    cache: false,
     splitChunks: {
         // 三方库模块独立打包
         defaultVendors: {

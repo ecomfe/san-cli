@@ -1,5 +1,5 @@
-// 运行测试的时间上限设为3分钟（默认是5秒，太短了不够用）
-jest.setTimeout(180000);
+// 运行测试的时间上限设为6分钟（默认是5秒，太短了不够用）
+jest.setTimeout(360000);
 
 const path = require('path');
 const child_process = require('child_process');
@@ -289,4 +289,4 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
             });
         });
     });
-}, 360000);
+});

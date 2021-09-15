@@ -9,7 +9,7 @@
  */
 
 exports.command = 'serve [entry]';
-exports.description = 'Builds and serves your app, rebuilding on file changes';
+exports.description = 'Build and serve your app with rebuilding when files change';
 exports.builder = {
     'no-progress': {
         type: 'boolean',
@@ -43,7 +43,6 @@ exports.builder = {
         default: false,
         describe: 'To send ipc message to ui-dashboard'
     },
-
     https: {
         type: 'boolean',
         default: false,
@@ -90,7 +89,7 @@ exports.handler = argv => {
             argv.mode = 'development';
         }
     }
-    const projectOptions = {
+    const projectConfigs = {
         loaderOptions: {
             esbuild: argv.esm
         }
@@ -99,7 +98,7 @@ exports.handler = argv => {
     const service = new Service(process.cwd(), {
         watch: argv.watch,
         useDashboard: argv.dashboard,
-        projectOptions
+        projectConfigs
     });
     const run = require('./run');
     service.run('serve', argv).then(run.bind(run, argv));

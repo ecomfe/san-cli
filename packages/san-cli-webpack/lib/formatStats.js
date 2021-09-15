@@ -24,9 +24,7 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
     const isCSS = val => /\.css$/.test(val);
     const isMinJS = val => /\.min\.js$/.test(val);
 
-    /* eslint-disable no-unused-vars */
     let {assets, entrypoints, chunks} = stats;
-    /* eslint-enable no-unused-vars */
 
     function getChunksById(id) {
         if (typeof id === 'number' && chunks[id]) {
@@ -108,13 +106,13 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
         };
     });
 
-    const assetsMap = new Map(); // eslint-disable-line no-undef
+    const assetsMap = new Map();
     // 只提取 js 和 css
-    assets = assets.filter(a => {
+    assets.forEach(a => {
         if (isJS(a.name) || isCSS(a.name)) {
             const name = a.name;
             if (assetsMap.has(name)) {
-                return false;
+                return;
             }
             // 标识下 common 的模块类型
             if (a.chunks && a.chunks.length === 1 && commonChunksIds.has(a.chunks[0])) {
@@ -127,10 +125,7 @@ module.exports = function formatStats(stats, destDir, {resolve}) {
                 ...a,
                 gzippedSize: getGzippedSize(a)
             });
-            // 处理 entry 合并计算资源大小
-            return true;
         }
-        return false;
     });
 
     function getAssetsFiles(files = []) {

@@ -90,8 +90,10 @@ exports.lessOptions = {
         style: {},
         css: {},
         less: {
-            javascriptEnabled: true,
-            compress: false
+            lessOptions: {
+                javascriptEnabled: true,
+                compress: false
+            }
         }
     },
     sourceMap: false

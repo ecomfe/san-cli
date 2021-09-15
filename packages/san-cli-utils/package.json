@@ -1,6 +1,6 @@
 {
     "name": "san-cli-utils",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "main": "index.js",
     "license": "MIT",
     "author": "ksky521",
@@ -22,12 +22,12 @@
     ],
     "dependencies": {
         "address": "^1.1.2",
-        "boxen": "^4.2.0",
-        "chalk": "^3.0.0",
+        "boxen": "^5.1.0",
+        "chalk": "^4.1.2",
         "consola": "^2.11.0",
         "debug": "^4.1.1",
         "figures": "^3.1.0",
-        "fs-extra": "^8.1.0",
+        "fs-extra": "^10.0.0",
         "git-clone": "^0.1.0",
         "hash-sum": "^2.0.0",
         "import-lazy": "^4.0.0",

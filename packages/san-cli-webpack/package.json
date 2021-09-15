@@ -1,12 +1,12 @@
 {
     "name": "san-cli-webpack",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "main": "index.js",
     "dependencies": {
-        "fs-extra": "^8.1.0",
+        "fs-extra": "^10.0.0",
         "html-webpack-plugin": "^5.2.0",
         "portfinder": "^1.0.25",
-        "san-cli-utils": "^1.0.0",
+        "san-cli-utils": "^1.0.5",
         "tty-table": "^2.8.2",
         "webpack": "^5.38.1",
         "webpack-dev-server": "^3.11.2"
