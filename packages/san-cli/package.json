@@ -9,7 +9,7 @@
     },
     "license": "MIT",
     "engines": {
-        "node": ">=12.0"
+        "node": ">=12.13"
     },
     "author": "ksky521",
     "repository": {
@@ -29,12 +29,12 @@
     ],
     "dependencies": {
         "yargs": "~15.0.2",
-        "chalk":"^4.1.0",
+        "chalk": "^4.1.0",
         "san-cli-init": "^2.0.1",
         "san-cli-build": "^1.0.1",
         "san-cli-serve": "^1.0.1",
         "semver": "^7.1.1",
-        "update-notifier": "^4.0.0"
+        "update-notifier": "^5.1.0"
     },
     "gitHead": "402d813859ac219434712fa2063e5f724819004a",
     "devDependencies": {
