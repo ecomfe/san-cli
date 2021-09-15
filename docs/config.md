@@ -238,6 +238,7 @@ module.exports = {
         }
     };
     ```
+-   `san` 需要修改的 `san-loader` 的配置项，注意当 `san-loader` 开启 `{esModule: true}` 时，需同时将 `loaderOptions.html` 设置为 `{esModule: true}`
 
 ### css 相关
 

@@ -5,8 +5,9 @@ const htmlMinifyOptions = require('../defaultOptions').htmlMinifyOptions;
 module.exports = factory({
     loader: resolve.sync('html-loader'),
     options: {
+        esModule: false,
         minimize: htmlMinifyOptions,
-        attributes: {
+        sources: {
             list: [
                 {
                     tag: 'img',

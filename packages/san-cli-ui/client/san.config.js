@@ -21,7 +21,13 @@ module.exports = {
     css: {
         sourceMap: isProduction,
         cssPreprocessor: 'less',
-        extract: true
+        extract: true,
+        loaderOptions: {
+            less: {
+                javascriptEnabled: true,
+                compress: false
+            }
+        }
     },
 
     pages: {

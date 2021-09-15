@@ -17,7 +17,7 @@ const readPkg = {
         'author': 'ksky521',
         'license': 'MIT',
         'engines': {
-            'node': '>=12.0'
+            'node': '>=12.13.0'
         },
         'dependencies': {
             '@babel/core': '^7.6.4',
