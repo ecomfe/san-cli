@@ -222,6 +222,23 @@ module.exports = {
 };
 ```
 
+> 注意：`san-cli-plugin-babel` 在 < 2.02版本时，默认内置了 `@babel/plugin-transform-modules-commonjs` 将代码转换为commonjs后再处理，版本 >= 2.02中已移除该插件，已有代码库如出现模块引入问题可按照如下方式将此插件增加至babel
+
+```js
+module.exports = {
+    //...
+    loaderOptions: {
+        babel: {
+            plugins: [
+                ...
+                '@babel/plugin-transform-modules-commonjs'
+            ]
+        }
+    }
+};
+
+```
+
 ::: warning
 但是，我们推荐使用`babel.config.js`或者`.babelrc`进行 Babel 配置。
 :::
@@ -308,6 +325,23 @@ module.exports = {
 };
 ```
 
+::: warning
+当使用的san-cli版本 >= 4.1.0时，默认less版本是4.1.1， less-loader版本10.0.1，若工程中需要引用 less 3.x less-loader 5.x时，尤其是需要使用`javascriptEnabled`特性，则需要按照以下参数传入配置：
+:::
+
+```js
+module.exports = {
+    css: {
+        cssPreprocessor: 'less',
+        loaderOptions: {
+            less: {
+                javascriptEnabled: true,
+                compress: false
+            }
+        }
+    }
+};
+```
 
 ::: warning
 这里介绍的是一般配置，更多高级的配置以及优化相关的配置可以继续阅读[高级配置](./advanced.md)内容。
