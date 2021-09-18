@@ -21,7 +21,7 @@ module.exports = {
 
                 const script = chainConfig.module
                     .rule('script')
-                    .test(/\.(m?j|t)s$/)
+                    .test(/\.(m?j|t)sx?$/)
                     .exclude.add(filepath => !filepath)
                     .end();
 

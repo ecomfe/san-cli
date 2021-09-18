@@ -54,7 +54,7 @@ module.exports = {
 
             const scriptRule = webpackConfig.module
                 .rule('script')
-                .test(/\.(m?j|t)s$/)
+                .test(/\.(m?j|t)sx?$/)
                 .exclude.add(filepath => {
                     // 兼容webpack 5下data URI，filepath不存在的问题
                     if (!filepath) {
