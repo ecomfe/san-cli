@@ -150,6 +150,21 @@ module.exports = {
 };
 ```
 
+> 注意：若需要支持 ts 构建可按照 [esbuild-loader](https://github.com/privatenumber/esbuild-loader) 官方推荐方式传入配置，San CLI内默认的规则（`/\.(m?j|t)sx?$/`）已经支持对ts文件的检测。
+
+```js
+module.exports = {
+    // ...
+    loaderOptions: {
+        esbuild: {
+            loader: 'tsx',  // Or 'ts' if you don't need tsx
+            target: 'es2015'
+        }
+    }
+};
+
+```
+
 ### unsafeCache
 
 webpack5 新增了安全策略，对应 config.module.unsafeCache，开启后（true）表示忽略安全策略，可加快构建速度，默认不开启（false）。

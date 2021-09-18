@@ -243,6 +243,32 @@ module.exports = {
 但是，我们推荐使用`babel.config.js`或者`.babelrc`进行 Babel 配置。
 :::
 
+##### 对ts构建支持
+
+在内置的js插件中有关于 ts 文件格式的匹配规则（`/\.(m?j|t)sx?$/`），因此在需要支持ts构建的项目中，只需在 `loaderOptions.babel` 或 `babel.config.js` 按照如下步骤传入相关插件即可
+
+```js
+// 1. 执行 npm install @babel/preset-typescript 安装 typescript 预设
+// 2. san.config.js 中传入预设
+module.exports = {
+    //...
+    loaderOptions: {
+        babel: {
+            {
+                presets: [
+                    "@babel/typescript"
+                ],
+                plugins: [
+                    "@babel/proposal-class-properties",
+                    "@babel/proposal-object-rest-spread"
+                ]
+            }
+        }
+    }
+};
+
+```
+
 其他可在`loaderOptions`中配置的选项：
 
 -   `image` 用于修改图片的 url-loader 的默认配置项
