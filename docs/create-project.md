@@ -24,21 +24,21 @@ san init <template> <app-name>
 ```
 
 > 1. template 是工程项目脚手架地址，支持 github、icode、gitlab 等 repo 作为脚手架直接创建项目，并且可以指定 template 的 alias，详见下方的 **san remote**
-> 2. 为了方便，我们创建了一个 San 的基础脚手架 ksky521/san-project，不指定脚手架创建时（即快速创建时），用的就是这个基础脚手架。
+> 2. 为了方便，我们创建了一个 San 的基础脚手架 wanwu/san-project，不指定脚手架创建时（即快速创建时），用的就是这个基础脚手架。
 
 ### 例如
 
 ```bash
 # 1. 支持传入完整的 repo 地址:
-san init ksky521/san-project#v4 demo
-san init https://github.com/ksky521/san-project.git#v4 demo
+san init wanwu/san-project#v4 demo
+san init https://github.com/wanwu/san-project.git#v4 demo
 # 2. 默认是从 github repo 安装
-# 所以用 git@github.com:ksky521/simple.git 这个 repo 时可以简写成：
+# 所以用 git@github.com:wanwu/simple.git 这个 repo 时可以简写成：
 san init simple demo
 # 3. 支持 github、icode、gitlab 等的简写方式
-san init github:ksky521/san-project#v4 demo
+san init github:wanwu/san-project#v4 demo
 san init icode:baidu/hulk/san-project-base demo
-san init coding:ksky521/san-project demo
+san init coding:wanwu/san-project demo
 # 4. 分支写法
 san init template#branch demo
 # 5. 项目生成在当前目录

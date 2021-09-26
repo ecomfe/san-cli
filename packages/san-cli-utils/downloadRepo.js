@@ -83,7 +83,7 @@ san init <template> <app-name>, for example:
     san ${cmd} ${chalk.cyan('coding:yourname/template')} ${appName}
     san ${cmd} ${chalk.cyan('template#branch1')} ${appName}
 
-Default template is ${chalk.cyan('ksky521/san-project')}, Use ${chalk.cyan('san init -h')} for more information.`;
+Default template is ${chalk.cyan('wanwu/san-project')}, Use ${chalk.cyan('san init -h')} for more information.`;
 
     return info;
     // if (/failed with status 128/.test(reason)) {
@@ -117,9 +117,9 @@ function normalize(repo, opts) {
             checkout: ''
         };
     }
-    // TODO 这里要不要创建个 san-projects/san-templates 的用户放一些标准的项目脚手架？没有之前，product 默认写 ksky521吧~
+    // TODO 这里要不要创建个 san-projects/san-templates 的用户放一些标准的项目脚手架？没有之前，product 默认写 wanwu吧~
     // eslint-disable-next-line no-unused-vars
-    const [_, source = 'github', baidu = 'baidu', product = 'ksky521', repoName, checkout = ''] = match;
+    const [_, source = 'github', baidu = 'baidu', product = 'wanwu', repoName, checkout = ''] = match;
     let url = repo;
     switch (source) {
         case 'icode':
@@ -135,11 +135,11 @@ function normalize(repo, opts) {
         case 'gitlab':
         case 'bitbucket':
             if (!useSSH) {
-                // https://github.com/ksky521/san-webpack.git
+                // https://github.com/wanwu/san-webpack.git
                 url = `https://${source}.com/${product}/${repoName}.git`;
             }
             else {
-                // git@github.com:ksky521/san-webpack.git
+                // git@github.com:wanwu/san-webpack.git
                 url = `git@${source}.com:${product}/${repoName}.git`;
             }
             break;

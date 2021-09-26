@@ -17,15 +17,15 @@ const evaluate = require('../utils/isTemplatePath');
 
 describe('测试san init模板字符串形式', () => {
     test('github简写', () => {
-        expect(evaluate('ksky521/san-project')).toBeTruthy();
+        expect(evaluate('wanwu/san-project')).toBeTruthy();
     });
 
     test('github完整写法', () => {
-        expect(evaluate('https://github.com/ksky521/san-project.git')).toBeTruthy();
+        expect(evaluate('https://github.com/wanwu/san-project.git')).toBeTruthy();
     });
 
     test('SSH的写法', () => {
-        expect(evaluate('git@github.com:ksky521/simple.git')).toBeTruthy();
+        expect(evaluate('git@github.com:wanwu/san-project.git')).toBeTruthy();
     });
 
     test('icode的代码库', () => {

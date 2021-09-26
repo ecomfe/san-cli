@@ -22,7 +22,7 @@ test('只传入repoName（默认走github），使用ssh方式', async () => {
         ssh: true
     });
     expect(res).toEqual({
-        url: 'git@github.com:ksky521/yyt.git',
+        url: 'git@github.com:wanwu/yyt.git',
         dest: 'aaa',
         checkout: ''
     });
