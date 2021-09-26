@@ -240,7 +240,7 @@ module.exports = {
 ```
 
 ::: warning
-但是，我们推荐使用`babel.config.js`或者`.babelrc`进行 Babel 配置。
+关于 `babel` 的配置，可参考[浏览器兼容性](./browser-compatibility.md)的说明。
 :::
 
 ##### 对ts构建支持
@@ -256,11 +256,10 @@ module.exports = {
         babel: {
             {
                 presets: [
-                    "@babel/typescript"
+                    "@babel/preset-typescript"
                 ],
                 plugins: [
-                    "@babel/proposal-class-properties",
-                    "@babel/proposal-object-rest-spread"
+                    "@babel/plugin-proposal-object-rest-spread"
                 ]
             }
         }
@@ -268,6 +267,14 @@ module.exports = {
 };
 
 ```
+
+由于 [`@babel/preset-typescript`](https://babeljs.io/docs/en/babel-preset-typescript) 只对 ts 文件做语法转换，因此语法检测的工作，可交由:
+
+-  [`@typescript-eslint`](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin) eslint 插件来进行检测，具体配置可参考通过 `san init` 命令初始化的默认工程。
+- 利用 tsc 命令，配合 ts.config.json 来完成检测。
+- 利用 vscode 等编辑器插件来完成检测。
+
+##### 其他配置项
 
 其他可在`loaderOptions`中配置的选项：
 
