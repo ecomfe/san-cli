@@ -222,9 +222,59 @@ module.exports = {
 };
 ```
 
+> 注意：`san-cli-plugin-babel` 在 < 2.02版本时，默认内置了 `@babel/plugin-transform-modules-commonjs` 将代码转换为commonjs后再处理，版本 >= 2.02中已移除该插件，已有代码库如出现模块引入问题可按照如下方式将此插件增加至babel
+
+```js
+module.exports = {
+    //...
+    loaderOptions: {
+        babel: {
+            plugins: [
+                ...
+                '@babel/plugin-transform-modules-commonjs'
+            ]
+        }
+    }
+};
+
+```
+
 ::: warning
-但是，我们推荐使用`babel.config.js`或者`.babelrc`进行 Babel 配置。
+关于 `babel` 的配置，可参考[浏览器兼容性](./browser-compatibility.md)的说明。
 :::
+
+##### 对ts构建支持
+
+在内置的js插件中有关于 ts 文件格式的匹配规则（`/\.(m?j|t)sx?$/`），因此在需要支持ts构建的项目中，只需在 `loaderOptions.babel` 或 `babel.config.js` 按照如下步骤传入相关插件即可
+
+```js
+// 1. 执行 npm install @babel/preset-typescript 安装 typescript 预设
+// 2. san.config.js 中传入预设
+module.exports = {
+    //...
+    loaderOptions: {
+        babel: {
+            {
+                presets: [
+                    "@babel/preset-typescript"
+                ],
+                plugins: [
+                    "@babel/plugin-proposal-object-rest-spread"
+                ]
+            }
+        }
+    }
+};
+
+```
+
+由于 [`@babel/preset-typescript`](https://babeljs.io/docs/en/babel-preset-typescript) 只对 ts 文件做语法转换，因此语法检测的工作，可交由:
+
+-  [`@typescript-eslint`](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin) eslint 插件来进行检测，具体配置可参考通过 `san init` 命令初始化的默认工程。
+- 利用 tsc 命令，配合 ts.config.json 来完成检测。
+- 利用 vscode 等编辑器插件来完成检测。
+
+##### 其他配置项
 
 其他可在`loaderOptions`中配置的选项：
 
@@ -308,6 +358,23 @@ module.exports = {
 };
 ```
 
+::: warning
+当使用的san-cli版本 >= 4.1.0时，默认less版本是4.1.1， less-loader版本10.0.1，若工程中需要引用 less 3.x less-loader 5.x时，尤其是需要使用`javascriptEnabled`特性，则需要按照以下参数传入配置：
+:::
+
+```js
+module.exports = {
+    css: {
+        cssPreprocessor: 'less',
+        loaderOptions: {
+            less: {
+                javascriptEnabled: true,
+                compress: false
+            }
+        }
+    }
+};
+```
 
 ::: warning
 这里介绍的是一般配置，更多高级的配置以及优化相关的配置可以继续阅读[高级配置](./advanced.md)内容。

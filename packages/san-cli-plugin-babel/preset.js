@@ -73,6 +73,8 @@ module.exports = (context, options = {}) => {
         ignoreBrowserslistConfig,
         // 这个是plugins数组
         plugins: userPlugins,
+        // 用户传入的其他预设
+        presets = [],
         // 用户显式传入的 polyfill，一般是解决core-js没有自动注入的问题
         polyfills: userPolyfills,
         bugfixes = true,
@@ -179,7 +181,10 @@ module.exports = (context, options = {}) => {
     ]);
 
     return {
-        presets: [[require('@babel/preset-env'), envOptions]],
+        presets: [
+            [require('@babel/preset-env'), envOptions],
+            ...presets
+        ],
         plugins
     };
 };

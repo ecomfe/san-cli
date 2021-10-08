@@ -31,7 +31,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
     /* eslint-disable no-console */
     const cmdArgs = [
         'init',
-        'https://github.com/ksky521/san-project#v4',
+        'https://github.com/wanwu/san-project#v4',
         cwd,
         isWindows
             ? '--project-presets="{\\"name\\": \\"e2e\\", \\"description\\": \\"A San project\\", \\"author\\": \\"Lohoyo\\", \\"tplEngine\\": \\"smarty\\", \\"lint\\": false, \\"demo\\": true, \\"demoType\\": \\"normal\\", \\"cssPreprocessor\\": \\"less\\"}"' // eslint-disable-line max-len
