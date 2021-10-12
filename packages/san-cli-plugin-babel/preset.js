@@ -4,7 +4,7 @@
  * This source code is licensed under the MIT license.
  * See LICENSE file in the project root for license information.
  *
- * @file bable loader config
+ * @file babel loader config
  */
 const path = require('path');
 const semver = require('semver');
