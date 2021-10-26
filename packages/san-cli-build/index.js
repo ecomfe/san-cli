@@ -72,7 +72,7 @@ exports.builder = {
     report: {
         type: 'boolean',
         default: false,
-        describe: 'Generate bundle report HTML file'
+        describe: 'Generate bundle report HTML/JSON file'
     },
     // 'no-minimize': {
     //     type: 'boolean',

@@ -30,7 +30,7 @@ san build [entry]
 
 -   `--analyze，--analyzer`：是否使用 webpack-bundle-analyzer 输出包分析，值为 true 或 false，默认 false
 -   `--profile，--profiler`：是否展示编译进度日志，值为 true 或 false，默认是 false
--   `--report`：是否输将包分析报表生成为单个 HTML 文件，值为 true 或 false 或者文件名，默认 false，仅生成 Webpack Stats JSON 文件
+-   `--report`：是否输将包分析报表生成为单个 HTML / JSON 文件，值为 true 或 false 或者文件名，文件名指定 .html 时生成 HTML 文件（相应的 [webpack-bundle-analyzer](https://www.npmjs.com/package/webpack-bundle-analyzer) 选项 analyzerMode 取值 'static' ），文件名指定 .json 时生成 json 文件（相应的 [webpack-bundle-analyzer](https://www.npmjs.com/package/webpack-bundle-analyzer) 选项 analyzerMode 取值 'static' ）文件名不指定后缀时，按照 .html 处理; 默认 false，仅生成 Webpack Stats JSON 文件
 -   `--stats-json，--statsJson`：是否输将包分析报表生成为 stats.json，值为 true 或 false 或者文件名，默认是 false
 -   `--no-colors`：是否展示无色彩 log，值为 true 或 false，默认是 false
 
