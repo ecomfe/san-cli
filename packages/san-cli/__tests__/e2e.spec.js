@@ -53,7 +53,7 @@ test('serve 命令和 build 命令的 E2E 测试', done => {
     try {
         init.stderr.on('data', data => {
             if (data.toString().includes('Download timeout')) {
-                throw '你网络不行，用 HTTPS clone GitHub 的代码库时失败了，可以通过配置代理解决，不会配置的话可以找胡粤。';
+                throw '你网络不行，用 HTTPS clone GitHub 的代码库时失败了，可以通过配置代理解决。';
             }
 
             console.error(`init stderr: ${data}`);

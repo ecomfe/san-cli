@@ -31,7 +31,7 @@ exports.devServerOptions = {
     watchOptions: {
         aggregateTimeout: 300,
         ignored: /node_modules/,
-        poll: 100
+        poll: 1000
     },
     disableHostCheck: true,
     compress: false,
@@ -60,12 +60,13 @@ exports.terserOptions = {
 };
 
 exports.htmlMinifyOptions = {
+    caseSensitive: true,
     removeComments: true,
     collapseWhitespace: false,
     // 引号保留，不然 inline 的 base64 图片 compress 时报错
     removeAttributeQuotes: false,
     quoteCharacter: '"',
-    collapseBooleanAttributes: true,
+    collapseBooleanAttributes: false,
     removeScriptTypeAttributes: false,
     minifyCSS: true,
     // 处理 smarty 和 php 情况
