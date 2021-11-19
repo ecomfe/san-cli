@@ -10,6 +10,7 @@ const {warn} = require('san-cli-utils/ttyLogger');
 
 const {cssnanoOptions: defaultCssnanoOptions} = require('../defaultOptions');
 const createCSSRule = require('../rules/createCSSRule');
+const {resolveEsmodule} = require('../utils');
 
 module.exports = {
     id: 'css',
@@ -31,7 +32,8 @@ module.exports = {
         stylusOptions: 'css.loaderOptions.stylus',
         // 推荐使用 postcss.config.js
         postcssOptions: 'css.loaderOptions.postcss',
-        extractCssOptions: 'css.loaderOptions.extract-css'
+        extractCssOptions: 'css.loaderOptions.extract-css',
+        esModule: 'esModule'
     },
     apply(api, options = {}) {
         const isProd = api.isProd();
@@ -53,7 +55,8 @@ module.exports = {
             lessOptions: less,
             stylusOptions: stylus,
             postcssOptions: postcss,
-            extractCssOptions: extractCss = {}
+            extractCssOptions: extractCss = {},
+            esModule
         } = options;
         const pkg = api.getPkg();
         api.chainWebpack(chainConfig => {
@@ -118,6 +121,7 @@ module.exports = {
                 };
             }
             const useEsbuild = esbuild.css;
+            loaderOptions.css = resolveEsmodule(loaderOptions.css, esModule);
             // 1. 设置style loader
             // 2. 设置 css loader + css module + postcss
             createCSSRule(chainConfig, 'css', /\.css$/, {

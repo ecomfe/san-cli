@@ -87,6 +87,7 @@ const schema = joi
         }),
         // webpack 相关配置
         alias: joi.object(),
+        esModule: joi.boolean(),
         // 缓存的相关配置
         cache: joi.alternatives().try(joi.boolean(), joi.object()),
         // 内置 loader 的 options 增加thread-loader主要用在生产环境 增加esbuild-loader主要用在开发环境（转换js）生产环境（压缩js和css）
