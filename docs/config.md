@@ -243,6 +243,16 @@ module.exports = {
 关于 `babel` 的配置，可参考[浏览器兼容性](./browser-compatibility.md)的说明。
 :::
 
+
+##### esModule
+
+在内置的 loader 最新版本都支持esModule配置项，如 `html-loader` 、 `css-loader` 、`san-loader`，使用 `esModule`配置项可一键开启/关闭相关loader的 esModule 选项，通常情况下不需要设置此项。
+为兼容旧的工程，在 San CLI 内部默认 `html-loader` 、`san-loader` loader的配置：`{esModule: false} , 但当 **用户创建新的工程，且使用 .san 单文件** 时，请务必将此项设置为true，否则css-modules的取值会出现多层嵌套。
+
+::: warning
+该参数的设置 esModule 的优先级低于 loaderOptions 内直接设置对应loader的配置。
+:::
+
 ##### 对ts构建支持
 
 在内置的js插件中有关于 ts 文件格式的匹配规则（`/\.(m?j|t)sx?$/`），因此在需要支持ts构建的项目中，只需在 `loaderOptions.babel` 或 `babel.config.js` 按照如下步骤传入相关插件即可
@@ -288,7 +298,7 @@ module.exports = {
         }
     };
     ```
--   `san` 需要修改的 `san-loader` 的配置项，注意当 `san-loader` 开启 `{esModule: true}` 时，需同时将 `loaderOptions.html` 设置为 `{esModule: true}`
+-   `san` 需要修改的 `san-loader` 的配置项，注意当 `san-loader` 开启 `{esModule: true}` 时，需同时将 `loaderOptions.html` 设置为 `{esModule: true}` 需要全部模块开启 `esModule` 时，可使用 `esModule` 配置项。
 
 ### css 相关
 
