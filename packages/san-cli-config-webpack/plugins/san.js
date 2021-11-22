@@ -4,24 +4,27 @@
  */
 
 const rules = require('../rules');
+const {resolveEsmodule} = require('../utils');
 
 module.exports = {
     id: 'san',
     pickConfig: {
         sanOptions: 'loaderOptions.san',
-        sanHotOptions: 'loaderOptions.san-hot'
+        sanHotOptions: 'loaderOptions.san-hot',
+        esModule: 'esModule'
     },
     apply(api, options = {}) {
         const {
             sanOptions,
-            sanHotOptions
+            sanHotOptions,
+            esModule
         } = options;
         api.chainWebpack(chainConfig => {
 
             // set loaders
             // ------------------------loaders------------
             if (sanOptions !== false) {
-                const sanLoaders = [['san', sanOptions]];
+                const sanLoaders = [['san', resolveEsmodule(sanOptions, esModule)]];
                 if (!api.isProd() && sanHotOptions !== false) {
                     sanLoaders.unshift(['san-hot', sanHotOptions]);
                 }

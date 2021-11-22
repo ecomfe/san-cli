@@ -35,3 +35,12 @@ exports.resolveLocal = (...args) => {
     return path.join(__dirname, ...args);
 };
 
+exports.resolveEsmodule = (options, esModule) => {
+    const opt = options || {};
+    // 各个loaderOptions内的esModule优先级高于外层的esModule开关
+    if (!opt.hasOwnProperty('esModule') && typeof esModule !== 'undefined') {
+        opt.esModule = esModule;
+    }
+    return opt;
+};
+

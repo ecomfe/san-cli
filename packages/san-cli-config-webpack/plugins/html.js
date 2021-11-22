@@ -9,7 +9,7 @@ const fs = require('fs');
 const resolveSync = require('resolve').sync;
 const lMerge = require('lodash.merge');
 const minify = require('html-minifier-terser').minify;
-const {defineVar, ensureRelative, resolveLocal} = require('../utils');
+const {defineVar, ensureRelative, resolveLocal, resolveEsmodule} = require('../utils');
 const {terserOptions: defaultTerserOptions, htmlMinifyOptions} = require('../defaultOptions');
 
 module.exports = {
@@ -22,14 +22,16 @@ module.exports = {
         ejsOptions: 'loaderOptions.ejs',
         outputDir: 'outputDir',
         terserOptions: 'terserOptions',
-        publicPath: 'publicPath'
+        publicPath: 'publicPath',
+        esModule: 'esModule'
     },
     apply(api, options = {}) {
         const {
             htmlOptions: html,
             ejsOptions,
             copy,
-            publicPath
+            publicPath,
+            esModule
         } = options;
         const pkg = api.getPkg();
         api.chainWebpack(chainConfig => {
@@ -52,7 +54,7 @@ module.exports = {
 
             // html, ejs
             if (html !== false) {
-                rules.createRule(chainConfig, 'html', /\.html?$/, [['html', html]]);
+                rules.createRule(chainConfig, 'html', /\.html?$/, [['html', resolveEsmodule(html, esModule)]]);
             }
             if (ejsOptions !== false) {
                 rules.createRule(chainConfig, 'ejs', /\.ejs$/, [['ejs', ejsOptions]]);

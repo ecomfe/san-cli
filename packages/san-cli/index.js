@@ -69,7 +69,7 @@ function execCommand() {
         }
     }
     catch (e) {
-        if (e.code === 'MODULE_NOT_FOUND' && e.requireStack[0] === require.resolve(__filename)) {
+        if (e.code === 'MODULE_NOT_FOUND' && e.requireStack && e.requireStack[0] === require.resolve(__filename)) {
             // 没找到
             console.error(chalk.red(`[${cmdName}] command not found, you may install san-cli-${cmdName}`));
         }
