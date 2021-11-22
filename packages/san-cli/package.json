@@ -1,7 +1,7 @@
 {
     "name": "san-cli",
     "description": "San.js 定制化的前端工程构建工具",
-    "version": "4.1.0",
+    "version": "4.2.0",
     "scriptName": "san",
     "main": "index.js",
     "bin": {
@@ -30,7 +30,7 @@
     "dependencies": {
         "yargs": "~15.0.2",
         "chalk": "^4.1.0",
-        "san-cli-init": "^2.0.2",
+        "san-cli-init": "^2.0.3",
         "san-cli-build": "^2.0.0",
         "san-cli-serve": "^2.0.0",
         "semver": "^7.1.1",
