@@ -53,10 +53,6 @@ module.exports = class Build extends EventEmitter {
                 }
 
                 this.emit('fail', getWebpackErrorInfoFromStats(err, mulStats));
-                if (this.isWatch) {
-                    debug(err || errorInfo.errorInfo);
-                    process.exit(1);
-                }
                 return;
             }
             this.emit('success', {stats: mulStats, isWatch: this.isWatch});

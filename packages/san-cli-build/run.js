@@ -38,7 +38,9 @@ module.exports = function apply(argv, api) {
             info('Build failed with errors.');
             error(err ? err : 'Webpack config error, use `--verbose` flag to show debug log');
         }
-        process.exit(1);
+        if (!argv.watch) {
+            process.exit(1);
+        }
     }
     // 编译成功处理逻辑
     function success({stats: webpackStats, isWatch}, {isModern, isModernBuild} = {}) {
