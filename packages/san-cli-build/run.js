@@ -44,7 +44,7 @@ module.exports = function apply(argv, api) {
     }
     // 编译成功处理逻辑
     function success({stats: webpackStats, isWatch}, {isModern, isModernBuild} = {}) {
-        if (analyze) {
+        if (analyze || isWatch) {
             successLog('Build complete. Watching for changes...');
             return;
         }
