@@ -69,8 +69,8 @@ exports.htmlMinifyOptions = {
     collapseBooleanAttributes: false,
     removeScriptTypeAttributes: false,
     minifyCSS: true,
-    // 处理 smarty 和 php 情况
-    ignoreCustomFragments: [/{%[\s\S]*?%}/, /<%[\s\S]*?%>/, /<\?[\s\S]*?\?>/],
+    // 处理 smarty、php 和 san 插值语法的情况
+    ignoreCustomFragments: [/{%[\s\S]*?%}/, /<%[\s\S]*?%>/, /<\?[\s\S]*?\?>/, /{{[\s\S]*?}}/],
     keepClosingSlash: true
     // more options:
     // https://github.com/kangax/html-minifier#options-quick-reference
