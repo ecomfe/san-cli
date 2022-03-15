@@ -71,7 +71,7 @@
         "launch-editor": "^2.2.1",
         "lowdb": "^1.0.0",
         "node-fetch": "^2.6.0",
-        "node-ipc": "^9.1.1",
+        "node-ipc": "9.1.1",
         "node-notifier": "^9.0.0",
         "open-web-browser": "^0.1.0",
         "portfinder": "^1.0.25",
