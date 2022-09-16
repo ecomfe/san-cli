@@ -83,6 +83,10 @@ module.exports = {
                 const extModulesRule = baseRule.oneOf('normal-modules').test(/\.module\.\w+$/);
                 applyLoaders(extModulesRule, true);
 
+                // rules for <style module> files
+                const sanModulesRule = baseRule.oneOf('san-modules').resourceQuery(/module/);
+                applyLoaders(sanModulesRule, true);
+
                 // rules for normal CSS imports
                 const normalRule = baseRule.oneOf('normal');
                 applyLoaders(normalRule, !requireModuleExtension);
