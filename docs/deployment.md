@@ -3,6 +3,8 @@
 # 部署
 在执行 `san build [entry] --remote <remote-name>` 时，使用的就是该页面的远程部署解决方案，支持从项目本地将生产环境编译产出直接远程部署到目标开发机。
 
+如需在开发中代码每次更改自动部署至远端机器，实现代码更改实时push，可执行 `san build [entry] --watch --remote <remote-name>` 命令
+
 使用时，需要进行相应的 **环境配置** 以及 **参数配置**，下面具体说明如何配置。
 
 ## 环境配置
@@ -15,6 +17,7 @@
 SAN_REMOTE_XIAOMING_DISABLE_FSR=true
 SAN_REMOTE_XIAOMING_RECEIVER=http://www.xiaoming.com:8080/receiver.php
 SAN_REMOTE_XIAOMING_TEMPLATE_PATH=/home/work/nginx_static/html/test/template
+SAN_REMOTE_XIAOMING_TEMPLATE_SUFFIX=.html
 SAN_REMOTE_XIAOMING_STATIC_PATH=/home/work/nginx_static/html/test/static
 SAN_REMOTE_XIAOMING_STATIC_DOMAIN=http://test.bdstatic.com:8888
 SAN_REMOTE_XIAOMING_BASE_URL=http://www.cdnstatic.com
@@ -24,7 +27,7 @@ SAN_REMOTE_XIAOMING_HOST=http://www.xiaoming.com:8080
 
 ::: warning 上例解读
 1. 命名规则：**SAN_REMOTE_（1.大写的 remote-name 名称）_ (2.大写的参数名称，驼峰处改用下划线分隔)**；其中【1】的与remote-name相同，【2】会解析为配置参数，具体含义见**参数配置**
-2. 将 tpl、js、css 文件代码中 http://www.cdnstatic.com 替换成了 http://test.bdstatic.com:8888 。
+2. 将模板（默认tpl）、js、css 文件代码中 http://www.cdnstatic.com 替换成了 http://test.bdstatic.com:8888 。
 :::
 
 ### 远端机器
@@ -43,7 +46,12 @@ SAN_REMOTE_XIAOMING_HOST=http://www.xiaoming.com:8080
 远程服务的 receiver.php 地址，receiver.php 文件内容[参考](https://github.com/fex-team/fis3-deploy-http-push/blob/master/receiver.php)
 
 #### `templatePath`
-远程服务的模板存放地址，产出文件中的 .tpl 结尾的文件会上传到此路径下。
+远程服务的模板存放地址，产出文件中的 .tpl (默认后缀， 可通过templateSuffix修改) 结尾的文件会上传到此路径下。
+
+#### `templateSuffix`
+项目中模板文件后缀，如：'.html'，不配置时默认 '.tpl'
+
+>> san-cli-build > 2.1.1 & deploy-files > 0.2.3 支持
 
 #### `staticPath`
 远程服务的静态文件存放地址。
@@ -76,7 +84,7 @@ san build --remote xiaoming --watch
 
 ## 简单说实现
 
-使用[deploy-files](https://github.com/jinzhan/deploy-files)插件。
+使用[deploy-files](https://github.com/wanwu/deploy-files)插件。
 
 安装 deploy-files (版本 >= 0.1.1)：
 
