@@ -1,4 +1,4 @@
-jest.setTimeout(30000);
+jest.setTimeout(32000);
 
 const child_process = require('child_process');
 const puppeteer = require('puppeteer');

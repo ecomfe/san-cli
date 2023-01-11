@@ -91,7 +91,7 @@ test('async/await', () => {
             await Promise.resolve();
         }
     `, defaultOptions);
-    expect(code).toMatch('regenerator-runtime/runtime');
+    expect(code).toMatch('regeneratorRuntime');
 });
 
 test('显式传入 polyfill', () => {

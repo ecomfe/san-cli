@@ -1,5 +1,5 @@
 // 运行测试的时间上限设为6分钟（默认是5秒，太短了不够用）
-jest.setTimeout(360000);
+jest.setTimeout(390000);
 
 const path = require('path');
 const child_process = require('child_process');

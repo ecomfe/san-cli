@@ -34,6 +34,7 @@ SAN_VAR_TRUE=true
 # .env.production
 SAN_REMOTE_XIAOMING_RECEIVER=http://www.xiaoming.com:8080/receiver.php
 SAN_REMOTE_XIAOMING_TEMPLATE_PATH=/home/work/nginx_static/html/test/template
+SAN_REMOTE_XIAOMING_TEMPLATE_SUFFIX=.html # 可选
 SAN_REMOTE_XIAOMING_STATIC_PATH=/home/work/nginx_static/html/test/static
 SAN_REMOTE_XIAOMING_STATIC_DOMAIN=http://test.bdstatic.com:8888
 ```
