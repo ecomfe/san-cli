@@ -1,0 +1,32 @@
+{
+    "name": "san-cli-deploy",
+    "description": "San-CLI deploy command",
+    "version": "0.0.1",
+    "main": "index.js",
+    "license": "MIT",
+    "engines": {
+        "node": ">=12.13.0"
+    },
+    "author": "zttonly",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ecomfe/san-cli.git",
+        "directory": "packages/san-cli-deploy"
+    },
+    "bugs": {
+        "url": "https://github.com/ecomfe/san-cli/issues"
+    },
+    "homepage": "https://ecomfe.github.io/san-cli",
+    "keywords": [
+        "san",
+        "deploy",
+        "san.js",
+        "san-cli"
+    ],
+    "dependencies": {
+        "chokidar": "^3.5.3",
+        "deploy-files": "^0.2.5",
+        "graceful-fs": "^4.2.10",
+        "san-cli-utils": "^1.0.5"
+    }
+}
