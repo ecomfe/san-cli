@@ -61,6 +61,7 @@ module.exports = function apply(argv) {
     const deployObj = config[argv.target];
     const {
         root = '.',
+        disableFsr = false,
         ignore = [/(^|[\/\\])\../, '**/node_modules/**'],
         host,
         receiver,
@@ -77,7 +78,7 @@ module.exports = function apply(argv) {
         });
         const files = {};
         const up = new Upload({
-            disableFsr: false,
+            disableFsr,
             host,
             receiver,
             replace: arrify(deployObj.replace),
