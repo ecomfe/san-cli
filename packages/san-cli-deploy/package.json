@@ -1,7 +1,7 @@
 {
     "name": "san-cli-deploy",
     "description": "San-CLI deploy command",
-    "version": "0.0.2",
+    "version": "1.0.0",
     "main": "index.js",
     "license": "MIT",
     "engines": {

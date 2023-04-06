@@ -88,7 +88,7 @@ module.exports = function apply(argv) {
         watcher.on('all', (event, file) => {
             const filePth = resolve(cwd, root, file);
             if (event === 'add' || event === 'change') {
-                files[filePth] = fs.readFileSync(filePth);
+                files[file] = fs.readFileSync(filePth);
                 up.run();
             }
         });
