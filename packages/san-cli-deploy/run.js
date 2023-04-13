@@ -48,7 +48,7 @@ const arrify = (value = []) => (Array.isArray(value) ? value : [value]);
 
 module.exports = function apply(argv) {
     const cwd = process.cwd();
-    const config = loadConfig(argv.configFile, cwd);
+    const config = loadConfig(argv.config, cwd);
     if (!config) {
         logger.error('Please set default deploy configuration!');
         return;
