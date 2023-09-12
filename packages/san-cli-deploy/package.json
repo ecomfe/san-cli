@@ -1,7 +1,7 @@
 {
     "name": "san-cli-deploy",
     "description": "San-CLI deploy command",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "main": "index.js",
     "license": "MIT",
     "engines": {
@@ -25,7 +25,7 @@
     ],
     "dependencies": {
         "chokidar": "^3.5.3",
-        "deploy-files": "^0.2.5",
+        "deploy-files": "^0.2.6",
         "graceful-fs": "^4.2.10",
         "san-cli-utils": "^1.0.5"
     }

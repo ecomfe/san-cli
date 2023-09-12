@@ -68,8 +68,15 @@ module.exports = function apply(argv) {
         watchOptions = {}
     } = deployObj;
 
+    const up = new Upload({
+        disableFsr,
+        host,
+        receiver,
+        replace: arrify(deployObj.replace),
+    });
     const rule = arrify(deployObj.rule);
     rule.forEach(item => {
+        let timer = null;
         const watcher = chokidar.watch(item.match, {
             cwd: resolve(cwd, root),
             ignored: ignore, // glob
@@ -77,19 +84,20 @@ module.exports = function apply(argv) {
             ...watchOptions
         });
         const files = {};
-        const up = new Upload({
-            disableFsr,
-            host,
-            receiver,
-            replace: arrify(deployObj.replace),
-            to: item.to,
-            files
-        });
         watcher.on('all', (event, file) => {
             const filePth = resolve(cwd, root, file);
             if (event === 'add' || event === 'change') {
                 files[file] = fs.readFileSync(filePth);
-                up.run();
+                if (timer) {
+                    clearTimeout(timer);
+                }
+                timer = setTimeout(() => {
+                    up.upload({
+                        to: item.to,
+                        files
+                    });
+                    timer = null;
+                }, 500);
             }
         });
     });
