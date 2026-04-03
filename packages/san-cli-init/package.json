@@ -21,7 +21,7 @@
         "git-clone": "^0.1.0",
         "gulp-filter": "^6.0.0",
         "gulp-rename": "^2.0.0",
-        "handlebars": "^4.5.1",
+        "handlebars": "^4.7.9",
         "hash-sum": "^2.0.0",
         "inquirer": "^7.0.0",
         "san-cli-utils": "^1.0.0",
