@@ -20,7 +20,7 @@
         "fs-extra": "^10.0.0",
         "gulp-filter": "^6.0.0",
         "gulp-rename": "^2.0.0",
-        "handlebars": "^4.5.1",
+        "handlebars": "^4.7.9",
         "handlebars-delimiters": "^1.0.0",
         "prompts": "^2.4.0",
         "san-cli-utils": "^1.0.0",
