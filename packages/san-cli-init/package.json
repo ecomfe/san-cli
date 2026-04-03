@@ -1,6 +1,6 @@
 {
     "name": "san-cli-init",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "main": "index.js",
     "author": "ksky521",
     "repository": {
@@ -21,7 +21,7 @@
         "git-clone": "^0.1.0",
         "gulp-filter": "^6.0.0",
         "gulp-rename": "^2.0.0",
-        "handlebars": "^4.5.1",
+        "handlebars": "^4.7.9",
         "handlebars-delimiters": "^1.0.0",
         "hash-sum": "^2.0.0",
         "prompts": "^2.4.0",
