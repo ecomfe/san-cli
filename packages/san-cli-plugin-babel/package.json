@@ -37,7 +37,7 @@
         "@babel/preset-env": "^7.6.3",
         "@babel/runtime": "^7.6.3",
         "@babel/runtime-corejs3": "^7.6.3",
-        "babel-loader": "^8.0.6",
+        "babel-loader": "^9.0.0",
         "core-js": "^3.6.4",
         "regenerator-runtime": "^0.13.7",
         "thread-loader": "^3.0.4",
